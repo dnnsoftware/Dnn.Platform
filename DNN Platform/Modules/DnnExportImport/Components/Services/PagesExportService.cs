@@ -1147,7 +1147,8 @@ namespace Dnn.ExportImport.Components.Services
 
             var toDate = _exportImportJob.CreatedOnDate.ToLocalTime();
             var fromDate = (_exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
-            var isAllIncluded = selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.Checked);
+            var isAllIncluded =
+                selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.Checked);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
                 _exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate); // ordered by TabID
@@ -1159,13 +1160,17 @@ namespace Dnn.ExportImport.Components.Services
 
             //Note: We assume child tabs have bigger TabID values for restarting from checkpoints.
             //      Anything other than this might not work properly with shedule restarts.
+            CheckPoint.TotalItems = IncludeSystem || isAllIncluded
+                ? allTabs.Count
+                : allTabs.Count(otherPg => IsTabIncluded(otherPg, allTabs, selectedPages));
+
             foreach (var otherPg in allTabs)
             {
                 if (CheckCancelled(_exportImportJob)) break;
 
                 if (_totals.LastProcessedId > otherPg.TabID) continue;
 
-                if (isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
+                if (IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var tab = _tabController.GetTab(otherPg.TabID, portalId);
                     var exportPage = SaveExportPage(tab);
