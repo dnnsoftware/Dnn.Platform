@@ -61,11 +61,17 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckCancelled(importJob)) return;
 
             var pageIndex = 0;
-            const int pageSize = 500;//Constants.DefaultPageSize;
+            const int pageSize = Constants.DefaultPageSize;
             var totalUserRolesImported = 0;
             var totalProfilesImported = 0;
             var totalProcessed = 0;
             var totalUsers = Repository.GetCount<ExportUser>();
+            if (totalUsers == 0)
+            {
+                CheckPoint.Completed = true;
+                CheckPointStageCallback(this);
+                return;
+            }
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
             //Skip the import if all the users has been processed already.
             if (CheckPoint.Stage >= totalPages)

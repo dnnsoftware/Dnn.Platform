@@ -52,7 +52,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
-            const int pageSize = 500;
+            const int pageSize = Constants.DefaultPageSize;
             var totalUsersExported = 0;
             var totalUserRolesExported = 0;
             var totalPortalsExported = 0;
@@ -61,7 +61,12 @@ namespace Dnn.ExportImport.Components.Services
             var totalAspnetUserExported = 0;
             var totalAspnetMembershipExported = 0;
             var totalUsers = DataProvider.Instance().GetUsersCount(portalId, exportDto.IncludeDeletions, toDateUtc, fromDateUtc);
-            if (totalUsers == 0) return;
+            if (totalUsers == 0)
+            {
+                CheckPoint.Completed = true;
+                CheckPointStageCallback(this);
+                return;
+            }
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
             //Skip the export if all the users has been processed already.
@@ -214,15 +219,20 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
 
-            const int pageSize = 500;// Constants.DefaultPageSize;
+            const int pageSize = Constants.DefaultPageSize;
             var totalUsersImported = 0;
             var totalPortalsImported = 0;
             var totalAspnetUserImported = 0;
             var totalAspnetMembershipImported = 0;
             var totalUserAuthenticationCount = 0;
             var totalUsers = Repository.GetCount<ExportUser>();
+            if (totalUsers == 0)
+            {
+                CheckPoint.Completed = true;
+                CheckPointStageCallback(this);
+                return;
+            }
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
-
             //Skip the import if all the users has been processed already.
             if (CheckPoint.Stage >= totalPages)
                 return;

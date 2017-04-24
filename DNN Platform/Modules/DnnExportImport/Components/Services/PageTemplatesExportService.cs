@@ -96,7 +96,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
             //Skip the export if all the templates have been processed already.
-            if (CheckPoint.Stage >= 2)
+            if (CheckPoint.Stage >= 2 || CheckPoint.Completed)
                 return;
 
             var portalId = importJob.PortalId;
@@ -112,6 +112,8 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     Result.AddLogEntry("TemplatesFileNotFound", "Templates file not found. Skipping templates import",
                         ReportLevel.Warn);
+                    CheckPoint.Completed = true;
+                    CheckPointStageCallback(this);
                 }
                 else
                 {

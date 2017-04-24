@@ -108,6 +108,7 @@ namespace Dnn.ExportImport.Components.Services
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? GetImportTotal() : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
+            if (CheckPoint.Stage > 1) return;
             if (CheckPoint.Stage == 0)
             {
                 var portalSettings = Repository.GetAllItems<ExportPortalSetting>().ToList();
