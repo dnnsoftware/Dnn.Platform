@@ -185,6 +185,7 @@ class ExportModal extends Component {
     }
 
     updatePagesToExport(selectedPages) {
+        console.log('selected pages: ', selectedPages)
         let { exportRequest } = this.state;
         exportRequest.pages = selectedPages;
         this.setState({ exportRequest });
@@ -371,7 +372,7 @@ class ExportModal extends Component {
                         </div>
                         <div className="export-pages">
                             <div className="sectionTitle">{Localization.get("PagesInExport")}</div>
-                            <PagePickerInteractor PortalTabsParameters={PortalTabsParameters} />
+                            <PagePickerInteractor PortalTabsParameters={PortalTabsParameters} OnSelect={this.updatePagesToExport.bind(this)}/>
 
 
                             <div className="seperator2">

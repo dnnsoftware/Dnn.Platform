@@ -26,6 +26,8 @@ export class PagePickerInteractor extends Component {
       this.InitialTabsURL =     `http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
       this.DescendantTabsURL =  `http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
       this.selectAll = false
+      this.ExportModalOnSelect = props.OnSelect
+      console.log(this.ExportModalOnSelect)
     }
 
     componentWillMount(){
@@ -92,6 +94,10 @@ export class PagePickerInteractor extends Component {
       }
     }
 
+    _generateExportAPIObject(tabs){
+
+    }
+
     _filterOutUnchecked(tabs){
       return tabs.filter(tab => !!tab.CheckedState)
     }
@@ -145,11 +151,11 @@ export class PagePickerInteractor extends Component {
       tabs = filterOutMasterRootTab(tabs)
 
       const Left = () => {
-          actions.exportSite(tab)
+          this.ExportModalOnSelect(tabs)
       }
 
       const Right = () => {
-        console.log(tabs)
+        this.ExportModalOnSelect(tabs)
       }
       this._isAnyAllSelected(tabs) ? Left() : Right()
     }
