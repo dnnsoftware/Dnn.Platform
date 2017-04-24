@@ -1,9 +1,11 @@
 
 import React, {Component} from 'react'
-import {PagePickerDesktop} from './_new-page-picker'
+import { PagePickerDesktop } from './_new-page-picker'
 import {PagePickerDataManager} from './helpers'
 import {IconSelector} from './icons'
-// import {tabs, tabs2} from './mocks'
+import actions from '../../../actions/importExport'
+
+console.log(actions)
 
 import {global} from './_global'
 const styles = global.styles
@@ -24,7 +26,6 @@ export class PagePickerInteractor extends Component {
       this.InitialTabsURL =     `http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
       this.DescendantTabsURL =  `http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
       this.selectAll = false
-
     }
 
     componentWillMount(){
@@ -34,7 +35,6 @@ export class PagePickerInteractor extends Component {
 
     init(){
       this._requestInitialTabs()
-
     }
 
     _requestInitialTabs = () => {
@@ -145,7 +145,7 @@ export class PagePickerInteractor extends Component {
       tabs = filterOutMasterRootTab(tabs)
 
       const Left = () => {
-          console.log(tabs)
+          actions.exportSite(tab)
       }
 
       const Right = () => {
