@@ -125,7 +125,7 @@ class App extends Component {
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>
                     <PersonaBarPageHeader title={Localization.get("Import")}>
-                        <div className="sub-title">{props.portalName}</div>
+                        <div style={{marginTop: "-10"}}>{props.portalName}</div>
                     </PersonaBarPageHeader>
                     <PersonaBarPageBody backToLinkProps={{
                         text: state.referrer && state.referrerText || Localization.get("BackToImportExport"),
