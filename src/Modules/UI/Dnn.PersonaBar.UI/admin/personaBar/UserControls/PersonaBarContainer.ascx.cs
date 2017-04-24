@@ -8,6 +8,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.Controllers;
 using DotNetNuke.Entities.Host;
@@ -57,6 +58,13 @@ namespace Dnn.PersonaBar.UI.UserControls
         {
             base.OnLoad(e);
             PersonaBarPanel.Visible = InjectPersonaBar();
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            Visible = Response.StatusCode == (int)HttpStatusCode.OK;
+
+            base.OnPreRender(e);
         }
 
         #endregion
