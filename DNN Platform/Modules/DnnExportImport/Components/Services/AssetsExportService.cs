@@ -179,7 +179,7 @@ namespace Dnn.ExportImport.Components.Services
             //Stage 2: All folders and files imported.
             //Stage 3: Synchronization completed.
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 2)
+            if (CheckPoint.Stage >= 2 || CheckPoint.Completed)
                 return;
 
             var totalFolderImported = 0;
@@ -197,6 +197,8 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     Result.AddLogEntry("AssetsFileNotFound", "Assets file not found. Skipping assets import",
                         ReportLevel.Warn);
+                    CheckPoint.Completed = true;
+                    CheckPointStageCallback(this);
                 }
                 else
                 {

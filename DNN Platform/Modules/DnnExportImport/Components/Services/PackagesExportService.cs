@@ -96,7 +96,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
             //Skip the export if all the templates have been processed already.
-            if (CheckPoint.Stage >= 2)
+            if (CheckPoint.Stage >= 1 || CheckPoint.Completed)
                 return;
 
             _exportImportJob = importJob;
@@ -206,9 +206,12 @@ namespace Dnn.ExportImport.Components.Services
                                 Logger.Error(ex);
                             }
                         }
+                        CheckPoint.Stage++;
+                        CheckPoint.Completed = true;
                     }
                     finally
                     {
+                        CheckPointStageCallback(this);
                         try
                         {
                             FileSystemUtils.DeleteFolderRecursive(tempFolder);
@@ -222,6 +225,8 @@ namespace Dnn.ExportImport.Components.Services
             }
             else
             {
+                CheckPoint.Completed = true;
+                CheckPointStageCallback(this);
                 Result.AddLogEntry("PackagesFileNotFound", "Packages file not found. Skipping packages import", ReportLevel.Warn);
             }
         }

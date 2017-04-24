@@ -353,7 +353,7 @@ namespace Dnn.ExportImport.Components.Services
                         Username = other.Username,
                         RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? noRole,
                         RoleName = other.RoleName,
-                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? Null.NullInteger,
+                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
                         PermissionKey = other.PermissionKey,
                         AllowAccess = other.AllowAccess,
                         PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,

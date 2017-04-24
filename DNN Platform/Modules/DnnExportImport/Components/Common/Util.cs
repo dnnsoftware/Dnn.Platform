@@ -42,7 +42,6 @@ namespace Dnn.ExportImport.Components.Common
     public static class Util
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
-
         // some string extension helpers
         public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
         public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
@@ -113,7 +112,7 @@ namespace Dnn.ExportImport.Components.Common
 
         public static int? GetRoleIdByName(int portalId, string exportRolename)
         {
-            if (string.IsNullOrEmpty(exportRolename)) return -1;
+            if (string.IsNullOrEmpty(exportRolename)) return null;
 
             var role = RoleController.Instance.GetRoleByName(portalId, exportRolename);
             return role?.RoleID;

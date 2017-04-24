@@ -91,7 +91,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
             //Skip the export if all the templates have been processed already.
-            if (CheckPoint.Stage >= 1)
+            if (CheckPoint.Stage >= 1 || CheckPoint.Completed)
                 return;
 
             _exportImportJob = importJob;
@@ -158,15 +158,19 @@ namespace Dnn.ExportImport.Components.Services
                             }
                         }
                         CheckPoint.Stage++;
+                        CheckPoint.Completed = true;
                     }
                     finally
                     {
+                        CheckPointStageCallback(this);
                         FileSystemUtils.DeleteFolderRecursive(tempFolder);
                     }
                 }
             }
             else
             {
+                CheckPoint.Completed = true;
+                CheckPointStageCallback(this);
                 Result.AddLogEntry("ThemesFileNotFound", "Themes file not found. Skipping themes import", ReportLevel.Warn);
             }
         }
