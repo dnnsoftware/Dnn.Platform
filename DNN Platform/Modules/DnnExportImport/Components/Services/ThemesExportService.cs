@@ -101,7 +101,7 @@ namespace Dnn.ExportImport.Components.Services
             if (File.Exists(packageZipFile))
             {
                 CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
-                var exporeFiles = Directory.Exists(tempFolder) ? new string[0] : Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories);
+                var exporeFiles = Directory.Exists(tempFolder) ? Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories) : new string[0];
                 var portalSettings = new PortalSettings(importDto.PortalId);
                 _importCount = exporeFiles.Length;
 
