@@ -26,26 +26,18 @@ using System.Web.Http;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.ExportImport.Services
 {
-    [DnnAuthorize(StaticRoles = "Administrators")]
+    [RequireHost]
     public class ExportImportController : DnnApiController
     {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Export(ExportDto exportDto)
         {
-            var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
-            if (!isHostUser && exportDto.PortalId != PortalSettings.PortalId)
-            {
-                var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
-            }
-
             var controller = new ExportController();
             var jobId = controller.QueueOperation(PortalSettings.UserId, exportDto);
 
@@ -56,13 +48,6 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Import(ImportDto importDto)
         {
-            var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
-            if (!isHostUser && importDto.PortalId != PortalSettings.PortalId)
-            {
-                var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
-            }
-
             var controller = new ImportController();
             string message;
             if (controller.VerifyImportPackage(importDto.PackageId, null, out message))
@@ -80,7 +65,7 @@ namespace Dnn.ExportImport.Services
             string message;
             var summary = new ImportExportSummary();
             var isValid = controller.VerifyImportPackage(packageId, summary, out message);
-            summary?.ConvertToLocal(UserInfo);
+            summary.ConvertToLocal(UserInfo);
             return isValid
                 ? Request.CreateResponse(HttpStatusCode.OK, summary)
                 : Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
