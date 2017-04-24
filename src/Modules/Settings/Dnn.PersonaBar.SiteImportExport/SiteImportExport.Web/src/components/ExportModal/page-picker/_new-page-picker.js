@@ -3,9 +3,6 @@ import {IconSelector} from './icons'
 import * as shortid from 'shortid'
 import {global} from './_global'
 
-// import {PagePickerStore} from './redux'
-// import * as A from './redux/_actions'
-
 const styles = global.styles
 const greenscreen = styles.backgroundColor('green')
 const floatLeft = styles.float()
@@ -37,8 +34,6 @@ export class PagePickerDesktop extends Component {
       rootContext=props.rootContext
 
       this.setMasterRootCheckedState = props.setMasterRootCheckedState
-
-      console.log(props)
     }
 
     componentWillMount(){
@@ -377,22 +372,32 @@ export class PagePickerDesktop extends Component {
     }
 
     expandParentTab = (tab) => {
-
       const left = () => {
         tab.IsOpen = !tab.IsOpen
         const Tab = Object.assign({}, tab)
         const TabIdName = `${tab.TabId}-${tab.Name}`
+        const ChildrenSelected = STATE[TabIdName].ChildrenSelected
+        console.log('CS', ChildrenSelected)
         STATE[TabIdName] = Tab
+        STATE[TabIdName].ChildrenSelected=ChildrenSelected
+        console.log(tab)
         this._update()
       }
 
       const right = () => {
         this.getChildTabs(tab.TabId)
-        this._update()
+        .then(()=>{
+          tab.IsOpen = !tab.IsOpen
+          const Tab = Object.assign({}, tab)
+          const TabIdName = `${tab.TabId}-${tab.Name}`
+          STATE[TabIdName] = Tab
+          console.log(tab)
+        })
+        .then( () => this._setParentTabChildrenSelected(tab) )
+        .then( () => this._setRootTabChildrenSelected(tab) )
+        .then( ()=> this._update() )
       }
-
       tab.ChildTabs.length ? left() : right()
-
     }
 
     showChildTabs = (tab) =>{
@@ -431,7 +436,6 @@ export class PagePickerDesktop extends Component {
       const width = styles.width(100)
       const margin = styles.margin({top:10})
       const animate = direction=='90deg' ? true : false
-      console.log(animate)
 
       const render = (
          <div style={merge(width)}>

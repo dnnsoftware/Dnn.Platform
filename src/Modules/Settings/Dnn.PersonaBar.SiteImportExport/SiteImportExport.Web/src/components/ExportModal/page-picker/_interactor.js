@@ -48,21 +48,21 @@ export class PagePickerInteractor extends Component {
     }
 
     _requestDescendantTabs = (ParentTabId) => {
-      let descendantTabs = null
+        let descendantTabs = null
+        const params = `&parentId=${ParentTabId}`
         const mapToFlatTabs = (tabs) =>  tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`]=tab)
-        const captureDecendants = (tabs) => descendantTabs=tabs
+        const captureDecendants = (tabs) => descendantTabs=tabs.map(tab => {
+          !Array.isArray(tab.ChildTabs) ? tab.ChildTabs=[] : null
+          return tab
+        })
         const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants)
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs))
+        const appendDescendants = (parentTab) => descendantTabs.forEach((tab)=> tab.ParentTabId==parentTab.TabId ? parentTab.ChildTabs.push(tab) : null )
 
-        //this._traverseChildTabs(setLength)
-
-        const params = `&parentId=${ParentTabId}`
-
-        this._xhr(this.DescendantTabsURL, params)
-        .then(compose)
-        .then( ()=> console.log(descendantTabs) )
-        .then( ()=> this.forceUpdate() )
-
+        return this._xhr(this.DescendantTabsURL, params)
+        .then( input )
+        .then( ()=> this._traverseChildTabs(appendDescendants) )
+        .then( ()=> this.setState({tabs:this.state.tabs}) )
     }
 
     _xhr(url, params='') {
@@ -109,8 +109,8 @@ export class PagePickerInteractor extends Component {
       const loop = () => {
         const childtab  = cached_childtabs.length ? cached_childtabs.shift() : null
         const left = () => childtab.forEach(tab => {
-            comparator(tab)
-            tab.ChildTabs.length ? cached_childtabs.push(tab.ChildTabs) : null
+            Array.isArray(tab.ChildTabs) ? comparator(tab) : null
+            Array.isArray(tab.ChildTabs) && tab.ChildTabs.length ? cached_childtabs.push(tab.ChildTabs) : null
             condition ? loop() : exit()
         })
         const right = () =>  null
