@@ -37,11 +37,12 @@
         display: block;
         float: left;
         width: 100%;
-        position: relative;
+        position: relative;        
         input, textarea {
             width: 100%;
-            display: none;
+            opacity: 0;
             border-radius: 0;
+            pointer-events: none;
         }
         textarea {
             height: 100%;
@@ -74,7 +75,8 @@
         }
         div.editable-input {
             input, textarea {
-                display: block;
+                opacity: 1;
+                pointer-events: all;
             }
             .help-text {
                 opacity: 1;
