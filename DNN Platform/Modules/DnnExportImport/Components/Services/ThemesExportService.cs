@@ -58,15 +58,16 @@ namespace Dnn.ExportImport.Components.Services
                     foreach (var theme in exportThemes)
                     {
                         var filePath = SkinController.FormatSkinSrc(theme, _portalSettings);
-
                         var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
-                        foreach (var file in Directory.GetFiles(physicalPath, "*.*", SearchOption.AllDirectories))
+                        if (Directory.Exists(physicalPath))
                         {
-                            var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
-                            CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset);
+                            foreach (var file in Directory.GetFiles(physicalPath, "*.*", SearchOption.AllDirectories))
+                            {
+                                var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
+                                CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset);
+                            }
+                            totalThemesExported += 1;
                         }
-
-                        totalThemesExported += 1;
 
                         CheckPoint.ProcessedItems++;
                         CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalThemes;
@@ -74,13 +75,14 @@ namespace Dnn.ExportImport.Components.Services
                         //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
-
+                    CheckPoint.Stage++;
                     CheckPoint.Completed = true;
                     CheckPoint.Progress = 100;
                 }
             }
             finally
             {
+                CheckPointStageCallback(this);
                 Result.AddSummary("Exported Themes", totalThemesExported.ToString());
             }
         }
@@ -96,67 +98,76 @@ namespace Dnn.ExportImport.Components.Services
 
             var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipThemes}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
-            CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
-            var exporeFiles = Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories);
-            var portalSettings = new PortalSettings(importDto.PortalId);
-            _importCount = exporeFiles.Length;
-
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exporeFiles.Length : CheckPoint.TotalItems;
-            if (CheckPointStageCallback(this)) return;
-
-            if (CheckPoint.Stage == 0)
+            if (File.Exists(packageZipFile))
             {
-                try
+                CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
+                var exporeFiles = Directory.Exists(tempFolder) ? new string[0] : Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories);
+                var portalSettings = new PortalSettings(importDto.PortalId);
+                _importCount = exporeFiles.Length;
+
+                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exporeFiles.Length : CheckPoint.TotalItems;
+                if (CheckPointStageCallback(this)) return;
+
+                if (CheckPoint.Stage == 0)
                 {
-                    foreach (var file in exporeFiles)
+                    try
                     {
-                        try
+                        foreach (var file in exporeFiles)
                         {
-                            var checkFolder = file.Replace(tempFolder + "\\", string.Empty).Split('\\')[0];
-                            var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
-                            string targetPath;
-                            
+                            try
+                            {
+                                var checkFolder = file.Replace(tempFolder + "\\", string.Empty).Split('\\')[0];
+                                var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
+                                string targetPath;
 
-                            if (checkFolder == "_default")
-                            {
-                                targetPath = Path.Combine(Globals.HostMapPath, relativePath);
-                            }
-                            else if (checkFolder.EndsWith("-System"))
-                            {
-                                targetPath = Path.Combine(portalSettings.HomeSystemDirectoryMapPath, relativePath);
-                            }
-                            else
-                            {
-                                targetPath = Path.Combine(portalSettings.HomeDirectoryMapPath, relativePath);
-                            }
 
-                            if (!File.Exists(targetPath) || importDto.CollisionResolution == CollisionResolution.Overwrite)
-                            {
-                                var directory = Path.GetDirectoryName(targetPath);
-                                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                                if (checkFolder == "_default")
                                 {
-                                    Directory.CreateDirectory(directory);
+                                    targetPath = Path.Combine(Globals.HostMapPath, relativePath);
+                                }
+                                else if (checkFolder.EndsWith("-System"))
+                                {
+                                    targetPath = Path.Combine(portalSettings.HomeSystemDirectoryMapPath, relativePath);
+                                }
+                                else
+                                {
+                                    targetPath = Path.Combine(portalSettings.HomeDirectoryMapPath, relativePath);
                                 }
 
-                                File.Copy(file, targetPath, true);
-                            }
+                                if (!File.Exists(targetPath) ||
+                                    importDto.CollisionResolution == CollisionResolution.Overwrite)
+                                {
+                                    var directory = Path.GetDirectoryName(targetPath);
+                                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                                    {
+                                        Directory.CreateDirectory(directory);
+                                    }
 
-                            Result.AddLogEntry("Import Theme File completed", targetPath);
-                            CheckPoint.ProcessedItems++;
-                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exporeFiles.Length;
-                            CheckPointStageCallback(this); // just to update the counts without exit logic
+                                    File.Copy(file, targetPath, true);
+                                }
+
+                                Result.AddLogEntry("Import Theme File completed", targetPath);
+                                CheckPoint.ProcessedItems++;
+                                CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exporeFiles.Length;
+                                CheckPointStageCallback(this); // just to update the counts without exit logic
+                            }
+                            catch (Exception ex)
+                            {
+                                Result.AddLogEntry("Import Theme error", file);
+                                Logger.Error(ex);
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            Result.AddLogEntry("Import Theme error", file);
-                            Logger.Error(ex);
-                        }
+                        CheckPoint.Stage++;
+                    }
+                    finally
+                    {
+                        FileSystemUtils.DeleteFolderRecursive(tempFolder);
                     }
                 }
-                finally
-                {
-                    FileSystemUtils.DeleteFolderRecursive(tempFolder);
-                }
+            }
+            else
+            {
+                Result.AddLogEntry("ThemesFileNotFound", "Themes file not found. Skipping themes import", ReportLevel.Warn);
             }
         }
 

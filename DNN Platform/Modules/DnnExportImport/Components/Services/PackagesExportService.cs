@@ -8,7 +8,6 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Dnn.ExportImport.Dto.Pages;
-using Dnn.ExportImport.Dto.PageTemplates;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
@@ -149,68 +148,81 @@ namespace Dnn.ExportImport.Components.Services
             var packageName = match.Groups[2].Value;
             var version = new Version(match.Groups[3].Value);
 
-            return new ExportPackage {PackageFileName = fileName, PackageName = packageName, PackageType = packageType, Version = version};
+            return new ExportPackage { PackageFileName = fileName, PackageName = packageName, PackageType = packageType, Version = version };
         }
 
         private void ProcessImportModulePackages(ImportDto importDto)
         {
             var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
-            CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
-            var exportPackages = Repository.GetAllItems<ExportPackage>().ToList();
-
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportPackages.Count : CheckPoint.TotalItems;
-            if (CheckPointStageCallback(this)) return;
-
-            if (CheckPoint.Stage == 0)
+            if (File.Exists(packageZipFile))
             {
-                try
-                {
-                    foreach (var exportPackage in exportPackages)
-                    {
-                        try
-                        {
-                            var filePath = Path.Combine(tempFolder, exportPackage.PackageFileName);
-                            if (!File.Exists(filePath))
-                            {
-                                continue;
-                            }
+                CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
+                var exportPackages = Repository.GetAllItems<ExportPackage>().ToList();
 
-                            var packageType = exportPackage.PackageType;
-                            var packageName = exportPackage.PackageName;
-                            var version = exportPackage.Version;
+                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportPackages.Count : CheckPoint.TotalItems;
+                if (CheckPointStageCallback(this)) return;
 
-                            var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageType == packageType && p.Name == packageName);
-                            if (existPackage != null && (existPackage.Version > version || (existPackage.Version == version && importDto.CollisionResolution == CollisionResolution.Ignore)))
-                            {
-                                Result.AddLogEntry($"Import Package ignores", $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
-                                continue;
-                            }
-
-                            InstallPackage(filePath);
-                            Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
-                            CheckPoint.ProcessedItems++;
-                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
-                            CheckPointStageCallback(this); // just to update the counts without exit logic
-                        }
-                        catch (Exception ex)
-                        {
-                            Result.AddLogEntry("Import Package error", $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
-                            Logger.Error(ex);
-                        }
-                    }
-                }
-                finally
+                if (CheckPoint.Stage == 0)
                 {
                     try
                     {
-                        FileSystemUtils.DeleteFolderRecursive(tempFolder);
+                        foreach (var exportPackage in exportPackages)
+                        {
+                            try
+                            {
+                                var filePath = Path.Combine(tempFolder, exportPackage.PackageFileName);
+                                if (!File.Exists(filePath))
+                                {
+                                    continue;
+                                }
+
+                                var packageType = exportPackage.PackageType;
+                                var packageName = exportPackage.PackageName;
+                                var version = exportPackage.Version;
+
+                                var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger,
+                                    p => p.PackageType == packageType && p.Name == packageName);
+                                if (existPackage != null &&
+                                    (existPackage.Version > version ||
+                                     (existPackage.Version == version &&
+                                      importDto.CollisionResolution == CollisionResolution.Ignore)))
+                                {
+                                    Result.AddLogEntry($"Import Package ignores",
+                                        $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
+                                    continue;
+                                }
+
+                                InstallPackage(filePath);
+                                Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
+                                CheckPoint.ProcessedItems++;
+                                CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
+                                CheckPointStageCallback(this); // just to update the counts without exit logic
+                            }
+                            catch (Exception ex)
+                            {
+                                Result.AddLogEntry("Import Package error",
+                                    $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
+                                Logger.Error(ex);
+                            }
+                        }
                     }
-                    catch (Exception)
+                    finally
                     {
-                        //ignore
+                        try
+                        {
+                            FileSystemUtils.DeleteFolderRecursive(tempFolder);
+                        }
+                        catch (Exception)
+                        {
+                            //ignore
+                        }
                     }
                 }
+            }
+            else
+            {
+                Result.AddLogEntry("PackagesFileNotFound", "Packages file not found. Skipping packages import", ReportLevel.Warn);
             }
         }
 
@@ -249,7 +261,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, false, false)
             {
-                InstallerInfo = {PortalID = Null.NullInteger}
+                InstallerInfo = { PortalID = Null.NullInteger }
             };
 
             //Read the manifest
