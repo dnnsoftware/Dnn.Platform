@@ -66,6 +66,7 @@ namespace Dnn.ExportImport.Components.Common
         public static void UnZipArchiveExcept(string archivePath, string extractFolder, bool overwrite = true,
             IEnumerable<string> exceptionList = null, bool deleteFromSoure = false)
         {
+            if (!File.Exists(archivePath)) return;
             using (var archive = OpenCreate(archivePath))
             {
                 foreach (
@@ -74,7 +75,8 @@ namespace Dnn.ExportImport.Components.Common
                             entry =>
                                 ((exceptionList != null && !exceptionList.Contains(entry.FullName)) ||
                                  exceptionList == null) &&
-                                !entry.FullName.EndsWith("\\") && !entry.FullName.EndsWith("/") && entry.Length > 0))
+                                !entry.FullName.EndsWith("\\") && !entry.FullName.EndsWith("/") && entry.Length > 0)
+                    )
                 {
                     var path = Path.GetDirectoryName(Path.Combine(extractFolder, entry.FullName));
                     if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
@@ -98,6 +100,7 @@ namespace Dnn.ExportImport.Components.Common
         public static void UnZipFileFromArchive(string fileName, string archivePath, string extractFolder,
             bool overwrite = true, bool deleteFromSoure = false)
         {
+            if (!File.Exists(archivePath)) return;
             using (var archive = OpenCreate(archivePath))
             {
                 var fileUnzipFullName = Path.Combine(extractFolder, fileName);

@@ -193,13 +193,21 @@ namespace Dnn.ExportImport.Components.Services
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {
-                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath,
-                    importDto.CollisionResolution == CollisionResolution.Overwrite);
-                //Stage 1: Once unzipping of portal files is completed.
-                CheckPoint.Stage++;
-                CheckPoint.StageData = null;
-                CheckPoint.Progress = 10;
-                if (CheckPointStageCallback(this)) return;
+                if (File.Exists(assetsFile))
+                {
+                    Result.AddLogEntry("AssetsFileNotFound", "Assets file not found. Skipping assets import",
+                        ReportLevel.Warn);
+                }
+                else
+                {
+                    CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath,
+                        importDto.CollisionResolution == CollisionResolution.Overwrite);
+                    //Stage 1: Once unzipping of portal files is completed.
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    CheckPoint.Progress = 10;
+                    if (CheckPointStageCallback(this)) return;
+                }
             }
 
             if (CheckPoint.Stage == 1)

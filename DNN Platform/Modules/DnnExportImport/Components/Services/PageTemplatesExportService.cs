@@ -6,6 +6,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
+using System.IO;
 using Dnn.ExportImport.Dto.PageTemplates;
 using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
@@ -107,18 +108,26 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 0)
             {
-                var portal = PortalController.Instance.GetPortal(portalId);
+                if (File.Exists(templatesFile))
+                {
+                    Result.AddLogEntry("TemplatesFileNotFound", "Templates file not found. Skipping templates import",
+                        ReportLevel.Warn);
+                }
+                else
+                {
+                    var portal = PortalController.Instance.GetPortal(portalId);
 
-                CompressionUtil.UnZipArchive(templatesFile, portal.HomeDirectoryMapPath,
-                    importDto.CollisionResolution == CollisionResolution.Overwrite);
+                    CompressionUtil.UnZipArchive(templatesFile, portal.HomeDirectoryMapPath,
+                        importDto.CollisionResolution == CollisionResolution.Overwrite);
 
-                Result.AddSummary("Imported templates", totalTemplates.ToString());
-                CheckPoint.Stage++;
-                CheckPoint.StageData = null;
-                CheckPoint.Progress = 90;
-                CheckPoint.TotalItems = totalTemplates;
-                CheckPoint.ProcessedItems = totalTemplates;
-                if (CheckPointStageCallback(this)) return;
+                    Result.AddSummary("Imported templates", totalTemplates.ToString());
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    CheckPoint.Progress = 90;
+                    CheckPoint.TotalItems = totalTemplates;
+                    CheckPoint.ProcessedItems = totalTemplates;
+                    if (CheckPointStageCallback(this)) return;
+                }
             }
             if (CheckPoint.Stage == 1)
             {
