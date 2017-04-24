@@ -39,7 +39,7 @@ class JobDetails extends Component {
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
             if (detail) {
-                if (detail.Completed || state.cancelled || props.jobDetail.Status !== 1) {
+                if (detail.Completed || state.cancelled || props.jobDetail.Status !== 1 || detail.TotalItems === 0) {
                     return detail.ProcessedItems > detail.TotalItems ? detail.TotalItemsString : detail.ProcessedItemsString + " / " + detail.TotalItemsString;
                 }
                 else {
