@@ -137,6 +137,11 @@ ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
 	 padding-left:0px; 
 }
 .DnnModule #mdMemberList:hover{z-index:3;}
+#mdMemberList > li,#mdMemberList > li * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
 
 #mdMemberList > li{
 	position:relative;
