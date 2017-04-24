@@ -185,7 +185,6 @@ class ExportModal extends Component {
     }
 
     updatePagesToExport(selectedPages) {
-        console.log('selected pages: ', selectedPages)
         let { exportRequest } = this.state;
         exportRequest.pages = selectedPages;
         this.setState({ exportRequest });

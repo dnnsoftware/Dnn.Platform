@@ -156,7 +156,7 @@ export class PagePickerDesktop extends Component {
           case noChildrenSelected:
             console.log('no children selected')
             parent.CheckedState = parent.CheckedState ? 1 : 0
-            delete parent.ChildrenSelected
+            parent.ChildrenSelected=false
           return
 
           default:
@@ -203,7 +203,7 @@ export class PagePickerDesktop extends Component {
           case noChildrenSelected:
             console.log('no children')
             RootTab.CheckedState = RootTab.CheckedState ? 1 : 0
-            delete RootTab.ChildrenSelected
+            RootTab.ChildrenSelected = false
           return
 
           default:
@@ -214,7 +214,7 @@ export class PagePickerDesktop extends Component {
 
       const Right = () => {
         console.log('In Root Right')
-        delete tab.ChildrenSelected
+        tab.ChildrenSelected=false
       }
       tab.ParentTabId !== -1  ? Left() : Right()
 
@@ -483,10 +483,9 @@ export class PagePickerDesktop extends Component {
     }
 
     render_ChildrenSelectedIndicator = (tab) => {
-
       const TabIdName = `${tab.TabId}-${tab.Name}`
       const tabState = STATE[TabIdName]
-      const condition =  `ChildrenSelected` in tabState && tabState.ChildrenSelected
+      const condition =  typeof tabState == 'object' && `ChildrenSelected` in tabState && tabState.ChildrenSelected
       const template =  ( condition ? <span>*</span> : <span></span> )
       const indicator = ( () => {
         return (

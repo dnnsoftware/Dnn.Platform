@@ -3,10 +3,6 @@ import React, {Component} from 'react'
 import { PagePickerDesktop } from './_new-page-picker'
 import {PagePickerDataManager} from './helpers'
 import {IconSelector} from './icons'
-import actions from '../../../actions/importExport'
-
-console.log(actions)
-
 import {global} from './_global'
 const styles = global.styles
 const greenscreen = styles.backgroundColor('green')
@@ -27,7 +23,6 @@ export class PagePickerInteractor extends Component {
       this.DescendantTabsURL =  `http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
       this.selectAll = false
       this.ExportModalOnSelect = props.OnSelect
-      console.log(this.ExportModalOnSelect)
     }
 
     componentWillMount(){
@@ -41,7 +36,7 @@ export class PagePickerInteractor extends Component {
 
     _requestInitialTabs = () => {
        this._xhr(this.InitialTabsURL)
-       .then(tabdata => this.PortalTabs = tabdata)
+       .then( tabdata => this.PortalTabs = tabdata )
        .then( () => this.setState({tabs:this.PortalTabs, selectAll:this.state.selectAll}))
        .then( () => this.flatTabs = ppdm.flatten(this.PortalTabs) )
        .then( () => this.setState({tabs:this.PortalTabs}) )
