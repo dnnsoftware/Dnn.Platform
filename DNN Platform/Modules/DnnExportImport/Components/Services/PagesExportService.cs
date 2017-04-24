@@ -319,8 +319,8 @@ namespace Dnn.ExportImport.Components.Services
                     x => x.PermissionCode == other.PermissionCode &&
                          x.PermissionKey == other.PermissionKey &&
                          x.PermissionName == other.PermissionName &&
-                         (x.RoleName == other.RoleName || x.RoleName.IsNullOrEmpty() && other.RoleName.IsNullOrEmpty()) &&
-                         (x.Username == other.Username || x.Username.IsNullOrEmpty() && other.Username.IsNullOrEmpty()));
+                        (x.RoleName == other.RoleName || (string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(other.RoleName))) &&
+                    (x.Username == other.Username || (string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(other.Username))));
 
                 var isUpdate = false;
                 if (local != null)
@@ -345,14 +345,15 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
+                    var noRole = Convert.ToInt32(Globals.glbRoleNothing);
                     local = new TabPermissionInfo
                     {
                         TabID = localTab.TabID,
                         UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
                         Username = other.Username,
-                        RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? -1,
+                        RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? noRole,
                         RoleName = other.RoleName,
-                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
+                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? Null.NullInteger,
                         PermissionKey = other.PermissionKey,
                         AllowAccess = other.AllowAccess,
                         PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
@@ -362,9 +363,13 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         Result.AddLogEntry("Couldn't add tab permission; Permission is undefined!", $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                     }
+                    else if (local.RoleID == noRole && local.UserID == -1)
+                    {
+                        Result.AddLogEntry("Couldn't add tab permission; Role/User are undefined!", $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
+                    }
                     else
                     {
-                        localTab.TabPermissions.Add(local);
+                        localTab.TabPermissions.Add(local, true);
                         //UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
                         //var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         //var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
