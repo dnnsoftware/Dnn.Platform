@@ -58,7 +58,6 @@ namespace Dnn.ExportImport.Components.Services
                     foreach (var theme in exportThemes)
                     {
                         var filePath = SkinController.FormatSkinSrc(theme, _portalSettings);
-
                         var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
                         if (Directory.Exists(physicalPath))
                         {
@@ -67,9 +66,9 @@ namespace Dnn.ExportImport.Components.Services
                                 var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
                                 CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset);
                             }
+                            }
+                            totalThemesExported += 1;
                         }
-
-                        totalThemesExported += 1;
 
                         CheckPoint.ProcessedItems++;
                         CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalThemes;
@@ -103,7 +102,7 @@ namespace Dnn.ExportImport.Components.Services
             if (File.Exists(packageZipFile))
             {
                 CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
-                var exporeFiles = Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories);
+                var exporeFiles = Directory.Exists(tempFolder) ? new string[0] : Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories);
                 var portalSettings = new PortalSettings(importDto.PortalId);
                 _importCount = exporeFiles.Length;
 

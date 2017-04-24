@@ -1199,6 +1199,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             ReportExportTotals();
+            UpdateTotalProcessedPackages();
         }
 
         private int ExportTabSettings(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
@@ -1263,42 +1264,43 @@ namespace Dnn.ExportImport.Components.Services
                             ExportPortableContent(exportPage, exportModule, toDate, fromDate);
                     }
 
-                    ExportModulePackage(exportModule);
+                    _totals.TotalPackages +=
+                        ExportModulePackage(exportModule);
                 }
             }
 
             return modules.Count;
         }
 
-        private void ExportModulePackage(ExportModule exportModule)
+        private int ExportModulePackage(ExportModule exportModule)
         {
-            if (_exportedModuleDefinitions.Contains(exportModule.ModuleDefID))
+            if (!_exportedModuleDefinitions.Contains(exportModule.ModuleDefID))
             {
-                return;
-            }
+                var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
+                var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
+                var desktopModuleId = moduleDefinition.DesktopModuleID;
+                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+                var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
 
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
-            var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
-            var desktopModuleId = moduleDefinition.DesktopModuleID;
-            var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
-            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
-
-            var filePath = InstallerUtil.GetPackageBackupPath(package);
-            if (File.Exists(filePath))
-            {
-                var offset = Path.GetDirectoryName(filePath)?.Length + 1;
-                CompressionUtil.AddFileToArchive(filePath, packageZipFile, offset.GetValueOrDefault(0));
-
-                Repository.CreateItem(new ExportPackage
+                var filePath = InstallerUtil.GetPackageBackupPath(package);
+                if (File.Exists(filePath))
                 {
-                    PackageName = package.Name,
-                    Version = package.Version,
-                    PackageType = package.PackageType,
-                    PackageFileName = InstallerUtil.GetPackageBackupName(package)
-                }, null);
+                    var offset = Path.GetDirectoryName(filePath)?.Length + 1;
+                    CompressionUtil.AddFileToArchive(filePath, packageZipFile, offset.GetValueOrDefault(0));
 
-                _exportedModuleDefinitions.Add(exportModule.ModuleDefID);
+                    Repository.CreateItem(new ExportPackage
+                    {
+                        PackageName = package.Name,
+                        Version = package.Version,
+                        PackageType = package.PackageType,
+                        PackageFileName = InstallerUtil.GetPackageBackupName(package)
+                    }, null);
+
+                    _exportedModuleDefinitions.Add(exportModule.ModuleDefID);
+                    return 1;
+                }
             }
+            return 0;
         }
 
         private int ExportModuleSettings(ExportModule exportModule, DateTime toDate, DateTime? fromDate)
@@ -1470,6 +1472,20 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddLogEntry(prefix + " Module Permissions", _totals.TotalModulePermissions.ToString());
             Result.AddLogEntry(prefix + " Tab Modules", _totals.TotalTabModules.ToString());
             Result.AddLogEntry(prefix + " Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
+            Result.AddLogEntry(prefix + " Module Packages", _totals.TotalPackages.ToString());
+        }
+
+        private void UpdateTotalProcessedPackages()
+        {
+            //HACK: get skin packages checkpoint and add "_totals.TotalPackages" to it
+            var packagesCheckpoint = EntitiesController.Instance.GetJobChekpoints(_exportImportJob.JobId).FirstOrDefault(
+                cp => cp.Category == Constants.Category_Packages);
+            if (packagesCheckpoint != null)
+            {
+                packagesCheckpoint.TotalItems += _totals.TotalPackages;
+                packagesCheckpoint.ProcessedItems += _totals.TotalPackages;
+                EntitiesController.Instance.UpdateJobChekpoint(packagesCheckpoint);
+            }
         }
 
         #endregion
@@ -1492,6 +1508,7 @@ namespace Dnn.ExportImport.Components.Services
             public int TotalModulePermissions { get; set; }
             public int TotalModuleSettings { get; set; }
             public int TotalContents { get; set; }
+            public int TotalPackages { get; set; }
 
             public int TotalTabModules { get; set; }
             public int TotalTabModuleSettings { get; set; }
