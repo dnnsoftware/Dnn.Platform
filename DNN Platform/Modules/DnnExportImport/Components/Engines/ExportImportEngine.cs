@@ -178,6 +178,8 @@ namespace Dnn.ExportImport.Components.Engines
                                 // persist the record in db
                                 CheckpointCallback(service);
                             }
+                            else if (service.CheckPoint.StartDate == Null.NullDate)
+                                service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
 
                             try
                             {
@@ -350,6 +352,8 @@ namespace Dnn.ExportImport.Components.Engines
                                                      Progress = 0,
                                                      StartDate = DateUtils.GetDatabaseUtcTime()
                                                  };
+                            if (service.CheckPoint.StartDate == Null.NullDate)
+                                service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
                             CheckpointCallback(service);
 
                             try
