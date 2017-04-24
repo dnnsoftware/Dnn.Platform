@@ -8,7 +8,6 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Dnn.ExportImport.Dto.Pages;
-using Dnn.ExportImport.Dto.PageTemplates;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
