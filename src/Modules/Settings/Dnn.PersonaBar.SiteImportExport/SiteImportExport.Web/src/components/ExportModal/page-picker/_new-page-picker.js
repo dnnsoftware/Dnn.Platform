@@ -289,6 +289,7 @@ export class PagePickerDesktop extends Component {
       tab.IsOpen=true
       tab.CheckedState = tab.CheckedState==2 ? 0 : tab.CheckedState
       tab.CheckedState = tab.CheckedState==1 ? 0 : tab.CheckedState
+      tab.CheckedState = tab.CheckedState==0 ? 2 : tab.CheckedState
 
       const ParentState = {}
       const parent = ParentState[ParentTabIdName] = Object.assign({},tab)

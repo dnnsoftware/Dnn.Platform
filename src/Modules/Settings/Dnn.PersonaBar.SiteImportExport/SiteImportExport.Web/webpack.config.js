@@ -26,11 +26,10 @@ module.exports = {
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
             { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
             { test: /\.svg$/, loader: 'svg-url-loader'}
-
         ],
 
         preLoaders: [
-            // { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
         ]
     },
 

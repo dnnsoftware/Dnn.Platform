@@ -35,11 +35,17 @@ export class PagePickerInteractor extends Component {
     }
 
     _requestInitialTabs = () => {
+      const ExportInitialSelection = () => {
+        const selection = this._generateSelectionObject(this.state.tabs)
+        this.ExportModalOnSelect(selection)
+      }
+
        this._xhr(this.InitialTabsURL)
        .then( tabdata => this.PortalTabs = tabdata )
        .then( () => this.setState({tabs:this.PortalTabs, selectAll:this.state.selectAll}))
        .then( () => this.flatTabs = ppdm.flatten(this.PortalTabs) )
        .then( () => this.setState({tabs:this.PortalTabs, flatTabs:this.flatTabs}) )
+       .then( () => ExportInitialSelection() )
 
        .catch(err => this.PortalTabs = this.tabs)
     }
@@ -55,7 +61,7 @@ export class PagePickerInteractor extends Component {
           return tab
         })
 
-        const input = (tabs) => compose(tabs, inspect, mapToFlatTabs, captureDecendants)
+        const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants)
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs))
         const appendDescendants = (parentTab) => descendantTabs.forEach((tab)=> tab.ParentTabId==parentTab.TabId ? parentTab.ChildTabs.push(tab) : null )
 
@@ -92,9 +98,6 @@ export class PagePickerInteractor extends Component {
       }
     }
 
-    _generateExportAPIObject(tabs){
-
-    }
 
     _filterOutUnchecked(tabs){
       return tabs.filter(tab => !!tab.CheckedState)
@@ -142,11 +145,10 @@ export class PagePickerInteractor extends Component {
 
     export = (selection) => {
       const RootTab = this._getRootTab(selection)
-      const filterOutMasterRootTab = (tabs) => tabs.filter(tab=>tab.TabId!=-1)
+      const filterOutMasterRootTab = (tabs) => tabs.filter(tab=>parseInt(tab.TabId)!=-1)
 
       let tabs = this._mapSelection(selection, this._generateSelectionObject)
       tabs = this._filterOutUnchecked(tabs)
-      tabs = filterOutMasterRootTab(tabs)
 
       const Left = () => {
           this.ExportModalOnSelect(tabs)
@@ -185,11 +187,12 @@ export class PagePickerInteractor extends Component {
     setCheckedState = () => {
       this.state.tabs.CheckedState = this.state.tabs.CheckedState ? 0 : 2
       this.state.selectAll = this.state.tabs.CheckedState ?  true : false
+      this.state.flatTabs[`${this.state.tabs.TabId}-${this.state.tabs.Name}`].CheckedState = this.state.tabs.CheckedState
       this.setState({
           tabs:this.state.tabs,
-          selectAll:this.state.selectAll
+          flatTabs:this.state.flatTabs
       })
-      console.log('hmm', this.state.selectAll)
+
     }
 
     render_icon = (direction) => {
