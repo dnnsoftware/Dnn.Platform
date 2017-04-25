@@ -1,14 +1,14 @@
 
-import {ArrowIcon} from './arrow-icon'
+import {ArrowIcon} from "./arrow-icon";
 
 
 export const IconSelector = (type) => {
     switch(type){
         case 'arrow_bullet':
-            return ArrowIcon
+            return ArrowIcon;
 
-        default: 
-            return ArrowIcon
-     }   
+        default:
+            return ArrowIcon;
+     }
 
-} 
+};

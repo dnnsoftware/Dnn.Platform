@@ -19,7 +19,7 @@ import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
 
-import {PagePickerInteractor} from './page-picker'
+import {PagePickerInteractor} from './page-picker';
 
 const scrollAreaStyle = {
     width: "100%",

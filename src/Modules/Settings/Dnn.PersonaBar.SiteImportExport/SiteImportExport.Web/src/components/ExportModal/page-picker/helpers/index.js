@@ -1,1 +1,1 @@
-export {PagePickerDataManager} from './_page-picker-data-manager'
+export {PagePickerDataManager} from './_page-picker-data-manager';
