@@ -61,7 +61,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
                     //Update the total items count in the check points. This should be updated only once.
-                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? scopeTypes.Count : CheckPoint.TotalItems;
+                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? 0 : CheckPoint.TotalItems;
                     if (CheckPoint.TotalItems == scopeTypes.Count)
                     {
                         vocabularyTypes =
@@ -71,7 +71,7 @@ namespace Dnn.ExportImport.Components.Services
                         taxonomyVocabularies =
                             CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
                                 .GetAllVocabularies(toDate, fromDate));
-                        CheckPoint.TotalItems += vocabularyTypes.Count + taxonomyTerms.Count + taxonomyVocabularies.Count;
+                        CheckPoint.TotalItems += taxonomyTerms.Count + taxonomyVocabularies.Count;
                     }
                     CheckPointStageCallback(this);
 
