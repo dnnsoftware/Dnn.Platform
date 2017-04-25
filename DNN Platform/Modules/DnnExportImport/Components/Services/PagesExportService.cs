@@ -1571,10 +1571,10 @@ namespace Dnn.ExportImport.Components.Services
 
         private int GetLocalStateId(int exportedStateId)
         {
-            if (exportedStateId > 6) // 6 is the last system state set in Platform at table creation time
+            if (exportedStateId > 1) // 1 is direct publish
             {
                 var state = Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedStateId);
-                return state?.LocalId ?? 1; // 1 is direct publish
+                return state?.LocalId ?? 1;
             }
 
             return 1;
