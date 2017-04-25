@@ -1432,13 +1432,6 @@ namespace Dnn.ExportImport.Components.Services
 
         private ExportTab SaveExportPage(TabInfo tab)
         {
-            var stateId = tab.StateID;
-            if (stateId > 6) // 6 is the last system state set in Platform at table creation time
-            {
-                var exportedState = Repository.GetItem<ExportWorkflowState>(item => item.StateID == stateId);
-                stateId = exportedState?.StateID ?? 1; // 1 is direct publish
-            }
-
             var exportPage = new ExportTab
             {
                 TabId = tab.TabID,
@@ -1477,7 +1470,7 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = stateId,
+                StateID = tab.StateID,
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
@@ -1575,11 +1568,22 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        private int GetLocalStateId(ExportWorkflowState exportedState, int otherStateId)
+        {
+            if (exportedState.StateID > 6) // 6 is the last system state set in Platform at table creation time
+            {
+                var state = Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedState.StateID);
+                return state?.StateID ?? 1; // 1 is direct publish
+            }
+
+            return 1;
+        }
+
         #endregion
 
-        #region private classes
+    #region private classes
 
-        [JsonObject]
+    [JsonObject]
         private class ProgressTotals
         {
             // for Export: this is the TabID
