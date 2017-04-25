@@ -457,18 +457,18 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (permissionId != null)
                 {
+                    var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+
                     folderPermission.PermissionId = Convert.ToInt32(permissionId);
                     if (folderPermission.UserId != null && folderPermission.UserId > 0 && !string.IsNullOrEmpty(folderPermission.Username))
                     {
-                        folderPermission.UserId =
-                            UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
+                        folderPermission.UserId = UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
                         if (folderPermission.UserId == null)
                             return;
                     }
-                    if (folderPermission.RoleId != null && folderPermission.RoleId >= 0 && !string.IsNullOrEmpty(folderPermission.RoleName))
+                    if (folderPermission.RoleId != null && folderPermission.RoleId > noRole && !string.IsNullOrEmpty(folderPermission.RoleName))
                     {
-                        folderPermission.RoleId =
-                            RoleController.Instance.GetRoleByName(portalId, folderPermission.RoleName)?.RoleID;
+                        folderPermission.RoleId = Util.GetRoleIdByName(portalId, folderPermission.RoleId ?? noRole, folderPermission.RoleName);
                         if (folderPermission.RoleId == null)
                             return;
                     }
@@ -477,7 +477,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     folderPermission.FolderPermissionId = DotNetNuke.Data.DataProvider.Instance()
                         .AddFolderPermission(folderPermission.FolderId, folderPermission.PermissionId,
-                            folderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing), folderPermission.AllowAccess,
+                            folderPermission.RoleId ?? noRole, folderPermission.AllowAccess,
                             folderPermission.UserId ?? Null.NullInteger, createdBy);
                 }
             }

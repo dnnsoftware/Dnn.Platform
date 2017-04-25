@@ -85,10 +85,10 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        public void CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
+        public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null) where T : BasicExportImportDto
         {
             if (items == null) return;
-            var allItems = items.ToList();
+            var allItems = items as List<T> ?? items.ToList();
             if (allItems.Count == 0) return;
 
             var collection = DbCollection<T>();

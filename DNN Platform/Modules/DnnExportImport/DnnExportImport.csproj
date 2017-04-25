@@ -118,6 +118,7 @@
     <Compile Include="Components\Services\UsersDataExportService.cs" />
     <Compile Include="Components\Services\UsersExportService.cs" />
     <Compile Include="Components\Services\VocabularyService.cs" />
+    <Compile Include="Components\Services\WorkflowsExportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExportImportController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />

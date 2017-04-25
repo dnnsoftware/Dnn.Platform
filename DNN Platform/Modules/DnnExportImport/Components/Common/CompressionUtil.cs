@@ -183,7 +183,6 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         /// <param name="archiveFileName"></param>
         /// <returns></returns>
-            //TODO: This will need review. We might need to seperate methods for opening in read and write mode seperately since the for read mode, whole archive is loaded in memory and is persisted.
         public static ZipArchive OpenCreate(string archiveFileName)
         {
             return File.Exists(archiveFileName)

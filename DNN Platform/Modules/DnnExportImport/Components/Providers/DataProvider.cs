@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web.UI.WebControls;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
@@ -31,7 +30,7 @@ using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Providers
 {
-    public class DataProvider
+    internal class DataProvider
     {
         #region Shared/Static Methods
 
@@ -201,6 +200,12 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
+        public int GetRoleIdByName(int portalId, string roleName)
+        {
+            return _dataProvider.ExecuteScalar<int>("Export_RoleIdByName", _dataProvider.GetNull(portalId), roleName);
+        }
+
+
         public void SetRoleAutoAssign(int roleId)
         {
             _dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);
@@ -349,6 +354,26 @@ namespace Dnn.ExportImport.Components.Providers
         public void UpdateTabUrlChangers(int tabId, int seqNum, int? createdBy, int? modifiedBy)
         {
             _dataProvider.ExecuteNonQuery("Export_UpdateTabUrlChangers", tabId, seqNum, createdBy, modifiedBy);
+        }
+
+        public IDataReader GetAllWorkflows(int portalId, bool includeDeleted)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflows", portalId, includeDeleted);
+        }
+
+        public IDataReader GetAllWorkflowSources(int workflowId)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflowSources", workflowId);
+        }
+
+        public IDataReader GetAllWorkflowStates(int workflowId)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflowStates", workflowId);
+        }
+
+        public IDataReader GetAllWorkflowStatePermissions(int workflowStateId, DateTime toDate, DateTime? fromDate)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflowStatePermissions", workflowStateId, toDate, fromDate);
         }
     }
 }

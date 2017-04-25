@@ -173,6 +173,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 -- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleIdByName]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleIdByName]
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 GO

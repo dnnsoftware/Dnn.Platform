@@ -28,6 +28,7 @@ using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Components.Providers;
 using Dnn.ExportImport.Dto.Pages;
 using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
@@ -45,6 +46,7 @@ using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 using Util = Dnn.ExportImport.Components.Common.Util;
 using InstallerUtil = DotNetNuke.Services.Installer.Util;
+using DotNetNuke.Entities.Users;
 
 // ReSharper disable SuggestBaseTypeForParameter
 
@@ -62,6 +64,8 @@ namespace Dnn.ExportImport.Components.Services
         public override uint Priority => 20;
 
         public virtual bool IncludeSystem { get; set; } = false;
+
+        public virtual bool IgnoreParentMatch { get; set; } = false;
 
         protected ImportDto ImportDto => _importDto;
 
@@ -180,7 +184,7 @@ namespace Dnn.ExportImport.Components.Services
                         break;
                     case CollisionResolution.Overwrite:
                         SetTabData(localTab, otherTab);
-                        var parentId = TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
+                        var parentId = IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                         if (parentId == -1 && otherTab.ParentId > 0)
                         {
                             Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
@@ -217,7 +221,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 localTab = new TabInfo { PortalID = portalId };
                 SetTabData(localTab, otherTab);
-                var parentId = TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
+                var parentId = IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                 if (parentId == -1 && otherTab.ParentId > 0)
                 {
                     Result.AddLogEntry("Importing new tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
@@ -248,6 +252,10 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
                 AddTabRelatedItems(localTab, otherTab, true);
+
+                //update tab with import flag, to trigger update event handler.
+                localTab.TabSettings.Add("TabImported", "Y");
+                _tabController.UpdateTab(localTab);
             }
         }
 
@@ -321,7 +329,6 @@ namespace Dnn.ExportImport.Components.Services
                          x.PermissionName == other.PermissionName &&
                         (x.RoleName == other.RoleName || (string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(other.RoleName))) &&
                     (x.Username == other.Username || (string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(other.Username))));
-
                 var isUpdate = false;
                 if (local != null)
                 {
@@ -345,30 +352,44 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    var noRole = Convert.ToInt32(Globals.glbRoleNothing);
-                    local = new TabPermissionInfo
+                    var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
+                    if (permissionId != null)
                     {
-                        TabID = localTab.TabID,
-                        UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
-                        Username = other.Username,
-                        RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? noRole,
-                        RoleName = other.RoleName,
-                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
-                        PermissionKey = other.PermissionKey,
-                        AllowAccess = other.AllowAccess,
-                        PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
-                    };
-
-                    if (local.PermissionID == -1)
-                    {
-                        Result.AddLogEntry("Couldn't add tab permission; Permission is undefined!", $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
-                    }
-                    else if (local.RoleID == noRole && local.UserID == -1)
-                    {
-                        Result.AddLogEntry("Couldn't add tab permission; Role/User are undefined!", $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
-                    }
-                    else
-                    {
+                        var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+                        local = new TabPermissionInfo
+                        {
+                            TabID = localTab.TabID,
+                            UserID = Null.NullInteger,
+                            RoleID = noRole,
+                            Username = other.Username,
+                            RoleName = other.RoleName,
+                            ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
+                            PermissionKey = other.PermissionKey,
+                            AllowAccess = other.AllowAccess,
+                            PermissionID = permissionId.Value
+                        };
+                        if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
+                        {
+                            var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
+                            if (userId == null)
+                            {
+                                Result.AddLogEntry("Couldn't add tab permission; User is undefined!",
+                                    $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
+                                continue;
+                            }
+                            local.UserID = userId.Value;
+                        }
+                        if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
+                        {
+                            var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
+                            if (roleId == null)
+                            {
+                                Result.AddLogEntry("Couldn't add tab permission; Role is undefined!",
+                                    $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
+                                continue;
+                            }
+                            local.RoleID = roleId.Value;
+                        }
                         localTab.TabPermissions.Add(local, true);
                         //UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
                         //var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -376,6 +397,11 @@ namespace Dnn.ExportImport.Components.Services
                         //UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
                         Result.AddLogEntry("Added tab permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
+                    }
+                    else
+                    {
+                        Result.AddLogEntry("Couldn't add tab permission; Permission is undefined!",
+                            $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                     }
                 }
             }
@@ -834,20 +860,37 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName);
-                    if (roleId.HasValue)
+                    var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
+
+                    if (permissionId != null)
                     {
+                        var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+
                         local = new ModulePermissionInfo
                         {
                             ModuleID = localModule.ModuleID,
-                            RoleID = roleId.Value,
+                            UserID = Null.NullInteger,
+                            RoleID = noRole,
                             RoleName = other.RoleName,
-                            UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
                             Username = other.Username,
                             PermissionKey = other.PermissionKey,
                             AllowAccess = other.AllowAccess,
-                            PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
+                            PermissionID = permissionId.Value
                         };
+                        if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
+                        {
+                            var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
+                            if (userId == null)
+                                continue;
+                            local.UserID = userId.Value;
+                        }
+                        if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
+                        {
+                            var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
+                            if (roleId == null)
+                                continue;
+                            local.RoleID = roleId.Value;
+                        }
 
                         other.LocalId = localModule.ModulePermissions.Add(local);
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);

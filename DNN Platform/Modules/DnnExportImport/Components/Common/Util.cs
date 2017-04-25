@@ -31,8 +31,11 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Dnn.ExportImport.Components.Controllers;
+using Dnn.ExportImport.Components.Providers;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
 using Newtonsoft.Json;
@@ -42,6 +45,7 @@ namespace Dnn.ExportImport.Components.Common
     public static class Util
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
+        private static int _noRole = Convert.ToInt32(Globals.glbRoleNothing);
         // some string extension helpers
         public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
         public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
@@ -110,12 +114,12 @@ namespace Dnn.ExportImport.Components.Common
             return user.UserID < 0 ? importJob.CreatedByUserId : user.UserID;
         }
 
-        public static int? GetRoleIdByName(int portalId, string exportRolename)
+        public static int? GetRoleIdByName(int portalId, int exportRoleId, string exportRolename)
         {
             if (string.IsNullOrEmpty(exportRolename)) return null;
 
-            var role = RoleController.Instance.GetRoleByName(portalId, exportRolename);
-            return role?.RoleID;
+            var roleId = DataProvider.Instance().GetRoleIdByName(exportRoleId >= 0 ? portalId : -1, exportRolename);
+            return roleId == _noRole ? null : (int?)roleId;
         }
 
         public static int? GeModuleDefIdByFriendltName(string friendlyName)
@@ -168,7 +172,6 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        //TODO: We should implement some base serializer to fix dates for all the entities.
         public static void FixDateTime<T>(T item)
         {
             var properties = item.GetType().GetRuntimeProperties();

@@ -116,7 +116,7 @@ namespace Dnn.ExportImport.Components.Services
                                     var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
                                     foreach (var userRole in userRoles)
                                     {
-                                        var roleId = Util.GetRoleIdByName(importJob.PortalId, userRole.RoleName);
+                                        var roleId = Util.GetRoleIdByName(importJob.PortalId, userRole.RoleId, userRole.RoleName);
                                         if (roleId == null) continue;
                                         if (!(roleId > Convert.ToInt32(Globals.glbRoleNothing))) continue;
                                         var userRoleRow = tableUserRoles.NewRow();

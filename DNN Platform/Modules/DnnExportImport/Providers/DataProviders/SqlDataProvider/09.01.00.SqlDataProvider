@@ -15,7 +15,7 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'PortalSettingExportList')
 	INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
-	VALUES (N'PortalSettingExportList', N'AddCompatibleHttpHeader,ControlPanelMode,ControlPanelSecurity,ControlPanelVisibility,EnablePopUps,EnableSkinWidgets,HideFoldersEnabled,InjectModuleHyperLink,InlineEditorEnabled,MaximumVersionHistory,PageHeadText,PortalAliasMapping,DefaultAdminContainer,DefaultAdminSkin,DefaultPortalContainer,DefaultPortalSkin', 
+	VALUES (N'PortalSettingExportList', N'DefaultTabWorkflowKey,TabWorkflowEnabledKey,TabVersionsMaxNumber,TabVersionsEnabled,AddCompatibleHttpHeader,ControlPanelMode,ControlPanelSecurity,ControlPanelVisibility,EnablePopUps,EnableSkinWidgets,HideFoldersEnabled,InjectModuleHyperLink,InlineEditorEnabled,MaximumVersionHistory,PageHeadText,PortalAliasMapping,DefaultAdminContainer,DefaultAdminSkin,DefaultPortalContainer,DefaultPortalSkin', 
 	0, -1, GETDATE(), -1, GETDATE())
 GO
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'MaxSecondsToRunJob')
@@ -1672,6 +1672,29 @@ AS
 GO
 
 -- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleIdByName]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleIdByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleIdByName]
+	@PortalID  int = NULL,
+	@RoleName  nvarchar(50)
+AS
+BEGIN
+	DECLARE @RoleId int;
+	SELECT TOP 1 @RoleId=RoleID FROM 
+		{databaseOwner}{objectQualifier}Roles
+	WHERE
+		(PortalID = @PortalID OR @PortalID IS NULL) AND RoleName=@RoleName
+	IF @RoleId IS NULL
+	BEGIN
+		SET @RoleId = -4;
+	END
+	SELECT @RoleId;
+END
+GO
+
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 GO
@@ -2325,5 +2348,90 @@ BEGIN
     UPDATE {databaseOwner}{objectQualifier}UserPortals
     SET IsDeleted = @IsDeleted
     WHERE PortalID = @PortalID AND UserID = @UserID
+END
+GO
+
+-- WORKFLOWS
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflows]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflows]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflows]
+	@PortalID       int,
+	@IncludeDeleted bit
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}ContentWorkflows
+	WHERE
+		PortalID = @PortalID
+	  AND
+		(@IncludeDeleted = 1 OR IsDeleted = 0)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]
+	@WorkflowID     int
+AS
+BEGIN
+	SELECT
+		ws.*
+	FROM
+		{databaseOwner}{objectQualifier}ContentWorkflowSources ws
+			INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows AS wf  ON wf.WorkflowID = ws.WorkflowID
+	WHERE
+		ws.WorkflowID = @WorkflowID
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]
+	@WorkflowID     int
+AS
+BEGIN
+	SELECT
+		ws.*
+	FROM
+		{databaseOwner}{objectQualifier}ContentWorkflowStates ws
+			INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows AS wf  ON wf.WorkflowID = ws.WorkflowID
+	WHERE
+		ws.WorkflowID = @WorkflowID
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]
+	@StateID  int,
+	@ToDate   datetime,
+	@FromDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		wp.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}vw_ContentWorkflowStatePermissions AS wp
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates AS ws ON wp.StateID = ws.StateID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON wp.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON wp.LastModifiedByUserID = u2.UserID
+	WHERE
+		ws.StateID = @StateID
+	AND
+		COALESCE(wp.LastModifiedOnDate, wp.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(wp.LastModifiedOnDate, wp.CreatedOnDate) >= @FromDate)
 END
 GO

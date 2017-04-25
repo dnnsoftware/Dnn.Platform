@@ -69,6 +69,7 @@ namespace Dnn.ExportImport.Components.Common
         public const string Category_Assets = "ASSETS";
         public const string Category_Packages = "PACKAGES";
         public const string Category_Themes = "THEMES";
+        public const string Category_Workflows = "WORKFLOW";
 
         // these are added internally by the engine
         internal const string Category_Portal = "PORTAL";
