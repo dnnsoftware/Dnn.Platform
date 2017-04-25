@@ -73,12 +73,12 @@ namespace Dnn.ExportImport.Components.Services
                 foreach (var workflow in contentWorkflows)
                 {
                     var contentWorkflowStates = GetWorkflowStates(workflow.WorkflowID);
-                    Repository.CreateItems(contentWorkflowStates, workflow.Id);
+                    Repository.CreateItems(contentWorkflowStates, workflow.WorkflowID);
 
                     foreach (var workflowState in contentWorkflowStates)
                     {
                         var contentWorkflowStatePermissions = GetWorkflowStatePermissions(workflowState.StateID, toDate, fromDate);
-                        Repository.CreateItems(contentWorkflowStatePermissions);
+                        Repository.CreateItems(contentWorkflowStatePermissions, workflowState.StateID);
                     }
                 }
             }
@@ -147,7 +147,8 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             PortalID = portalId,
                             WorkflowName = importWorkflow.WorkflowName,
-                            Description = importWorkflow.Description
+                            Description = importWorkflow.Description,
+                            WorkflowKey = importWorkflow.WorkflowKey
                             
                         };
 
@@ -174,59 +175,59 @@ namespace Dnn.ExportImport.Components.Services
 
                             WorkflowStateManager.Instance.AddWorkflowState(workflowState);
 
-                            //var importPermissions = Repository.GetRelatedItems<ExportContentWorkflowStatePermission>(importState.StateID).ToList();
-                            //foreach (var importPermission in importPermissions)
-                            //{
-                            //    var permissionId = new PermissionController().GetPermissionByCodeAndKey(importPermission.PermissionCode, importPermission.PermissionKey)
-                            //        .Cast<PermissionInfo>().FirstOrDefault()?.PermissionID ?? Null.NullInteger;
+                            var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.StateID).ToList();
+                            foreach (var importPermission in importPermissions)
+                            {
+                                var permissionId = new PermissionController().GetPermissionByCodeAndKey(importPermission.PermissionCode, importPermission.PermissionKey)
+                                    .Cast<PermissionInfo>().FirstOrDefault()?.PermissionID ?? Null.NullInteger;
 
-                            //    var importRoleId = importPermission.RoleID.GetValueOrDefault(Convert.ToInt32(Globals.glbRoleNothing));
-                            //    var importUserId = importPermission.UserID.GetValueOrDefault(Null.NullInteger);
+                                var importRoleId = importPermission.RoleID.GetValueOrDefault(Convert.ToInt32(Globals.glbRoleNothing));
+                                var importUserId = importPermission.UserID.GetValueOrDefault(Null.NullInteger);
 
-                            //    var roleFound = true;
-                            //    var userFound = true;
+                                var roleFound = true;
+                                var userFound = true;
 
-                            //    if (importRoleId > Null.NullInteger)
-                            //    {
-                            //        var role = RoleController.Instance.GetRoleByName(portalId, importPermission.RoleName);
-                            //        if (role == null)
-                            //        {
-                            //            roleFound = false;
-                            //        }
-                            //        else
-                            //        {
-                            //            importRoleId = role.RoleID;
-                            //        }
-                            //    }
+                                if (importRoleId > Null.NullInteger)
+                                {
+                                    var role = RoleController.Instance.GetRoleByName(portalId, importPermission.RoleName);
+                                    if (role == null)
+                                    {
+                                        roleFound = false;
+                                    }
+                                    else
+                                    {
+                                        importRoleId = role.RoleID;
+                                    }
+                                }
 
-                            //    if (importUserId > Null.NullInteger)
-                            //    {
-                            //        var user = UserController.GetUserByName(portalId, importPermission.Username);
-                            //        if (user == null)
-                            //        {
-                            //            userFound = false;
-                            //        }
-                            //        else
-                            //        {
-                            //            importUserId = user.UserID;
-                            //        }
-                            //    }
+                                if (importUserId > Null.NullInteger)
+                                {
+                                    var user = UserController.GetUserByName(portalId, importPermission.Username);
+                                    if (user == null)
+                                    {
+                                        userFound = false;
+                                    }
+                                    else
+                                    {
+                                        importUserId = user.UserID;
+                                    }
+                                }
 
-                            //    if (permissionId > Null.NullInteger && roleFound && userFound)
-                            //    {
-                            //        var permission = new WorkflowStatePermission
-                            //        {
-                            //            PermissionID = permissionId,
-                            //            StateID = workflowState.StateID,
-                            //            RoleID = importRoleId,
-                            //            UserID = importUserId,
-                            //            AllowAccess = importPermission.AllowAccess
+                                if (permissionId > Null.NullInteger && roleFound && userFound)
+                                {
+                                    var permission = new WorkflowStatePermission
+                                    {
+                                        PermissionID = permissionId,
+                                        StateID = workflowState.StateID,
+                                        RoleID = importRoleId,
+                                        UserID = importUserId,
+                                        AllowAccess = importPermission.AllowAccess
 
-                            //        };
+                                    };
 
-                            //        WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, Null.NullInteger);
-                            //    }
-                            //}
+                                    WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, Null.NullInteger);
+                                }
+                            }
                         }
                     }
 
