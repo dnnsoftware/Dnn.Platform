@@ -66,6 +66,13 @@ namespace Dnn.ExportImport.Components.Services
             var contentWorkflows = GetWorkflows(exportDto.PortalId, exportDto.IncludeDeletions);
             if (contentWorkflows.Count > 0)
             {
+                var defaultWorkflowId = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(exportDto.PortalId);
+                var defaultWorkflow = contentWorkflows.FirstOrDefault(w => w.WorkflowID == defaultWorkflowId);
+                if (defaultWorkflow != null)
+                {
+                    defaultWorkflow.IsDefault = true;
+                }
+
                 CheckPoint.TotalItems = contentWorkflows.Count;
                 Repository.CreateItems(contentWorkflows);
                 Result.AddLogEntry("Exported ContentWorkflows", contentWorkflows.Count.ToString());
@@ -129,7 +136,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 0)
             {
                 var existWorkflows = WorkflowManager.Instance.GetWorkflows(portalId).ToList();
-                var defaultTabWorkflowId = Convert.ToInt32(Repository.GetItem<ExportPortalSetting>(s => s.SettingName == "DefaultTabWorkflowKey")?.SettingValue ?? "0");
+                var defaultTabWorkflowId = importWorkflows.FirstOrDefault(w => w.IsDefault)?.WorkflowID ?? 0;
 
                 foreach (var importWorkflow in importWorkflows.Where(i => !i.IsDeleted && !i.IsSystem))
                 {
