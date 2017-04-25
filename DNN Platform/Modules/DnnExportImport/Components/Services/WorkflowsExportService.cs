@@ -135,6 +135,8 @@ namespace Dnn.ExportImport.Components.Services
             var defaultTabWorkflowId = importWorkflows.FirstOrDefault(w => w.IsDefault)?.WorkflowID ?? 1;
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? importWorkflows.Count : CheckPoint.TotalItems;
 
+            #region importing workflows
+
             foreach (var importWorkflow in importWorkflows)
             {
                 var workflow = existWorkflows.FirstOrDefault(w => w.WorkflowName == importWorkflow.WorkflowName);
@@ -173,6 +175,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 importWorkflow.LocalId = workflow.WorkflowID;
 
+                #region importing workflow states
+
                 var importStates = Repository.GetRelatedItems<ExportWorkflowState>(importWorkflow.Id).ToList();
                 foreach (var importState in importStates)
                 {
@@ -204,74 +208,91 @@ namespace Dnn.ExportImport.Components.Services
                         Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());
                     }
 
-                    importState.LocalId = workflowState.StateID;
-                    var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.Id);
-                    foreach (var importPermission in importPermissions)
+                    #region importin permissions
+
+                    if (!workflowState.IsSystem)
                     {
-                        var permissionId = new PermissionController().GetPermissionByCodeAndKey(
-                                importPermission.PermissionCode, importPermission.PermissionKey)
-                            .OfType<PermissionInfo>().FirstOrDefault()?.PermissionID ?? -1;
-
-                        if (permissionId > -1)
+                        importState.LocalId = workflowState.StateID;
+                        var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.Id);
+                        foreach (var importPermission in importPermissions)
                         {
-                            var importRoleId = importPermission.RoleID.GetValueOrDefault(Convert.ToInt32(Globals.glbRoleNothing));
-                            var importUserId = importPermission.UserID.GetValueOrDefault(-1);
+                            var permissionId = new PermissionController().GetPermissionByCodeAndKey(
+                                                       importPermission.PermissionCode, importPermission.PermissionKey)
+                                                   .OfType<PermissionInfo>().FirstOrDefault()?.PermissionID ?? -1;
 
-                            var roleFound = true;
-                            var userFound = true;
-
-                            if (importRoleId > -1)
+                            if (permissionId > -1)
                             {
-                                var role = RoleController.Instance.GetRoleByName(portalId, importPermission.RoleName);
-                                if (role == null)
-                                {
-                                    roleFound = false;
-                                }
-                                else
-                                {
-                                    importRoleId = role.RoleID;
-                                }
-                            }
+                                var importRoleId = importPermission.RoleID.GetValueOrDefault(Convert.ToInt32(Globals.glbRoleNothing));
+                                var importUserId = importPermission.UserID.GetValueOrDefault(-1);
 
-                            if (importUserId > -1)
-                            {
-                                var user = UserController.GetUserByName(portalId, importPermission.Username);
-                                if (user == null)
-                                {
-                                    userFound = false;
-                                }
-                                else
-                                {
-                                    importUserId = user.UserID;
-                                }
-                            }
+                                var roleFound = true;
+                                var userFound = true;
 
-                            if (roleFound || userFound)
-                            {
-                                var permission = new WorkflowStatePermission
+                                if (importRoleId > -1)
                                 {
-                                    PermissionID = permissionId,
-                                    StateID = workflowState.StateID,
-                                    RoleID = importRoleId,
-                                    UserID = importUserId,
-                                    AllowAccess = importPermission.AllowAccess,
-                                    //TODO: ModuleDefID = ??? what value to set here ?
-                                };
+                                    var role = RoleController.Instance.GetRoleByName(portalId, importPermission.RoleName);
+                                    if (role == null)
+                                    {
+                                        roleFound = false;
+                                    }
+                                    else
+                                    {
+                                        importRoleId = role.RoleID;
+                                    }
+                                }
 
-                                WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, -1);
-                                importPermission.LocalId = permission.WorkflowStatePermissionID;
-                                Result.AddLogEntry("Added workflow state permission", permission.WorkflowStatePermissionID.ToString());
+                                if (importUserId > -1)
+                                {
+                                    var user = UserController.GetUserByName(portalId, importPermission.Username);
+                                    if (user == null)
+                                    {
+                                        userFound = false;
+                                    }
+                                    else
+                                    {
+                                        importUserId = user.UserID;
+                                    }
+                                }
+
+                                if (roleFound || userFound)
+                                {
+                                    var permission = new WorkflowStatePermission
+                                    {
+                                        PermissionID = permissionId,
+                                        StateID = workflowState.StateID,
+                                        RoleID = importRoleId,
+                                        UserID = importUserId,
+                                        AllowAccess = importPermission.AllowAccess,
+                                        //TODO: ModuleDefID = ??? what value to set here ?
+                                    };
+
+                                    WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, -1);
+                                    try
+                                    {
+                                        importPermission.LocalId = permission.WorkflowStatePermissionID;
+                                        Result.AddLogEntry("Added workflow state permission", permission.WorkflowStatePermissionID.ToString());
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Result.AddLogEntry("Exception adding workflow state permission", ex.Message, ReportLevel.Error);
+                                    }
+                                }
                             }
                         }
                     }
-                    //Repository.UpdateItems(importPermissions); // not necessary for now.
-                }
-                Repository.UpdateItems(importStates);
 
+                    #endregion
+                }
+
+                #endregion
+
+                Repository.UpdateItems(importStates);
                 Result.AddSummary("Imported Workflow", importWorkflows.Count.ToString());
                 CheckPoint.ProcessedItems++;
                 CheckPointStageCallback(this); // no need to return; very small amount of data processed
             }
+
+            #endregion
 
             Repository.UpdateItems(importWorkflows);
 
