@@ -201,6 +201,12 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
+        public int GetRoleIdByName(int portalId, string roleName)
+        {
+            return _dataProvider.ExecuteScalar<int>("Export_RoleIdByName", _dataProvider.GetNull(portalId), roleName);
+        }
+
+
         public void SetRoleAutoAssign(int roleId)
         {
             _dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);

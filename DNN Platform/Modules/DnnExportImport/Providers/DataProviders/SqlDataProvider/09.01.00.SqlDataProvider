@@ -1672,6 +1672,29 @@ AS
 GO
 
 -- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleIdByName]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleIdByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleIdByName]
+	@PortalID  int = NULL,
+	@RoleName  nvarchar(50)
+AS
+BEGIN
+	DECLARE @RoleId int;
+	SELECT TOP 1 @RoleId=RoleID FROM 
+		{databaseOwner}{objectQualifier}Roles
+	WHERE
+		(PortalID = @PortalID OR @PortalID IS NULL) AND RoleName=@RoleName
+	IF @RoleId IS NULL
+	BEGIN
+		SET @RoleId = -4;
+	END
+	SELECT @RoleId;
+END
+GO
+
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 GO
