@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             try
             {
                 int total = 0;
-                var vocabularies = _controller.GetVocabularies(pageIndex, pageSize, scopeTypeId, out total).Select(v => new
+                var vocabularies = _controller.GetVocabularies(PortalId, pageIndex, pageSize, scopeTypeId, out total).Select(v => new
                 {
                     v.VocabularyId,
                     v.Name,
