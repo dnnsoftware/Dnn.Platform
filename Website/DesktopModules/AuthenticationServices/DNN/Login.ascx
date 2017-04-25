@@ -43,7 +43,7 @@
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
 		function setUpLogin() {
-			var actionLinks = $("a#dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin");
+			var actionLinks = $("a#dnn_ctr<%#ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin");
 			actionLinks.click(function () {
 				if ($(this).hasClass("dnnDisabledAction")) {
 					return false;
@@ -57,7 +57,7 @@
 
 			$('.dnnLoginService').on('keydown', function(e) {
 				if (e.keyCode === 13) {
-					var $loginButton = $('#dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin');
+					var $loginButton = $('#dnn_ctr<%#ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin');
 					if ($loginButton.hasClass("dnnDisabledAction")) {
 						return false;
 					}
