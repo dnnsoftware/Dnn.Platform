@@ -15,7 +15,7 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'PortalSettingExportList')
 	INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
-	VALUES (N'PortalSettingExportList', N'AddCompatibleHttpHeader,ControlPanelMode,ControlPanelSecurity,ControlPanelVisibility,EnablePopUps,EnableSkinWidgets,HideFoldersEnabled,InjectModuleHyperLink,InlineEditorEnabled,MaximumVersionHistory,PageHeadText,PortalAliasMapping,DefaultAdminContainer,DefaultAdminSkin,DefaultPortalContainer,DefaultPortalSkin', 
+	VALUES (N'PortalSettingExportList', N'DefaultTabWorkflowKey,TabWorkflowEnabledKey,TabVersionsMaxNumber,TabVersionsEnabled,AddCompatibleHttpHeader,ControlPanelMode,ControlPanelSecurity,ControlPanelVisibility,EnablePopUps,EnableSkinWidgets,HideFoldersEnabled,InjectModuleHyperLink,InlineEditorEnabled,MaximumVersionHistory,PageHeadText,PortalAliasMapping,DefaultAdminContainer,DefaultAdminSkin,DefaultPortalContainer,DefaultPortalSkin', 
 	0, -1, GETDATE(), -1, GETDATE())
 GO
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'MaxSecondsToRunJob')
