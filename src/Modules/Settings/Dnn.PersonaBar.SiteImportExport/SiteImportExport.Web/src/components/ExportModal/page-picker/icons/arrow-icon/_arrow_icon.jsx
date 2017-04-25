@@ -1,8 +1,7 @@
-
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 
 const arrow_svg = require("!raw!./arrow_bullet.svg");
-import {global} from "../../_global";
+import { global } from "../../_global";
 
 const styles = global.styles;
 const merge = styles.merge;
@@ -10,25 +9,25 @@ const merge = styles.merge;
 import * as shortid from "shortid";
 
 const style = (direction) => {
-  return {
-    transition: "all .15s ease-in",
-    cursor:"pointer",
-    width:"100%",
-    transform: `rotate(${direction})`
-  };
+    return {
+        transition: "all .15s ease-in",
+        cursor: "pointer",
+        width: "100%",
+        transform: `rotate(${direction})`
+    };
 };
 
 export class ArrowIcon extends Component {
 
-    state ={
-        selected:false,
+    state = {
+        selected: false,
         arrow_bullet: null
     }
 
     constructor(props) {
         super();
         this.direction = props.direction;
-        this.id =  shortid.generate();
+        this.id = shortid.generate();
         this.shouldAnimate = props.animate;
     }
 
@@ -40,11 +39,11 @@ export class ArrowIcon extends Component {
         this.animate(this.shouldAnimate);
     }
 
-    animate = (bool) =>{
+    animate = (bool) => {
         const left = () => {
-          this.setState({selected:!this.state.selected});
-          const arrow_css = this.arrow_bullet.style;
-          arrow_css.transform = (this.state.selected) ? "rotate(0deg)" : "rotate(90deg)";
+            this.setState({ selected: !this.state.selected });
+            const arrow_css = this.arrow_bullet.style;
+            arrow_css.transform = (this.state.selected) ? "rotate(0deg)" : "rotate(90deg)";
         };
         const right = () => null;
         bool ? left() : right();
@@ -52,16 +51,16 @@ export class ArrowIcon extends Component {
 
     reset = (bool) => {
         if (bool) {
-            this.setState({selected:false});
+            this.setState({ selected: false });
         }
     }
 
 
     render() {
-      /* eslint-disable react/no-danger */
-      const marginTop = styles.margin({top:-3});
-      const padding = styles.padding({all:2});
-      const baseStyles = style(this.direction);
+        /* eslint-disable react/no-danger */
+        const marginTop = styles.margin({ top: -3 });
+        const padding = styles.padding({ all: 2 });
+        const baseStyles = style(this.direction);
         return (
             <div
                 dangerouslySetInnerHTML={{ __html: arrow_svg }}
@@ -71,7 +70,7 @@ export class ArrowIcon extends Component {
                 src={arrow_svg}
                 alt="arrow_icon"
                 onMouseDown={this.onMouseDown} />
-            );
+        );
         /* eslint-disable react/no-danger */
     }
 
