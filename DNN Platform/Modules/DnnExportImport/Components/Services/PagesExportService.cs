@@ -65,6 +65,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public virtual bool IncludeSystem { get; set; } = false;
 
+        protected ImportDto ImportDto => _importDto;
+
         private ProgressTotals _totals;
         private Providers.DataProvider _dataProvider;
         private ITabController _tabController;

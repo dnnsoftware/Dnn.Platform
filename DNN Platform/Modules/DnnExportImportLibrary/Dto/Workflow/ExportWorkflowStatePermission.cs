@@ -4,7 +4,7 @@ using System;
 
 namespace Dnn.ExportImport.Dto.Workflow
 {
-    public class ExportContentWorkflowStatePermission : BasicExportImportDto
+    public class ExportWorkflowStatePermission : BasicExportImportDto
     {
         public int WorkflowStatePermissionID { get; set; }
         public int StateID { get; set; }

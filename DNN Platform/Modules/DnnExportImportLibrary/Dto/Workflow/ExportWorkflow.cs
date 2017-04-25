@@ -2,7 +2,7 @@
 
 namespace Dnn.ExportImport.Dto.Workflow
 {
-    public class ExportContentWorkflow : BasicExportImportDto
+    public class ExportWorkflow : BasicExportImportDto
     {
         public int WorkflowID { get; set; }
         public string WorkflowName { get; set; }
