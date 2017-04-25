@@ -1996,11 +1996,11 @@ BEGIN
 			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
 		)
 	AND 
-		ct.ContentType = 'Tab'
+		ct.ContentType = N'Tab'
 	AND (
 			ci.StateID IS NULL 
 		OR 
-			ci.StateID IN (SELECT StateID FROM dnn_ContentWorkflowStates WHERE StateName = 'Published')
+			ci.StateID IN (SELECT StateID FROM {databaseOwner}{objectQualifier}ContentWorkflowStates WHERE StateName = N'Published')
 		)
 	ORDER BY
 		TabID
