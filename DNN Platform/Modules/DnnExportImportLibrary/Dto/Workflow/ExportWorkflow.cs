@@ -13,5 +13,6 @@ namespace Dnn.ExportImport.Dto.Workflow
         public bool DispositionEnabled { get; set; }
         public bool IsSystem { get; set; }
         public string WorkflowKey { get; set; }
+        public bool IsDefault { get; set; }
     }
 }
