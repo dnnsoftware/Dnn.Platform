@@ -195,7 +195,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 var user = GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem, stateTransaction);
                 if (user == null)
                 {
-                    Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
+                    //Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
                     return;
                 }
 

@@ -29,12 +29,11 @@ using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Dnn.ExportImport.Dto.Assets;
+using Dnn.ExportImport.Dto.Workflow;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
 using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
@@ -341,7 +340,7 @@ namespace Dnn.ExportImport.Components.Services
             folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? "" : folder.FolderPath;
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
             if (folderMapping == null) return false;
-
+            var workFlowId = GetLocalWorkFlowId(folder.WorkflowId);
             if (isUpdate)
             {
                 Util.FixDateTime(existingFolder);
@@ -349,7 +348,7 @@ namespace Dnn.ExportImport.Components.Services
                     .UpdateFolder(importJob.PortalId, folder.VersionGuid, existingFolder.FolderId, folder.FolderPath,
                         folder.StorageLocation, folder.MappedPath, folder.IsProtected, folder.IsCached,
                         DateUtils.GetDatabaseLocalTime(), modifiedBy, folderMapping.FolderMappingID, folder.IsVersioned,
-                        folder.WorkflowId ?? Null.NullInteger, existingFolder.ParentId ?? Null.NullInteger);
+                        workFlowId, existingFolder.ParentId ?? Null.NullInteger);
 
                 folder.FolderId = existingFolder.FolderId;
 
@@ -374,7 +373,7 @@ namespace Dnn.ExportImport.Components.Services
                         .AddFolder(importJob.PortalId, Guid.NewGuid(), folder.VersionGuid, folder.FolderPath,
                             folder.MappedPath, folder.StorageLocation, folder.IsProtected, folder.IsCached,
                             DateUtils.GetDatabaseLocalTime(),
-                            createdBy, folderMapping.FolderMappingID, folder.IsVersioned, folder.WorkflowId ?? Null.NullInteger,
+                            createdBy, folderMapping.FolderMappingID, folder.IsVersioned, workFlowId,
                             folder.ParentId ?? Null.NullInteger);
                 }
                 //Case when the folder is a user folder.
@@ -484,8 +483,6 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessFiles(ExportImportJob importJob, ImportDto importDto, ExportFile file, IEnumerable<ExportFile> localFiles)
         {
-            var portalId = importJob.PortalId;
-
             if (file == null) return;
             var existingFile = localFiles.FirstOrDefault(x => x.FileName == file.FileName);
             var isUpdate = false;
@@ -586,6 +583,16 @@ namespace Dnn.ExportImport.Components.Services
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
             return 0;
+        }
+
+        private int GetLocalWorkFlowId(int? exportedWorkFlowId)
+        {
+            if (exportedWorkFlowId!=null && exportedWorkFlowId > 1) // 1 is direct publish
+            {
+                var state = Repository.GetItem<ExportWorkflow>(item => item.WorkflowID == exportedWorkFlowId);
+                return state?.LocalId ?? -1;
+            }
+            return -1;
         }
     }
 }
