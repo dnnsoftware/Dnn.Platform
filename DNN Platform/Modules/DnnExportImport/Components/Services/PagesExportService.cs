@@ -248,6 +248,10 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
                 AddTabRelatedItems(localTab, otherTab, true);
+
+                //update tab with import flag, to trigger update event handler.
+                localTab.TabSettings.Add("TabImported", "Y");
+                _tabController.UpdateTab(localTab);
             }
         }
 
