@@ -253,11 +253,12 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
                 AddTabRelatedItems(localTab, otherTab, true);
-
-                //update tab with import flag, to trigger update event handler.
-                localTab.TabSettings.Add("TabImported", "Y");
-                _tabController.UpdateTab(localTab);
             }
+
+            //update tab with import flag, to trigger update event handler.
+            localTab.TabSettings.Add("TabImported", "Y");
+            localTab.StateID = GetLocalStateId(otherTab.StateID);
+            _tabController.UpdateTab(localTab);
         }
 
         private void AddTabRelatedItems(TabInfo localTab, ExportTab otherTab, bool isNew)
@@ -1568,11 +1569,11 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private int GetLocalStateId(ExportWorkflowState exportedState, int otherStateId)
+        private int GetLocalStateId(int exportedStateId)
         {
-            if (exportedState.StateID > 6) // 6 is the last system state set in Platform at table creation time
+            if (exportedStateId > 6) // 6 is the last system state set in Platform at table creation time
             {
-                var state = Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedState.StateID);
+                var state = Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedStateId);
                 return state?.StateID ?? 1; // 1 is direct publish
             }
 
@@ -1581,9 +1582,9 @@ namespace Dnn.ExportImport.Components.Services
 
         #endregion
 
-    #region private classes
+        #region private classes
 
-    [JsonObject]
+        [JsonObject]
         private class ProgressTotals
         {
             // for Export: this is the TabID
