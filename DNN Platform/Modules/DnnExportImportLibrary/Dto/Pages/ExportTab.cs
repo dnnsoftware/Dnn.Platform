@@ -63,7 +63,7 @@ namespace Dnn.ExportImport.Dto.Pages
         public string TabPath { get; set; }
         public bool HasBeenPublished { get; set; }
         public bool IsSystem { get; set; }
-
+        public int StateID { get; set; }
         public string CreatedByUserName { get; set; }
         public string LastModifiedByUserName { get; set; }
     }
