@@ -30,6 +30,7 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Providers;
 using Dnn.ExportImport.Dto.Pages;
+using Dnn.ExportImport.Dto.Workflow;
 using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
@@ -1431,6 +1432,13 @@ namespace Dnn.ExportImport.Components.Services
 
         private ExportTab SaveExportPage(TabInfo tab)
         {
+            var stateId = tab.StateID;
+            if (stateId > 6) // 6 is the last system state set in Platform at table creation time
+            {
+                var exportedState = Repository.GetItem<ExportWorkflowState>(item => item.StateID == stateId);
+                stateId = exportedState?.StateID ?? 1; // 1 is direct publish
+            }
+
             var exportPage = new ExportTab
             {
                 TabId = tab.TabID,
@@ -1469,7 +1477,7 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = tab.StateID //TODO: match to imported one
+                StateID = stateId,
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");

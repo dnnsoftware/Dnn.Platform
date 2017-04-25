@@ -132,13 +132,11 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             var importWorkflows = Repository.GetAllItems<ExportWorkflow>().ToList();
             var existWorkflows = workflowManager.GetWorkflows(portalId).ToList();
-            var defaultTabWorkflowId = importWorkflows.FirstOrDefault(w => w.IsDefault)?.WorkflowID ?? 0;
+            var defaultTabWorkflowId = importWorkflows.FirstOrDefault(w => w.IsDefault)?.WorkflowID ?? 1;
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? importWorkflows.Count : CheckPoint.TotalItems;
 
             foreach (var importWorkflow in importWorkflows)
             {
-                if (!importDto.ExportDto.IncludeDeletions && importWorkflow.IsDeleted) continue;
-
                 var workflow = existWorkflows.FirstOrDefault(w => w.WorkflowName == importWorkflow.WorkflowName);
                 if (workflow != null)
                 {
@@ -174,17 +172,22 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 importWorkflow.LocalId = workflow.WorkflowID;
+
                 var importStates = Repository.GetRelatedItems<ExportWorkflowState>(importWorkflow.Id).ToList();
                 foreach (var importState in importStates)
                 {
                     var workflowState = workflow.States.FirstOrDefault(s => s.StateName == importState.StateName);
                     if (workflowState != null)
                     {
-                        //workflowState.Order = importState.Order; //TODO: see what to do about this
-                        workflowState.SendNotification = importState.SendNotification;
-                        workflowState.SendNotificationToAdministrators = importState.SendNotificationToAdministrators;
-                        workflowStateManager.UpdateWorkflowState(workflowState);
-                        Result.AddLogEntry("Updated workflow state", workflowState.StateID.ToString());
+                        if (!workflowState.IsSystem)
+                        {
+                            workflowState.Order = importState.Order;
+                            workflowState.IsSystem = false;
+                            workflowState.SendNotification = importState.SendNotification;
+                            workflowState.SendNotificationToAdministrators = importState.SendNotificationToAdministrators;
+                            workflowStateManager.UpdateWorkflowState(workflowState);
+                            Result.AddLogEntry("Updated workflow state", workflowState.StateID.ToString());
+                        }
                     }
                     else
                     {
@@ -192,6 +195,8 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             StateName = importState.StateName,
                             WorkflowID = workflow.WorkflowID,
+                            Order = importState.Order,
+                            IsSystem = importState.IsSystem,
                             SendNotification = importState.SendNotification,
                             SendNotificationToAdministrators = importState.SendNotificationToAdministrators
                         };
@@ -254,22 +259,28 @@ namespace Dnn.ExportImport.Components.Services
                                 };
 
                                 WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, -1);
+                                importPermission.LocalId = permission.WorkflowStatePermissionID;
                                 Result.AddLogEntry("Added workflow state permission", permission.WorkflowStatePermissionID.ToString());
                             }
                         }
                     }
+                    //Repository.UpdateItems(importPermissions); // not necessary for now.
                 }
                 Repository.UpdateItems(importStates);
 
                 Result.AddSummary("Imported Workflow", importWorkflows.Count.ToString());
-                CheckPoint.Stage++;
-                CheckPoint.StageData = null;
-                CheckPoint.Progress = 100;
-                CheckPoint.TotalItems = importWorkflows.Count;
-                CheckPoint.ProcessedItems = importWorkflows.Count;
+                CheckPoint.ProcessedItems++;
                 CheckPointStageCallback(this); // no need to return; very small amount of data processed
             }
+
             Repository.UpdateItems(importWorkflows);
+
+            CheckPoint.Stage++;
+            CheckPoint.StageData = null;
+            CheckPoint.Progress = 100;
+            CheckPoint.TotalItems = importWorkflows.Count;
+            CheckPoint.ProcessedItems = importWorkflows.Count;
+            CheckPointStageCallback(this);
         }
 
         #endregion
