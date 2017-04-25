@@ -34,8 +34,6 @@ using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -206,75 +204,77 @@ namespace Dnn.ExportImport.Components.Services
                         WorkflowStateManager.Instance.AddWorkflowState(workflowState);
                         Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());
                     }
+                    importState.LocalId = workflowState.StateID;
 
                     #region importin permissions
 
                     if (!workflowState.IsSystem)
                     {
-                        importState.LocalId = workflowState.StateID;
-                        var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.Id);
+                        var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.Id).ToList();
                         foreach (var importPermission in importPermissions)
                         {
-                            var permissionId = new PermissionController().GetPermissionByCodeAndKey(
-                                                       importPermission.PermissionCode, importPermission.PermissionKey)
-                                                   .OfType<PermissionInfo>().FirstOrDefault()?.PermissionID ?? -1;
+                            var permissionId = DataProvider.Instance().GetPermissionId(
+                                importPermission.PermissionCode, importPermission.PermissionKey, importPermission.PermissionName);
 
-                            if (permissionId > -1)
+                            if (permissionId != null)
                             {
-                                var importRoleId = importPermission.RoleID.GetValueOrDefault(Convert.ToInt32(Globals.glbRoleNothing));
-                                var importUserId = importPermission.UserID.GetValueOrDefault(-1);
-
-                                var roleFound = true;
-                                var userFound = true;
-
-                                if (importRoleId > -1)
+                                var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+                                var permission = new WorkflowStatePermission
                                 {
-                                    var role = RoleController.Instance.GetRoleByName(portalId, importPermission.RoleName);
-                                    if (role == null)
+                                    PermissionID = permissionId ?? -1,
+                                    StateID = workflowState.StateID,
+                                    RoleID = noRole,
+                                    UserID = -1,
+                                    AllowAccess = importPermission.AllowAccess,
+                                    //TODO: ModuleDefID = ??? what value to set here ?
+                                };
+
+                                if (importPermission.UserID != null && importPermission.UserID > 0 && !string.IsNullOrEmpty(importPermission.Username))
+                                {
+                                    var userId = UserController.GetUserByName(importDto.PortalId, importPermission.Username)?.UserID;
+                                    if (userId == null)
                                     {
-                                        roleFound = false;
+                                        Result.AddLogEntry("Couldn't add tab permission; User is undefined!",
+                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
+                                        continue;
                                     }
-                                    else
-                                    {
-                                        importRoleId = role.RoleID;
-                                    }
+                                    permission.UserID = userId.Value;
                                 }
 
-                                if (importUserId > -1)
+                                if (importPermission.RoleID != null && importPermission.RoleID > noRole && !string.IsNullOrEmpty(importPermission.RoleName))
                                 {
-                                    var user = UserController.GetUserByName(portalId, importPermission.Username);
-                                    if (user == null)
+                                    var roleId = Util.GetRoleIdByName(importDto.PortalId, importPermission.RoleID ?? noRole, importPermission.RoleName);
+                                    if (roleId == null)
                                     {
-                                        userFound = false;
+                                        Result.AddLogEntry("Couldn't add tab permission; Role is undefined!",
+                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
+                                        continue;
                                     }
-                                    else
-                                    {
-                                        importUserId = user.UserID;
-                                    }
+                                    permission.RoleID = roleId.Value;
                                 }
 
-                                if (roleFound || userFound)
+                                try
                                 {
-                                    var permission = new WorkflowStatePermission
-                                    {
-                                        PermissionID = permissionId,
-                                        StateID = workflowState.StateID,
-                                        RoleID = importRoleId,
-                                        UserID = importUserId,
-                                        AllowAccess = importPermission.AllowAccess,
-                                        //TODO: ModuleDefID = ??? what value to set here ?
-                                    };
+                                    var existingPermissions = workflowStateManager.GetWorkflowStatePermissionByState(workflowState.StateID);
+                                    var local = existingPermissions.FirstOrDefault(
+                                        x => x.PermissionCode == importPermission.PermissionCode &&
+                                             x.PermissionKey == importPermission.PermissionKey
+                                             && x.PermissionName == importPermission.PermissionName &&
+                                             (x.RoleName == importPermission.RoleName || string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(importPermission.RoleName))
+                                             &&
+                                             (x.Username == importPermission.Username || string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(importPermission.Username)));
 
-                                    WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, -1);
-                                    try
+
+                                    if (local != null)
                                     {
+                                        workflowStateManager.AddWorkflowStatePermission(permission, -1);
                                         importPermission.LocalId = permission.WorkflowStatePermissionID;
                                         Result.AddLogEntry("Added workflow state permission", permission.WorkflowStatePermissionID.ToString());
                                     }
-                                    catch (Exception ex)
-                                    {
-                                        Result.AddLogEntry("Exception adding workflow state permission", ex.Message, ReportLevel.Error);
-                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Result.AddLogEntry("Exception adding workflow state permission", ex.Message, ReportLevel.Error);
                                 }
                             }
                         }

@@ -253,7 +253,7 @@ namespace Dnn.ExportImport.Components.Services
                             localRoleInfo.TrialFrequency = other.TrialFrequency;
                             localRoleInfo.TrialPeriod = other.TrialPeriod ?? 0;
 
-                            RoleController.Instance.UpdateRole(localRoleInfo, other.AutoAssignment);
+                            RoleController.Instance.UpdateRole(localRoleInfo, false);
                             roleItems.Add(new RoleItem(localRoleInfo.RoleID, createdBy, modifiedBy));
 
                             // do not assign existing users to the roles automatically
@@ -295,7 +295,7 @@ namespace Dnn.ExportImport.Components.Services
                         TrialPeriod = other.TrialPeriod ?? 0,
                     };
 
-                    other.LocalId = RoleController.Instance.AddRole(roleInfo, other.AutoAssignment);
+                    other.LocalId = RoleController.Instance.AddRole(roleInfo, false);
                     roleItems.Add(new RoleItem(roleInfo.RoleID, createdBy, modifiedBy));
                     RoleController.Instance.ClearRoleCache(roleInfo.RoleID);
                     Result.AddLogEntry("Added role", other.RoleName);
