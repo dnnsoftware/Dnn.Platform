@@ -182,7 +182,7 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("Pages")}
                                 />
-                                <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
+                                <div className="import-summary-item pagers">{this.getSummaryItem("Pages")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
