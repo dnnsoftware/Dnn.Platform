@@ -60,6 +60,9 @@ namespace Dnn.ExportImport.Dto.Pages
         public Guid VersionGuid { get; set; }
         public Guid? DefaultLanguageGuid { get; set; }
         public Guid LocalizedVersionGuid { get; set; }
+        public bool InheritViewPermissions { get; set; }
+        public bool IsShareable { get; set; }
+        public bool IsShareableViewOnly { get; set; }
 
         public string FriendlyName { get; set; } // this is ModuleDefinition.FriendlyName
         public string CreatedByUserName { get; set; }

@@ -254,7 +254,7 @@ namespace Dnn.ExportImport.Components.Services
                 AddTabRelatedItems(localTab, otherTab, true);
 
                 //update tab with import flag, to trigger update event handler.
-                //localTab.TabSettings.Add("TabImported", "Y");
+                localTab.TabSettings.Add("TabImported", "Y");
                 _tabController.UpdateTab(localTab);
             }
         }
@@ -550,6 +550,10 @@ namespace Dnn.ExportImport.Components.Services
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
+                        InheritViewPermissions = other.InheritViewPermissions,
+                        IsShareable = other.IsShareable,
+                        IsShareableViewOnly = other.IsShareableViewOnly,
+                        PortalID = _exportImportJob.PortalId
                     };
 
                     //Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
@@ -644,6 +648,10 @@ namespace Dnn.ExportImport.Components.Services
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                                     LocalizedVersionGuid = other.LocalizedVersionGuid,
+                                    InheritViewPermissions = other.InheritViewPermissions,
+                                    IsShareable = other.IsShareable,
+                                    IsShareableViewOnly = other.IsShareableViewOnly,
+                                    PortalID = _exportImportJob.PortalId
                                 };
 
                                 //this will create up to 2 records:  Module (if it is not already there) and TabModule
