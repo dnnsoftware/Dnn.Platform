@@ -65,6 +65,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public virtual bool IncludeSystem { get; set; } = false;
 
+        public virtual bool IgnoreParentMatch { get; set; } = false;
+
         protected ImportDto ImportDto => _importDto;
 
         private ProgressTotals _totals;
@@ -182,7 +184,7 @@ namespace Dnn.ExportImport.Components.Services
                         break;
                     case CollisionResolution.Overwrite:
                         SetTabData(localTab, otherTab);
-                        var parentId = TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
+                        var parentId = IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                         if (parentId == -1 && otherTab.ParentId > 0)
                         {
                             Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
@@ -219,7 +221,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 localTab = new TabInfo { PortalID = portalId };
                 SetTabData(localTab, otherTab);
-                var parentId = TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
+                var parentId = IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                 if (parentId == -1 && otherTab.ParentId > 0)
                 {
                     Result.AddLogEntry("Importing new tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
