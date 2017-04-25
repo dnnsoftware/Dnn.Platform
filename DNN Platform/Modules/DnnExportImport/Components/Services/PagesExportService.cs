@@ -1417,7 +1417,8 @@ namespace Dnn.ExportImport.Components.Services
                 Level = tab.Level,
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
-                IsSystem = tab.IsSystem
+                IsSystem = tab.IsSystem,
+                StateID = tab.StateID
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
