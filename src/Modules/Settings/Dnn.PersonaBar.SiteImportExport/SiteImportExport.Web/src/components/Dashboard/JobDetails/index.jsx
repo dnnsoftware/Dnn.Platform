@@ -70,7 +70,7 @@ class JobDetails extends Component {
                             labelType="inline"
                             label={Localization.get("UsersStep1")}
                         />
-                        <div className="import-summary-item">
+                        <div className="import-summary-item users">
                             <div>
                                 <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
                                 <div style={{ float: "right" }}>
@@ -86,7 +86,7 @@ class JobDetails extends Component {
                             labelType="inline"
                             label={Localization.get("UsersStep1")}
                         />
-                        <div className="import-summary-item">
+                        <div className="import-summary-item users">
                             {users.ProcessedItems > users.TotalItems ? users.TotalItemsString : users.ProcessedItemsString + " / " + users.TotalItemsString}
                         </div>
                     </GridCell>;
@@ -97,7 +97,7 @@ class JobDetails extends Component {
                             labelType="inline"
                             label={Localization.get("UsersStep2")}
                         />
-                        <div className="import-summary-item">
+                        <div className="import-summary-item users">
                             <div>
                                 <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
                                 <div style={{ float: "right" }}>
@@ -113,7 +113,7 @@ class JobDetails extends Component {
                             labelType="inline"
                             label={Localization.get("Users")}
                         />
-                        <div className="import-summary-item">
+                        <div className="import-summary-item users">
                             {users.ProcessedItems > users.TotalItems ? users.TotalItemsString : users.ProcessedItemsString + " / " + users.TotalItemsString}
                         </div>
                     </GridCell>;
@@ -182,7 +182,7 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("Pages")}
                                 />
-                                <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
+                                <div className="import-summary-item pagers">{this.getSummaryItem("Pages")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
