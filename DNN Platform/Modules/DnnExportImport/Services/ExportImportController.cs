@@ -113,13 +113,6 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage ProgressStatus(int jobId)
-        {
-            //TODO: implement
-            return Request.CreateResponse(HttpStatusCode.OK, new { percentage = "10%" });
-        }
-
-        [HttpGet]
         public HttpResponseMessage LastJobTime(int portal, JobType jobType)
         {
             if (!UserInfo.IsSuperUser && portal != PortalSettings.PortalId)

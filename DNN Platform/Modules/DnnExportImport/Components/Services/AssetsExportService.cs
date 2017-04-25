@@ -333,7 +333,6 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore:
-                        //TODO: Log that user was ignored.
                         return false;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
@@ -431,7 +430,6 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore:
-                        //TODO: Log that user was ignored.
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
@@ -499,7 +497,6 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore:
-                        //TODO: Log that user was ignored.
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());

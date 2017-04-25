@@ -26,7 +26,6 @@ using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Providers;
-using Dnn.ExportImport.Dto.Portal;
 using Dnn.ExportImport.Dto.Taxonomy;
 using Dnn.ExportImport.Dto.Workflow;
 using DotNetNuke.Common;
@@ -44,7 +43,7 @@ namespace Dnn.ExportImport.Components.Services
     {
         public override string Category => Constants.Category_Workflows;
 
-        public override string ParentCategory => Constants.Category_Portal;
+        public override string ParentCategory => null;
 
         public override uint Priority => 6;
 

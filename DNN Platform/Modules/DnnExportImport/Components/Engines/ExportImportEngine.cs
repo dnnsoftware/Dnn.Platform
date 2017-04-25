@@ -583,7 +583,6 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static void DoPacking(ExportImportJob exportJob, string dbName)
         {
-            //TODO: Error handling
             var exportFileArchive = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
             var folderOffset = exportFileArchive.IndexOf(Constants.ExportZipDbName, StringComparison.Ordinal);
             File.Delete(CompressionUtil.AddFileToArchive(dbName, exportFileArchive, folderOffset)
@@ -593,7 +592,6 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static void DoUnPacking(ExportImportJob importJob)
         {
-            //TODO: Error handling
             var extractFolder = Path.Combine(ExportFolder, importJob.Directory);
             var dbName = Path.Combine(extractFolder, Constants.ExportDbName);
             if (File.Exists(dbName))

@@ -209,7 +209,6 @@ namespace Dnn.ExportImport.Components.Controllers
                 });
             }
 
-            //TODO: Get export file info.
             summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
             summary.FromDate = exportDto.FromDateUtc;
             summary.ToDate = exportDto.ToDateUtc;
