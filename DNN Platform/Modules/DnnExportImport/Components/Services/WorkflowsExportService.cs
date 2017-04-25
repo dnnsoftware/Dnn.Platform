@@ -204,12 +204,12 @@ namespace Dnn.ExportImport.Components.Services
                         WorkflowStateManager.Instance.AddWorkflowState(workflowState);
                         Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());
                     }
+                    importState.LocalId = workflowState.StateID;
 
                     #region importin permissions
 
                     if (!workflowState.IsSystem)
                     {
-                        importState.LocalId = workflowState.StateID;
                         var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.Id).ToList();
                         foreach (var importPermission in importPermissions)
                         {
