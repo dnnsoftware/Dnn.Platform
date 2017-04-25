@@ -39,20 +39,23 @@ export class PagePickerInteractor extends Component {
        .then( tabdata => this.PortalTabs = tabdata )
        .then( () => this.setState({tabs:this.PortalTabs, selectAll:this.state.selectAll}))
        .then( () => this.flatTabs = ppdm.flatten(this.PortalTabs) )
-       .then( () => this.setState({tabs:this.PortalTabs}) )
+       .then( () => this.setState({tabs:this.PortalTabs, flatTabs:this.flatTabs}) )
 
        .catch(err => this.PortalTabs = this.tabs)
     }
 
     _requestDescendantTabs = (ParentTabId) => {
+        console.log('requeting descendantTabs')
         let descendantTabs = null
+        const inspect = (tabs) => console.log('inspecting :', tabs)
         const params = `&parentId=${ParentTabId}`
         const mapToFlatTabs = (tabs) =>  tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`]=tab)
         const captureDecendants = (tabs) => descendantTabs=tabs.map(tab => {
           !Array.isArray(tab.ChildTabs) ? tab.ChildTabs=[] : null
           return tab
         })
-        const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants)
+
+        const input = (tabs) => compose(tabs, inspect, mapToFlatTabs, captureDecendants)
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs))
         const appendDescendants = (parentTab) => descendantTabs.forEach((tab)=> tab.ParentTabId==parentTab.TabId ? parentTab.ChildTabs.push(tab) : null )
 
@@ -242,7 +245,7 @@ export class PagePickerInteractor extends Component {
         const picker =  (
           <PagePickerDesktop
               icon_type="arrow_bullet"
-              flatTabs={this.flatTabs}
+              flatTabs={this.state.flatTabs}
               tabs={this.state.tabs.ChildTabs}
               export={this.export}
               getChildTabs={this.getChildTabs}

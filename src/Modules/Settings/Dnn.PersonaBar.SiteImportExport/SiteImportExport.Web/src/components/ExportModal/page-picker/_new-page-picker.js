@@ -56,7 +56,9 @@ export class PagePickerDesktop extends Component {
     }
 
     componentWillUpdate(){
-
+      const flatTabs = Object.keys(this.flatTabs).map(key => this.flatTabs[key])
+      const update = flatTabs.filter(tab => `${tab.TabId}-${tab.Name}` in STATE == false )
+      update.forEach(tab => STATE[`${tab.TabId}-${tab.Name}`] = tab )
     }
 
     __setMasterRoot = () =>{
@@ -265,6 +267,8 @@ export class PagePickerDesktop extends Component {
     _setChildCheckedState = (tab) => {
       console.log('set Child State')
       const TabIdName = `${tab.TabId}-${tab.Name}`
+
+      console.log(STATE)
       const state = Object.assign({}, STATE)
       tab.CheckedState = !tab.CheckedState
       tab.CheckedState = tab.CheckedState ? 1 : 0
@@ -372,15 +376,16 @@ export class PagePickerDesktop extends Component {
     }
 
     expandParentTab = (tab) => {
+
       const left = () => {
         tab.IsOpen = !tab.IsOpen
         const Tab = Object.assign({}, tab)
         const TabIdName = `${tab.TabId}-${tab.Name}`
         const ChildrenSelected = STATE[TabIdName].ChildrenSelected
-        console.log('CS', ChildrenSelected)
+
         STATE[TabIdName] = Tab
         STATE[TabIdName].ChildrenSelected=ChildrenSelected
-        console.log(tab)
+
         this._update()
       }
 
@@ -390,8 +395,10 @@ export class PagePickerDesktop extends Component {
           tab.IsOpen = !tab.IsOpen
           const Tab = Object.assign({}, tab)
           const TabIdName = `${tab.TabId}-${tab.Name}`
+          const ChildrenSelected = STATE[TabIdName].ChildrenSelected
           STATE[TabIdName] = Tab
-          console.log(tab)
+          STATE[TabIdName].ChildrenSelected=ChildrenSelected
+
         })
         .then( () => this._setParentTabChildrenSelected(tab) )
         .then( () => this._setRootTabChildrenSelected(tab) )
@@ -412,7 +419,6 @@ export class PagePickerDesktop extends Component {
 
         const TabIdName = `${tab.TabId}-${tab.Name}`
         STATE[TabIdName].CheckedState = 0
-        console.log('state:', STATE)
 
         this._setRootTabChildrenSelected(tab)
         this._setParentTabChildrenSelected(tab)
