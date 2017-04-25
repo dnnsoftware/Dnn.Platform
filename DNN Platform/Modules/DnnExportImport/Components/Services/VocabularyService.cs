@@ -75,7 +75,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     CheckPointStageCallback(this);
 
-                    Repository.CreateItems(scopeTypes, null);
+                    Repository.CreateItems(scopeTypes);
                     //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
                     //CheckPoint.ProcessedItems += scopeTypes.Count;
                 }
@@ -95,7 +95,7 @@ namespace Dnn.ExportImport.Components.Services
                     if (vocabularyTypes == null)
                         vocabularyTypes =
                             CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
-                    Repository.CreateItems(vocabularyTypes, null);
+                    Repository.CreateItems(vocabularyTypes);
                     //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
                     //CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 }
@@ -108,7 +108,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
                 if (taxonomyTerms == null) taxonomyTerms = GetTaxonomyTerms(toDate, fromDate);
-                Repository.CreateItems(taxonomyTerms, null);
+                Repository.CreateItems(taxonomyTerms);
                 Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
                 CheckPoint.Progress = 75;
                 CheckPoint.ProcessedItems += taxonomyTerms.Count;
@@ -120,7 +120,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
                 if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(toDate, fromDate);
-                Repository.CreateItems(taxonomyVocabularies, null);
+                Repository.CreateItems(taxonomyVocabularies);
                 Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += taxonomyVocabularies.Count;

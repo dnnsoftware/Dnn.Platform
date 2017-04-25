@@ -70,7 +70,7 @@ namespace Dnn.ExportImport.Components.Services
         protected ImportDto ImportDto => _importDto;
 
         private ProgressTotals _totals;
-        private Providers.DataProvider _dataProvider;
+        private DataProvider _dataProvider;
         private ITabController _tabController;
         private IModuleController _moduleController;
         private ExportImportJob _exportImportJob;
@@ -132,7 +132,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessImportPages()
         {
-            _dataProvider = Providers.DataProvider.Instance();
+            _dataProvider = DataProvider.Instance();
             _totals = string.IsNullOrEmpty(CheckPoint.StageData)
                 ? new ProgressTotals()
                 : JsonConvert.DeserializeObject<ProgressTotals>(CheckPoint.StageData);
@@ -254,7 +254,7 @@ namespace Dnn.ExportImport.Components.Services
                 AddTabRelatedItems(localTab, otherTab, true);
 
                 //update tab with import flag, to trigger update event handler.
-                localTab.TabSettings.Add("TabImported", "Y");
+                //localTab.TabSettings.Add("TabImported", "Y");
                 _tabController.UpdateTab(localTab);
             }
         }
@@ -1461,7 +1461,7 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = tab.StateID
+                StateID = tab.StateID //TODO: match to imported one
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");

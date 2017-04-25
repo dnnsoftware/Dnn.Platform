@@ -76,7 +76,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     CheckPointStageCallback(this);
 
-                    Repository.CreateItems(portalSettings, null);
+                    Repository.CreateItems(portalSettings);
                 }
                 Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
 
@@ -93,7 +93,7 @@ namespace Dnn.ExportImport.Components.Services
                     portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
                         .GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
 
-                Repository.CreateItems(portalLanguages, null);
+                Repository.CreateItems(portalLanguages);
                 Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.Completed = true;

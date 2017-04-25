@@ -57,7 +57,7 @@ namespace Dnn.ExportImport.Components.Services
             CheckPointStageCallback(this);
 
             if (CheckCancelled(exportJob)) return;
-            Repository.CreateItems(profileProperties, null);
+            Repository.CreateItems(profileProperties);
             Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             CheckPoint.Progress = 100;
             CheckPoint.ProcessedItems = profileProperties.Count;

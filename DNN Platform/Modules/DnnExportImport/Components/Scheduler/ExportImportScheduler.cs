@@ -98,7 +98,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                             }
                             catch (Exception ex)
                             {
-                                result.AddLogEntry("EXCEPTION", ex.Message, ReportLevel.Error);
+                                result.AddLogEntry("EXCEPTION exporting job #" + job.JobId, ex.Message, ReportLevel.Error);
                                 engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
@@ -109,7 +109,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                             {
                                 engine.Import(job, result, ScheduleHistoryItem);
                             }
-                            catch (ThreadAbortException ex)
+                            catch (ThreadAbortException)
                             {
                                 ScheduleHistoryItem.TimeLapse = EmergencyScheduleFrequency;
                                 ScheduleHistoryItem.TimeLapseMeasurement = EmergencyScheduleFrequencyUnit;
@@ -126,7 +126,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                             }
                             catch (Exception ex)
                             {
-                                result.AddLogEntry("EXCEPTION", ex.Message, ReportLevel.Error);
+                                result.AddLogEntry("EXCEPTION importing job #" + job.JobId, ex.Message, ReportLevel.Error);
                                 engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }

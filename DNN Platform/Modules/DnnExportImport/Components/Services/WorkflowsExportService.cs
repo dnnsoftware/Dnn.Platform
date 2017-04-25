@@ -73,12 +73,12 @@ namespace Dnn.ExportImport.Components.Services
                 foreach (var workflow in contentWorkflows)
                 {
                     var contentWorkflowStates = GetWorkflowStates(workflow.WorkflowID);
-                    Repository.CreateItems(contentWorkflowStates, workflow.WorkflowID);
+                    Repository.CreateItems(contentWorkflowStates, workflow.Id);
 
                     foreach (var workflowState in contentWorkflowStates)
                     {
                         var contentWorkflowStatePermissions = GetWorkflowStatePermissions(workflowState.StateID, toDate, fromDate);
-                        Repository.CreateItems(contentWorkflowStatePermissions, workflowState.StateID);
+                        Repository.CreateItems(contentWorkflowStatePermissions, workflowState.Id);
                     }
                 }
             }
@@ -115,131 +115,155 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (CheckCancelled(importJob) || CheckPoint.Stage >= 1 || CheckPoint.Completed)
+            if (CheckCancelled(importJob) || CheckPoint.Stage >= 1 || CheckPoint.Completed || CheckPointStageCallback(this))
             {
                 return;
             }
 
+            var workflowManager = WorkflowManager.Instance;
+            var workflowStateManager = WorkflowStateManager.Instance;
             var portalId = importJob.PortalId;
             var importWorkflows = Repository.GetAllItems<ExportWorkflow>().ToList();
-            
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? importWorkflows.Count() : CheckPoint.TotalItems;
-            if (CheckPointStageCallback(this)) return;
+            var existWorkflows = workflowManager.GetWorkflows(portalId).ToList();
+            var defaultTabWorkflowId = Convert.ToInt32(Repository.GetItem<ExportPortalSetting>(
+                s => s.SettingName == "DefaultTabWorkflowKey")?.SettingValue ?? "0");
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? importWorkflows.Count : CheckPoint.TotalItems;
 
-            if (CheckPoint.Stage == 0)
+            foreach (var importWorkflow in importWorkflows)
             {
-                var existWorkflows = WorkflowManager.Instance.GetWorkflows(portalId).ToList();
-                var defaultTabWorkflowId = Convert.ToInt32(Repository.GetItem<ExportPortalSetting>(s => s.SettingName == "DefaultTabWorkflowKey")?.SettingValue ?? "0");
+                if (!importDto.ExportDto.IncludeDeletions && importWorkflow.IsDeleted) continue;
 
-                foreach (var importWorkflow in importWorkflows.Where(i => !i.IsDeleted && !i.IsSystem))
+                var workflow = existWorkflows.FirstOrDefault(w => w.WorkflowName == importWorkflow.WorkflowName);
+                if (workflow != null)
                 {
-                    var workflow = existWorkflows.FirstOrDefault(w => w.WorkflowName == importWorkflow.WorkflowName);
-                    if (workflow != null)
+                    if (!importWorkflow.IsSystem && importDto.CollisionResolution == CollisionResolution.Overwrite)
                     {
-                        if (importDto.CollisionResolution == CollisionResolution.Overwrite)
+                        if (workflow.Description != importWorkflow.Description ||
+                            workflow.WorkflowKey != importWorkflow.WorkflowKey)
                         {
-                                //TODO: overwrite the workflow.
+                            workflow.Description = importWorkflow.Description;
+                            workflow.WorkflowKey = importWorkflow.WorkflowKey;
+                            workflowManager.UpdateWorkflow(workflow);
+                            Result.AddLogEntry("Updated workflow", workflow.WorkflowName);
                         }
+                    }
+                }
+                else
+                {
+                    workflow = new Workflow
+                    {
+                        PortalID = portalId,
+                        WorkflowName = importWorkflow.WorkflowName,
+                        Description = importWorkflow.Description,
+                        WorkflowKey = importWorkflow.WorkflowKey,
+                    };
+
+                    workflowManager.AddWorkflow(workflow);
+                    Result.AddLogEntry("Added workflow", workflow.WorkflowName);
+
+                    if (importWorkflow.WorkflowID == defaultTabWorkflowId)
+                    {
+                        TabWorkflowSettings.Instance.SetDefaultTabWorkflowId(portalId, workflow.WorkflowID);
+                    }
+                }
+
+                importWorkflow.LocalId = workflow.WorkflowID;
+                var importStates = Repository.GetRelatedItems<ExportWorkflowState>(importWorkflow.Id).ToList();
+                foreach (var importState in importStates)
+                {
+                    var workflowState = workflow.States.FirstOrDefault(s => s.StateName == importState.StateName);
+                    if (workflowState != null)
+                    {
+                        //workflowState.Order = importState.Order; //TODO: see what to do about this
+                        workflowState.SendNotification = importState.SendNotification;
+                        workflowState.SendNotificationToAdministrators = importState.SendNotificationToAdministrators;
+                        workflowStateManager.UpdateWorkflowState(workflowState);
+                        Result.AddLogEntry("Updated workflow state", workflowState.StateID.ToString());
                     }
                     else
                     {
-                        workflow = new Workflow
+                        workflowState = new WorkflowState
                         {
-                            PortalID = portalId,
-                            WorkflowName = importWorkflow.WorkflowName,
-                            Description = importWorkflow.Description,
-                            WorkflowKey = importWorkflow.WorkflowKey
-                            
+                            StateName = importState.StateName,
+                            WorkflowID = workflow.WorkflowID,
+                            SendNotification = importState.SendNotification,
+                            SendNotificationToAdministrators = importState.SendNotificationToAdministrators
                         };
-
-                        WorkflowManager.Instance.AddWorkflow(workflow);
-
-                        if (importWorkflow.WorkflowID == defaultTabWorkflowId)
-                        {
-                            TabWorkflowSettings.Instance.SetDefaultTabWorkflowId(portalId, workflow.WorkflowID);
-                        }
+                        WorkflowStateManager.Instance.AddWorkflowState(workflowState);
+                        Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());
                     }
 
-                    var importStates = Repository.GetRelatedItems<ExportWorkflowState>(importWorkflow.WorkflowID).ToList();
-                    foreach (var importState in importStates)
+                    importState.LocalId = workflowState.StateID;
+                    var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.Id);
+                    foreach (var importPermission in importPermissions)
                     {
-                        if (workflow.States.All(s => s.StateName != importState.StateName))
+                        var permissionId = new PermissionController().GetPermissionByCodeAndKey(
+                                importPermission.PermissionCode, importPermission.PermissionKey)
+                            .OfType<PermissionInfo>().FirstOrDefault()?.PermissionID ?? -1;
+
+                        if (permissionId > -1)
                         {
-                            var workflowState = new WorkflowState()
+                            var importRoleId = importPermission.RoleID.GetValueOrDefault(Convert.ToInt32(Globals.glbRoleNothing));
+                            var importUserId = importPermission.UserID.GetValueOrDefault(-1);
+
+                            var roleFound = true;
+                            var userFound = true;
+
+                            if (importRoleId > -1)
                             {
-                                StateName = importState.StateName,
-                                WorkflowID = workflow.WorkflowID,
-                                SendNotification = importState.SendNotification,
-                                SendNotificationToAdministrators = importState.SendNotificationToAdministrators
-                            };
+                                var role = RoleController.Instance.GetRoleByName(portalId, importPermission.RoleName);
+                                if (role == null)
+                                {
+                                    roleFound = false;
+                                }
+                                else
+                                {
+                                    importRoleId = role.RoleID;
+                                }
+                            }
 
-                            WorkflowStateManager.Instance.AddWorkflowState(workflowState);
-
-                            var importPermissions = Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.StateID).ToList();
-                            foreach (var importPermission in importPermissions)
+                            if (importUserId > -1)
                             {
-                                var permissionId = new PermissionController().GetPermissionByCodeAndKey(importPermission.PermissionCode, importPermission.PermissionKey)
-                                    .Cast<PermissionInfo>().FirstOrDefault()?.PermissionID ?? Null.NullInteger;
-
-                                var importRoleId = importPermission.RoleID.GetValueOrDefault(Convert.ToInt32(Globals.glbRoleNothing));
-                                var importUserId = importPermission.UserID.GetValueOrDefault(Null.NullInteger);
-
-                                var roleFound = true;
-                                var userFound = true;
-
-                                if (importRoleId > Null.NullInteger)
+                                var user = UserController.GetUserByName(portalId, importPermission.Username);
+                                if (user == null)
                                 {
-                                    var role = RoleController.Instance.GetRoleByName(portalId, importPermission.RoleName);
-                                    if (role == null)
-                                    {
-                                        roleFound = false;
-                                    }
-                                    else
-                                    {
-                                        importRoleId = role.RoleID;
-                                    }
+                                    userFound = false;
                                 }
-
-                                if (importUserId > Null.NullInteger)
+                                else
                                 {
-                                    var user = UserController.GetUserByName(portalId, importPermission.Username);
-                                    if (user == null)
-                                    {
-                                        userFound = false;
-                                    }
-                                    else
-                                    {
-                                        importUserId = user.UserID;
-                                    }
+                                    importUserId = user.UserID;
                                 }
+                            }
 
-                                if (permissionId > Null.NullInteger && roleFound && userFound)
+                            if (roleFound || userFound)
+                            {
+                                var permission = new WorkflowStatePermission
                                 {
-                                    var permission = new WorkflowStatePermission
-                                    {
-                                        PermissionID = permissionId,
-                                        StateID = workflowState.StateID,
-                                        RoleID = importRoleId,
-                                        UserID = importUserId,
-                                        AllowAccess = importPermission.AllowAccess
+                                    PermissionID = permissionId,
+                                    StateID = workflowState.StateID,
+                                    RoleID = importRoleId,
+                                    UserID = importUserId,
+                                    AllowAccess = importPermission.AllowAccess,
+                                    //TODO: ModuleDefID = ??? what value to set here ?
+                                };
 
-                                    };
-
-                                    WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, Null.NullInteger);
-                                }
+                                WorkflowStateManager.Instance.AddWorkflowStatePermission(permission, -1);
+                                Result.AddLogEntry("Added workflow state permission", permission.WorkflowStatePermissionID.ToString());
                             }
                         }
                     }
-
-                    Result.AddSummary("Imported Workflow", importWorkflows.Count.ToString());
-                    CheckPoint.Stage++;
-                    CheckPoint.StageData = null;
-                    CheckPoint.Progress = 90;
-                    CheckPoint.TotalItems = importWorkflows.Count;
-                    CheckPoint.ProcessedItems = importWorkflows.Count;
-                    if (CheckPointStageCallback(this)) return;
                 }
+                Repository.UpdateItems(importStates);
+
+                Result.AddSummary("Imported Workflow", importWorkflows.Count.ToString());
+                CheckPoint.Stage++;
+                CheckPoint.StageData = null;
+                CheckPoint.Progress = 100;
+                CheckPoint.TotalItems = importWorkflows.Count;
+                CheckPoint.ProcessedItems = importWorkflows.Count;
+                CheckPointStageCallback(this); // no need to return; very small amount of data processed
             }
+            Repository.UpdateItems(importWorkflows);
         }
 
         #endregion

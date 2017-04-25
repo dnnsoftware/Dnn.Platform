@@ -2372,24 +2372,6 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]
-	@WorkflowID     int
-AS
-BEGIN
-	SELECT
-		ws.*
-	FROM
-		{databaseOwner}{objectQualifier}ContentWorkflowSources ws
-			INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows AS wf  ON wf.WorkflowID = ws.WorkflowID
-	WHERE
-		ws.WorkflowID = @WorkflowID
-END
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]
 GO
