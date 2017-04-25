@@ -3,17 +3,15 @@ export class PagePickerDataManager {
     constructor() {
         this.original_data = [];
         this.storage = {};
-
         this.select = 1;
         this.partialSelect = -1;
         this.unselect = 0;
-
     }
+
     reset() {
         this.original_data = [];
         this.storage = {};
     }
-
 
     /** INTERNAL METHODS **/
 
@@ -42,22 +40,20 @@ export class PagePickerDataManager {
                     // })[0];
                 }
             };
-
             childrenTruthy ? Left() : Right();
-
         }
     }
 
 
     _hasObjectChildren(id) {
         const tab = this.storage[id];
-        const conditional = (tab.HasChildren && Array.isArray(tab.ChildTabs) && typeof tab.ChildTabs[0] == 'object');
+        const conditional = (tab.HasChildren && Array.isArray(tab.ChildTabs) && typeof tab.ChildTabs[0] === "object");
         return conditional ? true : false;
     }
 
     _idExists(id) {
         const tab = this.storage[id];
-        return typeof tab == 'object' ? true : false;
+        return typeof tab === "object" ? true : false;
     }
 
     _store(tab) {
@@ -68,15 +64,13 @@ export class PagePickerDataManager {
         const children = Object.keys(this.storage);
         const root_TabId = children[0];
         const rootTab = this.storage[root_TabId];
-        let rootChildTabs = rootTab.ChildTabs;
         let mem_cache = [];
 
         children
-            .filter(id => id != root_TabId)
-            .sort((a, b) => a.split('-')[0] - b.split('-')[0])
+            .filter(id => id !== parseInt(root_TabId) )
+            .sort((a, b) => a.split("-")[0] - b.split("-")[0])
             .forEach((id) => {
                 const tab = this.storage[id];
-                const RarentTabId = tab.ParentTabId;
                 const parentTab = this.getBy({
                     TabId: tab.ParentTabId
                 })[0];
@@ -92,13 +86,13 @@ export class PagePickerDataManager {
 
         rootTab.ChildTabs = rootTab.ChildTabs.concat(mem_cache);
         mem_cache = [];
-        rootTab.ChildTabs = rootTab.ChildTabs.sort().filter((id, i, arr) => id != arr[i + 1]);
+        rootTab.ChildTabs = rootTab.ChildTabs.sort().filter((id, i, arr) => parseInt(id) !== parseInt(arr[i + 1]) );
     }
 
     _removeDuplicateChildTabIds() {
-        const keys = Object.keys(this.storage).map(id => {
+        Object.keys(this.storage).map(id => {
             let ChildTabs = this.storage[id].ChildTabs;
-            ChildTabs = ChildTabs.sort().filter((id, i, arr) => id != arr[i + 1]);
+            ChildTabs = ChildTabs.sort().filter((id, i, arr) => parseInt(id) !== parseInt(arr[i + 1]) );
         });
     }
 
@@ -121,7 +115,7 @@ export class PagePickerDataManager {
             };
 
             const Right = () => fn(tab);
-            return !!parent && `ParentTabId` in parent ? Left() : Right();
+            return !!parent && "ParentTabId" in parent ? Left() : Right();
         };
 
         return loop(TabId);
@@ -132,19 +126,19 @@ export class PagePickerDataManager {
     }) {
         //console.log(selection)
         const hasAllChildTabsSelected = (arr) => {
-            const condition = arr.reduce((a, b) => a + b) == arr.length;
+            const condition = arr.reduce((a, b) => a + b) === arr.length;
             return condition;
         };
 
         const hasAllChildTabsUnselected = (arr) => {
-            const filtered = arr.filter(v => v == this.unselect);
-            const condition = filtered.length == arr.length;
+            const filtered = arr.filter(v => v === this.unselect);
+            const condition = filtered.length === arr.length;
             return condition;
         };
 
         const hasUncheckedPartialStates = (arr) => {
-            const left = (arr.indexOf(-1) != -1) && (arr.filter(v => v == -1).length != arr.length);
-            const right = (arr.indexOf(0) != -1) && (arr.filter(v => v == 0).length != arr.length);
+            const left = (parseInt( arr.indexOf(-1) ) !== -1) && (arr.filter(v => parseInt(v) === -1).length !== arr.length);
+            const right = (parseInt( arr.indexOf(0) ) !== -1) && (arr.filter(v => parseInt(v) === 0).length !== arr.length);
             const condition = left || right;
             return condition;
         };
@@ -163,7 +157,7 @@ export class PagePickerDataManager {
 
 
         Object.keys(this.storage)
-            .filter(id => id != selection)
+            .filter(id => parseInt(id) !== parseInt(selection) )
             .filter(id => this.hasChildren(id))
             .forEach(id => {
                 const ParentTab = this.storage[id];
@@ -211,7 +205,7 @@ export class PagePickerDataManager {
         const parent = this.getBy({
             TabId: id
         })[0];
-        const conditional = (typeof parent == 'object' && 'ParentTabId' in parent && parent.ParentTabId != 0) ? true : false;
+        const conditional = (typeof parent === "object" && "ParentTabId" in parent && parseInt(parent.ParentTabId) !== 0) ? true : false;
         return conditional;
     }
 
@@ -230,7 +224,7 @@ export class PagePickerDataManager {
         const tabs = Object.keys(this.storage)
             .filter((id) => {
                 const bool_array = keys.map(key => {
-                    const condition = (this.storage[id][key] == paramObj[key]);
+                    const condition = (this.storage[id][key] === paramObj[key]);
                     return condition;
                 });
                 return bool_array.indexOf(false) === -1;
@@ -242,7 +236,7 @@ export class PagePickerDataManager {
         return tabs.length > 0 ? Left() : Right();
     }
 
-    export () {
+    export() {
         return Object.assign({}, this.storage);
     }
 
@@ -267,12 +261,12 @@ export class PagePickerDataManager {
         const Right = () => {
             throw (`ppdm.replace requires an object input, got ${typeof obj}`);
         };
-        (typeof obj == 'object') ? Left(): Right();
+        (typeof obj === "object") ? Left(): Right();
     }
 
     update({id}, updateObj) {
         const Right = () => {
-            throw ('Both a unique TabId must exist and Update Object is required');
+            throw ("Both a unique TabId must exist and Update Object is required");
         };
         const Left = () => {
             Object.keys(updateObj).forEach((key) => this.storage[id][key] = updateObj[key]);
@@ -280,7 +274,7 @@ export class PagePickerDataManager {
                 selection: id
             });
         };
-        (id && typeof updateObj == 'object') ? Left(): Right();
+        (id && typeof updateObj === "object") ? Left(): Right();
     }
 
 }
