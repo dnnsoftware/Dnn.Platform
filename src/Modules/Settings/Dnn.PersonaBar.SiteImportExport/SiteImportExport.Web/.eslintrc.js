@@ -1,4 +1,8 @@
 module.exports = {
+  "parser": "babel-eslint",
+    "rules": {
+      "strict": 0
+    },
     "plugins": [
         "react",
         "spellcheck"
@@ -10,12 +14,13 @@ module.exports = {
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parserOptions": {
         "ecmaFeatures": {
+            "es6":true,
             "jsx": true,
             "experimentalObjectRestSpread": true
         },
         "ecmaVersion": 6,
         "sourceType": "module"
-    },        
+    },
     "globals": {
         "__": false,
         "Promise": false,
@@ -34,14 +39,14 @@ module.exports = {
     //             "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
     //         ]
     //     }
-    //   ],      
+    //   ],
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],
       "indent": ["warn", 4, {"SwitchCase": 1}],
       "no-unused-vars": "warn",
-      "no-console": "warn",      
-      "keyword-spacing": "warn", 
+      "no-console": "warn",
+      "keyword-spacing": "warn",
       "eqeqeq": "warn",
       "space-before-function-paren": ["warn", { "anonymous": "always", "named": "never" }],
       "space-before-blocks": "warn",

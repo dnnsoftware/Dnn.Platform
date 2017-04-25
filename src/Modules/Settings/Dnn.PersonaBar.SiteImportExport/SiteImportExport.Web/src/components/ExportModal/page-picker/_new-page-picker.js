@@ -1,22 +1,34 @@
-import React, {Component} from 'react';
-import {IconSelector} from './icons';
-import * as shortid from 'shortid';
-import {global} from './_global';
+import React, {Component} from "react";
+import {PropTypes} from "prop-types";
+import {IconSelector} from "./icons";
+import * as shortid from "shortid";
+import {global} from "./_global";
 
 const styles = global.styles;
-const greenscreen = styles.backgroundColor('green');
 const floatLeft = styles.float();
 const merge = styles.merge;
-const inlineBlock = styles.display('inline-block');
+const inlineBlock = styles.display("inline-block");
 
 let memoize_lastTab = null;
 let STATE = false;
 let context = [];
 let rootContext = null;
 
+PagePickerDesktop.propTypes = {
+  flatTabs: PropTypes.object.isRequired,
+  tabs: PropTypes.object.isRequired,
+  setMasterRootCheckedState: PropTypes.func.isRequired,
+  rootContext: PropTypes.object.isRequired,
+  selectAll: PropTypes.bool,
+  icon_type: PropTypes.object.isRequired,
+  export: PropTypes.func.isRequired,
+  getChildTabs: PropTypes.func.isRequired
+};
+
+
 export class PagePickerDesktop extends Component {
 
-    constructor(props){
+    constructor(props) {
       super(props);
       this.id = shortid.generate();
       this.debug = true;
@@ -36,39 +48,40 @@ export class PagePickerDesktop extends Component {
       this.setMasterRootCheckedState = props.setMasterRootCheckedState;
     }
 
-    componentWillMount(){
+    componentWillMount() {
       STATE =  STATE  || this.flatTabs;
       this.__setMasterRoot();
-      const unique_context = (context.filter(ref => ref.id===this.id).length == 0);
+      const unique_context = (context.filter(ref => ref.id===this.id).length === 0);
       unique_context ? context.push(this) : null;
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
       let index = null;
       context.forEach( (ref, i) =>  {
           const left = (i) => index = i;
           const right = () => null;
-          ref.id==this.id ? left(i) : right();
-      })
+          ref.id===this.id ? left(i) : right();
+      });
+
       const split1 = context.slice(0,index);
       const split2 = context.slice(index+1);
       context = [...split1, ...split2];
     }
 
-    componentWillUpdate(){
+    componentWillUpdate() {
       const flatTabs = Object.keys(this.flatTabs).map(key => this.flatTabs[key]);
-      const update = flatTabs.filter(tab => `${tab.TabId}-${tab.Name}` in STATE == false );
+      const update = flatTabs.filter(tab => `${tab.TabId}-${tab.Name}` in STATE === false );
       update.forEach(tab => STATE[`${tab.TabId}-${tab.Name}`] = tab );
     }
 
-    __setMasterRoot = () =>{
+    __setMasterRoot = () => {
       this.RootTab = Object.keys(STATE)
       .map(key=>STATE[key])
-      .filter(tab => parseInt(tab.TabId)===-1&&tab.ParentTabId==0)[0];
+      .filter(tab => parseInt(tab.TabId)===-1 && parseInt(tab.ParentTabId)===0)[0];
 
       const children = Object.keys(STATE)
       .map(key => STATE[key])
-      .filter(tab => tab.ParentTabId == -1);
+      .filter(tab => parseInt(tab.ParentTabId) === -1);
       this.RootTab.ChildTabs = children;
     }
 
@@ -79,49 +92,50 @@ export class PagePickerDesktop extends Component {
       this.export(STATE);
     }
 
-    _getState(){
+    _getState() {
       return this.state;
     }
 
-    _log( msg ){
+    _log( msg ) {
       this.debug? console.log(msg) : null;
     }
 
     _hasChildren = (tab) =>{
-      const bool  = `HasChildren` in tab && !!tab.HasChildren? true : false;
+      const bool  = "HasChildren" in tab && !!tab.HasChildren? true : false;
       return bool;
     }
 
     _noChildren = (tab) => {
-      const bool = `HasChildren` in tab && !!tab.HasChildren == false && tab.ChildTabs.length == false;
+      const bool = "HasChildren" in tab && !!tab.HasChildren === false && tab.ChildTabs.length === 0;
       return bool;
     }
 
     _notTopLevel = (tab) => {
-      const bool = `ParentTabId` in tab && tab.ParentTabId != -1;
+      const bool = "ParentTabId" in tab && parseInt(tab.ParentTabId) !== -1;
       return bool;
     }
 
     _isOpen = (tab) => {
-      const bool = `IsOpen` in tab && !!tab.IsOpen ? true: false;
+      const bool = "IsOpen" in tab && !!tab.IsOpen ? true: false;
       return bool;
     }
 
     _getTabById = (TabId) => {
       return Object.keys(STATE)
       .map(key => STATE[key])
-      .filter(tab => tab.TabId == TabId);
+      .filter(tab => tab.TabId === TabId);
     }
 
     _getRootTab = (TabId) => {
       let tab = this._getTabById(TabId)[0];
-      const condition = (tab) =>   tab.ParentTabId != -1;
+      const condition = (tab) =>   parseInt(tab.ParentTabId) !== -1;
 
       const loop = () => {
         TabId = tab.ParentTabId;
         tab = this._getTabById(TabId)[0];
         condition(tab) ? loop() : exit();
-      }
+      };
+
       const exit = () =>  tab;
 
       loop();
@@ -130,7 +144,7 @@ export class PagePickerDesktop extends Component {
 
 
     _setParentTabChildrenSelected = (tab) => {
-      console.log('set parent tab selected');
+      console.log("set parent tab selected");
       const Left = () => {
         let ParentTabId = tab.ParentTabId;
         let parent = this._getTabById(ParentTabId)[0];
@@ -139,44 +153,44 @@ export class PagePickerDesktop extends Component {
         this._mapChildTabs(parent, AreChildrenChecked);
 
         const truthyLength = truthyCheckedStates.filter(bool => !!bool).length;
-        const allChildrenSelected = (truthyLength==truthyCheckedStates.length);
-        const someChildrenSelected = (truthyCheckedStates.indexOf(true)!=-1);
-        const noChildrenSelected = (truthyLength == 0);
+        const allChildrenSelected = (truthyLength===truthyCheckedStates.length);
+        const someChildrenSelected = (truthyCheckedStates.indexOf(true)!==-1);
+        const noChildrenSelected = (truthyLength === 0);
 
-        switch(true){
+        switch (true) {
           case allChildrenSelected:
-            console.log('all children selected');
-            parent.CheckedState= parent.CheckedState==0 ? 2 : 0;
-          return
+            console.log("all children selected");
+            parent.CheckedState= parent.CheckedState===0 ? 2 : 0;
+          return;
 
           case someChildrenSelected:
-            console.log('some children selected');
+            console.log("some children selected");
             parent.CheckedState = parent.CheckedState ? 1 : 0;
-            parent.ChildrenSelected=true
-          return
+            parent.ChildrenSelected=true;
+          return;
 
           case noChildrenSelected:
-            console.log('no children selected');
+            console.log("no children selected");
             parent.CheckedState = parent.CheckedState ? 1 : 0;
             parent.ChildrenSelected=false;
-          return
+          return;
 
           default:
-            console.log('default called');
-          return
+            console.log("default called");
+          return;
         }
-      }
+      };
 
       const Right = () => {
         let ParentTabId = tab.ParentTabId;
         let parent = this._getTabById(ParentTabId)[0];
         delete parent.ChildrenSelected;
-      }
+      };
       tab.ParentTabId !== -1 ? Left() : Right ();
     }
 
     _setRootTabChildrenSelected = (tab) => {
-      console.log('set root tab selected');
+      console.log("set root tab selected");
       const Left = () => {
         const TabId = tab.TabId;
         const RootTab = this._getRootTab(TabId);
@@ -185,39 +199,38 @@ export class PagePickerDesktop extends Component {
         this._mapChildTabs(RootTab, AreChildrenChecked);
 
         const truthyLength = truthyCheckedStates.filter(bool => !!bool).length;
-        const allChildrenSelected = (truthyLength==truthyCheckedStates.length);
-        const someChildrenSelected = (truthyCheckedStates.indexOf(true)!=-1);
-        const noChildrenSelected = (truthyLength == 0);
+        const allChildrenSelected = (truthyLength===truthyCheckedStates.length);
+        const someChildrenSelected = (truthyCheckedStates.indexOf(true)!==-1);
+        const noChildrenSelected = (truthyLength === 0);
 
-        switch(true){
+        switch (true) {
           case allChildrenSelected:
-            console.log('all children selected');
+            console.log("all children selected");
             RootTab.CheckedState=2;
             RootTab.ChildrenSelected=true;
-          return
+          return;
 
           case someChildrenSelected:
-            console.log('some children selected');
+            console.log("some children selected");
             RootTab.CheckedState = RootTab.CheckedState ? 1 : 0;
             RootTab.ChildrenSelected=true;
-          return
+          return;
 
           case noChildrenSelected:
-            console.log('no children');
+            console.log("no children");
             RootTab.CheckedState = RootTab.CheckedState ? 1 : 0;
             RootTab.ChildrenSelected = false;
-          return
+          return;
 
           default:
-            console.log('default called');
-          return
+            console.log("default called");
         }
-      }
+      };
 
       const Right = () => {
-        console.log('In Root Right');
+        console.log("In Root Right");
         tab.ChildrenSelected=false;
-      }
+      };
       tab.ParentTabId !== -1  ? Left() : Right();
 
     }
@@ -225,7 +238,6 @@ export class PagePickerDesktop extends Component {
     _mapChildTabs = (tab, fn) => {
       let ChildTabs = tab.ChildTabs;
       const cached_ChildTabs = [];
-      const updates = {};
       const loop = () => {
         ChildTabs.forEach(tab => {
           fn(tab);
@@ -233,11 +245,11 @@ export class PagePickerDesktop extends Component {
           const left = () => {
             ChildTabs = cached_ChildTabs.shift();
             loop();
-          }
+          };
           const right = () => null;
-          !!cached_ChildTabs.length ? left() : right();
-        })
-      }
+          cached_ChildTabs.length > 0? left() : right();
+        });
+      };
       loop();
       return;
     }
@@ -248,8 +260,7 @@ export class PagePickerDesktop extends Component {
         const list_item = this.render_ListItem(tab);
 
         const width = styles.width(100);
-        const height = styles.height(10);
-        const textLeft = styles.textAlign('left');
+        const textLeft = styles.textAlign("left");
         const padding = styles.padding({all:0});
 
         return (
@@ -261,11 +272,11 @@ export class PagePickerDesktop extends Component {
             {checkbox}
             {list_item}
           </li>
-        )
+        );
     }
 
     _setChildCheckedState = (tab) => {
-      console.log('set Child State');
+      console.log("set Child State");
       const TabIdName = `${tab.TabId}-${tab.Name}`;
 
       console.log(STATE);
@@ -275,7 +286,7 @@ export class PagePickerDesktop extends Component {
       state[TabIdName].CheckedState = tab.CheckedState ? 1 : 0;
       STATE = state;
 
-      tab.ParentTabId!=-1 ? this._setChildrenSelectedIndicator(tab.ParentTabId) : null;
+      parseInt(tab.ParentTabId)!==-1 ? this._setChildrenSelectedIndicator(tab.ParentTabId) : null;
       this._setRootTabChildrenSelected(tab);
       this._setParentTabChildrenSelected(tab);
 
@@ -284,12 +295,12 @@ export class PagePickerDesktop extends Component {
     }
 
     _openTabs = (tab) => {
-      console.log('in open tabs');
+      console.log("in open tabs");
       const ParentTabIdName = `${tab.TabId}-${tab.Name}`;
       tab.IsOpen=true;
-      tab.CheckedState = tab.CheckedState==2 ? 0 : tab.CheckedState;
-      tab.CheckedState = tab.CheckedState==1 ? 0 : tab.CheckedState;
-      tab.CheckedState = tab.CheckedState==0 ? 2 : tab.CheckedState;
+      tab.CheckedState = tab.CheckedState===2 ? 0 : tab.CheckedState;
+      tab.CheckedState = tab.CheckedState===1 ? 0 : tab.CheckedState;
+      tab.CheckedState = tab.CheckedState===0 ? 2 : tab.CheckedState;
 
       const ParentState = {};
       const parent = ParentState[ParentTabIdName] = Object.assign({},tab);
@@ -319,10 +330,10 @@ export class PagePickerDesktop extends Component {
     }
 
     _setParentCheckedState = (tab) => {
-      console.log('in parent check update');
-      tab.CheckedState = tab.CheckedState==2 ? 0 : tab.CheckedState;
-      tab.CheckedState = tab.CheckedState==1 ? 0 : tab.CheckedState;
-      tab.CheckedState = tab.CheckedState==0 ? 2 : tab.CheckedState;
+      console.log("in parent check update");
+      tab.CheckedState = tab.CheckedState===2 ? 0 : tab.CheckedState;
+      tab.CheckedState = tab.CheckedState===1 ? 0 : tab.CheckedState;
+      tab.CheckedState = tab.CheckedState===0 ? 2 : tab.CheckedState;
 
       tab.ChildrenSelected = true;
       const ParentTabIdName = `${tab.TabId}-${tab.Name}`;
@@ -330,7 +341,7 @@ export class PagePickerDesktop extends Component {
       ParentState[ParentTabIdName] = Object.assign({},tab);
       ParentState[ParentTabIdName].CheckedState=2;
 
-      let ChildStates = {}
+      let ChildStates = {};
       const openAllChildTabs = (tab) => tab.IsOpen=true;
       const parentShowIndicators = (tab) => tab.HasChildren ? tab.ChildrenSelected=true : tab.ChildrenSelected=false;
       const toggleCheckAllChildtabs = (tab) => tab.HasChildren ? tab.CheckedState=2 : tab.CheckedState=1;
@@ -364,16 +375,16 @@ export class PagePickerDesktop extends Component {
         state[TabIdName].ChildrenSelected = update.ChildrenSelected;
         STATE=state;
         this._update();
-      }
+      };
 
       const right = () => {
         const truthyCheckedStates = [];
         const isAllChildrenChecked = (tab) => tab.CheckedState ? truthyCheckedStates.push(true) : truthyCheckedStates.push(false);
         this._mapChildTabs(parent, isAllChildrenChecked);
-        const conditional = !!truthyCheckedStates.filter(v=>!!v).length==false;
+        const conditional = !!truthyCheckedStates.filter(v=>!!v).length===0;
         conditional ? delete parent.ChildrenSelected : parent.ChildrenSelected=true;
-      }
-      memoize_lastTab!=ParentTabId || memoize_lastTab==null ? left() : right();
+      };
+      memoize_lastTab!==ParentTabId || memoize_lastTab===null ? left() : right();
     }
 
     expandParentTab = (tab) => {
@@ -388,7 +399,7 @@ export class PagePickerDesktop extends Component {
         STATE[TabIdName].ChildrenSelected=ChildrenSelected;
 
         this._update();
-      }
+      };
 
       const right = () => {
         this.getChildTabs(tab.TabId)
@@ -404,7 +415,7 @@ export class PagePickerDesktop extends Component {
         .then( () => this._setParentTabChildrenSelected(tab) )
         .then( () => this._setRootTabChildrenSelected(tab) )
         .then( ()=> this._update() );
-      }
+      };
       tab.ChildTabs.length ? left() : right();
     }
 
@@ -413,10 +424,10 @@ export class PagePickerDesktop extends Component {
     }
 
     setCheckedState = (tab) => {
-      if(tab.IsOpen && tab.CheckedState){
-        console.log('in reset');
+      if (tab.IsOpen && tab.CheckedState) {
+        console.log("in reset");
         tab.CheckedState = 0;
-        tab.ParentTabId== -1?  delete tab.ChildrenSelected : null;
+        parseInt(tab.ParentTabId) === -1?  delete tab.ChildrenSelected : null;
 
         const TabIdName = `${tab.TabId}-${tab.Name}`;
         STATE[TabIdName].CheckedState = 0;
@@ -441,64 +452,62 @@ export class PagePickerDesktop extends Component {
 
     render_icon = (direction) => {
       const width = styles.width(100);
-      const margin = styles.margin({top:10});
-      const animate = direction=='90deg' ? true : false;
+      const animate = direction==="90deg" ? true : false;
 
       const render = (
          <div style={merge(width)}>
                 <this.icon animate={animate} reset={false} direction={direction} />
           </div>
-        )
+        );
       return render;
     }
 
     render_Bullet = (tab) => {
       const conditional = this._hasChildren(tab);
-      const direction = tab.IsOpen && tab.ChildTabs.length ? '90deg' : '0deg';
-      const render = ( conditional ? this.render_icon(direction) : ()=>null)
+      const direction = tab.IsOpen && tab.ChildTabs.length ? "90deg" : "0deg";
+      const render = ( conditional ? this.render_icon(direction) : ()=>null);
       return render;
     }
 
     render_ListBullet = (tab, fn) => {
       const bullet = ( () => {
-        const width = styles.width(20, 'px');
-        const height = styles.height(20, 'px');
+        const width = styles.width(20, "px");
+        const height = styles.height(20, "px");
         const padding = styles.padding({top:3});
-        const marginTop = styles.margin({top:6});
+
         return (
           <div
             onClick={()=>fn()}
             style={merge(floatLeft, padding, width, height)}>
             { this.render_Bullet(tab) }
-          </div>) })()
+          </div>); })();
         return bullet;
     }
 
     render_ListCheckbox = (tab) => {
       const checkbox =  ( () => {
         const padding = styles.padding({top:6});
-        const checked = tab.CheckedState;
         return (
           <div style={merge(floatLeft, padding)}>
             <input
                 type="checkbox"
-                onChange={ (e)=>this.setCheckedState(tab) }
+                onChange={ ()=>this.setCheckedState(tab) }
                 checked={tab.CheckedState}
                 />
-            </div>) })();
+            </div>); })();
       return checkbox;
     }
 
     render_ChildrenSelectedIndicator = (tab) => {
       const TabIdName = `${tab.TabId}-${tab.Name}`;
       const tabState = STATE[TabIdName];
-      const condition =  typeof tabState == 'object' && `ChildrenSelected` in tabState && tabState.ChildrenSelected;
+      const condition =  typeof tabState === "object" && "ChildrenSelected" in tabState && tabState.ChildrenSelected;
       const template =  ( condition ? <span>*</span> : <span></span> );
       const indicator = ( () => {
         return (
           template
-        )
-      })()
+        );
+      })();
       return indicator;
     }
 
@@ -507,20 +516,19 @@ export class PagePickerDesktop extends Component {
       const pageName = tab.Name;
       const list_item = ( () => {
         const padding = styles.padding({all:6});
-        const width = styles.width(10);
         return (
           <div
             style={merge(inlineBlock, padding)}
-            key={TabId+'listItem'}
+            key={TabId+"listItem"}
              >
             {pageName}
-          </div>) })()
+          </div>); })();
         return list_item;
     }
 
-    render_li(childtab){
+    render_li(childtab) {
       const render= (childtab) => childtab.map((tab)=> {
-        const textLeft = styles.textAlign('left');
+        const textLeft = styles.textAlign("left");
         const padding = styles.padding({left:20});
         const childrenSelectedIndicator = this.render_ChildrenSelectedIndicator(tab);
         const bullet = this.render_ListBullet(tab, this.showChildTabs.bind(this, tab));
@@ -546,8 +554,8 @@ export class PagePickerDesktop extends Component {
               />
               : <span></span> }
           </li>
-        )
-      })
+        );
+      });
       return render(childtab);
     }
 
@@ -556,12 +564,10 @@ export class PagePickerDesktop extends Component {
     const listStyle = styles.listStyle();
     const padding = styles.padding({left:20});
     return (
-
         <ul style={merge(listStyle, padding)}>
           { this.render_li(tabs) }
         </ul>
-
-    )
+    );
 
   }
 

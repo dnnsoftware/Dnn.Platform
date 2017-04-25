@@ -1,35 +1,41 @@
-
-import React, {Component} from 'react'
-import { PagePickerDesktop } from './_new-page-picker'
-import {PagePickerDataManager} from './helpers'
-import {IconSelector} from './icons'
-import {global} from './_global'
+import React, {Component} from "react";
+import {PropTypes} from "prop-types";
+import { PagePickerDesktop } from "./_new-page-picker";
+import {PagePickerDataManager} from "./helpers";
+import {IconSelector} from "./icons";
+import {global} from "./_global";
 const styles = global.styles;
-const greenscreen = styles.backgroundColor('green');
+
 const floatLeft = styles.float();
 const merge = styles.merge;
-const inlineBlock = styles.display('inline-block');
-const ppdm = new PagePickerDataManager()
+const ppdm = new PagePickerDataManager();
+
+PagePickerInteractor.propTypes = {
+  OnSelect: PropTypes.func.isRequired,
+  PortalTabParamters: PropTypes.object.isRequired
+};
+
+
 
 export class PagePickerInteractor extends Component {
 
-    constructor(props){
+    constructor(props) {
       super();
       this.cached_ChildTabs;
       this.icon = IconSelector("arrow_bullet");
       this.PortalTabParamters = props.PortalTabParamters || null;
-      this.InitialTabsURL =     `http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
-      this.DescendantTabsURL =  `http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
+      this.InitialTabsURL =     "http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0";
+      this.DescendantTabsURL =  "http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0";
       this.selectAll = false;
       this.ExportModalOnSelect = props.OnSelect;
     }
 
-    componentWillMount(){
+    componentWillMount() {
       this.setState({ tabs:[], selectAll:false, childrenSelected:true });
       this.init();
     }
 
-    init(){
+    init() {
       this._requestInitialTabs();
     }
 
@@ -37,7 +43,7 @@ export class PagePickerInteractor extends Component {
       const ExportInitialSelection = () => {
         const selection = this._generateSelectionObject(this.state.tabs);
         this.ExportModalOnSelect(selection);
-      }
+      };
 
        this._xhr(this.InitialTabsURL)
        .then( tabdata => this.PortalTabs = tabdata )
@@ -46,23 +52,23 @@ export class PagePickerInteractor extends Component {
        .then( () => this.setState({tabs:this.PortalTabs, flatTabs:this.flatTabs}) )
        .then( () => ExportInitialSelection() )
 
-       .catch(err => this.PortalTabs = this.tabs);
+       .catch( () => this.PortalTabs = this.tabs);
     }
 
     _requestDescendantTabs = (ParentTabId) => {
-        console.log('requeting descendantTabs');
+        console.log("requeting descendantTabs");
         let descendantTabs = null;
-        const inspect = (tabs) => console.log('inspecting :', tabs);
+        const inspect = (tabs) => console.log("inspecting :", tabs);
         const params = `&parentId=${ParentTabId}`;
         const mapToFlatTabs = (tabs) =>  tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`]=tab);
         const captureDecendants = (tabs) => descendantTabs=tabs.map(tab => {
           !Array.isArray(tab.ChildTabs) ? tab.ChildTabs=[] : null;
-          return tab
+          return tab;
         });
 
         const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants);
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
-        const appendDescendants = (parentTab) => descendantTabs.forEach((tab)=> tab.ParentTabId==parentTab.TabId ? parentTab.ChildTabs.push(tab) : null );
+        const appendDescendants = (parentTab) => descendantTabs.forEach((tab)=> parseInt(tab.ParentTabId)===parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null );
 
         return this._xhr(this.DescendantTabsURL, params)
         .then( input )
@@ -70,12 +76,12 @@ export class PagePickerInteractor extends Component {
         .then( ()=> this.setState({tabs:this.state.tabs}) );
     }
 
-    _xhr(url, params='') {
+    _xhr(url, params="") {
       return new Promise((resolve, reject) => {
-        var xhttp = new XMLHttpRequest();
+        let xhttp = new XMLHttpRequest();
         xhttp.onload = () => {
-          const response = JSON.parse(xhttp.responseText).Results
-          resolve(response)
+          const response = JSON.parse(xhttp.responseText).Results;
+          resolve(response);
         };
         xhttp.open("GET", url+params, true);
         xhttp.onerror = () => reject(xhttp);
@@ -86,28 +92,28 @@ export class PagePickerInteractor extends Component {
     _getRootTab(selection) {
       return Object.keys(selection)
       .map(key=> selection[key])
-      .filter(tab => tab.TabId===-1&&tab.ParentTabId===0);
+      .filter(tab => tab.TabId===-1 && tab.ParentTabId===0);
     }
 
-    _generateSelectionObject(tab){
+    _generateSelectionObject(tab) {
       return {
           "TabId": tab.TabId,
           "ParentTabId": tab.ParentTabId,
           "CheckedState": tab.CheckedState
-      }
+      };
     }
 
 
-    _filterOutUnchecked(tabs){
+    _filterOutUnchecked(tabs) {
       return tabs.filter(tab => !!tab.CheckedState);
     }
 
-    _filterChildrenOfAllSelected(tabs){
-      const ParentTabIds = tabs.filter(tab=>tab.CheckedState==2).map(tab => tab.TabId);
-      return tabs.filter(tab => ParentTabIds.indexOf(tab.ParentTabId)==-1);
+    _filterChildrenOfAllSelected(tabs) {
+      const ParentTabIds = tabs.filter(tab=>tab.CheckedState===2).map(tab => tab.TabId);
+      return tabs.filter(tab => ParentTabIds.indexOf(tab.ParentTabId)===-1);
     }
 
-    _traverseChildTabs(comparator){
+    _traverseChildTabs(comparator) {
       let ChildTabs = this.state.tabs.ChildTabs;
       const cached_childtabs = [];
       cached_childtabs.push(ChildTabs);
@@ -121,21 +127,20 @@ export class PagePickerInteractor extends Component {
         });
         const right = () =>  null;
         childtab ? left() : right();
-      }
+      };
 
       const exit = () => null;
       loop();
       return;
     }
 
-
-    _isAnyAllSelected(tabs){
-      return tabs.filter(tab=>tab.CheckedState==2).length ? true : false;
+    _isAnyAllSelected(tabs) {
+      return tabs.filter(tab=>tab.CheckedState===2).length ? true : false;
     }
 
-    _mapSelection(selection, fn){
+    _mapSelection(selection, fn) {
       const mapped = [];
-      for(let tab in selection){
+      for (let tab in selection) {
         const obj = fn(selection[tab]);
         mapped.push(obj);
       }
@@ -144,26 +149,26 @@ export class PagePickerInteractor extends Component {
 
     export = (selection) => {
       const RootTab = this._getRootTab(selection);
-      const filterOutMasterRootTab = (tabs) => tabs.filter(tab=>parseInt(tab.TabId)!=-1);
+      const filterOutMasterRootTab = (tabs) => tabs.filter(tab=>parseInt(tab.TabId)!==-1);
 
       let tabs = this._mapSelection(selection, this._generateSelectionObject);
       tabs = this._filterOutUnchecked(tabs);
 
       const Left = () => {
           this.ExportModalOnSelect(tabs);
-      }
+      };
 
       const Right = () => {
         this.ExportModalOnSelect(tabs);
-      }
+      };
       this._isAnyAllSelected(tabs) ? Left() : Right();
     }
 
     setMasterRootCheckedState = () => {
       let totalChildren = 0;
       let childrenSelected = 0;
-      const setLength = (tab) => !!tab?  totalChildren++ : null;
-      const isAllSelected = (tab) =>  tab.CheckedState ? childrenSelected++ : null;
+      const setLength = (tab) => typeof tab === "object" ?  totalChildren++ : null;
+      const isAllSelected = (tab) =>  tab.CheckedState  ? childrenSelected++ : null;
 
       this._traverseChildTabs(setLength);
       this._traverseChildTabs(isAllSelected);
@@ -171,14 +176,14 @@ export class PagePickerInteractor extends Component {
       const left = () => this.setState({childrenSelected:true});
       const right = () => this.setState({childrenSelected:false});
 
-      childrenSelected!=0 ? left() : right();
+      childrenSelected!==0 ? left() : right();
     }
 
     getChildTabs = (ParentTabId) => {
       return this._requestDescendantTabs(ParentTabId);
     }
 
-    showChildTabs = (tabs) => {
+    showChildTabs = () => {
       this.state.tabs.IsOpen =! this.state.tabs.IsOpen;
       this.setState({tabs:this.state.tabs});
     }
@@ -196,47 +201,46 @@ export class PagePickerInteractor extends Component {
     render_icon = (direction) => {
       const width = styles.width(100);
       const margin = styles.margin({top:-2});
-      const animate = direction=='90deg' ? true : false;
+      const animate = direction==="90deg" ? true : false;
       const render = (
          <div style={merge(width, margin)}>
                 <this.icon animate={true} reset={false} direction={direction} />
           </div>
-        )
+        );
       return render;
     }
 
-    render_Bullet = (tab) => {
-      const direction = this.state.tabs.IsOpen && this.state.tabs.ChildTabs.length ? '90deg' : '0deg';
+    render_Bullet = () => {
+      const direction = this.state.tabs.IsOpen && this.state.tabs.ChildTabs.length ? "90deg" : "0deg";
       const render = this.render_icon(direction);
       return render;
     }
 
     render_ListBullet = (tab, fn) => {
       const bullet = ( () => {
-        const width = styles.width(20, 'px');
-        const height = styles.height(20, 'px');
+        const width = styles.width(20, "px");
+        const height = styles.height(20, "px");
 
         return (
           <div
             onClick={()=>fn()}
             style={merge(floatLeft, width, height)}>
             { this.render_Bullet(tab) }
-          </div>) })();
+          </div>); })();
         return bullet;
     }
 
-    render_ListCheckbox = (tab) => {
+    render_ListCheckbox = () => {
       const checkbox =  ( () => {
         const padding = styles.padding({all:0});
-        const checked = this.state.tabs.CheckedState;
         return (
           <div style={merge(floatLeft, padding)}>
             <input
                 type="checkbox"
-                onChange={ (e)=>this.setCheckedState(this.state.tabs) }
+                onChange={ ()=>this.setCheckedState(this.state.tabs) }
                 checked={this.state.tabs.CheckedState}
                 />
-            </div>) })();
+            </div>); })();
       return checkbox;
     }
 
@@ -252,27 +256,27 @@ export class PagePickerInteractor extends Component {
               getChildTabs={this.getChildTabs}
               setMasterRootCheckedState={this.setMasterRootCheckedState}
               rootContext={this}
-          />)
+          />);
 
         return (
           <div>
               { condition ? picker : null}
           </div>
-        )
+        );
 
-      } )()
+      } )();
 
       return pagepicker;
     }
 
-    render(){
+    render() {
       const listStyle = styles.listStyle();
-      const textLeft = styles.textAlign('left');
+      const textLeft = styles.textAlign("left");
       const ULPadding = styles.padding({all:3});
       const spanPadLeft = styles.padding({left:5});
 
       const checkbox = this.render_ListCheckbox(this.state.tabs);
-      const bullet = this.render_ListBullet(this.state.tabs, (tab)=>this.showChildTabs(this.state.tabs) );
+      const bullet = this.render_ListBullet(this.state.tabs, ()=>this.showChildTabs(this.state.tabs) );
       const pagepicker = this.render_PagePicker();
 
        return (
@@ -285,7 +289,7 @@ export class PagePickerInteractor extends Component {
               {pagepicker}
             </li>
           </ul>
-       )
+       );
 
     }
 }
