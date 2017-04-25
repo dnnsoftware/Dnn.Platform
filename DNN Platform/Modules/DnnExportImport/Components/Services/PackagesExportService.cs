@@ -188,7 +188,7 @@ namespace Dnn.ExportImport.Components.Services
                                      (existPackage.Version == version &&
                                       importDto.CollisionResolution == CollisionResolution.Ignore)))
                                 {
-                                    Result.AddLogEntry($"Import Package ignores",
+                                    Result.AddLogEntry("Import Package ignores",
                                         $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
                                     continue;
                                 }

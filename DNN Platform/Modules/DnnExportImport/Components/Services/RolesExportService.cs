@@ -66,7 +66,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 CheckPointStageCallback(this);
 
-                Repository.CreateItems(roleGroups, null);
+                Repository.CreateItems(roleGroups);
                 Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
                 CheckPoint.ProcessedItems = roleGroups.Count;
                 CheckPoint.Progress = 30;
@@ -80,7 +80,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (roles == null)
                     roles = CBO.FillCollection<ExportRole>(
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
-                Repository.CreateItems(roles, null);
+                Repository.CreateItems(roles);
                 Result.AddSummary("Exported Roles", roles.Count.ToString());
                 CheckPoint.Progress = 80;
                 CheckPoint.ProcessedItems += roles.Count;
@@ -94,7 +94,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (roleSettings == null)
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
-                Repository.CreateItems(roleSettings, null);
+                Repository.CreateItems(roleSettings);
                 Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += roleSettings.Count;

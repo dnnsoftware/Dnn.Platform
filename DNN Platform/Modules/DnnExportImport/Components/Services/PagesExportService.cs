@@ -30,6 +30,7 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Providers;
 using Dnn.ExportImport.Dto.Pages;
+using Dnn.ExportImport.Dto.Workflow;
 using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
@@ -70,7 +71,7 @@ namespace Dnn.ExportImport.Components.Services
         protected ImportDto ImportDto => _importDto;
 
         private ProgressTotals _totals;
-        private Providers.DataProvider _dataProvider;
+        private DataProvider _dataProvider;
         private ITabController _tabController;
         private IModuleController _moduleController;
         private ExportImportJob _exportImportJob;
@@ -132,7 +133,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessImportPages()
         {
-            _dataProvider = Providers.DataProvider.Instance();
+            _dataProvider = DataProvider.Instance();
             _totals = string.IsNullOrEmpty(CheckPoint.StageData)
                 ? new ProgressTotals()
                 : JsonConvert.DeserializeObject<ProgressTotals>(CheckPoint.StageData);
@@ -550,6 +551,10 @@ namespace Dnn.ExportImport.Components.Services
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
+                        InheritViewPermissions = other.InheritViewPermissions,
+                        IsShareable = other.IsShareable,
+                        IsShareableViewOnly = other.IsShareableViewOnly,
+                        PortalID = _exportImportJob.PortalId
                     };
 
                     //Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
@@ -644,6 +649,10 @@ namespace Dnn.ExportImport.Components.Services
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                                     LocalizedVersionGuid = other.LocalizedVersionGuid,
+                                    InheritViewPermissions = other.InheritViewPermissions,
+                                    IsShareable = other.IsShareable,
+                                    IsShareableViewOnly = other.IsShareableViewOnly,
+                                    PortalID = _exportImportJob.PortalId
                                 };
 
                                 //this will create up to 2 records:  Module (if it is not already there) and TabModule
@@ -1423,6 +1432,13 @@ namespace Dnn.ExportImport.Components.Services
 
         private ExportTab SaveExportPage(TabInfo tab)
         {
+            var stateId = tab.StateID;
+            if (stateId > 6) // 6 is the last system state set in Platform at table creation time
+            {
+                var exportedState = Repository.GetItem<ExportWorkflowState>(item => item.StateID == stateId);
+                stateId = exportedState?.StateID ?? 1; // 1 is direct publish
+            }
+
             var exportPage = new ExportTab
             {
                 TabId = tab.TabID,
@@ -1461,7 +1477,7 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = tab.StateID
+                StateID = stateId,
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
