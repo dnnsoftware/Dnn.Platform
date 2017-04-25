@@ -62,8 +62,6 @@ namespace Dnn.ExportImport.Components.Engines
         private readonly Stopwatch _stopWatch = Stopwatch.StartNew();
         private int _timeoutSeconds;
 
-        public int ProgressPercentage { get; private set; } = 1;
-
         public void Export(ExportImportJob exportJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             var exportDto = JsonConvert.DeserializeObject<ExportDto>(exportJob.JobObject);
@@ -502,7 +500,10 @@ namespace Dnn.ExportImport.Components.Engines
             includedItems.Remove(Constants.Category_Content);
 
             if (exportDto.Pages.Length > 0)
+            {
                 includedItems.Add(Constants.Category_Pages);
+                includedItems.Add(Constants.Category_Workflows);
+            }
 
             if (exportDto.IncludeContent)
                 includedItems.Add(Constants.Category_Content);
@@ -620,7 +621,8 @@ namespace Dnn.ExportImport.Components.Engines
             Constants.Category_Vocabularies,
             Constants.Category_Templates,
             Constants.Category_ProfileProps,
-            Constants.Category_Packages
+            Constants.Category_Packages,
+            Constants.Category_Workflows,
         };
 
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)

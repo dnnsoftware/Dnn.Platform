@@ -79,6 +79,10 @@
     <Compile Include="Dto\Users\ExportUserProfile.cs" />
     <Compile Include="Dto\Users\ExportUserRelationship.cs" />
     <Compile Include="Dto\Users\ExportUserRole.cs" />
+    <Compile Include="Dto\Workflow\ExportContentWorkflow.cs" />
+    <Compile Include="Dto\Workflow\ExportContentWorkflowSource.cs" />
+    <Compile Include="Dto\Workflow\ExportContentWorkflowState.cs" />
+    <Compile Include="Dto\Workflow\ExportContentWorkflowStatePermission.cs" />
     <Compile Include="Interfaces\IExportImportRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ExportImportRepository.cs" />

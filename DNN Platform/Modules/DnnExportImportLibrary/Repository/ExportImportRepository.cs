@@ -85,7 +85,7 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        public void CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
+        public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null) where T : BasicExportImportDto
         {
             if (items == null) return;
             var allItems = items.ToList();

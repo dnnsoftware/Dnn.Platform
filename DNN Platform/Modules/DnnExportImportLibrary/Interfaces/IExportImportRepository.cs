@@ -33,7 +33,7 @@ namespace Dnn.ExportImport.Interfaces
 
         T CreateItem<T>(T item, int? referenceId) where T : BasicExportImportDto;
 
-        void CreateItems<T>(IEnumerable<T> items, int? referenceId)
+        void CreateItems<T>(IEnumerable<T> items, int? referenceId = null)
             where T : BasicExportImportDto;
 
         IEnumerable<T> GetItems<T>(Expression<Func<T, bool>> predicate,

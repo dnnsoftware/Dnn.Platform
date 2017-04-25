@@ -2350,3 +2350,88 @@ BEGIN
     WHERE PortalID = @PortalID AND UserID = @UserID
 END
 GO
+
+-- WORKFLOWS
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflows]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflows]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflows]
+	@PortalID       int,
+	@IncludeDeleted bit
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}ContentWorkflows
+	WHERE
+		PortalID = @PortalID
+	  AND
+		(@IncludeDeleted = 1 OR IsDeleted = 0)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowSources]
+	@WorkflowID     int
+AS
+BEGIN
+	SELECT
+		ws.*
+	FROM
+		{databaseOwner}{objectQualifier}ContentWorkflowSources ws
+			INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows AS wf  ON wf.WorkflowID = ws.WorkflowID
+	WHERE
+		ws.WorkflowID = @WorkflowID
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]
+	@WorkflowID     int
+AS
+BEGIN
+	SELECT
+		ws.*
+	FROM
+		{databaseOwner}{objectQualifier}ContentWorkflowStates ws
+			INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows AS wf  ON wf.WorkflowID = ws.WorkflowID
+	WHERE
+		ws.WorkflowID = @WorkflowID
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]
+	@StateID  int,
+	@ToDate   datetime,
+	@FromDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		wp.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}vw_ContentWorkflowStatePermissions AS wp
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates AS ws ON wp.StateID = ws.StateID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON wp.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON wp.LastModifiedByUserID = u2.UserID
+	WHERE
+		ws.StateID = @StateID
+	AND
+		COALESCE(wp.LastModifiedOnDate, wp.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(wp.LastModifiedOnDate, wp.CreatedOnDate) >= @FromDate)
+END
+GO
