@@ -619,7 +619,10 @@ namespace Dnn.ExportImport.Components.Engines
         private static void CleanupDatabaseIfDirty(IExportImportRepository repository)
         {
             var exportDto = repository.GetSingleItem<ExportDto>();
-            if (!exportDto.IsDirty) return;
+            var isDirty = exportDto.IsDirty;
+            exportDto.IsDirty = true;
+            repository.UpdateSingleItem(exportDto);
+            if (!isDirty) return;
             var typeLocator = new TypeLocator();
             var types = typeLocator.GetAllMatchingTypes(
                 t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
@@ -641,8 +644,7 @@ namespace Dnn.ExportImport.Components.Engines
                         e.Message);
                 }
             }
-            exportDto.IsDirty = true;
-            repository.UpdateSingleItem(exportDto);
+
         }
 
         private static string[] NotAllowedCategoriesinRequestArray => new[]
