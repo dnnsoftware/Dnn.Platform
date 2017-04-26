@@ -195,7 +195,7 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
                     serviceUrl = service.getSearchUserUrl();
                 } else {
                     service.moduleRoot = 'InternalServices';
-                    serviceUrl = sf.getServiceRoot() + 'ItemListService/SearchUser';
+                    serviceUrl = service.getServiceRoot() + 'ItemListService/SearchUser';
                 }
                 
                 new dnn.permissionGridManager(serviceUrl, 'permissionGrid');
