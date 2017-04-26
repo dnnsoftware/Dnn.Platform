@@ -52,7 +52,7 @@ class Dropdown extends Component {
     }
 
     render() {
-        const {options, label, abbreviatedLabel, className} = this.props;
+        const {options, label, className} = this.props;
         const layoutOptions = options.map((option) => {
             return <div className="time-option" key={option.value} onClick={this.onUpdate.bind(this, option.value) }>{option.label}</div>;
         });
@@ -60,7 +60,7 @@ class Dropdown extends Component {
         return (
             <div className={"dnn-time-picker " +  (className || "")} ref="timePicker">
                 <div className="time-text" onClick={this.showTimeSelector.bind(this)}>
-                    <span title={label}>{abbreviatedLabel || label}</span>
+                    <span className="time-text-label" title={label}>{label}</span>
                     {this.state.isTimeSelectorVisible && <div className={"time-selector " + this.state.className}>
                         <div className="time-options">
                             {layoutOptions}
@@ -76,7 +76,6 @@ Dropdown.propTypes = {
     onUpdate: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
     label: PropTypes.string,
-    abbreviatedLabel: PropTypes.string,
     className: PropTypes.string
 };
 

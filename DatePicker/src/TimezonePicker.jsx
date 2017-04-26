@@ -2,12 +2,6 @@ import React, {PropTypes} from "react";
 import timeZones from "./timeZones";
 import Dropdown from "./Dropdown";
 
-const MAX_LABEL_LENGHT = 20;
-
-function getAbbreviatedLabel(label) {
-    return (label && label.length > MAX_LABEL_LENGHT) ? label.substring(0, MAX_LABEL_LENGHT - 3) + "..." : label;
-}
-
 function getDropdownLabel(value) {
     const currentOption = value ? timeZones.find(o => o.value === value) : value;
     return currentOption ? currentOption.label : "";
@@ -19,7 +13,6 @@ const TimezonePicker = ({value, onUpdate}) => {
         <Dropdown 
             options={timeZones}
             label={label}
-            abbreviatedLabel={getAbbreviatedLabel(label)}
             onUpdate={onUpdate}
             className="timezone-picker" />
     );
