@@ -148,7 +148,7 @@ export class PagePickerDesktop extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    parent.CheckedState = parent.CheckedState === 0 ? 2 : 0;
+                    parent.CheckedState = parent.CheckedState === 0 ? 2 : parent.CheckedState;
                     return;
 
                 case someChildrenSelected:
@@ -253,8 +253,7 @@ export class PagePickerDesktop extends Component {
         return (
             <li
                 key={`${tab.TabId}-${tab.Name}`}
-                style={merge(width, padding, textLeft)}
-            >
+                style={merge(width, padding, textLeft)} >
                 {bullet}
                 {checkbox}
                 {list_item}
@@ -294,25 +293,22 @@ export class PagePickerDesktop extends Component {
         parent.CheckedState = parent.HasChildren ? 2 : 0;
         parent.ChildrenSelected = parent.HasChildren ? true : null;
 
-        const isSingular = parent.HasChildren===false
-        const singularCheckState = () => parent.CheckedState = parent.HasChildren ? 1 : 0
-        const ParentCheckedState = () => parent.CheckedState = parent.HasChildren ? 2 : 0
+        const isSingular = parent.HasChildren===false;
+        const singularCheckState = () => parent.CheckedState = parent.HasChildren ? 1 : 0;
+        const ParentCheckedState = () => parent.CheckedState = parent.HasChildren ? 2 : 0;
 
-        isSingular ? singularCheckState() : ParentCheckedState()
+        isSingular ? singularCheckState() : ParentCheckedState();
 
         let ChildStates = {};
         const openAllChildTabs = (tab) => tab.IsOpen = true;
         const parentShowIndicators = (tab) => tab.HasChildren ? tab.ChildrenSelected = true : tab.ChildrenSelected = false;
-        const toggleCheckAllChildtabs = (tab) => tab.CheckedState = 1;
+        const toggleCheckAllChildtabs = (tab) => tab.CheckedState = tab.HasChildren ? 2: 1;
         const setState = (tab) => ChildStates[`${tab.TabId}-${tab.Name}`] = tab;
 
         this._mapChildTabs(tab, openAllChildTabs);
         this._mapChildTabs(tab, toggleCheckAllChildtabs);
         this._mapChildTabs(tab, parentShowIndicators);
         this._mapChildTabs(tab, setState);
-
-        console.log(ParentState)
-        console.log(ChildStates)
 
         const updates = Object.assign({}, ParentState, ChildStates);
         Object.keys(updates).forEach(key => STATE[key] = updates[key]);

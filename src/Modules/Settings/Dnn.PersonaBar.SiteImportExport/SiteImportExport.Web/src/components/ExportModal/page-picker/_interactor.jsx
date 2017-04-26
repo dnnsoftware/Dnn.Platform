@@ -146,31 +146,35 @@ export class PagePickerInteractor extends Component {
     const RootTab = this._getRootTab(selection);
     const filterOutMasterRootTab = (tabs) => tabs.filter(tab => parseInt(tab.TabId) !== -1);
     const onlyChildrenOrNoParents = (tabs) => tabs.filter(tab => parseInt(tab.CheckedState) === 1);
+    const onlyParents = (tabs) => tabs.filter( tab => tab.CheckedState === 2)
 
     let tabs = this._mapSelection(selection, this._generateSelectionObject);
     tabs = this._filterOutUnchecked(tabs);
-    const childrenTabs = onlyChildrenOrNoParents(tabs);
+    const rootTab = tabs.filter(tab => parseInt(tab.TabId) === -1 )
+    let childrenTabs = onlyChildrenOrNoParents(tabs);
+    let parentTabs = onlyParents(tabs)
+
 
     const Left = () => {
 
-      console.log(tabs)
-      // childrenTabs.forEach( (tab, i, arr) => {
-      //   const ParentTabId = tab.ParentTabId
-      //   const parent = tabs.filter( t =>  parseInt(t.TabId) === parseInt(ParentTabId) )[0];
-      //
-      //   const parentExists = !!parent
-      //   const ParentCheckedState = 0
-      //
-      //   const noop = () => {}
-      //   const isAllChildrenChecked = () => {
-      //     const AllChildrenSelected = parent.CheckedState == 2 ? true : false
-      //     console.log(AllChildrenSelected)
-      //   }
-      //   parentExists ? isAllChildrenChecked() : noop()
-      // })
+      childrenTabs = childrenTabs.filter( (tab, i, arr) => {
+        const ParentTabId = tab.ParentTabId
+        const parent = tabs.filter( t =>  parseInt(t.TabId) === parseInt(ParentTabId) )[0];
+        const parentExists = !!parent;
+        const ParentCheckedState = 0;
 
-      this.ExportModalOnSelect(tabs);
+        const falsey = () => falsey;
+        const isAllChildrenChecked = () => parent.CheckedState == 2 ? true : false;
 
+        const bool  = parentExists ? isAllChildrenChecked() : falsey();
+        return !bool
+      })
+
+      console.log('childtabs', childrenTabs);
+      console.log('parenttabs', parentTabs);
+
+      const tabsExport = parentTabs.concat(childrenTabs)
+      this.ExportModalOnSelect(tabsExport);
     };
 
     const Right = () => {
