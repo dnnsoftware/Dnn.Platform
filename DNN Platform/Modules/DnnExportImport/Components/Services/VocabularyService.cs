@@ -61,13 +61,9 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? scopeTypes.Count : CheckPoint.TotalItems;
                     if (CheckPoint.TotalItems == scopeTypes.Count)
                     {
-                        vocabularyTypes =
-                            CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
-                        taxonomyTerms =
-                            CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.PortalId, toDate, fromDate));
-                        taxonomyVocabularies =
-                            CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
-                                .GetAllVocabularies(exportDto.PortalId, toDate, fromDate));
+                        vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                        taxonomyTerms = GetTaxonomyTerms(exportDto.PortalId, toDate, fromDate);
+                        taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
                         CheckPoint.TotalItems += taxonomyTerms.Count + taxonomyVocabularies.Count;
                     }
                     CheckPointStageCallback(this);
@@ -82,8 +78,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
                 {
                     if (vocabularyTypes == null)
-                        vocabularyTypes =
-                            CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                        vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
                     Repository.CreateItems(vocabularyTypes);
                     //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
                     //CheckPoint.ProcessedItems += vocabularyTypes.Count;
@@ -163,7 +158,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changed = false;
             var dataService = Util.GetDataService();
-            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+            var localVocabularies = GetTaxonomyVocabularies(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null);
             foreach (var other in otherVocabularies)
             {
                 var createdBy = Common.Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -227,21 +222,16 @@ namespace Dnn.ExportImport.Components.Services
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
-            var vocabularyController = new VocabularyController();
-            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+            //var vocabularyController = new VocabularyController();
+            var localTaxonomyTerms = GetTaxonomyTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null);
             foreach (var other in otherTaxonomyTerms)
             {
                 var createdBy = Common.Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Common.Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name);
+
                 var vocabulary = otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.VocabularyID);
                 var vocabularyId = vocabulary?.LocalId ?? 0;
-                var localVocabulary = vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == vocabularyId);
-
-                if (localVocabulary == null)
-                {
-                    continue;
-                }
+                var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name && t.VocabularyID == vocabularyId);
 
                 if (local != null)
                 {
@@ -253,7 +243,7 @@ namespace Dnn.ExportImport.Components.Services
                             break;
                         case CollisionResolution.Overwrite:
                             var parent = other.ParentTermID.HasValue
-                                ? otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.ParentTermID.Value)
+                                ? otherTaxonomyTerms.FirstOrDefault(v => v.TermID == other.ParentTermID.Value)
                                 : null;
                             var term = new Term(other.Name, other.Description, vocabularyId)
                             {
@@ -262,7 +252,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Weight = other.Weight,
                             };
 
-                            if (localVocabulary.IsHeirarchical)
+                            if (term.ParentTermId.HasValue)
                             {
                                 dataService.UpdateHeirarchicalTerm(term, modifiedBy);
                             }
@@ -289,7 +279,7 @@ namespace Dnn.ExportImport.Components.Services
                     };
 
 
-                    other.LocalId = localVocabulary.IsHeirarchical
+                    other.LocalId = term.ParentTermId.HasValue
                         ? dataService.AddHeirarchicalTerm(term, createdBy)
                         : dataService.AddSimpleTerm(term, createdBy);
                     Result.AddLogEntry("Added taxonomy", other.Name);
