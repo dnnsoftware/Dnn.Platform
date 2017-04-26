@@ -28,7 +28,7 @@ namespace Dnn.ExportImport.Components.Dto
     [JsonObject]
     public class ExportDto
     {
-        public object Id { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Specifies the version of the exportes schema.
         /// </summary>
