@@ -1634,22 +1634,19 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
 	@ToDate   datetime,
 	@FromDate	datetime=NULL
 AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
 	SELECT
 		t.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
-            INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Vocabularies v ON v.VocabularyID = t.VocabularyID
+			INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Vocabularies v ON v.VocabularyID = t.VocabularyID
             INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes st ON st.ScopeTypeID = v.ScopeTypeID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON t.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON t.LastModifiedByUserID = u2.UserID
 	WHERE (st.ScopeType = 'Application' OR (st.ScopeType = 'Portal' AND v.ScopeID = @PortalId))
-    AND (CASE
-			WHEN @FromDate IS NULL THEN 0
-			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
-			ELSE t.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-	AND (CASE
-			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
-			ELSE t.LastModifiedOnDate END)<= @ToDate
+	  AND (COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
@@ -1661,21 +1658,23 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
 	@ToDate   datetime,
 	@FromDate	datetime=NULL
 AS
-	SELECT
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+	SELECT DISTINCT
 		v.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
             INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes st ON st.ScopeTypeID = v.ScopeTypeID
+			INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms t ON v.VocabularyID = t.VocabularyID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON v.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON v.LastModifiedByUserID = u2.UserID
 	WHERE (st.ScopeType = 'Application' OR (st.ScopeType = 'Portal' AND v.ScopeID = @PortalId))
-    AND (CASE
-			WHEN @FromDate IS NULL THEN 0
-			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
-			ELSE v.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-	AND (CASE
-			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
-			ELSE v.LastModifiedOnDate END)<= @ToDate
+	AND (
+			(COALESCE(v.LastModifiedOnDate, v.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(v.LastModifiedOnDate, v.CreatedOnDate) >= @FromDate))
+		 OR
+			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+		)
+END
 GO
 
 -- Roles Import/Export
