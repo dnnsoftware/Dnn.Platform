@@ -215,6 +215,7 @@ namespace Dnn.ExportImport.Components.Services
 
                         UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
                         AddTabRelatedItems(localTab, otherTab, false);
+                        TriggerImportEvent(localTab);
                         Result.AddLogEntry("Updated Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                         _totals.TotalTabs++;
                         break;
@@ -258,17 +259,7 @@ namespace Dnn.ExportImport.Components.Services
                 _totals.TotalTabs++;
                 AddTabRelatedItems(localTab, otherTab, true);
 
-                //update tab with import flag, to trigger update event handler.
-                if (localTab.TabSettings.ContainsKey("TabImported"))
-                {
-                    localTab.TabSettings["TabImported"] = "Y";
-                }
-                else
-                {
-                    localTab.TabSettings.Add("TabImported", "Y");
-                }
-                _tabController.UpdateTab(localTab);
-                TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
+                TriggerImportEvent(localTab);
             }
 
             var contentItem = _contentController.GetContentItem(localTab.ContentItemId);
@@ -277,6 +268,21 @@ namespace Dnn.ExportImport.Components.Services
                 contentItem.StateID = GetLocalStateId(otherTab.StateID);
                 _contentController.UpdateContentItem(contentItem);
             }
+        }
+
+        private void TriggerImportEvent(TabInfo localTab)
+        {
+            //update tab with import flag, to trigger update event handler.
+            if (localTab.TabSettings.ContainsKey("TabImported"))
+            {
+                localTab.TabSettings["TabImported"] = "Y";
+            }
+            else
+            {
+                localTab.TabSettings.Add("TabImported", "Y");
+            }
+            _tabController.UpdateTab(localTab);
+            TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
         }
 
         private void AddTabRelatedItems(TabInfo localTab, ExportTab otherTab, bool isNew)
@@ -1589,13 +1595,8 @@ namespace Dnn.ExportImport.Components.Services
 
         private int GetLocalStateId(int exportedStateId)
         {
-            if (exportedStateId > 1) // 1 is direct publish
-            {
-                var state = Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedStateId);
-                return state?.LocalId ?? -1;
-            }
-
-            return -1;
+            var state = Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedStateId);
+            return state?.LocalId ?? Null.NullInteger;
         }
 
         #endregion
