@@ -1630,6 +1630,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+    @PortalId INT,
 	@ToDate   datetime,
 	@FromDate	datetime=NULL
 AS
@@ -1637,9 +1638,12 @@ AS
 		t.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
+            INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Vocabularies v ON v.VocabularyID = t.VocabularyID
+            INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes st ON st.ScopeTypeID = v.ScopeTypeID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON t.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON t.LastModifiedByUserID = u2.UserID
-	WHERE (CASE
+	WHERE (st.ScopeType = 'Application' OR (st.ScopeType = 'Portal' AND v.ScopeID = @PortalId))
+    AND (CASE
 			WHEN @FromDate IS NULL THEN 0
 			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
 			ELSE t.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
@@ -1653,6 +1657,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+    @PortalId INT,
 	@ToDate   datetime,
 	@FromDate	datetime=NULL
 AS
@@ -1660,9 +1665,11 @@ AS
 		v.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
+            INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes st ON st.ScopeTypeID = v.ScopeTypeID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON v.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON v.LastModifiedByUserID = u2.UserID
-	WHERE (CASE
+	WHERE (st.ScopeType = 'Application' OR (st.ScopeType = 'Portal' AND v.ScopeID = @PortalId))
+    AND (CASE
 			WHEN @FromDate IS NULL THEN 0
 			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
 			ELSE v.LastModifiedOnDate END)>= ISNULL(@FromDate,0)

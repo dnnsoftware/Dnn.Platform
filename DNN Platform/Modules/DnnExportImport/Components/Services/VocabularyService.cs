@@ -55,8 +55,8 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
 
-                taxonomyTerms = GetTaxonomyTerms(toDate, fromDate);
-                taxonomyVocabularies = GetTaxonomyVocabularies(toDate, fromDate);
+                taxonomyTerms = GetTaxonomyTerms(exportDto.PortalId, toDate, fromDate);
+                taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
                 if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
                 {
                     var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
@@ -67,10 +67,10 @@ namespace Dnn.ExportImport.Components.Services
                         vocabularyTypes =
                             CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
                         taxonomyTerms =
-                            CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(toDate, fromDate));
+                            CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.PortalId, toDate, fromDate));
                         taxonomyVocabularies =
                             CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
-                                .GetAllVocabularies(toDate, fromDate));
+                                .GetAllVocabularies(exportDto.PortalId, toDate, fromDate));
                         CheckPoint.TotalItems += taxonomyTerms.Count + taxonomyVocabularies.Count;
                     }
                     CheckPointStageCallback(this);
@@ -88,8 +88,8 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
 
-                if (taxonomyTerms == null) taxonomyTerms = GetTaxonomyTerms(toDate, fromDate);
-                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(toDate, fromDate);
+                if (taxonomyTerms == null) taxonomyTerms = GetTaxonomyTerms(exportDto.PortalId, toDate, fromDate);
+                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
                 if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
                 {
                     if (vocabularyTypes == null)
@@ -107,7 +107,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 2)
             {
                 if (CheckCancelled(exportJob)) return;
-                if (taxonomyTerms == null) taxonomyTerms = GetTaxonomyTerms(toDate, fromDate);
+                if (taxonomyTerms == null) taxonomyTerms = GetTaxonomyTerms(exportDto.PortalId, toDate, fromDate);
                 Repository.CreateItems(taxonomyTerms);
                 Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
                 CheckPoint.Progress = 75;
@@ -119,7 +119,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 3)
             {
                 if (CheckCancelled(exportJob)) return;
-                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(toDate, fromDate);
+                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
                 Repository.CreateItems(taxonomyVocabularies);
                 Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
                 CheckPoint.Progress = 100;
@@ -130,14 +130,14 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private static List<TaxonomyTerm> GetTaxonomyTerms(DateTime toDate, DateTime? fromDate)
+        private static List<TaxonomyTerm> GetTaxonomyTerms(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(toDate, fromDate));
+            return CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(portalId, toDate, fromDate));
         }
 
-        private static List<TaxonomyVocabulary> GetTaxonomyVocabularies(DateTime toDate, DateTime? fromDate)
+        private static List<TaxonomyVocabulary> GetTaxonomyVocabularies(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(toDate, fromDate));
+            return CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(portalId, toDate, fromDate));
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
@@ -207,7 +207,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changed = false;
             var dataService = Util.GetDataService();
-            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var other in otherVocabularies)
             {
                 if (CheckCancelled(importJob)) return;
@@ -215,6 +215,16 @@ namespace Dnn.ExportImport.Components.Services
                 var modifiedBy = Common.Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localVocabularies.FirstOrDefault(t => t.Name == other.Name);
                 var scope = otherScopeTypes.FirstOrDefault(s => s.ScopeTypeID == other.ScopeTypeID);
+
+                var scopeId = other.ScopeID ?? Null.NullInteger;
+                if (scope != null && scope.ScopeType.Equals("Application", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    scopeId = Null.NullInteger;
+                }
+                else if (scope != null && scope.ScopeType.Equals("Portal", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    scopeId = importDto.PortalId;
+                }
 
                 if (local != null)
                 {
@@ -229,7 +239,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 IsSystem = other.IsSystem,
                                 Weight = other.Weight,
-                                ScopeId = other.ScopeID ?? 0,
+                                ScopeId = scopeId,
                                 ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                             };
                             dataService.UpdateVocabulary(vocabulary, modifiedBy);
@@ -246,7 +256,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         IsSystem = other.IsSystem,
                         Weight = other.Weight,
-                        ScopeId = other.ScopeID ?? 0,
+                        ScopeId = scopeId,
                         ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                     };
                     other.LocalId = dataService.AddVocabulary(vocabulary, createdBy);
@@ -262,7 +272,7 @@ namespace Dnn.ExportImport.Components.Services
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
-            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var other in otherTaxonomyTerms)
             {
                 if (CheckCancelled(importJob)) return;

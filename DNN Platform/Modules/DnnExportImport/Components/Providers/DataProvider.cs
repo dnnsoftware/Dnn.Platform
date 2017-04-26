@@ -175,14 +175,14 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("ExportTaxonomy_VocabularyTypes");
         }
 
-        public IDataReader GetAllTerms(DateTime toDate, DateTime? fromDate)
+        public IDataReader GetAllTerms(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("ExportTaxonomy_Terms", toDate, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("ExportTaxonomy_Terms", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAllVocabularies(DateTime toDate, DateTime? fromDate)
+        public IDataReader GetAllVocabularies(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("ExportTaxonomy_Vocabularies", toDate, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("ExportTaxonomy_Vocabularies", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public IDataReader GetAllRoleGroups(int portalId, DateTime toDate, DateTime? fromDate)
