@@ -296,7 +296,7 @@ class JobDetails extends Component {
                         <GridCell className="action-buttons">
                             {props.jobDetail.Status < 2 && !state.cancelled &&
                                 <Button type="secondary" onClick={this.cancel.bind(this, props.jobId)}>
-                                    {props.jobDetail.JobType.includes("Export") ? Localization.get("CancelExport") : Localization.get("CancelImport")}
+                                    {props.jobDetail.JobType.indexOf("Export") >= 0 ? Localization.get("CancelExport") : Localization.get("CancelImport")}
                                 </Button>
                             }
                             {(props.jobDetail.Status > 1 || state.cancelled) &&
@@ -315,7 +315,7 @@ class JobDetails extends Component {
         if (props.jobDetail !== undefined) {
             return (
                 <div className="job-details">
-                    <div className="summary-title">{props.jobDetail.JobType.includes("Export") ? Localization.get("ExportSummary") : Localization.get("ImportSummary")}</div>
+                    <div className="summary-title">{props.jobDetail.JobType.indexOf("Export") >= 0 ? Localization.get("ExportSummary") : Localization.get("ImportSummary")}</div>
                     {this.renderExportSummary()}
                 </div>
             );

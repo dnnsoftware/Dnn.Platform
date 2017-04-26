@@ -33,7 +33,7 @@ class JobRow extends Component {
 
     getTypeIndicator() {
         const { props } = this;
-        return props.jobType.includes("Import") ? <div className="jobIndicator-import"></div> : <div className="jobIndicator-export"></div>;
+        return props.jobType.indexOf("Import") >= 0 ? <div className="jobIndicator-import"></div> : <div className="jobIndicator-export"></div>;
     }
 
     /* eslint-disable react/no-danger */
