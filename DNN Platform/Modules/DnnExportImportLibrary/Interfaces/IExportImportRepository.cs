@@ -29,6 +29,7 @@ namespace Dnn.ExportImport.Interfaces
     public interface IExportImportRepository : IDisposable
     {
         T AddSingleItem<T>(T item) where T : class;
+        T UpdateSingleItem<T>(T item) where T : class;
         T GetSingleItem<T>() where T : class;
 
         T CreateItem<T>(T item, int? referenceId) where T : BasicExportImportDto;
@@ -69,5 +70,7 @@ namespace Dnn.ExportImport.Interfaces
         bool DeleteItem<T>(int id) where T : BasicExportImportDto;
 
         void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression) where T : BasicExportImportDto;
+
+        void CleanUpLocal(string collectionName);
     }
 }

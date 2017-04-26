@@ -32,6 +32,12 @@ using Dnn.ExportImport.Components.Dto.Jobs;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Services;
+using Dnn.ExportImport.Dto;
+using Dnn.ExportImport.Dto.Assets;
+using Dnn.ExportImport.Dto.PageTemplates;
+using Dnn.ExportImport.Dto.Portal;
+using Dnn.ExportImport.Dto.ProfileProperties;
+using Dnn.ExportImport.Interfaces;
 using Dnn.ExportImport.Repository;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -39,12 +45,15 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Scheduling;
 using Newtonsoft.Json;
 using PlatformDataProvider = DotNetNuke.Data.DataProvider;
+using DotNetNuke.Framework.Reflections;
+using Dnn.ExportImport.Dto.Users;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.ExportImport.Components.Engines
 {
     public class ExportImportEngine
     {
-        //private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
 
@@ -289,6 +298,7 @@ namespace Dnn.ExportImport.Components.Engines
                 {
                     result.AddSummary("Starting Importing Repository", finfo.Name);
                     result.AddSummary("Importing File Size", Util.FormatSize(finfo.Length));
+                    CleanupDatabaseIfDirty(ctx);
                 }
                 else
                 {
@@ -606,6 +616,37 @@ namespace Dnn.ExportImport.Components.Engines
             return files.Sum(file => new FileInfo(file).Length);
         }
 
+        private static void CleanupDatabaseIfDirty(IExportImportRepository repository)
+        {
+            var exportDto = repository.GetSingleItem<ExportDto>();
+            var isDirty = exportDto.IsDirty;
+            exportDto.IsDirty = true;
+            repository.UpdateSingleItem(exportDto);
+            if (!isDirty) return;
+            var typeLocator = new TypeLocator();
+            var types = typeLocator.GetAllMatchingTypes(
+                t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
+                     typeof(BasicExportImportDto).IsAssignableFrom(t));
+
+            foreach (var type in from type in types
+                                 let typeName = type.Name
+                                 where !CleanUpIgnoredClasses.Contains(typeName)
+                                 select type)
+            {
+                try
+                {
+                    repository.CleanUpLocal(type.Name);
+                }
+                catch (Exception e)
+                {
+                    Logger.ErrorFormat("Unable to clear {0} while calling CleanupDatabaseIfDirty. Error: {1}",
+                        type.Name,
+                        e.Message);
+                }
+            }
+
+        }
+
         private static string[] NotAllowedCategoriesinRequestArray => new[]
         {
             Constants.Category_Content,
@@ -621,6 +662,25 @@ namespace Dnn.ExportImport.Components.Engines
             Constants.Category_ProfileProps,
             Constants.Category_Packages,
             Constants.Category_Workflows,
+        };
+
+        private static string[] CleanUpIgnoredClasses => new[]
+        {
+            typeof (ExportFile).Name,
+            typeof (ExportFolder).Name,
+            typeof (ExportFolderMapping).Name,
+            typeof (ExportFolderPermission).Name,
+            typeof (ExportPageTemplate).Name,
+            typeof (ExportPortalSetting).Name,
+            typeof (ExportPortalLanguage).Name,
+            typeof (ExportProfileProperty).Name,
+            typeof (ExportUser).Name,
+            typeof (ExportAspnetUser).Name,
+            typeof (ExportAspnetMembership).Name,
+            typeof (ExportUserAuthentication).Name,
+            typeof (ExportUserPortal).Name,
+            typeof (ExportUserProfile).Name,
+            typeof (ExportUserRole).Name
         };
 
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)

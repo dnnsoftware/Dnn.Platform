@@ -1630,22 +1630,23 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+    @PortalId INT,
 	@ToDate   datetime,
 	@FromDate	datetime=NULL
 AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
 	SELECT
 		t.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
+			INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Vocabularies v ON v.VocabularyID = t.VocabularyID
+            INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes st ON st.ScopeTypeID = v.ScopeTypeID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON t.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON t.LastModifiedByUserID = u2.UserID
-	WHERE (CASE
-			WHEN @FromDate IS NULL THEN 0
-			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
-			ELSE t.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-	AND (CASE
-			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
-			ELSE t.LastModifiedOnDate END)<= @ToDate
+	WHERE (st.ScopeType = 'Application' OR (st.ScopeType = 'Portal' AND v.ScopeID = @PortalId))
+	  AND (COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
@@ -1653,22 +1654,27 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+    @PortalId INT,
 	@ToDate   datetime,
 	@FromDate	datetime=NULL
 AS
-	SELECT
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+	SELECT DISTINCT
 		v.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
+            INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_ScopeTypes st ON st.ScopeTypeID = v.ScopeTypeID
+			INNER JOIN {databaseOwner}{objectQualifier}Taxonomy_Terms t ON v.VocabularyID = t.VocabularyID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON v.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON v.LastModifiedByUserID = u2.UserID
-	WHERE (CASE
-			WHEN @FromDate IS NULL THEN 0
-			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
-			ELSE v.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-	AND (CASE
-			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
-			ELSE v.LastModifiedOnDate END)<= @ToDate
+	WHERE (st.ScopeType = 'Application' OR (st.ScopeType = 'Portal' AND v.ScopeID = @PortalId))
+	AND (
+			(COALESCE(v.LastModifiedOnDate, v.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(v.LastModifiedOnDate, v.CreatedOnDate) >= @FromDate))
+		 OR
+			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+		)
+END
 GO
 
 -- Roles Import/Export
@@ -2004,8 +2010,6 @@ BEGIN
 		t.TabID, IsNull(t.ParentId, -1) AS ParentId, t.IsSystem, t.IsDeleted
 	FROM
 		{databaseOwner}{objectQualifier}Tabs t
-		    INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS ci ON t.ContentItemID = ci.ContentItemID
-			INNER JOIN {databaseOwner}{objectQualifier}ContentTypes AS ct on ci.ContentTypeID = ct.ContentTypeID
 			LEFT JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
 	WHERE
 		PortalID = @PortalID
@@ -2017,13 +2021,6 @@ BEGIN
 			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
 		 OR
 			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
-		)
-	AND 
-		ct.ContentType = N'Tab'
-	AND (
-			ci.StateID IS NULL 
-		OR 
-			ci.StateID IN (SELECT StateID FROM {databaseOwner}{objectQualifier}ContentWorkflowStates WHERE StateName = N'Published')
 		)
 	ORDER BY
 		TabID

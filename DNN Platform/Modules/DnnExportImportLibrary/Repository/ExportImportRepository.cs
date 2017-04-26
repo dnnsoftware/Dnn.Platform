@@ -32,13 +32,13 @@ namespace Dnn.ExportImport.Repository
 {
     public class ExportImportRepository : IExportImportRepository
     {
-        private LiteDatabase _lightDb;
+        private LiteDatabase _liteDb;
 
         public ExportImportRepository(string dbFileName)
         {
-            _lightDb = new LiteDatabase(dbFileName);
-            _lightDb.Mapper.EmptyStringToNull = false;
-            _lightDb.Mapper.TrimWhitespace = false;
+            _liteDb = new LiteDatabase(dbFileName);
+            _liteDb.Mapper.EmptyStringToNull = false;
+            _liteDb.Mapper.TrimWhitespace = false;
         }
 
         ~ExportImportRepository()
@@ -53,7 +53,7 @@ namespace Dnn.ExportImport.Repository
 
         private void Dispose(bool isDisposing)
         {
-            var temp = Interlocked.Exchange(ref _lightDb, null);
+            var temp = Interlocked.Exchange(ref _liteDb, null);
             temp?.Dispose();
             if (isDisposing)
                 GC.SuppressFinalize(this);
@@ -63,6 +63,13 @@ namespace Dnn.ExportImport.Repository
         {
             var collection = DbCollection<T>();
             collection.Insert(item);
+            return item;
+        }
+
+        public T UpdateSingleItem<T>(T item) where T : class
+        {
+            var collection = DbCollection<T>();
+            collection.Update(item);
             return item;
         }
 
@@ -209,9 +216,21 @@ namespace Dnn.ExportImport.Repository
                 collection.Delete(deleteExpression);
         }
 
+        public void CleanUpLocal(string collectionName)
+        {
+            if (!_liteDb.CollectionExists(collectionName)) return;
+            var collection = _liteDb.GetCollection<BsonDocument>(collectionName);
+            var documentsToUpdate = collection.Find(Query.All()).ToList();
+            documentsToUpdate.ForEach(x =>
+            {
+                x["LocalId"] = null;
+            });
+            collection.Update(documentsToUpdate);
+        }
+
         private LiteCollection<T> DbCollection<T>()
         {
-            return _lightDb.GetCollection<T>(typeof(T).Name);
+            return _liteDb.GetCollection<T>(typeof(T).Name);
         }
     }
 }
