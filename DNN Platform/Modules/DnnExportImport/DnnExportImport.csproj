@@ -91,8 +91,6 @@
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
     <Compile Include="Components\Dto\SummaryItem.cs" />
-    <Compile Include="Components\Dto\Users\ImportAspnetMembership.cs" />
-    <Compile Include="Components\Dto\Users\ImportAspnetUser.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
     <Compile Include="Components\Entities\ExportImportChekpoint.cs" />
     <Compile Include="Components\Entities\ExportImportJobLog.cs" />
