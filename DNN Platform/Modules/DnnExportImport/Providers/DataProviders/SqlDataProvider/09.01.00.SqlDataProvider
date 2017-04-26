@@ -2004,8 +2004,6 @@ BEGIN
 		t.TabID, IsNull(t.ParentId, -1) AS ParentId, t.IsSystem, t.IsDeleted
 	FROM
 		{databaseOwner}{objectQualifier}Tabs t
-		    INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS ci ON t.ContentItemID = ci.ContentItemID
-			INNER JOIN {databaseOwner}{objectQualifier}ContentTypes AS ct on ci.ContentTypeID = ct.ContentTypeID
 			LEFT JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
 	WHERE
 		PortalID = @PortalID
@@ -2017,13 +2015,6 @@ BEGIN
 			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
 		 OR
 			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
-		)
-	AND 
-		ct.ContentType = N'Tab'
-	AND (
-			ci.StateID IS NULL 
-		OR 
-			ci.StateID IN (SELECT StateID FROM {databaseOwner}{objectQualifier}ContentWorkflowStates WHERE StateName = N'Published')
 		)
 	ORDER BY
 		TabID
