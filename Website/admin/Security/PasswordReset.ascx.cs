@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             var user = UserController.GetUserByPasswordResetToken(PortalId, ResetToken);
 
-            if (user == null)
+            if (user == null || user.PasswordResetExpiration < DateTime.Now)
             {
                 divPassword.Visible = false;
                 resetMessages.Visible = true;

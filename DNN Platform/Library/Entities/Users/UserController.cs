@@ -1789,13 +1789,10 @@ namespace DotNetNuke.Entities.Users
         {
             var settings = new MembershipPasswordSettings(user.PortalID);
 
-            if (user.PasswordResetExpiration < DateTime.Now)
-            {
-                user.PasswordResetExpiration = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
-                user.PasswordResetToken = Guid.NewGuid();
-                UpdateUser(user.PortalID, user);
-            }
-
+            user.PasswordResetExpiration = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
+            user.PasswordResetToken = Guid.NewGuid();
+            UpdateUser(user.PortalID, user);
+            
             if (sendEmail)
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
