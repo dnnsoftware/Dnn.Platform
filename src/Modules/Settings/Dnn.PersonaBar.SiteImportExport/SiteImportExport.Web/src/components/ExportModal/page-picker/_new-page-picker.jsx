@@ -401,7 +401,6 @@ export class PagePickerDesktop extends Component {
                     const ChildrenSelected = STATE[TabIdName].ChildrenSelected;
                     STATE[TabIdName] = Tab;
                     STATE[TabIdName].ChildrenSelected = ChildrenSelected;
-
                 })
                 .then(() => this._setParentTabChildrenSelected(tab))
                 .then(() => this._setRootTabChildrenSelected(tab))
