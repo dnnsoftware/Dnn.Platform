@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, {PropTypes} from "react";
+import Dropdown from "./Dropdown";
 
 let timeArray = [];
 for (let i = 0; i < 24; i++) {
@@ -7,6 +8,8 @@ for (let i = 0; i < 24; i++) {
         timeArray.push(hour + ":" + (j ? "30" : "00") + " " + (i > 11 ? "PM" : "AM"));
     }
 }
+
+timeArray = timeArray.map(t => {return {label: t, value: t};});
 
 function getHour(number) {
     let hour = number;
@@ -19,81 +22,17 @@ function getHour(number) {
     return hour;
 }
 
-export default class TimePicker extends Component {
-    constructor() {
-        super();
-        this.state = {
-            isTimeSelectorVisible: false,
-            className: ""
-        };
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    componentDidMount() {
-        document.addEventListener("click", this.handleClick, false);
-        this._isMounted = true;
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("click", this.handleClick, false);
-        this._isMounted = false;
-    }
-
-    handleClick(e) {
-        if (!this._isMounted) { return; }
-        const node = this.refs.timePicker;
-        if (node && node.contains(e.target)) {
-            return;
-        }
-        this.hideTimeSelector();
-    }
-
-    updateTime(time) {
-        this.hideTimeSelector();
-        setTimeout( ()=> {this.props.updateTime(time);}, 200);
-    }
-
-    toggleTimeSelector() {
-        if (this.state.isTimeSelectorVisible) {
-            return this.hideTimeSelector();
-        }
-        this.showTimeSelector();
-    }
-
-    showTimeSelector() {
-        this.setState({ isTimeSelectorVisible: true }, () => {
-            setTimeout(() => {
-                this.setState({ className: "show" });
-            }, 0);
-        });
-    }
-
-    hideTimeSelector() {
-        this.setState({ className: "" }, () => {
-            setTimeout(() => {
-                this.setState({ isTimeSelectorVisible: false });
-            }, 200);
-        });
-    }
-
-    render() {
-        const TimeOptions = timeArray.map((time) => {
-            return <div className="time-option" key={time} onClick={this.updateTime.bind(this, time) }>{time}</div>;
-        });
-        return <div className="dnn-time-picker" ref="timePicker">
-            <div className="time-text" onClick={this.showTimeSelector.bind(this)}>
-                {this.props.time}
-                {this.state.isTimeSelectorVisible && <div className={"time-selector " + this.state.className}>
-                    <div className="time-options">
-                        {TimeOptions}
-                    </div>
-                </div>}
-            </div>
-        </div >;
-    }
-}
+const TimePicker = ({time, updateTime, className}) => 
+    <Dropdown 
+        options={timeArray}
+        label={time}
+        onUpdate={updateTime}
+        className={"time-picker " + (className || "")} />;
 
 TimePicker.propTypes = {
     updateTime: PropTypes.func.isRequired,
-    time: PropTypes.string
+    time: PropTypes.string,
+    className: PropTypes.string
 };
+
+export default TimePicker;

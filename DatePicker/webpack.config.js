@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 module.exports = {
     entry: "./src/DatePicker.jsx",
     output: {
@@ -29,5 +31,7 @@ module.exports = {
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 
-    }
+    },
+
+    plugins: [new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/)]
 };

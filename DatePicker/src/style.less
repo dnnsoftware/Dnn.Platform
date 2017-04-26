@@ -29,7 +29,7 @@
         transition: 300ms;
         transform-origin: 100% 0% 0px;
         transform: scale(1);
-        z-index: 1;
+        z-index: 10;
         background: white;
         text-align: center;
 
@@ -295,64 +295,105 @@
     }
 }
 
-.dnn-time-picker {
-    width: 240px;
-    text-align: center;
-    float: left;
-    border-top: 1px solid @mercury;
-    margin-left: 8px;
-    pointer-events: none;
-    .time-text {
-        width: 82px;
-        margin: auto;
-        padding: 8px 0 0 0;
-        position: relative;
-        color: @curiousBlue;
-        font-weight: 600;
-        letter-spacing: 1px;
-        height: 16px;
-        pointer-events: all;
-        &:after {
-            position: absolute;
-            content: "";
-            right: 0px;
-            top: 13px;
-            width: 0;
-            height: 0;
-            border-left: 3px solid transparent;
-            border-right: 3px solid transparent;
-            border-top: 4px solid @curiousBlue;
-        }
-        .time-selector {
-            width: 134px;
-            height: 132px;
-            overflow: hidden;
-            background: white;
-            position: absolute;
-            left: 50%;
-            transform: translate(-50%);
-            top: 31px;
-            border: 1px solid @alto;
-            padding: 5px 0px;
-            box-sizing: border-box;
-            box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
-            transition: @transition;
-            opacity: 0;
-            &.show {
-                opacity: 1;
+.dnn-time-picker-box {
+    .dnn-time-picker {
+        &.timezone-picker {
+            text-align: left;
+            width: 155px;
+            .time-selector {
+                width: 215px;
+                .time-options {
+                    width: 228px;
+                }
             }
-            .time-options {
-                overflow-y: scroll;
-                overflow-x: auto;
-                width: 147px;
-                height: 100%;
-                .time-option {
-                    color: @rollingStone;
-                    padding: 5px;
-                    cursor: pointer;
-                    &:hover {
-                        background: @gallery;
-                        color: @curiousBlue;
+            .time-text {
+                width: 150px;
+                .time-text-label {
+                    display: block;
+                    width: 135px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            }
+        }
+        &.time-picker {
+            &.half {
+                text-align: left;
+                width: 75px;
+                .time-text {
+                    width: 75px;
+                }
+            }
+            &.full {
+                text-align: center;
+                width: 240px;
+                .time-text {
+                    width: 82px;
+                    margin: auto;
+                    padding: 8px 0 0 0;
+                }
+            }
+            .time-selector {
+                width: 134px;
+                .time-options {
+                    width: 147px;
+                }
+            }
+        }
+        
+        
+        float: left;
+        border-top: 1px solid @mercury;
+        margin-left: 10px;
+        pointer-events: none;
+        .time-text {
+            position: relative;
+            color: @curiousBlue;
+            font-weight: 600;
+            letter-spacing: 1px;
+            height: 16px;
+            pointer-events: all;
+            &:after {
+                position: absolute;
+                content: "";
+                right: 0px;
+                top: 13px;
+                width: 0;
+                height: 0;
+                border-left: 3px solid transparent;
+                border-right: 3px solid transparent;
+                border-top: 4px solid @curiousBlue;
+            }
+            .time-selector {
+                height: 132px;
+                overflow: hidden;
+                background: white;
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%);
+                top: 31px;
+                border: 1px solid @alto;
+                padding: 5px 0px;
+                box-sizing: border-box;
+                box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
+                transition: @transition;
+                opacity: 0;
+                &.show {
+                    opacity: 1;
+                }
+                .time-options {
+                    overflow-y: scroll;
+                    overflow-x: auto;
+                    height: 100%;
+                    .time-option {
+                        color: @rollingStone;
+                        padding: 5px;
+                        cursor: pointer;
+                        &:hover {
+                            background: @gallery;
+                            color: @curiousBlue;
+                        }
                     }
                 }
             }

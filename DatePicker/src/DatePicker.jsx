@@ -2,6 +2,8 @@ import React, {Component, PropTypes} from "react";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
 import TimePicker from "./TimePicker";
+import TimezonePicker from "./TimezonePicker";
+import timeZones from "./timeZones";
 import DateInput from "./DateInput";
 import "./style.less";
 
@@ -35,7 +37,7 @@ const clearButtonStyleInvisible = {
     cursor: "default"
 };
 
-export default class DatePicker extends Component {
+class DatePicker extends Component {
 
     constructor(props) {
         super(props);
@@ -45,7 +47,8 @@ export default class DatePicker extends Component {
 
         this.savedDate = {
             FirstDate: firstDate !== undefined ? firstDate : null,
-            SecondDate: secondDate !== undefined ? secondDate : null
+            SecondDate: secondDate !== undefined ? secondDate : null,
+            timezone: props.timezone
         };
 
         this.state = {
@@ -53,7 +56,8 @@ export default class DatePicker extends Component {
             Date: {
                 FirstDate: firstDate !== undefined ? firstDate : null,
                 SecondDate: secondDate !== undefined ? secondDate : null
-            }
+            },
+            timezone: props.timezone
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -190,16 +194,16 @@ export default class DatePicker extends Component {
     }
 
     callUpdateDate() {
-        let {Date} = this.state;
-        this.props.updateDate(Date.FirstDate, Date.SecondDate);
+        let {Date, timezone} = this.state;
+        this.props.updateDate(Date.FirstDate, Date.SecondDate, timezone);
         this.cashPreviousDates();
     }
 
     cashPreviousDates() {
-        const {Date} = this.state;
+        const {Date, timezone} = this.state;
         const FirstDate = Date.FirstDate;
         const SecondDate = Date.SecondDate;
-        this.savedDate = { FirstDate, SecondDate };
+        this.savedDate = { FirstDate, SecondDate, timezone };
     }
 
     apply() {
@@ -211,7 +215,8 @@ export default class DatePicker extends Component {
         this.hideCalendar();
         const FirstDate = this.savedDate.FirstDate;
         const SecondDate = this.savedDate.SecondDate;
-        this.setState({ Date: { FirstDate, SecondDate } });
+        const timezone = this.savedDate.timezone;
+        this.setState({ Date: { FirstDate, SecondDate }, timezone });
     }
 
     updateFirstTime(time) {
@@ -238,7 +243,7 @@ export default class DatePicker extends Component {
         if (date) {
             return moment(date).format(format);
         }
-        return false;
+        return date;
     }
 
     showCalendar() {       
@@ -299,6 +304,10 @@ export default class DatePicker extends Component {
             default:
                 return "show-below-input";
         }
+    }
+
+    updateTimezone(timezone){
+        this.setState({timezone});
     }
    
     render() {
@@ -369,7 +378,19 @@ export default class DatePicker extends Component {
                         onDayClick={this.firstDateClick.bind(this) }
                         disabledDays={ this.firstDisableDates.bind(this) }
                         />
-                    {this.props.hasTimePicker && <TimePicker updateTime={this.updateFirstTime.bind(this) } time={this.formatDate(this.date, "LT") }/>}
+                    <div className="dnn-time-picker-box">
+                        {this.props.hasTimePicker && 
+                            <TimePicker 
+                                updateTime={this.updateFirstTime.bind(this)} 
+                                time={this.formatDate(this.date, "LT") }
+                                className={this.props.hasTimezonePicker ? "half" : "full"} />
+                        }
+                        {this.props.hasTimezonePicker && 
+                            <TimezonePicker 
+                                onUpdate={this.updateTimezone.bind(this)} 
+                                value={this.state.timezone} />
+                        }
+                    </div>
                 </div>
 
                 {this.props.isDateRange && <div>
@@ -409,9 +430,14 @@ DatePicker.propTypes = {
     minSecondDate: PropTypes.instanceOf(Date),
     maxSecondDate: PropTypes.instanceOf(Date),
 
+    // timezone value & update callback
+    timezone: PropTypes.string,
+
     // if set to true, it shows time picker 
     hasTimePicker: PropTypes.bool,
 
+    // if set to true, it shows time zone picker 
+    hasTimezonePicker: PropTypes.bool,
 
     //if set to true it shows static text instead of input fields
     isInputReadOnly: PropTypes.bool,
@@ -447,5 +473,10 @@ DatePicker.propTypes = {
 
 DatePicker.defaultProps = {
     showClearDates: false,
-    calendarPosition: "bottom"
+    calendarPosition: "bottom",
+    hasTimezonePicker: false,
+    hasTimePicker: false
 };
+
+export default DatePicker;
+export { timeZones };
