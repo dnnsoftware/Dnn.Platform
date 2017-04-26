@@ -260,8 +260,16 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             //update tab with import flag, to trigger update event handler.
-            localTab.TabSettings.Add("TabImported", "Y");
+            if (localTab.TabSettings.ContainsKey("TabImported"))
+            {
+                localTab.TabSettings["TabImported"] = "Y";
+            }
+            else
+            {
+                localTab.TabSettings.Add("TabImported", "Y");
+            }
             _tabController.UpdateTab(localTab);
+            TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
 
             var contentItem = _contentController.GetContentItem(localTab.ContentItemId);
             if(contentItem != null)
