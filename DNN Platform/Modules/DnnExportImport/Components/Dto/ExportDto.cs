@@ -28,6 +28,7 @@ namespace Dnn.ExportImport.Components.Dto
     [JsonObject]
     public class ExportDto
     {
+        public object Id { get; set; }
         /// <summary>
         /// Specifies the version of the exportes schema.
         /// </summary>
@@ -158,6 +159,11 @@ namespace Dnn.ExportImport.Components.Dto
         /// Whether to run the job immediately or not.
         /// </summary>
         public bool RunNow { get; set; }
+
+        /// <summary>
+        /// Used to determine if the DB file needs cleanup before starting import or not.
+        /// </summary>
+        public bool IsDirty { get; set; }
     }
 
     /// <summary>
