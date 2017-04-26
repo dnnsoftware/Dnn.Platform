@@ -395,6 +395,15 @@ namespace Dnn.ExportImport.Components.Engines
                     }
                 }
             }
+
+            try
+            {
+                File.Delete(dbName);
+            }
+            catch (Exception)
+            {
+                result.AddSummary("The exacted db file can't removed, please delete it manually.", dbName);
+            }
         }
 
         private void PrepareCheckPoints(int jobId, List<BasePortableService> parentServices, List<BasePortableService> implementors,

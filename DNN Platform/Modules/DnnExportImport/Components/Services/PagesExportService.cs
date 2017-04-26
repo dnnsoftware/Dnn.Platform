@@ -257,19 +257,19 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
                 AddTabRelatedItems(localTab, otherTab, true);
-            }
 
-            //update tab with import flag, to trigger update event handler.
-            if (localTab.TabSettings.ContainsKey("TabImported"))
-            {
-                localTab.TabSettings["TabImported"] = "Y";
+                //update tab with import flag, to trigger update event handler.
+                if (localTab.TabSettings.ContainsKey("TabImported"))
+                {
+                    localTab.TabSettings["TabImported"] = "Y";
+                }
+                else
+                {
+                    localTab.TabSettings.Add("TabImported", "Y");
+                }
+                _tabController.UpdateTab(localTab);
+                TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
             }
-            else
-            {
-                localTab.TabSettings.Add("TabImported", "Y");
-            }
-            _tabController.UpdateTab(localTab);
-            TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
 
             var contentItem = _contentController.GetContentItem(localTab.ContentItemId);
             if(contentItem != null)
