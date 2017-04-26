@@ -272,6 +272,7 @@ namespace Dnn.ExportImport.Components.Services
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
+            var vocabularyController = new VocabularyController();
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var other in otherTaxonomyTerms)
             {
@@ -281,6 +282,12 @@ namespace Dnn.ExportImport.Components.Services
                 var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name);
                 var vocabulary = otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.VocabularyID);
                 var vocabularyId = vocabulary?.LocalId ?? 0;
+                var localVocabulary = vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == vocabularyId);
+
+                if (localVocabulary == null)
+                {
+                    continue;
+                }
 
                 if (local != null)
                 {
@@ -301,10 +308,14 @@ namespace Dnn.ExportImport.Components.Services
                                 Weight = other.Weight,
                             };
 
-                            if (term.ParentTermId.HasValue)
+                            if (localVocabulary.IsHeirarchical)
+                            {
                                 dataService.UpdateHeirarchicalTerm(term, modifiedBy);
+                            }
                             else
+                            {
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
+                            }
                             DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
                             Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
@@ -325,7 +336,7 @@ namespace Dnn.ExportImport.Components.Services
                     };
 
 
-                    other.LocalId = term.ParentTermId.HasValue
+                    other.LocalId = localVocabulary.IsHeirarchical
                         ? dataService.AddHeirarchicalTerm(term, createdBy)
                         : dataService.AddSimpleTerm(term, createdBy);
                     Result.AddLogEntry("Added taxonomy", other.Name);
