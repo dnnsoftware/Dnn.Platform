@@ -21,12 +21,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Dto.Jobs;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Services;
@@ -36,6 +38,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Scheduling;
 using Newtonsoft.Json;
+using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Engines
 {
@@ -59,8 +62,6 @@ namespace Dnn.ExportImport.Components.Engines
         private readonly Stopwatch _stopWatch = Stopwatch.StartNew();
         private int _timeoutSeconds;
 
-        public int ProgressPercentage { get; private set; } = 1;
-
         public void Export(ExportImportJob exportJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             var exportDto = JsonConvert.DeserializeObject<ExportDto>(exportJob.JobObject);
@@ -71,7 +72,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return;
             }
 
-            _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
+            _timeoutSeconds = GetTimeoutPerSlot();
             var dbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
@@ -126,7 +127,7 @@ namespace Dnn.ExportImport.Components.Engines
             PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
-            scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.FromDate ?? Constants.MinDbTime}] and [{exportDto.ToDate:g}]");
+            scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.FromDateUtc ?? Constants.MinDbTime}] and [{exportDto.ToDateUtc:g}]");
             var firstIteration = true;
             AddJobToCache(exportJob);
 
@@ -175,8 +176,18 @@ namespace Dnn.ExportImport.Components.Engines
                                 // persist the record in db
                                 CheckpointCallback(service);
                             }
+                            else if (service.CheckPoint.StartDate == Null.NullDate)
+                                service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
 
-                            service.ExportData(exportJob, exportDto);
+                            try
+                            {
+                                service.ExportData(exportJob, exportDto);
+
+                            }
+                            finally
+                            {
+                                AddLogsToDatabase(exportJob.JobId, result.CompleteLog);
+                            }
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
                     }
@@ -216,42 +227,13 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Successful;
                 SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
 
-                //TODO: Thumb generation at root with name exportJob.Directory.jpg
                 var exportController = new ExportController();
-                var zipDbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
-                var zipAssetsName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipFiles);
-                var zipTemplatesName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipTemplates);
-                FileInfo zipDbFinfo;
-                if (File.Exists(zipDbName))
-                {
-                    zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size    
-                }
-                else
-                {
-                    zipDbFinfo = new FileInfo(Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName));
-                }
-                result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
-                var exportSize = zipDbFinfo.Length;
                 var exportFileInfo = new ExportFileInfo
                 {
                     ExportPath = exportJob.Directory,
-                    ExportDbSize = Util.FormatSize(zipDbFinfo.Length)
+                    ExportSize = Util.FormatSize(GetExportSize(Path.Combine(ExportFolder, exportJob.Directory)))
                 };
-                if (File.Exists(zipAssetsName))
-                {
-                    var zipAssetsFInfo = new FileInfo(zipAssetsName); // refresh to get new size
-                    exportSize += zipAssetsFInfo.Length;
-                    exportFileInfo.ExportFilesSize = Util.FormatSize(zipAssetsFInfo.Length);
-                    result.AddSummary("Exported Assets File Size", Util.FormatSize(zipAssetsFInfo.Length));
-                }
-                if (File.Exists(zipTemplatesName))
-                {
-                    var zipTemplatesFInfo = new FileInfo(zipTemplatesName); // refresh to get new size
-                    exportSize += zipTemplatesFInfo.Length;
-                    exportFileInfo.ExportTemplatesSize = Util.FormatSize(zipTemplatesFInfo.Length);
-                    result.AddSummary("Exported Templates File Size", Util.FormatSize(zipTemplatesFInfo.Length));
-                }
-                exportFileInfo.ExportSize = Util.FormatSize(exportSize);
+
                 summary.ExportFileInfo = exportFileInfo;
                 exportController.CreatePackageManifest(exportJob, exportFileInfo, summary);
             }
@@ -260,7 +242,7 @@ namespace Dnn.ExportImport.Components.Engines
         public void Import(ExportImportJob importJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB #{importJob.JobId}</b>");
-            _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
+            _timeoutSeconds = GetTimeoutPerSlot();
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
             if (importDto == null)
             {
@@ -285,8 +267,6 @@ namespace Dnn.ExportImport.Components.Engines
                 importJob.JobStatus = JobStatus.Failed;
                 return;
             }
-
-            //TODO: unzip files first
 
             using (var ctx = new ExportImportRepository(dbName))
             {
@@ -370,9 +350,18 @@ namespace Dnn.ExportImport.Components.Engines
                                                      Progress = 0,
                                                      StartDate = DateUtils.GetDatabaseUtcTime()
                                                  };
+                            if (service.CheckPoint.StartDate == Null.NullDate)
+                                service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
                             CheckpointCallback(service);
 
-                            service.ImportData(importJob, importDto);
+                            try
+                            {
+                                service.ImportData(importJob, importDto);
+                            }
+                            finally
+                            {
+                                AddLogsToDatabase(importJob.JobId, result.CompleteLog);
+                            }
                             scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                         }
                     }
@@ -400,6 +389,10 @@ namespace Dnn.ExportImport.Components.Engines
                 else if (importJob.JobStatus == JobStatus.InProgress)
                 {
                     importJob.JobStatus = JobStatus.Successful;
+                    if (importDto.ExportDto.IncludeContent)
+                    {
+                        PagesExportService.ResetContentsFlag(ctx);
+                    }
                 }
             }
         }
@@ -507,14 +500,13 @@ namespace Dnn.ExportImport.Components.Engines
             includedItems.Remove(Constants.Category_Content);
 
             if (exportDto.Pages.Length > 0)
+            {
                 includedItems.Add(Constants.Category_Pages);
-
-            // must be included always when there is at least one other object to process
-            includedItems.Add(Constants.Category_Portal);
+                includedItems.Add(Constants.Category_Workflows);
+            }
 
             if (exportDto.IncludeContent)
                 includedItems.Add(Constants.Category_Content);
-
 
             if (exportDto.IncludeFiles)
                 includedItems.Add(Constants.Category_Assets);
@@ -540,45 +532,45 @@ namespace Dnn.ExportImport.Components.Engines
             if (exportDto.IncludeExtensions)
                 includedItems.Add(Constants.Category_Packages);
 
-            foreach (var includedItem in includedItems.ToList())
+            var additionalItems = new List<string>();
+            foreach (var includedItem in includedItems)
             {
                 BasePortableService basePortableService;
                 if (
                     (basePortableService =
                         implementors.FirstOrDefault(x => x.ParentCategory.Equals(includedItem, IgnoreCaseComp))) != null)
                 {
-                    includedItems.Add(basePortableService.Category);
+                    additionalItems.Add(basePortableService.Category);
                 }
             }
+            additionalItems.ForEach(i => includedItems.Add(i));
+
+            // must be included always when there is at least one other object to process
+            if (includedItems.Any())
+                includedItems.Add(Constants.Category_Portal);
 
             return includedItems;
         }
 
-        private static int GetTimeoutPerSlot(int scheduleId)
+        private static int GetTimeoutPerSlot()
         {
-            var provider = SchedulingProvider.Instance();
-            var nseedsUpdate = false;
-            int value;
-            var settings = provider.GetScheduleItemSettings(scheduleId);
-            if (!int.TryParse(settings[Constants.MaxTimeToRunJobKey] as string ?? "", out value))
+            var value = 0;
+            var setting = SettingsController.Instance.GetSetting(Constants.MaxSecondsToRunJobKey);
+            if (setting != null && !int.TryParse(setting.SettingValue, out value))
             {
-                // max time to run a job is 2 hours
-                value = (int)TimeSpan.FromHours(2).TotalSeconds;
-                nseedsUpdate = true;
+                // default max time to run a job is 8 hours
+                value = (int)TimeSpan.FromHours(8).TotalSeconds;
             }
 
-            // enforce minimum of 60 seconds per slot
-            if (value < 60)
+            // enforce minimum/maximum of 10 minutes/12 hours per slot
+            if (value < 600)
             {
-                value = 60;
-                nseedsUpdate = true;
+                value = 600;
             }
-
-            if (nseedsUpdate)
+            else if (value > 12 * 60 * 60)
             {
-                provider.AddScheduleItemSetting(scheduleId, Constants.MaxTimeToRunJobKey, value.ToString());
+                value = 12 * 60 * 60;
             }
-
             return value;
         }
 
@@ -591,7 +583,6 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static void DoPacking(ExportImportJob exportJob, string dbName)
         {
-            //TODO: Error handling
             var exportFileArchive = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
             var folderOffset = exportFileArchive.IndexOf(Constants.ExportZipDbName, StringComparison.Ordinal);
             File.Delete(CompressionUtil.AddFileToArchive(dbName, exportFileArchive, folderOffset)
@@ -601,13 +592,18 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static void DoUnPacking(ExportImportJob importJob)
         {
-            //TODO: Error handling
             var extractFolder = Path.Combine(ExportFolder, importJob.Directory);
             var dbName = Path.Combine(extractFolder, Constants.ExportDbName);
             if (File.Exists(dbName))
                 return;
             var zipDbName = Path.Combine(extractFolder, Constants.ExportZipDbName);
             CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, extractFolder, false);
+        }
+
+        private static long GetExportSize(string exportFolder)
+        {
+            var files = Directory.GetFiles(exportFolder);
+            return files.Sum(file => new FileInfo(file).Length);
         }
 
         private static string[] NotAllowedCategoriesinRequestArray => new[]
@@ -623,7 +619,51 @@ namespace Dnn.ExportImport.Components.Engines
             Constants.Category_Vocabularies,
             Constants.Category_Templates,
             Constants.Category_ProfileProps,
-            Constants.Category_Packages
+            Constants.Category_Packages,
+            Constants.Category_Workflows,
+        };
+
+        public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
+        {
+            if (completeLog == null || completeLog.Count == 0) return;
+
+            using (var table = new DataTable("ExportImportJobLogs"))
+            {
+                // must create the columns from scratch with each iteration
+                table.Columns.AddRange(DatasetColumns.Select(
+                    column => new DataColumn(column.Item1, column.Item2)).ToArray());
+
+                // batch specific amount of record each time
+                const int batchSize = 500;
+                var toSkip = 0;
+                while (toSkip < completeLog.Count)
+                {
+                    foreach (var item in completeLog.Skip(toSkip).Take(batchSize))
+                    {
+                        var row = table.NewRow();
+                        row["JobId"] = jobId;
+                        row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
+                        row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
+                        row["Level"] = (int)item.ReportLevel;
+                        row["CreatedOnDate"] = item.CreatedOnDate;
+                        table.Rows.Add(row);
+                    }
+
+                    PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
+                    toSkip += batchSize;
+                    table.Rows.Clear();
+                }
+            }
+            completeLog.Clear();
+        }
+
+        private static readonly Tuple<string, Type>[] DatasetColumns =
+        {
+            new Tuple<string,Type>("JobId", typeof(int)),
+            new Tuple<string,Type>("Name" , typeof(string)),
+            new Tuple<string,Type>("Value", typeof(string)),
+            new Tuple<string,Type>("Level", typeof(int)),
+            new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
         };
     }
 }

@@ -18,6 +18,7 @@
       <Templates Include="..\Website\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
       <RadSpell Include="..\Components\Telerik\App_Data\RadSpell\*.tdf" />
+      <ExportImport Include="..\Website\App_Data\ExportImport\PlaceHolder.txt" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <InstallFiles Include="..\Website\Install\InstallWizard*.*" />
@@ -61,6 +62,7 @@
 
     <Copy SourceFiles="@(Database)" DestinationFolder="$(WebsiteAppDataPath)" Condition="'@(WebsiteDatabase)' == ''" />
     <Copy SourceFiles="@(RadSpell)" DestinationFolder="$(WebsiteRadSpellPath)" Condition="'@(WebsiteRadSpell)' == ''" />
+    <Copy SourceFiles="@(ExportImport)" DestinationFolder="$(WebsiteAppDataPath)\ExportImport"/>
     <Copy SourceFiles="@(Templates)" DestinationFolder="$(WebsiteHostPortalPath)" Condition="'@(WebsiteTemplates)' == ''"/>
     <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" Condition="'@(WebsiteConfig)' == ''"/>
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />

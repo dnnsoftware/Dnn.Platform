@@ -27,8 +27,6 @@ namespace Dnn.ExportImport.Dto.ProfileProperties
     {
         public int PropertyDefinitionId { get; set; }
 
-        public int? PortalId { get; set; }
-
         public int? ModuleDefId { get; set; }
 
         public bool Deleted { get; set; }

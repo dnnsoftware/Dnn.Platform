@@ -42,8 +42,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var fromDate = exportDto.FromDate?.DateTime;
-            var toDate = exportDto.ToDate;
+            var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
+            var toDate = exportDto.ToDateUtc.ToLocalTime();
             if (CheckPoint.Stage > 2) return;
             List<ExportRole> roles = null;
             List<ExportRoleSetting> roleSettings = null;
@@ -66,7 +66,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 CheckPointStageCallback(this);
 
-                Repository.CreateItems(roleGroups, null);
+                Repository.CreateItems(roleGroups);
                 Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
                 CheckPoint.ProcessedItems = roleGroups.Count;
                 CheckPoint.Progress = 30;
@@ -80,7 +80,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (roles == null)
                     roles = CBO.FillCollection<ExportRole>(
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
-                Repository.CreateItems(roles, null);
+                Repository.CreateItems(roles);
                 Result.AddSummary("Exported Roles", roles.Count.ToString());
                 CheckPoint.Progress = 80;
                 CheckPoint.ProcessedItems += roles.Count;
@@ -94,10 +94,11 @@ namespace Dnn.ExportImport.Components.Services
                 if (roleSettings == null)
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
-                Repository.CreateItems(roleSettings, null);
+                Repository.CreateItems(roleSettings);
                 Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += roleSettings.Count;
+                CheckPoint.Completed = true;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
@@ -146,6 +147,7 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += otherRoleSettings.Count;
+                CheckPoint.Completed = true;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
@@ -251,7 +253,7 @@ namespace Dnn.ExportImport.Components.Services
                             localRoleInfo.TrialFrequency = other.TrialFrequency;
                             localRoleInfo.TrialPeriod = other.TrialPeriod ?? 0;
 
-                            RoleController.Instance.UpdateRole(localRoleInfo, other.AutoAssignment);
+                            RoleController.Instance.UpdateRole(localRoleInfo, false);
                             roleItems.Add(new RoleItem(localRoleInfo.RoleID, createdBy, modifiedBy));
 
                             // do not assign existing users to the roles automatically
@@ -293,7 +295,7 @@ namespace Dnn.ExportImport.Components.Services
                         TrialPeriod = other.TrialPeriod ?? 0,
                     };
 
-                    other.LocalId = RoleController.Instance.AddRole(roleInfo, other.AutoAssignment);
+                    other.LocalId = RoleController.Instance.AddRole(roleInfo, false);
                     roleItems.Add(new RoleItem(roleInfo.RoleID, createdBy, modifiedBy));
                     RoleController.Instance.ClearRoleCache(roleInfo.RoleID);
                     Result.AddLogEntry("Added role", other.RoleName);

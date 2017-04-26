@@ -148,8 +148,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <returns></returns>
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
-            var controller = EntitiesController.Instance;
-            return controller.GetLastJobTime(portalId, jobType);
+            return EntitiesController.Instance.GetLastJobTime(portalId, jobType);
         }
 
         protected static ImportExportSummary BuildJobSummary(int jobId)
@@ -168,8 +167,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 IncludePermissions = exportDto.IncludePermissions,
                 IncludeProfileProperties = exportDto.IncludeProperfileProperties,
                 IncludeContent = exportDto.IncludeContent,
-                FromDate = exportDto.FromDate?.DateTime,
-                ToDate = exportDto.ToDate,
+                FromDate = exportDto.FromDateUtc,
+                ToDate = exportDto.ToDateUtc,
                 ExportMode = exportDto.ExportMode,
                 ExportFileInfo = job.JobType == JobType.Export
                     ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
@@ -186,7 +185,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 ProcessedItems = checkpoint.ProcessedItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
                 Category = checkpoint.Category,
-                Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0
+                Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,
+                Completed = checkpoint.Completed
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
@@ -209,10 +209,9 @@ namespace Dnn.ExportImport.Components.Controllers
                 });
             }
 
-            //TODO: Get export file info.
             summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
-            summary.FromDate = exportDto.FromDate?.DateTime;
-            summary.ToDate = exportDto.ToDate;
+            summary.FromDate = exportDto.FromDateUtc;
+            summary.ToDate = exportDto.ToDateUtc;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
             summary.IncludeContent = exportDto.IncludeContent;
@@ -239,6 +238,8 @@ namespace Dnn.ExportImport.Components.Controllers
         private static JobItem ToJobItem(ExportImportJob job)
         {
             var user = UserController.Instance.GetUserById(job.PortalId, job.CreatedByUserId);
+            var name = job.JobType == JobType.Import ? JsonConvert.DeserializeObject<ImportDto>(job.JobObject)?.ExportDto?.ExportName : job.Name;
+
             return new JobItem
             {
                 JobId = job.JobId,
@@ -248,7 +249,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Status = (int)job.JobStatus,
                 Cancelled = job.IsCancelled,
                 JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
-                Name = job.Name,
+                Name = name,
                 Description = job.Description,
                 CreatedOn = job.CreatedOnDate,
                 CompletedOn = job.CompletedOnDate,

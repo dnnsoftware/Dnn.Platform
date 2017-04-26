@@ -28,13 +28,12 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles;
-using System.Linq;
-using System.Xml.Linq;
 using System.Text;
 using System.IO;
 using System.Threading;
 using Dnn.ExportImport.Components.Controllers;
+using Dnn.ExportImport.Components.Providers;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
 using Newtonsoft.Json;
@@ -44,7 +43,7 @@ namespace Dnn.ExportImport.Components.Common
     public static class Util
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
-
+        private static int _noRole = Convert.ToInt32(Globals.glbRoleNothing);
         // some string extension helpers
         public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
         public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
@@ -113,12 +112,12 @@ namespace Dnn.ExportImport.Components.Common
             return user.UserID < 0 ? importJob.CreatedByUserId : user.UserID;
         }
 
-        public static int? GetRoleIdByName(int portalId, string exportRolename)
+        public static int? GetRoleIdByName(int portalId, int exportRoleId, string exportRolename)
         {
-            if (string.IsNullOrEmpty(exportRolename)) return -1;
+            if (string.IsNullOrEmpty(exportRolename)) return null;
 
-            var role = RoleController.Instance.GetRoleByName(portalId, exportRolename);
-            return role?.RoleID;
+            var roleId = DataProvider.Instance().GetRoleIdByName(exportRoleId >= 0 ? portalId : -1, exportRolename);
+            return roleId == _noRole ? null : (int?)roleId;
         }
 
         public static int? GeModuleDefIdByFriendltName(string friendlyName)
@@ -131,12 +130,12 @@ namespace Dnn.ExportImport.Components.Common
 
         public static int? GePermissionIdByName(string permissionCode, string permissionKey, string permissionName)
         {
-            if (string.IsNullOrEmpty(permissionName) ||
+            if (string.IsNullOrEmpty(permissionCode) ||
                 string.IsNullOrEmpty(permissionKey) ||
                 string.IsNullOrEmpty(permissionName))
                 return null;
 
-            var permission = EntitiesController.Instance.GetPermissionInfo(permissionName, permissionKey, permissionName);
+            var permission = EntitiesController.Instance.GetPermissionInfo(permissionCode, permissionKey, permissionName);
             return permission?.PermissionID;
         }
 
@@ -171,7 +170,6 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        //TODO: We should implement some base serializer to fix dates for all the entities.
         public static void FixDateTime<T>(T item)
         {
             var properties = item.GetType().GetRuntimeProperties();
@@ -180,7 +178,7 @@ namespace Dnn.ExportImport.Components.Common
                 if ((property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?)) &&
                     (property.GetValue(item) as DateTime?) == DateTime.MinValue)
                 {
-                    property.SetValue(item, Constants.EpochTime);
+                    property.SetValue(item, Constants.MinDbTime);
                 }
             }
         }
@@ -192,7 +190,7 @@ namespace Dnn.ExportImport.Components.Common
                 dateTime = new DateTime(
                     dateTime.Year, dateTime.Month, dateTime.Day,
                     dateTime.Hour, dateTime.Minute, dateTime.Second,
-                    DateTimeKind.Utc);
+                    dateTime.Millisecond, DateTimeKind.Utc);
                 return userInfo.LocalTime(dateTime);
             }
             return dateTime;
@@ -216,11 +214,8 @@ namespace Dnn.ExportImport.Components.Common
             if (dateTime.Value.Kind != DateTimeKind.Utc) return dateTime;
             var differenceInUtcTimes =
                 TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
-            var localDateTime = dateTime.Value.ToLocalTime().AddMilliseconds(differenceInUtcTimes);
-            return new DateTime(
-                    localDateTime.Year, localDateTime.Month, localDateTime.Day,
-                    localDateTime.Hour, localDateTime.Minute, localDateTime.Second,
-                    DateTimeKind.Local);
+            var d = dateTime.Value.ToLocalTime().AddMilliseconds(differenceInUtcTimes);
+            return new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Local);
         }
 
         /// <summary>
@@ -234,11 +229,8 @@ namespace Dnn.ExportImport.Components.Common
             if (dateTime.Value.Kind == DateTimeKind.Utc) return dateTime;
             var differenceInUtcTimes =
                 TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
-            var localDateTime = dateTime.Value.ToUniversalTime().AddMilliseconds(differenceInUtcTimes);
-            return new DateTime(
-                localDateTime.Year, localDateTime.Month, localDateTime.Day,
-                localDateTime.Hour, localDateTime.Minute, localDateTime.Second,
-                DateTimeKind.Utc);
+            var d = dateTime.Value.ToUniversalTime().AddMilliseconds(differenceInUtcTimes);
+            return new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
         }
 
         public static string GetDateTimeString(DateTime? dateTime)
@@ -249,12 +241,6 @@ namespace Dnn.ExportImport.Components.Common
         public static string FormatNumber(int? number)
         {
             return number?.ToString("n0", Thread.CurrentThread.CurrentUICulture);
-        }
-
-        private static string GetTagValue(XContainer xmlDoc, string name, string rootTag)
-        {
-            return (from f in xmlDoc.Descendants(rootTag)
-                    select f.Element(name)?.Value).SingleOrDefault();
         }
     }
 }

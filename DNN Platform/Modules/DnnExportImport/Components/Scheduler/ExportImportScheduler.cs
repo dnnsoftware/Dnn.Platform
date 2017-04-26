@@ -20,21 +20,16 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text;
+using System.Threading;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
-using Dnn.ExportImport.Components.Dto.Jobs;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
-using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Scheduler
 {
@@ -44,6 +39,20 @@ namespace Dnn.ExportImport.Components.Scheduler
     public class ExportImportScheduler : SchedulerClient
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
+
+        private const int EmergencyScheduleFrequency = 120;
+        private const int DefaultScheduleFrequency = 1;
+        private const string EmergencyScheduleFrequencyUnit = "m";
+        private const string DefaultScheduleFrequencyUnit = "d";
+
+        private const int EmergencyScheduleRetry = 90;
+        private const int DefaultScheduleRetry = 1;
+        private const string EmergencyScheduleRetryUnit = "s";
+        private const string DefaultScheduleRetryUnit = "h";
+
+        private const int EmergencyHistoryNumber = 1;
+        private const int DefaultHistoryNumber = 60;
+
 
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -78,6 +87,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         JobId = job.JobId,
                     };
                     var engine = new ExportImportEngine();
+                    var succeeded = true;
 
                     switch (job.JobType)
                     {
@@ -88,8 +98,8 @@ namespace Dnn.ExportImport.Components.Scheduler
                             }
                             catch (Exception ex)
                             {
-                                result.AddLogEntry("EXCEPTION", ex.Message, ReportLevel.Error);
-                                AddLogsToDatabase(job.JobId, result.CompleteLog);
+                                result.AddLogEntry("EXCEPTION exporting job #" + job.JobId, ex.Message, ReportLevel.Error);
+                                engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
                             EntitiesController.Instance.UpdateJobStatus(job);
@@ -99,10 +109,25 @@ namespace Dnn.ExportImport.Components.Scheduler
                             {
                                 engine.Import(job, result, ScheduleHistoryItem);
                             }
+                            catch (ThreadAbortException)
+                            {
+                                ScheduleHistoryItem.TimeLapse = EmergencyScheduleFrequency;
+                                ScheduleHistoryItem.TimeLapseMeasurement = EmergencyScheduleFrequencyUnit;
+                                ScheduleHistoryItem.RetryTimeLapse = EmergencyScheduleRetry;
+                                ScheduleHistoryItem.RetryTimeLapseMeasurement = EmergencyScheduleRetryUnit;
+                                ScheduleHistoryItem.RetainHistoryNum = EmergencyHistoryNumber;
+
+                                SchedulingController.UpdateSchedule(ScheduleHistoryItem);
+
+                                SchedulingController.PurgeScheduleHistory();
+
+                                Logger.Error("The Schduler item stopped because main thread stopped, set schedule into emergency mode so it will start after app restart.");
+                                succeeded = false;
+                            }
                             catch (Exception ex)
                             {
-                                result.AddLogEntry("EXCEPTION", ex.Message, ReportLevel.Error);
-                                AddLogsToDatabase(job.JobId, result.CompleteLog);
+                                result.AddLogEntry("EXCEPTION importing job #" + job.JobId, ex.Message, ReportLevel.Error);
+                                engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
                             EntitiesController.Instance.UpdateJobStatus(job);
@@ -117,6 +142,21 @@ namespace Dnn.ExportImport.Components.Scheduler
                     }
 
                     ScheduleHistoryItem.Succeeded = true;
+
+                    //restore schedule item running timelapse to default.
+                    if (succeeded
+                        && ScheduleHistoryItem.TimeLapse == EmergencyScheduleFrequency
+                        && ScheduleHistoryItem.TimeLapseMeasurement == EmergencyScheduleFrequencyUnit)
+                    {
+                        ScheduleHistoryItem.TimeLapse = DefaultScheduleFrequency;
+                        ScheduleHistoryItem.TimeLapseMeasurement = DefaultScheduleFrequencyUnit;
+                        ScheduleHistoryItem.RetryTimeLapse = DefaultScheduleRetry;
+                        ScheduleHistoryItem.RetryTimeLapseMeasurement = DefaultScheduleRetryUnit;
+                        ScheduleHistoryItem.RetainHistoryNum = DefaultHistoryNumber;
+
+                        SchedulingController.UpdateSchedule(ScheduleHistoryItem);
+                    }
+
                     var sb = new StringBuilder();
                     var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
                     var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
@@ -133,7 +173,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     }
 
                     ScheduleHistoryItem.AddLogNote(sb.ToString());
-                    AddLogsToDatabase(job.JobId, result.CompleteLog);
+                    engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
 
                     Logger.Trace("Site Export/Import: Job Finished");
                 }
@@ -151,48 +191,5 @@ namespace Dnn.ExportImport.Components.Scheduler
                 //}
             }
         }
-
-        private static void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
-        {
-            if (completeLog == null || completeLog.Count == 0) return;
-
-            using (var table = new DataTable("ExportImportJobLogs"))
-            {
-                // must create the columns from scratch with each iteration
-                table.Columns.AddRange(DatasetColumns.Select(
-                    column => new DataColumn(column.Item1, column.Item2)).ToArray());
-
-                // batch specific amount of record each time
-                const int batchSize = 500;
-                var toSkip = 0;
-                while (toSkip < completeLog.Count)
-                {
-                    foreach (var item in completeLog.Skip(toSkip).Take(batchSize))
-                    {
-                        var row = table.NewRow();
-                        row["JobId"] = jobId;
-                        row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
-                        row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
-                        row["Level"] = (int)item.ReportLevel;
-                        row["CreatedOnDate"] = item.CreatedOnDate;
-                        table.Rows.Add(row);
-                    }
-
-                    PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
-                    toSkip += batchSize;
-                    table.Rows.Clear();
-                }
-            }
-            completeLog.Clear();
-        }
-
-        private static readonly Tuple<string, Type>[] DatasetColumns =
-        {
-            new Tuple<string,Type>("JobId", typeof(int)),
-            new Tuple<string,Type>("Name" , typeof(string)),
-            new Tuple<string,Type>("Value", typeof(string)),
-            new Tuple<string,Type>("Level", typeof(int)),
-            new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
-        };
     }
 }

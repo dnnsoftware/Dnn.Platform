@@ -41,7 +41,7 @@ namespace Dnn.ExportImport.Components.Common
     /// </summary>
     public enum ExportMode
     {
-        Complete = 0,
+        Full = 0,
         Differential = 1
     }
 

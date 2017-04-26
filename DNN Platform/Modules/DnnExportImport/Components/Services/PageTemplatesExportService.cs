@@ -6,6 +6,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
+using System.IO;
 using Dnn.ExportImport.Dto.PageTemplates;
 using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
@@ -43,8 +44,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (CheckPoint.Stage == 0)
                 {
-                    var fromDate = exportDto.FromDate?.DateTime;
-                    var toDate = exportDto.ToDate;
+                    var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
+                    var toDate = exportDto.ToDateUtc.ToLocalTime();
                     var portal = PortalController.Instance.GetPortal(portalId);
 
                     var templates =
@@ -79,6 +80,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     CheckPoint.Stage++;
                     currentIndex = 0;
+                    CheckPoint.Completed = true;
                     CheckPoint.Progress = 100;
                 }
             }
@@ -94,7 +96,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
             //Skip the export if all the templates have been processed already.
-            if (CheckPoint.Stage >= 2)
+            if (CheckPoint.Stage >= 2 || CheckPoint.Completed)
                 return;
 
             var portalId = importJob.PortalId;
@@ -106,18 +108,28 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 0)
             {
-                var portal = PortalController.Instance.GetPortal(portalId);
+                if (!File.Exists(templatesFile))
+                {
+                    Result.AddLogEntry("TemplatesFileNotFound", "Templates file not found. Skipping templates import",
+                        ReportLevel.Warn);
+                    CheckPoint.Completed = true;
+                    CheckPointStageCallback(this);
+                }
+                else
+                {
+                    var portal = PortalController.Instance.GetPortal(portalId);
 
-                CompressionUtil.UnZipArchive(templatesFile, portal.HomeDirectoryMapPath,
-                    importDto.CollisionResolution == CollisionResolution.Overwrite);
+                    CompressionUtil.UnZipArchive(templatesFile, portal.HomeDirectoryMapPath,
+                        importDto.CollisionResolution == CollisionResolution.Overwrite);
 
-                Result.AddSummary("Imported templates", totalTemplates.ToString());
-                CheckPoint.Stage++;
-                CheckPoint.StageData = null;
-                CheckPoint.Progress = 90;
-                CheckPoint.TotalItems = totalTemplates;
-                CheckPoint.ProcessedItems = totalTemplates;
-                if (CheckPointStageCallback(this)) return;
+                    Result.AddSummary("Imported templates", totalTemplates.ToString());
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    CheckPoint.Progress = 90;
+                    CheckPoint.TotalItems = totalTemplates;
+                    CheckPoint.ProcessedItems = totalTemplates;
+                    if (CheckPointStageCallback(this)) return;
+                }
             }
             if (CheckPoint.Stage == 1)
             {
@@ -125,6 +137,7 @@ namespace Dnn.ExportImport.Components.Services
                 var templates = Repository.GetAllItems(predicate).Select(x => x.Folder).Distinct();
                 templates.ForEach(x => FolderManager.Instance.Synchronize(importJob.PortalId, x));
                 CheckPoint.Stage++;
+                CheckPoint.Completed = true;
                 CheckPoint.Progress = 100;
                 CheckPointStageCallback(this);
             }

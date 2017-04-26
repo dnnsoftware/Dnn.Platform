@@ -486,7 +486,7 @@ namespace DotNetNuke.Common
             {
                 if (_installMapPath == null)
                 {
-                    _installMapPath = HttpContext.Current.Server.MapPath(InstallPath);
+                    _installMapPath = ApplicationMapPath + "\\Install\\";
                 }
                 return _installMapPath;
             }

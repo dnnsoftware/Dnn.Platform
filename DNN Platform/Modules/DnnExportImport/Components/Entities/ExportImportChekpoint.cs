@@ -43,6 +43,8 @@ namespace Dnn.ExportImport.Components.Entities
         public DateTime StartDate { get; set; }
         public DateTime LastUpdateDate { get; set; }
 
+        public bool Completed { get; set; }
+
         public double Progress
         {
             get { return _progress; }
@@ -76,6 +78,7 @@ namespace Dnn.ExportImport.Components.Entities
             ProcessedItems = Null.SetNullInteger(dr[nameof(ProcessedItems)]);
             StartDate = Null.SetNullDateTime(dr[nameof(StartDate)]);
             LastUpdateDate = Null.SetNullDateTime(dr[nameof(LastUpdateDate)]);
+            Completed = Null.SetNullBoolean(dr[nameof(Completed)]);
         }
     }
 }

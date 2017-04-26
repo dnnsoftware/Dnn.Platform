@@ -7,6 +7,18 @@ DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] 
 DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_IMPORT'
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_Settings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddSetting]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddSetting]
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportSettings]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportSettings]
+GO
+
 IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
 			WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport')
 	DELETE FROM {databaseOwner}{objectQualifier}Schedule
@@ -102,20 +114,40 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NO
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserType]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulkData]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulkData]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserDataType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserDataType]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserRoleType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserRoleType]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserProfileType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserProfileType]
 GO
 
 --Profile Properties
@@ -141,6 +173,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 -- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleIdByName]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleIdByName]
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 GO
@@ -188,8 +224,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT
 GO
 
 -- Pages / Tabs
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Tabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Tabs]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabSettings]', 'P') IS NOT NULL
@@ -234,5 +270,17 @@ GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetUserDeleted]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetUserDeleted]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflows]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflows]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]
 GO
 

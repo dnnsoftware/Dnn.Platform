@@ -29,7 +29,7 @@ namespace Dnn.ExportImport.Dto.Pages
     {
         public int ModuleID { get; set; }
         public int ModuleDefID { get; set; }
-        public string FriendlyName { get; set; }
+        public string FriendlyName { get; set; } // this is ModuleDefinition.FriendlyName
         public bool AllTabs { get; set; }
         public bool IsDeleted { get; set; }
         public bool? InheritViewPermissions { get; set; }

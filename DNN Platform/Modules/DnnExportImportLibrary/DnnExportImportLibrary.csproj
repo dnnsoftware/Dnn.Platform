@@ -48,6 +48,7 @@
     <Compile Include="Dto\Assets\ExportFolderMapping.cs" />
     <Compile Include="Dto\Assets\ExportFolderPermission.cs" />
     <Compile Include="Dto\BasicExportImportDto.cs" />
+    <Compile Include="Dto\Pages\ExportPackage.cs" />
     <Compile Include="Dto\Pages\ExportModule.cs" />
     <Compile Include="Dto\Pages\ExportModuleContent.cs" />
     <Compile Include="Dto\Pages\ExportModulePermission.cs" />
@@ -78,6 +79,9 @@
     <Compile Include="Dto\Users\ExportUserProfile.cs" />
     <Compile Include="Dto\Users\ExportUserRelationship.cs" />
     <Compile Include="Dto\Users\ExportUserRole.cs" />
+    <Compile Include="Dto\Workflow\ExportWorkflow.cs" />
+    <Compile Include="Dto\Workflow\ExportWorkflowState.cs" />
+    <Compile Include="Dto\Workflow\ExportWorkflowStatePermission.cs" />
     <Compile Include="Interfaces\IExportImportRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ExportImportRepository.cs" />

@@ -30,7 +30,7 @@ using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Providers
 {
-    public class DataProvider
+    internal class DataProvider
     {
         #region Shared/Static Methods
 
@@ -100,6 +100,17 @@ namespace Dnn.ExportImport.Components.Providers
             _dataProvider.ExecuteNonQuery(60, "ExportImportJobs_Remove", jobId);
         }
 
+        public IDataReader GetExportImportSettings()
+        {
+            return _dataProvider.ExecuteReader("ExportImport_Settings");
+        }
+        public void AddExportImportSetting(ExportImportSetting exportImportSetting)
+        {
+            _dataProvider.ExecuteNonQuery("ExportImport_AddSetting", exportImportSetting.SettingName,
+                exportImportSetting.SettingValue, exportImportSetting.SettingIsSecure,
+                exportImportSetting.CreatedByUserId);
+        }
+
         public IDataReader GetFirstActiveJob()
         {
             return _dataProvider.ExecuteReader("ExportImportJobs_FirstActive");
@@ -138,14 +149,20 @@ namespace Dnn.ExportImport.Components.Providers
 
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
-            return _dataProvider.ExecuteScalar<DateTime?>("ExportImportJobLogs_LastJobTime", portalId, jobType);
+            var datim = _dataProvider.ExecuteScalar<DateTime?>("ExportImportJobLogs_LastJobTime", portalId, jobType);
+            if (datim.HasValue)
+            {
+                var d = datim.Value;
+                datim = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
+            }
+            return datim;
         }
 
         public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
         {
             _dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",
                 checkpoint.JobId, checkpoint.AssemblyName, checkpoint.Category, checkpoint.Stage, checkpoint.StageData,
-                Null.SetNullInteger(Math.Floor(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems, _dataProvider.GetNull(checkpoint.StartDate));
+                Null.SetNullInteger(Math.Floor(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems, _dataProvider.GetNull(checkpoint.StartDate), checkpoint.Completed);
         }
 
         public IDataReader GetAllScopeTypes()
@@ -183,6 +200,12 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
+        public int GetRoleIdByName(int portalId, string roleName)
+        {
+            return _dataProvider.ExecuteScalar<int>("Export_RoleIdByName", _dataProvider.GetNull(portalId), roleName);
+        }
+
+
         public void SetRoleAutoAssign(int roleId)
         {
             _dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);
@@ -194,34 +217,17 @@ namespace Dnn.ExportImport.Components.Providers
                 .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDate,
-            DateTime? fromDate, DateTime toDateUtc, DateTime? fromDateUtc)
+        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
         {
             return _dataProvider
-                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDate,
-                    _dataProvider.GetNull(fromDate), toDateUtc, _dataProvider.GetNull(fromDateUtc), false);
+                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDateUtc,
+                    _dataProvider.GetNull(fromDateUtc), false);
         }
 
-        public int GetUsersCount(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        public int GetUsersCount(int portalId, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
         {
             return _dataProvider
-                .ExecuteScalar<int>("Export_GetAllUsers", portalId, 0, 0, includeDeleted, toDate,
-                    _dataProvider.GetNull(fromDate), _dataProvider.GetNull(null), _dataProvider.GetNull(null), true);
-        }
-
-        public IDataReader GetAspNetUser(string username)
-        {
-            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username);
-        }
-
-        public IDataReader GetUserMembership(Guid userId)
-        {
-            return _dataProvider.ExecuteReader("Export_GetUserMembership", userId);
-        }
-
-        public IDataReader GetUserProfile(int portalId, int userId)
-        {
-            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId);
+                .ExecuteScalar<int>("Export_GetAllUsers", portalId, 0, 0, includeDeleted, toDateUtc, _dataProvider.GetNull(fromDateUtc), true);
         }
 
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
@@ -232,12 +238,7 @@ namespace Dnn.ExportImport.Components.Providers
 
         public IDataReader GetPortalSettings(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetPortalPermissions(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public IDataReader GetPortalLanguages(int portalId, DateTime toDate, DateTime? fromDate)
@@ -287,7 +288,7 @@ namespace Dnn.ExportImport.Components.Providers
 
         public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, includeDeleted, includeSystem, toDate, fromDate);
+            return _dataProvider.ExecuteReader("Export_Tabs", portalId, includeDeleted, includeSystem, toDate, fromDate);
         }
 
         public IDataReader GetAllTabSettings(int tabId, DateTime toDate, DateTime? fromDate)
@@ -353,6 +354,26 @@ namespace Dnn.ExportImport.Components.Providers
         public void UpdateTabUrlChangers(int tabId, int seqNum, int? createdBy, int? modifiedBy)
         {
             _dataProvider.ExecuteNonQuery("Export_UpdateTabUrlChangers", tabId, seqNum, createdBy, modifiedBy);
+        }
+
+        public IDataReader GetAllWorkflows(int portalId, bool includeDeleted)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflows", portalId, includeDeleted);
+        }
+
+        public IDataReader GetAllWorkflowSources(int workflowId)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflowSources", workflowId);
+        }
+
+        public IDataReader GetAllWorkflowStates(int workflowId)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflowStates", workflowId);
+        }
+
+        public IDataReader GetAllWorkflowStatePermissions(int workflowStateId, DateTime toDate, DateTime? fromDate)
+        {
+            return _dataProvider.ExecuteReader("Export_ContentWorkflowStatePermissions", workflowStateId, toDate, fromDate);
         }
     }
 }

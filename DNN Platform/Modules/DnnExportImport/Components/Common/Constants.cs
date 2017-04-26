@@ -38,20 +38,22 @@ namespace Dnn.ExportImport.Components.Common
         internal const string ExportZipDbName = "export_db.zip"; // export compressed database file name
         internal const string ExportZipFiles = "export_files.zip"; //Compressed assets file name
         internal const string ExportZipTemplates = "export_templates.zip"; //Compressed templates file name
+        internal const string ExportZipPackages = "export_packages.zip"; //Compressed extension packages
+        internal const string ExportZipThemes = "export_themes.zip"; //Compressed site used themes
 
         internal const string LogTypeSiteExport = "SITE_EXPORT";
         internal const string LogTypeSiteImport = "SITE_IMPORT";
 
         internal const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         internal const string LastJobStartTimeKey = "EXPORT_LastJobStartTime";
-        internal const string MaxTimeToRunJobKey = "EXPORT_MaxTimeToRunJob";
+        internal const string MaxSecondsToRunJobKey = "MaxSecondsToRunJob";
+        internal const string PortalSettingExportKey = "PortalSettingExportList";
         internal const string TemplatesExtension = "template";
         internal const int DefaultPageSize = 1000;
 
         internal const int LogColumnLength = 255;
 
-        internal static DateTime EpochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        internal static DateTime MinDbTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static int MaxZipFilesMemory = 104857600;//100 MB
 
@@ -66,6 +68,8 @@ namespace Dnn.ExportImport.Components.Common
         public const string Category_Templates = "TEMPLATES";
         public const string Category_Assets = "ASSETS";
         public const string Category_Packages = "PACKAGES";
+        public const string Category_Themes = "THEMES";
+        public const string Category_Workflows = "WORKFLOW";
 
         // these are added internally by the engine
         internal const string Category_Portal = "PORTAL";

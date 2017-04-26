@@ -37,6 +37,8 @@ namespace Dnn.ExportImport.Repository
         public ExportImportRepository(string dbFileName)
         {
             _lightDb = new LiteDatabase(dbFileName);
+            _lightDb.Mapper.EmptyStringToNull = false;
+            _lightDb.Mapper.TrimWhitespace = false;
         }
 
         ~ExportImportRepository()
@@ -83,10 +85,10 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        public void CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
+        public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null) where T : BasicExportImportDto
         {
             if (items == null) return;
-            var allItems = items.ToList();
+            var allItems = items as List<T> ?? items.ToList();
             if (allItems.Count == 0) return;
 
             var collection = DbCollection<T>();
@@ -138,18 +140,13 @@ namespace Dnn.ExportImport.Repository
             where T : BasicExportImportDto
         {
             var collection = DbCollection<T>();
-            var result = predicate != null ? collection.Find(predicate) : collection.FindAll();
+
+            var result = predicate != null
+                ? collection.Find(predicate, skip ?? 0, max ?? int.MaxValue)
+                : collection.Find(Query.All(), skip ?? 0, max ?? int.MaxValue);
 
             if (orderKeySelector != null)
                 result = asc ? result.OrderBy(orderKeySelector) : result.OrderByDescending(orderKeySelector);
-            else
-                result = result.OrderBy(x => x.Id);
-
-            if (skip != null)
-                result = result.Skip(skip.Value);
-
-            if (max != null)
-                result = result.Take(max.Value);
 
             return result.AsEnumerable();
         }

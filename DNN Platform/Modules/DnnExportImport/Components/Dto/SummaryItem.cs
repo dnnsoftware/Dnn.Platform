@@ -39,12 +39,6 @@ namespace Dnn.ExportImport.Components.Dto
         public string Category { get; set; }
 
         /// <summary>
-        /// Localized text to show on UI. 
-        /// </summary>
-        //TODO: Note: This item might be removed and always derived from localization on UI.
-        public string InfoText => Localization.GetString(Category + ".InfoText", Constants.SharedResources);
-
-        /// <summary>
         /// Total items to import/export.
         /// </summary>
         public int TotalItems { get; set; }
@@ -58,6 +52,11 @@ namespace Dnn.ExportImport.Components.Dto
         /// Items processed.
         /// </summary>
         public int ProcessedItems { get; set; }
+
+        /// <summary>
+        /// Is job finished or not yet.
+        /// </summary>
+        public bool Completed { get; set; }
 
         /// <summary>
         /// Formatted processed items.

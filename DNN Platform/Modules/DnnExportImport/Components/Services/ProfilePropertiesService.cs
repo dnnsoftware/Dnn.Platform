@@ -40,8 +40,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var fromDate = exportDto.FromDate?.DateTime;
-            var toDate = exportDto.ToDate;
+            var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
+            var toDate = exportDto.ToDateUtc.ToLocalTime();
             if (CheckCancelled(exportJob)) return;
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
@@ -57,10 +57,11 @@ namespace Dnn.ExportImport.Components.Services
             CheckPointStageCallback(this);
 
             if (CheckCancelled(exportJob)) return;
-            Repository.CreateItems(profileProperties, null);
+            Repository.CreateItems(profileProperties);
             Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             CheckPoint.Progress = 100;
             CheckPoint.ProcessedItems = profileProperties.Count;
+            CheckPoint.Completed = true;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);
         }
@@ -105,6 +106,7 @@ namespace Dnn.ExportImport.Components.Services
 
             Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
             CheckPoint.ProcessedItems = profileProperties.Count;
+            CheckPoint.Completed = true;
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);

@@ -99,7 +99,6 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 using (var ctx = new ExportImportRepository(dbPath))
                 {
-                    //TODO: Build the import info from database.
                     if (summary != null)
                         BuildJobSummary(packageId, ctx, summary);
                     isValid = true;
@@ -123,7 +122,6 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private static string UnPackDatabase(string folderPath)
         {
-            //TODO: Error handling
             var dbName = Path.Combine(folderPath, Constants.ExportDbName);
             if (File.Exists(dbName))
                 return dbName;

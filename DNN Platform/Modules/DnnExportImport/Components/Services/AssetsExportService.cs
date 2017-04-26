@@ -29,12 +29,11 @@ using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Dnn.ExportImport.Dto.Assets;
+using Dnn.ExportImport.Dto.Workflow;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
 using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
@@ -79,8 +78,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (CheckPoint.Stage == 0)
                 {
-                    var fromDate = exportDto.FromDate?.DateTime;
-                    var toDate = exportDto.ToDate;
+                    var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
+                    var toDate = exportDto.ToDateUtc.ToLocalTime();
                     var portal = PortalController.Instance.GetPortal(portalId);
 
                     var folders =
@@ -151,8 +150,12 @@ namespace Dnn.ExportImport.Components.Services
                             currentIndex++;
                             //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                             if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
+                            Repository.RebuildIndex<ExportFolder>(x => x.Id, true);
+                            Repository.RebuildIndex<ExportFolder>(x => x.UserId);
+                            Repository.RebuildIndex<ExportFile>(x => x.ReferenceId);
                         }
                     }
+                    CheckPoint.Completed = true;
                     CheckPoint.Stage++;
                     currentIndex = 0;
                     CheckPoint.Progress = 100;
@@ -175,7 +178,7 @@ namespace Dnn.ExportImport.Components.Services
             //Stage 2: All folders and files imported.
             //Stage 3: Synchronization completed.
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 2)
+            if (CheckPoint.Stage >= 2 || CheckPoint.Completed)
                 return;
 
             var totalFolderImported = 0;
@@ -189,13 +192,23 @@ namespace Dnn.ExportImport.Components.Services
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {
-                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath,
-                    importDto.CollisionResolution == CollisionResolution.Overwrite);
-                //Stage 1: Once unzipping of portal files is completed.
-                CheckPoint.Stage++;
-                CheckPoint.StageData = null;
-                CheckPoint.Progress = 10;
-                if (CheckPointStageCallback(this)) return;
+                if (!File.Exists(assetsFile))
+                {
+                    Result.AddLogEntry("AssetsFileNotFound", "Assets file not found. Skipping assets import",
+                        ReportLevel.Warn);
+                    CheckPoint.Completed = true;
+                    CheckPointStageCallback(this);
+                }
+                else
+                {
+                    CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath,
+                        importDto.CollisionResolution == CollisionResolution.Overwrite);
+                    //Stage 1: Once unzipping of portal files is completed.
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    CheckPoint.Progress = 10;
+                    if (CheckPointStageCallback(this)) return;
+                }
             }
 
             if (CheckPoint.Stage == 1)
@@ -277,6 +290,7 @@ namespace Dnn.ExportImport.Components.Services
                         if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
                     currentIndex = 0;
+                    CheckPoint.Completed = true;
                     CheckPoint.Stage++;
                     CheckPoint.Progress = 100;
                 }
@@ -318,17 +332,15 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore:
-                        //TODO: Log that user was ignored.
                         return false;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
             folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? "" : folder.FolderPath;
-            folder.PortalId = portalId;
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
             if (folderMapping == null) return false;
-
+            var workFlowId = GetLocalWorkFlowId(folder.WorkflowId);
             if (isUpdate)
             {
                 Util.FixDateTime(existingFolder);
@@ -336,7 +348,7 @@ namespace Dnn.ExportImport.Components.Services
                     .UpdateFolder(importJob.PortalId, folder.VersionGuid, existingFolder.FolderId, folder.FolderPath,
                         folder.StorageLocation, folder.MappedPath, folder.IsProtected, folder.IsCached,
                         DateUtils.GetDatabaseLocalTime(), modifiedBy, folderMapping.FolderMappingID, folder.IsVersioned,
-                        folder.WorkflowId ?? Null.NullInteger, existingFolder.ParentId ?? Null.NullInteger);
+                        workFlowId, existingFolder.ParentId ?? Null.NullInteger);
 
                 folder.FolderId = existingFolder.FolderId;
 
@@ -361,7 +373,7 @@ namespace Dnn.ExportImport.Components.Services
                         .AddFolder(importJob.PortalId, Guid.NewGuid(), folder.VersionGuid, folder.FolderPath,
                             folder.MappedPath, folder.StorageLocation, folder.IsProtected, folder.IsCached,
                             DateUtils.GetDatabaseLocalTime(),
-                            createdBy, folderMapping.FolderMappingID, folder.IsVersioned, folder.WorkflowId ?? Null.NullInteger,
+                            createdBy, folderMapping.FolderMappingID, folder.IsVersioned, workFlowId,
                             folder.ParentId ?? Null.NullInteger);
                 }
                 //Case when the folder is a user folder.
@@ -417,7 +429,6 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore:
-                        //TODO: Log that user was ignored.
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
@@ -443,18 +454,18 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (permissionId != null)
                 {
+                    var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+
                     folderPermission.PermissionId = Convert.ToInt32(permissionId);
                     if (folderPermission.UserId != null && folderPermission.UserId > 0 && !string.IsNullOrEmpty(folderPermission.Username))
                     {
-                        folderPermission.UserId =
-                            UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
+                        folderPermission.UserId = UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
                         if (folderPermission.UserId == null)
                             return;
                     }
-                    if (folderPermission.RoleId != null && folderPermission.RoleId >= 0 && !string.IsNullOrEmpty(folderPermission.RoleName))
+                    if (folderPermission.RoleId != null && folderPermission.RoleId > noRole && !string.IsNullOrEmpty(folderPermission.RoleName))
                     {
-                        folderPermission.RoleId =
-                            RoleController.Instance.GetRoleByName(portalId, folderPermission.RoleName)?.RoleID;
+                        folderPermission.RoleId = Util.GetRoleIdByName(portalId, folderPermission.RoleId ?? noRole, folderPermission.RoleName);
                         if (folderPermission.RoleId == null)
                             return;
                     }
@@ -463,7 +474,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     folderPermission.FolderPermissionId = DotNetNuke.Data.DataProvider.Instance()
                         .AddFolderPermission(folderPermission.FolderId, folderPermission.PermissionId,
-                            folderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing), folderPermission.AllowAccess,
+                            folderPermission.RoleId ?? noRole, folderPermission.AllowAccess,
                             folderPermission.UserId ?? Null.NullInteger, createdBy);
                 }
             }
@@ -472,8 +483,6 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessFiles(ExportImportJob importJob, ImportDto importDto, ExportFile file, IEnumerable<ExportFile> localFiles)
         {
-            var portalId = importJob.PortalId;
-
             if (file == null) return;
             var existingFile = localFiles.FirstOrDefault(x => x.FileName == file.FileName);
             var isUpdate = false;
@@ -485,13 +494,11 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore:
-                        //TODO: Log that user was ignored.
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
-            file.PortalId = portalId;
             if (isUpdate)
             {
                 var modifiedBy = Util.GetUserIdByName(importJob, file.LastModifiedByUserId, file.LastModifiedByUserName);
@@ -521,7 +528,9 @@ namespace Dnn.ExportImport.Components.Services
                         file.FolderId,
                         createdBy, file.Sha1Hash, DateUtils.GetDatabaseLocalTime(), file.Title, file.Description,
                         file.StartDate, file.EndDate ?? Null.NullDate, file.EnablePublishPeriod,
-                        file.ContentItemId ?? Null.NullInteger);
+                        //file.ContentItemId ?? Null.NullInteger);--If we keep it we will see FK_PK relationship errors.
+                        Null.NullInteger);
+
 
                 if (file.Content != null)
                     DotNetNuke.Data.DataProvider.Instance().UpdateFileContent(file.FileId, file.Content);
@@ -574,6 +583,16 @@ namespace Dnn.ExportImport.Components.Services
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
             return 0;
+        }
+
+        private int GetLocalWorkFlowId(int? exportedWorkFlowId)
+        {
+            if (exportedWorkFlowId!=null && exportedWorkFlowId > 1) // 1 is direct publish
+            {
+                var state = Repository.GetItem<ExportWorkflow>(item => item.WorkflowID == exportedWorkFlowId);
+                return state?.LocalId ?? -1;
+            }
+            return -1;
         }
     }
 }

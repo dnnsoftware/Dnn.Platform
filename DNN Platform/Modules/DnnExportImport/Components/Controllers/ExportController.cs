@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
@@ -37,11 +38,12 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             exportDto.ProductSku = DotNetNuke.Application.DotNetNukeContext.Current.Application.SKU;
             exportDto.ProductVersion = Globals.FormatVersion(DotNetNuke.Application.DotNetNukeContext.Current.Application.Version, true);
-            exportDto.ToDate = DateUtils.GetDatabaseLocalTime();
-            var directory = DateUtils.GetDatabaseLocalTime().ToString("yyyy-MM-dd_HH-mm-ss");
+            var dbTime = DateUtils.GetDatabaseUtcTime();
+            exportDto.ToDateUtc = dbTime.AddMilliseconds(-dbTime.Millisecond);
+            var directory = dbTime.ToString("yyyy-MM-dd_HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
-                exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export);
+                exportDto.FromDateUtc = GetLastJobTime(exportDto.PortalId, JobType.Export);
             }
             var dataObject = JsonConvert.SerializeObject(exportDto);
 

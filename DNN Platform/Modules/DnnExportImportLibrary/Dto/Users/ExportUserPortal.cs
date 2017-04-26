@@ -26,7 +26,6 @@ namespace Dnn.ExportImport.Dto.Users
     public class ExportUserPortal : BasicExportImportDto
     {
         public int UserId { get; set; }
-        public int UserPortalId { get; set; }
         public DateTime CreatedDate { get; set; }
         public bool Authorised { get; set; }
         public bool IsDeleted { get; set; }
