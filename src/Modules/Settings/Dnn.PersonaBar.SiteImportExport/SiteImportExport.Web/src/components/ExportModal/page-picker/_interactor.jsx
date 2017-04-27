@@ -66,8 +66,9 @@ export class PagePickerInteractor extends Component {
     _requestDescendantTabs = (ParentTabId) => {
         console.log("requeting descendantTabs");
 
-        let descendantTabs = null;
+         let descendantTabs = null;
         const inspect = (tabs) => console.log("inspecting :", tabs);
+        const params = `&parentId=${ParentTabId}`;
         const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
         const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
             !Array.isArray(tab.ChildTabs) ? tab.ChildTabs = [] : null;
@@ -76,17 +77,7 @@ export class PagePickerInteractor extends Component {
 
         const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants, copy);
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
-        const appendDescendants = (parentTab) => {
-            console.log(descendantTabs);
-
-            descendantTabs.forEach((tab) => {
-                const truthy = () => {
-                    parentTab.ChildTabs.push(tab);
-                };
-                const falsey = () => null;
-                parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? truthy() : falsey();
-            });
-        };
+        const appendDescendants = (parentTab) => descendantTabs.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
 
         let copiedDescendants = {};
         const copy = (descendantTabs) => copiedDescendants = JSON.parse(JSON.stringify(descendantTabs));
