@@ -17,21 +17,26 @@ export class PagePickerInteractor extends Component {
     super();
     this.cached_ChildTabs;
     this.icon = IconSelector("arrow_bullet");
-    this.PortalTabParamters = props.PortalTabParamters || null;
+    this.PortalTabsParameters = props.PortalTabsParameters
     this.InitialTabsURL = "http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0";
     this.DescendantTabsURL = "http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0";
     this.selectAll = false;
     this.ExportModalOnSelect = props.OnSelect;
+    this.serviceFramework = props.serviceFramework;
+    this.moduleRoot = props.moduleRoot
+    this.controller = props.controller
   }
 
   componentWillMount() {
     this.setState({ tabs: [], selectAll: false, childrenSelected: true });
     this.init();
-    console.log(window.sf)
   }
 
   init() {
     this._requestInitialTabs();
+    this.serviceFramework.moduleRoot = this.moduleRoot
+    this.serviceFramework.controller = this.controller
+    this._serviceFrameworkGetInitialTabs()
   }
 
   _requestInitialTabs = () => {
@@ -48,6 +53,29 @@ export class PagePickerInteractor extends Component {
     .then(() => ExportInitialSelection())
 
     .catch(() => this.PortalTabs = this.tabs);
+  }
+
+  _serviceFrameworkGetInitialTabs() {
+
+    const serializeQueryStringParameters = (obj) => {
+      const s = [];
+      for (let p in obj) {
+        const data = encodeURIComponent(p) + "=" + encodeURIComponent(obj[p])
+        console.log(data)
+        obj.hasOwnProperty(p) ? s.push(data) : null
+      }
+      return s.join("&");
+    }
+
+    return new Promise((resolve, reject) => {
+      console.log(this.(PortalTabsParameters))
+      const query = serializeQueryStringParameters(this.PortalTabsParameters)
+      console.log(query)
+      const params = `GetPortalTabs?${query}`
+      this.serviceFramework.get(params, {}, (res)=>resolve(res.Results), (err)=>reject(res))
+    })
+
+    
   }
 
   _requestDescendantTabs = (ParentTabId) => {
@@ -282,6 +310,7 @@ export class PagePickerInteractor extends Component {
               export={this.export}
               getChildTabs={this.getChildTabs}
               setMasterRootCheckedState={this.setMasterRootCheckedState}
+              PortalTabsParameters={this.PortalTabsParameters}
               rootContext={this}
               />);
 

@@ -376,6 +376,7 @@ class ExportModal extends Component {
                                OnSelect={this.updatePagesToExport.bind(this)}
                                moduleRoot={"PersonaBar"}
                                controller={"Tabs"}
+                               serviceFramework={utilities.utilities.sf}
                                />
 
 
