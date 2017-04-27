@@ -27,6 +27,7 @@ export class PagePickerInteractor extends Component {
   componentWillMount() {
     this.setState({ tabs: [], selectAll: false, childrenSelected: true });
     this.init();
+    console.log(window.sf)
   }
 
   init() {

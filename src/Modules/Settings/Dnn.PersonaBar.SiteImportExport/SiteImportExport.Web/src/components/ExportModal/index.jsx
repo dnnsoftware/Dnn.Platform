@@ -371,7 +371,12 @@ class ExportModal extends Component {
                         </div>
                         <div className="export-pages">
                             <div className="sectionTitle">{Localization.get("PagesInExport")}</div>
-                            <PagePickerInteractor PortalTabsParameters={PortalTabsParameters} OnSelect={this.updatePagesToExport.bind(this)}/>
+                            <PagePickerInteractor
+                               PortalTabsParameters={PortalTabsParameters}
+                               OnSelect={this.updatePagesToExport.bind(this)}
+                               moduleRoot={"PersonaBar"}
+                               controller={"Tabs"}
+                               />
 
 
                             <div className="seperator2">
