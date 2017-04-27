@@ -34,7 +34,7 @@ export class PagePickerInteractor extends Component {
         this.serviceFramework = props.serviceFramework;
         this.moduleRoot = props.moduleRoot;
         this.controller = props.controller;
-        this.getInitialPortalTabs = props.getInitialPortalTabs;
+
 
         this.copy = {};
 
@@ -52,7 +52,7 @@ export class PagePickerInteractor extends Component {
             this.ExportModalOnSelect(selection);
         };
 
-        this.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
+        this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
             this.PortalTabs = response.Results;
             this.flatTabs = ppdm.flatten(this.PortalTabs);
             this.copy = JSON.parse(JSON.stringify(this.PortalTabs));
