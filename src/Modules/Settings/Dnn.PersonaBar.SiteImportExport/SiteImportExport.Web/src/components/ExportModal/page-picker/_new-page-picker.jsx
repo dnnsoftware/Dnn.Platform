@@ -31,8 +31,9 @@ export class PagePickerDesktop extends Component {
         this.tabs = props.tabs;
         this.getChildTabs = props.getChildTabs;
         this.export = props.export;
-        this.selectAll = props.selectAll;
+        this.root = props.root;
         rootContext = props.rootContext;
+
 
         this.setMasterRootCheckedState = props.setMasterRootCheckedState;
     }
@@ -61,6 +62,7 @@ export class PagePickerDesktop extends Component {
         const flatTabs = Object.keys(this.flatTabs).map(key => this.flatTabs[key]);
         const update = flatTabs.filter(tab => typeof STATE === "object" && `${tab.TabId}-${tab.Name}` in STATE === false);
         update.forEach(tab => STATE[`${tab.TabId}-${tab.Name}`] = tab);
+
     }
 
     __setMasterRoot = () => {
@@ -414,6 +416,7 @@ export class PagePickerDesktop extends Component {
     }
 
     setCheckedState = (tab) => {
+        console.log('the tab', tab)
         if (tab.IsOpen && tab.CheckedState) {
             console.log("in reset");
             tab.CheckedState = 0;
@@ -539,6 +542,7 @@ export class PagePickerDesktop extends Component {
                     {childrenSelectedIndicator}
                     {tab.HasChildren && tab.IsOpen ?
                         <PagePickerDesktop
+                            root={this.root}
                             setMasterRootCheckedState={this.setMasterRootCheckedState}
                             rootContext={rootContext}
                             export={this.export.bind(this)}
@@ -570,7 +574,7 @@ PagePickerDesktop.propTypes = {
     tabs: PropTypes.object.isRequired,
     setMasterRootCheckedState: PropTypes.func.isRequired,
     rootContext: PropTypes.object.isRequired,
-    selectAll: PropTypes.bool,
+    root: PropTypes.object.isRequired,
     icon_type: PropTypes.object.isRequired,
     export: PropTypes.func.isRequired,
     getChildTabs: PropTypes.func.isRequired

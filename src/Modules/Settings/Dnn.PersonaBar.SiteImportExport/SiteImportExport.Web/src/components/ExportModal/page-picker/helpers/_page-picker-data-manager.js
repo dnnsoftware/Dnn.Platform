@@ -196,7 +196,7 @@ export class PagePickerDataManager {
         this._init();
         this._flatten();
         this._updateParentChildTabs();
-        this._removeDuplicateChildTabIds();
+        //this._removeDuplicateChildTabIds();
         this._clearChildTabs();
         return this.storage;
     }
