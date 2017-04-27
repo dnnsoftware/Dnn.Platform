@@ -226,7 +226,7 @@ export class PagePickerInteractor extends Component {
                 const parentExists = !!parent;
 
                 const falsey = () => falsey;
-                const isAllChildrenChecked = () => parent.CheckedState == 2 ? true : false;
+                const isAllChildrenChecked = () => parent.CheckedState === 2 ? true : false;
 
                 const bool = parentExists ? isAllChildrenChecked() : falsey();
                 return !bool;
@@ -259,6 +259,29 @@ export class PagePickerInteractor extends Component {
         const right = () => this.setState({ childrenSelected: false });
 
         childrenSelected !== 0 ? left() : right();
+
+        const update = Object.assign({}, this.state.tabs);
+
+        switch (true) {
+            case childrenSelected === totalChildren:
+                update.CheckedState = 2;
+                 this.setState({tabs:update});
+
+            return;
+            case childrenSelected < totalChildren && childrenSelected !== 0:
+                update.CheckedState = 1;
+                this.setState({tabs:update});
+
+            return;
+            case childrenSelected === 0:
+                 update.CheckedState = 1;
+                 this.setState({tabs:update});
+            return;
+            default:
+              
+            return;
+        }
+
     }
 
     getChildTabs = (ParentTabId) => {

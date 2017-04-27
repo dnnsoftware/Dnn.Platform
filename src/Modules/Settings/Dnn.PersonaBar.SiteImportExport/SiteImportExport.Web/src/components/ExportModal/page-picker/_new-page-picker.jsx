@@ -10,7 +10,7 @@ const merge = styles.merge;
 const inlineBlock = styles.display("inline-block");
 
 let memoize_lastTab = null;
-let STATE = false;
+let STATE = {};
 let context = [];
 let rootContext = null;
 
@@ -39,7 +39,7 @@ export class PagePickerDesktop extends Component {
     }
 
     componentWillMount() {
-        STATE = STATE || this.flatTabs;
+        STATE = Object.keys(STATE).length ? STATE : this.flatTabs;
         this.__setMasterRoot();
         const unique_context = (context.filter(ref => ref.id === this.id).length === 0);
         unique_context ? context.push(this) : null;
@@ -307,7 +307,7 @@ export class PagePickerDesktop extends Component {
         const toggleCheckAllChildtabs = (tab) => tab.CheckedState = tab.HasChildren ? 2 : 1;
         const setState = (tab) => ChildStates[`${tab.TabId}-${tab.Name}`] = tab;
 
-        this._mapChildTabs(tab, openAllChildTabs);
+       // this._mapChildTabs(tab, openAllChildTabs);
         this._mapChildTabs(tab, toggleCheckAllChildtabs);
         this._mapChildTabs(tab, parentShowIndicators);
         this._mapChildTabs(tab, setState);
