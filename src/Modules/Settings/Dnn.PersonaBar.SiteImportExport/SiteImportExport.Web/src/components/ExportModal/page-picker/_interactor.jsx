@@ -34,8 +34,6 @@ export class PagePickerInteractor extends Component {
         this.serviceFramework = props.serviceFramework;
         this.moduleRoot = props.moduleRoot;
         this.controller = props.controller;
-
-
         this.copy = {};
 
     }
@@ -83,10 +81,36 @@ export class PagePickerInteractor extends Component {
 
 
         this.props.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
-            console.log('called how many times')
+            const setCheckedState = (tab) => {
+                const left = () => {
+                    const select = () => {
+                        console.log('in select')
+                        tab.ChildTabs = tab.ChildTabs.map(child => {
+                            child.CheckedState = child.HasChildren ? 2 : 1;
+                            return child;
+                        });
+                    };
+
+                    const unselect = () => {
+                        console.log('in unselect');
+                        tab.ChildTabs = tab.ChildTabs.map(child => {
+                            child.CheckedState = 0; return child;
+                        });
+                    };
+
+                    console.log(tab)
+                    tab.CheckedState ? select() : unselect();
+                };
+
+                const right = () => null;
+                parseInt(tab.TabId) === parseInt(ParentTabId) ? left() : right();
+            };
+
             const tabs = response.Results;
             input(tabs);
             this._traverseChildTabs(appendDescendants);
+            this._traverseChildTabs(setCheckedState);
+
             this._traverseCopyTabs(appendCopies);
             this.setState({ tabs: this.state.tabs });
             callback();
@@ -204,7 +228,7 @@ export class PagePickerInteractor extends Component {
             setTimeout(() => {
 
                 const RootTab = this._generateSelectionObject(this.state.tabs);
-                const ExportRootOnly = () =>  {
+                const ExportRootOnly = () => {
                     const exports = [RootTab]
                     console.log(exports);
                     this.ExportModalOnSelect(exports);
@@ -216,9 +240,9 @@ export class PagePickerInteractor extends Component {
                     this.ExportModalOnSelect(exports);
                 };
 
-                RootTab.CheckedState===2 ? ExportRootOnly() : ExportSelection();
+                RootTab.CheckedState === 2 ? ExportRootOnly() : ExportSelection();
 
-             },1);
+            }, 1);
 
         };
 
