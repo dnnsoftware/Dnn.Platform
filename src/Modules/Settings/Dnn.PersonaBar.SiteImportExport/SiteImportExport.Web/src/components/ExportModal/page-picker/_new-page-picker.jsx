@@ -114,7 +114,7 @@ export class PagePickerDesktop extends Component {
     _getTabById = (TabId) => {
         return Object.keys(STATE)
             .map(key => STATE[key])
-            .filter(tab => parseInt(tab.TabId) === parseInt(TabId) );
+            .filter(tab => parseInt(tab.TabId) === parseInt(TabId));
     }
 
     _getRootTab = (TabId) => {
@@ -295,7 +295,7 @@ export class PagePickerDesktop extends Component {
         parent.CheckedState = parent.HasChildren ? 2 : 0;
         parent.ChildrenSelected = parent.HasChildren ? true : null;
 
-        const isSingular = parent.HasChildren===false;
+        const isSingular = parent.HasChildren === false;
         const singularCheckState = () => parent.CheckedState = parent.HasChildren ? 1 : 0;
         const ParentCheckedState = () => parent.CheckedState = parent.HasChildren ? 2 : 0;
 
@@ -304,7 +304,7 @@ export class PagePickerDesktop extends Component {
         let ChildStates = {};
         const openAllChildTabs = (tab) => tab.IsOpen = true;
         const parentShowIndicators = (tab) => tab.HasChildren ? tab.ChildrenSelected = true : tab.ChildrenSelected = false;
-        const toggleCheckAllChildtabs = (tab) => tab.CheckedState = tab.HasChildren ? 2: 1;
+        const toggleCheckAllChildtabs = (tab) => tab.CheckedState = tab.HasChildren ? 2 : 1;
         const setState = (tab) => ChildStates[`${tab.TabId}-${tab.Name}`] = tab;
 
         this._mapChildTabs(tab, openAllChildTabs);
@@ -416,7 +416,6 @@ export class PagePickerDesktop extends Component {
     }
 
     setCheckedState = (tab) => {
-        console.log('the tab', tab)
         if (tab.IsOpen && tab.CheckedState) {
             console.log("in reset");
             tab.CheckedState = 0;

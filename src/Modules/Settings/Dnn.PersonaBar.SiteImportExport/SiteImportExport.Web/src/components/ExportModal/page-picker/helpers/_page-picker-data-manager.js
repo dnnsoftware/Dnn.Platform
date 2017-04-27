@@ -35,9 +35,6 @@ export class PagePickerDataManager {
                 const hasParent = this.hasParent(Tab.TabId);
                 if (hasParent) {
                     this._store(Tab);
-                    // const parent = this.getBy({
-                    //     TabId: Tab.ParentTabId
-                    // })[0];
                 }
             };
             childrenTruthy ? Left() : Right();
@@ -89,12 +86,6 @@ export class PagePickerDataManager {
         rootTab.ChildTabs = rootTab.ChildTabs.sort().filter((id, i, arr) => parseInt(id) !== parseInt(arr[i + 1]) );
     }
 
-    _removeDuplicateChildTabIds() {
-        Object.keys(this.storage).map(id => {
-            let ChildTabs = this.storage[id].ChildTabs;
-            ChildTabs = ChildTabs.sort().filter((id, i, arr) => parseInt(id) !== parseInt(arr[i + 1]) );
-        });
-    }
 
     _mapRootTabs(TabId, fn = (root) => root) {
         let root = null;
@@ -196,7 +187,6 @@ export class PagePickerDataManager {
         this._init();
         this._flatten();
         this._updateParentChildTabs();
-        //this._removeDuplicateChildTabIds();
         this._clearChildTabs();
         return this.storage;
     }
