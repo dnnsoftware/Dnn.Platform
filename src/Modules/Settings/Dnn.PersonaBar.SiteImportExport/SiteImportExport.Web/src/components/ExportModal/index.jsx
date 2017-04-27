@@ -19,7 +19,7 @@ import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
 
-import {PagePickerInteractor} from './page-picker'
+import {PagePickerInteractor} from './page-picker';
 
 const scrollAreaStyle = {
     width: "100%",
@@ -371,7 +371,13 @@ class ExportModal extends Component {
                         </div>
                         <div className="export-pages">
                             <div className="sectionTitle">{Localization.get("PagesInExport")}</div>
-                            <PagePickerInteractor PortalTabsParameters={PortalTabsParameters} OnSelect={this.updatePagesToExport.bind(this)}/>
+                            <PagePickerInteractor
+                               PortalTabsParameters={PortalTabsParameters}
+                               OnSelect={this.updatePagesToExport.bind(this)}
+                               moduleRoot={"PersonaBar"}
+                               controller={"Tabs"}
+                               serviceFramework={utilities.utilities.sf}
+                               />
 
 
                             <div className="seperator2">

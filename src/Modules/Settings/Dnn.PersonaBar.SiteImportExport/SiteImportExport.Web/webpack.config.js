@@ -29,7 +29,8 @@ module.exports = {
         ],
 
         preLoaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
+            //{ test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["babel-loader", "eslint-loader"] }
         ]
     },
 
