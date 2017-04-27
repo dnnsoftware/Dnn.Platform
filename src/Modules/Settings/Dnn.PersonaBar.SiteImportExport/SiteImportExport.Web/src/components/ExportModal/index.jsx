@@ -434,7 +434,9 @@ ExportModal.propTypes = {
     portalId: PropTypes.number.isRequired,
     portalName: PropTypes.string.isRequired,
     exportJobId: PropTypes.number,
-    lastExportTime: PropTypes.string
+    lastExportTime: PropTypes.string,
+    getInitialPortalTabs: PropTypes.func.isRequired,
+    getDescendantPortalTabs: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

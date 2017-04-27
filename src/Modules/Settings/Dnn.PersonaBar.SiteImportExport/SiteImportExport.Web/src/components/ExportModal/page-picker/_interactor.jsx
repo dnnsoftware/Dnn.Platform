@@ -66,32 +66,43 @@ export class PagePickerInteractor extends Component {
     _requestDescendantTabs = (ParentTabId) => {
         console.log("requeting descendantTabs");
 
-        const request = new Promise((resolve, reject) => {
-            let descendantTabs = null;
-            const inspect = (tabs) => console.log("inspecting :", tabs);
-            const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
-            const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
-                !Array.isArray(tab.ChildTabs) ? tab.ChildTabs = [] : null;
-                return tab;
+        let descendantTabs = null;
+        const inspect = (tabs) => console.log("inspecting :", tabs);
+        const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
+        const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
+            !Array.isArray(tab.ChildTabs) ? tab.ChildTabs = [] : null;
+            return tab;
+        });
+
+        const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants, copy);
+        const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
+        const appendDescendants = (parentTab) => {
+            console.log(descendantTabs);
+
+            descendantTabs.forEach((tab) => {
+                const truthy = () => {
+                    parentTab.ChildTabs.push(tab);
+                    parentTab.ChildTabs.sort((a, b)=> parseInt(b.TabId)<parseInt(a.TabId));
+
+                };
+                const falsey = () => null;
+                parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? truthy() : falsey();
             });
+        };
 
-            const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants, copy);
-            const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
-            const appendDescendants = (parentTab) => descendantTabs.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
+        let copiedDescendants = {};
+        const copy = (descendantTabs) => copiedDescendants = JSON.parse(JSON.stringify(descendantTabs));
+        const appendCopies = (parentTab) => copiedDescendants.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
 
-            let copiedDescendants = {};
-            const copy = (descendantTabs) => copiedDescendants = JSON.parse(JSON.stringify(descendantTabs));
-            const appendCopies = (parentTab) => copiedDescendants.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
 
+        const request = new Promise((resolve, reject) => {
             this.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
-                console.log(response)
                 const tabs = response.Results;
                 input(tabs);
                 this._traverseChildTabs(appendDescendants);
                 this._traverseChildTabs(appendCopies);
                 this.setState({ tabs: this.state.tabs });
                 resolve();
-
             });
         });
 
@@ -391,5 +402,7 @@ PagePickerInteractor.propTypes = {
     controller: PropTypes.string.isRequired,
     moduleRoot: PropTypes.string.isrequired,
     OnSelect: PropTypes.func.isRequired,
-    PortalTabParamters: PropTypes.object.isRequired
+    PortalTabParamters: PropTypes.object.isRequired,
+    getInitialPortalTabs: PropTypes.func.isRequired,
+    getDescendantPortalTabs: PropTypes.func.isRequired
 };

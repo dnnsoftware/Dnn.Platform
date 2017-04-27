@@ -284,7 +284,7 @@ export class PagePickerDesktop extends Component {
     _openTabs = (tab) => {
         console.log("in open tabs");
         const ParentTabIdName = `${tab.TabId}-${tab.Name}`;
-        tab.IsOpen = true;
+        tab.IsOpen = tab.IsOpen;
         tab.CheckedState = tab.CheckedState === 2 ? 0 : tab.CheckedState;
         tab.CheckedState = tab.CheckedState === 1 ? 0 : tab.CheckedState;
         tab.CheckedState = tab.CheckedState === 0 && tab.HasChildren ? 2 : tab.CheckedState;
@@ -404,6 +404,7 @@ export class PagePickerDesktop extends Component {
                     const ChildrenSelected = STATE[TabIdName].ChildrenSelected;
                     STATE[TabIdName] = Tab;
                     STATE[TabIdName].ChildrenSelected = ChildrenSelected;
+                    tab.IsOpen = true
                 })
                 .then(() => this._setParentTabChildrenSelected(tab))
                 .then(() => this._setRootTabChildrenSelected(tab))
@@ -417,7 +418,7 @@ export class PagePickerDesktop extends Component {
     }
 
     setCheckedState = (tab) => {
-        if (tab.IsOpen && tab.CheckedState) {
+        if (tab.HasChildren && tab.CheckedState) {
             console.log("in reset");
             tab.CheckedState = 0;
             parseInt(tab.ParentTabId) === -1 ? delete tab.ChildrenSelected : null;
@@ -578,5 +579,6 @@ PagePickerDesktop.propTypes = {
     root: PropTypes.object.isRequired,
     icon_type: PropTypes.object.isRequired,
     export: PropTypes.func.isRequired,
-    getChildTabs: PropTypes.func.isRequired
+    getChildTabs: PropTypes.func.isRequired,
+    getDescendantPortalTabs: PropTypes.func.isRequired
 };
