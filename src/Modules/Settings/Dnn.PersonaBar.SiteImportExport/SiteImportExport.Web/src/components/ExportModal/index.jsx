@@ -19,7 +19,7 @@ import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
 
-import {PagePickerInteractor} from './page-picker';
+import { PagePickerInteractor } from './page-picker';
 
 const scrollAreaStyle = {
     width: "100%",
@@ -61,7 +61,6 @@ class ExportModal extends Component {
         };
 
         this.getInitialPortalTabs = props.getInitialPortalTabs;
-        this.getDescendantPortalTabs = props.getDescendantPortalTabs;
     }
 
     componentWillMount() {
@@ -138,6 +137,10 @@ class ExportModal extends Component {
             success = false;
         }
         return success;
+    }
+
+    getDescendantPortalTabs(PortalTabsParameters, ParentTabId, callback) {
+        this.props.dispatch(ImportExportActions.getDescendantPortalTabs(PortalTabsParameters, ParentTabId, callback));
     }
 
     ValidateTexts(key) {
@@ -377,14 +380,14 @@ class ExportModal extends Component {
                         <div className="export-pages">
                             <div className="sectionTitle">{Localization.get("PagesInExport")}</div>
                             <PagePickerInteractor
-                               PortalTabsParameters={PortalTabsParameters}
-                               OnSelect={this.updatePagesToExport.bind(this)}
-                               moduleRoot={"PersonaBar"}
-                               controller={"Tabs"}
-                               serviceFramework={utilities.utilities.sf}
-                               getInitialPortalTabs={this.getInitialPortalTabs}
-                               getDescendantPortalTabs={this.getDescendantPortalTabs}
-                               />
+                                PortalTabsParameters={PortalTabsParameters}
+                                OnSelect={this.updatePagesToExport.bind(this)}
+                                moduleRoot={"PersonaBar"}
+                                controller={"Tabs"}
+                                serviceFramework={utilities.utilities.sf}
+                                getInitialPortalTabs={this.getInitialPortalTabs}
+                                getDescendantPortalTabs={this.getDescendantPortalTabs.bind(this)}
+                            />
 
 
                             <div className="seperator2">
@@ -435,8 +438,7 @@ ExportModal.propTypes = {
     portalName: PropTypes.string.isRequired,
     exportJobId: PropTypes.number,
     lastExportTime: PropTypes.string,
-    getInitialPortalTabs: PropTypes.func.isRequired,
-    getDescendantPortalTabs: PropTypes.func.isRequired
+    getInitialPortalTabs: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

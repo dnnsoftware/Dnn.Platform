@@ -123,7 +123,6 @@ class App extends Component {
                             <ExportModal
                                 onCancel={this.selectPanelInternal.bind(this, 0)}
                                 getInitialPortalTabs={ImportExportActions.getInitialPortalTabs}
-                                getDescendantPortalTabs={ImportExportActions.getDescendantPortalTabs}
                             />}
 
                     </PersonaBarPageBody>

@@ -35,7 +35,6 @@ export class PagePickerInteractor extends Component {
         this.moduleRoot = props.moduleRoot;
         this.controller = props.controller;
         this.getInitialPortalTabs = props.getInitialPortalTabs;
-        this.getDescendantPortalTabs = props.getDescendantPortalTabs;
 
         this.copy = {};
 
@@ -63,10 +62,10 @@ export class PagePickerInteractor extends Component {
 
     }
 
-    _requestDescendantTabs = (ParentTabId) => {
+    _requestDescendantTabs = (ParentTabId, callback) => {
         console.log("requeting descendantTabs");
 
-         let descendantTabs = null;
+        let descendantTabs = [];
         const inspect = (tabs) => console.log("inspecting :", tabs);
         const params = `&parentId=${ParentTabId}`;
         const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
@@ -78,26 +77,20 @@ export class PagePickerInteractor extends Component {
         const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants, copy);
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
         const appendDescendants = (parentTab) => descendantTabs.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
-
-        let copiedDescendants = {};
-        const copy = (descendantTabs) => copiedDescendants = JSON.parse(JSON.stringify(descendantTabs));
+        let copiedDescendants = [];
+        const copy = (dtabs) => copiedDescendants = JSON.parse(JSON.stringify(dtabs));
         const appendCopies = (parentTab) => copiedDescendants.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
 
 
-        const request = new Promise((resolve, reject) => {
-            this.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
-                console.log('called how many times')
-                const tabs = response.Results;
-                resolve(tabs);
-            });
+        this.props.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
+            console.log('called how many times')
+            const tabs = response.Results;
+            input(tabs);
+            this._traverseChildTabs(appendDescendants);
+            //this._traverseChildTabs(appendCopies);
+            this.setState({ tabs: this.state.tabs });
+            callback();
         });
-
-        return request
-        .then( (tabs) => input(tabs))
-        .then( () =>   this._traverseChildTabs(appendDescendants))
-        .then( () =>   this._traverseChildTabs(appendCopies))
-        .then( () =>   this.setState({ tabs: this.state.tabs }));
-
     }
 
 
@@ -261,8 +254,8 @@ export class PagePickerInteractor extends Component {
 
     }
 
-    getChildTabs = (ParentTabId) => {
-        return this._requestDescendantTabs(ParentTabId);
+    getChildTabs = (ParentTabId, callback) => {
+        this._requestDescendantTabs(ParentTabId, callback);
     }
 
     showChildTabs = () => {
@@ -344,11 +337,11 @@ export class PagePickerInteractor extends Component {
                     flatTabs={this.state.flatTabs}
                     tabs={this.state.tabs.ChildTabs}
                     export={this.export}
-                    getChildTabs={this.getChildTabs}
+                    getChildTabs={this.getChildTabs.bind(this)}
                     setMasterRootCheckedState={this.setMasterRootCheckedState}
                     PortalTabsParameters={this.PortalTabsParameters}
                     rootContext={this}
-                    getDescendantPortalTabs={this.getDescendantPortalTabs}
+                    getDescendantPortalTabs={this.props.getDescendantPortalTabs}
                 />);
 
             return (

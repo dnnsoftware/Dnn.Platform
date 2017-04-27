@@ -308,7 +308,7 @@ export class PagePickerDesktop extends Component {
         const toggleCheckAllChildtabs = (tab) => tab.CheckedState = tab.HasChildren ? 2 : 1;
         const setState = (tab) => ChildStates[`${tab.TabId}-${tab.Name}`] = tab;
 
-       // this._mapChildTabs(tab, openAllChildTabs);
+        // this._mapChildTabs(tab, openAllChildTabs);
         this._mapChildTabs(tab, toggleCheckAllChildtabs);
         this._mapChildTabs(tab, parentShowIndicators);
         this._mapChildTabs(tab, setState);
@@ -396,19 +396,19 @@ export class PagePickerDesktop extends Component {
         };
 
         const right = () => {
-            this.getChildTabs(tab.TabId)
-                .then(() => {
-                    tab.IsOpen = !tab.IsOpen;
-                    const Tab = Object.assign({}, tab);
-                    const TabIdName = `${tab.TabId}-${tab.Name}`;
-                    const ChildrenSelected = STATE[TabIdName].ChildrenSelected;
-                    STATE[TabIdName] = Tab;
-                    STATE[TabIdName].ChildrenSelected = ChildrenSelected;
-                    tab.IsOpen = true
-                })
-                .then(() => this._setParentTabChildrenSelected(tab))
-                .then(() => this._setRootTabChildrenSelected(tab))
-                .then(() => this._update());
+            this.getChildTabs(tab.TabId, () => {
+                tab.IsOpen = !tab.IsOpen;
+                const Tab = Object.assign({}, tab);
+                const TabIdName = `${tab.TabId}-${tab.Name}`;
+                const ChildrenSelected = STATE[TabIdName].ChildrenSelected;
+                STATE[TabIdName] = Tab;
+                STATE[TabIdName].ChildrenSelected = ChildrenSelected;
+                tab.IsOpen = true
+
+                this._setParentTabChildrenSelected(tab)
+                this._setRootTabChildrenSelected(tab)
+                this._update()
+            });
         };
         tab.ChildTabs.length ? left() : right();
     }

@@ -31,7 +31,8 @@ class ApplicationService {
     getDescendantPortalTabs(parameters, parentIdObj, callback, errorCallback) {
         const params = Object.assign({}, parameters, parentIdObj);
         const sf = this.getServiceFramework("PersonaBar", "Tabs");
-        sf.get(`GetTabsDescendants?` + serializeQueryStringParameters(params) , {}, callback, errorCallback);
+        const serializedParams = serializeQueryStringParameters(params);
+        sf.get(`GetTabsDescendants?${serializedParams}`, {}, callback, errorCallback);
     }
 
     getAllJobs(parameters, callback, errorCallback) {
