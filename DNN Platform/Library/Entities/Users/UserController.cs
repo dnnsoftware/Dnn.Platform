@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke?- http://www.dotnetnuke.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
@@ -1788,10 +1788,13 @@ namespace DotNetNuke.Entities.Users
         public static bool ResetPasswordToken(UserInfo user, bool sendEmail)
         {
             var settings = new MembershipPasswordSettings(user.PortalID);
-
-            user.PasswordResetExpiration = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
-            user.PasswordResetToken = Guid.NewGuid();
-            UpdateUser(user.PortalID, user);
+            var expiry = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
+            if (user.PasswordResetExpiration < DateTime.Now || user.PasswordResetExpiration > expiry)
+            {
+                user.PasswordResetExpiration = expiry;
+                user.PasswordResetToken = Guid.NewGuid();
+                UpdateUser(user.PortalID, user);
+            }
             
             if (sendEmail)
             {
