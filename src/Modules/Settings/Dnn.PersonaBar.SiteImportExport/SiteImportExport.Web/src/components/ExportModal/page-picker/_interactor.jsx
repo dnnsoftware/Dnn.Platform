@@ -177,7 +177,6 @@ export class PagePickerInteractor extends Component {
 
 
     export = (selection) => {
-
         const onlyChildrenOrNoParents = (tabs) => tabs.filter(tab => parseInt(tab.CheckedState) === 1);
         const onlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === 2);
 
@@ -201,12 +200,26 @@ export class PagePickerInteractor extends Component {
                 return !bool;
             });
 
-            console.log('childtabs', childrenTabs);
-            console.log('parenttabs', parentTabs);
 
-            const tabsExport = parentTabs.concat(childrenTabs);
+            setTimeout(() => {
 
-            this.ExportModalOnSelect(tabsExport);
+                const RootTab = this._generateSelectionObject(this.state.tabs);
+                const ExportRootOnly = () =>  {
+                    const exports = [RootTab]
+                    console.log(exports);
+                    this.ExportModalOnSelect(exports);
+
+                };
+                const ExportSelection = () => {
+                    const exports = [RootTab].concat(parentTabs, childrenTabs);
+                    console.log(exports);
+                    this.ExportModalOnSelect(exports);
+                };
+
+                RootTab.CheckedState===2 ? ExportRootOnly() : ExportSelection();
+
+             },1);
+
         };
 
         const Right = () => {
@@ -234,16 +247,20 @@ export class PagePickerInteractor extends Component {
 
         switch (true) {
             case childrenSelected === totalChildren:
+                console.log('root all selected')
                 update.CheckedState = 2;
                 this.setState({ tabs: update });
 
                 return;
             case childrenSelected < totalChildren && childrenSelected !== 0:
-                update.CheckedState = 1;
+                console.log('root some selected')
+                console.log(update)
+                update.CheckedState = update.CheckedSate ? update.CheckedState : 1;
                 this.setState({ tabs: update });
 
                 return;
             case childrenSelected === 0:
+                console.log('root none selected')
                 update.CheckedState = 1;
                 this.setState({ tabs: update });
                 return;
