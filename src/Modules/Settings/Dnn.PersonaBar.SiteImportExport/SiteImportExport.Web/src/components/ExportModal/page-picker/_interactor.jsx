@@ -82,8 +82,6 @@ export class PagePickerInteractor extends Component {
             descendantTabs.forEach((tab) => {
                 const truthy = () => {
                     parentTab.ChildTabs.push(tab);
-                    parentTab.ChildTabs.sort((a, b)=> parseInt(b.TabId)<parseInt(a.TabId));
-
                 };
                 const falsey = () => null;
                 parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? truthy() : falsey();
@@ -97,16 +95,18 @@ export class PagePickerInteractor extends Component {
 
         const request = new Promise((resolve, reject) => {
             this.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
+                console.log('called how many times')
                 const tabs = response.Results;
-                input(tabs);
-                this._traverseChildTabs(appendDescendants);
-                this._traverseChildTabs(appendCopies);
-                this.setState({ tabs: this.state.tabs });
-                resolve();
+                resolve(tabs);
             });
         });
 
-        return request;
+        return request
+        .then( (tabs) => input(tabs))
+        .then( () =>   this._traverseChildTabs(appendDescendants))
+        .then( () =>   this._traverseChildTabs(appendCopies))
+        .then( () =>   this.setState({ tabs: this.state.tabs }));
+
     }
 
 
