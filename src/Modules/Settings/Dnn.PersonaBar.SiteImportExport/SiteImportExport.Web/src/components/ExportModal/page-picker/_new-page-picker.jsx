@@ -283,12 +283,13 @@ export class PagePickerDesktop extends Component {
 
     _openTabs = (tab) => {
         console.log("in open tabs");
+        console.log(tab)
         const ParentTabIdName = `${tab.TabId}-${tab.Name}`;
         tab.IsOpen = tab.IsOpen;
         tab.CheckedState = tab.CheckedState === 2 ? 0 : tab.CheckedState;
         tab.CheckedState = tab.CheckedState === 1 ? 0 : tab.CheckedState;
         tab.CheckedState = tab.CheckedState === 0 && tab.HasChildren ? 2 : tab.CheckedState;
-        tab.CheckedState = tab.CheckedState === 0 && tab.ChildTabs.Length === 0 ? 1 : tab.CheckedState;
+        tab.CheckedState = tab.CheckedState === 0 && tab.ChildTabs.length === 0 ? 1 : tab.CheckedState;
 
         const ParentState = {};
         const parent = ParentState[ParentTabIdName] = Object.assign({}, tab);
@@ -418,7 +419,7 @@ export class PagePickerDesktop extends Component {
     }
 
     setCheckedState = (tab) => {
-        if (tab.HasChildren && tab.CheckedState) {
+        if (tab.CheckedState) {
             console.log("in reset");
             tab.CheckedState = 0;
             parseInt(tab.ParentTabId) === -1 ? delete tab.ChildrenSelected : null;

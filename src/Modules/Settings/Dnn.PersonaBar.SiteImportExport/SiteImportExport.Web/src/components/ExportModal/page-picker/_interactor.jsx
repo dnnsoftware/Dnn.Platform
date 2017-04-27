@@ -87,7 +87,7 @@ export class PagePickerInteractor extends Component {
             const tabs = response.Results;
             input(tabs);
             this._traverseChildTabs(appendDescendants);
-            //this._traverseChildTabs(appendCopies);
+            this._traverseCopyTabs(appendCopies);
             this.setState({ tabs: this.state.tabs });
             callback();
         });
