@@ -34,6 +34,8 @@ export class PagePickerInteractor extends Component {
         this.serviceFramework = props.serviceFramework;
         this.moduleRoot = props.moduleRoot;
         this.controller = props.controller;
+        this.getInitialPortalTabs = props.getInitialPortalTabs;
+        this.getDescendantPortalTabs = props.getDescendantPortalTabs;
 
         this.copy = {};
 
@@ -45,80 +47,57 @@ export class PagePickerInteractor extends Component {
     }
 
     init() {
-        this.serviceFramework.moduleRoot = this.moduleRoot;
-        this.serviceFramework.controller = this.controller;
 
         const ExportInitialSelection = () => {
             const selection = this._generateSelectionObject(this.state.tabs);
             this.ExportModalOnSelect(selection);
         };
 
-        const cache = (tabdata) => this.copy = JSON.parse(JSON.stringify(tabdata));
-        const assign = (tabdata) => this.PortalTabs = tabdata;
-
-        const compose = (tabdata, ...fns) => fns.forEach(fn => fn(tabdata));
-
-        this._serviceFrameworkGetInitialTabs()
-            .then(tabdata => compose(tabdata, cache, assign))
-            .then(() => this.setState({ tabs: this.PortalTabs }))
-            .then(() => this.flatTabs = ppdm.flatten(this.PortalTabs))
-            .then(() => this.setState({ tabs: this.PortalTabs, flatTabs: this.flatTabs }))
-            .then(() => ExportInitialSelection());
-
-    }
-
-
-    _serviceFrameworkGetInitialTabs() {
-
-        return new Promise((resolve, reject) => {
-            const query = serializeQueryStringParameters(this.PortalTabsParameters);
-            console.log(query);
-            const params = `GetPortalTabs?${query}`;
-            this.serviceFramework.get(params, {}, (res) => resolve(res.Results), (err) => reject(err));
+        this.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
+            this.PortalTabs = response.Results;
+            this.flatTabs = ppdm.flatten(this.PortalTabs);
+            this.copy = JSON.parse(JSON.stringify(this.PortalTabs));
+            this.setState({ tabs: this.PortalTabs, flatTabs: this.flatTabs });
+            ExportInitialSelection();
         });
-    }
 
-    _serviceFrameworkGetDescendants() {
     }
 
     _requestDescendantTabs = (ParentTabId) => {
         console.log("requeting descendantTabs");
-        let descendantTabs = null;
-        const inspect = (tabs) => console.log("inspecting :", tabs);
-        const params = `&parentId=${ParentTabId}`;
-        const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
-        const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
-            !Array.isArray(tab.ChildTabs) ? tab.ChildTabs = [] : null;
-            return tab;
+
+        const request = new Promise((resolve, reject) => {
+            let descendantTabs = null;
+            const inspect = (tabs) => console.log("inspecting :", tabs);
+            const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
+            const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
+                !Array.isArray(tab.ChildTabs) ? tab.ChildTabs = [] : null;
+                return tab;
+            });
+
+            const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants, copy);
+            const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
+            const appendDescendants = (parentTab) => descendantTabs.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
+
+            let copiedDescendants = {};
+            const copy = (descendantTabs) => copiedDescendants = JSON.parse(JSON.stringify(descendantTabs));
+            const appendCopies = (parentTab) => copiedDescendants.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
+
+            this.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
+                console.log(response)
+                const tabs = response.Results;
+                input(tabs);
+                this._traverseChildTabs(appendDescendants);
+                this._traverseChildTabs(appendCopies);
+                this.setState({ tabs: this.state.tabs });
+                resolve();
+
+            });
         });
 
-        const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants, copy);
-        const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
-        const appendDescendants = (parentTab) => descendantTabs.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
-
-        let copiedDescendants = {};
-        const copy = (descendantTabs) => copiedDescendants = JSON.parse(JSON.stringify(descendantTabs));
-        const appendCopies = (parentTab) => copiedDescendants.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
-
-        return this._xhr(this.DescendantTabsURL, params)
-            .then(input)
-            .then(() => this._traverseChildTabs(appendDescendants))
-            .then(() => this._traverseCopyTabs(appendCopies))
-            .then(() => this.setState({ tabs: this.state.tabs }));
+        return request;
     }
 
-    _xhr(url, params = "") {
-        return new Promise((resolve, reject) => {
-            let xhttp = new XMLHttpRequest();
-            xhttp.onload = () => {
-                const response = JSON.parse(xhttp.responseText).Results;
-                resolve(response);
-            };
-            xhttp.open("GET", url + params, true);
-            xhttp.onerror = () => reject(xhttp);
-            xhttp.send();
-        });
-    }
 
     _getRootTab(selection) {
         return Object.keys(selection)
@@ -201,13 +180,8 @@ export class PagePickerInteractor extends Component {
         return mapped;
     }
 
-    _cacheOriginalState() {
-
-    }
-
 
     export = (selection) => {
-       
 
         const onlyChildrenOrNoParents = (tabs) => tabs.filter(tab => parseInt(tab.CheckedState) === 1);
         const onlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === 2);
@@ -236,6 +210,7 @@ export class PagePickerInteractor extends Component {
             console.log('parenttabs', parentTabs);
 
             const tabsExport = parentTabs.concat(childrenTabs);
+
             this.ExportModalOnSelect(tabsExport);
         };
 
@@ -265,21 +240,21 @@ export class PagePickerInteractor extends Component {
         switch (true) {
             case childrenSelected === totalChildren:
                 update.CheckedState = 2;
-                 this.setState({tabs:update});
+                this.setState({ tabs: update });
 
-            return;
+                return;
             case childrenSelected < totalChildren && childrenSelected !== 0:
                 update.CheckedState = 1;
-                this.setState({tabs:update});
+                this.setState({ tabs: update });
 
-            return;
+                return;
             case childrenSelected === 0:
-                 update.CheckedState = 1;
-                 this.setState({tabs:update});
-            return;
+                update.CheckedState = 1;
+                this.setState({ tabs: update });
+                return;
             default:
-              
-            return;
+
+                return;
         }
 
     }
@@ -371,6 +346,7 @@ export class PagePickerInteractor extends Component {
                     setMasterRootCheckedState={this.setMasterRootCheckedState}
                     PortalTabsParameters={this.PortalTabsParameters}
                     rootContext={this}
+                    getDescendantPortalTabs={this.getDescendantPortalTabs}
                 />);
 
             return (

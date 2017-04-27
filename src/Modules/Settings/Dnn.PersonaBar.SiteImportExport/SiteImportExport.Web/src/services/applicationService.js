@@ -23,13 +23,25 @@ class ApplicationService {
         sf.get("getPortals", {}, callback, errorCallback);
     }
 
+    getInitialPortalTabs(parameters, callback, errorCallback) {
+        const sf = this.getServiceFramework("PersonaBar", "Tabs");
+        sf.get(`GetPortalTabs?` + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
+    }
+
+    getDescendantPortalTabs(parameters, parentIdObj, callback, errorCallback) {
+        console.log('in sf')
+        const params = Object.assign({}, parameters, parentIdObj);
+        const sf = this.getServiceFramework("PersonaBar", "Tabs");
+        sf.get(`GetTabsDescendants?` + serializeQueryStringParameters(params) , {}, callback, errorCallback);
+    }
+
     getAllJobs(parameters, callback, errorCallback) {
-        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");
         sf.getsilence("AllJobs?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
     getLastJobTime(parameters, callback, errorCallback) {
-        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");
         sf.get("LastJobTime?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
@@ -49,7 +61,7 @@ class ApplicationService {
     }
 
     getImportPackages(parameters, callback, errorCallback) {
-        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");
         sf.get("GetImportPackages?"+ serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
@@ -67,6 +79,9 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
         sf.post("RemoveJob?jobId=" + jobId, {}, callback, errorCallback);
     }
+
+
+
 }
 const applicationService = new ApplicationService();
 export default applicationService;

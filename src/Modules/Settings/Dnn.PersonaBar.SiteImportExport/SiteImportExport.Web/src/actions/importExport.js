@@ -2,6 +2,24 @@ import { importExport as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const jobsActions = {
+
+    getInitialPortalTabs(PortalTabsParameters, callback) {
+        ApplicationService.getInitialPortalTabs(PortalTabsParameters, (response) => {
+            if (callback) {
+                callback(response);
+            }
+        });
+    },
+
+    getDescendantPortalTabs(PortalTabsParameters, ParentTabId, callback){
+        const ParentTabIdObj = {parentId: ParentTabId};
+        ApplicationService.getDescendantPortalTabs(PortalTabsParameters, ParentTabIdObj, (response) => {
+            if (callback) {
+                callback(response);
+            }
+        });
+    },
+
     siteSelected(portalId, portalName, callback) {
         return (dispatch) => {
             dispatch({

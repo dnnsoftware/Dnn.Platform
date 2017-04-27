@@ -59,6 +59,9 @@ class ExportModal extends Component {
             reloadPages: false,
             requestSubmitting: false
         };
+
+        this.getInitialPortalTabs = props.getInitialPortalTabs;
+        this.getDescendantPortalTabs = props.getDescendantPortalTabs;
     }
 
     componentWillMount() {
@@ -68,6 +71,8 @@ class ExportModal extends Component {
         this.setState({
             exportRequest
         });
+
+
     }
 
     componentWillReceiveProps(props) {
@@ -377,6 +382,8 @@ class ExportModal extends Component {
                                moduleRoot={"PersonaBar"}
                                controller={"Tabs"}
                                serviceFramework={utilities.utilities.sf}
+                               getInitialPortalTabs={this.getInitialPortalTabs}
+                               getDescendantPortalTabs={this.getDescendantPortalTabs}
                                />
 
 

@@ -31,7 +31,8 @@ export class PagePickerDesktop extends Component {
         this.tabs = props.tabs;
         this.getChildTabs = props.getChildTabs;
         this.export = props.export;
-        this.root = props.root;
+
+        this.getDescendantPortalTabs = props.getDescendantPortalTabs;
         rootContext = props.rootContext;
 
 
@@ -547,6 +548,7 @@ export class PagePickerDesktop extends Component {
                             export={this.export.bind(this)}
                             tabs={tab.ChildTabs}
                             getChildTabs={this.getChildTabs}
+                            getDescendantPortalTabs={this.getDescendantPortalTabs}
                         />
                         : <span></span>}
                 </li>
