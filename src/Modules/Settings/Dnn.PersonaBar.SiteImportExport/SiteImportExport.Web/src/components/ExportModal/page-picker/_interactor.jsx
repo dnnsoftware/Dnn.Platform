@@ -209,7 +209,10 @@ export class PagePickerInteractor extends Component {
         let childrenTabs = onlyChildrenOrNoParents(tabs);
         let parentTabs = onlyParents(tabs);
 
+        console.log("childrenTabs", childrenTabs);
+        console.log("parentTabs", parentTabs);
 
+        
         const Left = () => {
 
             childrenTabs = childrenTabs.filter((tab, i, arr) => {

@@ -138,6 +138,8 @@ export class PagePickerDesktop extends Component {
         const Left = () => {
             let ParentTabId = tab.ParentTabId;
             let parent = this._getTabById(ParentTabId)[0];
+            console.log(parent);
+
             const truthyCheckedStates = [];
             const AreChildrenChecked = (tab) => tab.CheckedState ? truthyCheckedStates.push(true) : truthyCheckedStates.push(false);
             this._mapChildTabs(parent, AreChildrenChecked);
@@ -150,7 +152,9 @@ export class PagePickerDesktop extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    parent.CheckedState = parent.CheckedState === 0 ? 2 : parent.CheckedState;
+                    console.log("parent before: ", parent.CheckedState);
+                    parent.CheckedState = parent.CheckedState === 2 ? parent.CheckedState : 0;
+                    console.log("parentTab checkState:", parent.CheckedState);
                     return;
 
                 case someChildrenSelected:
@@ -196,7 +200,7 @@ export class PagePickerDesktop extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    RootTab.CheckedState = 2;
+                    RootTab.CheckedState = RootTab.CheckedState ?  RootTab.CheckedState : 0;
                     RootTab.ChildrenSelected = true;
                     return;
 
@@ -276,7 +280,7 @@ export class PagePickerDesktop extends Component {
         this._setRootTabChildrenSelected(tab);
         this._setParentTabChildrenSelected(tab);
 
-        //console.log(STATE);
+        console.log(STATE);
         this._update();
     }
 
@@ -361,7 +365,6 @@ export class PagePickerDesktop extends Component {
         const noChildrenSelected = (child) => STATE[`${child.TabId}-${child.Name}`].ChildrenSelected = false;
         this._mapChildTabs(tab, unselect);
         this._mapChildTabs(tab, noChildrenSelected);
-
     }
 
     _setChildrenSelectedIndicator = (ParentTabId) => {
@@ -431,7 +434,6 @@ export class PagePickerDesktop extends Component {
             tab.CheckedState = 0;
             delete tab.ChildrenSelected;
 
-            console.log(tab)
             parseInt(tab.ParentTabId) === -1 ? delete tab.ChildrenSelected : null;
 
             const TabIdName = `${tab.TabId}-${tab.Name}`;
@@ -439,11 +441,11 @@ export class PagePickerDesktop extends Component {
             STATE[TabIdName].ChildrenSelected=false;
 
             this._unselectAllChildren(tab);
-
             this._setRootTabChildrenSelected(tab);
             this._setParentTabChildrenSelected(tab);
 
-
+            console.log(tab);
+            console.log(STATE);
 
             this._update();
             return;
