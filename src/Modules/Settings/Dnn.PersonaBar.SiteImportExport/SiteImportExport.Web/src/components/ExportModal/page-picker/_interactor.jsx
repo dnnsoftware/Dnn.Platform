@@ -29,8 +29,6 @@ export class PagePickerInteractor extends Component {
         this.cached_ChildTabs;
         this.icon = IconSelector("arrow_bullet");
         this.PortalTabsParameters = props.PortalTabsParameters;
-        this.InitialTabsURL = "http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0";
-        this.DescendantTabsURL = "http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0";
 
         this.ExportModalOnSelect = props.OnSelect;
         this.copy = {};
@@ -101,8 +99,6 @@ export class PagePickerInteractor extends Component {
                             return child;
                         });
                     };
-
-                    console.log(tab)
                     tab.CheckedState ? select() : unselect();
                 };
 
@@ -115,7 +111,6 @@ export class PagePickerInteractor extends Component {
             this._traverseChildTabs(appendDescendants);
             this._traverseChildTabs(setCheckedState);
 
-            //this._traverseCopyTabs(appendCopies);
             this.setState({ tabs: this.state.tabs });
             callback();
         });
@@ -168,28 +163,6 @@ export class PagePickerInteractor extends Component {
         return;
     }
 
-    _traverseCopyTabs(comparator) {
-        let ChildTabs = this.copy.ChildTabs;
-        const cached_childtabs = [];
-        cached_childtabs.push(ChildTabs);
-        const condition = (cached_childtabs.length > 0);
-        const loop = () => {
-            const childtab = cached_childtabs.length ? cached_childtabs.shift() : null;
-            const left = () => childtab.forEach(tab => {
-                Array.isArray(tab.ChildTabs) ? comparator(tab) : null;
-                Array.isArray(tab.ChildTabs) && tab.ChildTabs.length ? cached_childtabs.push(tab.ChildTabs) : null;
-                condition ? loop() : exit();
-            });
-            const right = () => null;
-            childtab ? left() : right();
-        };
-
-        const exit = () => null;
-        loop();
-        return;
-    }
-
-
     _isAnyAllSelected(tabs) {
         return tabs.filter(tab => tab.CheckedState === this.fully_checked).length ? true : false;
     }
@@ -227,7 +200,6 @@ export class PagePickerInteractor extends Component {
                     const ParentTabId = tab.ParentTabId;
                     const parent = tabs.filter(t => parseInt(t.TabId) === parseInt(ParentTabId))[0];
                     const parentExists = !!parent;
-
                     const falsey = () => false;
                     const isAllChildrenChecked = () => parent.CheckedState === this.fully_checked ? true : false;
 
@@ -273,7 +245,6 @@ export class PagePickerInteractor extends Component {
 
                 this.ExportModalOnSelect(exports);
             }, 1);
-
         };
         this._isAnyAllSelected(tabs) ? Left() : Right();
     }
