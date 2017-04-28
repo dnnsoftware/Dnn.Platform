@@ -16,7 +16,7 @@ let context = [];
 let rootContext = null;
 
 
-export class PagePickerDesktop extends Component {
+export class TreeControl extends Component {
 
     constructor(props) {
         super(props);
@@ -558,7 +558,7 @@ export class PagePickerDesktop extends Component {
                     {list_item}
                     {childrenSelectedIndicator}
                     {tab.HasChildren && tab.IsOpen ?
-                        <PagePickerDesktop
+                        <TreeControl
                             root={this.root}
                             setMasterRootCheckedState={this.setMasterRootCheckedState}
                             rootContext={rootContext}
@@ -590,7 +590,7 @@ export class PagePickerDesktop extends Component {
     }
 }
 
-PagePickerDesktop.propTypes = {
+TreeControl.propTypes = {
     flatTabs: PropTypes.object.isRequired,
     tabs: PropTypes.object.isRequired,
     setMasterRootCheckedState: PropTypes.func.isRequired,

@@ -1,4 +1,4 @@
-export class PagePickerDataManager {
+export class TreeControlDataManager {
 
     constructor() {
         this.original_data = [];

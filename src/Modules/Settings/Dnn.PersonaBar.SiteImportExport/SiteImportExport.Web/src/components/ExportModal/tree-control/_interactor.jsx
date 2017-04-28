@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
-import { PagePickerDesktop } from "./_new-page-picker";
-import { PagePickerDataManager } from "./helpers";
+import { TreeControl } from "./_tree-control";
+import { TreeControlDataManager } from "./helpers";
 import { IconSelector } from "./icons";
 import { global } from "./_global";
 const styles = global.styles;
 
 const floatLeft = styles.float();
 const merge = styles.merge;
-const ppdm = new PagePickerDataManager();
+const tcdm = new TreeControlDataManager();
 
 import "./styles.less";
 
-export class PagePickerInteractor extends Component {
+export class TreeControlInteractor extends Component {
 
     constructor(props) {
         super();
@@ -43,7 +43,7 @@ export class PagePickerInteractor extends Component {
 
         this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
             this.PortalTabs = response.Results;
-            this.flatTabs = ppdm.flatten(this.PortalTabs);
+            this.flatTabs = tcdm.flatten(this.PortalTabs);
             this.copy = JSON.parse(JSON.stringify(this.PortalTabs));
             this.setState({ tabs: this.PortalTabs, flatTabs: this.flatTabs });
             ExportInitialSelection();
@@ -300,7 +300,7 @@ export class PagePickerInteractor extends Component {
         const tabs = JSON.parse(JSON.stringify(this.state.tabs));
         tabs.IsOpen = true;
 
-        const flatTabs = ppdm.flatten(tabs);
+        const flatTabs = tcdm.flatten(tabs);
 
         this.setMasterRootCheckedState();
         this.setState({ tabs: tabs, flatTabs: flatTabs });
@@ -314,7 +314,7 @@ export class PagePickerInteractor extends Component {
 
         this._traverseChildTabs(unselect);
         const tabs = JSON.parse(JSON.stringify(this.state.tabs));
-        const flatTabs = ppdm.flatten(this.state.tabs);
+        const flatTabs = tcdm.flatten(this.state.tabs);
         this.ExportModalOnSelect([]);
         this.setState({ tabs: tabs, flatTabs: flatTabs, childrenSelected: false });
     }
@@ -384,11 +384,11 @@ export class PagePickerInteractor extends Component {
         return checkbox;
     }
 
-    render_PagePicker = () => {
+    render_TreeControl = () => {
         const pagepicker = (() => {
             const condition = (this.state.tabs.IsOpen && this.state.tabs.ChildTabs.length);
             const picker = (
-                <PagePickerDesktop
+                <TreeControl
                     icon_type="arrow_bullet"
                     flatTabs={this.state.flatTabs}
                     tabs={this.state.tabs.ChildTabs}
@@ -420,7 +420,7 @@ export class PagePickerInteractor extends Component {
 
         const checkbox = this.render_ListCheckbox(this.state.tabs);
         const bullet = this.render_ListBullet(this.state.tabs, () => this.showChildTabs(this.state.tabs));
-        const pagepicker = this.render_PagePicker();
+        const treeControl = this.render_TreeControl();
 
         return (
             <ul className="page-picker" style={merge(listStyle, ULPadding)}>
@@ -429,7 +429,7 @@ export class PagePickerInteractor extends Component {
                     {checkbox}
                     <span style={merge(spanPadLeft)}> {this.state.tabs.Name} </span>
                     {this.state.childrenSelected ? <span>*</span> : <span></span>}
-                    {pagepicker}
+                    {treeControl}
                 </li>
             </ul>
         );
@@ -437,7 +437,7 @@ export class PagePickerInteractor extends Component {
     }
 }
 
-PagePickerInteractor.propTypes = {
+TreeControlInteractor.propTypes = {
     PortalTabsParameters: PropTypes.object.isRequired,
     serviceFramework: PropTypes.object.isRequired,
     controller: PropTypes.string.isRequired,
