@@ -318,7 +318,10 @@ export class PagePickerInteractor extends Component {
         this._traverseChildTabs(select);
         const tabs = JSON.parse(JSON.stringify(this.state.tabs));
         tabs.IsOpen = true;
+
         const flatTabs = ppdm.flatten(tabs);
+
+        this.setMasterRootCheckedState();
         this.setState({ tabs: tabs, flatTabs: flatTabs });
     }
 
@@ -326,19 +329,19 @@ export class PagePickerInteractor extends Component {
         const unselect = (tab) => {
             tab.CheckedState = this.unchecked;
             tab.ChildrenSelected = false;
-            this.ExportModalOnSelect([]);
         };
 
         this._traverseChildTabs(unselect);
         const tabs = JSON.parse(JSON.stringify(this.state.tabs));
         const flatTabs = ppdm.flatten(this.state.tabs);
+        this.ExportModalOnSelect([]);
         this.setState({ tabs: tabs, flatTabs: flatTabs, childrenSelected: false });
     }
 
 
 
     setCheckedState = () => {
-        const update = Object.assign({}, this.state);
+        const update = Object.assign({},this.state);
         update.tabs.CheckedState = this.state.tabs.CheckedState ? this.unchecked : this.fully_checked;
         update.flatTabs[`${this.state.tabs.TabId}-${this.state.tabs.Name}`].CheckedState = this.state.tabs.CheckedState;
         update.tabs.CheckedState === this.fully_checked ? this.selectAll() : this.setState({ tabs: update.tabs, flatTabs: update.flatTabs });
