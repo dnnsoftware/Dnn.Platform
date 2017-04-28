@@ -326,6 +326,19 @@ export class PagePickerInteractor extends Component {
         this.setState({ tabs: tabs, flatTabs: flatTabs });
     }
 
+    unselectAll = () => {
+        const unselect = (tab) =>{
+            tab.CheckedState=0;
+            tab.ChildrenSelected=false;
+        };
+
+        this._traverseChildTabs(unselect);
+        this.flatTabs = ppdm.flatten(this.state.tabs)
+        this.ExportModalOnSelect([]);
+        this.setState({tabs:this.state.tabs, flatTabs:this.flattabs, childrenSelected:false});
+    }
+
+
 
     setCheckedState = () => {
         const update = Object.assign({}, this.state);
@@ -341,7 +354,7 @@ export class PagePickerInteractor extends Component {
             this.ExportModalOnSelect(exports);
         };
 
-        this.state.tabs.CheckedState === 2 ? ExportRootTab() : null;
+        this.state.tabs.CheckedState === 2 ? ExportRootTab() : this.unselectAll();
     };
 
     render_icon = (direction) => {
