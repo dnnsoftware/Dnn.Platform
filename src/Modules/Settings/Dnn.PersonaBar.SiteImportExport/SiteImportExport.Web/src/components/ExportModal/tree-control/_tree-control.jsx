@@ -152,7 +152,7 @@ export class TreeControl extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    parent.CheckedState = parent.CheckedState===this.individually_checked && tab.CheckedState===this.fully_checked ? this.fully_checked : parent.CheckedState;
+                    parent.CheckedState=parent.CheckedState ? this.fully_checked : parent.CheckedState;
                     return;
 
                 case someChildrenSelected:
@@ -202,9 +202,7 @@ export class TreeControl extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    RootTab.CheckedState = RootTab.CheckedState && tab.CheckedState===this.fully_checked ? this.fully_checked : RootTab.CheckedState;
-                    RootTab.CheckedState = RootTab.CheckedState===this.individually_checked && tab.CheckedState ===this.fullyChecked ? this.fully_checked : RootTab.CheckedState;
-                    RootTab.CheckedState = RootTab.CheckedState===this.unchecked ?  this.unchecked : RootTab.CheckedState;
+                    RootTab.CheckState=this.fully_checked;
                     RootTab.ChildrenSelected = true;
                     return;
 
