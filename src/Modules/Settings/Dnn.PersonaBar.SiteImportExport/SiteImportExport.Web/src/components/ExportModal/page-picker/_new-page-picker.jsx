@@ -139,7 +139,7 @@ export class PagePickerDesktop extends Component {
         const Left = () => {
             let ParentTabId = tab.ParentTabId;
             let parent = this._getTabById(ParentTabId)[0];
-            console.log(parent);
+
 
             const truthyCheckedStates = [];
             const AreChildrenChecked = (tab) => tab.CheckedState ? truthyCheckedStates.push(true) : truthyCheckedStates.push(false);
@@ -154,7 +154,7 @@ export class PagePickerDesktop extends Component {
                 case allChildrenSelected:
                     console.log("all children selected");
                     console.log("parent before: ", parent.CheckedState);
-                    parent.CheckedState = parent.CheckedState === this.fullly_checked ? parent.CheckedState : this.unchecked;
+                    parent.CheckedState = parent.CheckedState ? this.fully_checked : this.unchecked;
                     console.log("parentTab checkState:", parent.CheckedState);
                     return;
 
@@ -201,7 +201,8 @@ export class PagePickerDesktop extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    RootTab.CheckedState = RootTab.CheckedState==this.unchecked ?  this.unchecked : this.fully_checked;
+                    console.log(RootTab)
+                    RootTab.CheckedState = RootTab.CheckedState===this.unchecked ?  this.unchecked : this.fully_checked;
                     RootTab.ChildrenSelected = true;
                     return;
 
@@ -210,6 +211,7 @@ export class PagePickerDesktop extends Component {
                     RootTab.CheckedState = RootTab.CheckedState ? this.individually_checked : this.unchecked;
                     RootTab.ChildrenSelected = true;
                     console.log(RootTab)
+
                     return;
 
                 case noChildrenSelected:
@@ -226,7 +228,6 @@ export class PagePickerDesktop extends Component {
         const Right = () => {
             console.log("In Root Right");
             tab.ChildrenSelected = false;
-            console.log(tab);
         };
         tab.ParentTabId !== -1 ? Left() : Right();
     }

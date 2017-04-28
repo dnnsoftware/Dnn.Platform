@@ -35,9 +35,9 @@ export class PagePickerInteractor extends Component {
         this.ExportModalOnSelect = props.OnSelect;
         this.copy = {};
 
-        this.fully_checked=2;
-        this.individually_checked=1;
-        this.unchecked=0;
+        this.fully_checked = 2;
+        this.individually_checked = 1;
+        this.unchecked = 0;
 
     }
 
@@ -115,7 +115,7 @@ export class PagePickerInteractor extends Component {
             this._traverseChildTabs(appendDescendants);
             this._traverseChildTabs(setCheckedState);
 
-            this._traverseCopyTabs(appendCopies);
+            //this._traverseCopyTabs(appendCopies);
             this.setState({ tabs: this.state.tabs });
             callback();
         });
@@ -206,47 +206,48 @@ export class PagePickerInteractor extends Component {
 
     export = (selection) => {
         console.log('the selection ', selection);
-        const onlyChildrenOrNoParents = (tabs) => tabs.filter(tab => parseInt(tab.CheckedState) === this.individually_checked && parseInt(tab.TabId)!== -1);
+        const onlyChildrenOrNoParents = (tabs) => tabs.filter(tab => parseInt(tab.CheckedState) === this.individually_checked && parseInt(tab.TabId) !== -1);
         const onlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === this.fully_checked);
-        const filterOutRoot = (tabs) => tabs.filter(tab => tab.TabId !== -1);
+        const filterOutRoot = (tabs) => tabs.filter(tab => parseInt(tab.TabId) !== -1);
 
         let tabs = this._mapSelection(selection, this._generateSelectionObject);
-        tabs = this._filterOutUnchecked(tabs);
-        tabs = filterOutRoot(tabs);
-
-        let childrenTabs = onlyChildrenOrNoParents(tabs);
-        let parentTabs = onlyParents(tabs);
-
-        console.log("childrenTabs", childrenTabs);
-        console.log("parentTabs", parentTabs);
-
 
         const Left = () => {
 
-            childrenTabs = childrenTabs.filter((tab, i, arr) => {
-                const ParentTabId = tab.ParentTabId;
-                const parent = tabs.filter(t => parseInt(t.TabId) === parseInt(ParentTabId))[0];
-                const parentExists = !!parent;
-
-                const falsey = () => falsey;
-                const isAllChildrenChecked = () => parent.CheckedState === this.fully_checked ? true : false;
-
-                const bool = parentExists ? isAllChildrenChecked() : falsey();
-                return !bool;
-            });
-
-
-            setTimeout(() => {
+            setTimeout(() => { //Because setState is async
                 const RootTab = this._generateSelectionObject(this.state.tabs);
+                let tabs = this._mapSelection(selection, this._generateSelectionObject);
+                tabs = this._filterOutUnchecked(tabs);
+                tabs = filterOutRoot(tabs);
+
+                let childrenTabs = onlyChildrenOrNoParents(tabs);
+                let parentTabs = onlyParents(tabs);
+
+                childrenTabs = childrenTabs.filter((tab, i, arr) => {
+                    const ParentTabId = tab.ParentTabId;
+                    const parent = tabs.filter(t => parseInt(t.TabId) === parseInt(ParentTabId))[0];
+                    const parentExists = !!parent;
+
+                    const falsey = () => false;
+                    const isAllChildrenChecked = () => parent.CheckedState === this.fully_checked ? true : false;
+
+                    const bool = parentExists ? isAllChildrenChecked() : falsey();
+                    return !bool;
+                });
+
+
                 const ExportRootOnly = () => {
                     console.log('export root only');
-                    const exports = [RootTab]
+                    const exports = [RootTab];
                     console.log(exports);
                     this.ExportModalOnSelect(exports);
 
                 };
                 const ExportSelection = () => {
                     console.log('export selection');
+                    console.log("childrenTabs", childrenTabs);
+                    console.log("parentTabs", parentTabs);
+
                     const exports = [RootTab].concat(parentTabs, childrenTabs);
                     console.log(exports);
                     this.ExportModalOnSelect(exports);
@@ -258,14 +259,20 @@ export class PagePickerInteractor extends Component {
 
         const Right = () => {
 
-            setTimeout(()=>{
+            setTimeout(() => {//Because setState is async
                 console.log('in right exports');
                 const RootTab = this._generateSelectionObject(this.state.tabs);
+                let childrenTabs = onlyChildrenOrNoParents(tabs);
+                let parentTabs = onlyParents(tabs);
+
+                console.log("childrenTabs", childrenTabs);
+                console.log("parentTabs", parentTabs);
+
                 const exports = [RootTab].concat(childrenTabs);
                 console.log(exports);
 
                 this.ExportModalOnSelect(exports);
-            },1);
+            }, 1);
 
         };
         this._isAnyAllSelected(tabs) ? Left() : Right();
@@ -298,9 +305,7 @@ export class PagePickerInteractor extends Component {
                 return;
             case childrenSelected < totalChildren && childrenSelected !== 0:
                 console.log('root some selected');
-
                 update.CheckedState = update.CheckedState ? this.individually_checked : update.CheckedState;
-                console.log(update)
                 this.setState({ tabs: update });
 
                 return;
@@ -327,23 +332,36 @@ export class PagePickerInteractor extends Component {
     }
 
     selectAll = () => {
-        const tabs = JSON.parse(JSON.stringify(this.copy));
-        const flatTabs = ppdm.flatten(tabs);
+        const select = (tab) => {
+            const parentSelect = () => {
+                tab.CheckedState = this.fully_checked;
+                tab.ChildrenSelected = true;
+            };
+
+            const singularCheck = () => {
+                tab.CheckedState = this.individually_checked;
+            };
+
+            tab.HasChildren ? parentSelect() : singularCheck();
+        };
+        this._traverseChildTabs(select);
+        const tabs = JSON.parse(JSON.stringify(this.state.tabs));
         tabs.IsOpen = true;
+        const flatTabs = ppdm.flatten(tabs);
         this.setState({ tabs: tabs, flatTabs: flatTabs });
     }
 
     unselectAll = () => {
-        const unselect = (tab) =>{
-            tab.CheckedState=this.unchecked;
-            tab.ChildrenSelected=false;
+        const unselect = (tab) => {
+            tab.CheckedState = this.unchecked;
+            tab.ChildrenSelected = false;
             this.ExportModalOnSelect([]);
         };
 
         this._traverseChildTabs(unselect);
         const tabs = JSON.parse(JSON.stringify(this.state.tabs));
         const flatTabs = ppdm.flatten(this.state.tabs);
-        this.setState({tabs:tabs, flatTabs:flatTabs, childrenSelected:false});
+        this.setState({ tabs: tabs, flatTabs: flatTabs, childrenSelected: false });
     }
 
 
@@ -408,7 +426,7 @@ export class PagePickerInteractor extends Component {
                         onChange={() => this.setCheckedState(this.state.tabs)}
                         checked={this.state.tabs.CheckedState}
                     />
-                    <label onClick={ ()=>this.setCheckedState(this.state.tabs) } ></label>
+                    <label onClick={() => this.setCheckedState(this.state.tabs)} ></label>
                 </div>);
         })();
         return checkbox;
@@ -426,7 +444,7 @@ export class PagePickerInteractor extends Component {
                     getChildTabs={this.getChildTabs.bind(this)}
                     setMasterRootCheckedState={this.setMasterRootCheckedState}
                     PortalTabsParameters={this.PortalTabsParameters}
-                    
+
                     rootContext={this}
                     getDescendantPortalTabs={this.props.getDescendantPortalTabs}
                 />);
