@@ -171,11 +171,29 @@ export class TreeControlInteractor extends Component {
             setTimeout(() => { //Because setState is async
                 const RootTab = this._generateSelectionObject(this.state.tabs);
                 let tabs = this._mapSelection(selection, this._generateSelectionObject);
+                let bool = false;
                 tabs = this._filterOutUnchecked(tabs);
                 tabs = filterOutRoot(tabs);
 
                 let childrenTabs = onlyChildrenOrNoParents(tabs);
                 let parentTabs = onlyParents(tabs);
+
+                parentTabs = parentTabs.filter((tab, i, arr) => {
+                    let bools = [];
+                    const left = () => {
+                        const ParentTabId = tab.ParentTabId;
+                        const parentExists = arr.filter( t=> parseInt(t.TabId) === parseInt(ParentTabId) );
+                        parentExists.length ? bools.push(true) : bools.push(false);
+                        console.log(parentExists)
+                        const condition =  bools.indexOf(true) === -1 ? true : false;
+                        return condition;
+                    };
+                    const right = () => true;
+                    bool = tab.CheckedState===this.fully_checked ? left() : right();
+                    return bool;
+                });
+
+
 
                 childrenTabs = childrenTabs.filter((tab) => {
                     const ParentTabId = tab.ParentTabId;

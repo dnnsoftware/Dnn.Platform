@@ -139,6 +139,7 @@ export class TreeControl extends Component {
             let ParentTabId = tab.ParentTabId;
             let parent = this._getTabById(ParentTabId)[0];
 
+            console.log(parent.CheckedState);
 
             const truthyCheckedStates = [];
             const AreChildrenChecked = (tab) => tab.CheckedState ? truthyCheckedStates.push(true) : truthyCheckedStates.push(false);
@@ -152,12 +153,13 @@ export class TreeControl extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    parent.CheckedState = parent.CheckedState ? this.fully_checked : this.unchecked;
+                    parent.CheckedState = parent.CheckedState===this.individually_checked ? this.fully_checked : parent.CheckedState;
+                    parent.CheckedState = parent.CheckedState==this.fully_checked ? this.individually_checked : parent.CheckedState;
                     return;
 
                 case someChildrenSelected:
                     console.log("some children selected");
-                    parent.CheckedState = parent.CheckedState ? this.individually_checked : this.unchecked;
+                    parent.CheckedState =  this.individually_checked;
                     parent.ChildrenSelected = true;
                     return;
 
@@ -198,12 +200,21 @@ export class TreeControl extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    RootTab.CheckedState = RootTab.CheckedState===this.unchecked ?  this.unchecked : this.fully_checked;
+                    RootTab.CheckedState = RootTab.CheckedState && tab.CheckedState===this.fully_checked ? this.fully_checked : RootTab.CheckedState;
+                    RootTab.CheckedState = RootTab.CheckedState===this.unchecked ?  this.unchecked : RootTab.CheckedState;
                     RootTab.ChildrenSelected = true;
+
+                    console.log(RootTab);
+                    console.log(RootTab.CheckedState);
+
+                    console.log(tab);
+                    console.log(tab.CheckedState);
+
                     return;
 
                 case someChildrenSelected:
                     console.log("some children selected");
+                    console.log(RootTab)
                     RootTab.CheckedState = RootTab.CheckedState ? this.individually_checked : this.unchecked;
                     RootTab.ChildrenSelected = true;
                     return;
@@ -326,12 +337,13 @@ export class TreeControl extends Component {
 
         this._update();
     }
-
+d
     _setParentCheckedState = (tab) => {
         console.log("in parent check update");
-        tab.CheckedState = tab.CheckedState === this.fully_checked ? this.unchecked : tab.CheckedState;
+
         tab.CheckedState = tab.CheckedState === this.individually_checked ? this.unchecked : tab.CheckedState;
         tab.CheckedState = tab.CheckedState === this.unchecked ? this.fully_checked : tab.CheckedState;
+
 
         tab.ChildrenSelected = true;
         const ParentTabIdName = `${tab.TabId}-${tab.Name}`;
@@ -363,8 +375,10 @@ export class TreeControl extends Component {
         const unselectState = (child) => STATE[`${child.TabId}-${child.Name}`].CheckedState = false;
         const noChildrenSelected = (child) => STATE[`${child.TabId}-${child.Name}`].ChildrenSelected = false;
         this._mapChildTabs(tab, unselect);
-        this._mapChildTabs(tab, unselectState);
         this._mapChildTabs(tab, noChildrenSelected);
+        this._mapChildTabs(tab, unselectState);
+
+        this._update();
     }
 
     _setChildrenSelectedIndicator = (ParentTabId) => {
