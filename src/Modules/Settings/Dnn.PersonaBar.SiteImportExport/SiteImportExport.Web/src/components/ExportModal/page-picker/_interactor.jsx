@@ -330,12 +330,14 @@ export class PagePickerInteractor extends Component {
         const unselect = (tab) =>{
             tab.CheckedState=0;
             tab.ChildrenSelected=false;
+            this.ExportModalOnSelect([]);
         };
 
         this._traverseChildTabs(unselect);
-        this.flatTabs = ppdm.flatten(this.state.tabs)
-        this.ExportModalOnSelect([]);
-        this.setState({tabs:this.state.tabs, flatTabs:this.flattabs, childrenSelected:false});
+        const tabs = JSON.parse(JSON.stringify(this.state.tabs));
+        const flatTabs = ppdm.flatten(this.state.tabs)
+        console.log(flatTabs);
+        this.setState({tabs:tabs, flatTabs:flatTabs, childrenSelected:false});
     }
 
 
