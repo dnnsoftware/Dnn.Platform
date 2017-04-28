@@ -23,7 +23,6 @@ export class PagePickerDesktop extends Component {
         this.id = shortid.generate();
         this.debug = true;
 
-
         this.fully_checked = 2;
         this.individually_checked = 1;
         this.unchecked = 0;
@@ -90,7 +89,7 @@ export class PagePickerDesktop extends Component {
         return this.state;
     }
 
-    _log(msg) {
+    log(msg) {
         this.debug ? console.log(msg) : null;
     }
 
@@ -153,9 +152,7 @@ export class PagePickerDesktop extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    console.log("parent before: ", parent.CheckedState);
                     parent.CheckedState = parent.CheckedState ? this.fully_checked : this.unchecked;
-                    console.log("parentTab checkState:", parent.CheckedState);
                     return;
 
                 case someChildrenSelected:
@@ -201,7 +198,6 @@ export class PagePickerDesktop extends Component {
             switch (true) {
                 case allChildrenSelected:
                     console.log("all children selected");
-                    console.log(RootTab);
                     RootTab.CheckedState = RootTab.CheckedState===this.unchecked ?  this.unchecked : this.fully_checked;
                     RootTab.ChildrenSelected = true;
                     return;
@@ -210,8 +206,6 @@ export class PagePickerDesktop extends Component {
                     console.log("some children selected");
                     RootTab.CheckedState = RootTab.CheckedState ? this.individually_checked : this.unchecked;
                     RootTab.ChildrenSelected = true;
-                    console.log(RootTab);
-
                     return;
 
                 case noChildrenSelected:
@@ -284,7 +278,6 @@ export class PagePickerDesktop extends Component {
         this._setRootTabChildrenSelected(tab);
         this._setParentTabChildrenSelected(tab);
 
-        console.log(STATE);
         this._update();
     }
 
@@ -308,7 +301,6 @@ export class PagePickerDesktop extends Component {
         const singularCheckState = () => {
             console.log('in singular check');
             parent.CheckedState = parent.CheckedState === this.unchecked ? this.individually_checked : this.unchecked;
-            console.log(parent.CheckedState);
         };
 
         const ParentCheckedState = () => {
@@ -333,7 +325,6 @@ export class PagePickerDesktop extends Component {
         this._setRootTabChildrenSelected(tab);
         this._setParentTabChildrenSelected(tab);
 
-        console.log(STATE);
         this._update();
     }
 

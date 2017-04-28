@@ -62,10 +62,8 @@ export class PagePickerInteractor extends Component {
     }
 
     _requestDescendantTabs = (ParentTabId, callback) => {
-        console.log("requeting descendantTabs");
 
         let descendantTabs = [];
-        const inspect = (tabs) => console.log("inspecting :", tabs);
         const params = `&parentId=${ParentTabId}`;
         const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
         const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
@@ -73,19 +71,14 @@ export class PagePickerInteractor extends Component {
             return tab;
         });
 
-        const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants, copy);
+        const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants);
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
         const appendDescendants = (parentTab) => descendantTabs.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
-        let copiedDescendants = [];
-        const copy = (dtabs) => copiedDescendants = JSON.parse(JSON.stringify(dtabs));
-        const appendCopies = (parentTab) => copiedDescendants.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
-
 
         this.props.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
             const setCheckedState = (tab) => {
                 const left = () => {
                     const select = () => {
-                        console.log('in select')
                         tab.ChildTabs = tab.ChildTabs.map(child => {
                             child.CheckedState = child.HasChildren ? this.fully_checked : this.individually_checked;
                             return child;
@@ -93,7 +86,6 @@ export class PagePickerInteractor extends Component {
                     };
 
                     const unselect = () => {
-                        console.log('in unselect');
                         tab.ChildTabs = tab.ChildTabs.map(child => {
                             child.CheckedState = this.unchecked;
                             return child;
