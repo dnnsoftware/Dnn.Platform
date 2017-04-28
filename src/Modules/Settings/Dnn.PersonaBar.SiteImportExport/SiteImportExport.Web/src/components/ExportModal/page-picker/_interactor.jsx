@@ -94,7 +94,8 @@ export class PagePickerInteractor extends Component {
                     const unselect = () => {
                         console.log('in unselect');
                         tab.ChildTabs = tab.ChildTabs.map(child => {
-                            child.CheckedState = 0; return child;
+                            child.CheckedState = 0;
+                            return child;
                         });
                     };
 
@@ -332,7 +333,16 @@ export class PagePickerInteractor extends Component {
         update.flatTabs[`${this.state.tabs.TabId}-${this.state.tabs.Name}`].CheckedState = this.state.tabs.CheckedState;
         update.tabs.CheckedState === 2 ? this.selectAll() : this.setState({ tabs: update.tabs, flatTabs: update.flatTabs });
 
-    }
+        const ExportRootTab = () => {
+            console.log('export root')
+            const RootTab = this._generateSelectionObject(this.state.tabs);
+            const exports = [RootTab];
+            console.log(exports)
+            this.ExportModalOnSelect(exports);
+        };
+
+        this.state.tabs.CheckedState === 2 ? ExportRootTab() : null;
+    };
 
     render_icon = (direction) => {
         const width = styles.width(100);
