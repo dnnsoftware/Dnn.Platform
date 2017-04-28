@@ -214,6 +214,7 @@ export class TreeControl extends Component {
 
                 case someChildrenSelected:
                     console.log("some children selected");
+                    console.log(RootTab)
                     RootTab.CheckedState = RootTab.CheckedState ? this.individually_checked : this.unchecked;
                     RootTab.ChildrenSelected = true;
                     this._update();
