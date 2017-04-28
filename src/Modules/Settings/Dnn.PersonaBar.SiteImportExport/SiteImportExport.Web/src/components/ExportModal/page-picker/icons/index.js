@@ -1,5 +1,6 @@
-
-import {ArrowIcon} from "./arrow-icon";
+import {
+    ArrowIcon
+} from "./arrow-icon";
 
 
 export const IconSelector = (type) => {
@@ -9,6 +10,6 @@ export const IconSelector = (type) => {
 
         default:
             return ArrowIcon;
-     }
+    }
 
 };

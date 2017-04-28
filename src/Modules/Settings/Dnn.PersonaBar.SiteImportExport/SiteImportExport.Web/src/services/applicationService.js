@@ -80,8 +80,6 @@ class ApplicationService {
         sf.post("RemoveJob?jobId=" + jobId, {}, callback, errorCallback);
     }
 
-
-
 }
 const applicationService = new ApplicationService();
 export default applicationService;

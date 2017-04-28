@@ -12,16 +12,6 @@ const ppdm = new PagePickerDataManager();
 
 import "./styles.less";
 
-const serializeQueryStringParameters = (obj) => {
-    const s = [];
-    for (let p in obj) {
-        const data = encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]);
-        obj.hasOwnProperty(p) ? s.push(data) : null;
-    }
-    return s.join("&");
-};
-
-
 export class PagePickerInteractor extends Component {
 
     constructor(props) {
@@ -64,7 +54,6 @@ export class PagePickerInteractor extends Component {
     _requestDescendantTabs = (ParentTabId, callback) => {
 
         let descendantTabs = [];
-        const params = `&parentId=${ParentTabId}`;
         const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
         const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
             !Array.isArray(tab.ChildTabs) ? tab.ChildTabs = [] : null;
@@ -170,7 +159,7 @@ export class PagePickerInteractor extends Component {
 
 
     export = (selection) => {
-        console.log('the selection ', selection);
+        console.log("the selection", selection);
         const onlyChildrenOrNoParents = (tabs) => tabs.filter(tab => parseInt(tab.CheckedState) === this.individually_checked && parseInt(tab.TabId) !== -1);
         const onlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === this.fully_checked);
         const filterOutRoot = (tabs) => tabs.filter(tab => parseInt(tab.TabId) !== -1);
@@ -188,7 +177,7 @@ export class PagePickerInteractor extends Component {
                 let childrenTabs = onlyChildrenOrNoParents(tabs);
                 let parentTabs = onlyParents(tabs);
 
-                childrenTabs = childrenTabs.filter((tab, i, arr) => {
+                childrenTabs = childrenTabs.filter((tab) => {
                     const ParentTabId = tab.ParentTabId;
                     const parent = tabs.filter(t => parseInt(t.TabId) === parseInt(ParentTabId))[0];
                     const parentExists = !!parent;
@@ -201,14 +190,14 @@ export class PagePickerInteractor extends Component {
 
 
                 const ExportRootOnly = () => {
-                    console.log('export root only');
+                    console.log("export root only");
                     const exports = [RootTab];
                     console.log(exports);
                     this.ExportModalOnSelect(exports);
 
                 };
                 const ExportSelection = () => {
-                    console.log('export selection');
+                    console.log("export selection");
                     console.log("childrenTabs", childrenTabs);
                     console.log("parentTabs", parentTabs);
 
@@ -224,7 +213,7 @@ export class PagePickerInteractor extends Component {
         const Right = () => {
 
             setTimeout(() => {//Because setState is async
-                console.log('in right exports');
+                console.log("in right exports");
                 const RootTab = this._generateSelectionObject(this.state.tabs);
                 let childrenTabs = onlyChildrenOrNoParents(tabs);
                 let parentTabs = onlyParents(tabs);
@@ -242,7 +231,7 @@ export class PagePickerInteractor extends Component {
     }
 
     setMasterRootCheckedState = () => {
-        console.log('set master root selected');
+        console.log("set master root selected");
 
         let totalChildren = 0;
         let childrenSelected = 0;
@@ -261,19 +250,19 @@ export class PagePickerInteractor extends Component {
 
         switch (true) {
             case childrenSelected === totalChildren:
-                console.log('root all selected');
+                console.log("root all selected");
                 update.CheckedState = this.fully_checked;
                 this.setState({ tabs: update });
 
                 return;
             case childrenSelected < totalChildren && childrenSelected !== 0:
-                console.log('root some selected');
+                console.log("root some selected");
                 update.CheckedState = update.CheckedState ? this.individually_checked : update.CheckedState;
                 this.setState({ tabs: update });
 
                 return;
             case childrenSelected === this.unchecked:
-                console.log('root none selected');
+                console.log("root none selected");
                 update.CheckedState = this.individually_checked;
                 this.setState({ tabs: update });
                 return;
@@ -330,8 +319,6 @@ export class PagePickerInteractor extends Component {
         this.setState({ tabs: tabs, flatTabs: flatTabs, childrenSelected: false });
     }
 
-
-
     setCheckedState = () => {
         const update = Object.assign({},this.state);
         update.tabs.CheckedState = this.state.tabs.CheckedState ? this.unchecked : this.fully_checked;
@@ -339,7 +326,7 @@ export class PagePickerInteractor extends Component {
         update.tabs.CheckedState === this.fully_checked ? this.selectAll() : this.setState({ tabs: update.tabs, flatTabs: update.flatTabs });
 
         const ExportRootTab = () => {
-            console.log('export root');
+            console.log("export root");
             const RootTab = this._generateSelectionObject(this.state.tabs);
             const exports = [RootTab];
             console.log(exports);
@@ -352,7 +339,6 @@ export class PagePickerInteractor extends Component {
     render_icon = (direction) => {
         const width = styles.width(100);
         const margin = styles.margin({ top: -2 });
-        const animate = direction === "90deg" ? true : false;
         const render = (
             <div style={merge(width, margin)}>
                 <this.icon animate={true} reset={false} direction={direction} />

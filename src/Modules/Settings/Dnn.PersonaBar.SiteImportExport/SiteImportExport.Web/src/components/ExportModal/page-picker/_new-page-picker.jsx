@@ -299,7 +299,6 @@ export class PagePickerDesktop extends Component {
 
         const isSingular = parent.HasChildren === false;
         const singularCheckState = () => {
-            console.log('in singular check');
             parent.CheckedState = parent.CheckedState === this.unchecked ? this.individually_checked : this.unchecked;
         };
 
@@ -341,7 +340,6 @@ export class PagePickerDesktop extends Component {
         ParentState[ParentTabIdName].CheckedState = this.fully_checked;
 
         let ChildStates = {};
-        const openAllChildTabs = (tab) => tab.IsOpen = true;
         const parentShowIndicators = (tab) => tab.HasChildren ? tab.ChildrenSelected = true : tab.ChildrenSelected = false;
         const toggleCheckAllChildtabs = (tab) => tab.HasChildren ? tab.CheckedState = this.fully_checked : tab.CheckedState = this.individually_checked;
         const setState = (tab) => ChildStates[`${tab.TabId}-${tab.Name}`] = tab;
@@ -362,8 +360,10 @@ export class PagePickerDesktop extends Component {
 
     _unselectAllChildren(tab) {
         const unselect = (child) => child.CheckedState = this.unchecked;
+        const unselectState = (child) => STATE[`${child.TabId}-${child.Name}`].CheckedState = false;
         const noChildrenSelected = (child) => STATE[`${child.TabId}-${child.Name}`].ChildrenSelected = false;
         this._mapChildTabs(tab, unselect);
+        this._mapChildTabs(tab, unselectState);
         this._mapChildTabs(tab, noChildrenSelected);
     }
 
