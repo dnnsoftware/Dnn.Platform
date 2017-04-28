@@ -10,6 +10,8 @@ const floatLeft = styles.float();
 const merge = styles.merge;
 const ppdm = new PagePickerDataManager();
 
+import "./styles.less";
+
 const serializeQueryStringParameters = (obj) => {
     const s = [];
     for (let p in obj) {
@@ -402,6 +404,7 @@ export class PagePickerInteractor extends Component {
                         onChange={() => this.setCheckedState(this.state.tabs)}
                         checked={this.state.tabs.CheckedState}
                     />
+                    <label onClick={ ()=>this.setCheckedState(this.state.tabs) } ></label>
                 </div>);
         })();
         return checkbox;
@@ -445,7 +448,7 @@ export class PagePickerInteractor extends Component {
         const pagepicker = this.render_PagePicker();
 
         return (
-            <ul style={merge(listStyle, ULPadding)}>
+            <ul className="page-picker" style={merge(listStyle, ULPadding)}>
                 <li style={merge(textLeft, ULPadding)}>
                     {bullet}
                     {checkbox}

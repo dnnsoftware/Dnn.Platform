@@ -4,6 +4,7 @@ import { IconSelector } from "./icons";
 import * as shortid from "shortid";
 import { global } from "./_global";
 
+
 const styles = global.styles;
 const floatLeft = styles.float();
 const merge = styles.merge;
@@ -128,9 +129,7 @@ export class PagePickerDesktop extends Component {
             tab = this._getTabById(TabId)[0];
             condition(tab) ? loop() : exit();
         };
-
         const exit = () => tab;
-
         loop();
         return tab;
     }
@@ -290,7 +289,7 @@ export class PagePickerDesktop extends Component {
         console.log("in open tabs");
 
         const ParentTabIdName = `${tab.TabId}-${tab.Name}`;
-        
+
         tab.CheckedState = tab.CheckedState === 2 ? 0 : tab.CheckedState;
         tab.CheckedState = tab.CheckedState === 1 ? 0 : tab.CheckedState;
         tab.CheckedState = tab.CheckedState === 0 && tab.HasChildren ? 2 : tab.CheckedState;
@@ -516,6 +515,7 @@ export class PagePickerDesktop extends Component {
                         onChange={() => this.setCheckedState(tab)}
                         checked={tab.CheckedState}
                     />
+                    <label onClick={ ()=>this.setCheckedState(tab) } ></label>
                 </div>);
         })();
         return checkbox;
@@ -590,9 +590,12 @@ export class PagePickerDesktop extends Component {
         const listStyle = styles.listStyle();
         const padding = styles.padding({ left: 20 });
         return (
-            <ul style={merge(listStyle, padding)}>
-                {this.render_li(tabs)}
-            </ul>
+            <div>
+                <ul style={merge(listStyle, padding)}>
+                    {this.render_li(tabs)}
+                </ul>
+            </div>
+
         );
 
     }
