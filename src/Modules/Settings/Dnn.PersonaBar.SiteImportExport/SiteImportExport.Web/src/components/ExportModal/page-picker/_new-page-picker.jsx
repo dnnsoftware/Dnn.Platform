@@ -209,6 +209,7 @@ export class PagePickerDesktop extends Component {
                     console.log("some children selected");
                     RootTab.CheckedState = RootTab.CheckedState ? this.individually_checked : this.unchecked;
                     RootTab.ChildrenSelected = true;
+                    console.log(RootTab)
                     return;
 
                 case noChildrenSelected:
@@ -225,6 +226,7 @@ export class PagePickerDesktop extends Component {
         const Right = () => {
             console.log("In Root Right");
             tab.ChildrenSelected = false;
+            console.log(tab);
         };
         tab.ParentTabId !== -1 ? Left() : Right();
     }

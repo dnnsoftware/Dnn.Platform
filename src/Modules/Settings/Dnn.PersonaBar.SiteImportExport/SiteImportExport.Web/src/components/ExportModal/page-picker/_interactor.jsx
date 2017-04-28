@@ -239,14 +239,14 @@ export class PagePickerInteractor extends Component {
             setTimeout(() => {
                 const RootTab = this._generateSelectionObject(this.state.tabs);
                 const ExportRootOnly = () => {
-                    console.log('export selection');
-                    const exports = [RootTab];
+                    console.log('export root only');
+                    const exports = [RootTab]
                     console.log(exports);
                     this.ExportModalOnSelect(exports);
 
                 };
                 const ExportSelection = () => {
-                    console.log('export root only');
+                    console.log('export selection');
                     const exports = [RootTab].concat(parentTabs, childrenTabs);
                     console.log(exports);
                     this.ExportModalOnSelect(exports);
@@ -272,6 +272,8 @@ export class PagePickerInteractor extends Component {
     }
 
     setMasterRootCheckedState = () => {
+        console.log('set master root selected');
+
         let totalChildren = 0;
         let childrenSelected = 0;
         const setLength = (tab) => typeof tab === "object" ? totalChildren++ : null;
@@ -285,7 +287,7 @@ export class PagePickerInteractor extends Component {
 
         childrenSelected !== 0 ? left() : right();
 
-        const update = Object.assign({}, this.state.tabs);
+        const update = JSON.parse(JSON.stringify(this.state.tabs));
 
         switch (true) {
             case childrenSelected === totalChildren:
@@ -296,7 +298,9 @@ export class PagePickerInteractor extends Component {
                 return;
             case childrenSelected < totalChildren && childrenSelected !== 0:
                 console.log('root some selected');
-                update.CheckedState = update.CheckedState ? update.CheckedState : this.individually_checked;
+
+                update.CheckedState = update.CheckedState ? this.individually_checked : update.CheckedState;
+                console.log(update)
                 this.setState({ tabs: update });
 
                 return;
@@ -339,7 +343,6 @@ export class PagePickerInteractor extends Component {
         this._traverseChildTabs(unselect);
         const tabs = JSON.parse(JSON.stringify(this.state.tabs));
         const flatTabs = ppdm.flatten(this.state.tabs);
-        console.log(flatTabs);
         this.setState({tabs:tabs, flatTabs:flatTabs, childrenSelected:false});
     }
 
@@ -423,6 +426,7 @@ export class PagePickerInteractor extends Component {
                     getChildTabs={this.getChildTabs.bind(this)}
                     setMasterRootCheckedState={this.setMasterRootCheckedState}
                     PortalTabsParameters={this.PortalTabsParameters}
+                    
                     rootContext={this}
                     getDescendantPortalTabs={this.props.getDescendantPortalTabs}
                 />);
