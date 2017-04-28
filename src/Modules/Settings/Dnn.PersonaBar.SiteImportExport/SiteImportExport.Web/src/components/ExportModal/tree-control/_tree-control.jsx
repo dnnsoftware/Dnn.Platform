@@ -153,29 +153,34 @@ export class TreeControl extends Component {
                 case allChildrenSelected:
                     console.log("all children selected");
                     parent.CheckedState=parent.CheckedState ? this.fully_checked : parent.CheckedState;
+                    this._update();
                     return;
 
                 case someChildrenSelected:
                     console.log("some children selected");
                     parent.ChildrenSelected = true;
+                    this._update();
                     return;
 
                 case noChildrenSelected:
                     console.log("no children selected");
                     parent.CheckedState = parent.CheckedState ? this.individually_checked : this.unchecked;
                     parent.ChildrenSelected = false;
+                    this._update();
                     return;
 
                 default:
                     console.log("default called");
                     return;
             }
+
         };
 
         const Right = () => {
             let ParentTabId = tab.ParentTabId;
             let parent = this._getTabById(ParentTabId)[0];
             delete parent.ChildrenSelected;
+            this._update();
         };
         parseInt(tab.ParentTabId) !== -1 ? Left() : Right();
     }
@@ -204,19 +209,21 @@ export class TreeControl extends Component {
                     console.log("all children selected");
                     RootTab.CheckState=this.fully_checked;
                     RootTab.ChildrenSelected = true;
+                    this._update();
                     return;
 
                 case someChildrenSelected:
                     console.log("some children selected");
-                    console.log(RootTab.CheckedState)
                     RootTab.CheckedState = RootTab.CheckedState ? this.individually_checked : this.unchecked;
                     RootTab.ChildrenSelected = true;
+                    this._update();
                     return;
 
                 case noChildrenSelected:
                     console.log("no children");
                     RootTab.CheckedState = RootTab.CheckedState ? this.individually_checked : this.unchecked;
                     RootTab.ChildrenSelected = false;
+                    this._update();
                     return;
 
                 default:

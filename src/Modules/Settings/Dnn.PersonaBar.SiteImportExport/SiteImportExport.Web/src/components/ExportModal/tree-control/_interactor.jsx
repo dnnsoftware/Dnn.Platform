@@ -281,7 +281,7 @@ export class TreeControlInteractor extends Component {
                 return;
             case childrenSelected === this.unchecked:
                 console.log("root none selected");
-                update.CheckedState = this.individually_checked;
+                update.CheckedState = this.unchecked;
                 this.setState({ tabs: update });
                 return;
             default:
