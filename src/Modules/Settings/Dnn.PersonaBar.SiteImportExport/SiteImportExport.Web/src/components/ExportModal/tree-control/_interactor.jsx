@@ -184,7 +184,7 @@ export class TreeControlInteractor extends Component {
                         const ParentTabId = tab.ParentTabId;
                         const parentExists = arr.filter( t=> parseInt(t.TabId) === parseInt(ParentTabId) );
                         parentExists.length ? bools.push(true) : bools.push(false);
-                        console.log(parentExists)
+                        console.log(parentExists);
                         const condition =  bools.indexOf(true) === -1 ? true : false;
                         return condition;
                     };
@@ -219,7 +219,8 @@ export class TreeControlInteractor extends Component {
                     console.log("childrenTabs", childrenTabs);
                     console.log("parentTabs", parentTabs);
 
-                    const exports = [RootTab].concat(parentTabs, childrenTabs);
+                    exports = [RootTab].concat(parentTabs, childrenTabs);
+                    exports = exports.filter( tab => !!tab.CheckedState);
                     console.log(exports);
                     this.ExportModalOnSelect(exports);
                 };
@@ -239,7 +240,8 @@ export class TreeControlInteractor extends Component {
                 console.log("childrenTabs", childrenTabs);
                 console.log("parentTabs", parentTabs);
 
-                const exports = [RootTab].concat(childrenTabs);
+                let exports = [RootTab].concat(childrenTabs);
+                exports = exports.filter( tab => !!tab.CheckedState);
                 console.log(exports);
 
                 this.ExportModalOnSelect(exports);
