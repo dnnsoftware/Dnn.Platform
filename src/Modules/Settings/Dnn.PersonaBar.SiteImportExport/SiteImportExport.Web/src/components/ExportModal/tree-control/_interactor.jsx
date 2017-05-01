@@ -44,7 +44,7 @@ export class TreeControlInteractor extends Component {
 
         this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
             const tabs = [response.Results];
-            this.setState({ tabs: tabs});
+            this.setState({ tabs: tabs });
         });
 
     }
@@ -61,7 +61,7 @@ export class TreeControlInteractor extends Component {
 
         const input = (tabs) => compose(tabs, captureDecendants);
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
-        const appendDescendants = (parentTab) =>{
+        const appendDescendants = (parentTab) => {
 
             descendantTabs.forEach((tab) => {
                 const condition = parseInt(tab.ParentTabId) === parseInt(parentTab.TabId);
@@ -107,8 +107,8 @@ export class TreeControlInteractor extends Component {
 
     generateSelectionObject(tab) {
         return {
-            "TabId": tab.TabId,
-            "ParentTabId": tab.ParentTabId,
+            "TabId": parseInt(tab.TabId),
+            "ParentTabId": parseInt(tab.ParentTabId),
             "CheckedState": tab.CheckedState,
             "Name": tab.Name
         };
@@ -147,8 +147,8 @@ export class TreeControlInteractor extends Component {
             const condition = parseInt(tab.TabId) === parseInt(tabdata.ParentTabId);
             condition ? capture(tab) : null;
         };
-        this.traverse(find)
-        return parent
+        this.traverse(find);
+        return parent;
     }
 
     updateTree = (tabdata) => {
@@ -204,11 +204,11 @@ export class TreeControlInteractor extends Component {
                 }
             });
 
-            sum=sum
+            sum = sum
 
             switch (true) {
                 case sum === expect && tab.HasChildren:
-                    tab.CheckedState = tab.CheckedState===this.individuallyChecked ?  this.fullyChecked : tab.CheckedState;
+                    tab.CheckedState = tab.CheckedState === this.individuallyChecked ? this.fullyChecked : tab.CheckedState;
 
                     break;
                 case sum !== 0 && sum === expect && !tab.HasChildren:
@@ -216,7 +216,7 @@ export class TreeControlInteractor extends Component {
 
                     break;
                 case sum !== 0 && sum < expect:
-                    tab.CheckedState = tab.CheckedState===this.fullyChecked ?  this.individuallyChecked : tab.CheckedState;
+                    tab.CheckedState = tab.CheckedState === this.fullyChecked ? this.individuallyChecked : tab.CheckedState;
                     break;
                 default:
                     break;
@@ -230,7 +230,32 @@ export class TreeControlInteractor extends Component {
 
 
     export = (selection) => {
-        console.log("the selection", selection);
+
+        let tabs = []
+        let children = []
+        let parents = []
+        const filterOutZeros = (tabs) => tabs.filter(tab => !!tab.CheckedState);
+        const filterOnlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === this.fullyChecked);
+        const filterOnlyChildren = (tabs) => tabs.filter(tab => tab.CheckedState === this.individuallyChecked);
+
+        const filterOutIfAllSelected = (children) => children.filter(tab => {
+            let exists = false;
+            parents.forEach(t => t.TabId === tab.ParentTabId ? exists = t : null);
+            return exists === false;
+        });
+
+
+
+        const generateSelections = (tab) => tabs.push(this.generateSelectionObject(tab));
+        this.traverse(generateSelections);
+        tabs = filterOutZeros(tabs);
+        parents = filterOnlyParents(tabs);
+        children = filterOnlyChildren(tabs);
+        children = filterOutIfAllSelected(children);
+
+        const exports = parents.concat(children)
+
+        console.log(exports);
 
 
     }
