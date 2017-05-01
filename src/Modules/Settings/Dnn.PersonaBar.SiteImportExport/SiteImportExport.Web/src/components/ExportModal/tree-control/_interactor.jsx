@@ -51,25 +51,31 @@ export class TreeControlInteractor extends Component {
 
 
 
-    _requestDescendantTabs = (ParentTabId, callback) => {
+    requestDescendantTabs = (ParentTabId, callback) => {
 
         let descendantTabs = [];
-        const mapToFlatTabs = (tabs) => tabs.map(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`] = tab);
         const captureDecendants = (tabs) => descendantTabs = tabs.map(tab => {
             !Array.isArray(tab.ChildTabs) ? tab.ChildTabs = [] : null;
             return tab;
         });
 
-        const input = (tabs) => compose(tabs, mapToFlatTabs, captureDecendants);
+        const input = (tabs) => compose(tabs, captureDecendants);
         const compose = (tabs, ...fns) => fns.forEach(fn => fn(tabs));
-        const appendDescendants = (parentTab) => descendantTabs.forEach((tab) => parseInt(tab.ParentTabId) === parseInt(parentTab.TabId) ? parentTab.ChildTabs.push(tab) : null);
+        const appendDescendants = (parentTab) =>{
+
+            descendantTabs.forEach((tab) => {
+                const condition = parseInt(tab.ParentTabId) === parseInt(parentTab.TabId);
+                condition ? parentTab.ChildTabs.push(tab) : null;
+            });
+        };
 
         this.props.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
+
             const setCheckedState = (tab) => {
                 const left = () => {
                     const select = () => {
                         tab.ChildTabs = tab.ChildTabs.map(child => {
-                            child.CheckedState = child.HasChildren ? this.fully_checked : this.individually_checked;
+                            child.CheckedState = child.HasChildren ? this.fullyChecked : this.individuallyChecked;
                             return child;
                         });
                     };
@@ -80,6 +86,7 @@ export class TreeControlInteractor extends Component {
                             return child;
                         });
                     };
+
                     tab.CheckedState ? select() : unselect();
                 };
 
@@ -181,7 +188,7 @@ export class TreeControlInteractor extends Component {
 
             tabsWithoutChildren.forEach(t => {
                 t.CheckedState === this.individuallyChecked ? sum += 1 : null;
-            })
+            });
 
             tabsWithChildren.forEach(t => {
                 switch (true) {
@@ -197,6 +204,8 @@ export class TreeControlInteractor extends Component {
                 }
             });
 
+            sum=sum
+
             switch (true) {
                 case sum === expect && tab.HasChildren:
                     tab.CheckedState = this.fullyChecked;
@@ -207,7 +216,7 @@ export class TreeControlInteractor extends Component {
 
                     break;
                 case sum !== 0 && sum < expect:
-                    tab.CheckedState = this.individuallyChecked;
+                    tab.CheckedState = tab.CheckedState===this.fullyChecked ?  this.individuallyChecked : tab.CheckedState;
                     break;
                 default:
                     break;
@@ -234,7 +243,7 @@ export class TreeControlInteractor extends Component {
                 tabs={this.state.tabs}
                 export={this.export}
                 PortalTabsParameters={this.PortalTabsParameters}
-                getDescendantPortalTabs={this.props.getDescendantPortalTabs}
+                getDescendantPortalTabs={this.requestDescendantTabs}
                 fullyChecked={this.fullyChecked}
                 individuallyChecked={this.individuallyChecked}
                 unchecked={this.unchecked}

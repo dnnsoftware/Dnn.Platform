@@ -133,18 +133,20 @@ export class TreeControl extends Component {
                     return
 
                 case checkedArray.indexOf(true) !== -1:
-                    parent.CheckedState = parent.CheckedState==this.fullyChecked ?  this.props.individuallyChecked : parent.CheckedState;
+                    parent.CheckedState = parent.CheckedState==this.props.fullyChecked ?  this.props.individuallyChecked : parent.CheckedState;
+
                     this.props.updateTree(parent)
                     return
             }
+
             this.props.updateTree(parent)
-        }
+        };
 
         const noChildrenSelected = () => {
             parent.CheckedState = this.props.individuallyChecked;
             parent.ChildrenSelected = false
             this.props.updateTree(parent)
-        }
+        };
 
         ChildTabs.forEach(tab => tab.CheckedState ? checkedArray.push(true) : checkedArray.push(false))
         checkedArray.indexOf(true) !== -1 ? checkParent() : noChildrenSelected()
@@ -166,7 +168,7 @@ export class TreeControl extends Component {
                     this.props.updateTree(tab)
                     return
             }
-        }
+        };
         tab.CheckedState = this.props.fullyChecked
         tab.ChildrenSelected = true
         this._mapToChildTabs(tab, select)
@@ -192,8 +194,12 @@ export class TreeControl extends Component {
         const left = () => tab.IsOpen = !tab.IsOpen
 
         const right = () => {
-            this.props.getDescendantPortalTabs(this.props.PortalTabsParameters, tab.TabId)
-            tab.IsOpen = !tab.IsOpen
+            this.props.getDescendantPortalTabs(tab.TabId, () => {
+                 tab.IsOpen = !tab.IsOpen
+                 this.props.updateTree(tab)
+
+            });
+
         }
         condition ? left() : right()
         this.props.updateTree(tab)
@@ -330,7 +336,7 @@ export class TreeControl extends Component {
                     unchecked={this.props.unchecked}
 
                     export={this.props.export}
-                    PortalTabsParameters={this.PortalTabsParameters}
+                    PortalTabsParameters={this.props.PortalTabsParameters}
                     getDescendantPortalTabs={this.props.getDescendantPortalTabs}
 
 
@@ -344,13 +350,13 @@ export class TreeControl extends Component {
     render() {
         const listStyle = styles.listStyle();
         const textLeft = styles.textAlign("left");
-        const ULPadding = styles.padding({ all: 3 });
+        const ULPadding = styles.padding({ all: 'inherit' });
         const spanPadLeft = styles.padding({ left: 5 });
 
         const list_items = this.render_li(this.props.tabs);
 
         return (
-            <ul className="page-picker" >
+            <ul className="page-picker" style={merge(listStyle, ULPadding)} >
                 {list_items}
             </ul>
         )
