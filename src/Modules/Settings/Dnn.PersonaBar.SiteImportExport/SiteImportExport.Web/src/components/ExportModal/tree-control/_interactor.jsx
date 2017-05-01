@@ -237,13 +237,11 @@ export class TreeControlInteractor extends Component {
         const filterOutZeros = (tabs) => tabs.filter(tab => !!tab.CheckedState);
         const filterOnlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === this.fullyChecked);
         const filterOnlyChildren = (tabs) => tabs.filter(tab => tab.CheckedState === this.individuallyChecked);
-
-        const filterOutIfAllSelected = (children) => children.filter(tab => {
+        const filterOutIfAllSelected = (arr1, arr2) => arr1.filter(tab => {
             let exists = false;
-            parents.forEach(t => t.TabId === tab.ParentTabId ? exists = t : null);
+            arr2.forEach(t => t.TabId === tab.ParentTabId ? exists = t : null);
             return exists === false;
         });
-
 
 
         const generateSelections = (tab) => tabs.push(this.generateSelectionObject(tab));
@@ -251,9 +249,10 @@ export class TreeControlInteractor extends Component {
         tabs = filterOutZeros(tabs);
         parents = filterOnlyParents(tabs);
         children = filterOnlyChildren(tabs);
-        children = filterOutIfAllSelected(children);
+        children = filterOutIfAllSelected(children, parents);
+        parents = filterOutIfAllSelected(parents, parents);
 
-        const exports = parents.concat(children)
+        const exports = parents.concat(children);
 
         console.log(exports);
 
