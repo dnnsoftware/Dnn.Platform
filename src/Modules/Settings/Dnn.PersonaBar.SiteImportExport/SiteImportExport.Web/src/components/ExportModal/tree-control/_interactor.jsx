@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { TreeControl } from "./_tree-control";
-import { TreeControlDataManager } from "./helpers";
 import { IconSelector } from "./icons";
 import { global } from "./_global";
-
-import { PortalTabs } from "./mocks";
 
 const styles = global.styles;
 const floatLeft = styles.float();
@@ -22,8 +19,6 @@ export class TreeControlInteractor extends Component {
         this.icon = IconSelector("arrow_bullet");
         this.PortalTabsParameters = props.PortalTabsParameters;
 
-        this.ExportModalOnSelect = props.OnSelect;
-
         this.fullyChecked = 2;
         this.individuallyChecked = 1;
         this.unchecked = 0;
@@ -31,20 +26,23 @@ export class TreeControlInteractor extends Component {
     }
 
     componentWillMount() {
-        this.setState({ tabs: PortalTabs });
+        this.setState({ tabs: [] });
         this.init();
     }
 
     init() {
 
         const ExportInitialSelection = () => {
-            const selection = this._generateSelectionObject(this.state.tabs);
-            this.ExportModalOnSelect(selection);
+            const selection = this.generateSelectionObject(this.state.tabs);
+            this.props.OnSelect(selection);
         };
 
         this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
             const tabs = [response.Results];
-            this.setState({ tabs: tabs });
+            this.setState({ tabs: tabs }, ()=> {
+                ExportInitialSelection();
+            });
+            
         });
 
     }
@@ -139,10 +137,10 @@ export class TreeControlInteractor extends Component {
     }
 
     findParent = (tabdata) => {
-        let parent = {}
+        let parent = {};
         const capture = (tab) => {
-            parent = tab || {}
-        }
+            parent = tab || {};
+        };
         const find = (tab, copy) => {
             const condition = parseInt(tab.TabId) === parseInt(tabdata.ParentTabId);
             condition ? capture(tab) : null;
@@ -168,9 +166,9 @@ export class TreeControlInteractor extends Component {
 
     reAlignTree = () => {
 
-        let iterationsArray = []
-        const iterations = (t) => t.ChildTabs.length ? iterationsArray.push(...t.ChildTabs) : null
-        this.traverse(iterations)
+        let iterationsArray = [];
+        const iterations = (t) => t.ChildTabs.length ? iterationsArray.push(...t.ChildTabs) : null;
+        this.traverse(iterations);
 
         const realign = (tab) => {
             iterationsArray = [];
@@ -204,8 +202,6 @@ export class TreeControlInteractor extends Component {
                 }
             });
 
-            sum = sum
-
             switch (true) {
                 case sum === expect && tab.HasChildren:
                     tab.CheckedState = tab.CheckedState === this.individuallyChecked ? this.fullyChecked : tab.CheckedState;
@@ -225,15 +221,15 @@ export class TreeControlInteractor extends Component {
             this.updateTree(tab);
         };
 
-        iterationsArray.forEach(iter => this.traverse(realign));
+        iterationsArray.forEach(() => this.traverse(realign));
     }
 
 
-    export = (selection) => {
+    export = () => {
 
-        let tabs = []
-        let children = []
-        let parents = []
+        let tabs = [];
+        let children = [];
+        let parents = [];
         const filterOutZeros = (tabs) => tabs.filter(tab => !!tab.CheckedState);
         const filterOnlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === this.fullyChecked);
         const filterOnlyChildren = (tabs) => tabs.filter(tab => tab.CheckedState === this.individuallyChecked);
@@ -253,9 +249,8 @@ export class TreeControlInteractor extends Component {
         parents = filterOutIfAllSelected(parents, parents);
 
         const exports = parents.concat(children);
-
         console.log(exports);
-
+        this.props.OnSelect(exports);
 
     }
 
@@ -274,7 +269,6 @@ export class TreeControlInteractor extends Component {
                 updateTree={this.updateTree}
                 reAlignTree={this.reAlignTree}
                 findParent={this.findParent}
-
             />
         );
 
@@ -283,9 +277,6 @@ export class TreeControlInteractor extends Component {
 
 TreeControlInteractor.propTypes = {
     PortalTabsParameters: PropTypes.object.isRequired,
-    serviceFramework: PropTypes.object.isRequired,
-    controller: PropTypes.string.isRequired,
-    moduleRoot: PropTypes.string.isrequired,
     OnSelect: PropTypes.func.isRequired,
     PortalTabParamters: PropTypes.object.isRequired,
     getInitialPortalTabs: PropTypes.func.isRequired,
