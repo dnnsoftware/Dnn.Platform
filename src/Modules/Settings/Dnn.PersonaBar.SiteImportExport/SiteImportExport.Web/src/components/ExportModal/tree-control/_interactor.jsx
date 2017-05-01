@@ -4,11 +4,13 @@ import { TreeControl } from "./_tree-control";
 import { TreeControlDataManager } from "./helpers";
 import { IconSelector } from "./icons";
 import { global } from "./_global";
-const styles = global.styles;
 
+import { PortalTabs } from "./mocks";
+
+const styles = global.styles;
 const floatLeft = styles.float();
 const merge = styles.merge;
-const tcdm = new TreeControlDataManager();
+
 
 import "./styles.less";
 
@@ -21,16 +23,15 @@ export class TreeControlInteractor extends Component {
         this.PortalTabsParameters = props.PortalTabsParameters;
 
         this.ExportModalOnSelect = props.OnSelect;
-        this.copy = {};
 
-        this.fully_checked = 2;
-        this.individually_checked = 1;
+        this.fullyChecked = 2;
+        this.individuallyChecked = 1;
         this.unchecked = 0;
 
     }
 
     componentWillMount() {
-        this.setState({ tabs: [], childrenSelected: true });
+        this.setState({ tabs: PortalTabs });
         this.init();
     }
 
@@ -42,14 +43,13 @@ export class TreeControlInteractor extends Component {
         };
 
         this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
-            this.PortalTabs = response.Results;
-            this.flatTabs = tcdm.flatten(this.PortalTabs);
-            this.copy = JSON.parse(JSON.stringify(this.PortalTabs));
-            this.setState({ tabs: this.PortalTabs, flatTabs: this.flatTabs });
-            ExportInitialSelection();
+            const tabs = [response.Results];
+            this.setState({ tabs: tabs});
         });
 
     }
+
+
 
     _requestDescendantTabs = (ParentTabId, callback) => {
 
@@ -89,8 +89,8 @@ export class TreeControlInteractor extends Component {
 
             const tabs = response.Results;
             input(tabs);
-            this._traverseChildTabs(appendDescendants);
-            this._traverseChildTabs(setCheckedState);
+            this.traverse(appendDescendants);
+            this.traverse(setCheckedState);
 
             this.setState({ tabs: this.state.tabs });
             callback();
@@ -98,13 +98,7 @@ export class TreeControlInteractor extends Component {
     }
 
 
-    _getRootTab(selection) {
-        return Object.keys(selection)
-            .map(key => selection[key])
-            .filter(tab => tab.TabId === -1 && tab.ParentTabId === 0);
-    }
-
-    _generateSelectionObject(tab) {
+    generateSelectionObject(tab) {
         return {
             "TabId": tab.TabId,
             "ParentTabId": tab.ParentTabId,
@@ -114,24 +108,17 @@ export class TreeControlInteractor extends Component {
     }
 
 
-    _filterOutUnchecked(tabs) {
-        return tabs.filter(tab => !!tab.CheckedState);
-    }
-
-    _filterChildrenOfAllSelected(tabs) {
-        const ParentTabIds = tabs.filter(tab => tab.CheckedState === this.fully_checked).map(tab => tab.TabId);
-        return tabs.filter(tab => ParentTabIds.indexOf(tab.ParentTabId) === -1);
-    }
-
-    _traverseChildTabs(comparator) {
-        let ChildTabs = this.state.tabs.ChildTabs;
+    traverse = (comparator) => {
+        const copy = this.state.tabs;
+        let ChildTabs = copy;
         const cached_childtabs = [];
         cached_childtabs.push(ChildTabs);
-        const condition = (cached_childtabs.length > 0);
+        const condition = cached_childtabs.length > 0;
+
         const loop = () => {
             const childtab = cached_childtabs.length ? cached_childtabs.shift() : null;
             const left = () => childtab.forEach(tab => {
-                Array.isArray(tab.ChildTabs) ? comparator(tab) : null;
+                Array.isArray(tab.ChildTabs) ? comparator(tab, copy) : null;
                 Array.isArray(tab.ChildTabs) && tab.ChildTabs.length ? cached_childtabs.push(tab.ChildTabs) : null;
                 condition ? loop() : exit();
             });
@@ -144,314 +131,118 @@ export class TreeControlInteractor extends Component {
         return;
     }
 
-    _isAnyAllSelected(tabs) {
-        return tabs.filter(tab => tab.CheckedState === this.fully_checked).length ? true : false;
+    findParent = (tabdata) => {
+        let parent = {}
+        const capture = (tab) => {
+            parent = tab || {}
+        }
+        const find = (tab, copy) => {
+            const condition = parseInt(tab.TabId) === parseInt(tabdata.ParentTabId);
+            condition ? capture(tab) : null;
+        };
+        this.traverse(find)
+        return parent
     }
 
-    _mapSelection(selection, fn) {
-        const mapped = [];
-        for (let tab in selection) {
-            const obj = fn(selection[tab]);
-            mapped.push(obj);
-        }
-        return mapped;
+    updateTree = (tabdata) => {
+        let updateTab = null;
+        let newState = null;
+        const capture = (tab, copy) => {
+            tab = JSON.parse(JSON.stringify(tabdata));
+            newState = copy;
+        };
+        const find = (tab, copy) => {
+            parseInt(tab.TabId) === parseInt(tabdata.TabId) ? capture(tab, copy) : null;
+        };
+        this.traverse(find);
+        this.setState({ tabs: newState });
+        this.export(this.state.tabs);
+    }
+
+    reAlignTree = () => {
+
+        let iterationsArray = []
+        const iterations = (t) => t.ChildTabs.length ? iterationsArray.push(...t.ChildTabs) : null
+        this.traverse(iterations)
+
+        const realign = (tab) => {
+            iterationsArray = [];
+            let sum = 0;
+            let newState = null;
+            const tabsWithChildren = [];
+            const tabsWithoutChildren = [];
+            const ChildTabs = tab.ChildTabs;
+
+            tab.ChildTabs.forEach((t) => {
+                t.HasChildren ? tabsWithChildren.push(t) : tabsWithoutChildren.push(t);
+            });
+
+            const expect = tabsWithoutChildren.length + tabsWithChildren.length * this.fullyChecked;
+
+            tabsWithoutChildren.forEach(t => {
+                t.CheckedState === this.individuallyChecked ? sum += 1 : null;
+            })
+
+            tabsWithChildren.forEach(t => {
+                switch (true) {
+                    case t.CheckedState === this.fullyChecked:
+                        sum += 2;
+                        return;
+                    case t.CheckedState === this.individuallyChecked:
+                        sum += 1;
+                        return;
+                    default:
+                        return;
+
+                }
+            });
+
+            switch (true) {
+                case sum === expect && tab.HasChildren:
+                    tab.CheckedState = this.fullyChecked;
+
+                    break;
+                case sum !== 0 && sum === expect && !tab.HasChildren:
+                    tab.CheckedState = this.individuallyChecked;
+
+                    break;
+                case sum !== 0 && sum < expect:
+                    tab.CheckedState = this.individuallyChecked;
+                    break;
+                default:
+                    break;
+            }
+
+            this.updateTree(tab);
+        };
+
+        iterationsArray.forEach(iter => this.traverse(realign));
     }
 
 
     export = (selection) => {
         console.log("the selection", selection);
-        const onlyChildrenOrNoParents = (tabs) => tabs.filter(tab => parseInt(tab.CheckedState) === this.individually_checked && parseInt(tab.TabId) !== -1);
-        const onlyParents = (tabs) => tabs.filter(tab => tab.CheckedState === this.fully_checked);
-        const filterOutRoot = (tabs) => tabs.filter(tab => parseInt(tab.TabId) !== -1);
 
-        let tabs = this._mapSelection(selection, this._generateSelectionObject);
-
-        const Left = () => {
-
-            setTimeout(() => { //Because setState is async
-                const RootTab = this._generateSelectionObject(this.state.tabs);
-                let tabs = this._mapSelection(selection, this._generateSelectionObject);
-                let bool = false;
-                tabs = this._filterOutUnchecked(tabs);
-                tabs = filterOutRoot(tabs);
-
-                let childrenTabs = onlyChildrenOrNoParents(tabs);
-                let parentTabs = onlyParents(tabs);
-
-                parentTabs = parentTabs.filter((tab, i, arr) => {
-                    let bools = [];
-                    const left = () => {
-                        const ParentTabId = tab.ParentTabId;
-                        const parentExists = arr.filter( t=> parseInt(t.TabId) === parseInt(ParentTabId) );
-                        parentExists.length ? bools.push(true) : bools.push(false);
-                        console.log(parentExists);
-                        const condition =  bools.indexOf(true) === -1 ? true : false;
-                        return condition;
-                    };
-                    const right = () => true;
-                    bool = tab.CheckedState===this.fully_checked ? left() : right();
-                    return bool;
-                });
-
-
-
-                childrenTabs = childrenTabs.filter((tab) => {
-                    const ParentTabId = tab.ParentTabId;
-                    const parent = tabs.filter(t => parseInt(t.TabId) === parseInt(ParentTabId))[0];
-                    const parentExists = !!parent;
-                    const falsey = () => false;
-                    const isAllChildrenChecked = () => parent.CheckedState === this.fully_checked ? true : false;
-
-                    const bool = parentExists ? isAllChildrenChecked() : falsey();
-                    return !bool;
-                });
-
-
-                const ExportRootOnly = () => {
-                    console.log("export root only");
-                    const exports = [RootTab];
-                    console.log(exports);
-                    this.ExportModalOnSelect(exports);
-
-                };
-                const ExportSelection = () => {
-                    console.log("export selection");
-                    console.log("childrenTabs", childrenTabs);
-                    console.log("parentTabs", parentTabs);
-
-                    exports = [RootTab].concat(parentTabs, childrenTabs);
-                    exports = exports.filter( tab => !!tab.CheckedState);
-                    console.log(exports);
-                    this.ExportModalOnSelect(exports);
-                };
-                RootTab.CheckedState === this.fully_checked ? ExportRootOnly() : ExportSelection();
-            }, 1);
-
-        };
-
-        const Right = () => {
-
-            setTimeout(() => {//Because setState is async
-                console.log("in right exports");
-                const RootTab = this._generateSelectionObject(this.state.tabs);
-                let childrenTabs = onlyChildrenOrNoParents(tabs);
-                let parentTabs = onlyParents(tabs);
-
-                console.log("childrenTabs", childrenTabs);
-                console.log("parentTabs", parentTabs);
-
-                let exports = [RootTab].concat(childrenTabs);
-                exports = exports.filter( tab => !!tab.CheckedState);
-                console.log(exports);
-
-                this.ExportModalOnSelect(exports);
-            }, 1);
-        };
-        this._isAnyAllSelected(tabs) ? Left() : Right();
-    }
-
-    setMasterRootCheckedState = () => {
-        console.log("set master root selected");
-
-        let totalChildren = 0;
-        let childrenSelected = 0;
-        const setLength = (tab) => typeof tab === "object" ? totalChildren++ : null;
-        const isAllSelected = (tab) => tab.CheckedState ? childrenSelected++ : null;
-
-        this._traverseChildTabs(setLength);
-        this._traverseChildTabs(isAllSelected);
-
-        const left = () => this.setState({ childrenSelected: true });
-        const right = () => this.setState({ childrenSelected: false });
-
-        childrenSelected !== 0 ? left() : right();
-
-        const update = JSON.parse(JSON.stringify(this.state.tabs));
-
-        switch (true) {
-            case childrenSelected === totalChildren:
-                console.log("root all selected");
-                update.CheckedState = this.fully_checked;
-                this.setState({ tabs: update });
-
-                return;
-            case childrenSelected < totalChildren && childrenSelected !== 0:
-                console.log("root some selected");
-                update.CheckedState = update.CheckedState ? this.individually_checked : update.CheckedState;
-                this.setState({ tabs: update });
-
-                return;
-            case childrenSelected === this.unchecked:
-                console.log("root none selected");
-                update.CheckedState = this.unchecked;
-                this.setState({ tabs: update });
-                return;
-            default:
-
-                return;
-        }
 
     }
 
-    getChildTabs = (ParentTabId, callback) => {
-        this._requestDescendantTabs(ParentTabId, callback);
-    }
-
-    showChildTabs = () => {
-        const update = Object.assign({}, this.state.tabs);
-        update.IsOpen = !this.state.tabs.IsOpen;
-        this.setState({ tabs: update });
-    }
-
-    selectAll = () => {
-        const select = (tab) => {
-            const parentSelect = () => {
-                tab.CheckedState = this.fully_checked;
-                tab.ChildrenSelected = true;
-            };
-
-            const singularCheck = () => {
-                tab.CheckedState = this.individually_checked;
-            };
-
-            tab.HasChildren ? parentSelect() : singularCheck();
-        };
-        this._traverseChildTabs(select);
-        const tabs = JSON.parse(JSON.stringify(this.state.tabs));
-        tabs.IsOpen = true;
-
-        const flatTabs = tcdm.flatten(tabs);
-
-        this.setMasterRootCheckedState();
-        this.setState({ tabs: tabs, flatTabs: flatTabs });
-    }
-
-    unselectAll = () => {
-        const unselect = (tab) => {
-            tab.CheckedState = this.unchecked;
-            tab.ChildrenSelected = false;
-        };
-
-        this._traverseChildTabs(unselect);
-        const tabs = JSON.parse(JSON.stringify(this.state.tabs));
-        const flatTabs = tcdm.flatten(this.state.tabs);
-        this.ExportModalOnSelect([]);
-        this.setState({ tabs: tabs, flatTabs: flatTabs, childrenSelected: false });
-    }
-
-    setCheckedState = () => {
-        const update = Object.assign({},this.state);
-        update.tabs.CheckedState = this.state.tabs.CheckedState ? this.unchecked : this.fully_checked;
-        update.flatTabs[`${this.state.tabs.TabId}-${this.state.tabs.Name}`].CheckedState = this.state.tabs.CheckedState;
-        update.tabs.CheckedState === this.fully_checked ? this.selectAll() : this.setState({ tabs: update.tabs, flatTabs: update.flatTabs });
-
-        const ExportRootTab = () => {
-            console.log("export root");
-            const RootTab = this._generateSelectionObject(this.state.tabs);
-            const exports = [RootTab];
-            console.log(exports);
-            this.ExportModalOnSelect(exports);
-        };
-
-        this.state.tabs.CheckedState === this.fully_checked ? ExportRootTab() : this.unselectAll();
-    };
-
-    render_icon = (direction) => {
-        const width = styles.width(100);
-        const margin = styles.margin({ top: -2 });
-        const render = (
-            <div style={merge(width, margin)}>
-                <this.icon animate={true} reset={false} direction={direction} />
-            </div>
-        );
-        return render;
-    }
-
-    render_Bullet = () => {
-        const direction = this.state.tabs.IsOpen && this.state.tabs.ChildTabs.length ? "90deg" : "0deg";
-        const render = this.render_icon(direction);
-        return render;
-    }
-
-    render_ListBullet = (tab, fn) => {
-        const bullet = (() => {
-            const width = styles.width(20, "px");
-            const height = styles.height(20, "px");
-
-            return (
-                <div
-                    onClick={() => fn()}
-                    style={merge(floatLeft, width, height)}>
-                    {this.render_Bullet(tab)}
-                </div>);
-        })();
-        return bullet;
-    }
-
-    render_ListCheckbox = () => {
-        const checkbox = (() => {
-            const padding = styles.padding({ all: 0 });
-            return (
-                <div style={merge(floatLeft, padding)}>
-                    <input
-                        type="checkbox"
-                        onChange={() => this.setCheckedState(this.state.tabs)}
-                        checked={this.state.tabs.CheckedState}
-                    />
-                    <label onClick={() => this.setCheckedState(this.state.tabs)} ></label>
-                </div>);
-        })();
-        return checkbox;
-    }
-
-    render_TreeControl = () => {
-        const pagepicker = (() => {
-            const condition = (this.state.tabs.IsOpen && this.state.tabs.ChildTabs.length);
-            const picker = (
-                <TreeControl
-                    icon_type="arrow_bullet"
-                    flatTabs={this.state.flatTabs}
-                    tabs={this.state.tabs.ChildTabs}
-                    export={this.export}
-                    getChildTabs={this.getChildTabs.bind(this)}
-                    setMasterRootCheckedState={this.setMasterRootCheckedState}
-                    PortalTabsParameters={this.PortalTabsParameters}
-
-                    rootContext={this}
-                    getDescendantPortalTabs={this.props.getDescendantPortalTabs}
-                />);
-
-            return (
-                <div>
-                    {condition ? picker : null}
-                </div>
-            );
-
-        })();
-
-        return pagepicker;
-    }
 
     render() {
-        const listStyle = styles.listStyle();
-        const textLeft = styles.textAlign("left");
-        const ULPadding = styles.padding({ all: 3 });
-        const spanPadLeft = styles.padding({ left: 5 });
-
-        const checkbox = this.render_ListCheckbox(this.state.tabs);
-        const bullet = this.render_ListBullet(this.state.tabs, () => this.showChildTabs(this.state.tabs));
-        const treeControl = this.render_TreeControl();
-
         return (
-            <ul className="page-picker" style={merge(listStyle, ULPadding)}>
-                <li style={merge(textLeft, ULPadding)}>
-                    {bullet}
-                    {checkbox}
-                    <span style={merge(spanPadLeft)}> {this.state.tabs.Name} </span>
-                    {this.state.childrenSelected ? <span>*</span> : <span></span>}
-                    {treeControl}
-                </li>
-            </ul>
+            <TreeControl
+                icon_type="arrow_bullet"
+                tabs={this.state.tabs}
+                export={this.export}
+                PortalTabsParameters={this.PortalTabsParameters}
+                getDescendantPortalTabs={this.props.getDescendantPortalTabs}
+                fullyChecked={this.fullyChecked}
+                individuallyChecked={this.individuallyChecked}
+                unchecked={this.unchecked}
+                updateTree={this.updateTree}
+                reAlignTree={this.reAlignTree}
+                findParent={this.findParent}
+
+            />
         );
 
     }
