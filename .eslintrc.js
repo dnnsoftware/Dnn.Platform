@@ -10,6 +10,7 @@ module.exports = {
     "extends": ["eslint:recommended", "plugin:react/recommended", "eslint-config-dnn"],
     "parserOptions": {
         "ecmaFeatures": {
+            "es6":true,
             "jsx": true,
             "experimentalObjectRestSpread": true
         },
