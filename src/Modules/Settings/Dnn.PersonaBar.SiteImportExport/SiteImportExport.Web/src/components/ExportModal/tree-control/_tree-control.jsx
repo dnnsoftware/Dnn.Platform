@@ -128,7 +128,7 @@ export class TreeControl extends Component {
             parent.ChildrenSelected = true
             switch (true) {
                 case checkedArray.filter(bool => !!bool).length === length:
-                    parent.CheckedState = this.props.fullyChecked
+                    parent.CheckedState = parent.CheckedState === this.props.individuallyChecked ?  this.props.fullyChecked : parent.CheckedState;
                     this.props.updateTree(parent)
                     return
 
@@ -303,12 +303,10 @@ export class TreeControl extends Component {
 
                 const li = () => (
                     <li key={tab.Name}>
-                        <div>
-                            {tab.HasChildren ? bullet : null}
-                            {checkbox}
-                            {tabName}
-                            {tab.CheckedState && tab.HasChildren && anyChildrenSelected(tab) ? <span>*</span> : <span></span>}
-                        </div>
+                        {tab.HasChildren ? bullet : null }
+                        {checkbox}
+                        {tabName}
+                        {tab.HasChildren && anyChildrenSelected(tab) ? <span>*</span> : <span></span>}
                         {tree}
                     </li>)
                 const parent = this.props.findParent(tab)
@@ -350,13 +348,13 @@ export class TreeControl extends Component {
     render() {
         const listStyle = styles.listStyle();
         const textLeft = styles.textAlign("left");
-        const ULPadding = styles.padding({ all: 'inherit' });
+        const ULPadding = styles.padding({ all: 3 });
         const spanPadLeft = styles.padding({ left: 5 });
 
         const list_items = this.render_li(this.props.tabs);
 
         return (
-            <ul className="page-picker" style={merge(listStyle, ULPadding)} >
+            <ul className="page-picker" style={merge(listStyle)} >
                 {list_items}
             </ul>
         )
