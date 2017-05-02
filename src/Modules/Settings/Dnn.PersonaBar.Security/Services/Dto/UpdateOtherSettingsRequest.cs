@@ -35,6 +35,8 @@ namespace Dnn.PersonaBar.Security.Services.Dto
 {
     public class UpdateOtherSettingsRequest
     {
+        public bool DisplayCopyright { get; set; }
+
         public bool ShowCriticalErrors { get; set; }
 
         public bool DebugMode { get; set; }
