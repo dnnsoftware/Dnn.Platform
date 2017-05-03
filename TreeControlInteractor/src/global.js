@@ -40,10 +40,10 @@ export const global = {
             vertical = undefined
         }) => {
             return {
-                padding: ` ${all||vertical||top}px
-                                ${all||horizontal||right}px
-                                ${all||vertical||bottom}px
-                                ${all||horizontal||left}px`
+                padding: ` ${all || vertical || top}px
+                                ${all || horizontal || right}px
+                                ${all || vertical || bottom}px
+                                ${all || horizontal || left}px`
             };
         },
 
@@ -58,10 +58,10 @@ export const global = {
         }) => {
             return {
                 margin: `
-                              ${all||vertical||top}px
-                              ${all||horizontal||right}px
-                              ${all||vertical||bottom}px
-                              ${all||horizontal||left}px`
+                              ${all || vertical || top}px
+                              ${all || horizontal || right}px
+                              ${all || vertical || bottom}px
+                              ${all || horizontal || left}px`
             };
         },
 
@@ -83,7 +83,7 @@ export const global = {
             };
         },
 
-        merge: (...objs) => Object.assign({}, ...objs)
+        merge: (...objects) => Object.assign({}, ...objects)
     }
 
 };

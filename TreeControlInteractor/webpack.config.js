@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./src/_treeControlInteractor.jsx",
+    entry: "./src/TreeControlInteractor.jsx",
     output: {
         path: "./lib/",
         filename: "TreeControlInteractor.js",

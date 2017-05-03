@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 
 const arrow_svg = require("!raw!./arrow_bullet.svg");
-import { global } from "../../_global";
+import { global } from "../../global";
 
 const styles = global.styles;
 const merge = styles.merge;
@@ -24,6 +24,7 @@ export class ArrowIcon extends Component {
         this.direction = props.direction;
         this.id = shortid.generate();
         this.shouldAnimate = props.animate;
+        this.state = {};
     }
 
 

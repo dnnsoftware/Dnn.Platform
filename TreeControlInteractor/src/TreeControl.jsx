@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
-import { IconSelector } from "./icons/selector";
-import { global } from "./_global";
-
+import {IconSelector} from "./icons/IconSelector";
+import {global}  from "./global";
 
 const styles = global.styles;
 const floatLeft = styles.float();
 const merge = styles.merge;
 
-
 import "./styles.less";
 
-export class TreeControl extends Component {
+export default class TreeControl extends Component {
 
     constructor(props) {
         super(props);
@@ -25,19 +23,19 @@ export class TreeControl extends Component {
 
     _traverse(comparator) {
         let ChildTabs = this.props.tabs;
-        const cached_childtabs = [];
-        cached_childtabs.push(ChildTabs);
-        const condition = cached_childtabs.length > 0;
+        const cachedChildTabs = [];
+        cachedChildTabs.push(ChildTabs);
+        const condition = cachedChildTabs.length > 0;
 
         const loop = () => {
-            const childtab = cached_childtabs.length ? cached_childtabs.shift() : null;
-            const left = () => childtab.forEach(tab => {
+            const childTab = cachedChildTabs.length ? cachedChildTabs.shift() : null;
+            const left = () => childTab.forEach(tab => {
                 Array.isArray(tab.ChildTabs) ? comparator(tab, this.props.tabs) : null;
-                Array.isArray(tab.ChildTabs) && tab.ChildTabs.length ? cached_childtabs.push(tab.ChildTabs) : null;
+                Array.isArray(tab.ChildTabs) && tab.ChildTabs.length ? cachedChildTabs.push(tab.ChildTabs) : null;
                 condition ? loop() : exit();
             });
             const right = () => null;
-            childtab ? left() : right();
+            childTab ? left() : right();
         };
 
         const exit = () => null;
@@ -62,19 +60,19 @@ export class TreeControl extends Component {
 
     _mapToChildTabs(tab, fn) {
         let ChildTabs = tab.ChildTabs;
-        const cached_childtabs = [];
-        cached_childtabs.push(ChildTabs);
-        const condition = cached_childtabs.length > 0;
+        const cachedChildTabs = [];
+        cachedChildTabs.push(ChildTabs);
+        const condition = cachedChildTabs.length > 0;
 
         const loop = () => {
-            const childtab = cached_childtabs.length ? cached_childtabs.shift() : null;
-            const left = () => childtab.forEach(tab => {
+            const childTab = cachedChildTabs.length ? cachedChildTabs.shift() : null;
+            const left = () => childTab.forEach(tab => {
                 Array.isArray(tab.ChildTabs) ? fn(tab) : null;
-                Array.isArray(tab.ChildTabs) && tab.ChildTabs.length ? cached_childtabs.push(tab.ChildTabs) : null;
+                Array.isArray(tab.ChildTabs) && tab.ChildTabs.length ? cachedChildTabs.push(tab.ChildTabs) : null;
                 condition ? loop() : exit();
             });
             const right = () => null;
-            childtab ? left() : right();
+            childTab ? left() : right();
         };
         const exit = () => null;
 
@@ -95,10 +93,10 @@ export class TreeControl extends Component {
     }
 
     resetCheckedState(tab) {
-        const unselectChildren = (childtab) => {
-            childtab.CheckedState = this.props.unchecked;
-            childtab.ChildrenSelected = false;
-            this.props.updateTree(childtab);
+        const unselectChildren = (childTab) => {
+            childTab.CheckedState = this.props.unchecked;
+            childTab.ChildrenSelected = false;
+            this.props.updateTree(childTab);
         };
 
         const unselectIndividual = () => {
@@ -267,11 +265,6 @@ export class TreeControl extends Component {
     render_li(tabs) {
         const render = (() => {
             return tabs.map(tab => {
-                const listStyle = styles.listStyle();
-                const textLeft = styles.textAlign("left");
-                const ULPadding = styles.padding({ all: 3 });
-                const spanPadLeft = styles.padding({ left: 5 });
-
                 const tabName = this.render_tabName(tab);
                 const checkbox = this.render_ListCheckbox(tab);
                 const bullet = this.render_ListBullet.call(this, tab, this.expandParent.bind(this, tab));
@@ -279,14 +272,14 @@ export class TreeControl extends Component {
                 const anyChildrenSelected = (tab) => {
                     const ChildTabs = tab.ChildTabs;
                     const left = () => {
-                        const truthyCheckedState = [];
+                        const trueCheckedState = [];
                         const AreChildrenChecked = (t) => {
                             const condition = t.CheckedState !== this.props.unchecked;
-                            condition ? truthyCheckedState.push(true) : truthyCheckedState.push(false);
+                            condition ? trueCheckedState.push(true) : trueCheckedState.push(false);
                         };
 
                         this._mapToChildTabs(tab, AreChildrenChecked);
-                        const bool = truthyCheckedState.indexOf(true) !== -1 ? true : false;
+                        const bool = trueCheckedState.indexOf(true) !== -1 ? true : false;
                         return bool;
                     };
                     const right = () => null;
@@ -337,12 +330,7 @@ export class TreeControl extends Component {
 
     render() {
         const listStyle = styles.listStyle();
-        const textLeft = styles.textAlign("left");
-        const ULPadding = styles.padding({ all: 3 });
-        const spanPadLeft = styles.padding({ left: 5 });
-
         const list_items = this.render_li(this.props.tabs);
-
         return (
             <ul className="page-picker" style={merge(listStyle)} >
                 {list_items}

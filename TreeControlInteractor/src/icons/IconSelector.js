@@ -11,5 +11,4 @@ export const IconSelector = (type) => {
         default:
             return ArrowIcon;
     }
-
 };
