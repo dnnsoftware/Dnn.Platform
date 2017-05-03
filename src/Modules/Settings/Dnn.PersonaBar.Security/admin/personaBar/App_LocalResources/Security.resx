@@ -986,13 +986,13 @@
     <value>The passwordFormat is set as Hashed in web.config</value>
   </data>
   <data name="CheckAllowableFileExtensionsFailure.Text" xml:space="preserve">
-    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Host &gt; Host Settings &gt; Other Settings &gt; Allowable File Extensions</value>
+    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Settings &amp;gt; More &amp;gt; More security settings &amp;gt; Allowable File Extensions</value>
   </data>
   <data name="CheckAllowableFileExtensionsName.Text" xml:space="preserve">
     <value>Check if there are any harmful extensions allowed by the file uploader</value>
   </data>
   <data name="CheckAllowableFileExtensionsReason.Text" xml:space="preserve">
-    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Host &gt; Host Settings &gt; Other Settings &gt; Allowable File Extensions</value>
+    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Settings &amp;gt; More &amp;gt; More security settings &amp;gt; Allowable File Extensions</value>
   </data>
   <data name="CheckAllowableFileExtensionsSuccess.Text" xml:space="preserve">
     <value>The allowable file extensions is setup correctly.</value>
