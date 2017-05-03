@@ -69,10 +69,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.HttpModules, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\DotNetNuke.HttpModules.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.Instrumentation, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Instrumentation.dll</HintPath>

@@ -58,10 +58,6 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClientDependency.Core">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\ClientDependency.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="DNN.Integration.Test.Framework">
       <HintPath>..\packages\DNN.Integration.Test.Framework.1.0.0.279\lib\DNN.Integration.Test.Framework.dll</HintPath>
       <Private>True</Private>
@@ -71,48 +67,22 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetNuke.HttpModules">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.HttpModules.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\DotNetNuke.Core.9.0.1.128\lib\net40\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.Instrumentation.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.0.1.128\lib\net40\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.Log4Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetNuke.Tests.Data">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.Tests.Data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetNuke.Tests.Utilities">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.0.1.128\lib\net40\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.Web.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\DotNetNuke.Web.9.0.1.128\lib\net40\DotNetNuke.Web.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.Web.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Deprecated">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.Web.Deprecated.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetNuke.WebControls">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.WebControls.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\DotNetNuke.Web.Client.9.0.1.128\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\packages\DotNetNuke.Bundle.8.0.5.46\lib\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\DotNetNuke.Web.9.0.1.128\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
@@ -177,9 +147,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
