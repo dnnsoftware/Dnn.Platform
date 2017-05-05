@@ -17,6 +17,7 @@ using Dnn.PersonaBar.SiteSettings.Components;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
@@ -430,6 +431,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     _localeController.PublishLanguage(pid, locale.Code, false);
                     _tabController.DeleteTranslatedTabs(pid, locale.Code, false);
                     _portalController.RemovePortalLocalization(pid, locale.Code, false);
+                    DataProvider.Instance().EnsureLocalizationExists(pid, locale.Code);
                 }
 
                 _tabController.EnsureNeutralLanguage(pid, portalDefault, false);
