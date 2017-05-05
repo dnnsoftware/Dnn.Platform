@@ -574,7 +574,7 @@
     <value>Password Strength Regular Expression</value>
   </data>
   <data name="MaxInvalidPasswordAttemptsTitle.Help" xml:space="preserve">
-    <value>Specifies the number of times the wrong password can be entered before account is locked.  This can only be changed in web.config file.</value>
+    <value>Indicates the number of times the wrong password can be entered before account is locked.  This can only be changed in web.config file.</value>
   </data>
   <data name="MaxInvalidPasswordAttemptsTitle.Text" xml:space="preserve">
     <value>Max Invalid Password Attempts</value>
