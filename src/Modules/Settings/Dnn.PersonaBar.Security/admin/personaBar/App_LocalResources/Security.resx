@@ -454,7 +454,7 @@
     <value>Display Name Format</value>
   </data>
   <data name="Security_UserNameValidation.Help" xml:space="preserve">
-    <value>Add your own Validation Expression, which is used to check the validity of the user name provided.  If you change this from the default you should update the message that a user would see when they enter an invalid user name using the localization editor. (SharedResources.resx - Username.RegExError)</value>
+    <value>Add your own Validation Expression, which is used to check the validity of the user name provided.  If you change this from the default you should update the message that a user would see when they enter an invalid user name using the localization editor in Settings - Site Settings - Languages.</value>
   </data>
   <data name="Security_UserNameValidation.Text" xml:space="preserve">
     <value>User Name Validation</value>
