@@ -196,13 +196,13 @@
     <value>The Primary Administrator who will receive email notification of member activities.</value>
   </data>
   <data name="Redirect_AfterLogin.Help" xml:space="preserve">
-    <value>Optional select the page that users will be redirected to upon successful login.</value>
+    <value>Optionally select the page that users will be redirected to upon successful login.</value>
   </data>
   <data name="Redirect_AfterLogin.Text" xml:space="preserve">
     <value>Redirect After Login</value>
   </data>
   <data name="Redirect_AfterLogout.Help" xml:space="preserve">
-    <value>Optional select the page that users will be redirected to upon logout.</value>
+    <value>Optionally select the page that users will be redirected to upon logout.</value>
   </data>
   <data name="Redirect_AfterLogout.Text" xml:space="preserve">
     <value>Redirect After Logout</value>
@@ -472,7 +472,7 @@
     <value>Excluded Terms</value>
   </data>
   <data name="Redirect_AfterRegistration.Help" xml:space="preserve">
-    <value>Optional select the page that users will be redirected to upon successful registration.</value>
+    <value>Optionally select the page that users will be redirected to upon successful registration.</value>
   </data>
   <data name="Redirect_AfterRegistration.Text" xml:space="preserve">
     <value>Redirect After Registration</value>
