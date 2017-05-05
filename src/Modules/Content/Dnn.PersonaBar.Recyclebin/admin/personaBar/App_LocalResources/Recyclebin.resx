@@ -202,7 +202,7 @@
     <value>&lt;p&gt;Please confirm you wish to restore this page.&lt;/p&gt;</value>
   </data>
   <data name="recyclebin_RestorePageInvalid.Text" xml:space="preserve">
-    <value>You to need restore this page's parent at first.</value>
+    <value>You need restore this page's parent at first.</value>
   </data>
   <data name="recyclebin_RestorePagesConfirm.Text" xml:space="preserve">
     <value>&lt;p&gt;Please confirm you wish to restore selected pages.&lt;/p&gt;</value>
