@@ -379,7 +379,7 @@
     <value>Could not update the member settings. Please try later.</value>
   </data>
   <data name="SslSettingsUpdateSuccess.Text" xml:space="preserve">
-    <value>The SSl settings has been updated.</value>
+    <value>The SSL settings has been updated.</value>
   </data>
   <data name="SslSettingsError.Text" xml:space="preserve">
     <value>Could not update the SSL settings. Please try later.</value>
