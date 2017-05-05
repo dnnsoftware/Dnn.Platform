@@ -661,7 +661,7 @@
     <value>Time Before Timeout (Seconds)</value>
   </data>
   <data name="plMaxUploadSize.Help" xml:space="preserve">
-    <value>Maximum size of file that can be uploaded to the site.  The minimum is 12 MB.</value>
+    <value>Maximum size of files that can be uploaded to the site.  The minimum is 12 MB.</value>
   </data>
   <data name="plMaxUploadSize.Text" xml:space="preserve">
     <value>Max Upload Size (MB)</value>
