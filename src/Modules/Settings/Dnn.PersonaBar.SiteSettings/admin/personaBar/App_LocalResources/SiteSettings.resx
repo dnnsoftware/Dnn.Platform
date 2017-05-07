@@ -1207,7 +1207,7 @@
     <value>Are you sure you want to disable the language {0}</value>
   </data>
   <data name="MakeNeutralWarning.Text" xml:space="preserve">
-    <value>This will delete all translated version of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
+    <value>This will delete all translated versions of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
   </data>
   <data name="SiteSelectionLabel.Text" xml:space="preserve">
     <value>EDITING SITE</value>
