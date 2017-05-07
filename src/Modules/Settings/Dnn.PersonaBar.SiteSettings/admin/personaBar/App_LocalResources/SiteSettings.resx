@@ -646,7 +646,7 @@
     <value>Minimum length of index word is required. Integer must be greater than 0.</value>
   </data>
   <data name="lblCustomAnalyzer.Help" xml:space="preserve">
-    <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
+    <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit Settings -&gt; Site Settings -&gt; Search in the Persona Bar for each site and click the "Re-index Content" button.</value>
   </data>
   <data name="lblCustomAnalyzer.Text" xml:space="preserve">
     <value>Custom Analyzer Type</value>
@@ -1066,7 +1066,7 @@
     <value>Enable Localized Content</value>
   </data>
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
-    <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
+    <value />
   </data>
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
     <value>Click Cancel now if you want to change the current site default.</value>
