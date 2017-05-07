@@ -1183,7 +1183,7 @@
     <value>You are about to permanently remove all translations for the '{0}' language. Are you sure you want to continue?</value>
   </data>
   <data name="Mode.HelpText" xml:space="preserve">
-    <value>Select System to edit the base file for a given language; Host will create a custom version of the localized file for this installation.</value>
+    <value>Select Global to edit the base file for a given language; the other option will only affect the selected site.</value>
   </data>
   <data name="Mode.Label" xml:space="preserve">
     <value>Mode</value>
