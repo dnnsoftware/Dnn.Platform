@@ -208,7 +208,7 @@
     <value>Are you sure you want to delete this theme?</value>
   </data>
   <data name="UsePackageUninstall.Text" xml:space="preserve">
-    <value>This theme installed as package, please go to Extensions and uninstall from there.</value>
+    <value>This theme is installed as a package, please go to Extensions and uninstall it from there.</value>
   </data>
   <data name="SearchPlaceHolder.Text" xml:space="preserve">
     <value>Search</value>
