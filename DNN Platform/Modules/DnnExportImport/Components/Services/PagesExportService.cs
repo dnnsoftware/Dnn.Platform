@@ -35,11 +35,13 @@ using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -47,9 +49,6 @@ using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 using Util = Dnn.ExportImport.Components.Common.Util;
 using InstallerUtil = DotNetNuke.Services.Installer.Util;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Workflow;
 
 // ReSharper disable SuggestBaseTypeForParameter
 
@@ -76,7 +75,6 @@ namespace Dnn.ExportImport.Components.Services
         private DataProvider _dataProvider;
         private ITabController _tabController;
         private IModuleController _moduleController;
-        private IContentController _contentController;
         private ExportImportJob _exportImportJob;
         private ImportDto _importDto;
         private ExportDto _exportDto;
@@ -90,7 +88,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
-            var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.Partial);
+            var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.CheckedWithAllChildren);
             if (checkedPages.Any())
             {
                 _exportImportJob = exportJob;
@@ -117,7 +115,6 @@ namespace Dnn.ExportImport.Components.Services
             _exportDto = importDto.ExportDto;
             _tabController = TabController.Instance;
             _moduleController = ModuleController.Instance;
-            _contentController = ContentController.Instance;
 
             ProcessImportPages();
 
@@ -283,7 +280,7 @@ namespace Dnn.ExportImport.Components.Services
                 _tabController.UpdateTab(localTab);
                 TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
             }
@@ -1229,7 +1226,7 @@ namespace Dnn.ExportImport.Components.Services
             var toDate = _exportImportJob.CreatedOnDate.ToLocalTime();
             var fromDate = (_exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var isAllIncluded =
-                selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.Checked);
+                selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.CheckedWithAllChildren);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
                     _exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate) // ordered by TabID
@@ -1513,28 +1510,27 @@ namespace Dnn.ExportImport.Components.Services
         private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
         {
             var first = true;
-            do
+            while (tab != null)
             {
                 var pg = selectedPages.FirstOrDefault(p => p.TabId == tab.TabID);
                 if (pg != null)
                 {
-                    // this is the current page or a parent page for the one we are checking for.
-                    if (pg.CheckedState == TriCheckedState.UnChecked)
-                        return false;
-
-                    // this is the current page or a parent page for the one we are checking for.
-                    // it must be fully checked
-                    if (pg.CheckedState == TriCheckedState.Checked)
-                        return true;
-
-                    // this is the current page we are checking for and it is partially checked.
                     if (first)
+                    {
+                        // this is the current page we are checking for.
+                        return pg.CheckedState == TriCheckedState.Checked || pg.CheckedState == TriCheckedState.CheckedWithAllChildren;
+                    }
+
+                    // this is a [grand] parent of the page we are checking for.
+                    if (pg.CheckedState == TriCheckedState.CheckedWithAllChildren)
+                    {
                         return true;
+                    }
                 }
 
                 first = false;
                 tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
-            } while (tab != null);
+            } 
 
             return false;
         }
