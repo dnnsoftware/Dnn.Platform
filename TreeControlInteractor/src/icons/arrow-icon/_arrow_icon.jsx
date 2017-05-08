@@ -23,7 +23,6 @@ export class ArrowIcon extends Component {
         super();
         this.direction = props.direction;
         this.id = shortid.generate();
-        this.shouldAnimate = props.animate;
         this.state = {};
     }
 
@@ -32,7 +31,7 @@ export class ArrowIcon extends Component {
         if (!this.state.arrow_bullet) {
             this.arrow_bullet = document.getElementById(this.id);
         }
-        this.animate(this.shouldAnimate);
+        this.animate(this.props.shouldAnimate);
     }
 
     animate(bool) {
@@ -65,7 +64,7 @@ export class ArrowIcon extends Component {
                 ref={this.id}
                 src={arrow_svg}
                 alt="arrow_icon"
-                onMouseDown={this.onMouseDown.bind(this)} />
+                onClick={this.onMouseDown.bind(this)} />
         );
         /* eslint-disable react/no-danger */
     }
@@ -74,5 +73,6 @@ export class ArrowIcon extends Component {
 
 ArrowIcon.propTypes = {
     direction: PropTypes.string.isRequired,
-    animate: PropTypes.string
+    animate: PropTypes.string,
+    shouldAnimate: PropTypes.bool
 };

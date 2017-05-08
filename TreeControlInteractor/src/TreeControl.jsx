@@ -197,15 +197,8 @@ export default class TreeControl extends Component {
     }
 
     render_icon(direction) {
-        const width = styles.width(100);
         const animate = direction === "90deg" ? true : false;
-
-        const render = (
-            <div style={merge(width)}>
-                <this.icon animate={animate} reset={false} direction={direction} />
-            </div>
-        );
-        return render;
+        return <this.icon animate={animate} shouldAnimate={true} reset={false} direction={direction} />;
     }
 
     render_Bullet(tab) {
@@ -217,13 +210,10 @@ export default class TreeControl extends Component {
 
     render_ListBullet(tab, fn) {
         const bullet = (() => {
-            const width = styles.width(20, "px");
-            const height = styles.height(20, "px");
-
             return (
                 <div
-                    onClick={() => fn()}
-                    style={merge(floatLeft, width, height)}>
+                    className="arrow-bullet"
+                    onClick={() => fn()}>
                     {this.render_Bullet.call(this,tab)}
                 </div>);
         })();
