@@ -37,6 +37,7 @@ import Tabs from "dnn-tabs";
 import Tags from "dnn-tags";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import Tooltip from "dnn-tooltip";
+import TreeController from "dnn-tree-control-interactor";
 import NumberSlider from "dnn-slider";
 import FolderPicker from "dnn-folder-picker";
 
@@ -80,6 +81,7 @@ export {
     Tags,
     TextOverflowWrapper,
     Tooltip,
+    TreeController,
     NumberSlider,
     FolderPicker
 };
