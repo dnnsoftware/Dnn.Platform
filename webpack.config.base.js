@@ -23,7 +23,7 @@ module.exports = function getDefaultConfig(name) {
                 { test: /\.less$/, loader: "style-loader!css-loader!less-loader" }
             ],
             preLoaders: [
-                { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader"}
+                { test: /\.(js|jsx)$/, exclude: /node_modules/, loader:  ["babel-loader", "eslint-loader"]}
             ]
         },
         externals: {
