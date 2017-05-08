@@ -14,17 +14,11 @@ import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
 import RadioButtons from "dnn-radio-buttons";
-import PagePicker from "dnn-page-picker";
 import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
 
-const scrollAreaStyle = {
-    width: "100%",
-    height: 200,
-    marginTop: 0,
-    border: "1px solid #c8c8c8"
-};
+import TreeControlInteractor from "dnn-tree-control-interactor";
 
 const keysToValidate = ["ExportName"];
 
@@ -57,6 +51,8 @@ class ExportModal extends Component {
             reloadPages: false,
             requestSubmitting: false
         };
+
+        this.getInitialPortalTabs = props.getInitialPortalTabs;
     }
 
     componentWillMount() {
@@ -66,6 +62,8 @@ class ExportModal extends Component {
         this.setState({
             exportRequest
         });
+
+
     }
 
     componentWillReceiveProps(props) {
@@ -131,6 +129,10 @@ class ExportModal extends Component {
             success = false;
         }
         return success;
+    }
+
+    getDescendantPortalTabs(PortalTabsParameters, ParentTabId, callback) {
+        this.props.dispatch(ImportExportActions.getDescendantPortalTabs(PortalTabsParameters, ParentTabId, callback));
     }
 
     ValidateTexts(key) {
@@ -369,19 +371,17 @@ class ExportModal extends Component {
                         </div>
                         <div className="export-pages">
                             <div className="sectionTitle">{Localization.get("PagesInExport")}</div>
-                            <PagePicker
-                                className="export-page-picker"
-                                serviceFramework={utilities.utilities && utilities.utilities.sf}
+                            <TreeControlInteractor
                                 PortalTabsParameters={PortalTabsParameters}
-                                scrollAreaStyle={scrollAreaStyle}
                                 OnSelect={this.updatePagesToExport.bind(this)}
-                                allSelected={true}
-                                IsMultiSelect={true}
-                                IsInDropDown={false}
-                                ShowCount={false}
-                                Reload={this.state.reloadPages}
-                                ShowIcon={false}
+                                moduleRoot={"PersonaBar"}
+                                controller={"Tabs"}
+                                serviceFramework={utilities.utilities.sf}
+                                getInitialPortalTabs={this.getInitialPortalTabs}
+                                getDescendantPortalTabs={this.getDescendantPortalTabs.bind(this)}
                             />
+
+
                             <div className="seperator2">
                                 <hr />
                             </div>
@@ -429,7 +429,8 @@ ExportModal.propTypes = {
     portalId: PropTypes.number.isRequired,
     portalName: PropTypes.string.isRequired,
     exportJobId: PropTypes.number,
-    lastExportTime: PropTypes.string
+    lastExportTime: PropTypes.string,
+    getInitialPortalTabs: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

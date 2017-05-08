@@ -118,7 +118,11 @@ class App extends Component {
                         onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
                     }}>
                         {props.selectedPage === 1 &&
-                            <ExportModal onCancel={this.selectPanelInternal.bind(this, 0)} />}
+                            <ExportModal
+                                onCancel={this.selectPanelInternal.bind(this, 0)}
+                                getInitialPortalTabs={ImportExportActions.getInitialPortalTabs}
+                            />}
+
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>

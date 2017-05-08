@@ -3,6 +3,9 @@ export default function visiblePanel(state = {
     selectedPage: 0,
     selectedPageVisibleIndex: 0
 }, action) {
+    if (!action) {
+        return { ...state };
+    }
     switch (action.type) {
         case ActionTypes.SELECT_PANEL:
             return { ...state,
