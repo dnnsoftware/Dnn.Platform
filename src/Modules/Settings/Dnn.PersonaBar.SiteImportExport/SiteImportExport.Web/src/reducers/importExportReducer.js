@@ -15,6 +15,9 @@ export default function importExport(state = {
     selectedPackage: undefined,
     verificationSummary: undefined
 }, action) {
+    if (!action) {
+        return { ...state };
+    }
     switch (action.type) {
         case ActionTypes.SELECTED_SITE:
             return {

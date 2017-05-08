@@ -14,19 +14,11 @@ import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
 import RadioButtons from "dnn-radio-buttons";
-import PagePicker from "dnn-page-picker";
 import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
 
-import { TreeControlInteractor } from './tree-control';
-
-const scrollAreaStyle = {
-    width: "100%",
-    height: 200,
-    marginTop: 0,
-    border: "1px solid #c8c8c8"
-};
+import TreeControlInteractor from "dnn-tree-control-interactor";
 
 const keysToValidate = ["ExportName"];
 
