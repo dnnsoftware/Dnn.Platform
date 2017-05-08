@@ -207,16 +207,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var moduleName = params.moduleName;
                 var folderName = params.folderName || identifier;
 
-                iframe.style.width = "100%";
-                parentBody.style.overflow = "hidden";
-                body.style.overflow = 'auto';
-
-                // for mobile pad device...
-                if (onTouch) {
-                    iframe.style["min-width"] = "1245px";
-                    iframe.style.position = "fixed";
-                }
-
                 if (activePath === path && activemodule === moduleName) {
                     return;
                 }
@@ -254,6 +244,16 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         activemodule = moduleName;
                         $showSiteButton.show();
                         eventEmitter.emitOpenPanelEvent();
+
+                        iframe.style.width = "100%";
+                        parentBody.style.overflow = "hidden";
+                        body.style.overflow = 'auto';
+
+                        // for mobile pad device...
+                        if (onTouch) {
+                            iframe.style["min-width"] = "1245px";
+                            iframe.style.position = "fixed";
+                        }
 
                         $mask.css("display", "block");
                         inAnimation = true;
