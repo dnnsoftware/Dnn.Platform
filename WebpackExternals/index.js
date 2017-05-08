@@ -53,6 +53,7 @@ module.exports = {
         "dnn-switch": "window.dnn.nodeModules.CommonComponents.Switch",
         "dnn-tabs": "window.dnn.nodeModules.CommonComponents.Tabs",
         "dnn-tags": "window.dnn.nodeModules.CommonComponents.Tags",
+        "dnn-tree-control-interactor": "window.dnn.nodeModules.CommonComponents.TreeController"
         "dnn-text-overflow-wrapper": "window.dnn.nodeModules.CommonComponents.TextOverflowWrapper",
         "dnn-tooltip": "window.dnn.nodeModules.CommonComponents.Tooltip",
         "dnn-modal": "window.dnn.nodeModules.CommonComponents.Modal",
