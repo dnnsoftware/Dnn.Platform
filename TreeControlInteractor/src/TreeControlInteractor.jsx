@@ -188,7 +188,7 @@ export default class TreeControlInteractor extends Component {
 
             switch (true) {
                 case sum === expect && tab.HasChildren:
-                    tab.CheckedState = tab.CheckedState === this.individuallyChecked ? this.fullyChecked : tab.CheckedState;
+                    tab.CheckedState = tab.CheckedState ? this.fullyChecked : tab.CheckedState;
 
                     break;
                 case sum !== 0 && sum === expect && !tab.HasChildren:

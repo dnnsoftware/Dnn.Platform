@@ -130,7 +130,6 @@ export default class TreeControl extends Component {
 
                 case checkedArray.indexOf(true) !== -1:
                     parent.CheckedState = parent.CheckedState === this.props.fullyChecked ? this.props.individuallyChecked : parent.CheckedState;
-
                     this.props.updateTree(parent);
                     return;
             }
@@ -139,7 +138,6 @@ export default class TreeControl extends Component {
         };
 
         const noChildrenSelected = () => {
-            parent.CheckedState = this.props.individuallyChecked;
             parent.ChildrenSelected = false;
             this.props.updateTree(parent);
         };
