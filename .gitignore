@@ -11,6 +11,7 @@
 *.sln.docstates
 *.local.sln
 applicationhost.config
+yarn.lock
 
 # Build results
 [Dd]ebug/
