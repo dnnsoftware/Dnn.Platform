@@ -46,16 +46,6 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.SiteImportExport.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="Dnn.PersonaBar.Library">
@@ -150,29 +140,4 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="Module.build" />
-  <PropertyGroup>
-    <PreBuildEvent>if /i not "$(ConfigurationName)"=="Npm_Release" goto end
-
-cd /D $(ProjectDir)SiteImportExport.Web
-if exist .\node_modules goto build
-
-if not exist c:\npm_cache\$(ProjectName)\SiteImportExport.Web\node_modules goto restore
-echo "Copy node_modules from cache"
-xcopy c:\npm_cache\$(ProjectName)\SiteImportExport.Web\node_modules .\node_modules /E /Q /S /Y /I
-goto build
-
-:restore
-echo "Restore node modules"
-cmd /c npm install --cache-min 999999
-xcopy .\node_modules c:\npm_cache\$(ProjectName)\SiteImportExport.Web\node_modules /E /Q /S /Y /I
-goto build
-
-:build
-echo "Start build bundle"
-cmd /c npm run build
-goto end
-
-:end
-echo "$(ProjectName)\SiteImportExport.Web build successful"</PreBuildEvent>
-  </PropertyGroup>
 </Project>

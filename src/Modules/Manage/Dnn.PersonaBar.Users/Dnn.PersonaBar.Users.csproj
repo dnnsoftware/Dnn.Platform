@@ -46,16 +46,6 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.Users.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="Dnn.PersonaBar.Library">
@@ -175,51 +165,4 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="Module.build" />
-  <PropertyGroup>
-    <PreBuildEvent>if /i not "$(ConfigurationName)"=="Npm_Release" goto end_exports
-
-cd /D $(ProjectDir)Users.Web
-if exist .\node_modules goto build
-
-if not exist c:\npm_cache\$(ProjectName)\Users.Web\node_modules goto restore
-echo "Copy node_modules from cache"
-xcopy c:\npm_cache\$(ProjectName)\Users.Web\node_modules .\node_modules /E /Q /S /Y /I
-goto build
-
-:restore
-echo "Restore node modules"
-cmd /c npm install --cache-min 999999
-xcopy .\node_modules c:\npm_cache\$(ProjectName)\Users.Web\node_modules /E /Q /S /Y /I
-goto build
-
-:build
-echo "Start build bundle"
-cmd /c npm run build
-goto end
-
-:end
-echo "$(ProjectName)\Users.Web build successful"
-
-cd /D $(ProjectDir)Users.Web\src\_exportables
-if exist .\node_modules goto build_exports
-
-if not exist c:\npm_cache\$(ProjectName)\Users.Web.Exports\node_modules goto restore_exports
-echo "Copy node_modules from cache"
-xcopy c:\npm_cache\$(ProjectName)\Users.Web.Exports\node_modules .\node_modules /E /Q /S /Y /I
-goto build_exports
-
-:restore_exports
-echo "Restore node modules"
-cmd /c npm install --cache-min 999999
-xcopy .\node_modules c:\npm_cache\$(ProjectName)\Users.Web.Exports\node_modules /E /Q /S /Y /I
-goto build_exports
-
-:build_exports
-echo "Start build bundle"
-cmd /c npm run build
-goto end_exports
-
-:end_exports
-echo "$(ProjectName)\Users.Web.Exports build successful"</PreBuildEvent>
-  </PropertyGroup>
 </Project>
