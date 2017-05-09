@@ -43,36 +43,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>DEBUG;TRACE;CLOUD;CLOUD_DEBUG</DefineConstants>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <NoWarn>1591</NoWarn>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineConstants>TRACE;CLOUD;CLOUD_RELEASE</DefineConstants>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -318,23 +288,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <PropertyGroup>
-    <PreBuildEvent>if /i not "$(ConfigurationName)"=="Npm_Release" goto end
-
-cd /D $(ProjectDir)admin\personaBar\Bundle.Web
-if exist .\node_modules goto build
-
-echo "Restore node modules"
-cmd /c npm install --cache-min 999999
-xcopy .\node_modules c:\npm_cache\$(ProjectName)\Bundle.Web\node_modules /E /Q /S /Y /I
-goto build
-
-:build
-echo "Start build bundle"
-cmd /c npm run build
-goto end
-
-:end
-echo "$(ProjectName)\Bundle.Web build successful"</PreBuildEvent>
-  </PropertyGroup>
 </Project>
