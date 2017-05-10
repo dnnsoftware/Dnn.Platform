@@ -25,6 +25,7 @@ class MemberManagementPanelBody extends Component {
                 membershipResetLinkValidity: true,
                 adminMembershipResetLinkValidity: true,
                 membershipNumberPasswords: true,
+                membershipDaysBeforePasswordReuse: true,
                 passwordExpiry: true,
                 passwordExpiryReminder: true
             },
@@ -71,6 +72,13 @@ class MemberManagementPanelBody extends Component {
         }
         else if (adminMembershipResetLinkValidity !== "" && re2.test(membershipNumberPasswords)) {
             state.error["membershipNumberPasswords"] = false;
+        }
+        let membershipDaysBeforePasswordReuse = props.memberSettings["MembershipDaysBeforePasswordReuse"];
+        if (membershipDaysBeforePasswordReuse === "" || !re2.test(membershipDaysBeforePasswordReuse)) {
+            state.error["membershipDaysBeforePasswordReuse"] = true;
+        }
+        else if (adminMembershipResetLinkValidity !== "" && re2.test(membershipDaysBeforePasswordReuse)) {
+            state.error["membershipDaysBeforePasswordReuse"] = false;
         }
         let passwordExpiry = props.memberSettings["PasswordExpiry"];
         if (passwordExpiry === "" || !re2.test(passwordExpiry)) {
@@ -120,6 +128,13 @@ class MemberManagementPanelBody extends Component {
             state.error["membershipNumberPasswords"] = false;
         }
 
+        if (!re2.test(memberSettings[key]) && key === "MembershipDaysBeforePasswordReuse") {
+            state.error["membershipDaysBeforePasswordReuse"] = true;
+        }
+        else if (re2.test(memberSettings[key]) && key === "MembershipDaysBeforePasswordReuse") {
+            state.error["membershipDaysBeforePasswordReuse"] = false;
+        }
+
         if (!re2.test(memberSettings[key]) && key === "PasswordExpiry") {
             state.error["passwordExpiry"] = true;
         }
@@ -152,6 +167,7 @@ class MemberManagementPanelBody extends Component {
         if (state.error.membershipResetLinkValidity
             || state.error.adminMembershipResetLinkValidity
             || state.error.membershipNumberPasswords
+            || state.error.membershipDaysBeforePasswordReuse
             || state.error.passwordExpiry
             || state.error.passwordExpiryReminder) {
             return;
@@ -261,6 +277,25 @@ class MemberManagementPanelBody extends Component {
                             />
                     </InputGroup>
                     <InputGroup>
+                        <Label
+                            tooltipMessage={resx.get("plPasswordDays.Help")}
+                            label={resx.get("plPasswordDays")}
+                            extra={
+                                <Tooltip
+                                    messages={[resx.get("GlobalSetting")]}
+                                    type="global"
+                                    style={{ float: "left", position: "static" }}
+                                    />}
+                            />
+                        <SingleLineInputWithError
+                            withLabel={false}
+                            error={this.state.error.membershipDaysBeforePasswordReuse && this.state.triedToSubmit}
+                            errorMessage={resx.get("MembershipDaysBeforePasswordReuse.ErrorMessage")}
+                            value={state.memberSettings.MembershipDaysBeforePasswordReuse}
+                            onChange={this.onSettingChange.bind(this, "MembershipDaysBeforePasswordReuse")}
+                            />
+                    </InputGroup>
+                    <InputGroup>
                         <div className="memberSettings-row_switch" style={{ margin: "0 0 20px 0" }}>
                             <Label
                                 labelType="inline"
@@ -358,20 +393,20 @@ class MemberManagementPanelBody extends Component {
                             onChange={this.onSettingChange.bind(this, "PasswordExpiryReminder") }
                             />
                     </InputGroup>
-                        <div className="buttons-box">
-                            <Button
-                                disabled={!this.props.memberSettingsClientModified}
-                                type="secondary"
+                    <div className="buttons-box">
+                        <Button
+                            disabled={!this.props.memberSettingsClientModified}
+                            type="secondary"
                                 onClick={this.onCancel.bind(this) }>
                                 {resx.get("Cancel") }
-                            </Button>
-                            <Button
-                                disabled={!this.props.memberSettingsClientModified}
-                                type="primary"
+                        </Button>
+                        <Button
+                            disabled={!this.props.memberSettingsClientModified}
+                            type="primary"
                                 onClick={this.onUpdate.bind(this) }>
                                 {resx.get("Save") }
-                            </Button>
-                        </div>
+                        </Button>
+                    </div>
                 </div>
             );
         }

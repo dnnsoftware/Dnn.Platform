@@ -342,6 +342,12 @@
   <data name="plNumberPasswords.Help" xml:space="preserve">
     <value>Enter the number of passwords to store for reuse check</value>
   </data>
+  <data name="plPasswordDays.Text" xml:space="preserve">
+    <value>Number of Days Before Password Reuse</value>
+  </data>
+  <data name="plPasswordDays.Help" xml:space="preserve">
+    <value>Enter the length of time, in days, that must pass before a password can be reused</value>
+  </data>
   <data name="plEnableBannedList.Text" xml:space="preserve">
     <value>Enable Password Banned List</value>
   </data>
@@ -395,6 +401,9 @@
   </data>
   <data name="MembershipNumberPasswords.ErrorMessage" xml:space="preserve">
     <value>Number of passwords to store must be an integer greater than or equal to 0 and less than 10000.</value>
+  </data>
+  <data name="MembershipDaysBeforePasswordReuse.ErrorMessage" xml:space="preserve">
+    <value>Number of Days Before Password Reuse must be an integer greater than or equal to 0 and less than 10000.</value>
   </data>
   <data name="AutoAccountUnlockDuration.ErrorMessage" xml:space="preserve">
     <value>Auto account unlock duration must be an integer greater than or equal to 0 and less than 1000.</value>
