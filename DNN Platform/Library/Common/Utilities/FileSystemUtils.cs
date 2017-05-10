@@ -1472,7 +1472,8 @@ namespace DotNetNuke.Common.Utilities
 
         public static void DeleteFolderRecursive(string strRoot)
         {
-            if (String.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot.Trim()))
+            strRoot = strRoot.Replace("/", "\\");
+            if (string.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot.Trim()))
             {   Logger.Info(strRoot + " does not exist. ");
                 return;
             }
