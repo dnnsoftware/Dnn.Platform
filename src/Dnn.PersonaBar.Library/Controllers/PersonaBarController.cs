@@ -120,22 +120,11 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private void AddPermissions(MenuItem menuItem, IDictionary<string, object> settings)
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
             var portalSettings = PortalSettings.Current;
-            if (!settings.ContainsKey("isAdmin") && portalSettings != null)
-            {
-                settings.Add("isAdmin", user.IsInRole(portalSettings.AdministratorRoleName));
-            }
-
-            if (!settings.ContainsKey("isHost"))
-            {
-                settings.Add("isHost", user.IsSuperUser);
-            }
-
             if (!settings.ContainsKey("permissions") && portalSettings != null)
             {
                 var menuPermissions = MenuPermissionController.GetPermissions(menuItem.MenuId)
-                    .Where(p => p.MenuId == menuItem.MenuId);
+                    .Where(p => p.PermissionKey != "VIEW");
                 var portalId = portalSettings.PortalId;
                 var permissions = new Dictionary<string, bool>();
                 foreach (var permission in menuPermissions)

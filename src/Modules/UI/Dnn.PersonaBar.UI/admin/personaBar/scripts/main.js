@@ -367,7 +367,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     } else {
                         if (menuItem.id === identifier) {
                             if (menuItem.settings) {
-                                settings = eval("(" + menuItem.settings + ")");
+                                var defaultSettings = { isAdmin: config.isAdmin, isHost: config.isHost };
+                                settings = $.extend({}, defaultSettings, eval("(" + menuItem.settings + ")"));
                             } else {
                                 settings = {};
                             }
