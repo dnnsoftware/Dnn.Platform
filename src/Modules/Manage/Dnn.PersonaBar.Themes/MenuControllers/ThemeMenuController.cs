@@ -27,7 +27,6 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
             return new Dictionary<string, object>
             {
                 {"previewUrl", Globals.NavigateURL()},
-                {"isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser}
             };
         }
     }

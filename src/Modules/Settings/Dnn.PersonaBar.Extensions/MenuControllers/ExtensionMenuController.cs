@@ -22,7 +22,6 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();
-            settings.Add("isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser);
             settings.Add("portalId", PortalSettings.Current.PortalId);
             settings.Add("installUrl", Globals.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "Install", "popUp=true"));
             return settings;
