@@ -170,8 +170,10 @@
                 });
             }
 
+	    var screenWidth = $(window).width() > 650 ? 650  : 450;
+		
             composeMessageDialog.dialog({
-                minWidth: 650,
+                minWidth: screenWidth,
                 modal: true,
                 resizable: false,
                 open: function () {
