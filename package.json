@@ -1,9 +1,16 @@
 {
-  "name": "dnn-react-common",
+  "name": "dnn-tree-control",
+  "version": "0.0.1",
+  "description": "DNN Tree Control",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "set NODE_ENV=production&&webpack -p"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dnnsoftware/Dnn.React.Common.git"
+    "url": "https://github.com/dnnsoftware/Dnn.React.Common"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
