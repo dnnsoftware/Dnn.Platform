@@ -1,6 +1,6 @@
 {
   "name": "dnn-svg-icons",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "DNN Svg Icons",
   "main": "index.js",
   "scripts": {
