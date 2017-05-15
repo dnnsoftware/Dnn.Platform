@@ -87,15 +87,15 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param name="logType"></param>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
-        /// <param name="portalId"></param>
         /// <returns>List of log items</returns>
         [HttpGet]
-        public HttpResponseMessage GetLogItems(string logType, int pageSize, int pageIndex, int portalId = -1)
+        public HttpResponseMessage GetLogItems(string logType, int pageSize, int pageIndex)
         {
             try
             {
+                var portalId = UserInfo.IsSuperUser ? Request.GetQueryStringAsInteger("portalid") : PortalId;
                 var totalRecords = 0;
-                var logItems = LogController.Instance.GetLogs(UserInfo.IsSuperUser ? portalId : PortalId,
+                var logItems = LogController.Instance.GetLogs(portalId,
                     logType == "*" ? string.Empty : logType,
                     pageSize, pageIndex, ref totalRecords);
 
