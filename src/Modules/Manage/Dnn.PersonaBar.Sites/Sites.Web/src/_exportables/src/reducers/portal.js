@@ -46,6 +46,21 @@ const switchCase = [{
             totalCount: totalCount + 1
         };
     }
+}, {
+    condition: ActionTypes.UPDATE_PORTAL_PARAMETER,
+    functionToRun: (state, action) => {
+        let portals = Object.assign([], utilities.getObjectCopy(state.portals));
+        let totalCount = Object.assign(state.totalCount);
+        let portal = portals.find(p => p.PortalID == action.payload.portalId);
+        if(portal){
+            portal[action.payload.name] = action.payload.value;
+        }
+
+        return {
+            portals: portals,
+            totalCount: totalCount
+        };
+    }
 }];
 
 export default function getReducer(initialState, additionalCases) {
