@@ -41,11 +41,7 @@ namespace Dnn.PersonaBar.Servers.MenuControllers
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
-            var settings = new Dictionary<string, object>
-            {
-                {"isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser}
-            };
-
+            var settings = new Dictionary<string, object>();
             return settings;
         }
     }

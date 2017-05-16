@@ -98,6 +98,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage CreateCustomUrl(SeoUrl dto)
         {
             if (!_securityService.CanManagePage(dto.TabId))
@@ -116,6 +117,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage UpdateCustomUrl(SeoUrl dto)
         {
             if (!_securityService.CanManagePage(dto.TabId))
@@ -136,6 +138,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage DeleteCustomUrl(UrlIdDto dto)
         {
             if (!_securityService.CanManagePage(dto.TabId))
@@ -196,6 +199,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage MovePage(PageMoveRequest request)
         {
             if (!_securityService.IsPageAdminUser())
@@ -223,6 +227,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage DeletePage(PageItem page)
         {
             if (!_securityService.CanDeletePage(page.Id))
@@ -244,6 +249,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage DeletePageModule(PageModuleItem module)
         {
             if (!_securityService.CanManagePage(module.PageId))
@@ -264,6 +270,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage CopyThemeToDescendantPages(CopyThemeRequest copyTheme)
         {
             if (!_securityService.CanManagePage(copyTheme.PageId))
@@ -277,6 +284,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage CopyPermissionsToDescendantPages(CopyPermissionsRequest copyPermissions)
         {
             if (!_securityService.CanAdminPage(copyPermissions.PageId))
@@ -299,9 +307,9 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        // TODO: This should be a POST
-        [HttpGet]
-        public HttpResponseMessage EditModeForPage(int id)
+        [HttpPost]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
+        public HttpResponseMessage EditModeForPage([FromUri]int id)
         {
             if (!_securityService.CanManagePage(id))
             {
@@ -309,11 +317,12 @@ namespace Dnn.PersonaBar.Pages.Services
             }
 
             _pagesController.EditModeForPage(id, UserInfo.UserID);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage SavePageDetails(PageSettings pageSettings)
         {
             if (!_securityService.CanSavePageDetails(pageSettings))
@@ -397,6 +406,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage SaveBulkPages(BulkPage bulkPage)
         {
             if (!_securityService.IsPageAdminUser())
@@ -423,6 +433,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage SavePageAsTemplate(PageTemplate pageTemplate)
         {
             if (!_securityService.CanExportPage(pageTemplate.TabId))
@@ -456,6 +467,7 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/MakePageNeutral?tabId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage MakePageNeutral([FromUri] int tabId)
         {
             try
@@ -484,6 +496,7 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/MakePageTranslatable?tabId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage MakePageTranslatable([FromUri] int tabId)
         {
             try
@@ -515,6 +528,7 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/AddMissingLanguages?tabId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage AddMissingLanguages([FromUri] int tabId)
         {
             try
@@ -538,6 +552,7 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/NotifyTranslators
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage NotifyTranslators(TranslatorsComment comment)
         {
             try
@@ -609,6 +624,7 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/UpdateTabLocalization
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage UpdateTabLocalization(DnnPagesRequest request)
         {
             try
@@ -631,6 +647,7 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/RestoreModule?tabModuleId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage RestoreModule(int tabModuleId)
         {
             try
@@ -661,6 +678,7 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/DeleteModule?tabModuleId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage DeleteModule(int tabModuleId)
         {
             try

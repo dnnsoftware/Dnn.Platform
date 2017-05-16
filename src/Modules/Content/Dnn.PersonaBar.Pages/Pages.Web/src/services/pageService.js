@@ -136,7 +136,7 @@ const PageService = function () {
     
     const openPageInEditMode = function (id, url) {
         const api = getPagesApi();
-        return api.get("EditModeForPage", { id: id })
+        return api.post("EditModeForPage?id=" + id, {})
             .then(() => 
                 utils.getUtilities().closePersonaBar(function () {
                     window.top.location.href = url;

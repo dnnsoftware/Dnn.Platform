@@ -291,7 +291,7 @@ window.dnn.pages = window.dnn.pages || {};
                 if (typeof handler.options.onUnload === "function") {
                     handler.options.onUnload(handler.panel);            
                 }
-                handler._getService().get('EditModeForPage', { id: pageData.id }, function() {
+                handler._getService().post('EditModeForPage?id=' + pageData.id, {}, function() {
                     handler.utility.closePersonaBar(function() {
                         window.top.location.href = pageData.url;
                     });

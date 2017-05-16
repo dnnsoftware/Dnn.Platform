@@ -9,8 +9,6 @@ namespace Dnn.PersonaBar.Users.Components
 {
     public class UsersMenuController : IMenuItemController
     {
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
-
         public void UpdateParameters(MenuItem menuItem)
         {
         }
@@ -23,8 +21,6 @@ namespace Dnn.PersonaBar.Users.Components
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();
-            settings.Add("isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser);
-            settings.Add("isAdmin", UserController.Instance.GetCurrentUserInfo().Roles.Contains(PortalSettings.AdministratorRoleName));
             settings.Add("userId", UserController.Instance.GetCurrentUserInfo().UserID);
             return settings;
         }
