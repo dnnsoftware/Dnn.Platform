@@ -61,7 +61,7 @@ class Term extends Component {
                     }
                     <div onClick={this.onLiClick.bind(this)}>
                         <span className="term-name" dangerouslySetInnerHTML={{ __html: props.term.Name }}></span>
-                        {props.isEditable && util.settings.isHost && <div className="edit-button" onClick={this.onClick.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>}
+                        {props.isEditable && util.canEdit() && <div className="edit-button" onClick={this.onClick.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>}
                     </div>
                 </div>
                 <Collapsible isOpened={state.isOpened}>{props.children}</Collapsible>

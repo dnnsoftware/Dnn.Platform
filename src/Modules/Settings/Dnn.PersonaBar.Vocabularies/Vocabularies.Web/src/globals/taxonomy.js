@@ -7,9 +7,7 @@ const vocabularies = {
         // __webpack_public_path__ = options.publicPath;        
         let options = window.dnn.initVocabularies();
 
-        utilities.init(options.utility);
-        utilities.moduleName = options.moduleName;
-        utilities.settings = options.settings;
+        utilities.init(options);
 
         // delay the styles loading after the __webpack_public_path__ is set
         // this allows the fonts associated to be loaded properly in production

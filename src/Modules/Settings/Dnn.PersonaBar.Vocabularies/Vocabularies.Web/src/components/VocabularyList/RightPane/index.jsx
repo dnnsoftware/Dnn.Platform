@@ -200,6 +200,11 @@ class RightPane extends Component {
 
     onEditTerm(term) {
         const {props} = this;
+
+        if(!this.canEdit()){
+            return;
+        }
+
         this.openAddTerm(true);
         let {termBeingEdited} = this.state;
         termBeingEdited = term;
@@ -267,6 +272,11 @@ class RightPane extends Component {
         });
     }
 
+    canEdit(){
+        const {props} = this;
+        return util.isHost() || (props.scopeType == "Portal" && util.canEdit());
+    }
+
     render() {
         const {props, state} = this;
 
@@ -282,7 +292,7 @@ class RightPane extends Component {
             return <Term
                 term={term}
                 onClick={this.onEditTerm.bind(this)}
-                isEditable={true}
+                isEditable={this.canEdit()}
                 key={"term-" + term.TermId}
                 >
                 {children}
@@ -329,7 +339,7 @@ class RightPane extends Component {
                         />}
                     {!state._editBoxOpened && <GridCell className={"term-list-content " + (!this.state.editBoxOpened ? "open" : "closed")}>
                         <span className="term-list-label">{LocalizedResources.get("Terms") + " (" + props.totalTermCount + ")"}</span>
-                        {util.settings.isHost &&
+                        {this.canEdit() &&
                             <div className="add-term-button do-not-close"
                                 dangerouslySetInnerHTML={{ __html: AddIcon + " " + LocalizedResources.get("AddTerm") }}
                                 onClick={this.openAddTerm.bind(this, false, props.type)}>
@@ -352,6 +362,7 @@ RightPane.propTypes = {
     vocabularyTerms: PropTypes.array,
     totalTermCount: PropTypes.number,
     type: PropTypes.string,
+    scopeType: PropTypes.string,
     index: PropTypes.number,
     selectParentTerm: PropTypes.func
 };

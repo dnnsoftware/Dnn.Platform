@@ -14,8 +14,7 @@ namespace Dnn.PersonaBar.Vocabularies.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
+            return true;
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
