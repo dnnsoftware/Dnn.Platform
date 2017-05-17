@@ -43,7 +43,7 @@ const LanguagesPageIcon = require(`!raw!./svg/languages_page.svg`);
 const LinkIcon = require(`!raw!./svg/link.svg`);
 const LockClosedIcon = require(`!raw!./svg/lock_closed.svg`);
 const MoreMenuIcon = require(`!raw!./svg/more.svg`);
-const NoDataState = require(`!raw!./svg/nodata_state.svg`);
+const SiteGroupNoData = require(`!raw!./svg/site_group_nodata.svg`);
 const PagesIcon = require(`!raw!./svg/pages.svg`);
 const SearchFileSystemIcon = require(`!raw!./svg/search_filesystem.svg`);
 const SearchIcon = require(`!raw!./svg/search.svg`);
@@ -111,7 +111,7 @@ export {
     LinkIcon,
     LockClosedIcon,
     MoreMenuIcon,
-    NoDataState,
+    SiteGroupNoData,
     PagesIcon,
     SearchFileSystemIcon,
     SearchIcon,
