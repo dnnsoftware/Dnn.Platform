@@ -312,6 +312,7 @@ class DashboardPanelBody extends Component {
                     <DropDown
                         enabled={props.portals.length > 1 ? true : false}
                         options={this.getPortalOptions()}
+                        autoHide={false}
                         value={props.portalId}
                         onSelect={this.onPortalChange.bind(this)}
                         prependWith={Localization.get("ShowSiteLabel")}
