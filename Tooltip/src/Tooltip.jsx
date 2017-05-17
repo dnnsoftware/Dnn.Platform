@@ -9,7 +9,7 @@ import "./style.less";
 
 const colors = {
     error: "#EA2134",
-    info: "#C8C8C8",
+    info: "#4b4e4f",
     global: "#21A3DA"
 };
 

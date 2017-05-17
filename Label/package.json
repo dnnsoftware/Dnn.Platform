@@ -1,6 +1,6 @@
 {
   "name": "dnn-label",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "DNN Label",
   "main": "index.js",
   "scripts": {
@@ -30,5 +30,8 @@
     "less-loader": "2.2.3",
     "style-loader": "0.13.1",
     "webpack": "1.13.0"
+  },
+  "dependencies": {
+    "babel-core": "^6.24.1"
   }
 }

@@ -21,6 +21,7 @@ class Label extends Component {
                 <Tooltip
                     messages={tooltipMessages}
                     type="info"
+                    tooltipColor={props.toolTipColor}
                     tooltipPlace={props.tooltipPlace}
                     rendered={tooltipMessages.length > 0}
                     style={Object.assign(tooltipStyle, props.tooltipStyle)}/>
@@ -37,6 +38,7 @@ Label.propTypes = {
     tooltipMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     tooltipPlace: PropTypes.string,
     tooltipStyle: PropTypes.object,
+    tooltipColor: PropTypes.string,
     labelType: PropTypes.oneOf(["inline", "block"]),
     style: PropTypes.object,
     extra: PropTypes.node,

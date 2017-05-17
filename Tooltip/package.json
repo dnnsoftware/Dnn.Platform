@@ -1,6 +1,6 @@
 {
   "name": "dnn-tooltip",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Display an icon and associated tooltip showing a message from an array parametter",
   "main": "index.js",
   "scripts": {
@@ -32,8 +32,11 @@
     "style-loader": "0.13.0",
     "webpack": "1.13.1"
   },
-  "peerDependencies": {    
-    "lodash": "4.17.4",    
+  "peerDependencies": {
+    "lodash": "4.17.4",
     "react-portal-tooltip": "^1.1.4"
+  },
+  "dependencies": {
+    "react-portal-tooltip": "^1.1.5"
   }
 }
