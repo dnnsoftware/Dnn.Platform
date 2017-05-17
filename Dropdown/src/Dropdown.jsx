@@ -259,7 +259,7 @@ class Dropdown extends Component {
                         keepCollapsedContent={true}
                         isOpened={state.dropDownOpen}>
                         <Scrollbars
-                            autoHide={true}
+                            autoHide={this.props.autoHide}
                             style={props.scrollAreaStyle}
                             ref="dropdownScrollContainer"
                             onUpdate={this.props.onScrollUpdate}>
@@ -295,6 +295,7 @@ Dropdown.propTypes = {
     withBorder: PropTypes.bool,
     withIcon: PropTypes.bool,
     enabled: PropTypes.bool,
+    autoHide: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     closeOnClick: PropTypes.bool,
     prependWith: PropTypes.string,
@@ -311,6 +312,7 @@ Dropdown.defaultProps = {
     size: "small",
     closeOnClick: true,
     enabled: true,
+    autoHide: true,
     className: "",
     isDropDownOpen: false
 };
