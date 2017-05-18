@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1644,7 +1644,7 @@ namespace DotNetNuke.Entities.Portals
                     portal.AdminTabId = tab.TabID;
                 }
                 //when processing the template we can find: hometab, usertab, logintab
-                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", ""))
+                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", "").ToLowerInvariant())
                 {
                     case "splashtab":
                         portal.SplashTabId = tab.TabID;
@@ -1666,11 +1666,11 @@ namespace DotNetNuke.Entities.Portals
                         portal.SearchTabId = tab.TabID;
                         logType = "SearchTab";
                         break;
-                    case "404Tab":
+                    case "404tab":
                         portal.Custom404TabId = tab.TabID;
                         logType = "Custom404Tab";
                         break;
-                    case "500Tab":
+                    case "500tab":
                         portal.Custom500TabId = tab.TabID;
                         logType = "Custom500Tab";
                         break;

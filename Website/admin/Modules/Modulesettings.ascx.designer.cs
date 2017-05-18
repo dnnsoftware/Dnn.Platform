@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.TermsSelector termsSelector;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.TermsSelector termsSelector;
         
         /// <summary>
         /// rowAllTabs control.
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnDateTimePicker startDatePicker;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker startDatePicker;
         
         /// <summary>
         /// plEndDate control.
@@ -325,7 +325,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnDateTimePicker endDatePicker;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker endDatePicker;
         
         /// <summary>
         /// plMoniker control.
@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnGrid dgOnTabs;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgOnTabs;
         
         /// <summary>
         /// permissionsRow control.
@@ -604,7 +604,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnDatePicker diWebSliceExpiry;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker diWebSliceExpiry;
         
         /// <summary>
         /// valWebSliceExpiry control.
@@ -667,7 +667,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnSkinComboBox moduleContainerCombo;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnSkinComboBox moduleContainerCombo;
         
         /// <summary>
         /// lblCacheProvider control.
@@ -685,7 +685,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboCacheProvider;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboCacheProvider;
         
         /// <summary>
         /// lblCacheInherited control.
@@ -811,7 +811,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboTab;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboTab;
         
         /// <summary>
         /// fsSpecific control.

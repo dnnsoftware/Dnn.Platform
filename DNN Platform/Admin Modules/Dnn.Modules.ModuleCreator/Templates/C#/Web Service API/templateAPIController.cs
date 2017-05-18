@@ -19,10 +19,10 @@ using DotNetNuke.Web.Api;
 
 namespace _OWNER_._MODULE_
 {
-    [AllowAnonymous]
     public class _MODULE_APIController : DnnApiController
     {
         [HttpGet]
+        [AllowAnonymous]
         public HttpResponseMessage MyResponse()
         {
             return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");

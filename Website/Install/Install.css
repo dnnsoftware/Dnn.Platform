@@ -1,6 +1,6 @@
 
 body {
-    background: #f4f4f4 url(../portals/_default/skins/Gravity/images/body_bg.jpg) repeat-x 0 0; 
+    background: #f4f4f4 url(body_bg.jpg) repeat-x 0 0; 
     width: 900px;
     text-align: left;
     margin-left: auto;

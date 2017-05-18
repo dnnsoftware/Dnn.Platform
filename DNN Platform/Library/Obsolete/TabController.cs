@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -179,14 +179,14 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabasByPortal")]
+        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabsByPortal")]
         public ArrayList GetAllTabs()
         {
             return CBO.FillCollection(_dataProvider.GetAllTabs(), typeof(TabInfo));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2. Method is not scalable. Use GetTabasByPortal")]
+        [Obsolete("Deprecated in DNN 6.2. Method is not scalable. Use GetTabsByPortal")]
         public ArrayList GetAllTabs(bool checkLegacyFields)
         {
             return CBO.FillCollection(_dataProvider.GetAllTabs(), typeof(TabInfo));

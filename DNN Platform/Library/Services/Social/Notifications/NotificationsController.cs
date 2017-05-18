@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -438,7 +438,10 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal virtual UserInfo GetAdminUser()
         {
-            return UserController.GetUserById(PortalSettings.Current.PortalId, PortalSettings.Current.AdministratorId);
+            var current = PortalSettings.Current;
+            return current == null
+                ? new UserInfo()
+                : UserController.GetUserById(current.PortalId, current.AdministratorId);
         }
 
         internal virtual int GetCurrentUserId()

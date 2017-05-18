@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -171,6 +171,7 @@ namespace DotNetNuke.UI.WebControls
 
             //Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
+            writer.AddAttribute("aria-label", ID);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Value, optionValue);
             if ((Visibility.VisibilityMode == selectedVisibility))
@@ -192,6 +193,7 @@ namespace DotNetNuke.UI.WebControls
 
             //Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
+            writer.AddAttribute("aria-label", ID);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + prefix + value);
             writer.AddAttribute(HtmlTextWriterAttribute.Value, value);
             if (selected)

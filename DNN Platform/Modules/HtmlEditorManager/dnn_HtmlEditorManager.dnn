@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.HtmlEditorManager" type="Module" version="09.00.00">
+    <package name="DotNetNuke.HtmlEditorManager" type="Module" version="09.01.00">
       <friendlyName>Html Editor Management</friendlyName>
       <iconFile>Images/HtmlEditorManager_Standard_32x32.png</iconFile>
       <description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke HtmlEditor Provider.</description>
@@ -12,7 +12,7 @@
       </owner>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">06.01.00</dependency>
+        <dependency type="CoreVersion">09.01.00</dependency>
       </dependencies>
       <components>
         <component type="Module">

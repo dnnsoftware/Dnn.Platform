@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,7 +30,6 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -2346,6 +2345,12 @@ namespace DotNetNuke.Entities.Urls
                 //mapped virtual url
                 return false;
             }
+            catch (ArgumentException)
+            {
+                //catch and handle this exception, caused by an invalid character in the file path based on the
+                //mapped virtual url
+                return false;
+            }
         }
 
         private static bool IgnoreRequest(UrlAction result, string requestedPath, string ignoreRegex, HttpRequest request)
@@ -2701,6 +2706,13 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
+
+                                //DNN-9158: prevent SSL Offloading infinite redirects
+                                if (!result.IsSecureConnection && result.IsSSLOffloaded && bestFriendlyNoScheme.StartsWith("https"))
+                                {
+                                    bestFriendlyNoScheme = bestFriendlyNoScheme.Replace("https://", "http://");
+                                }
+
                                 if (!(bestFriendlyNoScheme == requestedPathNoScheme
                                       || bestFriendlyNoScheme == rawUrlWithHost
                                       || bestFriendlyNoScheme == rawUrlWithHostNoScheme

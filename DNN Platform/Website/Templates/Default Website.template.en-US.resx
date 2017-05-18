@@ -457,6 +457,21 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Lists.Title.Text" xml:space="preserve">
     <value>Lists</value>
   </data>
+  <data name="Tab.LogViewer.Content.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
+  <data name="Tab.LogViewer.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
+  <data name="Tab.LogViewer.Description.Text" xml:space="preserve">
+    <value>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</value>
+  </data>
+  <data name="Tab.LogViewer.Name.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
+  <data name="Tab.LogViewer.Title.Text" xml:space="preserve">
+    <value>Log Viewer</value>
+  </data>
   <data name="Tab.MyFriends.CenterPane.MemberDirectoryModule.Title.Text" xml:space="preserve">
     <value>Member Directory</value>
   </data>
@@ -928,6 +943,21 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Skins.Title.Text" xml:space="preserve">
     <value>Skins</value>
   </data>
+  <data name="Tab.Taxonomy.Content.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
+  <data name="Tab.Taxonomy.ContentPane.Module.Title.Text" xml:space="preserve">
+    <value>Taxonomy Manager</value>
+  </data>
+  <data name="Tab.Taxonomy.Description.Text" xml:space="preserve">
+    <value>Manage the Taxonomy for your Site.</value>
+  </data>
+  <data name="Tab.Taxonomy.Name.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
+  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
   <data name="Tab.UserAccounts.Content.Text" xml:space="preserve">
     <value>User Accounts</value>
   </data>
@@ -984,5 +1014,17 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.Home.Main.Wikis.SubLink.Text" xml:space="preserve">
     <value>Read the DNN Wiki</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.Facebook.Text" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.LinkedIn.Text" xml:space="preserve">
+    <value>LinkedIn</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.Twitter.Text" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.Youtube.Text" xml:space="preserve">
+    <value>Youtube</value>
   </data>
 </root>

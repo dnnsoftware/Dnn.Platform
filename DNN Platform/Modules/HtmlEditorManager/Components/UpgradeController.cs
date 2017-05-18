@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                         string pageDescription = Localization.GetString("HTMLEditorPageDescription", ResourceFile);
 
                         // Create HTML Editor Config Page (or get existing one)
-                        TabInfo editorPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/HtmlEditorManager_Standard_16x16.png", ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", true);
+                        TabInfo editorPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/HtmlEditorManager_Standard_16x16.png", ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", false);
 
                         // Find the RadEditor control and remove it
                         Upgrade.RemoveModule("RadEditor Manager", editorPage.TabName, editorPage.ParentId, false);

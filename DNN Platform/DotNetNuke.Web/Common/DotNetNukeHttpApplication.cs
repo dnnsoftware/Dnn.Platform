@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -138,8 +138,24 @@ namespace DotNetNuke.Web.Common.Internal
         private void Application_End(object sender, EventArgs eventArgs)
         {
             Logger.Info("Application Ending");
-            Initialize.LogEnd();
-            Initialize.StopScheduler();
+
+            try
+            {
+                Initialize.LogEnd();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
+
+            try
+            {
+                Initialize.StopScheduler();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
 
             //Shutdown Lucene, but not when we are installing
             if (Globals.Status != Globals.UpgradeStatus.Install)

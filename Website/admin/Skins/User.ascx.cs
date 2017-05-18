@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -187,7 +187,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             avatar.ImageUrl = GetAvatarUrl(userInfo);
                             avatar.NavigateUrl = enhancedRegisterLink.NavigateUrl;
-                            avatar.ToolTip = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
+                            avatar.ToolTip = avatar.Text = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
                             avatarGroup.Visible = true;                            
                         }
                         else

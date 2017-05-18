@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -91,7 +91,7 @@ namespace DotNetNuke.Security.Roles
                     Convert.ToInt32(dataProvider.AddRole(role.PortalID,
                                                          role.RoleGroupID,
                                                          role.RoleName.Trim(),
-                                                         role.Description.Trim(),
+                                                         (role.Description ?? "").Trim(),
                                                          role.ServiceFee,
                                                          role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
                                                          role.BillingFrequency,
@@ -170,7 +170,7 @@ namespace DotNetNuke.Security.Roles
             dataProvider.UpdateRole(role.RoleID,
                                     role.RoleGroupID,
                                     role.RoleName.Trim(),
-                                    role.Description.Trim(),
+                                    (role.Description ?? "").Trim(),
                                     role.ServiceFee,
                                     role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
                                     role.BillingFrequency,
@@ -355,7 +355,7 @@ namespace DotNetNuke.Security.Roles
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
             var roleGroupId = dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName.Trim(),
-                                                        roleGroup.Description.Trim(),
+                                                        (roleGroup.Description ?? "").Trim(),
                                                         UserController.Instance.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
@@ -389,7 +389,8 @@ namespace DotNetNuke.Security.Roles
         public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
             roleGroupName = roleGroupName.ToUpperInvariant().Trim();
-            return GetRoleGroupsInternal(portalId).SingleOrDefault(r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.InvariantCultureIgnoreCase));
+            return GetRoleGroupsInternal(portalId).SingleOrDefault(
+                r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// -----------------------------------------------------------------------------
@@ -422,7 +423,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
-            dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(), roleGroup.Description.Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
+            dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(),
+                (roleGroup.Description ?? "").Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
         }
 		

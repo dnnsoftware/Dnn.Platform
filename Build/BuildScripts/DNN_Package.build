@@ -22,6 +22,7 @@
     <InstallExclude Include="$(WebsitePath)\release.config"/>
     <InstallExclude Include="$(WebsitePath)\DotNetNuke.vstemplate"/>
     <InstallExclude Include="$(WebsitePath)\dotnetnuke.webproj"/>
+    <InstallExclude Include="$(WebsitePath)\App_Data\RadSpell\en-US.tdf"/>
 
     <InstallExclude Include="$(WebsitePath)\Install\Module\DNNXE*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Module\DNNPro*"/>
@@ -29,7 +30,7 @@
     <InstallExclude Include="$(WebsitePath)\Install\Module\Telerik_Design*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\*.resources"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\Facebook*"/>
-    <InstallExclude Include="$(WebsitePath)\Install\Provider\RadEditorProvider_06.01.02_Install.resources" />
+    <InstallExclude Include="$(WebsitePath)\Install\Provider\RadEditorProvider_*_Install.resources" />
     <InstallExclude Include="$(WebsitePath)\Install\Provider\FiftyOnePremiumProvider_*_Install.zip" />
     <InstallExclude Include="$(WebsitePath)\Install\AuthSystem\DNNPro*"/>
     <InstallExclude Include="$(WebsitePath)\**\*.cs" />

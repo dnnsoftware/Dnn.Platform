@@ -112,7 +112,7 @@ namespace log4net.Core
 		/// Create a new Level and add it to the map
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="Add(string,int,string)"/>
+		/// <seealso cref="M:Add(string,int,string)"/>
 		public void Add(string name, int value)
 		{
 			Add(name, value, null);

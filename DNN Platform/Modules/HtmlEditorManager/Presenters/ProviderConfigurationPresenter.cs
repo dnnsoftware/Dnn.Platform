@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -17,6 +17,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
 {
@@ -88,8 +90,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
             this.View.Editor.Controls.Add(this.LoadCurrentEditor());
 
             // hack: force DNN to load the Telerik Combobox skin. Needed for the RadEditor provider
-            var ctl = new DnnComboBox();
-            Utilities.ApplySkin(ctl);
+            ClientResourceManager.RegisterStyleSheet(View.Editor.Page, "~/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css");
         }
 
         /// <summary>Loads the current editor.</summary>

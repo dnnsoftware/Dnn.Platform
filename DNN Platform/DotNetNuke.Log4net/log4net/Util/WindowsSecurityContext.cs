@@ -275,7 +275,7 @@ namespace log4net.Util
 		/// token is used to initialize the WindowsIdentity.
 		/// </para>
 		/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]

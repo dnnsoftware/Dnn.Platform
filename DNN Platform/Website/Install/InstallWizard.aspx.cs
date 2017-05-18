@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,6 +39,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization.Internal;
@@ -50,7 +51,6 @@ using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
-using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -75,6 +75,7 @@ namespace DotNetNuke.Services.Install
         #region Private Members
         // Hide Licensing Step for Community Edition
         private static readonly bool IsProOrEnterprise = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallWizard));
         
         private readonly DataProvider _dataProvider = DataProvider.Instance();
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
@@ -197,6 +198,16 @@ namespace DotNetNuke.Services.Install
             {
                 ViewState["Versions"] = value;
             }
+        }
+
+        protected bool SupportLocalization
+        {
+            get { return _installConfig.SupportLocalization; }
+        }
+
+        protected bool DisplayBanners
+        {
+            get { return _installConfig.DisplayBanners; }
         }
 
         #endregion
@@ -330,6 +341,7 @@ namespace DotNetNuke.Services.Install
                 }
                 catch (Exception ex)
                 {
+                    Logger.Error("WIZARD ERROR:" + ex);
                     CurrentStepActivity("ERROR:" + ex.Message);
                     _installerRunning = false;
                     return;
@@ -730,7 +742,7 @@ namespace DotNetNuke.Services.Install
                 {
 					var li = new ListItem { Value = package.Description, Text = package.Name };
 		            languageList.AddItem(li.Text, li.Value);
-		            RadComboBoxItem lastItem = languageList.Items[languageList.Items.Count - 1];
+		            var lastItem = languageList.Items[languageList.Items.Count - 1];
 					if (DotNetNukeContext.Current.Application.Version.Major != package.Version.Major
 						|| DotNetNukeContext.Current.Application.Version.Minor != package.Version.Minor
 						|| DotNetNukeContext.Current.Application.Version.Build != package.Version.Build)
@@ -747,20 +759,16 @@ namespace DotNetNuke.Services.Install
             finally
             {
                 //ensure there is always an en-us
-                if (languageList.Items.FindItemByValue("en-US") == null)
+                if (languageList.FindItemByValue("en-US") == null)
                 {
                     var myCIintl = new CultureInfo("en-US", true);
                     var li = new ListItem {Value = @"en-US", Text = myCIintl.NativeName};
                     languageList.AddItem(li.Text, li.Value);
                     var lastItem = languageList.Items[languageList.Items.Count - 1];
                     lastItem.Attributes.Add("onclick", "javascript:ClearLegacyLangaugePack();");
-                    languageList.Sort = RadComboBoxSort.Ascending;
-                    languageList.Items.Sort();
                 }
-                var item = languageList.Items.FindItemByValue(_culture);
-                languageList.SelectedIndex = item != null ? item.Index : languageList.Items.FindItemByValue("en-US").Index;
-                languageList.Sort = RadComboBoxSort.Ascending;
-                languageList.Items.Sort();
+                var item = languageList.FindItemByValue(_culture);
+                languageList.SelectedIndex = item != null ? languageList.Items.IndexOf(item) : languageList.Items.IndexOf(languageList.FindItemByValue("en-US"));
             }
         }
 
@@ -772,7 +780,7 @@ namespace DotNetNuke.Services.Install
             {
                 templateList.AddItem(template.Name, Path.GetFileName(template.TemplateFilePath));
             }
-            templateList.SelectedIndex = templateList.FindItemByValue("Default Website.template").Index;
+            templateList.SelectedIndex = templateList.Items.IndexOf(templateList.FindItemByValue("Default Website.template"));
         }
 
 
@@ -883,6 +891,15 @@ namespace DotNetNuke.Services.Install
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+
+            if (!SupportLocalization)
+            {
+                languageFlags.Visible = false;
+                languagesRow.Attributes.Add("style", "display: none");
+            }
+            banners.Visible = DisplayBanners;
+
+
             passwordContainer.CssClass = "password-strength-container";
             txtPassword.CssClass = "password-strength";
                 
@@ -937,9 +954,9 @@ namespace DotNetNuke.Services.Install
             // Hide Licensing Step if no License Info is available
             LicenseActivation.Visible = IsProOrEnterprise && !String.IsNullOrEmpty(_installConfig.License.AccountEmail) && !String.IsNullOrEmpty(_installConfig.License.InvoiceNumber);
 
-            if ((!IsProOrEnterprise) && templateList.Items.FindItemByValue("Mobile Website.template") != null)
+            if ((!IsProOrEnterprise) && templateList.FindItemByValue("Mobile Website.template") != null)
             {
-                templateList.Items.Remove(templateList.Items.FindItemByValue("Mobile Website.template"));
+                templateList.Items.Remove(templateList.FindItemByValue("Mobile Website.template"));
             }
 
             if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall"))

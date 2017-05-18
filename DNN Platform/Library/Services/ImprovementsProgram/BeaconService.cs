@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
         }
 
         private string _beaconEndpoint;
-        private readonly SHA256 _sha256 = SHA256.Create();
 
         public string GetBeaconEndpoint()
         {
@@ -85,6 +84,8 @@ namespace DotNetNuke.Services.ImprovementsProgram
             // r: Role(s) - bitmask - see RolesEnum
             // u: User ID - hashed
             // f: page name / tab path
+            // n: Product Edition - hashed
+            // v: Version - hashed
 
             var uid = user.UserID.ToString("D") + user.CreatedOnDate.ToString("O");
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -101,6 +102,14 @@ namespace DotNetNuke.Services.ImprovementsProgram
             if (!string.IsNullOrEmpty(filePath))
                 qparams["f"] = HttpUtility.UrlEncode(filePath);
 
+            //add package and version to context of request
+            string packageName = DotNetNukeContext.Current.Application.Name;
+            string installVersion = Common.Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
+            if (!string.IsNullOrEmpty(packageName))
+                qparams["n"] = HttpUtility.UrlEncode(GetHash(packageName));
+            if (!string.IsNullOrEmpty(installVersion))
+                qparams["v"] = HttpUtility.UrlEncode(GetHash(installVersion));
+
             return "?" + string.Join("&", qparams.Select(kpv => kpv.Key + "=" + kpv.Value));
         }
 
@@ -111,7 +120,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
         private string GetHash(string data)
         {
-            return Convert.ToBase64String(_sha256.ComputeHash(Encoding.UTF8.GetBytes(data)));
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
+                return Convert.ToBase64String(hash);
+            }
         }
 
         private static RolesEnum GetUserRolesBitValues(UserInfo user)

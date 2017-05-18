@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -451,6 +451,9 @@ namespace DotNetNuke.Services.Install
                 LaunchUpgrade();
                 // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
                 HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
+
+                //DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
+                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
             }
         }
 

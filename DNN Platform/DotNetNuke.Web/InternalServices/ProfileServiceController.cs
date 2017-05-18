@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,7 +54,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-        [DnnExceptionFilter]
         public HttpResponseMessage Search(string q)
         {
             var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
@@ -83,7 +82,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpPost]
-        [DnnExceptionFilter]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateVanityUrl(VanityUrlDTO vanityUrl)
         {

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -273,6 +273,23 @@ namespace DotNetNuke.Services.Localization
         {
             bool returnValue = code == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
             return returnValue;
+        }
+
+        /// <summary>
+        /// Activates the language without publishing it.
+        /// </summary>
+        /// <param name="portalid">The portalid.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="publish">if set to <c>true</c> will publishthe language.</param>
+        public void ActivateLanguage(int portalid, string cultureCode, bool publish)
+        {
+            Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
+            Locale enabledlanguage;
+            if (enabledLanguages.TryGetValue(cultureCode, out enabledlanguage))
+            {
+                enabledlanguage.IsPublished = publish;
+                Instance.UpdatePortalLocale(enabledlanguage);
+            }
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -104,11 +104,14 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
             }
         }
     }
-
-    if(isFirefox){
-        loadScriptInSingleMode();
-    } else {
-        loadScriptInMultipleMode();
+    
+    if(window.dnnLoadScriptsInAjaxMode.length > 0){
+        window.loadingScriptsInAsyncRequest = true;
+        if(isFirefox || window['forceLoadScriptsInSingleMode'] === true){
+            loadScriptInSingleMode();
+        } else {
+            loadScriptInMultipleMode();
+        }
     }
 });
 
@@ -123,13 +126,26 @@ if(typeof window.dnnLoadScriptsInAjaxModeComplete == 'undefined'){
                 }
             }
             if(window.dnnLoadScriptsInAjaxMode.length == 0){
+                window.loadingScriptsInAsyncRequest = false;
                 $(window).trigger('dnnScriptLoadComplete');
-            }else if(isFirefox){
+            }else if(isFirefox || window['forceLoadScriptsInSingleMode'] === true){
                 loadScriptInSingleMode();
             }
         }
     }
 }
+
+var originalScriptLoad = Sys._ScriptLoader.getInstance().loadScripts;
+Sys._ScriptLoader.getInstance().loadScripts = function(){
+    var self = this, args = arguments;
+    if(window.loadingScriptsInAsyncRequest === true){
+        $(window).one('dnnScriptLoadComplete', function(){
+            originalScriptLoad.apply(self, args);
+        });
+    } else {
+        originalScriptLoad.apply(self, args);
+    }
+};
 }(jQuery));
 ";
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);

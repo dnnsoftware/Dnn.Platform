@@ -5,6 +5,8 @@
     <script name="Data">DotNetNuke.Data</script>
   </scripts>
   <version>08.00.04</version>
+  <supportLocalization>true</supportLocalization>
+  <displayBanners>true</displayBanners>
   <installCulture>en-US</installCulture>
   <superuser>
     <firstname>SuperUser</firstname>
@@ -29,6 +31,7 @@
     <AutoAddPortalAlias>Y</AutoAddPortalAlias>
     <CheckUpgrade>Y</CheckUpgrade>
     <ControlPanel>Admin/ControlPanel/ControlBar.ascx</ControlPanel>
+    <IgnoreControlPanelWrapper>Y</IgnoreControlPanelWrapper>
     <Copyright>Y</Copyright>
     <DemoPeriod></DemoPeriod>
     <DemoSignup>N</DemoSignup>

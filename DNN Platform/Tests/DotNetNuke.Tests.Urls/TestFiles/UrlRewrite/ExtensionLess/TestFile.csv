@@ -1,7 +1,6 @@
 ﻿Test,					Scheme,		Page Name,		Test Url,											Expected Url,										Status
-Home,					http://,	Home,			http://{alias}/,									{defaultPage}?TabId={tabId}&language=en-US,			200
+Home,					http://,	Home,			http://{alias}/,									{defaultPage}?TabId={tabId},			200
 About Us,				http://,	About Us,		http://{alias}/About-Us,							{defaultPage}?TabId={tabId},						200
-Admin,					http://,	Site Settings,	http://{alias}/Admin/Site-Settings,					{defaultPage}?TabId={tabId},						200
 Profile Messages,		http://,	Messages,		http://{alias}/Activity-Feed/Messages,				{defaultPage}?TabId={tabId},						200
 Terms,					http://,	Home,			http://{alias}/Terms,								{defaultPage}?PortalId={portalId}&ctl=Terms,		200
 Login,					http://,	About Us,		http://{alias}/Login,								{defaultPage}?PortalId={portalId}&ctl=Login,		200

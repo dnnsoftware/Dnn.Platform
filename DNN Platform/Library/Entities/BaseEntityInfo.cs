@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public int CreatedByUserID { get; private set; }
+        public int CreatedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public int LastModifiedByUserID { get; private set; }
+        public int LastModifiedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

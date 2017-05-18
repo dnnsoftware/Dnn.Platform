@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Dnn.AuthServices.Jwt")]
-[assembly: AssemblyCopyright("Copyright © DNN 2016")]
+[assembly: AssemblyCopyright("Copyright © DNN 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

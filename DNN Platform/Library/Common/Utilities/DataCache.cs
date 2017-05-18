@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -323,20 +323,24 @@ namespace DotNetNuke.Common.Utilities
 
         private static string _CachePersistenceEnabled = "";
 
+        public const string ScopeTypesCacheKey = "ScopeTypes";
+        public const string VocabularyCacheKey = "Vocabularies";
+        public const string TermCacheKey = "Terms_{0}";
+
         private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();
         private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
 
-        private static readonly SharedDictionary<string, Object> dictionaryCache = new SharedDictionary<string, Object>();
+        private static readonly SharedDictionary<string, object> dictionaryCache = new SharedDictionary<string, object>();
 
         public static bool CachePersistenceEnabled
         {
             get
             {
-                if (string.IsNullOrEmpty(_CachePersistenceEnabled))
+                if (String.IsNullOrEmpty(_CachePersistenceEnabled))
                 {
                     _CachePersistenceEnabled = Config.GetSetting("EnableCachePersistence") ?? "false";
                 }
-                return bool.Parse(_CachePersistenceEnabled);
+                return Boolean.Parse(_CachePersistenceEnabled);
             }
         }
 
@@ -437,8 +441,8 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 var portalId = portals[TabId];
-                RemoveCache(string.Format(SharedModulesByPortalCacheKey, portalId));
-                RemoveCache(string.Format(SharedModulesWithPortalCacheKey, portalId));
+                RemoveCache(String.Format(SharedModulesByPortalCacheKey, portalId));
+                RemoveCache(String.Format(SharedModulesWithPortalCacheKey, portalId));
             }
         }
 
@@ -459,7 +463,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearDefinitionsCache(int PortalId)
         {
-            RemoveCache(string.Format(ProfileDefinitionsCacheKey, PortalId));
+            RemoveCache(String.Format(ProfileDefinitionsCacheKey, PortalId));
         }
 
         public static void ClearDesktopModulePermissionsCache()
@@ -470,38 +474,38 @@ namespace DotNetNuke.Common.Utilities
         public static void ClearFolderPermissionsCache(int PortalId)
         {
             PermissionProvider.ResetCacheDependency(PortalId,
-                () => RemoveCache(string.Format(FolderPermissionCacheKey, PortalId)));
+                () => RemoveCache(String.Format(FolderPermissionCacheKey, PortalId)));
         }
 
         public static void ClearListsCache(int PortalId)
         {
-            RemoveCache(string.Format(ListsCacheKey, PortalId));
+            RemoveCache(String.Format(ListsCacheKey, PortalId));
         }
 
         public static void ClearModulePermissionsCache(int TabId)
         {
-            RemoveCache(string.Format(ModulePermissionCacheKey, TabId));
+            RemoveCache(String.Format(ModulePermissionCacheKey, TabId));
         }
 
         public static void ClearTabPermissionsCache(int PortalId)
         {
-            RemoveCache(string.Format(TabPermissionCacheKey, PortalId));
+            RemoveCache(String.Format(TabPermissionCacheKey, PortalId));
         }
 
         public static void ClearUserCache(int PortalId, string username)
         {
-            RemoveCache(string.Format(UserCacheKey, PortalId, username));
-            RemoveCache(string.Format(UserProfileCacheKey, PortalId, username));
+            RemoveCache(String.Format(UserCacheKey, PortalId, username));
+            RemoveCache(String.Format(UserProfileCacheKey, PortalId, username));
         }
 
         public static void ClearUserPersonalizationCache(int portalId, int userId)
         {
-            RemoveCache(string.Format(UserPersonalizationCacheKey, portalId, userId));
+            RemoveCache(String.Format(UserPersonalizationCacheKey, portalId, userId));
         }
 
 		public static void ClearPackagesCache(int portalId)
 		{
-			RemoveCache(string.Format(PackagesCacheKey, portalId));
+			RemoveCache(String.Format(PackagesCacheKey, portalId));
 		}
 
         private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
@@ -774,7 +778,7 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("Deprecated in DNN 5.1.1 - Should have been declared Friend")]
         public static void ClearDesktopModuleCache(int PortalId)
         {
-            RemoveCache(string.Format(DesktopModuleCacheKey, PortalId));
+            RemoveCache(String.Format(DesktopModuleCacheKey, PortalId));
             RemoveCache(ModuleDefinitionCacheKey);
             RemoveCache(ModuleControlsCacheKey);
         }

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>DotNetNuke.Bundle</id>
+    <version>9.1.0</version>
+    <title>DNN Platform (Bundle)</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
+    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components required for developing many different kinds of extensions for DNN Platform.
+      Installing this package also installs DotNetNuke.Core, DotNetNuke.Instrumentation, DotNetNuke.Web, DotNetNuke.Web.Client, DotNetNuke.Web.Mvc, DotNetNuke.WebApi, and DotNetNuke.Web.Deprecated.
+    </description>
+    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Core" version="9.1.0" />
+      <dependency id="DotNetNuke.Instrumentation" version="9.1.0" />
+      <dependency id="DotNetNuke.Web" version="9.1.0" />
+      <dependency id="DotNetNuke.Web.Client" version="9.1.0" />
+      <dependency id="DotNetNuke.Web.Mvc" version="9.1.0" />
+      <dependency id="DotNetNuke.WebApi" version="9.1.0" />
+      <dependency id="DotNetNuke.Web.Deprecated" version="9.1.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\Source\Bin\ClientDependency.Core.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\Source\Bin\ClientDependency.Core.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Components\51Degrees\bin\FiftyOne.Foundation.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\"/>
+  </files>
+</package>

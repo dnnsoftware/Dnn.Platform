@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Users.Password" Codebehind="Password.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 
@@ -53,7 +53,7 @@
                 <asp:textbox id="txtQAPassword" runat="server" textmode="Password" size="25" maxlength="20" />
             </div>
             <div class="dnnFormItem">
-                <dnn:label id="plEditQuestion" runat="server" controlname="lblQuetxtEditQuestionstion" />
+                <dnn:label id="plEditQuestion" runat="server" controlname="txtEditQuestion" />
                 <asp:textbox id="txtEditQuestion" runat="server" size="25" maxlength="20" />
             </div>
             <div class="dnnFormItem">

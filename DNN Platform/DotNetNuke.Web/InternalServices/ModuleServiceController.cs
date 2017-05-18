@@ -1,7 +1,7 @@
 #region Copyright
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,7 +34,6 @@ using DotNetNuke.Web.Api.Internal;
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
-    [DnnExceptionFilter]
     public class ModuleServiceController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleServiceController));
@@ -101,9 +100,9 @@ namespace DotNetNuke.Web.InternalServices
 		        var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values.Where(m => m.IsDeleted);
 		        foreach (var module in deletedModules)
 		        {
-			        if (module.ModuleOrder < moduleOrder)
-			        {
-				        moduleOrder += 2;
+                    if (module.ModuleOrder < moduleOrder && module.PaneName == postData.Pane)
+                    {
+                        moduleOrder += 2;
 			        }
 		        }
 	        }

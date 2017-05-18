@@ -113,7 +113,7 @@ namespace DotNetNuke.Tests.Integration.Framework
             if (!IsLoggedIn)
             {
                 Console.WriteLine(@"User not logged in yet");
-                throw new WebApiException(new HttpRequestException("User not logged in yet."),
+                throw new Web.Api.WebApiException(new HttpRequestException("User not logged in yet."),
                     new HttpResponseMessage(HttpStatusCode.Unauthorized));
             }
         }
@@ -833,7 +833,7 @@ namespace DotNetNuke.Tests.Integration.Framework
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(@"{0} failed for [{1}] {2}\n{3}", source, url, ex.Message, body);
-                throw new WebApiException(ex, result, body);
+                throw new Web.Api.WebApiException(ex, result, body);
             }
             catch (Exception ex)
             {

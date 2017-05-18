@@ -1,7 +1,6 @@
 ﻿Test,									Language,	Skin,			DefaultAlias,			Scheme,		Page Name,		Test Url,												Expected Url,													Status,		Final Url,										RedirectReason
 Home Redirect,							,			,				dnntest.com,			http://,	Home,			http://{alias}/,										{defaultPage}?TabId={tabId},									301,		http://{useAlias}/,								Wrong_Portal_Alias
 About Us Redirect,						,			,				dnntest.com,			http://,	About Us,		http://{alias}/About-Us,								{defaultPage}?TabId={tabId},									301,		http://{useAlias}/About-Us,						Wrong_Portal_Alias
-Admin Redirect,							,			,				dnntest.com,			http://,	Site Settings,	http://{alias}/Admin/Site-Settings,						{defaultPage}?TabId={tabId},									301,		http://{useAlias}/Admin/Site-Settings,			Wrong_Portal_Alias
 Profile Messages Redirect,				,			,				dnntest.com,			http://,	Messages,		http://{alias}/Activity-Feed/Messages,					{defaultPage}?TabId={tabId},									301,		http://{useAlias}/Activity-Feed/Messages,		Wrong_Portal_Alias
 Terms Redirect,							,			,				dnntest.com,			http://,	Home,			http://{alias}/Terms,									{defaultPage}?PortalId={portalId}&ctl=Terms,					301,		http://{useAlias}/Terms,						Wrong_Portal_Alias
 Login Redirect,							,			,				dnntest.com,			http://,	About Us,		http://{alias}/Login,									{defaultPage}?PortalId={portalId}&ctl=Login,					301,		http://{useAlias}/Login,						Wrong_Portal_Alias
@@ -9,7 +8,6 @@ Edit Page Home Redirect,				,			,				dnntest.com,			http://,	Home,			http://{ali
 Edit Page About Us Redirect,			,			,				dnntest.com,			http://,	About Us,		http://{alias}/About-Us/ctl/Edit/mid/200,				{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,					301,		http://{useAlias}/About-Us/ctl/Edit/mid/200,	Wrong_Portal_Alias
 Home Redirect fr-FR,					fr-FR,		,				fr.dnntest.com,			http://,	Home,			http://{alias}/language/fr-FR/Home,						{defaultPage}?TabId={tabId},									301,		http://{useAlias}/Home,							Wrong_Portal_Alias_For_Culture
 About Us Redirect fr-FR,				fr-FR,		,				fr.dnntest.com,			http://,	About Us,		http://{alias}/language/fr-FR/About-Us,					{defaultPage}?TabId={tabId},									301,		http://{useAlias}/About-Us,						Wrong_Portal_Alias_For_Culture
-Admin Redirect fr-FR,					fr-FR,		,				fr.dnntest.com,			http://,	Site Settings,	http://{alias}/language/fr-FR/Admin/Site-Settings,		{defaultPage}?TabId={tabId},									301,		http://{useAlias}/Admin/Site-Settings,			Wrong_Portal_Alias_For_Culture
 Profile Messages Redirect fr-FR,		fr-FR,		,				fr.dnntest.com,			http://,	Messages,		http://{alias}/language/fr-FR/Activity-Feed/Messages,	{defaultPage}?TabId={tabId},									301,		http://{useAlias}/Activity-Feed/Messages,		Wrong_Portal_Alias_For_Culture
 Terms Redirect fr-FR,					fr-FR,		,				fr.dnntest.com,			http://,	Home,			http://{alias}/language/fr-FR/Terms,					{defaultPage}?PortalId={portalId}&ctl=Terms,					301,		http://{useAlias}/Terms,						Wrong_Portal_Alias_For_Culture
 Login Redirect fr-FR,					fr-FR,		,				fr.dnntest.com,			http://,	About Us,		http://{alias}/language/fr-FR/Login,					{defaultPage}?PortalId={portalId}&ctl=Login,					301,		http://{useAlias}/Login,						Wrong_Portal_Alias_For_Culture

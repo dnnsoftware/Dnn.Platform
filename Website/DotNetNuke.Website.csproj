@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Dnn.Modules.Lists">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DNN Platform\Admin Modules\Dnn.Modules.Lists\bin\Dnn.Modules.Lists.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Library\bin\DotNetNuke.dll</HintPath>
@@ -139,7 +135,7 @@
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\Packages\Microsoft.AspNet.Mvc.5.1.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -162,9 +158,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.Web.UI">
-      <HintPath>..\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs">
@@ -219,55 +212,6 @@
     <Compile Include="admin\Containers\Visibility.ascx.designer.cs">
       <DependentUpon>visibility.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\ControlPanel\AddModule.ascx.cs">
-      <DependentUpon>AddModule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\ControlPanel\AddModule.ascx.designer.cs">
-      <DependentUpon>AddModule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\ControlPanel\AddPage.ascx.cs">
-      <DependentUpon>AddPage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\ControlPanel\AddPage.ascx.designer.cs">
-      <DependentUpon>AddPage.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\ControlPanel\ControlBar.ascx.cs">
-      <DependentUpon>ControlBar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\ControlPanel\ControlBar.ascx.designer.cs">
-      <DependentUpon>ControlBar.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\ControlPanel\RibbonBar.ascx.cs">
-      <DependentUpon>RibbonBar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\ControlPanel\RibbonBar.ascx.designer.cs">
-      <DependentUpon>RibbonBar.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\ControlPanel\SwitchSite.ascx.cs">
-      <DependentUpon>SwitchSite.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\ControlPanel\SwitchSite.ascx.designer.cs">
-      <DependentUpon>SwitchSite.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\ControlPanel\UpdatePage.ascx.cs">
-      <DependentUpon>UpdatePage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\ControlPanel\UpdatePage.ascx.designer.cs">
-      <DependentUpon>UpdatePage.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\ControlPanel\WebUpload.ascx.cs">
-      <DependentUpon>webupload.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\ControlPanel\WebUpload.ascx.designer.cs">
-      <DependentUpon>webupload.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Menus\ModuleActions\ModuleActions.ascx.cs">
       <DependentUpon>ModuleActions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -288,13 +232,6 @@
     </Compile>
     <Compile Include="admin\Modules\Import.ascx.designer.cs">
       <DependentUpon>import.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\Modules\ModuleLocalization.ascx.cs">
-      <DependentUpon>ModuleLocalization.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Modules\ModuleLocalization.ascx.designer.cs">
-      <DependentUpon>ModuleLocalization.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Modules\ModulePermissions.ascx.cs">
       <DependentUpon>ModulePermissions.ascx</DependentUpon>
@@ -485,13 +422,6 @@
     <Compile Include="admin\Skins\Language.ascx.designer.cs">
       <DependentUpon>language.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Skins\Links.ascx.cs">
       <DependentUpon>links.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -519,6 +449,13 @@
     </Compile>
     <Compile Include="admin\Skins\Login.ascx.designer.cs">
       <DependentUpon>login.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Skins\LeftMenu.ascx.cs">
+      <DependentUpon>LeftMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
+      <DependentUpon>LeftMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Logo.ascx.cs">
       <DependentUpon>logo.ascx</DependentUpon>
@@ -660,246 +597,22 @@
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.cs">
-      <DependentUpon>AvailableExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.designer.cs">
-      <DependentUpon>AvailableExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\BatchInstall.ascx.cs">
-      <DependentUpon>BatchInstall.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\BatchInstall.ascx.designer.cs">
-      <DependentUpon>BatchInstall.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Download.ascx.cs">
-      <DependentUpon>Download.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Download.ascx.designer.cs">
-      <DependentUpon>Download.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\EditExtension.ascx.cs">
-      <DependentUpon>EditExtension.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\EditExtension.ascx.designer.cs">
-      <DependentUpon>EditExtension.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\AuthenticationEditor.ascx.cs">
-      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\AuthenticationEditor.ascx.designer.cs">
-      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleControl.ascx.cs">
-      <DependentUpon>editmodulecontrol.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleControl.ascx.designer.cs">
-      <DependentUpon>editmodulecontrol.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleDefinition.ascx.cs">
-      <DependentUpon>EditModuleDefinition.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleDefinition.ascx.designer.cs">
-      <DependentUpon>EditModuleDefinition.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\JavaScriptLibraryEditor.ascx.cs">
-      <DependentUpon>JavaScriptLibraryEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\JavaScriptLibraryEditor.ascx.designer.cs">
-      <DependentUpon>JavaScriptLibraryEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\LanguagePackEditor.ascx.cs">
-      <DependentUpon>LanguagePackEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\LanguagePackEditor.ascx.designer.cs">
-      <DependentUpon>LanguagePackEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\ModuleEditor.ascx.cs">
-      <DependentUpon>ModuleEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\ModuleEditor.ascx.designer.cs">
-      <DependentUpon>ModuleEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinEditor.ascx.cs">
-      <DependentUpon>SkinEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinEditor.ascx.designer.cs">
-      <DependentUpon>SkinEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinObjectEditor.ascx.cs">
-      <DependentUpon>SkinObjectEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinObjectEditor.ascx.designer.cs">
-      <DependentUpon>SkinObjectEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Extensions.ascx.cs">
-      <DependentUpon>Extensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Extensions.ascx.designer.cs">
-      <DependentUpon>Extensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\ExtensionWizard.ascx.cs">
-      <DependentUpon>ExtensionWizard.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\ExtensionWizard.ascx.designer.cs">
-      <DependentUpon>ExtensionWizard.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Install.ascx.cs">
-      <DependentUpon>Install.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Install.ascx.designer.cs">
-      <DependentUpon>Install.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx.cs">
-      <DependentUpon>InstalledExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx.designer.cs">
-      <DependentUpon>InstalledExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.designer.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx.cs">
-      <DependentUpon>MoreExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx.designer.cs">
-      <DependentUpon>MoreExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PackageWriter.ascx.cs">
-      <DependentUpon>PackageWriter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PackageWriter.ascx.designer.cs">
-      <DependentUpon>PackageWriter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PurchasedExtensions.ascx.cs">
-      <DependentUpon>PurchasedExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PurchasedExtensions.ascx.designer.cs">
-      <DependentUpon>PurchasedExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Store.ascx.cs">
-      <DependentUpon>Store.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Store.ascx.designer.cs">
-      <DependentUpon>Store.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UnInstall.ascx.cs">
-      <DependentUpon>UnInstall.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UnInstall.ascx.designer.cs">
-      <DependentUpon>UnInstall.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UsageDetails.ascx.cs">
-      <DependentUpon>UsageDetails.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UsageDetails.ascx.designer.cs">
-      <DependentUpon>UsageDetails.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx.cs">
-      <DependentUpon>EditIPFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx.designer.cs">
-      <DependentUpon>EditIPFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx.cs">
-      <DependentUpon>FriendlyUrls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx.designer.cs">
-      <DependentUpon>FriendlyUrls.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\HostSettings.ascx.cs">
-      <DependentUpon>hostsettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\HostSettings.ascx.designer.cs">
-      <DependentUpon>hostsettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\IPFilters.ascx.cs">
-      <DependentUpon>IPFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\IPFilters.ascx.designer.cs">
-      <DependentUpon>IPFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.cs">
-      <DependentUpon>RequestFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.designer.cs">
-      <DependentUpon>RequestFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.cs">
-      <DependentUpon>Preview.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.designer.cs">
-      <DependentUpon>Preview.ascx</DependentUpon>
-    </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
-    <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.cs">
-      <DependentUpon>portals.ascx</DependentUpon>
+    <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
+      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.designer.cs">
-      <DependentUpon>portals.ascx</DependentUpon>
+    <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.designer.cs">
+      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Signup.ascx.cs">
-      <DependentUpon>signup.ascx</DependentUpon>
+    <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.cs">
+      <DependentUpon>EditExtension.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Signup.ascx.designer.cs">
-      <DependentUpon>signup.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\SiteSettings.ascx.cs">
-      <DependentUpon>sitesettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\SiteSettings.ascx.designer.cs">
-      <DependentUpon>sitesettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Template.ascx.cs">
-      <DependentUpon>template.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Template.ascx.designer.cs">
-      <DependentUpon>template.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SearchAdmin\SearchAdmin.ascx.cs">
-      <DependentUpon>searchadmin.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SearchAdmin\SearchAdmin.ascx.designer.cs">
-      <DependentUpon>searchadmin.ascx</DependentUpon>
+    <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.designer.cs">
+      <DependentUpon>EditExtension.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx.cs">
       <DependentUpon>ResultsSettings.ascx</DependentUpon>
@@ -915,27 +628,6 @@
     <Compile Include="DesktopModules\Admin\SearchResults\SearchResults.ascx.designer.cs">
       <DependentUpon>SearchResults.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditGroups.ascx.cs">
-      <DependentUpon>EditGroups.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditGroups.ascx.designer.cs">
-      <DependentUpon>EditGroups.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditProfileDefinition.ascx.cs">
-      <DependentUpon>EditProfileDefinition.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditProfileDefinition.ascx.designer.cs">
-      <DependentUpon>EditProfileDefinition.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditRoles.ascx.cs">
-      <DependentUpon>editroles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditRoles.ascx.designer.cs">
-      <DependentUpon>editroles.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -944,11 +636,11 @@
       <DependentUpon>EditUser.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.cs">
-      <DependentUpon>manageusers.ascx</DependentUpon>
+      <DependentUpon>ManageUsers.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.designer.cs">
-      <DependentUpon>manageusers.ascx</DependentUpon>
+      <DependentUpon>ManageUsers.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\MemberServices.ascx.cs">
       <DependentUpon>MemberServices.ascx</DependentUpon>
@@ -992,19 +684,19 @@
     <Compile Include="DesktopModules\Admin\Security\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Roles.ascx.cs">
-      <DependentUpon>roles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Roles.ascx.designer.cs">
-      <DependentUpon>roles.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.cs">
       <DependentUpon>securityroles.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.designer.cs">
       <DependentUpon>securityroles.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\Users.ascx.cs">
+      <DependentUpon>Users.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\Users.ascx.designer.cs">
+      <DependentUpon>Users.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\User.ascx.cs">
       <DependentUpon>User.ascx</DependentUpon>
@@ -1013,19 +705,12 @@
     <Compile Include="DesktopModules\Admin\Security\User.ascx.designer.cs">
       <DependentUpon>User.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Users.ascx.cs">
-      <DependentUpon>users.ascx</DependentUpon>
+    <Compile Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx.cs">
+      <DependentUpon>UrlProviderSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Users.ascx.designer.cs">
-      <DependentUpon>users.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.cs">
-      <DependentUpon>UserSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.designer.cs">
-      <DependentUpon>UserSettings.ascx</DependentUpon>
+    <Compile Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx.designer.cs">
+      <DependentUpon>UrlProviderSettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -1105,8 +790,22 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx" />
+    <Content Include="admin\Skins\LeftMenu.ascx" />
+    <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
+    <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
+    <Content Include="DesktopModules\Admin\Security\ManageUsers.ascx" />
+    <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
+    <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
+    <Content Include="DesktopModules\Admin\Security\Users.ascx" />
+    <Content Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx" />
+    <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
+    <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
+    <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
+    <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
+    <Content Include="Resources\Shared\components\DatePicker\pikaday.css" />
+    <Content Include="Resources\Shared\components\DatePicker\pikaday.jquery.js" />
+    <Content Include="Resources\Shared\components\DatePicker\pikaday.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
     <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\simplemde.css" />
@@ -1549,206 +1248,6 @@
     <Content Include="admin\Containers\Toggle.ascx" />
     <Content Include="admin\Containers\visibility.ascx" />
     <Content Include="admin\Containers\visibility.xml" />
-    <Content Include="admin\ControlPanel\AddModule.ascx" />
-    <Content Include="admin\ControlPanel\AddPage.ascx" />
-    <Content Include="admin\ControlPanel\ControlBar.ascx" />
-    <Content Include="admin\ControlPanel\ControlBar.css" />
-    <Content Include="admin\ControlPanel\controlbarimages\AdvancedSettings.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\basic.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\BasicSettings.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\Bookmarks.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\bookmarkThis.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\bookmarkThisModule.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\bookmarkThisModule_white.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\closeAddModule.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\ControlBar_bg.jpg" />
-    <Content Include="admin\ControlPanel\controlbarimages\dnnLogo.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\EditIcons.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\icon-edit-mode-input.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\icons.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\menuArrow.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\service-criticalUpdate.png" />
-    <Content Include="admin\ControlPanel\controlbarimages\service-update.png" />
-    <Content Include="admin\ControlPanel\images\action_up.gif" />
-    <Content Include="admin\ControlPanel\images\controlbar_cleartext.png" />
-    <Content Include="admin\ControlPanel\images\controlbar_loading.png" />
-    <Content Include="admin\ControlPanel\images\controlbar_page.png" />
-    <Content Include="admin\ControlPanel\images\controlbar_resize.png" />
-    <Content Include="admin\ControlPanel\images\controlbar_search.png" />
-    <Content Include="admin\ControlPanel\images\controlPanelLoader.gif" />
-    <Content Include="admin\ControlPanel\images\cp-header-bg.gif" />
-    <Content Include="admin\ControlPanel\images\icon-clear-input.png" />
-    <Content Include="admin\ControlPanel\images\icon-cp-search.png" />
-    <Content Include="admin\ControlPanel\images\iconbar_addmodule.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_addtab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_addtab_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_addtab_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_addtab_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_add_users_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_clearcache_16px.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_console.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_copytab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_copytab_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_copytab_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_copytab_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_deletetab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_deletetab_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_deletetab_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_deletetab_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_designtab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_docked.png" />
-    <Content Include="admin\ControlPanel\images\iconbar_edittab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_edittab_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_edittab_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_edittab_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_exporttab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_exporttab_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_exporttab_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_exporttab_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_extensions.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_extensions_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_files.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_files_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_help.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_help_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_help_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_help_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_hostconsole.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_importtab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_importtab_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_importtab_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_importtab_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_logo.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_logo.png" />
-    <Content Include="admin\ControlPanel\images\iconbar_recycleapp_16px.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_roles.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_roles_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_site.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_site_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_solutions.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_solutions_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_undesigntab.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_undocked.png" />
-    <Content Include="admin\ControlPanel\images\iconbar_users.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_users_16.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_users_bw.gif" />
-    <Content Include="admin\ControlPanel\images\iconbar_users_bw_16.gif" />
-    <Content Include="admin\ControlPanel\images\icon_appintegrity_16px.gif" />
-    <Content Include="admin\ControlPanel\images\icon_mytickets_16px.gif" />
-    <Content Include="admin\ControlPanel\images\icon_securityroles_16px.gif" />
-    <Content Include="admin\ControlPanel\images\icon_usersSwitcher_16px.gif" />
-    <Content Include="admin\ControlPanel\images\icon_webservers_16px.gif" />
-    <Content Include="admin\ControlPanel\module.css" />
-    <Content Include="admin\ControlPanel\RibbonBar.ascx" />
-    <Content Include="admin\ControlPanel\ribbonimages\add.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\add_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Console.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Console16px.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Console16px_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Console_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\CopyDesignToChildren.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\CopyDesignToChildren_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\CopyPage.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\CopyPage_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\CopyPermissionsToChildren.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\CopyPermissionsToChildren_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Dashboard.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Dashboard_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Default.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Default_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\DeletePage.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\DeletePage_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\EventLog.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\EventLog_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ExportPage.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ExportPage_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Extensions.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Extensions_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\FileManager.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\FileManager_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\GoogleAnalytics.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\GoogleAnalytics_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HealthMonitoring.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HealthMonitoring_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Help.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Help_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostConsole.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostConsole16px.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostConsole16px_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostConsole_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostExtensions.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostExtensions_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostFileManager.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostFileManager_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostSettings.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostSettings_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostVendors.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\HostVendors_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ImpersonateUser.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ImpersonateUser_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ImportPage.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ImportPage_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\IntegrityChecker.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\IntegrityChecker_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Languages.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Languages_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Lists.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Lists_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ManagePages.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\ManagePages_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Marketplace.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Marketplace_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewPage.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewPage_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewRole.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewRole_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewsLetters.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewsLetters_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewUser.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\NewUser_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\PageSettings.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\PageSettings_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\RecycleBin.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\RecycleBin_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\save.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\save_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Scheduler.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Scheduler_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SearchAdmin.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SearchAdmin_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SiteLog.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SiteLog_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Sites.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SiteSettings.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SiteSettings_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Sites_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SiteWizard.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SiteWizard_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Skins.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Skins_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SQL.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SQL_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SuperUsers.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SuperUsers_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SupportTickets.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\SupportTickets_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\switch.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\switch_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\UploadFile.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\UploadFile_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\UserRoles.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\UserRoles_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Users.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Users_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Vendors.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\Vendors_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\WebServerManager.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\WebServerManager_Disabled.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\WhatsNew.gif" />
-    <Content Include="admin\ControlPanel\ribbonimages\WhatsNew_Disabled.gif" />
-    <Content Include="admin\ControlPanel\SwitchSite.ascx" />
-    <Content Include="admin\ControlPanel\UpdatePage.ascx" />
-    <Content Include="admin\ControlPanel\webupload.ascx" />
     <Content Include="admin\Menus\DNNActions\DDRActionsMenu.ascx" />
     <Content Include="admin\Menus\DNNActions\dnnactions.debug.js" />
     <Content Include="admin\Menus\DNNActions\dnnactions.js" />
@@ -1769,7 +1268,6 @@
     <Content Include="admin\Modules\icon_moduledefinitions_32px.gif" />
     <Content Include="admin\Modules\import.ascx" />
     <Content Include="admin\Modules\module.css" />
-    <Content Include="admin\Modules\ModuleLocalization.ascx" />
     <Content Include="admin\Modules\ModulePermissions.ascx" />
     <Content Include="admin\Modules\Modulesettings.ascx" />
     <Content Include="admin\Modules\viewsource.ascx" />
@@ -1808,8 +1306,6 @@
     <Content Include="admin\Skins\jQuery.xml" />
     <Content Include="admin\Skins\language.ascx" />
     <Content Include="admin\Skins\Language.xml" />
-    <Content Include="admin\Skins\LeftMenu.ascx" />
-    <Content Include="admin\Skins\LeftMenu.xml" />
     <Content Include="admin\Skins\links.ascx" />
     <Content Include="admin\Skins\Links.xml" />
     <Content Include="admin\Skins\LinkToFullSite.ascx" />
@@ -1877,79 +1373,23 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\BatchInstall.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Download.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\EditExtension.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\AuthenticationEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\editmodulecontrol.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\EditModuleDefinition.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\JavaScriptLibraryEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\LanguagePackEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\ModuleEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\SkinEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\SkinObjectEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Extensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\ExtensionWizard.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Install.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\module.css" />
-    <Content Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\PackageWriter.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\PurchasedExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\scripts\Gallery-compiled.js" />
-    <Content Include="DesktopModules\Admin\Extensions\scripts\Gallery.js" />
-    <Content Include="DesktopModules\Admin\Extensions\Store.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\UnInstall.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\UsageDetails.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\hostsettings.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\block.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\checkmark.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\help-icn.gif" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\TimePicker.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\IPFilters.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\module.css" />
-    <Content Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx" />
-    <Content Include="DesktopModules\Admin\MobilePreview\Images\arrow.png" />
-    <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
-    <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
-    <Content Include="DesktopModules\Admin\MobilePreview\Scripts\PreviewEmulator.js" />
-    <Content Include="DesktopModules\Admin\Portals\module.css" />
-    <Content Include="DesktopModules\Admin\Portals\portals.ascx" />
-    <Content Include="DesktopModules\Admin\Portals\signup.ascx" />
-    <Content Include="DesktopModules\Admin\Portals\sitesettings.ascx" />
-    <Content Include="DesktopModules\Admin\Portals\template.ascx" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\dnn.SearchAdmin.js" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\module.css" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\searchadmin.ascx" />
     <Content Include="DesktopModules\Admin\SearchResults\dnn.searchResult.js" />
     <Content Include="DesktopModules\Admin\SearchResults\module.css" />
     <Content Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx" />
     <Content Include="DesktopModules\Admin\SearchResults\SearchResults.ascx" />
-    <Content Include="DesktopModules\Admin\Security\EditGroups.ascx" />
-    <Content Include="DesktopModules\Admin\Security\EditProfileDefinition.ascx" />
-    <Content Include="DesktopModules\Admin\Security\editroles.ascx" />
     <Content Include="DesktopModules\Admin\Security\EditUser.ascx" />
     <Content Include="DesktopModules\Admin\Security\icon_authentication_32px.gif" />
     <Content Include="DesktopModules\Admin\Security\icon_securityroles_32px.gif" />
     <Content Include="DesktopModules\Admin\Security\Images\socialLoginbuttons-icons.png" />
     <Content Include="DesktopModules\Admin\Security\Images\socialLoginbuttons-repeatingbg.png" />
-    <Content Include="DesktopModules\Admin\Security\manageusers.ascx" />
     <Content Include="DesktopModules\Admin\Security\MemberServices.ascx" />
     <Content Include="DesktopModules\Admin\Security\Membership.ascx" />
     <Content Include="DesktopModules\Admin\Security\module.css" />
     <Content Include="DesktopModules\Admin\Security\Password.ascx" />
     <Content Include="DesktopModules\Admin\Security\Profile.ascx" />
-    <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
     <Content Include="DesktopModules\Admin\Security\Register.ascx" />
-    <Content Include="DesktopModules\Admin\Security\roles.ascx" />
     <Content Include="DesktopModules\Admin\Security\Scripts\dnn.PasswordComparer.js" />
-    <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
     <Content Include="DesktopModules\Admin\Security\User.ascx" />
-    <Content Include="DesktopModules\Admin\Security\users.ascx" />
-    <Content Include="DesktopModules\Admin\Security\UserSettings.ascx" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -3288,33 +2728,6 @@
     <Content Include="images\yellow-warning_16px.gif" />
     <None Include="Install\App_LocalResources\Locales.xml" />
     <Content Include="Install\AuthSystem\PlaceHolder.txt" />
-    <Content Include="Install\Cleanup\03.00.08.txt" />
-    <Content Include="Install\Cleanup\03.00.12.txt" />
-    <Content Include="Install\Cleanup\03.01.00.txt" />
-    <Content Include="Install\Cleanup\03.02.00.txt" />
-    <Content Include="Install\Cleanup\03.02.01.txt" />
-    <Content Include="Install\Cleanup\03.03.00.txt" />
-    <Content Include="Install\Cleanup\04.03.03.txt" />
-    <Content Include="Install\Cleanup\04.05.00.txt" />
-    <Content Include="Install\Cleanup\04.05.01.txt" />
-    <Content Include="Install\Cleanup\04.06.00.txt" />
-    <Content Include="Install\Cleanup\04.07.00.txt" />
-    <Content Include="Install\Cleanup\04.08.00.txt" />
-    <Content Include="Install\Cleanup\04.08.01.txt" />
-    <Content Include="Install\Cleanup\04.08.02.txt" />
-    <Content Include="Install\Cleanup\04.09.00.txt" />
-    <Content Include="Install\Cleanup\05.00.00.txt" />
-    <Content Include="Install\Cleanup\05.00.01.txt" />
-    <Content Include="Install\Cleanup\05.01.00.txt" />
-    <Content Include="Install\Cleanup\05.03.00.txt" />
-    <Content Include="Install\Cleanup\05.06.00.txt" />
-    <Content Include="Install\Cleanup\06.00.00.txt" />
-    <Content Include="Install\Cleanup\07.00.00.txt" />
-    <Content Include="Install\Cleanup\07.00.01.txt" />
-    <Content Include="Install\Cleanup\07.02.01.txt" />
-    <Content Include="Install\Cleanup\07.03.01.txt" />
-    <Content Include="Install\Cleanup\07.04.01.txt" />
-    <Content Include="Install\Cleanup\07.04.02.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
     <Content Include="Install\Config\PlaceHolder.txt" />
     <Content Include="Install\Container\PlaceHolder.txt" />
@@ -3399,14 +2812,11 @@
     <Content Include="Licenses\Client Dependency Framework%28Ms-PL%29.txt" />
     <Content Include="Licenses\CountryListBox %28Public Domain%29.txt" />
     <Content Include="Licenses\DotNetOpenID %28New BSD%29.txt" />
-    <Content Include="Licenses\doubletaptogo %28MIT%29.txt" />
     <Content Include="Licenses\FCKEditor %28LGPL%29.txt" />
-    <Content Include="Licenses\FLV-Player %28Custom%29.txt" />
     <Content Include="Licenses\GeoIP %28Custom%29.txt" />
     <Content Include="Licenses\Highlighter %28Perl%29.txt" />
     <Content Include="Licenses\hoverintent %28MIT,GPL%29.txt" />
     <Content Include="Licenses\HtmlDiff %28MIT%29.txt" />
-    <Content Include="Licenses\jQuery %28MIT%29.txt" />
     <Content Include="Licenses\jQuery Boxy Plugin %28MIT%29.txt" />
     <Content Include="Licenses\jQuery Cycle %28MIT,GPL%29.txt" />
     <Content Include="Licenses\jQuery FileUpload %28MIT%29.txt" />
@@ -3414,11 +2824,8 @@
     <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt" />
     <Content Include="Licenses\jQuery Templates %28MIT,GPL%29.txt" />
     <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt" />
-    <Content Include="Licenses\jQuery UI %28MIT%29.txt" />
     <Content Include="Licenses\jquery-history.license.txt" />
     <Content Include="Licenses\json2 %28Public Domain%29.txt" />
-    <Content Include="Licenses\Knockout %28MIT%29.txt" />
-    <Content Include="Licenses\Knockout Mapping %28MIT%29.txt" />
     <Content Include="Licenses\Licenses.txt" />
     <Content Include="Licenses\log4net %28Apache%29.txt" />
     <Content Include="Licenses\Lucene.Net %28Apache%29.txt" />
@@ -3428,9 +2835,7 @@
     <Content Include="Licenses\Moq %28BSD%29.txt" />
     <Content Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt" />
     <Content Include="Licenses\OceanBrowserDetection %28MIT%29.txt" />
-    <Content Include="Licenses\OpenWYSIWYG %28LGPL%29.txt" />
     <Content Include="Licenses\SearchSpider %28LGPL%29.txt" />
-    <Content Include="Licenses\Sharepoint Logging Library %28LGPL%29.txt" />
     <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
     <Content Include="Licenses\SwfObject %28MIT%29.txt" />
     <Content Include="Licenses\VideoBox %28MIT%29.txt" />
@@ -3442,121 +2847,16 @@
     <Content Include="Portals\_default\admin.css" />
     <Content Include="Portals\_default\Cache\PlaceHolder.txt" />
     <Content Include="Portals\_default\Cache\ReadMe.txt" />
-    <Content Include="Portals\_default\Containers\Facebook\container.css" />
-    <Content Include="Portals\_default\Containers\Facebook\images\FacebookLogo.png" />
-    <Content Include="Portals\_default\Containers\Gravity\Banner.ascx" />
-    <Content Include="Portals\_default\Containers\Gravity\NoTitle.ascx" />
-    <Content Include="Portals\_default\Containers\Gravity\noTitle.jpg" />
-    <Content Include="Portals\_default\Containers\Gravity\Title_h2.ascx" />
-    <Content Include="Portals\_default\Containers\Gravity\Title_h2.jpg" />
-    <Content Include="Portals\_default\Containers\Gravity\Title_h3.ascx" />
-    <Content Include="Portals\_default\Containers\Gravity\Title_h3.jpg" />
-    <Content Include="Portals\_default\Containers\Gravity\Title_h4.ascx" />
-    <Content Include="Portals\_default\Containers\Gravity\Title_h4.jpg" />
     <Content Include="Portals\_default\Containers\_default\No Container.ascx" />
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\8.0.0\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
     <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
-    <Content Include="Portals\_default\Skins\Facebook\Facebook-Mega-Menu.ascx" />
-    <Content Include="Portals\_default\Skins\Facebook\Facebook-Mega-Menu.doctype.xml" />
-    <Content Include="Portals\_default\Skins\Facebook\images\FacebookLogo.png" />
-    <Content Include="Portals\_default\Skins\Facebook\jquery.cycle.min.js" />
-    <Content Include="Portals\_default\Skins\Facebook\skin.css" />
-    <Content Include="Portals\_default\Skins\Gravity\2-Col.ascx" />
-    <Content Include="Portals\_default\Skins\Gravity\2-Col.jpg" />
-    <Content Include="Portals\_default\Skins\Gravity\3-Col-Social.ascx" />
-    <Content Include="Portals\_default\Skins\Gravity\3-col-social.jpg" />
-    <Content Include="Portals\_default\Skins\Gravity\3-Col.ascx" />
-    <Content Include="Portals\_default\Skins\Gravity\3-col.jpg" />
-    <Content Include="Portals\_default\Skins\Gravity\404Skin.ascx" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrapNav\menudef.xml" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrapNav\SimpleTokens.txt" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrap\css\bootstrap.css" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrap\css\bootstrap.min.css" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrap\js\bootstrap.js" />
-    <Content Include="Portals\_default\Skins\Gravity\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Portals\_default\Skins\Gravity\groups.ascx" />
-    <Content Include="Portals\_default\Skins\Gravity\groups.css" />
-    <Content Include="Portals\_default\Skins\Gravity\groups.jpg" />
-    <Content Include="Portals\_default\Skins\Gravity\Home.ascx" />
-    <Content Include="Portals\_default\Skins\Gravity\home.jpg" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\arrow.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\body_bg.jpg" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\breadcrumb.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\copyright-background.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\down-arrow.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\globe.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\icon-btn-sm-circle-arrow.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\icon_bin.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\icon_message.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\icon_notification.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\left-arrow.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\pagination.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\right-arrow.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Images\search.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Awesome-Cycles-Logo.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Banner1.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Banner2.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Banner3.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Banner4.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\bike01.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\bike02.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\button_contactUs.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\connect_facebook.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\connect_googleplus.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\connect_linkedin.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\connect_twitter.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\connect_twitter_t.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Home-Ad1.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Home-Ad2.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Home-Ad3.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Product-Junior.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Product-Road.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Products-BMX.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Products-City.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Products-Gravity.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\Products-Trail.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\product_WP2GDownhill.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\storeFront.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\storeNews1.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\storeNews2.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Alejandro.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Beck.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_chris.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Drew-Paul.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Ivan.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Jose.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_ken.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Kip.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Lynn.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Max.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Mitch.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Myles.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Nathan.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_noPic.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Oliver.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Robert Juarez.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Tracey.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Wiley.png" />
-    <Content Include="Portals\_default\Skins\Gravity\Includes\team_Will.png" />
-    <Content Include="Portals\_default\Skins\Gravity\js\doubletaptogo.js" />
-    <Content Include="Portals\_default\Skins\Gravity\js\doubletaptogo.min.js" />
-    <Content Include="Portals\_default\Skins\Gravity\js\scripts.js" />
-    <Content Include="Portals\_default\Skins\Gravity\popUpSkin.ascx" />
-    <Content Include="Portals\_default\Skins\Gravity\Simple\menudef.xml" />
-    <Content Include="Portals\_default\Skins\Gravity\Simple\simple.css" />
-    <Content Include="Portals\_default\Skins\Gravity\Simple\SimpleTokens.txt" />
-    <Content Include="Portals\_default\Skins\Gravity\skin.css" />
-    <Content Include="Portals\_default\Skins\Gravity\skin.doctype.xml" />
     <Content Include="Portals\_default\Skins\_default\No Skin.ascx" />
     <Content Include="Portals\_default\Skins\_default\popUpSkin.ascx" />
     <Content Include="Portals\_default\Skins\_default\popUpSkin.doctype.xml" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox.Default.css" />
-    <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox.DnnBlack.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox\Default.gif" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox\rcbSprite.png" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DatePicker.Default.css" />
@@ -3655,7 +2955,6 @@
     <Content Include="Resources\Shared\components\UserFileManager\Templates\Default.html" />
     <Content Include="Resources\Shared\components\UserFileManager\UserFileManager.css" />
     <Content Include="Resources\Shared\components\UserFileManager\UserFileManager.js" />
-    <Content Include="Resources\Shared\scripts\dnn.controlBar.js" />
     <Content Include="Resources\Shared\scripts\dnn.DataStructures.js" />
     <Content Include="Resources\Shared\scripts\dnn.DataStructures.Tests.js" />
     <Content Include="Resources\Shared\scripts\dnn.dragDrop.js" />
@@ -3699,16 +2998,6 @@
     <Content Include="Robots.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\ControlPanel\App_LocalResources\AddModule.ascx.resx" />
-    <Content Include="admin\ControlPanel\App_LocalResources\AddPage.ascx.resx" />
-    <Content Include="admin\ControlPanel\App_LocalResources\ControlBar.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="admin\ControlPanel\App_LocalResources\RibbonBar.ascx.resx" />
-    <Content Include="admin\ControlPanel\App_LocalResources\SiteAddPage.ascx.resx" />
-    <Content Include="admin\ControlPanel\App_LocalResources\SwitchSite.ascx.resx" />
-    <Content Include="admin\ControlPanel\App_LocalResources\UpdatePage.ascx.resx" />
-    <Content Include="admin\ControlPanel\App_LocalResources\WebUpload.ascx.resx" />
     <Content Include="admin\Modules\App_LocalResources\Export.ascx.resx" />
     <Content Include="admin\Modules\App_LocalResources\Import.ascx.resx" />
     <Content Include="admin\Modules\App_LocalResources\ModuleLocalization.ascx.resx" />
@@ -3762,39 +3051,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\ExtensionWizard.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\Install.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\LanguagePacks.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\PackageWriter.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\SharedResources.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\UnInstall.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\UsageDetails.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\AuthenticationEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleControl.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleDefinition.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\JavaScriptLibraryEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\LanguagePackEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\ModuleEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchResults.ascx.resx" />
@@ -3863,12 +3119,6 @@
     <None Include="Config\SiteUrls.config" />
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
-    <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\Portals\portal.template.xsx">
-      <DependentUpon>portal.template.xsd</DependentUpon>
-    </None>
     <None Include="development.config" />
     <None Include="Documentation\TELERIK_EULA.pdf" />
     <None Include="Install\Template\UserProfile.page.template" />
@@ -4029,6 +3279,8 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.04.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.00.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.00.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
@@ -4042,7 +3294,6 @@
   <ItemGroup>
     <Folder Include="Install\Provider\" />
     <Folder Include="Install\Temp\" />
-    <Folder Include="Portals\_default\MergedTemplate\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -4073,10 +3324,6 @@
     <ProjectReference Include="..\DNN Platform\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj">
-      <Project>{9ba59b3d-9ffb-4a9e-bd7d-8b58d08b3a33}</Project>
-      <Name>DotNetNuke.Web.Deprecated</Name>
     </ProjectReference>
     <ProjectReference Include="..\DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -455,20 +455,17 @@ namespace DotNetNuke.Security
             {
                 tempInput = FormatRemoveSQL(tempInput);
             }
-            else
+            if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
             {
-                if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
-                {
-                    tempInput = HttpUtility.HtmlEncode(tempInput);
-                }
-                if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
-                {
-                    tempInput = FormatDisableScripting(tempInput);
-                }
-                if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
-                {
-                    tempInput = FormatMultiLine(tempInput);
-                }
+                tempInput = HttpUtility.HtmlEncode(tempInput);
+            }
+            if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
+            {
+                tempInput = FormatDisableScripting(tempInput);
+            }
+            if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
+            {
+                tempInput = FormatMultiLine(tempInput);
             }
             if ((filterType & FilterFlag.NoProfanity) == FilterFlag.NoProfanity)
             {
@@ -871,13 +868,12 @@ namespace DotNetNuke.Security
 
         public static bool IsInRole(string role)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            HttpContext context = HttpContext.Current;
-            if (!String.IsNullOrEmpty(role) && ((context.Request.IsAuthenticated == false && role == Globals.glbRoleUnauthUserName)))
+            if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
             {
                 return true;
             }
-            return IsInRoles(objUserInfo, PortalController.Instance.GetCurrentPortalSettings(), role);
+
+            return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentPortalSettings(), role);
         }
 
         public static bool IsInRoles(string roles)

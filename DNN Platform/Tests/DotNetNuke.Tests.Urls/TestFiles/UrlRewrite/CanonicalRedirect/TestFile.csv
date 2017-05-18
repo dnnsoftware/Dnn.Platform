@@ -1,7 +1,6 @@
 ﻿Test,					Scheme,		Page Name,		Test Url,																Expected Url,										Status,		Final Url,									RedirectReason,
 Home,					http://,	Home,			http://{alias}/{defaultPage}?TabId={tabId},								{defaultPage}?TabId={tabId},						301,		http://{alias}/,							Unfriendly_Url_2
 About Us,				http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId},								{defaultPage}?TabId={tabId},						301,		http://{alias}/About-Us,					Unfriendly_Url_2
-Admin,					http://,	Site Settings,	http://{alias}/{defaultPage}?TabId={tabId},								{defaultPage}?TabId={tabId},						301,		http://{alias}/Admin/Site-Settings,			Unfriendly_Url_2
 Profile Messages,		http://,	Messages,		http://{alias}/{defaultPage}?TabId={tabId},								{defaultPage}?TabId={tabId},						301,		http://{alias}/Activity-Feed/Messages,		Unfriendly_Url_2
 Terms,					http://,	Home,			http://{alias}/{defaultPage}?TabId={tabId}&ctl=Terms,					{defaultPage}?TabId={tabId}&ctl=Terms,				301,		http://{alias}/Terms,						Unfriendly_Url_2
 Login,					http://,	About Us,		http://{alias}/{defaultPage}?TabId={tabId}&ctl=Login,					{defaultPage}?TabId={tabId}&ctl=Login,				301,		http://{alias}/Login,						Unfriendly_Url_2

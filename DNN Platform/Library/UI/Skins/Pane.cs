@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -469,7 +469,7 @@ namespace DotNetNuke.UI.Skins
 
             try
             {
-                if (!Globals.IsAdminControl() && PortalSettings.InjectModuleHyperLink)
+                if (!Globals.IsAdminControl() && (PortalSettings.InjectModuleHyperLink || PortalSettings.UserMode != PortalSettings.Mode.View))
                 {
                     _containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
                 }

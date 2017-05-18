@@ -96,7 +96,7 @@ namespace log4net.Filter
 		/// <para>
 		/// This filter will attempt to match this value against logger name in
 		/// the following way. The match will be done against the beginning of the
-		/// logger name (using <see cref="String.StartsWith(string)"/>). The match is
+		/// logger name (using <see cref="M:String.StartsWith(string)"/>). The match is
 		/// case sensitive. If a match is found then
 		/// the result depends on the value of <see cref="AcceptOnMatch"/>.
 		/// </para>
@@ -120,7 +120,7 @@ namespace log4net.Filter
 		/// <para>
 		/// The rendered message is matched against the <see cref="LoggerToMatch"/>.
 		/// If the <see cref="LoggerToMatch"/> equals the beginning of 
-		/// the incoming <see cref="LoggingEvent.LoggerName"/> (<see cref="String.StartsWith(string)"/>)
+		/// the incoming <see cref="LoggingEvent.LoggerName"/> (<see cref="M:String.StartsWith(string)"/>)
 		/// then a match will have occurred. If no match occurs
 		/// this function will return <see cref="FilterDecision.Neutral"/>
 		/// allowing other filters to check the event. If a match occurs then

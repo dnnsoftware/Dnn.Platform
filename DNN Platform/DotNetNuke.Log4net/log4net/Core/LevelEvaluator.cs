@@ -29,7 +29,7 @@ namespace log4net.Core
 	/// <remarks>
 	/// <para>
 	/// This evaluator will trigger if the level of the event
-	/// passed to <see cref="IsTriggeringEvent(LoggingEvent)"/>
+	/// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
 	/// is equal to or greater than the <see cref="Threshold"/>
 	/// level.
 	/// </para>
@@ -51,7 +51,7 @@ namespace log4net.Core
 		/// </para>
 		/// <para>
 		/// This evaluator will trigger if the level of the event
-		/// passed to <see cref="IsTriggeringEvent(LoggingEvent)"/>
+		/// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
 		/// is equal to or greater than the <see cref="Threshold"/>
 		/// level.
 		/// </para>
@@ -70,7 +70,7 @@ namespace log4net.Core
 		/// </para>
 		/// <para>
 		/// This evaluator will trigger if the level of the event
-		/// passed to <see cref="IsTriggeringEvent(LoggingEvent)"/>
+		/// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
 		/// is equal to or greater than the <see cref="Threshold"/>
 		/// level.
 		/// </para>
@@ -94,7 +94,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// This evaluator will trigger if the level of the event
-		/// passed to <see cref="IsTriggeringEvent(LoggingEvent)"/>
+		/// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
 		/// is equal to or greater than the <see cref="Threshold"/>
 		/// level.
 		/// </para>
@@ -115,7 +115,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// This evaluator will trigger if the level of the event
-		/// passed to <see cref="IsTriggeringEvent(LoggingEvent)"/>
+		/// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
 		/// is equal to or greater than the <see cref="Threshold"/>
 		/// level.
 		/// </para>

@@ -1,5 +1,5 @@
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,45 +18,39 @@
 
 using System;
 using System.Net.Http;
+using System.Web.Http.Controllers;
 
 namespace DotNetNuke.Web.Api.Internal
 {
-// ReSharper disable InconsistentNaming
     public class IFrameSupportedValidateAntiForgeryTokenAttribute : ValidateAntiForgeryTokenAttribute
-// ReSharper restore InconsistentNaming
     {
-        public override bool IsAuthorized(AuthFilterContext context)
+        protected override Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
         {
-            if (base.IsAuthorized(context)) return true;
-            context.AuthFailureMessage = null;
+            var result = base.IsAuthorized(actionContext);
+            if (result.Item1) return SuccessResult;
 
             try
             {
-                var queryString = context.ActionContext.Request.GetQueryNameValuePairs();
+                var queryString = actionContext.Request.GetQueryNameValuePairs();
                 var token = string.Empty;
-                foreach(var kvp in queryString)
+                foreach (var kvp in queryString)
                 {
-                    if (kvp.Key == "__RequestVerificationToken"){
+                    if (kvp.Key == "__RequestVerificationToken")
+                    {
                         token = kvp.Value;
                         break;
                     }
                 }
-                string cookieValue = GetAntiForgeryCookieValue(context);
+                var cookieValue = GetAntiForgeryCookieValue(actionContext);
 
-                AntiForgery.Instance.Validate(cookieValue, token );
+                AntiForgery.Instance.Validate(cookieValue, token);
             }
             catch (Exception e)
             {
-                context.AuthFailureMessage = e.Message;
-                return false;
+                return new Tuple<bool, string>(false, e.Message);
             }
 
-            return true;
-        }
-
-        public override bool AllowMultiple
-        {
-            get { return false; }
+            return SuccessResult;
         }
     }
 }

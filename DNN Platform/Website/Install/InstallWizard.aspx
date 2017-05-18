@@ -1,9 +1,9 @@
 <%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.InstallWizard" CodeFile="InstallWizard.aspx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head runat="server">
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
@@ -36,7 +36,7 @@
     <br/>
     <img src="../images/Branding/DNN_logo.png" alt="DotNetNuke" />
 
-    <div id="languageFlags" style="float: right;">
+    <div id="languageFlags" runat="server" clientidmode="Static" style="float: right;">
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" title="Deutsch (Deutschland)" OnClientClick="installWizard.changePageLocale('lang_de_DE','de-DE');" CausesValidation="false"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton>
@@ -125,11 +125,11 @@
                             <asp:RequiredFieldValidator ID="valWebsiteName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="WebsiteName.Required" Display="Dynamic" ControlToValidate="txtWebsiteName"  />
                         </div>
                         <div class="dnnFormItem">
-                            <dnn:Label ID="lblTemplate" runat="server" ControlName="ddlTemplate" ResourceKey="WebsiteTemplate" />
+                            <dnn:Label ID="lblTemplate" runat="server" ControlName="templateList" ResourceKey="WebsiteTemplate" />
                             <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
-                        <div class="dnnFormItem">
-                            <dnn:Label ID="lblLanguage" runat="server" ControlName="ddlLanguage" ResourceKey="Language" />
+                        <div id="languagesRow" runat="server" class="dnnFormItem">
+                            <dnn:Label ID="lblLanguage" runat="server" ControlName="languageList" ResourceKey="Language" />
                             <dnn:DnnComboBox ID="languageList" runat="server" DataTextField="Text" DataValueField="Code">
                             </dnn:DnnComboBox>
                             <br/>
@@ -151,7 +151,7 @@
                             </asp:RadioButtonList>
                         </div>
                         <div id="StandardDatabaseMsg" class="dnnFormItem">
-                            <dnn:Label ID="lblStandardDatabase" runat="server"/>
+                            <div class="dnnLabel"></div>
                             <asp:Label ID="lblStandardDatabaseMsg" runat="server" CssClass="dnnFormMessage" ResourceKey="StandardDatabaseMsg" />
                         </div>
                         <div id="advancedDatabase" class="dnnFormItem" style="display:none">
@@ -222,12 +222,12 @@
                 <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
                     <div class="dnnFormItem">
-                        <dnn:Label ID="Label2" runat="server"/>
+                        <div class="dnnLabel"></div>
                         <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
                     </div>
                     <div class="dnnFormItem information-checkbox">
                         <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" CssClass="dnnLabel"/>
-                        <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
+                        <asp:Label id="lblImprovementProgram" AssociatedControlID="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                     </div>
                 </div>
                 <hr/>
@@ -262,9 +262,9 @@
                             <p class="step-notstarted" id="SuperUserCreation"><span class="states-icons"></span><%= LocalizeString("SuperUserCreation") %></p>
                             <p class="step-notstarted" id="LicenseActivation" runat="server"><span class="states-icons"></span><%= LocalizeString("LicenseActivation") %></p>
                         </div>
-                        <div id="banners">
+                        <div id="banners" runat="server" clientidmode="Static">
                             <a id="bannerLink" runat="server" href="" target="">
-                                <img id="bannerImage" runat="server" class="banner" src="../images/branding/DNN_logo.png" alt="" onerror="installWizard.bannerError(this);" />
+                                <img id="bannerImage" runat="server" class="banner" src="../images/branding/DNN_logo.png" alt="DotNetNuke" onerror="installWizard.bannerError(this);" />
                             </a>
                         </div>
                     </div>
@@ -553,6 +553,7 @@
             $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '';
         }
 
+        <% if (DisplayBanners) { %>
         // Banner Rotator
         jQuery(document).ready(function ($) {
             if (installWizard.online) {
@@ -580,7 +581,7 @@
                 }, 5000);
             }
         });
-
+        <% }  %>
         /*globals jQuery, window, Sys */
         (function ($, Sys) {
             $(function () {
@@ -665,8 +666,8 @@
                             confirmPassword: $('#<%= txtConfirmPassword.ClientID %>')[0].value,
                             email: $('#<%= txtEmail.ClientID %>')[0].value,
                             websiteName: $('#<%= txtWebsiteName.ClientID %>')[0].value,
-                            template: $find('<%= templateList.ClientID %>').get_value(),
-                            language: $find('<%= languageList.ClientID %>').get_value(),
+                            template: $('#<%= templateList.ClientID %>').val(),
+                            language: $('#<%= languageList.ClientID %>').val(),
                             databaseSetup: $('#<%= databaseSetupType.ClientID %> input:checked').val(),
                             threadCulture: $("#PageLocale")[0].value,
                             databaseServerName: "",

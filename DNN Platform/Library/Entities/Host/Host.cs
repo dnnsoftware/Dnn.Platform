@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1624,6 +1624,7 @@ namespace DotNetNuke.Entities.Host
 		/// <remarks>
 		///   Defaults to False
 		/// </remarks>
+		[Obsolete("Not used anymore")]
 		public static bool EnableTelerikCdn
 		{
 			get
@@ -1632,10 +1633,11 @@ namespace DotNetNuke.Entities.Host
 			}
 		}
 
-		/// <summary>
-		/// Get Telerik CDN Basic Path.
-		/// </summary>
-	    public static string TelerikCdnBasicUrl
+        /// <summary>
+        /// Get Telerik CDN Basic Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnBasicUrl
 	    {
 			get
 			{
@@ -1643,10 +1645,11 @@ namespace DotNetNuke.Entities.Host
 			}
 	    }
 
-		/// <summary>
-		/// Get Telerik CDN Secure Path.
-		/// </summary>
-		public static string TelerikCdnSecureUrl
+        /// <summary>
+        /// Get Telerik CDN Secure Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnSecureUrl
 		{
 			get
 			{

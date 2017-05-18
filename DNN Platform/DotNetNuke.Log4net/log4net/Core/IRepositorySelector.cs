@@ -128,7 +128,7 @@ namespace log4net.Core
 		/// <returns>The named <see cref="ILoggerRepository"/></returns>
 		/// <remarks>
 		/// Lookup a named <see cref="ILoggerRepository"/>. This is the repository created by
-		/// calling <see cref="CreateRepository(string,Type)"/>.
+		/// calling <see cref="M:CreateRepository(string,Type)"/>.
 		/// </remarks>
 		ILoggerRepository GetRepository(string repositoryName);
 
@@ -141,7 +141,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the domain
-		/// specified such that a call to <see cref="GetRepository(Assembly)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(Assembly)"/> with the
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// <para>
@@ -161,7 +161,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the name
-		/// specified such that a call to <see cref="GetRepository(string)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(string)"/> with the
 		/// same name will return the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -174,8 +174,8 @@ namespace log4net.Core
 		/// <returns><c>true</c> if the repository exists</returns>
 		/// <remarks>
 		/// <para>
-		/// Test if a named repository exists. Use <see cref="CreateRepository(Assembly, Type)"/>
-		/// to create a new repository and <see cref="GetRepository(Assembly)"/> to retrieve 
+		/// Test if a named repository exists. Use <see cref="M:CreateRepository(Assembly, Type)"/>
+		/// to create a new repository and <see cref="M:GetRepository(Assembly)"/> to retrieve 
 		/// a repository.
 		/// </para>
 		/// </remarks>

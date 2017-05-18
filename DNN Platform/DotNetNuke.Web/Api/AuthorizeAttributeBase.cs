@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -71,8 +71,7 @@ namespace DotNetNuke.Web.Api
         {
             return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
                    || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                         && !actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>()
-                                .Any(t => !(t is SupportedModulesAttribute) && !(t is ValidateAntiForgeryTokenAttribute)));
+                         && actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>().All(t => t is SupportedModulesAttribute));
         }
     }
 }

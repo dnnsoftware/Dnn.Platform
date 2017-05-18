@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -401,7 +401,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static FileUploadDto UploadFile(
                 Stream stream,
-                PortalSettings portalSettings,
+                int portalId,
                 UserInfo userInfo,
                 string folder,
                 string filter,
@@ -426,7 +426,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 var folderManager = FolderManager.Instance;
 
-                var effectivePortalId = isHostPortal ? Null.NullInteger : portalSettings.PortalId;
+                var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;
 
                 // Check if this is a User Folder                
                 int userId;
@@ -440,8 +440,8 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                if (!FolderPermissionController.HasFolderPermission(portalSettings.PortalId, folder, "WRITE")
-                    && !FolderPermissionController.HasFolderPermission(portalSettings.PortalId, folder, "ADD"))
+                if (!FolderPermissionController.HasFolderPermission(portalId, folder, "WRITE")
+                    && !FolderPermissionController.HasFolderPermission(portalId, folder, "ADD"))
                 {
                     result.Message = GetLocalizedString("NoPermission");
                     return result;
@@ -552,7 +552,7 @@ namespace DotNetNuke.Web.InternalServices
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
-            var portalSettings = PortalSettings;
+            var portalId = PortalSettings.PortalId;
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
@@ -591,6 +591,13 @@ namespace DotNetNuke.Web.InternalServices
                                 bool.TryParse(item.ReadAsStringAsync().Result, out extract);
                                 break;
 
+                            case "\"PORTALID\"":
+                                if (userInfo.IsSuperUser)
+                                {
+                                    int.TryParse(item.ReadAsStringAsync().Result, out portalId);
+                                }
+                                break;
+
                             case "\"POSTFILE\"":
                                 fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
                                 if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
@@ -611,7 +618,7 @@ namespace DotNetNuke.Web.InternalServices
                         currentSynchronizationContext.Send(
                             delegate
                             {
-                                result = UploadFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract);
+                                result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract);
                             },
                             null
                         );
@@ -667,7 +674,10 @@ namespace DotNetNuke.Web.InternalServices
 	            {
 		            fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
 	            }
-	            result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
+
+                var portalId = PortalSettings.PortalId;
+
+	            result = UploadFile(responseStream, portalId, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
                 /* Response Content Type cannot be application/json 

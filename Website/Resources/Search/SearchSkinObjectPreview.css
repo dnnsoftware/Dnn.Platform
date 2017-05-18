@@ -3,6 +3,7 @@
     margin: 0 -3px 0 0;
     position: relative;
 }
+
     .searchInputContainer > input[type="text"]::-ms-clear {
         display: none;
     }

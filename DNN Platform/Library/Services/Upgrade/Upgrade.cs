@@ -2,7 +2,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -4150,18 +4150,17 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
             }
 
+            string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
             try
             {
-                string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
-
                 if (File.Exists(listFile))
                 {
-                    exceptions = FileSystemUtils.DeleteFiles(FileSystemUtils.ReadFile(listFile).Split('\r', '\n'));
+                    exceptions = FileSystemUtils.DeleteFiles(File.ReadAllLines(listFile));
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.Error("Error cleanup file " + listFile, ex);
 
                 exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
                 // log the results
@@ -5326,6 +5325,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "7.4.2":
                             UpgradeToVersion742();
                             break;
+                        case "9.1.0":
+                            UpgradeToVersion910();
+                            break;
                     }
                 }
                 else
@@ -5462,6 +5464,60 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//DynamicContentTypeManager");
             UninstallPackage("Dnn.DynamicContentManager", "Module");
             UninstallPackage("Dnn.DynamicContentViewer", "Module");
+        }
+
+        private static void UpgradeToVersion910()
+        {
+            RemoveHostPage("Host Settings");
+            RemoveHostPage("Site Management");
+            RemoveHostPage("Schedule");
+            RemoveHostPage("Superuser Accounts");
+            RemoveHostPage("Extensions");
+            RemoveHostPage("Device Detection Management");
+
+            RemoveAdminPages("//Admin//Extensions");
+            RemoveAdminPages("//Admin//SiteSettings");
+            RemoveAdminPages("//Admin//SecurityRoles");
+            RemoveAdminPages("//Admin//Taxonomy");
+            RemoveAdminPages("//Admin//SiteRedirectionManagement");
+            RemoveAdminPages("//Admin//DevicePreviewManagement");
+            RemoveAdminPages("//Admin//SearchAdmin");
+
+            // Normal Modules
+            UninstallPackage("DotNetNuke.MobileManagement", "Module");
+            UninstallPackage("DotNetNuke.Modules.PreviewProfileManagement", "Module");
+
+            UninstallPackage("DotNetNuke.Dashboard.WebServer", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Database", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Host", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Portals", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Modules", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Skins", "DashboardControl");
+
+            // Admin Modules
+            UninstallPackage("DotNetNuke.HostSettings", "Module");
+            UninstallPackage("DotNetNuke.Languages", "Module");
+            UninstallPackage("DotNetNuke.Lists", "Module");
+            UninstallPackage("DotNetNuke.LogViewer", "Module");
+            UninstallPackage("DotNetNuke.RecycleBin", "Module");
+            UninstallPackage("DotNetNuke.Sitemap", "Module");
+            UninstallPackage("DotNetNuke.SiteWizard", "Module");
+            UninstallPackage("Dnn.Themes", "Module"); // aka. Skin Management
+            UninstallPackage("DotNetNuke.Tabs", "Module");
+
+            // at last remove "/Admin" / "/Host" pages
+            UninstallPackage("DotNetNuke.Console", "Module");
+            UninstallPackage("DotNetNuke.Portals", "Module");
+            UninstallPackage("DotNetNuke.Scheduler", "Module");
+            UninstallPackage("DotNetNuke.SearchAdmin", "Module");
+            UninstallPackage("DotNetNuke.SQL", "Module");
+            UninstallPackage("DotNetNuke.Extensions", "Module");
+            UninstallPackage("DotNetNuke.Configuration Manager", "Module");
+            UninstallPackage("DotNetNuke.Dashboard", "Module");
+            UninstallPackage("DotNetNuke.Google Analytics", "Module");
+            UninstallPackage("DotNetNuke.Taxonomy", "Module");
+
+            UninstallPackage("UrlManagement", "Library");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,7 +58,9 @@ namespace DotNetNuke.Entities.Modules
     /// </remarks>
     public class PortalModuleBase : UserControlBase, IModuleControl
     {
-        protected static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled);
+        protected static readonly Regex FileInfoRegex = new Regex(
+            @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private string _localResourceFile;

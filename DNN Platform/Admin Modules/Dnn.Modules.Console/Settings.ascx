@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="Dnn.Modules.Console.Settings" Codebehind="Settings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <div class="dnnForm dnnConsole dnnClear">
 	<div class="dnnFormItem">
 		<dnn:label id="Label1" runat="server" ControlName="ParentTab" ResourceKey="Mode" Suffix=":" />
@@ -12,9 +12,9 @@
 		</asp:DropDownList>--%>
         <dnn:DnnComboBox ID="modeList" runat="server" AutoPostBack="true">
             <Items>
-                <dnn:DnnComboBoxItem Value="Normal" Text="Normal" ResourceKey="Normal" />
-                <dnn:DnnComboBoxItem Value="Profile" Text="Profile" ResourceKey="Profile" />
-                <dnn:DnnComboBoxItem Value="Group" Text="Group" ResourceKey="Group" />
+                <asp:ListItem Value="Normal" Text="Normal" ResourceKey="Normal" />
+                <asp:ListItem Value="Profile" Text="Profile" ResourceKey="Profile" />
+                <asp:ListItem Value="Group" Text="Group" ResourceKey="Group" />
             </Items>
         </dnn:DnnComboBox>
 	</div>

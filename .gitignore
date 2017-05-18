@@ -88,6 +88,7 @@ DNN [Pp]latform/[Cc]ontrols/[Cc]ountry[Ll]ist[Bb]ox/[Bb]in/*
 DNN [Pp]latform/*/[Bb]in
 DNN [Pp]latform/Tests/*/[Bb]in/*
 DNN [Pp]latform/Modules/*/[Bb]in/*
+DNN [Pp]latform/Skins/*/[Bb]in/*
 DNN [Pp]latform/Admin Modules/*/[Bb]in/*
 DNN [Pp]latform/MVC Modules/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/[Bb]in/*
@@ -242,3 +243,4 @@ DNN Platform/Dnn.AuthServices.Jwt/Package/
 Website/Portals/_default/Install/Dnn.CKEditorDefaultSettings.xml
 Website/Portals/_default/Install/Dnn.CKToolbarButtons.xml
 Website/Portals/_default/Install/Dnn.CKToolbarSets.xml
+Website/DesktopModules/Admin/SiteExportImport/App_LocalResources/ExportImport.resx

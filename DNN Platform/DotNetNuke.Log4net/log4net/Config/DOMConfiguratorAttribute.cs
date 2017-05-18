@@ -43,7 +43,7 @@ namespace log4net.Config
 	/// </para>
 	/// <para>
 	/// Use this attribute to configure the <see cref="XmlConfigurator"/>
-	/// without calling one of the <see cref="XmlConfigurator.Configure()"/>
+	/// without calling one of the <see cref="M:XmlConfigurator.Configure()"/>
 	/// methods.
 	/// </para>
 	/// </remarks>

@@ -11,14 +11,5 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class LeftMenu {
-        
-        /// <summary>
-        /// LeftMenu1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder LeftMenu1;
     }
 }

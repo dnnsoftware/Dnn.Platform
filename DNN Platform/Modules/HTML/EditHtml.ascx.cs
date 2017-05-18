@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -443,9 +443,9 @@ namespace DotNetNuke.Modules.Html
             cmdMasterContent.Click += OnMasterContentClick;
             ddlRender.SelectedIndexChanged += OnRenderSelectedIndexChanged;
             cmdSave.Click += OnSaveClick;
-            dgHistory.ItemDataBound += OnHistoryGridItemDataBound;
-            dgVersions.ItemCommand += OnVersionsGridItemCommand;
-            dgVersions.ItemDataBound += OnVersionsGridItemDataBound;
+            dgHistory.RowDataBound += OnHistoryGridItemDataBound;
+            dgVersions.RowCommand += OnVersionsGridItemCommand;
+            dgVersions.RowDataBound += OnVersionsGridItemDataBound;
             dgVersions.PageIndexChanged += OnVersionsGridPageIndexChanged;
         }
 
@@ -646,11 +646,11 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        protected void OnHistoryGridItemDataBound(object sender, GridItemEventArgs e)
+        protected void OnHistoryGridItemDataBound(object sender, GridViewRowEventArgs e)
         {
-            var item = e.Item;
+            var item = e.Row;
 
-            if (item.ItemType == GridItemType.Item || item.ItemType == GridItemType.AlternatingItem || item.ItemType == GridItemType.SelectedItem)
+            if (item.RowType == DataControlRowType.DataRow)
             {
                 //Localize columns
                 item.Cells[2].Text = Localization.GetString(item.Cells[2].Text, LocalResourceFile);
@@ -658,7 +658,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        protected void OnVersionsGridItemCommand(object source, GridCommandEventArgs e)
+        protected void OnVersionsGridItemCommand(object source, GridViewCommandEventArgs e)
         {
             try
             {
@@ -708,17 +708,16 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        private HtmlTextInfo GetHTMLContent(GridCommandEventArgs e)
+        private HtmlTextInfo GetHTMLContent(GridViewCommandEventArgs e)
         {
             return _htmlTextController.GetHtmlText(ModuleId, int.Parse(e.CommandArgument.ToString()));
         }
 
-        protected void OnVersionsGridItemDataBound(object sender, GridItemEventArgs e)
+        protected void OnVersionsGridItemDataBound(object sender, GridViewRowEventArgs e)
         {
-            if ((e.Item.ItemType == GridItemType.Item || e.Item.ItemType == GridItemType.AlternatingItem || e.Item.ItemType == GridItemType.SelectedItem))
+            if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var item = e.Item as GridDataItem;
-                var htmlContent = item.DataItem as HtmlTextInfo;
+                var htmlContent = e.Row.DataItem as HtmlTextInfo;
                 var createdBy = "Default";
 
                 if ((htmlContent.CreatedByUserID != -1))
@@ -730,7 +729,7 @@ namespace DotNetNuke.Modules.Html
                     }                    
                 }
 
-                foreach (TableCell cell in item.Cells)
+                foreach (TableCell cell in e.Row.Cells)
                 {
                     foreach (Control cellControl in cell.Controls)
                     {
@@ -744,7 +743,7 @@ namespace DotNetNuke.Modules.Html
                                     //hide rollback for the first item
                                     if (dgVersions.CurrentPageIndex == 0)
                                     {
-                                        if ((item.ItemIndex == 0))
+                                        if ((e.Row.RowIndex == 0))
                                         {
                                             imageButton.Visible = false;
                                             break;
@@ -777,7 +776,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        protected void OnVersionsGridPageIndexChanged(object source, GridPageChangedEventArgs e)
+        protected void OnVersionsGridPageIndexChanged(object source, EventArgs e)
         {
             DisplayVersions();
         }

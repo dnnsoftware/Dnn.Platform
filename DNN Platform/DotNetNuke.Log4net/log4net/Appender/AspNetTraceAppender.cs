@@ -45,8 +45,8 @@ namespace log4net.Appender
 	/// whether tracing is displayed to a page, to the trace viewer, or both.
 	/// </para>
 	/// <para>
-	/// The logging event is passed to the <see cref="TraceContext.Write(string)"/> or 
-	/// <see cref="TraceContext.Warn(string)"/> method depending on the level of the logging event.
+	/// The logging event is passed to the <see cref="M:TraceContext.Write(string)"/> or 
+	/// <see cref="M:TraceContext.Warn(string)"/> method depending on the level of the logging event.
     /// The event's logger name is the default value for the category parameter of the Write/Warn method. 
 	/// </para>
 	/// </remarks>

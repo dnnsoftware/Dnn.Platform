@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -486,7 +486,7 @@ namespace DotNetNuke.Common
             {
                 if (_installMapPath == null)
                 {
-                    _installMapPath = HttpContext.Current.Server.MapPath(InstallPath);
+                    _installMapPath = ApplicationMapPath + "\\Install\\";
                 }
                 return _installMapPath;
             }
@@ -1911,8 +1911,13 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
-            return PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit &&
-                TabPermissionController.CanAddContentToPage();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (portalSettings == null)
+            {
+                return false;
+            }
+
+            return portalSettings.UserMode == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
@@ -2524,7 +2529,9 @@ namespace DotNetNuke.Common
                 else
                 {
                     //redirect to access denied page with custom message
-                    strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + HttpUtility.UrlEncode(Message));
+                    var messageGuid = DataProvider.Instance().AddRedirectMessage(
+                        _portalSettings.UserId, _portalSettings.ActiveTab.TabID, Message).ToString("N");
+                    strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + messageGuid);
                 }
             }
             else

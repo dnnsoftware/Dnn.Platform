@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -963,15 +963,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					var parameters = new string[3];
 					if (!string.IsNullOrEmpty(Request.QueryString["returnUrl"]))
 					{
-						parameters[0] = "returnUrl=" + Request.QueryString["returnUrl"];
+						parameters[0] = "returnUrl=" + HttpUtility.UrlEncode(Request.QueryString["returnUrl"]);
 					}
 					if (!string.IsNullOrEmpty(Request.QueryString["username"]))
 					{
-						parameters[1] = "username=" + Request.QueryString["username"];
+						parameters[1] = "username=" + HttpUtility.UrlEncode(Request.QueryString["username"]);
 					}
 					if (!string.IsNullOrEmpty(Request.QueryString["verificationcode"]))
 					{
-						parameters[2] = "verificationcode=" + Request.QueryString["verificationcode"];
+						parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(Request.QueryString["verificationcode"]);
 					}
 					Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId, "", parameters));
 				}

@@ -1,5 +1,5 @@
 DotNetNuke - http://www.dotnetnuke.com<br/>
-Copyright (c) 2002-2016<br/>
+Copyright (c) 2002-2017<br/>
 by DotNetNuke Corporation
 <br/><br/>
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 

@@ -37,7 +37,7 @@ namespace log4net.Appender
 	/// the underlying database in one go.
 	/// </para>
 	/// <para>
-	/// Subclasses should override the <see cref="SendBuffer(LoggingEvent[])"/>
+	/// Subclasses should override the <see cref="M:SendBuffer(LoggingEvent[])"/>
 	/// method to deliver the buffered events.
 	/// </para>
 	/// <para>The BufferingAppenderSkeleton maintains a fixed size cyclic 
@@ -47,14 +47,14 @@ namespace log4net.Appender
 	/// <para>A <see cref="ITriggeringEventEvaluator"/> is used to inspect 
 	/// each event as it arrives in the appender. If the <see cref="Evaluator"/> 
 	/// triggers, then the current buffer is sent immediately 
-	/// (see <see cref="SendBuffer(LoggingEvent[])"/>). Otherwise the event 
+	/// (see <see cref="M:SendBuffer(LoggingEvent[])"/>). Otherwise the event 
 	/// is stored in the buffer. For example, an evaluator can be used to 
 	/// deliver the events immediately when an ERROR event arrives.
 	/// </para>
 	/// <para>
 	/// The buffering appender can be configured in a <see cref="Lossy"/> mode. 
 	/// By default the appender is NOT lossy. When the buffer is full all 
-	/// the buffered events are sent with <see cref="SendBuffer(LoggingEvent[])"/>.
+	/// the buffered events are sent with <see cref="M:SendBuffer(LoggingEvent[])"/>.
 	/// If the <see cref="Lossy"/> property is set to <c>true</c> then the 
 	/// buffer will not be sent when it is full, and new events arriving 
 	/// in the appender will overwrite the oldest event in the buffer. 
@@ -68,7 +68,7 @@ namespace log4net.Appender
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-	public abstract class BufferingAppenderSkeleton : AppenderSkeleton
+    public abstract class BufferingAppenderSkeleton : AppenderSkeleton
 	{
 		#region Protected Instance Constructors
 
@@ -173,7 +173,7 @@ namespace log4net.Appender
 		/// <para>
 		/// The evaluator will be called for each event that is appended to this 
 		/// appender. If the evaluator triggers then the current buffer will 
-		/// immediately be sent (see <see cref="SendBuffer(LoggingEvent[])"/>).
+		/// immediately be sent (see <see cref="M:SendBuffer(LoggingEvent[])"/>).
 		/// </para>
 		/// <para>If <see cref="Lossy"/> is set to <c>true</c> then an
 		/// <see cref="Evaluator"/> must be specified.</para>
@@ -194,7 +194,7 @@ namespace log4net.Appender
 		/// <para>
 		/// The evaluator will be called for each event that is discarded from this 
 		/// appender. If the evaluator triggers then the current buffer will immediately 
-		/// be sent (see <see cref="SendBuffer(LoggingEvent[])"/>).
+		/// be sent (see <see cref="M:SendBuffer(LoggingEvent[])"/>).
 		/// </para>
 		/// </remarks>
 		public ITriggeringEventEvaluator LossyEvaluator
@@ -217,7 +217,7 @@ namespace log4net.Appender
 		/// event data to be fixed and serialized. This will improve performance.
 		/// </para>
 		/// <para>
-		/// See <see cref="LoggingEvent.FixVolatileData(FixFlags)"/> for more information.
+		/// See <see cref="M:LoggingEvent.FixVolatileData(FixFlags)"/> for more information.
 		/// </para>
 		/// </remarks>
 		[Obsolete("Use Fix property")]
@@ -260,6 +260,17 @@ namespace log4net.Appender
 		#endregion Public Instance Properties
 
 		#region Public Methods
+
+        /// <summary>
+        /// Flushes any buffered log data.
+        /// </summary>
+        /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
+        /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+        public override bool Flush(int millisecondsTimeout)
+        {
+            Flush();
+            return true;
+        }
 
 		/// <summary>
 		/// Flush the currently buffered events
@@ -412,7 +423,7 @@ namespace log4net.Appender
 		}
 
 		/// <summary>
-		/// This method is called by the <see cref="AppenderSkeleton.DoAppend(LoggingEvent)"/> method. 
+		/// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method. 
 		/// </summary>
 		/// <param name="loggingEvent">the event to log</param>
 		/// <remarks>
@@ -436,7 +447,7 @@ namespace log4net.Appender
 		/// </list>
 		/// <para>
 		/// Before the event is stored in the buffer it is fixed
-		/// (see <see cref="LoggingEvent.FixVolatileData(FixFlags)"/>) to ensure that
+		/// (see <see cref="M:LoggingEvent.FixVolatileData(FixFlags)"/>) to ensure that
 		/// any data referenced by the event will be valid when the buffer
 		/// is processed.
 		/// </para>
@@ -527,7 +538,7 @@ namespace log4net.Appender
 		/// <param name="buffer">The buffer containing the events that need to be send.</param>
 		/// <remarks>
 		/// <para>
-		/// The subclass must override <see cref="SendBuffer(LoggingEvent[])"/>.
+		/// The subclass must override <see cref="M:SendBuffer(LoggingEvent[])"/>.
 		/// </para>
 		/// </remarks>
 		virtual protected void SendFromBuffer(LoggingEvent firstLoggingEvent, CyclicBuffer buffer)
