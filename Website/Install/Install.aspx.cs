@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Install
                         string strError = Config.UpdateInstallVersion(installVersion);
 
                         //Adding FCN mode to web.config
-                        strError += Config.AddFCNMode(Config.FcnMode.Single);
+                        strError += Config.AddFCNMode(Config.FcnMode.Disabled);
                         if (!string.IsNullOrEmpty(strError))
                         {
                             Logger.Error(strError);
@@ -333,7 +333,7 @@ namespace DotNetNuke.Services.Install
                         string strError = Config.UpdateInstallVersion(installVersion);
 
                         //Adding FCN mode to web.config
-                        strError += Config.AddFCNMode(Config.FcnMode.Single);
+                        strError += Config.AddFCNMode(Config.FcnMode.Disabled);
                         if (!string.IsNullOrEmpty(strError))
                         {
                             Logger.Error(strError);
@@ -534,7 +534,7 @@ namespace DotNetNuke.Services.Install
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Config.AddFCNMode(Config.FcnMode.Single);
+            Config.AddFCNMode(Config.FcnMode.Disabled);
             //Get current Script time-out
             int scriptTimeOut = Server.ScriptTimeout;
 
