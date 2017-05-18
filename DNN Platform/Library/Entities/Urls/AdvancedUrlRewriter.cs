@@ -1845,8 +1845,17 @@ namespace DotNetNuke.Entities.Urls
             {
                 result.Action = ActionType.Redirect301;
                 result.Reason = redirectReason;
-                string destUrl = result.OriginalPath.ToLowerInvariant()
-                    .Replace(wrongAlias.ToLowerInvariant(), rightAlias.ToLowerInvariant());
+                var destUrl = result.OriginalPath;
+                if (result.OriginalPath.Contains(wrongAlias))
+                {
+                    destUrl = result.OriginalPath.Replace(wrongAlias, rightAlias);
+                }
+                else if (result.OriginalPath.ToLowerInvariant().Contains(wrongAlias))
+                {
+
+                    destUrl = result.OriginalPath.ToLowerInvariant().Replace(wrongAlias, rightAlias);
+                }
+
                 if (redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture ||
                     redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture_And_Browser)
                 {
