@@ -22,10 +22,8 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web;
-using System.Web.Hosting;
 using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 
@@ -42,9 +40,6 @@ namespace DotNetNuke.Web.Common.Internal
         private static FileSystemWatcher _binFolderWatcher;
         private static string _binFolder = "";
         private static string _configFileName = "web.config".ToLower();
-
-        [DllImport("webengine4.dll", CharSet = CharSet.Unicode)]
-        private static extern int GrowFileNotificationBuffer(string appId, bool fWatchSubtree);
 
         internal static void InitializeFcnSettings()
         {
@@ -75,24 +70,7 @@ namespace DotNetNuke.Web.Common.Internal
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
                         null, null, null);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
-
-                    if (fcnVal.ToString() == "1" /*Disabled*/)
-                    {
-                        AddSiteFilesMonitors(true);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            AddSiteFilesMonitors(false);
-                            var result = GrowFileNotificationBuffer(HostingEnvironment.ApplicationID, true);
-                            Logger.Trace("Calling GrowFileNotificationBuffer() returned: " + result);
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Trace("Calling GrowFileNotificationBuffer() threw this error: " + e);
-                        }
-                    }
+                    AddSiteFilesMonitors(fcnVal.ToString() == "1" /*Disabled*/);
                 }
             }
             catch (Exception e)
