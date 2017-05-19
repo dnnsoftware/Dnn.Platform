@@ -54,8 +54,8 @@
         }
     }
     .rightPane {
-        padding-left: 30px;
-        padding-right: 30px;
+        padding-left: 20px;
+        padding-right: 10px;
         .dnn-radio-buttons {
             ul {
                 li:first-child {
@@ -74,6 +74,7 @@
             margin-top: 8px;
         }
         label {
+            padding: 0px 24px 0 24px;
             margin-bottom: 10px;
         }
     }
@@ -126,6 +127,14 @@
 
 .dnn-servers-tab-panel .dnn-servers-info-panel-big {
     &.logsTab {
+        .log-file-display {
+            height:500px;
+            padding-right: 50px;
+        }
+
+        .track-horizontal {
+            display:none;
+        }
         .dnn-label {
             width: auto;
             margin-top: 8px;
@@ -138,6 +147,7 @@
         }
         .dnn-ui-common-multi-line-input {
             height: 400px;
+            overflow-y:hidden;
         }
         .dnn-dropdown {
             width: 70%;
