@@ -34,5 +34,8 @@
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "react-custom-scrollbars": "^4.1.1"
   }
 }
