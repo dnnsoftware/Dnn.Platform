@@ -36,10 +36,8 @@ namespace DotNetNuke.Web.Common.Internal
         private static Timer _shutDownDelayTimer;
         private static bool _handleShutdowns;
         private static bool _shutdownInprogress;
-        private static FileSystemWatcher _configWatcher;
         private static FileSystemWatcher _binFolderWatcher;
         private static string _binFolder = "";
-        private static string _configFileName = "web.config".ToLower();
 
         internal static void InitializeFcnSettings()
         {
@@ -81,11 +79,11 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void AddSiteFilesMonitors(bool handleShutdowns)
         {
-            if (_configWatcher == null)
+            if (_binFolderWatcher == null)
             {
                 lock (typeof(Initialize))
                 {
-                    if (_configWatcher == null)
+                    if (_binFolderWatcher == null)
                     {
                         try
                         {
@@ -102,32 +100,15 @@ namespace DotNetNuke.Web.Common.Internal
                                 IncludeSubdirectories = true,
                             };
 
-                            _configWatcher = new FileSystemWatcher
-                            {
-                                Filter = _configFileName,
-                                Path = Globals.ApplicationMapPath,
-                                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName,
-                                IncludeSubdirectories = false,
-                            };
-
                             _binFolderWatcher.Created += WatcherOnCreated;
                             _binFolderWatcher.Deleted += WatcherOnDeleted;
                             _binFolderWatcher.Renamed += WatcherOnRenamed;
                             _binFolderWatcher.Changed += WatcherOnChanged;
                             _binFolderWatcher.Error += WatcherOnError;
 
-                            // no need for all events; just the changed
-                            //_configWatcher.Created += WatcherOnCreated;
-                            //_configWatcher.Deleted += WatcherOnDeleted;
-                            //_configWatcher.Renamed += WatcherOnRenamed;
-                            _configWatcher.Changed += WatcherOnChanged;
-                            //_configWatcher.Error += WatcherOnError;
-
                             // begin watching;
-                            _configWatcher.EnableRaisingEvents = true;
                             _binFolderWatcher.EnableRaisingEvents = true;
                             Logger.Trace("Added watcher for: " + _binFolderWatcher.Path + "\\" + _binFolderWatcher.Filter);
-                            Logger.Trace("Added watcher for: " + _configWatcher.Path + "\\" + _configWatcher.Filter);
                         }
                         catch (Exception ex)
                         {
@@ -168,9 +149,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (
-                    (e.FullPath ?? "").ToLower().StartsWith(_binFolder) ||
-                    (e.FullPath ?? "").ToLower().EndsWith(_configFileName)))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLower().StartsWith(_binFolder))
             {
                 ShceduleShutdown();
             }
