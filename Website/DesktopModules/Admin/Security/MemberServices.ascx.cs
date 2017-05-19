@@ -414,6 +414,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
 					//Localize the Headers
                     Localization.LocalizeDataGrid(ref grdServices, LocalResourceFile);
+                    DataBind();
                 }
             }
             catch (Exception exc) //Module failed to load
