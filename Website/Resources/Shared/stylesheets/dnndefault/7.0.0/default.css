@@ -2300,6 +2300,12 @@ ul.dnnButtonGroup {
 	z-index: 100000;
 }
     /* Popup header */
+    .dnnFormPopup, .dnnFormPopup > * {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
     .dnnFormPopup .ui-dialog-titlebar {
         position: relative;
         padding: 0 0 18px 0;
