@@ -84,6 +84,10 @@ namespace Dnn.PersonaBar.Vocabularies.Components
 
         public void UpdateVocabulary(Vocabulary vocabulary)
         {
+            if (vocabulary.ScopeType.ScopeType == Constants.VocabularyScopeTypeWebsite)
+            {
+                vocabulary.ScopeId = PortalSettings.Current.PortalId;
+            }
             var result = _validator.ValidateObject(vocabulary);
             if (result.IsValid)
             {

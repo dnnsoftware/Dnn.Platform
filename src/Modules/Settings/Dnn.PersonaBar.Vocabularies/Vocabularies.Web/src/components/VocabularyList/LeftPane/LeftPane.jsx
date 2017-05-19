@@ -13,6 +13,12 @@ class LeftPane extends Component {
         const {props} = this;
         props.onEnter(key, value, props.index);
     }
+
+    canEdit(){
+        const {props} = this;
+        return util.isHost() || (props.scopeType == "Portal" && util.canEdit());
+    }
+
     render() {
         const {props} = this;
         return (
@@ -22,7 +28,7 @@ class LeftPane extends Component {
                     value={props.description}
                     onEnter={this.onEnter.bind(this, "Description") }
                     inputType="textArea"
-                    editable={util.settings.isHost}
+                    editable={this.canEdit()}
                     helpText={LocalizedResources.get("EditFieldHelper")}
                     />
                 <EditableWithLabel

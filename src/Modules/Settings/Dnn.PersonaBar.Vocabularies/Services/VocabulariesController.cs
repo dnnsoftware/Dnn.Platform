@@ -24,7 +24,7 @@ using Constants = Dnn.PersonaBar.Vocabularies.Components.Constants;
 
 namespace Dnn.PersonaBar.Vocabularies.Services
 {
-    [MenuPermission(Scope = ServiceScope.Admin)]
+    [MenuPermission(MenuName = Constants.MenuIdentifier)]
     public class VocabulariesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
@@ -79,6 +79,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns>Id of the new added vocabulary</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage CreateVocabulary(VocabularyDto vocabularyDto)
         {
             try
@@ -111,6 +112,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage UpdateVocabulary(VocabularyDto vocabularyDto)
         {
             try
@@ -147,6 +149,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage DeleteVocabulary(int vocabularyId)
         {
             try
@@ -238,6 +241,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns>Id of the new created term</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage CreateTerm(TermDto termDto)
         {
             try
@@ -273,6 +277,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage UpdateTerm(TermDto termDto)
         {
             try
@@ -309,6 +314,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage DeleteTerm(int termId)
         {
             try

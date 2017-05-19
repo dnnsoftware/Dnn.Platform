@@ -105,7 +105,7 @@ class TermHeader extends Component {
                     style={{ float: "left" }}>
                     {!state.collapsed && props.children}
                     {!state.collapsed && <GridCell className="vocab-footer">
-                        {!props.term.IsSystem && util.settings.isHost && <Button type="secondary" onClick={this.onDelete.bind(this)}>{LocalizedResources.get("DeleteTerm")}</Button>}
+                        {!props.term.IsSystem && util.canEdit() && <Button type="secondary" onClick={this.onDelete.bind(this)}>{LocalizedResources.get("DeleteTerm")}</Button>}
                         <Button type="secondary" onClick={this.collapse.bind(this)}>{LocalizedResources.get("Close")}</Button>
                     </GridCell>}
                 </Collapse>
