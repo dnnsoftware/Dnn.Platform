@@ -103,13 +103,13 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\VocabulariesController.cs" />
     <Compile Include="Exceptions\VocabulariesException.cs" />
     <Compile Include="Exceptions\TermValidationException.cs" />
     <Compile Include="Exceptions\VocabularyNameAlreadyExistsException.cs" />
     <Compile Include="Exceptions\VocabularyValidationException.cs" />
-    <Compile Include="MenuControllers\VocabulariesMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\TermDto.cs" />
     <Compile Include="Services\Dto\VocabularyDto.cs" />
