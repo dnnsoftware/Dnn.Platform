@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Scrollbars } from 'react-custom-scrollbars';
-
+import { Scrollbars } from "react-custom-scrollbars";
 import GridCell from "dnn-grid-cell";
 import Dropdown from "dnn-dropdown";
 
@@ -12,14 +11,11 @@ import utils from "../../utils";
 
 import "./tabs.less";
 
-
-
 class Logs extends Component {
     componentDidMount() {
         if (this.props.logs.length > 0) {
             return;
         }
-
         this.props.onRetrieveLogsServerInfo();
     }
 
@@ -51,7 +47,6 @@ class Logs extends Component {
                     autoHide
                     style={{ height: 500 }} >
                     <div className="log-file-display">{props.logData}</div>
-
                 </Scrollbars>
             </div>
         </div>;
