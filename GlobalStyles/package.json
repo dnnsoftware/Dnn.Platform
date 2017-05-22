@@ -2,6 +2,10 @@
     "name": "dnn-global-styles",
     "version": "0.0.5",
     "description": "DNN Global Styles",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "echo \"No build required\""
+    },
     "contributors": [
         { "name": "Miguel Gatmaytan" }
     ],

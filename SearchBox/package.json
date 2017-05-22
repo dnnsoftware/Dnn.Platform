@@ -13,7 +13,7 @@
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
   },
   "devDependencies": {
-    "babel-core": "^6.18.2",
+    "babel-core": "6.24.1",
     "babel-loader": "6.2.4",
     "babel-plugin-transform-object-assign": "6.8.0",
     "babel-plugin-transform-object-rest-spread": "6.8.0",
