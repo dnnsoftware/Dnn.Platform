@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				Context.ApplicationInstance.CompleteRequest();
 			}
 
-			cancelLink.NavigateUrl = GetRedirectUrl(false);
+			cancelLink.NavigateUrl = closeLink.NavigateUrl = GetRedirectUrl(false);
 			registerButton.Click += registerButton_Click;
 
 			if (PortalSettings.Registration.UseAuthProviders)
@@ -529,8 +529,7 @@ namespace DotNetNuke.Modules.Admin.Users
 					{
 						RegistrationForm.Visible = false;
 						registerButton.Visible = false;
-						cancelLink.Attributes["resourcekey"] = "Close";
-						RegistrationForm.Parent.Controls.Add(cancelLink);
+					    closeLink.Visible = true;
 					}
 				}
 				else

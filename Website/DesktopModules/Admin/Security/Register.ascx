@@ -29,6 +29,7 @@
         <li><asp:HyperLink ID="cancelLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
     </ul>
 </div>
+<asp:HyperLink ID="closeLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="Close" CausesValidation="false" Visible="False" />
 <script type="text/javascript">
     $(function () {
         $('.dnnFormItem .dnnLabel').each(function () {
