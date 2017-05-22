@@ -121,6 +121,6 @@
     <value>View Profile</value>
   </data>
   <data name="NoProperties.Text" xml:space="preserve">
-    <value>This user has elected to hide their profile.</value>
+    <value>This user has selected to hide their profile.</value>
   </data>
 </root>
