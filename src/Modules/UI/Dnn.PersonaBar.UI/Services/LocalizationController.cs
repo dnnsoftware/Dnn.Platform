@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.UI.Services
             var resourceFiles = GetAllResourceFiles(culture);
 
             var expired = resourceFiles.Select(file => new FileInfo(file.Value))
-                .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime);
+                .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime || resourceFile.CreationTime > lastModifiedTime);
             if (!expired)
             {
                 DataCache.SetCache(cacheKey, new CacheDto(), TimeSpan.FromMinutes(5));
