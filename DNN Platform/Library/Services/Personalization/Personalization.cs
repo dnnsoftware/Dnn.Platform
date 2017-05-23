@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Personalization
             if (personalization != null)
             {
                 var ps = new PortalSecurity();
-                return ps.DecryptString(personalization.Profile[namingContainer + ":" + key].ToString(), Config.GetDecryptionkey());
+                return ps.Decrypt(Config.GetDecryptionkey(), personalization.Profile[namingContainer + ":" + key].ToString());
             }
             return "";
         }
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Personalization
             if (personalization != null)
             {
                 var ps = new PortalSecurity();
-                personalization.Profile[namingContainer + ":" + key] = ps.EncryptString(value.ToString(), Config.GetDecryptionkey());
+                personalization.Profile[namingContainer + ":" + key] = ps.Encrypt(Config.GetDecryptionkey(), value.ToString());
                 personalization.IsModified = true;
             }
         }
