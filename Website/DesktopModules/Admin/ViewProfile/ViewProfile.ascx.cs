@@ -156,6 +156,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     noPropertiesLabel.Visible = true;
                     profileOutput.Visible = false;
+                    pnlScripts.Visible = false;
                 }
                 else
                 {
