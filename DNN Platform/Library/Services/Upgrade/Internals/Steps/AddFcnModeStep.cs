@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             Percentage = 0;
             Status = StepStatus.Running;
 
-            string strError = Config.AddFCNMode(Config.FcnMode.Disabled);
+            string strError = Config.AddFCNMode(Config.FcnMode.Single);
             if (!string.IsNullOrEmpty(strError))
             {
                 Errors.Add(Localization.Localization.GetString("FcnMode", LocalInstallResourceFile) + ": " + strError);
