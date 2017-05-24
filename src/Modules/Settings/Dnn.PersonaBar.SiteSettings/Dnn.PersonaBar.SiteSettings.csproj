@@ -101,6 +101,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Constants\Constants.cs" />
     <Compile Include="Components\Constants\LanguageResourceEnums.cs" />
     <Compile Include="MenuControllers\SiteSettingsMenuController.cs" />
     <Compile Include="Components\LanguagesControllerTasks.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="Services\Dto\UpdateProfileSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSiteSettingsRequest.cs" />
     <Compile Include="Services\LanguagesController.cs" />
-    <Compile Include="Services\RegularSiteSettingsController.cs" />
     <Compile Include="Services\SiteSettingsController.cs" />
   </ItemGroup>
   <ItemGroup>

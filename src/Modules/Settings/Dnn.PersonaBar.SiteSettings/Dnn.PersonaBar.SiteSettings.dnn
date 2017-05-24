@@ -45,6 +45,10 @@
                         <order>10</order>
                         <defaultPermissions>Administrators</defaultPermissions>
                     </menu>
+                    <permission>
+                      <key>SITE_INFO</key>
+                      <name>Site Info</name>
+                    </permission>
                 </component>
             </components>
         </package>
