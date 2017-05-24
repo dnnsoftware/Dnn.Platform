@@ -20,12 +20,14 @@ import util from "../../utils";
 import resx from "../../resources";
 
 let isHost = false;
+let isAdmin = false;
 
 export class Body extends Component {
     constructor() {
         super();
         this.handleSelect = this.handleSelect.bind(this);
         isHost = util.settings.isHost;
+        isAdmin = util.settings.isHost || util.settings.isAdmin;
     }
 
     handleSelect(index) {
@@ -91,27 +93,31 @@ export class Body extends Component {
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
+        let tabHeaders = [resx.get("TabSiteInfo")];
+        if(isAdmin){
+            tabHeaders.push(resx.get("TabSiteBehavior"));
+            tabHeaders.push(resx.get("TabLanguage"));
+            tabHeaders.push(resx.get("TabSearch"));
+        }
+
         return (
             <PersonaBarPageBody backToLinkProps={{
                 text: this.props.referrer && this.props.referrerText,
                 onClick: this.props.backToReferrerFunc
             }}>
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabSiteInfo"),
-                    resx.get("TabSiteBehavior"),
-                    resx.get("TabLanguage"),
-                    resx.get("TabSearch")]}
+                    tabHeaders={tabHeaders}
                     type="primary">
                     {this.props.showing && <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />}
-                    {this.props.showing && this.renderSiteBehaviorTab()}
-                    {this.props.showing && <LanguageSettings
+                    {this.props.showing && isAdmin && this.renderSiteBehaviorTab()}
+                    {this.props.showing && isAdmin && <LanguageSettings
                         portalId={this.props.portalId}
                         openLanguageVerifier={this.props.openLanguageVerifier}
                         openLanguagePack={this.props.openLanguagePack}
                         openLocalizedContent={this.props.openLocalizedContent}
                         cultureCode={this.props.cultureCode}
                         />}
-                    {this.props.showing && this.getSearchSecondaryTabs()}
+                    {this.props.showing && isAdmin && this.getSearchSecondaryTabs()}
                 </Tabs>
             </PersonaBarPageBody>
         );

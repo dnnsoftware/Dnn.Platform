@@ -19,7 +19,7 @@ class ApplicationService {
     }
 
     getPortalSettings(portalId, cultureCode, callback) {
-        const sf = this.getServiceFramework("SiteSettings");
+        const sf = this.getServiceFramework("RegularSiteSettings");
         sf.get("GetPortalSettings?portalId=" + portalId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
@@ -249,7 +249,7 @@ class ApplicationService {
     }
 
     getCultureList(portalId, callback) {
-        const sf = this.getServiceFramework("SiteSettings");
+        const sf = this.getServiceFramework("RegularSiteSettings");
         sf.get("GetCultureList?portalId=" + portalId, {}, callback);
     }
 

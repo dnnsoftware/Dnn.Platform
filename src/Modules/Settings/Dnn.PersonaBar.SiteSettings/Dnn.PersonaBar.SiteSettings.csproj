@@ -128,6 +128,7 @@
     <Compile Include="Services\Dto\UpdateProfileSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSiteSettingsRequest.cs" />
     <Compile Include="Services\LanguagesController.cs" />
+    <Compile Include="Services\RegularSiteSettingsController.cs" />
     <Compile Include="Services\SiteSettingsController.cs" />
   </ItemGroup>
   <ItemGroup>

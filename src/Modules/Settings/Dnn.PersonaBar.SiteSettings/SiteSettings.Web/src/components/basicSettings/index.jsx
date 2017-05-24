@@ -16,6 +16,7 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
+let isAdmin = false;
 class BasicSettingsPanelBody extends Component {
     constructor() {
         super();
@@ -26,6 +27,7 @@ class BasicSettingsPanelBody extends Component {
             },
             triedToSubmit: false
         };
+        isAdmin = util.settings.isHost || util.settings.isAdmin;
     }
 
     loadData() {
@@ -183,6 +185,7 @@ class BasicSettingsPanelBody extends Component {
                     <MultiLineInputWithError
                         value={state.basicSettings.Description}
                         onChange={this.onSettingChange.bind(this, "Description")}
+                        enabled={isAdmin}
                         />
                 </InputGroup>
                 <InputGroup>
@@ -194,6 +197,7 @@ class BasicSettingsPanelBody extends Component {
                         options={this.getTimeZoneOptions()}
                         value={state.basicSettings.TimeZone}
                         onSelect={this.onSettingChange.bind(this, "TimeZone")}
+                        enabled={isAdmin}
                         />
                 </InputGroup>
                 <InputGroup>
@@ -208,6 +212,7 @@ class BasicSettingsPanelBody extends Component {
                         value={state.basicSettings.FooterText}
                         onChange={this.onSettingChange.bind(this, "FooterText")}
                         style={{ width: "100%" }}
+                        enabled={isAdmin}
                         />
                 </InputGroup>
             </div>;
@@ -219,7 +224,8 @@ class BasicSettingsPanelBody extends Component {
                         />
                     <MultiLineInputWithError
                         value={state.basicSettings.KeyWords}
-                        onChange={this.onSettingChange.bind(this, "KeyWords")} />
+                        onChange={this.onSettingChange.bind(this, "KeyWords")}
+                        enabled={isAdmin} />
                 </InputGroup>
                 <InputGroup>
                     <Label
@@ -296,6 +302,7 @@ class BasicSettingsPanelBody extends Component {
                             value={state.basicSettings.PortalName}
                             onChange={this.onSettingChange.bind(this, "PortalName")}
                             style={{ width: "100%" }}
+                            enabled={isAdmin}
                             />
                     </InputGroup>
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
@@ -305,7 +312,7 @@ class BasicSettingsPanelBody extends Component {
                             label={resx.get("plLogoIcon")}
                             />
                     </InputGroup>
-                    <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
+                    {isAdmin && <Grid children={[columnThree, columnFour]} numberOfColumns={2} />}
                     <InputGroup style={{ paddingTop: "10px" }}>
                         <Label
                             tooltipMessage={resx.get("plIconSet.Help")}
@@ -315,9 +322,10 @@ class BasicSettingsPanelBody extends Component {
                             options={this.getIconSetOptions()}
                             value={state.basicSettings.IconSet}
                             onSelect={this.onSettingChange.bind(this, "IconSets")}
+                            enabled={isAdmin}
                             />
                     </InputGroup>
-                    <div className="buttons-box">
+                    {isAdmin && <div className="buttons-box">
                         <Button
                             disabled={!this.props.clientModified}
                             type="secondary"
@@ -330,7 +338,7 @@ class BasicSettingsPanelBody extends Component {
                             onClick={this.onUpdate.bind(this)}>
                             {resx.get("Save")}
                         </Button>
-                    </div>
+                    </div>}
                 </div>
             );
         }
