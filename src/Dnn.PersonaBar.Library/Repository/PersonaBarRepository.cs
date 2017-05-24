@@ -104,6 +104,7 @@ namespace Dnn.PersonaBar.Library.Repository
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             _dataService.UpdateMenuController(identifier, controller, user.UserID);
+            ClearCache();
         }
 
         private void InjectMenuItems(MenuItem parent, IList<MenuItem> menuItems)

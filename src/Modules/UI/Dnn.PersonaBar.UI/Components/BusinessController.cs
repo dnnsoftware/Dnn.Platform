@@ -66,7 +66,11 @@ namespace Dnn.PersonaBar.UI.Components
             var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                menuItems.ForEach(i => SaveEditPermission(portal.PortalID, i));
+                var portalId = portal.PortalID;
+                if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
+                {
+                    menuItems.ForEach(i => SaveEditPermission(portalId, i));
+                }
             }
         }
 
@@ -81,22 +85,26 @@ namespace Dnn.PersonaBar.UI.Components
             }
 
             var permissions = MenuPermissionController.GetMenuPermissions(portalId, menuItem.Identifier).ToList();
-            if (permissions.Any(p => p.PermissionID == viewPermission.PermissionId))
+            permissions.ForEach(p =>
             {
-                var permission = permissions.First(p => p.PermissionID == viewPermission.PermissionId);
-
-                var menuPermissionInfo = new MenuPermissionInfo
+                if (p.PermissionID == viewPermission.PermissionId)
                 {
-                    MenuPermissionId = Null.NullInteger,
-                    MenuId = menuItem.MenuId,
-                    PermissionID = editPermission.PermissionId,
-                    RoleID = permission.RoleID,
-                    UserID = permission.UserID,
-                    AllowAccess = permission.AllowAccess
-                };
+                    if (!permissions.Any(c => c.PermissionID == editPermission.PermissionId && c.RoleID == p.RoleID && c.UserID == p.UserID))
+                    {
+                        var menuPermissionInfo = new MenuPermissionInfo
+                        {
+                            MenuPermissionId = Null.NullInteger,
+                            MenuId = menuItem.MenuId,
+                            PermissionID = editPermission.PermissionId,
+                            RoleID = p.RoleID,
+                            UserID = p.UserID,
+                            AllowAccess = p.AllowAccess
+                        };
 
-                MenuPermissionController.SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
-            }
+                        MenuPermissionController.SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
+                    }
+                }
+            });
         }
     }
 }
