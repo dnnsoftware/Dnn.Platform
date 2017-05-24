@@ -149,11 +149,11 @@ class ListView extends Component {
     getDetailList() {
         const { props } = this;
         return props.portals.map((portal, index) => {
-            return <PortalListItem
+            return (portal.PortalAliases && <PortalListItem
                 key={"portal-" + portal.PortalID}
                 portal={portal}
                 portalButtons={this.getPortalButtons(portal, index)}
-                portalStatisticInfo={this.getPortalMapping(portal)} />;
+                portalStatisticInfo={this.getPortalMapping(portal)} />);
         });
     }
     cancelExport(event) {
