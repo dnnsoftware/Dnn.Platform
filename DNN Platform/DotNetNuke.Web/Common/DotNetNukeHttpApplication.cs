@@ -110,6 +110,7 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider),typeof(CoreCryptographyProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            DotNetNukeShutdownOverload.InitializeFcnSettings();
         }
         
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()

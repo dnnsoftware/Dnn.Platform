@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
@@ -413,7 +414,29 @@ namespace DotNetNuke.Common
                 log.AddProperty("Shutdown Details", shutdownDetail);
                 LogController.Instance.AddLog(log);
 
-                Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                // enhanced shutdown logging
+                var runtime = typeof(HttpRuntime).InvokeMember("_theRuntime",
+                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
+                    null, null, null) as HttpRuntime;
+
+                if (runtime == null)
+                {
+                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                }
+                else
+                {
+                    var shutDownMessage = runtime.GetType().InvokeMember("_shutDownMessage",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    var shutDownStack = runtime.GetType().InvokeMember("_shutDownStack",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    Logger.Info("Application shutting down. Reason: " + shutdownDetail
+                                + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
+                                + Environment.NewLine + shutDownStack);
+                }
             }
             catch (Exception exc)
             {
