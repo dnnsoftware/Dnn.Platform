@@ -28,7 +28,7 @@ export class Body extends Component {
         this.handleSelect = this.handleSelect.bind(this);
         isHost = util.settings.isHost;
         isAdmin = util.settings.isHost || util.settings.isAdmin;
-        canViewSiteInfo = isAdmin || util.settings.permissions.SITE_INFO;
+        canViewSiteInfo = isAdmin || util.settings.permissions.SITE_INFO_VIEW;
     }
 
     handleSelect(index) {

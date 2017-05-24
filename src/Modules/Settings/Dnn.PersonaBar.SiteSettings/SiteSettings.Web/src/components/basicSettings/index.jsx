@@ -27,7 +27,7 @@ class BasicSettingsPanelBody extends Component {
             },
             triedToSubmit: false
         };
-        canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
+        canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.SITE_INFO_EDIT;
     }
 
     loadData() {

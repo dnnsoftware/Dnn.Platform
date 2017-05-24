@@ -79,7 +79,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="cultureCode"></param>
         /// <returns>site settings</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfo)]
+        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView)]
         public HttpResponseMessage GetPortalSettings(int? portalId, string cultureCode)
         {
             try
@@ -158,7 +158,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="portalId"></param>
         /// <returns>Culture List</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfo)]
+        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView)]
         public HttpResponseMessage GetCultureList(int? portalId)
         {
             try
@@ -207,7 +207,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfo + "," + Components.Constants.Constants.Edit)]
+        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView + "," + Components.Constants.Constants.SiteInfoEdit)]
         public HttpResponseMessage UpdatePortalSettings(UpdateSiteSettingsRequest request)
         {
             try
