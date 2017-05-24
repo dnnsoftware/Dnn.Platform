@@ -68,16 +68,19 @@ namespace Dnn.PersonaBar.Library.Attributes
                 }
             }
 
-            //if menu identifier defined, then will check the menu permission, multiple identifier should split with ";".
+            //if menu identifier defined, then will check the menu permission, multiple identifier should split with ",".
             if (!string.IsNullOrEmpty(MenuName))
             {
                 var hasPermission = false;
-                MenuName.Split(';').ForEach(menuName =>
+                MenuName.Split(',').ForEach(menuName =>
                 {
-                    var menuItem = GetMenuByIdentifier(menuName);
-                    if (menuItem != null && portalSettings != null)
+                    if (!hasPermission)
                     {
-                        hasPermission = PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
+                        var menuItem = GetMenuByIdentifier(menuName);
+                        if (menuItem != null && portalSettings != null)
+                        {
+                            hasPermission = PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
+                        }
                     }
                 });
 
