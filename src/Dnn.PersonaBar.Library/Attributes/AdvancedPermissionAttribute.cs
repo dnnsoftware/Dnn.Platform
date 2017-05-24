@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;
+using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.Api;
 
@@ -29,8 +31,8 @@ namespace Dnn.PersonaBar.Library.Attributes
             {
                 return false;
             }
-
-            return MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, Permission);
+            var allPermissions = Permission.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return allPermissions.All(x => MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, x));
         }
 
         private MenuItem GetMenuByIdentifier()
