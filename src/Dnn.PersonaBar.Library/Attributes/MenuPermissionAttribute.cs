@@ -84,10 +84,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                     }
                 });
 
-                if (hasPermission)
-                {
-                    return true;
-                }
+                return hasPermission;
             }
             
 
