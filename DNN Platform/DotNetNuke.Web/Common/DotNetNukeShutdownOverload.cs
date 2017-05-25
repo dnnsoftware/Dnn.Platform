@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.Common.Internal
                 if (fileChangesMonitor == null)
                 {
                     Logger.Info("fileChangesMonitor is null");
-                    AddSiteFilesMonitors(true);
+                    //AddSiteFilesMonitoring(true);
                 }
                 else
                 {
@@ -68,8 +68,12 @@ namespace DotNetNuke.Web.Common.Internal
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
                         null, null, null);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
-                    AddSiteFilesMonitors(fcnVal.ToString() == "1" /*Disabled*/);
+                    // enable our monitor only when fcnMode="Disabled"
+                    //AddSiteFilesMonitoring(fcnVal.ToString() == "1");
                 }
+
+                // just monitor the root folder but don't interfere
+                AddSiteFilesMonitoring(false);
             }
             catch (Exception e)
             {
@@ -77,7 +81,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-        private static void AddSiteFilesMonitors(bool handleShutdowns)
+        private static void AddSiteFilesMonitoring(bool handleShutdowns)
         {
             if (_binFolderWatcher == null)
             {
@@ -95,7 +99,7 @@ namespace DotNetNuke.Web.Common.Internal
                             _binFolderWatcher = new FileSystemWatcher
                             {
                                 Filter = "*.*",
-                                Path = _binFolder,
+                                Path = handleShutdowns ? _binFolder : Globals.ApplicationMapPath,
                                 NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
                                 IncludeSubdirectories = true,
                             };
