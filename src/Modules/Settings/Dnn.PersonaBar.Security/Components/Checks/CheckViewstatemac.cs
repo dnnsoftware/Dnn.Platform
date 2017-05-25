@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.UI;
 
-namespace Dnn.PersonaBar.Security.Components
+namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckViewstatemac : IAuditCheck
     {

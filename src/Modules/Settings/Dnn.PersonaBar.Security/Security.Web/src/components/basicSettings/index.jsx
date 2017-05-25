@@ -14,6 +14,7 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
+let canEdit = false;
 class BasicSettingsPanelBody extends Component {
     constructor() {
         super();
@@ -21,6 +22,7 @@ class BasicSettingsPanelBody extends Component {
             basicLoginSettings: undefined,
             resetPagePicker: false
         };
+        canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.BASIC_LOGIN_SETTINGS_EDIT;
     }
 
     componentWillMount() {
@@ -147,71 +149,76 @@ class BasicSettingsPanelBody extends Component {
                 <div className={styles.loginSettings}>
                     <InputGroup>
                         <Label
-                            tooltipMessage={resx.get("DefaultAuthProvider.Help")}
-                            label={resx.get("DefaultAuthProvider")}
+                            tooltipMessage={resx.get("DefaultAuthProvider.Help") }
+                            label={resx.get("DefaultAuthProvider") }
                             />
                         <Dropdown
-                            options={this.getAuthProviderOptions()}
+                            options={this.getAuthProviderOptions() }
                             value={state.basicLoginSettings.DefaultAuthProvider}
-                            onSelect={this.onSettingChange.bind(this, "DefaultAuthProvider")}
+                            onSelect={this.onSettingChange.bind(this, "DefaultAuthProvider") }
+                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
                         <Label
-                            tooltipMessage={resx.get("plAdministrator.Help")}
-                            label={resx.get("plAdministrator")}
+                            tooltipMessage={resx.get("plAdministrator.Help") }
+                            label={resx.get("plAdministrator") }
                             />
                         <Dropdown
-                            options={this.getAdminUserOptions()}
+                            options={this.getAdminUserOptions() }
                             value={state.basicLoginSettings.PrimaryAdministratorId}
-                            onSelect={this.onSettingChange.bind(this, "PrimaryAdministratorId")}
+                            onSelect={this.onSettingChange.bind(this, "PrimaryAdministratorId") }
+                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
                         <Label
-                            tooltipMessage={resx.get("Redirect_AfterLogin.Help")}
-                            label={resx.get("Redirect_AfterLogin")}
+                            tooltipMessage={resx.get("Redirect_AfterLogin.Help") }
+                            label={resx.get("Redirect_AfterLogin") }
                             />
                         <PagePicker
                             serviceFramework={util.utilities.sf}
                             style={{ width: "100%", zIndex: 2 }}
                             selectedTabId={state.basicLoginSettings.RedirectAfterLoginTabId}
-                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLoginTabId")}
+                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLoginTabId") }
                             defaultLabel={state.basicLoginSettings.RedirectAfterLoginTabName !== "" ? state.basicLoginSettings.RedirectAfterLoginTabName : noneSpecifiedText}
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
                             PortalTabsParameters={RedirectAfterLoginParameters}
                             ResetSelected={state.resetPagePicker}
+                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
                         <Label
-                            tooltipMessage={resx.get("Redirect_AfterLogout.Help")}
-                            label={resx.get("Redirect_AfterLogout")}
+                            tooltipMessage={resx.get("Redirect_AfterLogout.Help") }
+                            label={resx.get("Redirect_AfterLogout") }
                             />
                         <PagePicker
                             serviceFramework={util.utilities.sf}
                             style={{ width: "100%", zIndex: 1 }}
                             selectedTabId={state.basicLoginSettings.RedirectAfterLogoutTabId}
-                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLogoutTabId")}
+                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLogoutTabId") }
                             defaultLabel={state.basicLoginSettings.RedirectAfterLogoutTabName !== "" ? state.basicLoginSettings.RedirectAfterLogoutTabName : noneSpecifiedText}
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
                             PortalTabsParameters={RedirectAfterLogoutParameters}
                             ResetSelected={state.resetPagePicker}
+                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
-                        <div className="loginSettings-row_switch" style={{margin: "0"}}>
+                        <div className="loginSettings-row_switch" style={{ margin: "0" }}>
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Security_RequireValidProfileAtLogin.Help")}
-                                label={resx.get("Security_RequireValidProfileAtLogin")}
+                                tooltipMessage={resx.get("Security_RequireValidProfileAtLogin.Help") }
+                                label={resx.get("Security_RequireValidProfileAtLogin") }
                                 />
                             <Switch
                                 labelHidden={true}
                                 value={state.basicLoginSettings.RequireValidProfileAtLogin}
-                                onChange={this.onSettingChange.bind(this, "RequireValidProfileAtLogin")}
+                                onChange={this.onSettingChange.bind(this, "RequireValidProfileAtLogin") }
+                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -219,13 +226,14 @@ class BasicSettingsPanelBody extends Component {
                         <div className="loginSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Security_CaptchaLogin.Help")}
-                                label={resx.get("Security_CaptchaLogin")}
+                                tooltipMessage={resx.get("Security_CaptchaLogin.Help") }
+                                label={resx.get("Security_CaptchaLogin") }
                                 />
                             <Switch
                                 labelHidden={true}
                                 value={state.basicLoginSettings.CaptchaLogin}
-                                onChange={this.onSettingChange.bind(this, "CaptchaLogin")}
+                                onChange={this.onSettingChange.bind(this, "CaptchaLogin") }
+                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -233,13 +241,14 @@ class BasicSettingsPanelBody extends Component {
                         <div className="loginSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Security_CaptchaRetrivePassword.Help")}
-                                label={resx.get("Security_CaptchaRetrivePassword")}
+                                tooltipMessage={resx.get("Security_CaptchaRetrivePassword.Help") }
+                                label={resx.get("Security_CaptchaRetrivePassword") }
                                 />
                             <Switch
                                 labelHidden={true}
                                 value={state.basicLoginSettings.CaptchaRetrivePassword}
-                                onChange={this.onSettingChange.bind(this, "CaptchaRetrivePassword")}
+                                onChange={this.onSettingChange.bind(this, "CaptchaRetrivePassword") }
+                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -247,13 +256,14 @@ class BasicSettingsPanelBody extends Component {
                         <div className="loginSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Security_CaptchaChangePassword.Help")}
-                                label={resx.get("Security_CaptchaChangePassword")}
+                                tooltipMessage={resx.get("Security_CaptchaChangePassword.Help") }
+                                label={resx.get("Security_CaptchaChangePassword") }
                                 />
                             <Switch
                                 labelHidden={true}
                                 value={state.basicLoginSettings.CaptchaChangePassword}
-                                onChange={this.onSettingChange.bind(this, "CaptchaChangePassword")}
+                                onChange={this.onSettingChange.bind(this, "CaptchaChangePassword") }
+                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -261,30 +271,33 @@ class BasicSettingsPanelBody extends Component {
                         <div className="loginSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("plHideLoginControl.Help")}
-                                label={resx.get("plHideLoginControl")}
+                                tooltipMessage={resx.get("plHideLoginControl.Help") }
+                                label={resx.get("plHideLoginControl") }
                                 />
                             <Switch
                                 labelHidden={true}
                                 value={state.basicLoginSettings.HideLoginControl}
-                                onChange={this.onSettingChange.bind(this, "HideLoginControl")}
+                                onChange={this.onSettingChange.bind(this, "HideLoginControl") }
+                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
-                    <div className="buttons-box">
-                        <Button
-                            disabled={!this.props.basicLoginSettingsClientModified}
-                            type="secondary"
-                            onClick={this.onCancel.bind(this)}>
-                            {resx.get("Cancel")}
-                        </Button>
-                        <Button
-                            disabled={!this.props.basicLoginSettingsClientModified}
-                            type="primary"
-                            onClick={this.onUpdate.bind(this)}>
-                            {resx.get("Save")}
-                        </Button>
-                    </div>
+                    {canEdit &&
+                        <div className="buttons-box">
+                            <Button
+                                disabled={!this.props.basicLoginSettingsClientModified}
+                                type="secondary"
+                                onClick={this.onCancel.bind(this) }>
+                                {resx.get("Cancel") }
+                            </Button>
+                            <Button
+                                disabled={!this.props.basicLoginSettingsClientModified}
+                                type="primary"
+                                onClick={this.onUpdate.bind(this) }>
+                                {resx.get("Save") }
+                            </Button>
+                        </div>
+                    }
                 </div>
             );
         }

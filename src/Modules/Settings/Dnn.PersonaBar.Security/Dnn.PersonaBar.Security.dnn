@@ -60,6 +60,38 @@
             <order>20</order>
             <defaultPermissions>Administrators</defaultPermissions>
           </menu>
+          <permission>
+            <key>BASIC_LOGIN_SETTINGS_VIEW</key>
+            <name>Basic Login Settings View</name>
+          </permission>
+          <permission>
+            <key>BASIC_LOGIN_SETTINGS_EDIT</key>
+            <name>Basic Login Settings Edit</name>
+          </permission>
+          <permission>
+            <key>LOGIN_IP_FILTERS_VIEW</key>
+            <name>Login Ip Filters View</name>
+          </permission>
+          <permission>
+            <key>LOGIN_IP_FILTERS_EDIT</key>
+            <name>Login Ip Filters Edit</name>
+          </permission>
+          <permission>
+            <key>MEMBER_MANAGEMENT_VIEW</key>
+            <name>Member Management View</name>
+          </permission>
+          <permission>
+            <key>MEMBER_MANAGEMENT_EDIT</key>
+            <name>Member Management Edit</name>
+          </permission>
+          <permission>
+            <key>REGISTRATION_SETTINGS_VIEW</key>
+            <name>Registration Settings View</name>
+          </permission>
+          <permission>
+            <key>REGISTRATION_SETTINGS_EDIT</key>
+            <name>Registration Settings Edit</name>
+          </permission>
         </component>
       </components>
     </package>

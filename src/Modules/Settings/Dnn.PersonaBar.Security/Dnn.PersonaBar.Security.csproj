@@ -119,6 +119,7 @@
     <Compile Include="Components\Checks\CheckHiddenSystemFiles.cs" />
     <Compile Include="Components\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Checks\CheckViewstatemac.cs" />
+    <Compile Include="Components\Constants.cs" />
     <Compile Include="MenuControllers\SecurityMenuController.cs" />
     <Compile Include="Components\IAuditCheck.cs" />
     <Compile Include="Components\SecurityController.cs" />
