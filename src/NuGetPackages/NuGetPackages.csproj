@@ -37,6 +37,9 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.1.1.70\lib\ClientDependency.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>..\packages\DotNetNuke.Core.9.0.1.128\lib\net40\DotNetNuke.dll</HintPath>
       <Private>True</Private>

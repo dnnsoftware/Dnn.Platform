@@ -58,6 +58,11 @@ namespace Dnn.PersonaBar.UI.UserControls
         {
             base.OnLoad(e);
             PersonaBarPanel.Visible = InjectPersonaBar();
+
+            if (!PersonaBarPanel.Visible)
+            {
+                RemovedAdminStyleSheet();
+            }
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -105,6 +110,26 @@ namespace Dnn.PersonaBar.UI.UserControls
         private void RegisterPersonaBarStyleSheet()
         {
             ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
+        }
+
+        private void RemovedAdminStyleSheet()
+        {
+            var loader = Page.FindControl("ClientResourceIncludes");
+            if (loader != null)
+            {
+                for (var i = 0; i < loader.Controls.Count; i++)
+                {
+                    var cssInclude = loader.Controls[i] as DnnCssInclude;
+                    if (cssInclude != null)
+                    {
+                        if (cssInclude.FilePath == (Globals.HostPath + "admin.css"))
+                        {
+                            loader.Controls.Remove(cssInclude);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
