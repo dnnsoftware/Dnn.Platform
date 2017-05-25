@@ -3297,7 +3297,7 @@ body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > inpu
 	min-width: 100% !important;	
 }
 
-body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > label#dnn_ctr_Login_Login_DNN_lblLogin{
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > span#dnn_ctr_Login_Login_DNN_lblLogin{
 	display: none !important;
 	width: 0;
 	margin: 0;
