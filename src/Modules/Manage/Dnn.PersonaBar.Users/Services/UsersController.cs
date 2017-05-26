@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Users.Services
     [MenuPermission(MenuName = "Dnn.Users")]
     public class UsersController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (UsersController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
 
         #region Users API
 
@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Users.Services
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AddUser)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AddUser, AllowAdmin = true)]
         public HttpResponseMessage CreateUser(CreateUserContract contract)
         {
             try
@@ -171,17 +171,9 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-//        [HttpGet]
-//        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
-//        public HttpResponseMessage ChangePasswordAvailable()
-//        {
-//            return Request.CreateResponse(HttpStatusCode.OK,
-//                new {Enabled = !MembershipProviderConfig.RequiresQuestionAndAnswer});
-//        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword, AllowAdmin = true)]
         public HttpResponseMessage ChangePassword(ChangePasswordDto changePasswordDto)
         {
             try
@@ -196,7 +188,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var controller = Components.UsersController.Instance;
                 controller.ChangePassword(PortalId, userId, password);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -207,7 +199,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword, AllowAdmin = true)]
         public HttpResponseMessage ForceChangePassword([FromUri] int userId)
         {
             try
@@ -230,7 +222,7 @@ namespace Dnn.PersonaBar.Users.Services
 
                     //Update User
                     UserController.UpdateUser(PortalId, user);
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
 
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -245,7 +237,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword, AllowAdmin = true)]
         public HttpResponseMessage SendPasswordResetLink([FromUri] int userId)
         {
             try
@@ -274,7 +266,7 @@ namespace Dnn.PersonaBar.Users.Services
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                         }
                     }
                     catch (ArgumentException exc)
@@ -300,8 +292,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName,
-            Permission = Components.Constants.AuthorizeUnAuthorizeUser)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AuthorizeUnAuthorizeUser, AllowAdmin = true)]
         public HttpResponseMessage UpdateAuthorizeStatus([FromUri] int userId, [FromUri] bool authorized)
         {
             try
@@ -313,7 +304,7 @@ namespace Dnn.PersonaBar.Users.Services
                 if (IsCurrentUser(userId, out response))
                     return response;
                 if (user.Membership.Approved == authorized)//Do nothing if the new status is same as current status.
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
                 user.Membership.Approved = authorized;
 
@@ -323,7 +314,7 @@ namespace Dnn.PersonaBar.Users.Services
                 {
                     //Update User Roles if needed
                     if (!user.IsSuperUser && user.IsInRole("Unverified Users") &&
-                        PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
+                        PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                     {
                         UserController.ApproveUser(user);
                     }
@@ -335,7 +326,7 @@ namespace Dnn.PersonaBar.Users.Services
                 {
                     Mail.SendMail(user, MessageType.UserUnAuthorized, PortalSettings);
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -346,7 +337,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser, AllowAdmin = true)]
         public HttpResponseMessage SoftDeleteUser([FromUri] int userId)
         {
             try
@@ -360,7 +351,7 @@ namespace Dnn.PersonaBar.Users.Services
                 return !deleted
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserDeleteError", Components.Constants.LocalResourcesFile))
-                    : Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -371,7 +362,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser, AllowAdmin = true)]
         public HttpResponseMessage HardDeleteUser([FromUri] int userId)
         {
             try
@@ -386,7 +377,7 @@ namespace Dnn.PersonaBar.Users.Services
                 return !deleted
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRemoveError", Components.Constants.LocalResourcesFile))
-                    : Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -397,7 +388,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser, AllowAdmin = true)]
         public HttpResponseMessage RestoreDeletedUser([FromUri] int userId)
         {
             try
@@ -412,7 +403,7 @@ namespace Dnn.PersonaBar.Users.Services
                 return !restored
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRestoreError", Components.Constants.LocalResourcesFile))
-                    : Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -420,24 +411,6 @@ namespace Dnn.PersonaBar.Users.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
-//        public HttpResponseMessage DeleteUnauthorizedUsers()
-//        {
-//            try
-//            {
-//                UserController.DeleteUnauthorizedUsers(PortalId);
-//
-//                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
-//            }
-//            catch (Exception ex)
-//            {
-//                Logger.Error(ex);
-//                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-//            }
-//        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -450,14 +423,14 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = GetUser(userId, out response);
                 if (user == null)
                     return response;
-                
+
                 user.IsSuperUser = setSuperUser;
 
                 //Update User
                 UserController.UpdateUser(PortalId, user);
                 DataCache.ClearCache();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -468,7 +441,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.EditSettings)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.EditSettings, AllowAdmin = true)]
         public HttpResponseMessage UpdateUserBasicInfo(UserBasicDto userBasicDto)
         {
             try
@@ -498,7 +471,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AuthorizeUnAuthorizeUser)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AuthorizeUnAuthorizeUser, AllowAdmin = true)]
         public HttpResponseMessage UnlockUser([FromUri] int userId)
         {
             try
@@ -528,7 +501,7 @@ namespace Dnn.PersonaBar.Users.Services
         #region User Roles API
 
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles, AllowAdmin = true)]
         public HttpResponseMessage GetSuggestRoles(string keyword, int count)
         {
             try
@@ -564,7 +537,7 @@ namespace Dnn.PersonaBar.Users.Services
         }
 
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles, AllowAdmin = true)]
         public HttpResponseMessage GetUserRoles(string keyword, int userId, int pageIndex, int pageSize)
         {
             try
@@ -573,7 +546,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = GetUser(userId, out response);
                 if (user == null)
                     return response;
-                
+
                 var allUserRoles = RoleController.Instance.GetUserRoles(user, true);
                 if (!string.IsNullOrEmpty(keyword))
                 {
@@ -584,12 +557,12 @@ namespace Dnn.PersonaBar.Users.Services
                 }
 
                 var userRoles = allUserRoles
-                    .Skip(pageIndex*pageSize)
+                    .Skip(pageIndex * pageSize)
                     .Take(pageSize)
                     .Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r));
 
                 return Request.CreateResponse(HttpStatusCode.OK,
-                    new {UserRoles = userRoles, TotalRecords = allUserRoles.Count});
+                    new { UserRoles = userRoles, TotalRecords = allUserRoles.Count });
             }
             catch (Exception ex)
             {
@@ -600,7 +573,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles, AllowAdmin = true)]
         public HttpResponseMessage SaveUserRole(UserRoleDto userRoleDto, [FromUri] bool notifyUser,
             [FromUri] bool isOwner)
         {
@@ -626,7 +599,7 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles, AllowAdmin = true)]
         public HttpResponseMessage RemoveUserRole(UserRoleDto userRoleDto)
         {
             try
@@ -640,7 +613,7 @@ namespace Dnn.PersonaBar.Users.Services
                 RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
                     RoleStatus.Approved, false, true);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -652,21 +625,21 @@ namespace Dnn.PersonaBar.Users.Services
         #endregion
 
         #region Profiles API
-//        User profile is not implemented currently
-//        [HttpGet]
-//        public HttpResponseMessage GetProfileDefinitions()
-//        {
-//            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(PortalId)
-//                .Cast<ProfilePropertyDefinition>().Select(d => new ProfileDefinitionDto(d));
-//
-//            return Request.CreateResponse(HttpStatusCode.OK, profileDefinitions);
-//        }
-//
-//        [HttpGet]
-//        public HttpResponseMessage GetUserProfile(int userId)
-//        {
-//            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
-//        }
+        //        User profile is not implemented currently
+        //        [HttpGet]
+        //        public HttpResponseMessage GetProfileDefinitions()
+        //        {
+        //            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(PortalId)
+        //                .Cast<ProfilePropertyDefinition>().Select(d => new ProfileDefinitionDto(d));
+        //
+        //            return Request.CreateResponse(HttpStatusCode.OK, profileDefinitions);
+        //        }
+        //
+        //        [HttpGet]
+        //        public HttpResponseMessage GetUserProfile(int userId)
+        //        {
+        //            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+        //        }
 
         #endregion
 
