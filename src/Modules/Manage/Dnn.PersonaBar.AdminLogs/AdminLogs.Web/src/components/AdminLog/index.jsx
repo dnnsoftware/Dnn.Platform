@@ -19,6 +19,7 @@ import {
 
 
 let pageSizeOptions = [];
+let canEdit = false;
 
 /*eslint-disable eqeqeq*/
 class AdminLogPanelBody extends Component {
@@ -40,26 +41,23 @@ class AdminLogPanelBody extends Component {
             excludedRowIds: [],
             totalCount: 0
         };
+        canEdit = util.settings.isHost || util.settings.permissions.ADMIN_LOGS_EDIT;
     }
 
     componentWillMount() {
         const {props} = this;
-        if (util.settings.isHost) {
-            props.dispatch(LogActions.getPortalList((dataPortal) => {
-                let portalList = Object.assign([], dataPortal.Results);
-                let currentPortalId = portalList[0].PortalID;
-                let currentPortal = portalList[0].PortalName;
-                this.setState({
-                    portalList,
-                    currentPortalId,
-                    currentPortal
-                }, () => {
-                    this.getLogTypes();
-                });
-            }));
-        } else {
-            this.getLogTypes();
-        }
+        props.dispatch(LogActions.getPortalList(util.settings.isHost, (dataPortal) => {
+            let portalList = Object.assign([], dataPortal.Results);
+            let currentPortalId = portalList[0].PortalID;
+            let currentPortal = portalList[0].PortalName;
+            this.setState({
+                portalList,
+                currentPortalId,
+                currentPortal
+            }, () => {
+                this.getLogTypes();
+            });
+        }));
 
         pageSizeOptions = [];
         pageSizeOptions.push({ "value": 10, "label": "10 entries per page" });
@@ -208,7 +206,7 @@ class AdminLogPanelBody extends Component {
         const checkboxClassName = "checkbox" + (isDeselectState ? " deselect-state" : "");
         tableHeaders.unshift(<div key={"selector" + "999999"} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
-                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
+                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this) } />
             </div>
         </div>);
 
@@ -223,7 +221,7 @@ class AdminLogPanelBody extends Component {
                 <LogItemRow
                     cssClass={term.LogTypeCSSClass}
                     logId={term.LogGUID}
-                    allRowIds={this.props.logList.map((row) => row.LogGUID)}
+                    allRowIds={this.props.logList.map((row) => row.LogGUID) }
                     typeName={term.LogTypeFriendlyName}
                     createDate={term.LogCreateDate}
                     userName={term.LogUserName}
@@ -270,11 +268,11 @@ class AdminLogPanelBody extends Component {
                     numericCounters={4}
                     pageSize={state.pageSize}
                     totalRecords={props.totalCount}
-                    onPageChanged={this.onPageChange.bind(this)}
+                    onPageChanged={this.onPageChange.bind(this) }
                     pageSizeDropDownWithoutBorder={true}
                     pageSizeOptionText={"{0} results per page"}
                     summaryText={"Showing {0}-{1} of {2} results"}
-                    culture={util.utilities.getCulture()}
+                    culture={util.utilities.getCulture() }
                     />
             </div>
         );
@@ -314,14 +312,14 @@ class AdminLogPanelBody extends Component {
         return (
             <div style={{ margin: "0 20px", float: "left" }}>
                 <div className="toolbar">
-                    {util.settings.isHost && state.portalList.length > 0 &&
+                    {state.portalList.length > 0 &&
                         <div className="adminlogs-filter-container">
                             <DropDown
                                 value={state.currentPortalId}
                                 style={{ width: "100%" }}
                                 options={portalOptions}
                                 withBorder={false}
-                                onSelect={this.onSelectPortal.bind(this)}
+                                onSelect={this.onSelectPortal.bind(this) }
                                 />
                         </div>
                     }
@@ -332,36 +330,39 @@ class AdminLogPanelBody extends Component {
                                 style={{ width: "100%" }}
                                 options={logTypeOptions}
                                 withBorder={false}
-                                onSelect={this.onSelectLogType.bind(this)}
+                                onSelect={this.onSelectLogType.bind(this) }
                                 />
                         </div>
                     }
-                    <div className="toolbar-button toolbar-button-actions" style={{ width: "15%", paddingRight: 0, textAlign: "right" }}>
-                        <div onClick={this.toggleEmailPanel.bind(this)}>
-                            <TextOverflowWrapper
-                                text={Localization.get("btnEmail")}
-                                maxWidth={100}
-                                />
+                    {(canEdit || util.settings.isAdmin) &&
+                        <div className="toolbar-button toolbar-button-actions" style={{ width: "15%", paddingRight: 0, textAlign: "right" }}>
+                            <div onClick={this.toggleEmailPanel.bind(this) }>
+                                <TextOverflowWrapper
+                                    text={Localization.get("btnEmail") }
+                                    maxWidth={100}
+                                    enabled={canEdit || util.settings.isAdmin}
+                                    />
+                            </div>
+                            <div className="collapsible-content">
+                                <EmailPanel
+                                    fixedHeight={450}
+                                    isOpened={state.emailPanelOpen}
+                                    logIds={props.selectedRowIds}
+                                    onCloseEmailPanel={this.toggleEmailPanel.bind(this) }>
+                                </EmailPanel>
+                            </div>
                         </div>
-                        <div className="collapsible-content">
-                            <EmailPanel
-                                fixedHeight={450}
-                                isOpened={state.emailPanelOpen}
-                                logIds={props.selectedRowIds}
-                                onCloseEmailPanel={this.toggleEmailPanel.bind(this)}>
-                            </EmailPanel>
-                        </div>
-                    </div>
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this)} style={{ width: "18%" }}>
+                    }
+                    {canEdit && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this) } style={{ width: "18%" }}>
                         <TextOverflowWrapper
-                            text={Localization.get("btnDelete")}
+                            text={Localization.get("btnDelete") }
                             maxWidth={115}
                             />
                     </div>
                     }
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this)} style={{ borderLeft: "none", width: "15%" }}>
+                    {canEdit && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) } style={{ borderLeft: "none", width: "15%" }}>
                         <TextOverflowWrapper
-                            text={Localization.get("btnClear")}
+                            text={Localization.get("btnClear") }
                             maxWidth={90}
                             />
                     </div>
@@ -369,12 +370,12 @@ class AdminLogPanelBody extends Component {
                 </div>
                 <div className="logContainer">
                     <div className="logContainerBox">
-                        {this.renderLogListHeader()}
-                        {this.renderedLogList()}
+                        {this.renderLogListHeader() }
+                        {this.renderedLogList() }
                     </div>
                 </div>
-                {this.renderPager()}
-                {this.renderedLogLegend()}
+                {this.renderPager() }
+                {this.renderedLogLegend() }
             </div>
         );
     }

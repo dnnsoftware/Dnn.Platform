@@ -20,9 +20,9 @@ const logActions = {
             });
         };
     },
-    getPortalList(callback) {
+    getPortalList(addAll, callback) {
         return (dispatch) => {
-            ApplicationService.getPortalList(data => {
+            ApplicationService.getPortalList(addAll, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_PORTAL_LIST,
                     data: {

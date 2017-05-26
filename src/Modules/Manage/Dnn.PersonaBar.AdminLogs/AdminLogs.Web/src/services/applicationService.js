@@ -26,9 +26,9 @@ class ApplicationService {
         sf.get("GetLogItems?" + serializeQueryStringParameters(searchParameters), {}, callback);
     }
 
-    getPortalList(callback) {
+    getPortalList(addAll, callback) {
         const sf = this.getServiceFramework("Portals");
-        sf.get("GetPortals?addAll=true", {}, callback);
+        sf.get("GetPortals?addAll=" + addAll, {}, callback);
     }
 
     /*Get all the types*/

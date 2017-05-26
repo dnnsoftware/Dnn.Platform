@@ -58,7 +58,7 @@ class LogSettingRow extends Component {
         let uniqueId = "settingrow-" + Math.random() + Date.now();
 
         return (
-            <div className={"collapsible-component-log" + (opened ? " row-opened" : "")} id={uniqueId}>
+            <div className={"collapsible-component-log" + (opened ? " row-opened" : "") } id={uniqueId}>
                 {props.visible && <div className={"collapsible-header-log " + !opened} >
                     <GridCell title={props.typeName} columnSize={40} >
                         {props.typeName}</GridCell>
@@ -68,10 +68,12 @@ class LogSettingRow extends Component {
                         {props.activeStatus}</GridCell>
                     <GridCell columnSize={20} >
                         {props.fileName}&nbsp; </GridCell>
-                    <GridCell columnSize={5} >
-                        <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}>
-                        </div>
-                    </GridCell>
+                    {!props.readOnly &&
+                        <GridCell columnSize={5} >
+                            <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
+                            </div>
+                        </GridCell>
+                    }
                 </div>
                 }
                 <Collapse accordion={true} isOpened={opened} style={{ float: "left" }}>{opened && props.children}</Collapse>
@@ -91,11 +93,13 @@ LogSettingRow.propTypes = {
     Collapse: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    visible: PropTypes.bool
+    visible: PropTypes.bool,
+    readOnly: PropTypes.bool
 };
 
 LogSettingRow.defaultProps = {
     collapsed: true,
-    visible: true
+    visible: true,
+    readOnly: false
 };
 export default (LogSettingRow);

@@ -26,10 +26,10 @@ using Newtonsoft.Json.Linq;
 
 namespace Dnn.PersonaBar.AdminLogs.Services
 {
-    [MenuPermission(Scope = ServiceScope.Admin)]
+    [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class AdminLogsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AdminLogsController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AdminLogsController));
         private readonly Components.AdminLogsController _controller = new Components.AdminLogsController();
 
         /// GET: api/AdminLogs/GetLogTypes
@@ -39,6 +39,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param></param>
         /// <returns>List of log types</returns>
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "," + Components.Constants.LogSettingsEdit, AllowAdmin = true)]
         public HttpResponseMessage GetLogTypes()
         {
             try
@@ -51,7 +52,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 logTypes.Insert(0, new LogTypeInfo
                 {
                     LogTypeFriendlyName = Localization.GetString("AllTypes", Components.Constants.LocalResourcesFile),
-                LogTypeKey = "*"
+                    LogTypeKey = "*"
                 });
 
                 var types = logTypes.Select(v => new
@@ -76,7 +77,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             }
         }
 
-
         #region Event Viewer
 
         /// GET: api/AdminLogs/GetLogItems
@@ -89,6 +89,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param name="pageIndex"></param>
         /// <returns>List of log items</returns>
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView, AllowAdmin = true)]
         public HttpResponseMessage GetLogItems(string logType, int pageSize, int pageIndex)
         {
             try
@@ -136,17 +137,17 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequireHost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit)]
         public HttpResponseMessage DeleteLogItems(IEnumerable<string> logIds)
         {
             try
             {
                 foreach (var logId in logIds)
                 {
-                    var objLogInfo = new LogInfo {LogGUID = logId};
+                    var objLogInfo = new LogInfo { LogGUID = logId };
                     LogController.Instance.DeleteLog(objLogInfo);
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
@@ -163,6 +164,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, AllowAdmin = true)]
         public HttpResponseMessage EmailLogItems(EmailLogItemsRequest request)
         {
             try
@@ -170,7 +172,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 if (!UserInfo.IsSuperUser && request.LogIds.Any(
                     x =>
                         ((LogInfo)
-                            LogController.Instance.GetSingleLog(new LogInfo {LogGUID = x},
+                            LogController.Instance.GetSingleLog(new LogInfo { LogGUID = x },
                                 LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalID != PortalId))
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
@@ -209,13 +211,13 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequireHost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit)]
         public HttpResponseMessage ClearLog()
         {
             try
             {
                 _controller.ClearLog();
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
@@ -226,7 +228,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
 
         #endregion
 
-
         #region Log Settings
 
         /// GET: api/AdminLogs/GetKeepMostRecentOptions
@@ -235,8 +236,8 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param></param>
         /// <returns>Option list of Keep Most Recent</returns>
-        [RequireHost]
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
         public HttpResponseMessage GetKeepMostRecentOptions()
         {
             try
@@ -265,8 +266,8 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param></param>
         /// <returns>Option list of Occurence Threshold</returns>
-        [RequireHost]
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
         public HttpResponseMessage GetOccurrenceOptions()
         {
             try
@@ -298,8 +299,8 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param></param>
         /// <returns>List of log settings</returns>
-        [RequireHost]
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
         public HttpResponseMessage GetLogSettings()
         {
             try
@@ -307,19 +308,21 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 var logTypes = LogController.Instance.GetLogTypeConfigInfo().Cast<LogTypeConfigInfo>();
 
                 int portalId;
-                var types = logTypes.Select(v => new
-                {
-                    v.LogTypeFriendlyName,
-                    v.LogTypeKey,
-                    v.LogTypePortalID,
-                    LogTypePortalName =
-                        int.TryParse(v.LogTypePortalID, out portalId)
-                            ? PortalController.Instance.GetPortal(portalId).PortalName
-                            : "*",
-                    v.LoggingIsActive,
-                    v.LogFileName,
-                    v.ID
-                }).ToList();
+                var types = logTypes
+                    .Where(x => UserInfo.IsSuperUser || (int.TryParse(x.LogTypePortalID, out portalId) && portalId == PortalId))
+                    .Select(v => new
+                    {
+                        v.LogTypeFriendlyName,
+                        v.LogTypeKey,
+                        v.LogTypePortalID,
+                        LogTypePortalName =
+                            int.TryParse(v.LogTypePortalID, out portalId)
+                                ? PortalController.Instance.GetPortal(portalId).PortalName
+                                : "*",
+                        v.LoggingIsActive,
+                        v.LogFileName,
+                        v.ID
+                    }).ToList();
 
                 var response = new
                 {
@@ -343,25 +346,29 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="logTypeConfigId"></param>
         /// <returns></returns>
-        [RequireHost]
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
         public HttpResponseMessage GetLogSetting(string logTypeConfigId)
         {
             try
             {
                 var configInfo = _controller.GetLogTypeConfig(logTypeConfigId);
                 int portalId;
+                if (!UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != PortalId))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     configInfo.ID,
                     configInfo.LoggingIsActive,
                     configInfo.LogTypeFriendlyName,
                     configInfo.LogTypeKey,
-                    LogTypePortalID = int.TryParse(configInfo.LogTypePortalID, out portalId) ? portalId.ToString() : "*",
+                    LogTypePortalID =
+                            int.TryParse(configInfo.LogTypePortalID, out portalId) ? portalId.ToString() : "*",
                     LogTypePortalName =
-                        int.TryParse(configInfo.LogTypePortalID, out portalId)
-                            ? PortalController.Instance.GetPortal(portalId).PortalName
-                            : "*",
+                            int.TryParse(configInfo.LogTypePortalID, out portalId)
+                                ? PortalController.Instance.GetPortal(portalId).PortalName
+                                : "*",
                     configInfo.KeepMostRecent,
                     configInfo.EmailNotificationIsActive,
                     configInfo.NotificationThreshold,
@@ -384,13 +391,15 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [RequireHost]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit)]
         public HttpResponseMessage AddLogSetting([FromBody] UpdateLogSettingsRequest request)
         {
             try
             {
+                request.LogTypePortalID = UserInfo.IsSuperUser ? request.LogTypePortalID : PortalId.ToString();
+
                 var logTypeConfigInfo = JObject.FromObject(request).ToObject<LogTypeConfigInfo>();
                 _controller.AddLogTypeConfig(logTypeConfigInfo);
                 return GetLatestLogSetting();
@@ -408,13 +417,23 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [RequireHost]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit)]
         public HttpResponseMessage UpdateLogSetting([FromBody] UpdateLogSettingsRequest request)
         {
             try
             {
+                request.LogTypePortalID = UserInfo.IsSuperUser ? request.LogTypePortalID : PortalId.ToString();
+
+                int requestPortalId;
+                int settingPortalId;
+                var configInfo = _controller.GetLogTypeConfig(request.ID);
+                if (!UserInfo.IsSuperUser &&
+                    (!int.TryParse(configInfo.LogTypePortalID, out settingPortalId) ||
+                     !int.TryParse(request.LogTypePortalID, out requestPortalId) || requestPortalId != settingPortalId))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
                 var logTypeConfigInfo = JObject.FromObject(request).ToObject<LogTypeConfigInfo>();
                 _controller.UpdateLogTypeConfig(logTypeConfigInfo);
                 return GetLogSetting(request.ID);
@@ -432,16 +451,21 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [RequireHost]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit)]
         public HttpResponseMessage DeleteLogSetting(DeleteLogSettingsRequest request)
         {
             try
             {
+                var configInfo = _controller.GetLogTypeConfig(request.LogTypeConfigId);
+                int portalId;
+                if (!UserInfo.IsSuperUser && (!int.TryParse(configInfo.LogTypePortalID, out portalId) || portalId != PortalId))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
                 _controller.DeleteLogTypeConfig(request.LogTypeConfigId);
                 return Request.CreateResponse(HttpStatusCode.OK,
-                    new {Success = true, LogSettingId = request.LogTypeConfigId});
+                    new { Success = true, LogSettingId = request.LogTypeConfigId });
             }
             catch (Exception exc)
             {
@@ -492,7 +516,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                         configInfo.MailToAddress
                     });
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {

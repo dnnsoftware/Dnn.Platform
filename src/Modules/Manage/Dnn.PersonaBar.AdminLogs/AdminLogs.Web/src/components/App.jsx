@@ -14,11 +14,17 @@ import {
 import util from "../utils";
 
 let isHost = false;
+let isAdmin = false;
+let canViewAdminLogs = false;
+let canViewLogSettings = false;
 
 class App extends Component {
     constructor() {
         super();
         isHost = util.settings.isHost;
+        isAdmin = isHost || util.settings.isAdmin;
+        canViewAdminLogs = isAdmin || util.settings.permissions.ADMIN_LOGS_VIEW;
+        canViewLogSettings = isHost || util.settings.permissions.LOG_SETTINGS_VIEW;
     }
 
     handleSelect(index) {
@@ -32,26 +38,27 @@ class App extends Component {
         props.dispatch(VisiblePanelActions.selectPanel(page, index));
     }
     render() {
+        let renderTabs = [];
+        let tabHeaders = [];
+        if (canViewAdminLogs) {
+            tabHeaders.push(Localization.get("AdminLogs.Header"));
+            renderTabs.push(<AdminLogs />);
+        }
+        if (canViewLogSettings) {
+            tabHeaders.push(Localization.get("LogSettings.Header"));
+            renderTabs.push(<LogSettings />);
+        }
+
         return (
             <GridCell>
-                <PersonaBarPageHeader title={("Admin Logs")}>
+                <PersonaBarPageHeader title={("Admin Logs") }>
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
-                    {isHost &&
-                        <Tabs onSelect={this.handleSelect.bind(this)}
-                            tabHeaders={[Localization.get("AdminLogs.Header"), Localization.get("LogSettings.Header")]}
-                            type="primary">
-                            <AdminLogs />
-                            <LogSettings />
-                        </Tabs>
-                    }
-                    {!isHost &&
-                        <Tabs onSelect={this.handleSelect.bind(this)}
-                            tabHeaders={[Localization.get("AdminLogs.Header")]}
-                            type="primary">
-                            <AdminLogs />
-                        </Tabs>
-                    }
+                    <Tabs onSelect={this.handleSelect.bind(this) }
+                        tabHeaders={tabHeaders}
+                        type="primary">
+                        {renderTabs}
+                    </Tabs>
                 </PersonaBarPageBody>
             </GridCell>
         );
