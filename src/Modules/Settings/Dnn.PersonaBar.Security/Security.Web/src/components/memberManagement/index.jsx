@@ -15,7 +15,7 @@ import styles from "./style.less";
 
 const re = /^[1-9][0-9]?[0-9]?[0-9]?$/;
 const re2 = /^[1-9][0-9]?[0-9]?[0-9]?$|^0$/;
-let canEdit = false;
+
 class MemberManagementPanelBody extends Component {
     constructor() {
         super();
@@ -30,7 +30,6 @@ class MemberManagementPanelBody extends Component {
             },
             triedToSubmit: false
         };
-        canEdit = util.settings.isHost || util.settings.permissions.MEMBER_MANAGEMENT_EDIT;
     }
 
     componentWillMount() {
@@ -201,7 +200,6 @@ class MemberManagementPanelBody extends Component {
                             errorMessage={resx.get("MembershipResetLinkValidity.ErrorMessage") }
                             value={state.memberSettings.MembershipResetLinkValidity}
                             onChange={this.onSettingChange.bind(this, "MembershipResetLinkValidity") }
-                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
@@ -221,7 +219,6 @@ class MemberManagementPanelBody extends Component {
                             errorMessage={resx.get("AdminMembershipResetLinkValidity.ErrorMessage") }
                             value={state.memberSettings.AdminMembershipResetLinkValidity}
                             onChange={this.onSettingChange.bind(this, "AdminMembershipResetLinkValidity") }
-                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
@@ -241,7 +238,6 @@ class MemberManagementPanelBody extends Component {
                                 labelHidden={true}
                                 value={state.memberSettings.EnablePasswordHistory}
                                 onChange={this.onSettingChange.bind(this, "EnablePasswordHistory") }
-                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -262,7 +258,6 @@ class MemberManagementPanelBody extends Component {
                             errorMessage={resx.get("MembershipNumberPasswords.ErrorMessage") }
                             value={state.memberSettings.MembershipNumberPasswords}
                             onChange={this.onSettingChange.bind(this, "MembershipNumberPasswords") }
-                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
@@ -282,7 +277,6 @@ class MemberManagementPanelBody extends Component {
                                 labelHidden={true}
                                 value={state.memberSettings.EnableBannedList}
                                 onChange={this.onSettingChange.bind(this, "EnableBannedList") }
-                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -303,7 +297,6 @@ class MemberManagementPanelBody extends Component {
                                 labelHidden={true}
                                 value={state.memberSettings.EnableStrengthMeter}
                                 onChange={this.onSettingChange.bind(this, "EnableStrengthMeter") }
-                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -324,7 +317,6 @@ class MemberManagementPanelBody extends Component {
                                 labelHidden={true}
                                 value={state.memberSettings.EnableIPChecking}
                                 onChange={this.onSettingChange.bind(this, "EnableIPChecking") }
-                                readOnly={!canEdit}
                                 />
                         </div>
                     </InputGroup>
@@ -345,7 +337,6 @@ class MemberManagementPanelBody extends Component {
                             errorMessage={resx.get("PasswordExpiry.ErrorMessage") }
                             value={state.memberSettings.PasswordExpiry}
                             onChange={this.onSettingChange.bind(this, "PasswordExpiry") }
-                            enabled={canEdit}
                             />
                     </InputGroup>
                     <InputGroup>
@@ -365,10 +356,8 @@ class MemberManagementPanelBody extends Component {
                             errorMessage={resx.get("PasswordExpiryReminder.ErrorMessage") }
                             value={state.memberSettings.PasswordExpiryReminder}
                             onChange={this.onSettingChange.bind(this, "PasswordExpiryReminder") }
-                            enabled={canEdit}
                             />
                     </InputGroup>
-                    {canEdit &&
                         <div className="buttons-box">
                             <Button
                                 disabled={!this.props.memberSettingsClientModified}
@@ -383,7 +372,6 @@ class MemberManagementPanelBody extends Component {
                                 {resx.get("Save") }
                             </Button>
                         </div>
-                    }
                 </div>
             );
         }

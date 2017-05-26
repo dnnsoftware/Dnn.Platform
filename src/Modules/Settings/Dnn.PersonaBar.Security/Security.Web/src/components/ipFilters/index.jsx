@@ -15,14 +15,13 @@ import styles from "./style.less";
 const warningIcon = require(`!raw!./../svg/error.svg`);
 
 let tableFields = [];
-let canEdit = false;
+
 class IpFiltersPanelBody extends Component {
     constructor() {
         super();
         this.state = {
             openId: ""
         };
-        canEdit = util.settings.isHost || util.settings.permissions.LOGIN_IP_FILTERS_EDIT;
     }
 
     componentWillMount() {
@@ -111,17 +110,13 @@ class IpFiltersPanelBody extends Component {
                     OpenCollapse={this.toggle.bind(this) }
                     Collapse={this.collapse.bind(this) }
                     onDelete={this.onDeleteIpFilter.bind(this, item.IPFilterID) }
-                    id={id}
-                    readOnly = {!canEdit}>
-                    {canEdit &&
+                    id={id}>
                         <IpFilterEditor
                             ipFilterId={item.IPFilterID}
                             Collapse={this.collapse.bind(this) }
                             onUpdate={this.onUpdateIpFilter.bind(this) }
                             id={id}
-                            openId={this.state.openId}
-                            />
-                    }
+                        openId={this.state.openId} />
                 </IpFilterRow>
             );
         });
@@ -140,17 +135,15 @@ class IpFiltersPanelBody extends Component {
                             </div>
                         }
                         <div className="AddItemRow">
-                            {canEdit &&
                                 <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
                                     <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
                                     </div> {resx.get("cmdAdd") }
                                 </div>
-                            }
                         </div>
                     </div>
                     <div className="ip-filter-items-grid">
                         {this.renderHeader() }
-                        {canEdit && <IpFilterRow
+                                <IpFilterRow
                             ipFilterId={"-"}
                             ruleType={"-"}
                             ipFilter={"-"}
@@ -162,16 +155,13 @@ class IpFiltersPanelBody extends Component {
                             Collapse={this.collapse.bind(this) }
                             onDelete={this.onDeleteIpFilter.bind(this) }
                             id={"add"}
-                            visible={opened}
-                            readOnly = {!canEdit}>
+                                    visible={opened}>
                             <IpFilterEditor
                                 Collapse={this.collapse.bind(this) }
                                 onUpdate={this.onUpdateIpFilter.bind(this) }
                                 id={"add"}
-                                openId={this.state.openId}
-                                />
+                                        openId={this.state.openId} />
                         </IpFilterRow>
-                        }
                         {this.renderedIpFilters() }
                     </div>
                 </div>

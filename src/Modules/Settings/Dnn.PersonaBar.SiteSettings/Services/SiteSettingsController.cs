@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
-        private const int DefaultSearchTagBoost = 40;   
+        private const int DefaultSearchTagBoost = 40;
         private const int DefaultSearchContentBoost = 35;
         private const int DefaultSearchDescriptionBoost = 20;
         private const int DefaultSearchAuthorBoost = 15;
@@ -207,7 +207,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView + "," + Components.Constants.Constants.SiteInfoEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.Constants.MenuName, Permission = Components.Constants.Constants.SiteInfoView + "&" + Components.Constants.Constants.SiteInfoEdit)]
         public HttpResponseMessage UpdatePortalSettings(UpdateSiteSettingsRequest request)
         {
             try

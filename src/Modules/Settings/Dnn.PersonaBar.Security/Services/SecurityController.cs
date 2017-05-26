@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="cultureCode"></param>
         /// <returns>Portal's basic login settings</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView, AllowAdmin = true)]
         public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
         {
             try
@@ -122,7 +122,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "," + Components.Constants.BasicLoginSettingsEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit, AllowAdmin = true)]
         public HttpResponseMessage UpdateBasicLoginSettings(UpdateBasicLoginSettingsRequest request)
         {
             try
@@ -164,7 +164,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param></param>
         /// <returns>List of IP filters</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LoginIpFiltersView)]
+        [RequireHost]
         public HttpResponseMessage GetIpFilters()
         {
             try
@@ -201,7 +201,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="filterId"></param>
         /// <returns>IP filter</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LoginIpFiltersView)]
+        [RequireHost]
         public HttpResponseMessage GetIpFilter(int filterId)
         {
             try
@@ -236,7 +236,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LoginIpFiltersView + "," + Components.Constants.LoginIpFiltersEdit)]
+        [RequireHost]
         public HttpResponseMessage UpdateIpFilter(UpdateIpFilterRequest request)
         {
             try
@@ -282,7 +282,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LoginIpFiltersView + "," + Components.Constants.LoginIpFiltersEdit)]
+        [RequireHost]
         public HttpResponseMessage DeleteIpFilter(int filterId)
         {
             try
@@ -319,7 +319,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Portal's member settings</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.MemberManagementView)]
+        [RequireHost]
         public HttpResponseMessage GetMemberSettings()
         {
             try
@@ -361,7 +361,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.MemberManagementView + "," + Components.Constants.MemberManagementEdit)]
+        [RequireHost]
         public HttpResponseMessage UpdateMemberSettings(UpdateMemberSettingsRequest request)
         {
             try
@@ -391,7 +391,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Portal's registration settings</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView, AllowAdmin = true)]
         public HttpResponseMessage GetRegistrationSettings()
         {
             try
@@ -500,7 +500,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "," + Components.Constants.RegistrationSettingsEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit, AllowAdmin = true)]
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
             try
