@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.UI.Services
     /// <summary>
     /// Service to perform portal operations.
     /// </summary>
-    [MenuPermission(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Regular)]
     public class PortalsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalsController));

@@ -5,6 +5,7 @@ using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;
 using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Library.Attributes
@@ -22,6 +23,8 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// </summary>
         public string Permission { get; set; }
 
+        public bool AllowAdmin { get; set; }
+
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var menuItem = GetMenuByIdentifier();
@@ -31,8 +34,14 @@ namespace Dnn.PersonaBar.Library.Attributes
             {
                 return false;
             }
-            var allPermissions = Permission.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            return allPermissions.All(x => MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, x));
+            if (AllowAdmin && PortalSecurity.IsInRole(Constants.AdminsRoleName))
+            {
+                return true;
+            }
+            //Permissions seperated by & should be treated with AND operand.
+            //Permissions seperated by , are internally treated with OR operand.
+            var allPermissionGroups = Permission.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, allPermissions));
         }
 
         private MenuItem GetMenuByIdentifier()
