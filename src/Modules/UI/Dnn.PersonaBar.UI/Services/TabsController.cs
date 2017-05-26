@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.UI.Services
         {
             try
             {
-                if (!UserInfo.IsSuperUser && portalId != PortalId)
+                if (!UserInfo.IsSuperUser && portalId != PortalId && portalId > -1)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", LocalResourcesFile));
                 }
