@@ -19,6 +19,7 @@
         window.dnn.initRoles = function initializeRoles() {
             return {
                 utility: utility,
+                settings: params.settings,
                 moduleName: 'Roles'
             };
         };

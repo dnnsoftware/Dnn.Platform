@@ -5,10 +5,14 @@ import Collapse from "dnn-collapsible";
 import GridCell from "dnn-grid-cell";
 import IconButton from "../../common/IconButton";
 import resx from "resources";
+import util from "utils";
+
+let canEdit = false;
 class RoleRow extends Component {
     constructor() {
         super();
         this.handleClick = this.handleClick.bind(this);
+        canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
     }
     componentDidMount() {
         document.addEventListener("click", this.handleClick);
@@ -65,7 +69,7 @@ class RoleRow extends Component {
         if (props.visible) {
             return (
                 <div className={"collapsible-component1 " + opened} id={uniqueId}>
-                    {!props.addIsClosed &&  <div className={"collapsible-header1 " + !opened}>
+                    {!props.addIsClosed && <div className={"collapsible-header1 " + !opened}>
                         <GridCell title={props.roleName} columnSize={40} >
                             {props.roleName}</GridCell>
                         <GridCell columnSize={20} >
@@ -74,18 +78,20 @@ class RoleRow extends Component {
                             {props.userCount}</GridCell>
                         <GridCell columnSize={15} >
                             {props.auto ? <IconButton className="icon-flat" type="checkmark" /> : <div>&nbsp; </div>} </GridCell>
-                        <GridCell columnSize={10} >
-                            {props.id !== "add" && props.roleIsApproved &&
-                                <IconButton type="user"
-                                    className={"edit-icon " + !(opened && props.currentIndex === 0)}
-                                    onClick={this.toggleUsers.bind(this)} 
-                                    title={resx.get("UsersInRole")}/>
-                            }
-                            <IconButton type="Edit"
-                                className={"edit-icon " + !(opened && props.currentIndex === 1)}
-                                onClick={this.toggleEditRole.bind(this)} 
-                                title={resx.get("EditRole")}/>
-                        </GridCell>
+                        {canEdit &&
+                            <GridCell columnSize={10} >
+                                {props.id !== "add" && props.roleIsApproved &&
+                                    <IconButton type="user"
+                                        className={"edit-icon " + !(opened && props.currentIndex === 0) }
+                                        onClick={this.toggleUsers.bind(this) }
+                                        title={resx.get("UsersInRole") }/>
+                                }
+                                <IconButton type="Edit"
+                                    className={"edit-icon " + !(opened && props.currentIndex === 1) }
+                                    onClick={this.toggleEditRole.bind(this) }
+                                    title={resx.get("EditRole") }/>
+                            </GridCell>
+                        }
                     </div>
                     }
                     <Collapse accordion={true} isOpened={opened} className="role-row-collapsible">
