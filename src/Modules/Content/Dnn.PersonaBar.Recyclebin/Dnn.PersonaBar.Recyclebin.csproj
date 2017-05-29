@@ -101,6 +101,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Dto\UserItem.cs" />
     <Compile Include="Components\Dto\ModuleItem.cs" />
     <Compile Include="Components\Dto\PageItem.cs" />

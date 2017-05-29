@@ -1,4 +1,4 @@
-﻿﻿#region Copyright
+﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         IRecyclebinController
     {
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RecyclebinController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
 
         #region Fields
 
@@ -52,11 +52,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         #region Properties
 
-        private static string LocalResourcesFile => 
-            Path.Combine(Constants.PersonaBarRelativePath, "Modules/Dnn.Recyclebin/App_LocalResources/Recyclebin.resx");
-
         private static PortalSettings PortalSettings => PortalSettings.Current;
-        
+
         #endregion
 
         #region ServiceLocator
@@ -72,7 +69,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         public string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourcesFile);
+            return Localization.GetString(key, Constants.LocalResourcesFile);
         }
 
         public void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false)
@@ -305,7 +302,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             var deletedModules = _moduleController.GetModules(PortalSettings.PortalId)
                 .Cast<ModuleInfo>()
                 .Where(module => module.IsDeleted && (
-                    TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) || 
+                    TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) ||
                     ModulePermissionController.CanDeleteModule(module))
                 )
                 .ToList();
@@ -324,7 +321,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         public List<UserInfo> GetDeletedUsers()
         {
-            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().ToList();
+            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(CanManageUser).ToList();
             return deletedusers;
         }
 
@@ -332,38 +329,52 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         {
             var userInfos = users as IList<UserInfo> ?? users.ToList();
             if (users == null || !userInfos.Any()) return;
-            foreach (var user in userInfos.Select(u => UserController.GetUserById(u.PortalID, u.UserID)).Where(user => user != null).Where(user => user.IsDeleted))
+            foreach (
+                var user in
+                    userInfos.Select(u => UserController.GetUserById(u.PortalID, u.UserID))
+                        .Where(user => user != null)
+                        .Where(user => user.IsDeleted))
             {
-                UserController.RemoveUser(user);
+                if (CanManageUser(user))
+                    UserController.RemoveUser(user);
             }
         }
 
         public void DeleteUsers(IEnumerable<UserItem> users)
         {
-            var userInfos = users as IList<UserItem> ?? users.ToList();
-            if (users == null || !userInfos.Any()) return;
-            foreach (var user in userInfos.Select(u => UserController.GetUserById(u.PortalId, u.Id)).Where(user => user != null).Where(user => user.IsDeleted))
-            {
-                UserController.RemoveUser(user);
-            }
+            var userInfos = users.Select(x => new UserInfo { PortalID = x.PortalId, UserID = x.Id });
+            DeleteUsers(userInfos);
         }
 
         public bool RestoreUser(UserInfo user, out string errorMessage)
         {
             errorMessage = null;
-            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().ToList();
+            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(CanManageUser).ToList();
             if ((user != null) && deletedusers.Any(u => u.UserID == user.UserID))
             {
                 UserController.RestoreUser(ref user);
                 return true;
             }
-            else
-            {
-                errorMessage = string.Format(LocalizeString("Service_RestoreUserError"));
-                return false;
-            }
+            errorMessage = string.Format(LocalizeString("Service_RestoreUserError"));
+            return false;
         }
 
+        /// <summary>
+        /// Checks if the current user has enough rights to manage the provided user or not
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private bool CanManageUser(UserInfo user)
+        {
+            if (PortalSettings.UserInfo.IsSuperUser ||
+                (PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !user.IsSuperUser) ||
+                (!PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !user.IsSuperUser &&
+                 !user.IsInRole(PortalSettings.AdministratorRoleName)))
+            {
+                return true;
+            }
+            return false;
+        }
         #endregion
     }
 }
