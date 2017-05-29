@@ -1217,4 +1217,10 @@ Common issues with bad installation files:
   <data name="NoModuleUsageDetail.Text" xml:space="preserve">
     <value>This module does not exist on any {0} pages.</value>
   </data>
+  <data name="Loading.Text" xml:space="preserve">
+    <value>One sec...We are fetching your extensions</value>
+  </data>
+  <data name="Loading.Tooltip" xml:space="preserve">
+    <value>Your extensions will be here in a just a moment</value>
+  </data>
 </root>
