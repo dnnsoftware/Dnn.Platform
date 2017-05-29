@@ -21,12 +21,13 @@ class SchedulerPanel extends Component {
             currentServerId: "*",
             schedulerItemList: [],
             openId: "",
-            serverList: []
+            serverList: [],
+            historyPanelOpen: false
         };
     }
 
     componentWillMount() {
-        const {props} = this;
+        const { props } = this;
         props.dispatch(TaskActions.getSchedulerItemList());
         if (props.serverList === null || props.serverList === [] || props.serverList === undefined) {
             props.dispatch(TaskActions.getServerList());
@@ -59,32 +60,31 @@ class SchedulerPanel extends Component {
         });
         return <div className="header-row">{tableHeaders}</div>;
     }
-    uncollapse(id) {
+    uncollapse(id, index) {
         setTimeout(() => {
             this.setState({
-                openId: id
+                openId: id,
+                historyPanelOpen: index === 1
             });
         }, this.timeout);
     }
-    collapse() {
+    collapse(index) {
         if (this.state.openId !== "") {
             this.setState({
-                openId: ""
+                openId: "",
+                historyPanelOpen: index !== 1
             });
         }
     }
-    toggle(openId) {
+    toggle(openId, index) {
         if (openId !== "") {
-            this.uncollapse(openId);
-        }
-        else {
-            //this.collapse();
+            this.uncollapse(openId, index);
         }
     }
 
     onSelectServer(event) {
-        const {props} = this;
-        let {state} = this;
+        const { props } = this;
+        let { state } = this;
         let index = event.target.selectedIndex;
         let server = event.target[index].text;
         let serverId = event.target.value;
@@ -99,7 +99,7 @@ class SchedulerPanel extends Component {
     }
 
     onUpdateSchedulerItem(scheduleItemDetail) {
-        const {props} = this;
+        const { props } = this;
         if (scheduleItemDetail.ScheduleID) {
             props.dispatch(TaskActions.updateScheduleItem(scheduleItemDetail, () => {
                 util.utilities.notify(resx.get("ScheduleItemUpdateSuccess"));
@@ -124,7 +124,7 @@ class SchedulerPanel extends Component {
     }
 
     onDeleteSchedulerItem(scheduleId) {
-        const {props} = this;
+        const { props } = this;
         util.utilities.confirm(resx.get("ScheduleItemDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const itemList = props.schedulerItemList.filter((item) => item.ScheduleID !== scheduleId);
             props.dispatch(TaskActions.deleteSchedule({ "ScheduleId": scheduleId }, itemList, () => {
@@ -138,6 +138,7 @@ class SchedulerPanel extends Component {
 
     /* eslint-disable react/no-danger */
     renderedScedulerItemList() {
+        const { state } = this;
         let i = 0;
         if (this.props.schedulerItemList) {
             return this.props.schedulerItemList.map((item, index) => {
@@ -156,7 +157,8 @@ class SchedulerPanel extends Component {
                         openId={this.state.openId}
                         OpenCollapse={this.toggle.bind(this)}
                         Collapse={this.collapse.bind(this)}
-                        id={id}>
+                        id={id}
+                        panelIndex={this.state.historyPanelOpen ? 1 : 0}>
                         <SchedulerEditor
                             serverList={this.props.serverList}
                             enabled={item.Enabled}
@@ -165,7 +167,8 @@ class SchedulerPanel extends Component {
                             onDelete={this.onDeleteSchedulerItem.bind(this)}
                             onUpdate={this.onUpdateSchedulerItem.bind(this)}
                             id={id}
-                            openId={this.state.openId} />
+                            openId={this.state.openId}
+                            panelIndex={this.state.historyPanelOpen ? 1 : 0} />                        
                     </SchedulerRow>
                 );
             });
@@ -186,7 +189,7 @@ class SchedulerPanel extends Component {
                                 withBorder={false}
                                 value={this.state.currentServerId}
                                 onSelect={this.onSelectServer.bind(this)}
-                                />
+                            />
                         }
                     </div>
                     <div className="AddItemRow">
