@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
     public class RecyclebinController : PersonaBarApiController
     {
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView, ForceAdminPermission = true)]
         public HttpResponseMessage GetDeletedPageList()
         {
             var tabs = Components.RecyclebinController.Instance.GetDeletedTabs();
@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         }
 
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView, ForceAdminPermission = true)]
         public HttpResponseMessage GetDeletedModuleList()
         {
             var mods = Components.RecyclebinController.Instance.GetDeletedModules();
@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         }
 
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView, ForceAdminPermission = true)]
         public HttpResponseMessage GetDeletedUserList()
         {
             var users = Components.RecyclebinController.Instance.GetDeletedUsers();
@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinPagesEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinPagesEdit, ForceAdminPermission = true)]
         public HttpResponseMessage RemovePage(List<PageItem> pages)
         {
             var errors = new StringBuilder();
@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView + "&" + Components.Constants.RecycleBinModulesEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView + "&" + Components.Constants.RecycleBinModulesEdit, ForceAdminPermission = true)]
         public HttpResponseMessage RemoveModule(List<ModuleItem> modules)
         {
             var errors = new StringBuilder();
@@ -122,7 +122,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinUsersEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinUsersEdit, ForceAdminPermission = true)]
         public HttpResponseMessage RemoveUser(List<UserItem> users)
         {
             var errors = new StringBuilder();
@@ -145,7 +145,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinPagesEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinPagesEdit, ForceAdminPermission = true)]
         public HttpResponseMessage RestorePage(List<PageItem> pages)
         {
             var errors = new StringBuilder();
@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView + "&" + Components.Constants.RecycleBinModulesEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView + "&" + Components.Constants.RecycleBinModulesEdit, ForceAdminPermission = true)]
         public HttpResponseMessage RestoreModule(List<ModuleItem> modules)
         {
             //modules dic stores module.Key=moduleId, module.Value=pageId;
@@ -209,7 +209,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinUsersEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinUsersEdit, ForceAdminPermission = true)]
         public HttpResponseMessage RestoreUser(List<UserItem> users)
         {
             var errors = new StringBuilder();
@@ -246,7 +246,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinModulesView + "&" +
                 Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinPagesEdit + "&" +
                 Components.Constants.RecycleBinModulesEdit + "&" + Components.Constants.RecycleBinUsersEdit,
-            AllowAdmin = true)]
+            ForceAdminPermission = true)]
         public HttpResponseMessage EmptyRecycleBin()
         {
             var deletedTabs = Components.RecyclebinController.Instance.GetDeletedTabs();

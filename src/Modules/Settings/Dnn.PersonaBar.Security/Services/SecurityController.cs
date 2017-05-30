@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="cultureCode"></param>
         /// <returns>Portal's basic login settings</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView, ForceAdminPermission = true)]
         public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
         {
             try
@@ -122,7 +122,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit, ForceAdminPermission = true)]
         public HttpResponseMessage UpdateBasicLoginSettings(UpdateBasicLoginSettingsRequest request)
         {
             try
@@ -391,7 +391,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Portal's registration settings</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView, ForceAdminPermission = true)]
         public HttpResponseMessage GetRegistrationSettings()
         {
             try
@@ -500,7 +500,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit, ForceAdminPermission = true)]
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
             try

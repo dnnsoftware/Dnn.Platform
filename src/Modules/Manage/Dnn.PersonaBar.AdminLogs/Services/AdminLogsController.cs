@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param></param>
         /// <returns>List of log types</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "," + Components.Constants.LogSettingsEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "," + Components.Constants.LogSettingsEdit, ForceAdminPermission = true)]
         public HttpResponseMessage GetLogTypes()
         {
             try
@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param name="pageIndex"></param>
         /// <returns>List of log items</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView, ForceAdminPermission = true)]
         public HttpResponseMessage GetLogItems(string logType, int pageSize, int pageIndex)
         {
             try
@@ -164,7 +164,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, AllowAdmin = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, ForceAdminPermission = true)]
         public HttpResponseMessage EmailLogItems(EmailLogItemsRequest request)
         {
             try
