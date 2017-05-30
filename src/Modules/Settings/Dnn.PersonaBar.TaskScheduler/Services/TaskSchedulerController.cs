@@ -414,7 +414,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
                     Collection arrScheduleQueue = SchedulingProvider.Instance().GetScheduleQueue();
 
-                    var queue = (from ScheduleHistoryItem item in arrScheduleQueue
+                    var queue = from ScheduleHistoryItem item in arrScheduleQueue
                                 select new
                                 {
                                     item.ScheduleID,
@@ -422,11 +422,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                     NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : "",
                                     item.Overdue,
                                     RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
+                                    RemainingSeconds = item.RemainingTime,
                                     item.ObjectDependencies,
                                     ScheduleSource = item.ScheduleSource.ToString(),
                                     item.ThreadID,
                                     item.Servers
-                                }).OrderByDescending(x => x.RemainingTime);
+                                };
 
                     var response = new
                     {
@@ -440,7 +441,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                             ActiveThreadCount = SchedulingProvider.Instance().GetActiveThreadCount().ToString(),
                             MaxThreadCount = SchedulingProvider.Instance().GetMaxThreadCount().ToString(),
                             ScheduleProcessing = processing,
-                            ScheduleQueue = queue.ToList()
+                            ScheduleQueue = queue.ToList().OrderBy(q => q.RemainingSeconds)
                         },
                         TotalResults = 1
                     };
@@ -624,13 +625,17 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             var time = TimeSpan.FromSeconds(sec);
             if (time.Days > 0)
             {
-                return $"{time.Days} {Localization.GetString("Days", localResourcesFile)}";
+                return $"{time.Days} {Localization.GetString(time.Days == 1 ? "DaySingular" : "DayPlural", localResourcesFile)}";
             }
             if (time.Hours > 0)
             {
-                return $"{time.Hours} {Localization.GetString("Hours", localResourcesFile)}";
+                return $"{time.Hours} {Localization.GetString(time.Hours == 1 ? "HourSingular" : "HourPlural", localResourcesFile)}";
             }
-            return time.Minutes > 0 ? $"{time.Minutes} {Localization.GetString("Minutes", localResourcesFile)}" : Localization.GetString("LessThanMinute", localResourcesFile);
+            if (time.Minutes > 0)
+            {
+                return $"{time.Minutes} {Localization.GetString(time.Minutes == 1 ? "MinuteSingular" : "MinutePlural", localResourcesFile)}";
+            }
+            return Localization.GetString("LessThanMinute", localResourcesFile);
         }
     }
 }
