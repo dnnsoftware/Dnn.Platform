@@ -16,7 +16,7 @@ class AvailableExtensions extends Component {
         super();
         this.state = {
             doingOperation: false,
-            loading: true
+            loading: false
         };
     }
     checkIfAvailablePackageTypesEmpty(props) {
@@ -29,12 +29,12 @@ class AvailableExtensions extends Component {
     componentWillMount() {
         const { props, state } = this;
 
-        if(props.availablePackages && props.availablePackages.length > 0){
-            this.setState({loading: false});
-        }
-
         if (!this.checkIfAvailablePackageTypesEmpty(props) && this.checkIfAvailablePackagesEmpty(props) && props.selectedAvailablePackageType === "") {
-            props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackageTypes[0].Type));
+            this.setState({loading: true}, () => {
+                props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackageTypes[0].Type, () => {
+                    this.setState({loading: false});
+                }));
+            });
         }
     }
     componentWillReceiveProps(props) {
@@ -57,7 +57,9 @@ class AvailableExtensions extends Component {
     onFilterSelect(option) {
         const {props} = this;
         this.setState({loading: true}, () => {
-            props.dispatch(ExtensionActions.getAvailablePackages(option.value));
+            props.dispatch(ExtensionActions.getAvailablePackages(option.value, () => {
+                this.setState({loading: false});
+            }));
         });
     }
 

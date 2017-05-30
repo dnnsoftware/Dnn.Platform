@@ -16,7 +16,7 @@ class InstalledExtensions extends Component {
         super();
         this.handleSelect = this.handleSelect.bind(this);
         this.state = {
-            loading: true
+            loading: false
         };
     }
 
@@ -33,17 +33,15 @@ class InstalledExtensions extends Component {
         if (this.checkIfPackageTypesEmpty(props)) {
             props.dispatch(ExtensionActions.getPackageTypes());
         }
-        if(props.installedPackages && props.installedPackages.length > 0){
-            this.setState({loading: false});
-        }
     }
 
     componentWillReceiveProps(props) {
-        if(props.installedPackages && props.installedPackages.length > 0){
-            this.setState({loading: false});
-        }
         if (!this.checkIfPackageTypesEmpty(props) && this.checkIfInstalledPackagesEmpty(props) && props.selectedInstalledPackageType === "") {
-            props.dispatch(ExtensionActions.getInstalledPackages(props.installedPackageTypes[0].Type));
+            this.setState({loading: true}, () => {
+                props.dispatch(ExtensionActions.getInstalledPackages(props.installedPackageTypes[0].Type, ()=> {
+                    this.setState({loading: false});
+                }));
+            })
         }
     }
 
@@ -61,7 +59,9 @@ class InstalledExtensions extends Component {
     onFilterSelect(option) {
         const {props} = this;
         this.setState({loading: true}, () => {
-            props.dispatch(ExtensionActions.getInstalledPackages(option.value));
+            props.dispatch(ExtensionActions.getInstalledPackages(option.value, () => {
+                this.setState({loading: false});
+            }));
         });
     }
 
