@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Container for related set of values</param>
         /// <param name="key">Individual profile key</param>
         /// <returns></returns>
-        [Obsolete("GetSecureProfile is not fips compliance and obsolete in 9.1.0, please use GetSecureFIPSComplainceProfile instead.")]
+        [Obsolete("GetSecureProfile is not fips compliance and obsolete in 9.1.1, please use GetSecureFIPSComplainceProfile instead.")]
         public static object GetSecureProfile(string namingContainer, string key)
         {
             return GetSecureProfile(LoadProfile(), namingContainer, key);
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Container for related set of values</param>
         /// <param name="key">Individual profile key</param>
         /// <returns></returns>
-        [Obsolete("GetSecureProfile is not fips compliance and obsolete in 9.1.0, please use GetSecureFIPSComplainceProfile instead.")]
+        [Obsolete("GetSecureProfile is not fips compliance and obsolete in 9.1.1, please use GetSecureFIPSComplainceProfile instead.")]
         public static object GetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key)
         {
             if (personalization != null)
@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Object containing user personalization info</param>
         /// <param name="key">Individual profile key</param>
         /// <param name="value">Individual profile value</param>
-        [Obsolete("SetSecureProfile is not fips compliance and obsolete in 9.1.0, please use SetSecureFIPSComplainceProfile instead.")]
+        [Obsolete("SetSecureProfile is not fips compliance and obsolete in 9.1.1, please use SetSecureFIPSComplainceProfile instead.")]
         public static void SetSecureProfile(string namingContainer, string key, object value)
         {
             SetSecureProfile(LoadProfile(), namingContainer, key, value);
@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Container for related set of values</param>
         /// <param name="key">Individual profile key</param>
         /// <param name="value">Individual profile value</param>
-        [Obsolete("SetSecureProfile is not fips compliance and obsolete in 9.1.0, please use SetSecureFIPSComplainceProfile instead.")]
+        [Obsolete("SetSecureProfile is not fips compliance and obsolete in 9.1.1, please use SetSecureFIPSComplainceProfile instead.")]
         public static void SetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key, object value)
         {
             if (personalization != null)
