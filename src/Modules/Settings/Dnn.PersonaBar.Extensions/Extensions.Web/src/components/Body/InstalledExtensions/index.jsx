@@ -41,7 +41,7 @@ class InstalledExtensions extends Component {
                 props.dispatch(ExtensionActions.getInstalledPackages(props.installedPackageTypes[0].Type, ()=> {
                     this.setState({loading: false});
                 }));
-            })
+            });
         }
     }
 
