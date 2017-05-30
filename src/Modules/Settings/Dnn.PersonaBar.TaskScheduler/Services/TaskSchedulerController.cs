@@ -414,19 +414,19 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
                     Collection arrScheduleQueue = SchedulingProvider.Instance().GetScheduleQueue();
 
-                    var queue = from ScheduleHistoryItem item in arrScheduleQueue
+                    var queue = (from ScheduleHistoryItem item in arrScheduleQueue
                                 select new
                                 {
                                     item.ScheduleID,
                                     item.FriendlyName,
                                     NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : "",
                                     item.Overdue,
-                                    item.RemainingTime,
+                                    RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
                                     item.ObjectDependencies,
                                     ScheduleSource = item.ScheduleSource.ToString(),
                                     item.ThreadID,
                                     item.Servers
-                                };
+                                }).OrderByDescending(x => x.RemainingTime);
 
                     var response = new
                     {
@@ -440,7 +440,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                             ActiveThreadCount = SchedulingProvider.Instance().GetActiveThreadCount().ToString(),
                             MaxThreadCount = SchedulingProvider.Instance().GetMaxThreadCount().ToString(),
                             ScheduleProcessing = processing,
-                            ScheduleQueue = queue.ToList().OrderBy(q => q.RemainingTime)
+                            ScheduleQueue = queue.ToList()
                         },
                         TotalResults = 1
                     };
@@ -617,6 +617,20 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         private static void Halt()
         {
             SchedulingProvider.Instance().Halt("Host Settings");
+        }
+
+        private static string GetTimeStringFromSeconds(double sec)
+        {
+            var time = TimeSpan.FromSeconds(sec);
+            if (time.Days > 0)
+            {
+                return $"{time.Days} {Localization.GetString("Days", localResourcesFile)}";
+            }
+            if (time.Hours > 0)
+            {
+                return $"{time.Hours} {Localization.GetString("Hours", localResourcesFile)}";
+            }
+            return time.Minutes > 0 ? $"{time.Minutes} {Localization.GetString("Minutes", localResourcesFile)}" : Localization.GetString("LessThanMinute", localResourcesFile);
         }
     }
 }

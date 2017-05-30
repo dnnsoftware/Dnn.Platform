@@ -412,7 +412,7 @@
     <value>Overdue (seconds): </value>
   </data>
   <data name="TimeRemaining.Header" xml:space="preserve">
-    <value>Time Remaining (seconds): </value>
+    <value>Time Remaining: </value>
   </data>
   <data name="NoTasks.Text" xml:space="preserve">
     <value>There are no tasks in the queue and no tasks are processing.</value>
@@ -572,5 +572,8 @@
   </data>
   <data name="Servers.Text" xml:space="preserve">
     <value>Servers</value>
+  </data>
+  <data name="LessThanMinute.Text" xml:space="preserve">
+    <value>Less than a minute</value>
   </data>
 </root>
