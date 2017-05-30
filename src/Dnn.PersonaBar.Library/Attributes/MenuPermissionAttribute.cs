@@ -71,6 +71,9 @@ namespace Dnn.PersonaBar.Library.Attributes
             //if menu identifier defined, then will check the menu permission, multiple identifier should split with ",".
             if (!string.IsNullOrEmpty(MenuName))
             {
+                if (isAdmin)
+                    return true;
+
                 var hasPermission = false;
                 MenuName.Split(',').ForEach(menuName =>
                 {

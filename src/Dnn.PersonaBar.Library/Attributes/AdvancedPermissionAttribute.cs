@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// </summary>
         public string Permission { get; set; }
 
-        public bool AllowAdmin { get; set; }
+        public bool ForceAdminPermission { get; set; }
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Library.Attributes
             {
                 return false;
             }
-            if (AllowAdmin && PortalSecurity.IsInRole(Constants.AdminsRoleName))
+            if (ForceAdminPermission && PortalSecurity.IsInRole(Constants.AdminsRoleName))
             {
                 return true;
             }
