@@ -15,6 +15,9 @@ class InstalledExtensions extends Component {
     constructor() {
         super();
         this.handleSelect = this.handleSelect.bind(this);
+        this.state = {
+            loading: false
+        };
     }
 
     checkIfPackageTypesEmpty(props) {
@@ -26,7 +29,7 @@ class InstalledExtensions extends Component {
     }
 
     componentWillMount() {
-        const {props} = this;
+        const {props, state} = this;
         if (this.checkIfPackageTypesEmpty(props)) {
             props.dispatch(ExtensionActions.getPackageTypes());
         }
@@ -34,7 +37,11 @@ class InstalledExtensions extends Component {
 
     componentWillReceiveProps(props) {
         if (!this.checkIfPackageTypesEmpty(props) && this.checkIfInstalledPackagesEmpty(props) && props.selectedInstalledPackageType === "") {
-            props.dispatch(ExtensionActions.getInstalledPackages(props.installedPackageTypes[0].Type));
+            this.setState({loading: true}, () => {
+                props.dispatch(ExtensionActions.getInstalledPackages(props.installedPackageTypes[0].Type, ()=> {
+                    this.setState({loading: false});
+                }));
+            });
         }
     }
 
@@ -51,7 +58,11 @@ class InstalledExtensions extends Component {
 
     onFilterSelect(option) {
         const {props} = this;
-        props.dispatch(ExtensionActions.getInstalledPackages(option.value));
+        this.setState({loading: true}, () => {
+            props.dispatch(ExtensionActions.getInstalledPackages(option.value, () => {
+                this.setState({loading: false});
+            }));
+        });
     }
 
     onDelete(_package, index) {
@@ -61,11 +72,20 @@ class InstalledExtensions extends Component {
         }));
     }
 
+    renderLoading(){
+        /* eslint-disable react/no-danger */
+        return <div className="loading-extensions">
+            <h2>{Localization.get("Loading")}</h2>
+            <p>{Localization.get("Loading.Tooltip")}</p>
+            <div dangerouslySetInnerHTML={{ __html: require("!raw!./../../../img/fetching.svg") }} />
+        </div>;
+    }
+
     render() {
-        const {props} = this;
+        const {props, state} = this;
         return (
             <GridCell className="extension-list">
-                <GridCell className="collapse-section">
+                <GridCell className="collapse-section filter-section">
                     <DropdownWithError className="filter-dropdown" onSelect={this.onFilterSelect.bind(this)} options={props.installedPackageTypes && props.installedPackageTypes.map((_package) => {
                         return {
                             label: _package.DisplayName,
@@ -76,7 +96,8 @@ class InstalledExtensions extends Component {
                         value={props.selectedInstalledPackageType}
                         labelType="inline" />
                 </GridCell>
-                {(props.installedPackages && props.installedPackages.length > 0) &&
+                {state.loading && this.renderLoading()}
+                {(props.installedPackages && props.installedPackages.length > 0 && !state.loading) &&
                     <ExtensionList
                         packages={props.installedPackages}
                         isHost={props.isHost}
