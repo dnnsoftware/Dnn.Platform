@@ -68,36 +68,44 @@ namespace Dnn.PersonaBar.Library.Controllers
             var menuFiltered = false;
             foreach (var menuItem in menuItems)
             {
-                if (!IsVisible(portalSettings, user, menuItem))
+                try
                 {
-                    menuFiltered = true;
-                    continue;
+                    if (!IsVisible(portalSettings, user, menuItem))
+                    {
+                        menuFiltered = true;
+                        continue;
+                    }
+
+                    var cloneItem = new MenuItem()
+                    {
+                        MenuId = menuItem.MenuId,
+                        Identifier = menuItem.Identifier,
+                        ModuleName = menuItem.ModuleName,
+                        FolderName = menuItem.FolderName,
+                        Controller = menuItem.Controller,
+                        ResourceKey = menuItem.ResourceKey,
+                        Path = menuItem.Path,
+                        Link = menuItem.Link,
+                        CssClass = menuItem.CssClass,
+                        IconFile = menuItem.IconFile,
+                        AllowHost = menuItem.AllowHost,
+                        Order = menuItem.Order,
+                        ParentId = menuItem.ParentId
+                    };
+
+                    UpdateParamters(cloneItem);
+                    cloneItem.Settings = GetMenuSettings(menuItem);
+
+                    var filtered = GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children,
+                        menuItem.Children);
+                    if (!filtered || cloneItem.Children.Count > 0)
+                    {
+                        filterItems.Add(cloneItem);
+                    }
                 }
-
-                var cloneItem = new MenuItem()
+                catch (Exception e) //Ignore the failure and still load personaBar
                 {
-                    MenuId = menuItem.MenuId,
-                    Identifier = menuItem.Identifier,
-                    ModuleName = menuItem.ModuleName,
-                    FolderName = menuItem.FolderName,
-                    Controller = menuItem.Controller,
-                    ResourceKey = menuItem.ResourceKey,
-                    Path = menuItem.Path,
-                    Link = menuItem.Link,
-                    CssClass = menuItem.CssClass,
-                    IconFile = menuItem.IconFile,
-                    AllowHost = menuItem.AllowHost,
-                    Order = menuItem.Order,
-                    ParentId = menuItem.ParentId
-                };
-                
-                UpdateParamters(cloneItem);
-                cloneItem.Settings = GetMenuSettings(menuItem);
-
-                var filtered = GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children, menuItem.Children);
-                if (!filtered || cloneItem.Children.Count > 0)
-                {
-                    filterItems.Add(cloneItem);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
                 }
             }
 
@@ -158,7 +166,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 Logger.Error(ex);
                 return null;
             }
-            
+
         }
 
         protected override Func<IPersonaBarController> GetFactory()
