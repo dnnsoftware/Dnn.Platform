@@ -23,7 +23,10 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// </summary>
         public string Permission { get; set; }
 
-        public bool ForceAdminPermission { get; set; }
+        /// <summary>
+        /// When true, it will force admin to have explicit Permission. When false, admin is passed without checking the Permission.
+        /// </summary>
+        public bool CheckPermissionForAdmin { get; set; }
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
@@ -34,7 +37,7 @@ namespace Dnn.PersonaBar.Library.Attributes
             {
                 return false;
             }
-            if (ForceAdminPermission && PortalSecurity.IsInRole(Constants.AdminsRoleName))
+            if (!CheckPermissionForAdmin && PortalSecurity.IsInRole(Constants.AdminsRoleName))
             {
                 return true;
             }
