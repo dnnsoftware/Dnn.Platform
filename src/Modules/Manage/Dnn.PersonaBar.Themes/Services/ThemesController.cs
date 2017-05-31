@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
         public HttpResponseMessage ApplyTheme(ApplyThemeInfo applyTheme, string language)
         {
             try
@@ -113,7 +113,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
         public HttpResponseMessage ApplyDefaultTheme(ApplyDefaultThemeInfo defaultTheme, string language)
         {
             try
@@ -145,7 +145,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
@@ -252,7 +252,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
         public HttpResponseMessage UpdateTheme(UpdateThemeInfo updateTheme)
         {
             try
@@ -317,7 +317,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
         public HttpResponseMessage RestoreTheme(string language)
         {
             try

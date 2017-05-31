@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param></param>
         /// <returns>List of log types</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "," + Components.Constants.LogSettingsEdit, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "," + Components.Constants.LogSettingsEdit)]
         public HttpResponseMessage GetLogTypes()
         {
             try
@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param name="pageIndex"></param>
         /// <returns>List of log items</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView)]
         public HttpResponseMessage GetLogItems(string logType, int pageSize, int pageIndex)
         {
             try
@@ -137,7 +137,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, CheckPermissionForAdmin = true)]
         public HttpResponseMessage DeleteLogItems(IEnumerable<string> logIds)
         {
             try
@@ -164,7 +164,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, ForceAdminPermission = true)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit)]
         public HttpResponseMessage EmailLogItems(EmailLogItemsRequest request)
         {
             try
@@ -211,7 +211,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, CheckPermissionForAdmin = true)]
         public HttpResponseMessage ClearLog()
         {
             try
@@ -237,7 +237,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param></param>
         /// <returns>Option list of Keep Most Recent</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetKeepMostRecentOptions()
         {
             try
@@ -267,7 +267,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param></param>
         /// <returns>Option list of Occurence Threshold</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetOccurrenceOptions()
         {
             try
@@ -300,7 +300,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param></param>
         /// <returns>List of log settings</returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetLogSettings()
         {
             try
@@ -347,7 +347,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param name="logTypeConfigId"></param>
         /// <returns></returns>
         [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
         public HttpResponseMessage GetLogSetting(string logTypeConfigId)
         {
             try
@@ -393,7 +393,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit, CheckPermissionForAdmin = true)]
         public HttpResponseMessage AddLogSetting([FromBody] UpdateLogSettingsRequest request)
         {
             try
@@ -419,7 +419,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit, CheckPermissionForAdmin = true)]
         public HttpResponseMessage UpdateLogSetting([FromBody] UpdateLogSettingsRequest request)
         {
             try
@@ -453,7 +453,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView + "&" + Components.Constants.LogSettingsEdit, CheckPermissionForAdmin = true)]
         public HttpResponseMessage DeleteLogSetting(DeleteLogSettingsRequest request)
         {
             try
