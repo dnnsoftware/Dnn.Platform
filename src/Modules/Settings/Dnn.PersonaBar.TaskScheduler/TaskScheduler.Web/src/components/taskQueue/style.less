@@ -5,15 +5,31 @@
             [hidden] {
                 display: none;
             }
-            .taskStatusList-title {
-                padding: 0;
-                margin: 0;
-            }
-            .noTasks, .taskStatusList-disabled {
-                padding: 10px 0 10px 0;
-                margin: 0 15px 0 15px;
-                font-weight: bolder;
-                color: @thunder;
+            .noData {
+                display: block;
+                text-align: center; 
+                float: left; 
+                width: 100%;
+                .noTasks {
+                    font-size: x-large;
+                    color: @thunder;
+                    margin-left: 40px;
+                    margin-right: 40px;
+                    margin-top: 60px;
+                    left: 0;
+                    right: 0;
+                    position: absolute;
+                }
+                .noTasksMessage {
+                    font-size: small;
+                    color: @alto;
+                    margin-left: 40px;
+                    margin-right: 40px;
+                    margin-top: 110px;
+                    left: 0;
+                    right: 0;
+                    position: absolute;
+                }
             }
         }
     }
