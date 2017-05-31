@@ -413,7 +413,6 @@ namespace DotNetNuke.Security
             return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
         }
 
-        [Obsolete("DecryptString is not fips compliance and obsolete in 9.1.1, please use Decrypt instead.")]
         public string DecryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().DecryptString(message, passphrase);
@@ -424,7 +423,6 @@ namespace DotNetNuke.Security
             return CryptographyProvider.Instance().EncryptParameter(data, key);
         }
 
-        [Obsolete("EncryptString is not fips compliance and obsolete in 9.1.1, please use Encrypt instead.")]
         public string EncryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().EncryptString(message, passphrase);

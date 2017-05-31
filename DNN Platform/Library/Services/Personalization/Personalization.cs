@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNukeÂ® - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
@@ -20,7 +20,6 @@
 #endregion
 #region Usings
 
-using System;
 using System.Web;
 
 using DotNetNuke.Common.Utilities;
@@ -34,7 +33,7 @@ namespace DotNetNuke.Services.Personalization
 {
     public class Personalization
     {
-		#region Private Methods
+        #region Private Methods
 
         private static PersonalizationInfo LoadProfile()
         {
@@ -60,10 +59,10 @@ namespace DotNetNuke.Services.Personalization
             }
             return personalization;
         }
-		
-		#endregion
 
-		#region Public Shared Methods
+        #endregion
+
+        #region Public Shared Methods
 
         /// <summary>
         /// load users profile and extract value base on naming container and key
@@ -94,7 +93,6 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Container for related set of values</param>
         /// <param name="key">Individual profile key</param>
         /// <returns></returns>
-        [Obsolete("GetSecureProfile is not fips compliance and obsolete in 9.1.1, please use GetSecureFIPSComplainceProfile instead.")]
         public static object GetSecureProfile(string namingContainer, string key)
         {
             return GetSecureProfile(LoadProfile(), namingContainer, key);
@@ -108,7 +106,6 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Container for related set of values</param>
         /// <param name="key">Individual profile key</param>
         /// <returns></returns>
-        [Obsolete("GetSecureProfile is not fips compliance and obsolete in 9.1.1, please use GetSecureFIPSComplainceProfile instead.")]
         public static object GetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key)
         {
             if (personalization != null)
@@ -180,7 +177,6 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Object containing user personalization info</param>
         /// <param name="key">Individual profile key</param>
         /// <param name="value">Individual profile value</param>
-        [Obsolete("SetSecureProfile is not fips compliance and obsolete in 9.1.1, please use SetSecureFIPSComplainceProfile instead.")]
         public static void SetSecureProfile(string namingContainer, string key, object value)
         {
             SetSecureProfile(LoadProfile(), namingContainer, key, value);
@@ -194,7 +190,6 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Container for related set of values</param>
         /// <param name="key">Individual profile key</param>
         /// <param name="value">Individual profile value</param>
-        [Obsolete("SetSecureProfile is not fips compliance and obsolete in 9.1.1, please use SetSecureFIPSComplainceProfile instead.")]
         public static void SetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key, object value)
         {
             if (personalization != null)
@@ -204,66 +199,6 @@ namespace DotNetNuke.Services.Personalization
                 personalization.IsModified = true;
             }
         }
-
-        /// <summary>
-        /// load users profile and extract secure value base on naming container and key
-        /// </summary>
-        /// <param name="namingContainer">Container for related set of values</param>
-        /// <param name="key">Individual profile key</param>
-        /// <returns></returns>
-        public static object GetSecureFIPSComplainceProfile(string namingContainer, string key)
-        {
-            return GetSecureFIPSComplainceProfile(LoadProfile(), namingContainer, key);
-        }
-
-        /// <summary>
-        /// extract value base on naming container and key from PersonalizationInfo object
-        /// function will automatically decrypt value to plaintext
-        /// </summary>
-        /// <param name="personalization">Object containing user personalization info</param>
-        /// <param name="namingContainer">Container for related set of values</param>
-        /// <param name="key">Individual profile key</param>
-        /// <returns></returns>
-        public static object GetSecureFIPSComplainceProfile(PersonalizationInfo personalization, string namingContainer, string key)
-        {
-            if (personalization != null)
-            {
-                var ps = new PortalSecurity();
-                return ps.Decrypt(Config.GetDecryptionkey(), personalization.Profile[namingContainer + ":" + key].ToString());
-            }
-            return "";
-        }
-
-        /// <summary>
-        /// persist profile value -use naming container and key to orgainize
-        /// function calls an overload which automatically encrypts the value
-        /// </summary>
-        /// <param name="namingContainer">Object containing user personalization info</param>
-        /// <param name="key">Individual profile key</param>
-        /// <param name="value">Individual profile value</param>
-        public static void SetSecureFIPSComplainceProfile(string namingContainer, string key, object value)
-        {
-            SetSecureFIPSComplainceProfile(LoadProfile(), namingContainer, key, value);
-        }
-
-        /// <summary>
-        /// persist profile value from PersonalizationInfo object, using naming container and key to organise 
-        /// function will automatically encrypt the value to plaintext
-        /// </summary>
-        /// <param name="personalization">Object containing user personalization info</param>
-        /// <param name="namingContainer">Container for related set of values</param>
-        /// <param name="key">Individual profile key</param>
-        /// <param name="value">Individual profile value</param>
-        public static void SetSecureFIPSComplainceProfile(PersonalizationInfo personalization, string namingContainer, string key, object value)
-        {
-            if (personalization != null)
-            {
-                var ps = new PortalSecurity();
-                personalization.Profile[namingContainer + ":" + key] = ps.Encrypt(Config.GetDecryptionkey(), value.ToString());
-                personalization.IsModified = true;
-            }
-        }
-
         #endregion
     }
 }
