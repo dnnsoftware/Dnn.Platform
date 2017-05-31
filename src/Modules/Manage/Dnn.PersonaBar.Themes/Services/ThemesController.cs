@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
 using System.Xml;
 using Dnn.PersonaBar.Library;
@@ -26,12 +25,11 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Themes.Services
 {
-    [MenuPermission(Scope = ServiceScope.Admin)]
+    [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class ThemesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
@@ -98,6 +96,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
         public HttpResponseMessage ApplyTheme(ApplyThemeInfo applyTheme, string language)
         {
             try
@@ -114,6 +113,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
         public HttpResponseMessage ApplyDefaultTheme(ApplyDefaultThemeInfo defaultTheme, string language)
         {
             try
@@ -145,6 +145,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
@@ -165,6 +166,7 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
+        [RequireHost]
         public HttpResponseMessage GetEditableTokens()
         {
             try
@@ -250,6 +252,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
         public HttpResponseMessage UpdateTheme(UpdateThemeInfo updateTheme)
         {
             try
@@ -312,27 +315,28 @@ namespace Dnn.PersonaBar.Themes.Services
             }
         }
 
-         [HttpPost]
-         [ValidateAntiForgeryToken]
-         public HttpResponseMessage RestoreTheme(string language)
-         {
-             try
-             {
-                 SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Portal, "");
-                 SkinController.SetSkin(SkinController.RootContainer, PortalId, SkinType.Portal, "");
-                 SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Admin, "");
-                 SkinController.SetSkin(SkinController.RootContainer, PortalId, SkinType.Admin, "");
-                 DataCache.ClearPortalCache(PortalId, true);
- 
-                 return Request.CreateResponse(HttpStatusCode.OK, GetCurrentThemeObject());
-             }
-             catch (Exception ex)
-             {
-                 Logger.Error(ex);
-                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-             }
-         }
- 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit, ForceAdminPermission = true)]
+        public HttpResponseMessage RestoreTheme(string language)
+        {
+            try
+            {
+                SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Portal, "");
+                SkinController.SetSkin(SkinController.RootContainer, PortalId, SkinType.Portal, "");
+                SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Admin, "");
+                SkinController.SetSkin(SkinController.RootContainer, PortalId, SkinType.Admin, "");
+                DataCache.ClearPortalCache(PortalId, true);
+
+                return Request.CreateResponse(HttpStatusCode.OK, GetCurrentThemeObject());
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         #endregion
 
         #region Private Methods

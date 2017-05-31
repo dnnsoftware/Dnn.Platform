@@ -7,6 +7,7 @@ import EditThemeAttributes from "./EditThemeAttributes";
 import ParseThemePackage from "./ParseThemePackage";
 
 import "./style.less";
+let canEdit = false;
 
 class ThemeSettings extends Component {
     constructor() {
@@ -14,11 +15,12 @@ class ThemeSettings extends Component {
         this.state = {
             parseType: "0"
         };
+        canEdit = utils.params.settings.isHost || utils.params.settings.isAdmin || (utils.params.settings.permissions && utils.params.settings.permissions.EDIT === true);
     }
 
     renderLeftColumn() {
         return <div className="left-column">
-            <EditThemeAttributes />
+            {canEdit && <EditThemeAttributes />}
         </div>;
     }
 

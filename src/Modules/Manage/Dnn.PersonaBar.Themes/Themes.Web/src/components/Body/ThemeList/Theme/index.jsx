@@ -9,10 +9,13 @@ import SvgIcon from "../../SvgIcon";
 import utils from "utils";
 import "./style.less";
 
+let canEdit = false;
+
 class Theme extends Component {
     constructor() {
         super();
         this.state = {};
+        canEdit = utils.params.settings.isHost || utils.params.settings.isAdmin || (utils.params.settings.permissions && utils.params.settings.permissions.EDIT === true);
     }
 
     selectedAsSite() {
@@ -76,9 +79,9 @@ class Theme extends Component {
         let isHost = utils.params.settings.isHost;
         return <span className="actions">
             <ul className={(isHost || theme.level === 1) ? "" : "short"}>
-                <li onClick={this.previewTheme.bind(this)} title={Localization.get("PreviewTheme")}><SvgIcon name="View" /></li>
-                <li onClick={this.applyDefaultTheme.bind(this)} title={Localization.get("ApplyTheme")}><SvgIcon name="Apply" /></li>
-                {((isHost || theme.level === 1) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this)} title={Localization.get("DeleteTheme")}><SvgIcon name="Trash" /></li>}
+                <li onClick={this.previewTheme.bind(this) } title={Localization.get("PreviewTheme") }><SvgIcon name="View" /></li>
+                {canEdit && <li onClick={this.applyDefaultTheme.bind(this) } title={Localization.get("ApplyTheme") }><SvgIcon name="Apply" /></li>}
+                {((isHost || theme.level === 1) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this) } title={Localization.get("DeleteTheme") }><SvgIcon name="Trash" /></li>}
             </ul>
         </span>;
     }
@@ -91,7 +94,7 @@ class Theme extends Component {
 
         return <span className={className}>
             {theme.thumbnail ? <img src={theme.thumbnail} alt={theme.packageName} /> : <SvgIcon name="EmptyThumbnail" />}
-            {this.renderActions()}
+            {this.renderActions() }
         </span>;
     }
 
@@ -99,8 +102,8 @@ class Theme extends Component {
         const {props} = this;
 
         return (
-            <div className={this.getClassName()}>
-                {this.renderThumbnail()}
+            <div className={this.getClassName() }>
+                {this.renderThumbnail() }
                 <OverflowText text={props.theme.packageName} maxWidth={168} className="title" />
             </div>
         );

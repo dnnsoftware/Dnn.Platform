@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Pages.Services
     public class PagesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
-        private const string LocalResourceFile = Constants.PersonaBarRelativePath + "Modules/Dnn.Pages/App_LocalResources/Pages.resx";
+        private const string LocalResourceFile = Library.Constants.PersonaBarRelativePath + "Modules/Dnn.Pages/App_LocalResources/Pages.resx";
 
         private readonly IPagesController _pagesController;
         private readonly IBulkPagesController _bulkPagesController;
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
             catch (PageNotFoundException)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, new {Message = "Page doesn't exists."});
+                return Request.CreateResponse(HttpStatusCode.NotFound, new { Message = "Page doesn't exists." });
             }
         }
 
@@ -111,7 +111,10 @@ namespace Dnn.PersonaBar.Pages.Services
             return Request.CreateResponse(HttpStatusCode.OK,
                                 new
                                 {
-                                    result.Id, result.Success, result.ErrorMessage, result.SuggestedUrlPath
+                                    result.Id,
+                                    result.Success,
+                                    result.ErrorMessage,
+                                    result.SuggestedUrlPath
                                 });
         }
 
@@ -126,7 +129,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
 
             var result = _pagesController.UpdateCustomUrl(dto);
-            
+
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
                 result.Id,
@@ -174,7 +177,7 @@ namespace Dnn.PersonaBar.Pages.Services
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
             var pages = from p in _pagesController.GetPageList(parentId, searchKey)
-                select Converters.ConvertToPageItem<PageItem>(p, tabs);
+                        select Converters.ConvertToPageItem<PageItem>(p, tabs);
             return Request.CreateResponse(HttpStatusCode.OK, pages);
         }
 
@@ -213,7 +216,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, true, false,
                     true);
                 var pageItem = Converters.ConvertToPageItem<PageItem>(tab, tabs);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0, Page = pageItem});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0, Page = pageItem });
             }
             catch (PageNotFoundException)
             {
@@ -221,7 +224,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
             catch (PageException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 1, ex.Message});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, ex.Message });
             }
         }
 
@@ -238,7 +241,7 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 _pagesController.DeletePage(page);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
             }
             catch (PageNotFoundException)
             {
@@ -260,7 +263,7 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 _pagesController.DeleteTabModule(module.PageId, module.ModuleId);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
             }
             catch (PageModuleNotFoundException)
             {
@@ -279,7 +282,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
 
             _pagesController.CopyThemeToDescendantPages(copyTheme.PageId, copyTheme.Theme);
-            return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
+            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpPost]
@@ -295,7 +298,7 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 _pagesController.CopyPermissionsToDescendantPages(copyPermissions.PageId);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
             }
             catch (PageNotFoundException)
             {
@@ -345,11 +348,11 @@ namespace Dnn.PersonaBar.Pages.Services
             }
             catch (PageNotFoundException)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, new {Message = "Page doesn't exists."});
+                return Request.CreateResponse(HttpStatusCode.NotFound, new { Message = "Page doesn't exists." });
             }
             catch (PageValidationException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 1, ex.Field, ex.Message});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, ex.Field, ex.Message });
             }
         }
 
@@ -371,7 +374,7 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage GetPageUrlPreview(string url)
         {
             var cleanedUrl = _pagesController.CleanTabUrl(url);
-            return Request.CreateResponse(HttpStatusCode.OK, new {Url = cleanedUrl});
+            return Request.CreateResponse(HttpStatusCode.OK, new { Url = cleanedUrl });
         }
 
         [HttpGet]
@@ -398,7 +401,8 @@ namespace Dnn.PersonaBar.Pages.Services
             var themeLayout = _themesController.GetLayouts(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
             var themeContainer = _themesController.GetContainers(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
 
-            return Request.CreateResponse(HttpStatusCode.OK, new {
+            return Request.CreateResponse(HttpStatusCode.OK, new
+            {
                 layouts = themeLayout == null ? new List<ThemeFileInfo>() : _themesController.GetThemeFiles(PortalSettings, themeLayout),
                 containers = themeContainer == null ? new List<ThemeFileInfo>() : _themesController.GetThemeFiles(PortalSettings, themeContainer)
             });

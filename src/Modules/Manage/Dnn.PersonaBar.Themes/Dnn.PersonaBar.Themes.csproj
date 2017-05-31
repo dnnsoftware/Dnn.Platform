@@ -101,6 +101,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\DTO\ApplyDefaultThemeInfo.cs" />
     <Compile Include="Components\DTO\ListItemInfo.cs" />
     <Compile Include="Components\DTO\ApplyThemeInfo.cs" />
