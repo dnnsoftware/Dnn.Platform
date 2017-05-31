@@ -81,7 +81,7 @@ AS
 		AND M.AllTabs = @AllTabs
 		AND M.TabModuleID =(SELECT min(TabModuleID) 
 			FROM {databaseOwner}{objectQualifier}TabModules
-			WHERE ModuleID = M.ModuleID)
+			WHERE ModuleID = COALESCE(M.ModuleID,-1))
 	ORDER BY M.ModuleId
 GO
 
