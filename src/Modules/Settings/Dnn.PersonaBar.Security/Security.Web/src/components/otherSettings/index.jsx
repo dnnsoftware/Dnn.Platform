@@ -60,10 +60,10 @@ class OtherSettingsPanelBody extends Component {
             state.error["autoAccountUnlockDuration"] = false;
         }
         let asyncTimeout = props.otherSettings["AsyncTimeout"];
-        if (asyncTimeout === "" || !re.test(asyncTimeout)) {
+        if (asyncTimeout === "" || !re2.test(asyncTimeout)) {
             state.error["asyncTimeout"] = true;
         }
-        else if (asyncTimeout !== "" && re.test(asyncTimeout)) {
+        else if (asyncTimeout !== "" && re2.test(asyncTimeout)) {
             state.error["asyncTimeout"] = false;
         }
         let maxUploadSize = props.otherSettings["MaxUploadSize"];
