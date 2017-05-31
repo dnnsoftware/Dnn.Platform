@@ -421,7 +421,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                     item.FriendlyName,
                                     NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : "",
                                     item.Overdue,
-                                    item.RemainingTime,
+                                    RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
+                                    RemainingSeconds = item.RemainingTime,
                                     item.ObjectDependencies,
                                     ScheduleSource = item.ScheduleSource.ToString(),
                                     item.ThreadID,
@@ -440,7 +441,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                             ActiveThreadCount = SchedulingProvider.Instance().GetActiveThreadCount().ToString(),
                             MaxThreadCount = SchedulingProvider.Instance().GetMaxThreadCount().ToString(),
                             ScheduleProcessing = processing,
-                            ScheduleQueue = queue.ToList().OrderBy(q => q.RemainingTime)
+                            ScheduleQueue = queue.ToList().OrderBy(q => q.RemainingSeconds)
                         },
                         TotalResults = 1
                     };
@@ -617,6 +618,24 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         private static void Halt()
         {
             SchedulingProvider.Instance().Halt("Host Settings");
+        }
+
+        private static string GetTimeStringFromSeconds(double sec)
+        {
+            var time = TimeSpan.FromSeconds(sec);
+            if (time.Days > 0)
+            {
+                return $"{time.Days} {Localization.GetString(time.Days == 1 ? "DaySingular" : "DayPlural", localResourcesFile)}";
+            }
+            if (time.Hours > 0)
+            {
+                return $"{time.Hours} {Localization.GetString(time.Hours == 1 ? "HourSingular" : "HourPlural", localResourcesFile)}";
+            }
+            if (time.Minutes > 0)
+            {
+                return $"{time.Minutes} {Localization.GetString(time.Minutes == 1 ? "MinuteSingular" : "MinutePlural", localResourcesFile)}";
+            }
+            return Localization.GetString("LessThanMinute", localResourcesFile);
         }
     }
 }
