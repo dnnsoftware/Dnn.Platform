@@ -33,7 +33,7 @@ class SingleLineInputWithError extends Component {
                         id={props.inputId}
                         type={props.type}
                         onChange={props.onChange}
-                        onBlur={props.onBlur}
+                        onBlur={()=> { props.onChange(); props.onBlur(); }}
                         onFocus={props.onFocus}
                         onKeyDown={props.onKeyDown}
                         onKeyPress={props.onKeyPress}
