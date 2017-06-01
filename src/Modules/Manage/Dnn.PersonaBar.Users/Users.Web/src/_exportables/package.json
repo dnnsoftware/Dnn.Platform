@@ -14,7 +14,7 @@
     "babel-preset-react": "6.5.0",
     "css-loader": "0.23.1",
     "dnn-global-styles": "0.0.5",
-    "dnn-webpack-externals": "^1.0.8",
+    "dnn-webpack-externals": "1.1.2",
     "eslint": "2.10.2",
     "eslint-config-dnn": "*",
     "eslint-import-resolver-webpack": "^0.3.2",

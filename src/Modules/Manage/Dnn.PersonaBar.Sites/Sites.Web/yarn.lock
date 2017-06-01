@@ -1177,7 +1177,7 @@ dnn-global-styles@0.0.5:
   version "0.0.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-global-styles/-/dnn-global-styles-0.0.5.tgz#f83d873d9ff0351930af55b49a0ae3b614c1ceae"
 
-dnn-webpack-externals@^1.0.8:
+dnn-webpack-externals@1.1.2:
   version "1.1.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-webpack-externals/-/dnn-webpack-externals-1.1.2.tgz#5a67a405ac5d31f0c91db5bd3880f1830bea3b3f"
 

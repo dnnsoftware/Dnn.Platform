@@ -1205,7 +1205,7 @@ dnn-transition-modal@0.0.1:
   version "0.0.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-transition-modal/-/dnn-transition-modal-0.0.1.tgz#8b89ad80943f64bbf0b3994774d3e609df3d9b73"
 
-dnn-webpack-externals@1.0.8:
+dnn-webpack-externals@1.1.2:
   version "1.1.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-webpack-externals/-/dnn-webpack-externals-1.1.2.tgz#5a67a405ac5d31f0c91db5bd3880f1830bea3b3f"
 
