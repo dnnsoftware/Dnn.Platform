@@ -1177,11 +1177,11 @@ dnn-global-styles@0.0.5:
   version "0.0.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-global-styles/-/dnn-global-styles-0.0.5.tgz#f83d873d9ff0351930af55b49a0ae3b614c1ceae"
 
-dnn-permission-grid@0.0.1:
+dnn-permission-grid@0.0.9:
   version "0.0.9"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-permission-grid/-/dnn-permission-grid-0.0.9.tgz#f45a5eb42ff3637c443e73aee007da3e7d316750"
 
-dnn-webpack-externals@1.1.0:
+dnn-webpack-externals@1.1.2:
   version "1.1.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-webpack-externals/-/dnn-webpack-externals-1.1.2.tgz#5a67a405ac5d31f0c91db5bd3880f1830bea3b3f"
 
