@@ -1252,11 +1252,11 @@ dnn-collapsible@0.0.8:
   version "0.0.8"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-collapsible/-/dnn-collapsible-0.0.8.tgz#70fb855ef20ba2dbc8bf51f2b7f7fdd9498c1fd7"
 
-dnn-content-load-wrapper@0.0.1:
+dnn-content-load-wrapper@0.0.2:
   version "0.0.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-content-load-wrapper/-/dnn-content-load-wrapper-0.0.2.tgz#96d9e2e78f5180f1eeb237d133f6c35701bb4669"
 
-dnn-date-picker@0.7.2:
+dnn-date-picker@0.8.2:
   version "0.8.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-date-picker/-/dnn-date-picker-0.8.2.tgz#cf6b97f98148883c5cca496d6234548c6eca0ce7"
 
