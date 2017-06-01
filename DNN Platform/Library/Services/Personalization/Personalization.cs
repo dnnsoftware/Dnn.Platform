@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Personalization
 {
     public class Personalization
     {
-		#region Private Methods
+        #region Private Methods
 
         private static PersonalizationInfo LoadProfile()
         {
@@ -59,10 +59,10 @@ namespace DotNetNuke.Services.Personalization
             }
             return personalization;
         }
-		
-		#endregion
 
-		#region Public Shared Methods
+        #endregion
+
+        #region Public Shared Methods
 
         /// <summary>
         /// load users profile and extract value base on naming container and key
@@ -89,10 +89,10 @@ namespace DotNetNuke.Services.Personalization
 
         /// <summary>
         /// load users profile and extract secure value base on naming container and key
-       /// </summary>
+        /// </summary>
         /// <param name="namingContainer">Container for related set of values</param>
         /// <param name="key">Individual profile key</param>
-       /// <returns></returns>
+        /// <returns></returns>
         public static object GetSecureProfile(string namingContainer, string key)
         {
             return GetSecureProfile(LoadProfile(), namingContainer, key);
@@ -199,6 +199,6 @@ namespace DotNetNuke.Services.Personalization
                 personalization.IsModified = true;
             }
         }
-		#endregion
+        #endregion
     }
 }
