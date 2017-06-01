@@ -1,6 +1,6 @@
 {
   "name": "dnn-single-line-input-with-error",
-  "version": "0.0.9",
+  "version": "0.0.15",
   "description": "DNN Single Line Input With Error",
   "main": "index.js",
   "scripts": {
