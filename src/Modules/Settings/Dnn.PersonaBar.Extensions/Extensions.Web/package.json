@@ -19,7 +19,7 @@
     "css-loader": "0.23.1",
     "dnn-global-styles": "0.0.5",
     "dnn-permission-grid": "0.0.1",
-    "dnn-webpack-externals": "1.1.0",
+    "dnn-webpack-externals": "1.1.2",
     "eslint": "2.9.0",
     "eslint-loader": "1.3.0",
     "eslint-plugin-react": "5.1.1",
