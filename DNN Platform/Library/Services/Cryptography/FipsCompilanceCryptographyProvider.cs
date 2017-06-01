@@ -202,7 +202,6 @@ namespace DotNetNuke.Services.Cryptography
             byte[] results;
             var utf8 = new UTF8Encoding();
 
-            //hash the passphrase using MD5 to create 128bit byte array
             using (var hashProvider = CryptographyUtils.CreateSHA512())
             {
                 byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
