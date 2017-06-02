@@ -792,4 +792,7 @@
   <data name="ViewTab.Text" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="SiteDefault.Text" xml:space="preserve">
+    <value>Site Default</value>
+  </data>
 </root>
