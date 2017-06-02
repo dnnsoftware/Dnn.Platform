@@ -36,7 +36,8 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 var personaBarMenu = _personaBarRepository.GetMenu();
                 var filteredMenu = new PersonaBarMenu();
-                GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, personaBarMenu.MenuItems);
+                var rootItems = personaBarMenu.MenuItems.Where(m => PersonaBarContainer.Instance.RootItems.Contains(m.Identifier)).ToList();
+                GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
 
                 PersonaBarContainer.Instance.FilterMenu(filteredMenu);
                 return filteredMenu;
