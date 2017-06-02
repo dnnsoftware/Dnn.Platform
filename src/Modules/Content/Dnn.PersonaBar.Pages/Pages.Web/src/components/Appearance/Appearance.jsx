@@ -154,7 +154,7 @@ class Appearance extends Component {
                 </GridCell>
                 <GridCell>
                     <GridCell columnSize="50">
-                        <SingleLineInputWithError
+                        <SingleLineInputWithError style={{ width: "100%" }}
                             label={Localization.get("PageStyleSheet") }
                             tooltipMessage={Localization.get("PageStyleSheetTooltip") }
                             value={page.pageStyleSheet}
