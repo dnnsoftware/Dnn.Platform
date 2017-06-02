@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider),typeof(CoreCryptographyProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider),typeof(FipsCompilanceCryptographyProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();

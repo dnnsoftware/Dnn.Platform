@@ -2182,7 +2182,7 @@ namespace DotNetNuke.Entities.Users
             Requires.NotNullOrEmpty("verificationCode", verificationCode);
 
             var portalSecurity = new PortalSecurity();
-            var decryptString = portalSecurity.DecryptString(verificationCode, Config.GetDecryptionkey());
+            var decryptString = portalSecurity.Decrypt(Config.GetDecryptionkey(), verificationCode);
             var strings = decryptString.Split('-');
 
             if (strings.Length != 2)
