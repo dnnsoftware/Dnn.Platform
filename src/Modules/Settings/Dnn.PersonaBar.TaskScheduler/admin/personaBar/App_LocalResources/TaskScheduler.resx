@@ -415,7 +415,10 @@
     <value>Time Remaining: </value>
   </data>
   <data name="NoTasks.Text" xml:space="preserve">
-    <value>There are no tasks in the queue and no tasks are processing.</value>
+    <value>There are no tasks in the queue</value>
+  </data>
+  <data name="NoTasksMessage.Text" xml:space="preserve">
+    <value>Whenever you have tasks in queue or processing, they will appear here.</value>
   </data>
   <data name="DisabledMessage.Text" xml:space="preserve">
     <value>Scheduler is currently disabled.</value>

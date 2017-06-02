@@ -4,6 +4,8 @@ import TaskStatusItemRow from "./taskStatusItemRow";
 import "./style.less";
 import resx from "../../resources";
 
+const noDataImage = require(`!raw!./../svg/nodata.svg`);
+
 class TaskQueuePanelBody extends Component {
     constructor() {
         super();
@@ -11,7 +13,7 @@ class TaskQueuePanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     renderedTaskStatusList() {
-        const {props} = this;
+        const { props } = this;
         return props.taskStatusList.map((term, index) => {
             return (
                 <TaskStatusItemRow
@@ -32,7 +34,7 @@ class TaskQueuePanelBody extends Component {
     }
 
     renderedTaskProcessingList() {
-        const {props} = this;
+        const { props } = this;
         if (props.taskProcessingList) {
             return props.taskProcessingList.map((term, index) => {
                 return (
@@ -55,21 +57,18 @@ class TaskQueuePanelBody extends Component {
 
     /*eslint-disable eqeqeq*/
     render() {
-        const {props} = this;
+        const { props } = this;
         return (
             <div>
-                <div>
-                    {((props.taskStatusList && props.taskStatusList.length > 0) || (props.taskProcessingList && props.taskProcessingList.length > 0)) &&
-                        <div className={props.schedulingEnabled === "True" ? "taskStatusList-title" : "taskStatusList-disabled"}>
-                            {props.schedulingEnabled === "True" ? "" : resx.get("DisabledMessage")}
-                        </div>
-                    }
-                    {props.taskStatusList && props.taskStatusList.length == 0 && props.taskProcessingList && props.taskProcessingList.length == 0 &&
-                        <div className="noTasks">{resx.get("NoTasks")}</div>
-                    }
-                    {this.renderedTaskProcessingList()}
-                    {this.renderedTaskStatusList()}
-                </div>
+                {props.taskStatusList && props.taskStatusList.length == 0 && props.taskProcessingList && props.taskProcessingList.length == 0 &&
+                    <div className="noData">
+                        <div className="noTasks">{props.schedulingEnabled === "True" ? resx.get("NoTasks") : resx.get("DisabledMessage")}</div>
+                        <div className="noTasksMessage">{resx.get("NoTasksMessage")}</div>
+                        <div dangerouslySetInnerHTML={{ __html: noDataImage }} />
+                    </div>
+                }
+                {this.renderedTaskProcessingList()}
+                {this.renderedTaskStatusList()}
             </div>
         );
     }
