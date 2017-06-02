@@ -17,6 +17,7 @@ import RadioButtons from "dnn-radio-buttons";
 import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
+import application from "../../globals/application";
 
 import TreeControlInteractor from "dnn-tree-control-interactor";
 
@@ -25,6 +26,8 @@ const keysToValidate = ["ExportName"];
 class ExportModal extends Component {
     constructor(props) {
         super();
+
+        const ItemsToExport = [];
         this.state = {
             wizardStep: 0,
             exportRequest: {
@@ -42,7 +45,7 @@ class ExportModal extends Component {
                 IncludeExtensions: true,
                 IncludeFiles: true,
                 ExportMode: props.lastExportTime ? "Differential" : "Full",
-                ItemsToExport: [],
+                ItemsToExport,
                 RunNow: true
             },
             errors: {
@@ -50,9 +53,16 @@ class ExportModal extends Component {
             },
             reloadPages: false,
             requestSubmitting: false
-        };
+        };        
 
         this.getInitialPortalTabs = props.getInitialPortalTabs;
+
+        const registeredItemsToExport = application.getRegisteredItemsToExport();
+        for (let i = 0; i < registeredItemsToExport.length; i++) {
+            if(registeredItemsToExport[i].defaultSelected) {
+                ItemsToExport.push(registeredItemsToExport[i].name);
+            }
+        }
     }
 
     componentWillMount() {
@@ -184,6 +194,20 @@ class ExportModal extends Component {
             this.ValidateTexts(key);
     }
 
+    onChangeItemsToExport(name) {
+        const { exportRequest } = this.state;
+        const index = exportRequest.ItemsToExport.indexOf(name);
+        if (index !== -1) {
+            exportRequest.ItemsToExport.splice(index, 1);
+        } else {
+            exportRequest.ItemsToExport.push(name);
+        }
+        this.setState({
+            exportRequest
+        });
+    }
+
+
     updatePagesToExport(selectedPages) {
         let { exportRequest } = this.state;
         exportRequest.pages = selectedPages;
@@ -209,6 +233,7 @@ class ExportModal extends Component {
             roles: "",
             sortOrder: 0
         };
+        const registeredItemsToExport = application.getRegisteredItemsToExport();
         return (
             <div className={styles.exportModal}>
                 <div className="pageTitle">{Localization.get("ExportSettings")}</div>
@@ -347,6 +372,19 @@ class ExportModal extends Component {
                                     onChange={this.onChange.bind(this, "IncludeExtensions")}
                                 />
                             </InputGroup>
+                            {registeredItemsToExport.map(item =>
+                                <InputGroup>
+                                    <Label
+                                        labelType="inline"
+                                        label={item.name}
+                                    />
+                                    <Switch
+                                        value={state.exportRequest.ItemsToExport.indexOf(item.name) !== -1}
+                                        onChange={this.onChangeItemsToExport.bind(this, item.name)}
+                                    />
+
+                                </InputGroup>)
+                            }
                             <InputGroup>
                                 <div style={{ "paddingBottom": 20, "paddingTop": 10 }}><hr /></div>
                                 <Label

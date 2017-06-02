@@ -10,6 +10,11 @@ let store = configureStore();
 application.dispatch = store.dispatch;
 application.init();
 
+if(!window.dnn.siteImportExport) {
+    window.dnn.siteImportExport = {};
+}
+window.dnn.siteImportExport.registerItemToExport = application.registerItemToExport;
+
 const appContainer = document.getElementById("siteimportexport-container");
 render(
     <Provider store={store}>
