@@ -723,7 +723,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
             else
             {
-                if (tabUrl != null)
+                if (url == "/" && tabUrl != null)
                 {
                     _tabController.DeleteTabUrl(tabUrl, portalSettings.PortalId, true);
                 }
