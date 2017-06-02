@@ -27,6 +27,7 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Security;
 
 #endregion
 
@@ -65,7 +66,7 @@ namespace DotNetNuke.Services.Personalization
                 HttpContext context = HttpContext.Current;
                 if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
                 {
-                    profileData = context.Request.Cookies["DNNPersonalization"].Value;
+                    profileData = DecryptData(context.Request.Cookies["DNNPersonalization"].Value);
                 }
             }
             personalization.Profile = string.IsNullOrEmpty(profileData)
@@ -137,7 +138,7 @@ namespace DotNetNuke.Services.Personalization
                     var context = HttpContext.Current;
                     if (context != null)
                     {
-                        var personalizationCookie = new HttpCookie("DNNPersonalization", profileData)
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", EncryptData(profileData))
                         {
                             Expires = DateTime.Now.AddDays(30),
                             Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
@@ -146,6 +147,16 @@ namespace DotNetNuke.Services.Personalization
                     }
                 }
             }
+        }
+
+        private string EncryptData(string profileData)
+        {
+            return new PortalSecurity().Encrypt(Config.GetDecryptionkey(), profileData);
+        }
+
+        private string DecryptData(string profileData)
+        {
+            return new PortalSecurity().Decrypt(Config.GetDecryptionkey(), profileData);
         }
     }
 }
