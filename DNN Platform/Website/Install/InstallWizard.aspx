@@ -748,7 +748,7 @@
                     } // ignore the error
                 }).fail(function () {
                     installWizard.Status = "";
-                }).done(function () {
+                }).always(function () {
                     installWizard.IsQueryingInstallProgress = false;
                 });
         };
