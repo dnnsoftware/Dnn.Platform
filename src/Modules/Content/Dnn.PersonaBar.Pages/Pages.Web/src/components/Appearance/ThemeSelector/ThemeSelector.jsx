@@ -29,30 +29,33 @@ class ThemeSelector extends Component {
 
     getThemeCards() {
         const { themes } = this.props;
+        let {defaultPortalThemeName} = this.props;
+        defaultPortalThemeName = defaultPortalThemeName === null ? "" : defaultPortalThemeName;
 
         if (themes.length === 0) {
-            return <div className="no-appearance-items">{localization.get("NoThemes")}</div>;
+            return <div className="no-appearance-items">{localization.get("NoThemes") }</div>;
         }
         return themes.map(theme => {
-            return <Card 
+            return <Card
                 cardId={theme.packageName}
-                onClick={this.onThemeClick.bind(this)}
-                hoverText={localization.get("SetPageTheme")}
+                onClick={this.onThemeClick.bind(this) }
+                hoverText={localization.get("SetPageTheme") }
                 label={theme.packageName}
-                selected={this.isSelected(theme)}
+                isSiteDefault={defaultPortalThemeName.toString().toLowerCase() === theme.packageName.toString().toLowerCase() }
+                selected={this.isSelected(theme) }
                 image={theme.thumbnail} />;
         });
     }
 
-    render() {        
-        const selectedIndex = this.getSelectedIndex();    
+    render() {
+        const selectedIndex = this.getSelectedIndex();
         return (
             <div>
-                <Label 
-                    label={localization.get("PageTheme")} 
-                    tooltipMessage={localization.get("PageThemeTooltip")} />
+                <Label
+                    label={localization.get("PageTheme") }
+                    tooltipMessage={localization.get("PageThemeTooltip") } />
                 <Gallery scrollToIndex={selectedIndex}>
-                    {this.getThemeCards()}
+                    {this.getThemeCards() }
                 </Gallery>
             </div>
         );
@@ -62,7 +65,8 @@ class ThemeSelector extends Component {
 ThemeSelector.propTypes = {
     selectedTheme: PropTypes.object,
     themes: PropTypes.array.isRequired,
-    onSelectTheme: PropTypes.func.isRequired
+    onSelectTheme: PropTypes.func.isRequired,
+    defaultPortalThemeName: PropTypes.string
 };
 
 export default ThemeSelector;
