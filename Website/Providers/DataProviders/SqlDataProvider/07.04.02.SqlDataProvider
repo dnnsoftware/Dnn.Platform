@@ -523,6 +523,169 @@ AS
 	WHERE f.WorkflowID IS NULL
 GO
 
+-- DNN-7176
+CREATE FUNCTION {databaseOwner}[{objectQualifier}BrowserFromUserAgent]
+	(@UserAgent nVarChar(2000))
+RETURNS nVarChar(2000)
+AS
+BEGIN
+	DECLARE @ident1		 nVarChar( 20) = '';
+	DECLARE @ident2		 nVarChar( 20) = '';
+	DECLARE @Browser     nVarChar(100) = '';
+	DECLARE @Version	 nVarChar( 10) = '';
+	DECLARE @Pos         Smallint = -1;
+	DECLARE @End		 Smallint =  0;
+	
+	-- Detect Browser family (Name|Version Prefix):
+	SET @Browser =	CASE
+		WHEN @UserAgent LIKE '%Opera Mini/%'	THEN 'Opera Mini|Opera Mini/|Version/'
+		WHEN @UserAgent LIKE '%Opera Mobi/%'	THEN 'Opera Mobile|Version/|Opera Mobi/'
+		WHEN @UserAgent LIKE '%Opera/%'			THEN 'Opera|Version/|Opera/'
+		WHEN @UserAgent LIKE '%Opera %'			THEN 'Opera|Opera '
+		WHEN @UserAgent LIKE '%Opera'			THEN 'Opera|Opera'
+		WHEN @UserAgent LIKE '%Firefox/%'		THEN 'Mozilla Firefox|Firefox/'
+		WHEN @UserAgent LIKE '%Firebird/%'		THEN 'Mozilla Firebird|Firebird/'
+		WHEN @UserAgent LIKE '%SeaMonkey/%'		THEN 'Mozilla SeaMonkey|SeaMonkey/'
+		WHEN @UserAgent LIKE '%Kindle/%'		THEN 'Amazon Kindle|Kindle/'
+		WHEN @UserAgent LIKE '%Kindle %'		THEN 'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE '%Silk/%'			THEN 'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE '%Chrome/%'		THEN 'Google Chrome|Chrome/'
+		WHEN @UserAgent Like '%Blackberry'		THEN 'Blackberry|Mobile Safari/'
+		WHEN @UserAgent LIKE '%Android%' 		THEN 'Android|Mobile Safari/'
+		WHEN @UserAgent LIKE '%Safari/%'		THEN 'Apple Safari|Safari/'
+		WHEN @UserAgent LIKE '%ChromePlus/%'	THEN 'ChromePlus|ChromePlus/'
+		WHEN @UserAgent LIKE '%AOL %'			THEN 'AOL Browser|AOL '
+		WHEN @USerAgent LIKE '%Crazy Browser %' THEN 'Crazy Browser|Crazy Browser '
+		WHEN @USerAgent LIKE '%Maxthon/%'		THEN 'Maxthon|Maxthon/'
+		WHEN @USerAgent LIKE '%IEMobile %'		THEN 'IE Mobile|IEMobile '
+		WHEN @USerAgent LIKE '%IEMobile/%'		THEN 'IE Mobile|IEMobile/'
+		WHEN @UserAgent LIKE '%MSIE %'      	THEN 'Internet Explorer|MSIE '
+		WHEN @UserAgent LIKE '%(IE %'      		THEN 'Internet Explorer|(IE '
+		WHEN @UserAgent LIKE '%Netscape/%' 		THEN 'Netscape Navigator|Netscape/'
+		WHEN @UserAgent LIKE '%Navigator/%'		THEN 'Netscape Navigator|Navigator/'
+		WHEN @UserAgent LIKE '%PLAYSTATION %' 	THEN 'Sony Playstation|PLAYSTATION '
+		WHEN @UserAgent LIKE '%WGet/%'			THEN 'WGet|WGet/'
+	END
+	IF @Browser <> '' -- separate elements:
+		SET @Pos = CharIndex('|', @Browser)
+		IF @Pos > 0 BEGIN	
+			SET @ident1  = SubString(@Browser, @Pos + 1, 100)
+			SET @Browser = Left(@Browser, @Pos - 1)
+			SET @Pos     = CharIndex('|', @ident1)
+			IF  @Pos > 0 BEGIN
+				SET @Ident2 = SubString(@Ident1, @Pos + 1, 100)
+				SET @Ident1 = Left(@Ident1, @Pos - 1)
+			END 
+			-- get major version number from UserAgent string:
+			SET @Pos = CharIndex(@ident1, @UserAgent) + Len(@ident1 + '|') - 1 -- correct to catch trailing space
+			IF @Pos = 0 SET @Pos = CharIndex(@ident2, @UserAgent) + Len(@ident2 + '|') - 1 -- again
+			IF @Pos > 0 BEGIN
+				WHILE SubString(@UserAgent, @Pos + @End, 1) >= '0' AND SubString(@UserAgent, @Pos + @End, 1) <= 9
+					SET @End = @End + 1
+				IF @End > 0 SET @Version = SubString(@UserAgent, @Pos, @End)
+			END
+		END
+	ELSE -- Search bots, ignore version
+		SET @Browser = CASE 
+		WHEN @UserAgent LIKE '%GoogleBot%'		THEN 'Google Bot'
+		WHEN @UserAgent LIKE 'BingBot%'			THEN 'Bing Bot'
+		WHEN @UserAgent LIKE 'MSNBot%'			THEN 'MSN Bot'
+		WHEN @UserAgent LIKE '%BaiduSpider%'	THEN 'Baidu Spider'
+		WHEN @UserAgent LIKE '%Arachmo%'		THEN 'Arachmo Bot'
+		WHEN @UserAgent LIKE '%NewsGator%'		THEN 'NewsGator Bot'
+		WHEN @UserAgent LIKE '%Seekbot%'		THEN 'SeekPort Bot'
+		WHEN @UserAgent LIKE '%Yahoo%'			THEN 'Yahoo Bot'
+		WHEN @UserAgent LIKE '%Yandex%'			THEN 'Yandex Bot'
+		WHEN @UserAgent LIKE '%Bot%'			THEN 'Other Bot'
+		ELSE 'Other'
+	END
+	RETURN RTRIM(@Browser + ' ' + @Version)
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}BrowserFromUserAgent]') AND OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+    DROP FUNCTION {databaseOwner}[{objectQualifier}BrowserFromUserAgent]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}BrowserFromUserAgent]
+	(@UserAgent nVarChar(2000))
+RETURNS nVarChar(2000)
+AS
+BEGIN
+	DECLARE @ident1		 nVarChar( 20) = N'';
+	DECLARE @ident2		 nVarChar( 20) = N'';
+	DECLARE @Browser     nVarChar(100) = N'';
+	DECLARE @Version	 nVarChar( 10) = N'';
+	DECLARE @Pos         SmallInt      = -1;
+	DECLARE @End		 SmallInt      =  0;
+	
+	-- Detect Browser family (Name|Version Prefix):
+	SET @Browser =	CASE
+		WHEN @UserAgent LIKE N'%Opera Mini/%'	THEN N'Opera Mini|Opera Mini/|Version/'
+		WHEN @UserAgent LIKE N'%Opera Mobi/%'	THEN N'Opera Mobile|Version/|Opera Mobi/'
+		WHEN @UserAgent LIKE N'%Opera/%'		THEN N'Opera|Version/|Opera/'
+		WHEN @UserAgent LIKE N'%Opera %'		THEN N'Opera|Opera N'
+		WHEN @UserAgent LIKE N'%Opera'			THEN N'Opera|Opera'
+		WHEN @UserAgent LIKE N'%Firefox/%'		THEN N'Mozilla Firefox|Firefox/'
+		WHEN @UserAgent LIKE N'%Firebird/%'		THEN N'Mozilla Firebird|Firebird/'
+		WHEN @UserAgent LIKE N'%SeaMonkey/%'	THEN N'Mozilla SeaMonkey|SeaMonkey/'
+		WHEN @UserAgent LIKE N'%Kindle/%'		THEN N'Amazon Kindle|Kindle/'
+		WHEN @UserAgent LIKE N'%Kindle %'		THEN N'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE N'%Silk/%'			THEN N'Amazon Kindle|Version/'
+		WHEN @UserAgent LIKE N'%Chrome/%'		THEN N'Google Chrome|Chrome/'
+		WHEN @UserAgent Like N'%Blackberry'		THEN N'Blackberry|Mobile Safari/'
+		WHEN @UserAgent LIKE N'%Android%' 		THEN N'Android|Mobile Safari/'
+		WHEN @UserAgent LIKE N'%Safari/%'		THEN N'Apple Safari|Safari/'
+		WHEN @UserAgent LIKE N'%ChromePlus/%'	THEN N'ChromePlus|ChromePlus/'
+		WHEN @UserAgent LIKE N'%AOL %'			THEN N'AOL Browser|AOL '
+		WHEN @USerAgent LIKE N'%Crazy Browser %' THEN N'Crazy Browser|Crazy Browser '
+		WHEN @USerAgent LIKE N'%Maxthon/%'		THEN N'Maxthon|Maxthon/'
+		WHEN @USerAgent LIKE N'%IEMobile %'		THEN N'IE Mobile|IEMobile '
+		WHEN @USerAgent LIKE N'%IEMobile/%'		THEN N'IE Mobile|IEMobile/'
+		WHEN @UserAgent LIKE N'%MSIE %'      	THEN N'Internet Explorer|MSIE '
+		WHEN @UserAgent LIKE N'%(IE %'      	THEN N'Internet Explorer|(IE '
+		WHEN @UserAgent LIKE N'%Netscape/%' 	THEN N'Netscape Navigator|Netscape/'
+		WHEN @UserAgent LIKE N'%Navigator/%'	THEN N'Netscape Navigator|Navigator/'
+		WHEN @UserAgent LIKE N'%PLAYSTATION %' 	THEN N'Sony Playstation|PLAYSTATION '
+		WHEN @UserAgent LIKE N'%WGet/%'			THEN N'WGet|WGet/'
+	END;
+	IF @Browser <> N'' -- separate elements:
+		SET @Pos = CharIndex(N'|', @Browser);
+		IF @Pos > 0 BEGIN	
+			SET @ident1  = SubString(@Browser, @Pos + 1, 100);
+			SET @Browser = Left(@Browser, @Pos - 1);
+			SET @Pos     = CharIndex(N'|', @ident1);
+			IF  @Pos > 0 BEGIN
+				SET @Ident2 = SubString(@Ident1, @Pos + 1, 100);
+				SET @Ident1 = Left(@Ident1, @Pos - 1);
+			END;
+			-- get major version number from UserAgent string:
+			SET @Pos = CharIndex(@ident1, @UserAgent) + Len(@ident1 + N'|') - 1; -- correct to catch trailing space
+			IF @Pos = 0 SET @Pos = CharIndex(@ident2, @UserAgent) + Len(@ident2 + N'|') - 1; -- again
+			IF @Pos > 0 BEGIN
+				WHILE SubString(@UserAgent, @Pos + @End, 1) >= N'0' AND SubString(@UserAgent, @Pos + @End, 1) <= N'9'
+					SET @End = @End + 1;
+				IF @End > 0 
+					SET @Version = SubString(@UserAgent, @Pos, @End);
+			END;
+		END
+	ELSE -- Search bots, ignore version
+		SET @Browser = CASE 
+		WHEN @UserAgent LIKE N'%GoogleBot%'		THEN N'Google Bot'
+		WHEN @UserAgent LIKE N'BingBot%'		THEN N'Bing Bot'
+		WHEN @UserAgent LIKE N'MSNBot%'			THEN N'MSN Bot'
+		WHEN @UserAgent LIKE N'%BaiduSpider%'	THEN N'Baidu Spider'
+		WHEN @UserAgent LIKE N'%Arachmo%'		THEN N'Arachmo Bot'
+		WHEN @UserAgent LIKE N'%NewsGator%'		THEN N'NewsGator Bot'
+		WHEN @UserAgent LIKE N'%Seekbot%'		THEN N'SeekPort Bot'
+		WHEN @UserAgent LIKE N'%Yahoo%'			THEN N'Yahoo Bot'
+		WHEN @UserAgent LIKE N'%Yandex%'		THEN N'Yandex Bot'
+		WHEN @UserAgent LIKE N'%Bot%'			THEN N'Other Bot'
+		ELSE N'Other'
+	END;
+	RETURN RTRIM(@Browser + N' ' + @Version);
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
