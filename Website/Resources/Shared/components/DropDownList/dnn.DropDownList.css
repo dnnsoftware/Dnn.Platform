@@ -251,6 +251,10 @@
     margin-top: 15px;
 }
 
+.dnnFormItem .dnnDropDownList .dt-container .dt-tree {
+    overflow-x: scroll;
+}
+
 .dnnFormItem .dnnDropDownList .dt-container {
     width: 100%;
     min-width: 250px;
@@ -278,7 +282,6 @@
     padding: 0 0 0 16px;
     margin: 0;
     white-space: nowrap;
-    overflow: hidden;
     border-right: 4px solid transparent;
 }
 
