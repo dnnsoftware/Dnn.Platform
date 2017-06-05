@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import GridSystem from "dnn-grid-system";
@@ -6,20 +6,23 @@ import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import Switch from "dnn-switch";
 import Dropdown from "dnn-dropdown";
+import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Localization from "../../localization";
-import {pageActions as PageActions} from "../../actions";
+import { pageActions as PageActions } from "../../actions";
 import styles from "./style.less";
 
 class More extends Component {
-    
     componentWillMount() {
         this.props.onFetchCacheProviderList();
+        if (this.props.page.cacheProvider && !this.props.cachedPageCount) {
+            this.props.onGetCachedPageCount(this.props.page.cacheProvider);
+        }
     }
-    
+
     onChangeField(key, event) {
-        const {onChangeField} = this.props;
+        const { onChangeField } = this.props;
         onChangeField(key, event.target.value);
     }
 
@@ -27,7 +30,13 @@ class More extends Component {
         this.props.onChangeField("cacheProvider", option.value);
         if (!this.props.page.cacheProvider && option.value) {
             this.props.onChangeField("cacheIncludeExclude", true);
-        }        
+        }
+        if (option.value) {
+            this.props.onGetCachedPageCount(option.value);
+        }
+        this.setState({
+            cacheProvider: option.value
+        });
     }
 
     onChangeIncludeExclude(value) {
@@ -35,13 +44,17 @@ class More extends Component {
         this.props.onChangeField("cacheIncludeExclude", include);
     }
 
+    onClearCache() {
+        this.props.onClearCache(this.props.page.cacheProvider);
+    }
+
     render() {
-        const {page, onChangeField, cacheProviderList} = this.props;
-        const cacheProviderOptions = cacheProviderList && 
-            [{value: null, label:Localization.get("None")},
-                 ...cacheProviderList.map(x => ({value: x, label: x}))];
+        const { page, onChangeField, cacheProviderList } = this.props;
+        const cacheProviderOptions = cacheProviderList &&
+            [{ value: null, label: Localization.get("None") },
+            ...cacheProviderList.map(x => ({ value: x, label: x }))];
         const includeExcludeOptions = [
-            { value: true, label: Localization.get("Include") }, 
+            { value: true, label: Localization.get("Include") },
             { value: false, label: Localization.get("Exclude") }];
 
         return (
@@ -55,7 +68,7 @@ class More extends Component {
                             labelType="inline"
                             tooltipMessage={Localization.get("SecureConnection_tooltip")}
                             label={Localization.get("SecureConnection")}
-                            />
+                        />
                         <Switch
                             labelHidden={true}
                             value={page.isSecure}
@@ -66,7 +79,7 @@ class More extends Component {
                             labelType="inline"
                             tooltipMessage={Localization.get("DisableLink_tooltip")}
                             label={Localization.get("DisableLink")}
-                            />
+                        />
                         <Switch
                             labelHidden={true}
                             value={page.disableLink}
@@ -84,19 +97,32 @@ class More extends Component {
                             labelType="block"
                             tooltipMessage={Localization.get("OutputCacheProvider_tooltip")}
                             label={Localization.get("OutputCacheProvider")}
-                            />
-                        {cacheProviderOptions && 
+                        />
+                        {cacheProviderOptions &&
                             <Dropdown options={cacheProviderOptions}
-                                value={page.cacheProvider} 
-                                onSelect={this.onCacheProviderSelected.bind(this)} 
+                                value={page.cacheProvider}
+                                onSelect={this.onCacheProviderSelected.bind(this)}
                                 withBorder={true} />}
 
-                        {page.cacheProvider &&        
+                        {page.cacheProvider &&
                             <SingleLineInputWithError
                                 label={Localization.get("CacheDuration")}
-                                tooltipMessage={Localization.get("CacheDuration_tooltip")} 
+                                tooltipMessage={Localization.get("CacheDuration_tooltip")}
                                 value={page.cacheDuration}
                                 onChange={this.onChangeField.bind(this, "cacheDuration")} />}
+                        {page.cacheProvider &&
+                            <div className="clear-cache">
+                                <Label
+                                    labelType="block"
+                                    label={Localization.get("lblCachedItemCount").replace("{0}", this.props.cachedPageCount)}
+                                />
+                                <Button
+                                    disabled={this.props.cachedPageCount === 0}
+                                    type="secondary"
+                                    onClick={this.onClearCache.bind(this)}>
+                                    {Localization.get("ClearPageCache")}
+                                </Button>
+                            </div>}
                     </GridCell>
 
                     {page.cacheProvider &&
@@ -104,34 +130,34 @@ class More extends Component {
                             <Label
                                 labelType="inline"
                                 tooltipMessage={Localization.get("IncludeExcludeParams_tooltip")}
-                                label={Localization.get("IncludeExcludeParams")}/>
-                            <RadioButtons 
-                                options={includeExcludeOptions} 
+                                label={Localization.get("IncludeExcludeParams")} />
+                            <RadioButtons
+                                options={includeExcludeOptions}
                                 value={page.cacheIncludeExclude}
-                                onChange={this.onChangeIncludeExclude.bind(this)}/>
+                                onChange={this.onChangeIncludeExclude.bind(this)} />
 
                             {!page.cacheIncludeExclude &&
                                 <SingleLineInputWithError
                                     label={Localization.get("IncludeParamsInCacheValidation")}
-                                    tooltipMessage={Localization.get("IncludeParamsInCacheValidation_tooltip")} 
-                                    value={page.cacheIncludeVaryBy} 
+                                    tooltipMessage={Localization.get("IncludeParamsInCacheValidation_tooltip")}
+                                    value={page.cacheIncludeVaryBy}
                                     onChange={this.onChangeField.bind(this, "cacheIncludeVaryBy")} />}
 
                             {page.cacheIncludeExclude &&
                                 <SingleLineInputWithError
                                     label={Localization.get("ExcludeParamsInCacheValidation")}
-                                    tooltipMessage={Localization.get("ExcludeParamsInCacheValidation_tooltip")} 
-                                    value={page.cacheExcludeVaryBy} 
-                                    onChange={this.onChangeField.bind(this, "cacheExcludeVaryBy")}/> }
+                                    tooltipMessage={Localization.get("ExcludeParamsInCacheValidation_tooltip")}
+                                    value={page.cacheExcludeVaryBy}
+                                    onChange={this.onChangeField.bind(this, "cacheExcludeVaryBy")} />}
 
-                            <SingleLineInputWithError                                 
+                            <SingleLineInputWithError
                                 label={Localization.get("VaryByLimit")}
                                 tooltipMessage={Localization.get("VaryByLimit_tooltip")}
                                 value={page.cacheMaxVaryByCount}
                                 onChange={this.onChangeField.bind(this, "cacheMaxVaryByCount")} />
-                            
-                        </GridCell>       
-                    } 
+
+                        </GridCell>
+                    }
                 </GridSystem>
             </div>
         );
@@ -142,18 +168,24 @@ More.propTypes = {
     page: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired,
     cacheProviderList: PropTypes.array,
-    onFetchCacheProviderList: PropTypes.func.isRequired
+    onFetchCacheProviderList: PropTypes.func.isRequired,
+    onGetCachedPageCount: PropTypes.func.isRequired,
+    cachedPageCount: PropTypes.number,
+    onClearCache: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
-        cacheProviderList: state.pages.cacheProviderList
+        cacheProviderList: state.pages.cacheProviderList,
+        cachedPageCount: state.pages.cachedPageCount
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({
-        onFetchCacheProviderList: PageActions.fetchCacheProviderList
+    return bindActionCreators({
+        onFetchCacheProviderList: PageActions.fetchCacheProviderList,
+        onGetCachedPageCount: PageActions.getCachedPageCount,
+        onClearCache: PageActions.clearCache
     }, dispatch);
 }
 

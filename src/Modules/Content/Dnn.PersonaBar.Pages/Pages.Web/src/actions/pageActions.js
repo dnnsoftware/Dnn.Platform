@@ -357,6 +357,34 @@ const pageActions = {
                 });
             });
         };
+    },
+
+    getCachedPageCount(cacheProvider) {
+        return (dispatch, getState) => {
+            const page = getState().pages.selectedPage;
+            PagesService.getCachedPageCount(cacheProvider, page.tabId).then(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_CACHED_PAGE_COUNT,
+                    data: {
+                        cachedPageCount: data.Count
+                    }
+                });
+            });
+        };
+    },
+
+    clearCache(cacheProvider) {
+        return (dispatch, getState) => {
+            const page = getState().pages.selectedPage;
+            PagesService.clearCache(cacheProvider, page.tabId).then(() => {
+                dispatch({
+                    type: ActionTypes.CLEARED_CACHED_PAGE,
+                    data: {
+                        cachedPageCount: 0
+                    }
+                });
+            });
+        };
     }
 };
 

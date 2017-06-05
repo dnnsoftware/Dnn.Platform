@@ -95,7 +95,9 @@ class PageSettings extends Component {
             editingSettingModuleId,
             pageDetailsFooterComponents,
             pageTypeSelectorComponents,
-            AllowContentLocalization
+            AllowContentLocalization,
+            onGetCachedPageCount,
+            onClearCache
         } = this.props;
 
         const buttons = this.getButtons();
@@ -135,7 +137,9 @@ class PageSettings extends Component {
                 label: Localization.get("More"),
                 component: <div className="dnn-simple-tab-item">
                                 <More page={selectedPage}
-                                    onChangeField={onChangeField} />
+                                    onChangeField={onChangeField} 
+                                    onGetCachedPageCount={onGetCachedPageCount}
+                                    onClearCache={onClearCache} />
                                 {footer}
                             </div>
             }
@@ -169,7 +173,8 @@ class PageSettings extends Component {
                             page={selectedPage}
                             errors={selectedPageErrors} 
                             onChangeField={onChangeField}
-                            components={pageDetailsFooterComponents} />
+                            components={pageDetailsFooterComponents}                             
+                            />
                         {footer}
                     </div>);
         }
@@ -235,7 +240,9 @@ PageSettings.propTypes = {
     pageTypeSelectorComponents: PropTypes.array.isRequired,
     selectedPageSettingTab: PropTypes.number,
     AllowContentLocalization: PropTypes.bool,
-    selectPageSettingTab: PropTypes.func
+    selectPageSettingTab: PropTypes.func,
+    onGetCachedPageCount: PropTypes.func.isRequired,
+    onClearCache: PropTypes.func.isRequired
 };
 
 export default PageSettings;

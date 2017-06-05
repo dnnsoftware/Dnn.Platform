@@ -144,6 +144,16 @@ const PageService = function () {
             );
     };
 
+    const getCachedPageCount = function (cacheProvider, pageId) {
+        const api = getPagesApi();
+        return api.get("GetCachedItemCount", { cacheProvider: cacheProvider, tabId: pageId });
+    };
+
+    const clearCache = function (cacheProvider, pageId) {
+        const api = getPagesApi();
+        return api.post("ClearCache?cacheProvider=" + cacheProvider + "&tabId=" + pageId);
+    };
+
     return {
         getPage,
         savePage,
@@ -155,7 +165,9 @@ const PageService = function () {
         getPageUrlPreview,
         copyAppearanceToDescendantPages,
         copyPermissionsToDescendantPages,
-        openPageInEditMode
+        openPageInEditMode,
+        getCachedPageCount,
+        clearCache
     };
 };
 
