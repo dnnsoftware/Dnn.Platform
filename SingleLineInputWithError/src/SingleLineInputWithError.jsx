@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import Tooltip from "dnn-tooltip";
 import Input from "dnn-single-line-input";
 import Label from "dnn-label";
@@ -10,9 +10,17 @@ class SingleLineInputWithError extends Component {
     }
 
     render() {
-        const {props} = this;
+        const { props } = this;
         const className = "dnn-single-line-input-with-error" + (props.error ? " error" : "") + (" " + props.className) + (props.enabled ? "" : " disabled");
         const errorMessages = props.errorMessage instanceof Array ? props.errorMessage : [props.errorMessage];
+
+        const onBlur = (e) => {
+            props.onChange(e);
+            if (props.hasOwnProperty('onBlur')) {
+                props.onBlur(e);
+            }
+        };
+
         return (
             <div className={className} style={props.style}>
                 {props.label &&
@@ -24,8 +32,8 @@ class SingleLineInputWithError extends Component {
                         tooltipActive={props.tooltipMessage}
                         labelType={props.labelType}
                         className={props.infoTooltipClassName}
-                        style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
-                        />
+                        style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle)}
+                    />
                 }
                 {props.extraToolTips}
                 <div className={"input-tooltip-container " + props.labelType}>
@@ -33,26 +41,26 @@ class SingleLineInputWithError extends Component {
                         id={props.inputId}
                         type={props.type}
                         onChange={props.onChange}
-                        onBlur={props.onBlur}
+                        onBlur={onBlur}
                         onFocus={props.onFocus}
                         onKeyDown={props.onKeyDown}
                         onKeyPress={props.onKeyPress}
                         onKeyUp={props.onKeyUp}
                         value={props.value}
                         tabIndex={props.tabIndex}
-                        style={Object.assign({ marginBottom: 32 }, props.inputStyle) }
+                        style={Object.assign({ marginBottom: 32 }, props.inputStyle)}
                         placeholder={props.placeholder}
                         enabled={props.enabled}
                         size={props.inputSize}
                         autoComplete={props.autoComplete}
                         maxLength={props.maxLength}
-                        />
+                    />
                     <Tooltip
                         messages={errorMessages}
                         type="error"
                         className={props.placement}
                         tooltipPlace={props.tooltipPlace}
-                        rendered={props.error}/>
+                        rendered={props.error} />
                 </div>
             </div>
         );
