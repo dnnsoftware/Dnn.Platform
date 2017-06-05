@@ -1,6 +1,6 @@
 {
   "name": "dnn-sortable",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "DNN Sortable",
   "main": "index.js",
   "scripts": {
@@ -27,10 +27,10 @@
     "eslint-plugin-import": "^1.10.2",
     "eslint-plugin-react": "5.1.1",
     "eslint-plugin-spellcheck": "0.0.7",
+    "interact.js": "1.2.6",
     "less": "2.6.1",
     "less-loader": "2.2.2",
     "style-loader": "0.13.0",
-    "webpack": "1.13.1",
-    "interact.js": "1.2.6"
+    "webpack": "1.13.1"
   }
 }

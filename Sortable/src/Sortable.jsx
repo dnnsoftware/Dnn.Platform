@@ -20,6 +20,13 @@ export default class Sortable extends Component {
         };
     }
 
+    componentWillReceiveProps(newProps) {
+        const items = newProps.items.map((item, index) => {
+            return { index, item, id: index };
+        });
+        this.setState({items});
+    }
+
     sortColumns(a, b) {
         if (a.index < b.index)
         { return -1; }
@@ -53,7 +60,7 @@ export default class Sortable extends Component {
 
     unselectAll() {
         let {items} = this.state;
-        items.forEach(i => i.selected = false);
+        items.forEach(i => i ? i.selected = false : false);
         this.setState({ items });
     }
 
@@ -150,7 +157,6 @@ export default class Sortable extends Component {
     sortOnDrag(event, dropX, dropY) {
         let id = event.draggable._element.getAttribute("data-dnn-sortable-id");
         const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
-
         itemElement.getAttribute("data-index");
         const sortableItems = document.getElementsByClassName("sortable-item");
         let newIndex = this.getNewIndex(sortableItems, dropY);
@@ -214,9 +220,8 @@ export default class Sortable extends Component {
             console.error("Children.length and items.length should be equal");
             return false;
         }
-
         const listItems = children.map((child, index) => {
-            const item = this.state.items[index];
+            const item = this.state.items[index] || {};
             return React.cloneElement(child, {
                 listItem: item,
                 selected: item.selected
