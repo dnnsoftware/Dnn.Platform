@@ -1296,9 +1296,9 @@ dnn-input-group@0.0.4:
   version "0.0.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-input-group/-/dnn-input-group-0.0.4.tgz#de246f2f7d50eb4b9549a6fb52b6e8d54692692d"
 
-dnn-label@0.0.6:
-  version "0.0.6"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-label/-/dnn-label-0.0.6.tgz#cf6f90d20b8b2318d9c0b25ebfaedbb9d179582a"
+dnn-label@0.0.7:
+  version "0.0.7"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-label/-/dnn-label-0.0.7.tgz#50f98eb509e72d61973fd870c75bae49b3c8c327"
 
 dnn-modal@0.0.2:
   version "0.0.2"
@@ -1364,9 +1364,9 @@ dnn-slider@0.0.1:
   version "0.0.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-slider/-/dnn-slider-0.0.1.tgz#708675245c36dcfe2e82ca2747b266ee2159ded8"
 
-dnn-sortable@0.0.2:
-  version "0.0.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-sortable/-/dnn-sortable-0.0.2.tgz#ab4f4e95925d691f1f4b4c0ef38e496015032525"
+dnn-sortable@0.0.4:
+  version "0.0.4"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-sortable/-/dnn-sortable-0.0.4.tgz#3b11e02308aca78a2256dd9168b54179874d36bd"
 
 dnn-svg-icons@0.1.12:
   version "0.1.12"
