@@ -326,6 +326,11 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_TabModules", tabId, includeDeleted, toDate, fromDate);
         }
 
+        public IDataReader GetAllTabModules(int portalId)
+        {
+            return _dataProvider.ExecuteReader("Import_GetAllTabsModules", portalId);
+        }
+
         public IDataReader GetAllTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)
         {
             return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, toDate, fromDate);

@@ -1,0 +1,14 @@
+﻿-- Get all tab modules
+IF object_id(N'{databaseOwner}[{objectQualifier}Import_GetAllTabsModules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Import_GetAllTabsModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Import_GetAllTabsModules]
+	@PortalID int
+AS
+BEGIN
+SELECT	* 	FROM {databaseOwner}[{objectQualifier}TabModules] TM 
+	INNER JOIN {databaseOwner}[{objectQualifier}Tabs] T ON T.TabID=TM.TabID
+	WHERE  T.PortalID = @PortalID 
+END
+GO
