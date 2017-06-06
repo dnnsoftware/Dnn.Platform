@@ -794,7 +794,46 @@ transform: rotate(180deg);
     color: #737171;
     background-color: transparent;
 }
+.personabarnav > li#Edit .editmode-tooltip {
+    position: absolute;
+    top: 20px;
+    left: 64px;
+    width: 128px;
+    min-height: 53px;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(64, 64, 64, 0.7);
+    background-color: #fff;
+    color: #000;
+    padding: 10px;
+    box-sizing: border-box;
+    display: none;
+    opacity: 0;
+    cursor: default;
+}
 
+.personabarnav > li#Edit:hover .editmode-tooltip {
+    display: block;
+    animation: tooltip 1000ms forwards;
+}
+@keyframes tooltip {
+    0% { display: none;opacity: 0;}
+    1%{ display: block; opacity: 0;}
+    100%{ display: block;opacity: 1;top: 0px;}
+}
+.personabarnav > li#Edit .editmode-tooltip > span {
+    display: block;
+    text-align: left;
+    font-size: 6px;
+}
+.personabarnav > li#Edit .editmode-tooltip .tooltip-title{
+     color: #0a85c3;
+}
+.personabarnav > li#Edit.locked {
+    background-color: transparent;
+}
+.personabarnav > li#Edit.locked svg {
+    fill: #79bfdb;
+}
 .personabarnav > li#showsite {
     background: url('../images/close_thin.svg') no-repeat center center;
     position: absolute;
