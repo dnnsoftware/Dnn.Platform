@@ -59,7 +59,7 @@ class ExportModal extends Component {
 
         const registeredItemsToExport = application.getRegisteredItemsToExport();
         for (let i = 0; i < registeredItemsToExport.length; i++) {
-            if(registeredItemsToExport[i].defaultSelected) {
+            if (registeredItemsToExport[i].defaultSelected) {
                 ItemsToExport.push(registeredItemsToExport[i].name);
             }
         }
