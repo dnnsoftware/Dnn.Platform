@@ -4,6 +4,7 @@ import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import Switch from "dnn-switch";
+import application from "../../globals/application";
 
 class ImportSummary extends Component {
     getSummaryItem(category) {
@@ -18,6 +19,7 @@ class ImportSummary extends Component {
 
     render() {
         const { props } = this;
+        const registeredItemsToExport = application.getRegisteredItemsToExport();
         return (
             <div style={{ float: "left", width: "100%" }}>
                 {props.importSummary && props.selectedPackage &&
@@ -125,6 +127,15 @@ class ImportSummary extends Component {
                                     />
                                     <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
                                 </GridCell>
+                                {registeredItemsToExport.map(item =>
+                                    <GridCell>
+                                        <Label
+                                            labelType="inline"
+                                            label={item.name}
+                                        />
+                                        <div className="import-summary-item">{props.importSummary.SummaryItems.find(x => x.Category === item.name) ? Localization.get("Yes") : Localization.get("No")}</div>
+                                    </GridCell>)
+                                }
                                 <GridCell>
                                     <Label
                                         labelType="inline"

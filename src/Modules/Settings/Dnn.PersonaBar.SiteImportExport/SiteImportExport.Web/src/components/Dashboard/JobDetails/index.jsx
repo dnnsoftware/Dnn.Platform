@@ -9,6 +9,7 @@ import {
     importExport as ImportExportActions
 } from "../../../actions";
 import Localization from "localization";
+import application from "../../../globals/application";
 
 class JobDetails extends Component {
     constructor(props) {
@@ -171,6 +172,7 @@ class JobDetails extends Component {
 
     renderExportSummary() {
         const { props, state } = this;
+        const registeredItemsToExport = application.getRegisteredItemsToExport();
         return <div style={{ float: "left", width: "100%" }}>
             {props.jobDetail &&
                 <div className="export-summary">
@@ -263,6 +265,7 @@ class JobDetails extends Component {
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Packages")}</div>
                             </GridCell>
+
                             <GridCell>
                                 <Label
                                     labelType="inline"
@@ -270,6 +273,15 @@ class JobDetails extends Component {
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
                             </GridCell>
+                            {registeredItemsToExport.map(item =>
+                                <GridCell>
+                                    <Label
+                                        labelType="inline"
+                                        label={item.name}
+                                    />
+                                    <div className="import-summary-item">{props.jobDetail.Summary.SummaryItems.find(x => x.Category === item.name) ? Localization.get("Yes") : Localization.get("No")}</div>
+                                </GridCell>)
+                            }
                             <GridCell>
                                 <Label
                                     labelType="inline"
