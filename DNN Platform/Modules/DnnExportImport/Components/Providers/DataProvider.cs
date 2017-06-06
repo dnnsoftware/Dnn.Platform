@@ -326,9 +326,9 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_TabModules", tabId, includeDeleted, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabModules(int portalId)
+        public bool CheckTabModuleUniqueIdExists(Guid uniqueId)
         {
-            return _dataProvider.ExecuteReader("Import_GetAllTabsModules", portalId);
+            return _dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabModuleUniqueIdExists", uniqueId) > 0;
         }
 
         public IDataReader GetAllTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)

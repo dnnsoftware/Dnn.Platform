@@ -518,7 +518,6 @@ namespace Dnn.ExportImport.Components.Services
             var localExportModules = isNew ? new List<ExportModule>()
                 : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MaxDbTime, null).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
-            var allTabUniqueIds = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetAllTabModules(localTab.PortalID)).Select(x => x.UniqueId).ToList();
             var allExistingIds = localTabModules.Select(l => l.ModuleID).ToList();
             var allImportedIds = new List<int>();
 
@@ -573,7 +572,7 @@ namespace Dnn.ExportImport.Components.Services
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
                         //UniqueId = other.UniqueId,
-                        UniqueId = allTabUniqueIds.Contains(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
+                        UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,

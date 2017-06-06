@@ -1,14 +1,13 @@
-﻿-- Get all tab modules
-IF object_id(N'{databaseOwner}[{objectQualifier}Import_GetAllTabsModules]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Import_GetAllTabsModules]
+﻿-- Check if unique id in TabModules exists or not
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Import_GetAllTabsModules]
-	@PortalID int
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]
+	@UniqueId uniqueidentifier
 AS
 BEGIN
-SELECT	* 	FROM {databaseOwner}[{objectQualifier}TabModules] TM 
-	INNER JOIN {databaseOwner}[{objectQualifier}Tabs] T ON T.TabID=TM.TabID
-	WHERE  T.PortalID = @PortalID 
+SELECT TOP 1 TabModuleId FROM {databaseOwner}[{objectQualifier}TabModules] 
+	WHERE UniqueId = @UniqueId 
 END
 GO

@@ -284,6 +284,6 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermi
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Import_GetAllTabsModules]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Import_GetAllTabsModules]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]
 GO
