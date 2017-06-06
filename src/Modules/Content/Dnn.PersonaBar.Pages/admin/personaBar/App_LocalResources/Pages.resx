@@ -483,29 +483,8 @@
   <data name="CancelWithoutSaving.Text" xml:space="preserve">
     <value>Are you sure you want to close? Any changes will be lost.</value>
   </data>
-  <data name="Error_EmptyTabName.Text" xml:space="preserve">
-    <value>The page name can't be empty.</value>
-  </data>
-  <data name="Error_PathDuplicateWithAlias.Text" xml:space="preserve">
-    <value>There is a site domain identical to your page path.</value>
-  </data>
-  <data name="Error_TabExists.Text" xml:space="preserve">
-    <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
-  </data>
-  <data name="Error_TabRecycled.Text" xml:space="preserve">
-    <value>A page with this name exists in the Recycle Bin.  To restore this page use the Recycle Bin.</value>
-  </data>
-  <data name="Error_UrlPathCleaned.Text" xml:space="preserve">
-    <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.&amp;lt;br&amp;gt;[NOTE: The illegal characters list is the following: &amp;lt;&amp;gt;\?:&amp;amp;=+|%# ]</value>
-  </data>
-  <data name="Error_UrlPathNotUnique.Text" xml:space="preserve">
-    <value>The submitted URL is not available as there is another page already use this URL.</value>
-  </data>
-  <data name="Error_StartDateAfterEndDate.Text" xml:space="preserve">
-    <value>The start date cannot be after end date.</value>
-  </data>
   <data name="PathDuplicateWithAlias.Text" xml:space="preserve">
-    <value>There is a site domain identical to your page path.</value>
+    <value>There is already a page with the same name, {0} at the same URL path {1}.</value>
   </data>
   <data name="TabExists.Text" xml:space="preserve">
     <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
