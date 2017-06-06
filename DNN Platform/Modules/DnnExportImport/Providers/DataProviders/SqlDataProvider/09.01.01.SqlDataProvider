@@ -1,0 +1,13 @@
+﻿-- Check if unique id in TabModules exists or not
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]
+	@UniqueId uniqueidentifier
+AS
+BEGIN
+SELECT TOP 1 TabModuleId FROM {databaseOwner}[{objectQualifier}TabModules] 
+	WHERE UniqueId = @UniqueId 
+END
+GO

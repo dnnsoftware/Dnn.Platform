@@ -518,7 +518,6 @@ namespace Dnn.ExportImport.Components.Services
             var localExportModules = isNew ? new List<ExportModule>()
                 : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MaxDbTime, null).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
-
             var allExistingIds = localTabModules.Select(l => l.ModuleID).ToList();
             var allImportedIds = new List<int>();
 
@@ -573,7 +572,7 @@ namespace Dnn.ExportImport.Components.Services
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
                         //UniqueId = other.UniqueId,
-                        UniqueId = Guid.NewGuid(),
+                        UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
@@ -596,8 +595,7 @@ namespace Dnn.ExportImport.Components.Services
                         if (other.IsDeleted)
                         {
                             local.IsDeleted = other.IsDeleted;
-                            EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
-                            //_moduleController.UpdateModule(local); // to clear cache
+                            _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
                         }
 
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -636,7 +634,7 @@ namespace Dnn.ExportImport.Components.Services
                     for (var i = 0; i < locals.Count; i++)
                     {
                         var local = locals.ElementAt(i);
-
+                        var isDeleted = local.IsDeleted;
                         try
                         {
                             var localExpModule = localExportModules.FirstOrDefault(
@@ -687,12 +685,14 @@ namespace Dnn.ExportImport.Components.Services
                                 Repository.UpdateItem(otherModule);
                                 allImportedIds.Add(local.ModuleID);
 
-                                // this is not saved upon adding the module
-                                if (other.IsDeleted)
+                                // this is not saved upon updating the module
+                                if (isDeleted != other.IsDeleted)
                                 {
                                     local.IsDeleted = other.IsDeleted;
-                                    EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
-                                    //_moduleController.UpdateModule(local); // to clear cache
+                                    if (other.IsDeleted)
+                                        _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
+                                    else
+                                        _moduleController.RestoreModule(local);
                                 }
                             }
                             else
@@ -747,15 +747,23 @@ namespace Dnn.ExportImport.Components.Services
                                 // this coould cause problem in some cases
                                 //if (local.UniqueId != other.UniqueId) local.UniqueId = other.UniqueId;
 
-                                // this is not saved upon updating the module
-                                EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
-
                                 // updates both module and tab module db records
                                 _moduleController.UpdateModule(local);
                                 other.LocalId = local.TabModuleID;
                                 otherModule.LocalId = localExpModule.ModuleID;
                                 Repository.UpdateItem(otherModule);
                                 allImportedIds.Add(local.ModuleID);
+
+                                // this is not saved upon updating the module
+                                if (isDeleted != other.IsDeleted)
+                                {
+                                    local.IsDeleted = other.IsDeleted;
+                                    if (other.IsDeleted)
+                                        _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
+                                    else
+                                        _moduleController.RestoreModule(local);
+                                }
+
                             }
 
                             var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -1530,7 +1538,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 first = false;
                 tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
-            } 
+            }
 
             return false;
         }
