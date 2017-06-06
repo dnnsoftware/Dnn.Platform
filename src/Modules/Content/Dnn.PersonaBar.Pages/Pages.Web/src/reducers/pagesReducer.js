@@ -44,7 +44,8 @@ export default function pagesReducer(state = {
                 selectedPage: action.data.page,
                 errors: {},
                 urlChanged: false,
-                dirtyPage: false
+                dirtyPage: false,
+                cachedPageCount: null
             };
         
         case ActionTypes.CHANGE_FIELD_VALUE:
@@ -137,6 +138,16 @@ export default function pagesReducer(state = {
                 }
             };
         }
+
+        case ActionTypes.RETRIEVED_CACHED_PAGE_COUNT:
+            return { ...state,                
+                cachedPageCount: action.data.cachedPageCount
+            };
+
+        case ActionTypes.CLEARED_CACHED_PAGE:
+            return { ...state,                
+                cachedPageCount: 0
+            };
 
         default:
             return state;

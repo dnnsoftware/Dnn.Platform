@@ -795,4 +795,10 @@
   <data name="SiteDefault.Text" xml:space="preserve">
     <value>Site Default</value>
   </data>
+  <data name="ClearPageCache.Text" xml:space="preserve">
+    <value>Clear Cache - This Page</value>
+  </data>
+  <data name="lblCachedItemCount.Text" xml:space="preserve">
+    <value>Current Cache Count: {0} variations for this page</value>
+  </data>
 </root>

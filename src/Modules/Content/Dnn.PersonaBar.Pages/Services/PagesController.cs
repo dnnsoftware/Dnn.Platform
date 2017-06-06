@@ -733,6 +733,52 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
+        // GET /api/personabar/pages/GetCachedItemCount
+        /// <summary>
+        /// Gets GetCachedItemCount 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetCachedItemCount(string cacheProvider, int tabId)
+        {
+            try
+            {
+                if (!TabPermissionController.CanManagePage())
+                {
+                    return GetForbiddenResponse();
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Count = OutputCachingProvider.Instance(cacheProvider).GetItemCount(tabId) });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        // POST /api/personabar/pages/ClearCache
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
+        public HttpResponseMessage ClearCache([FromUri]string cacheProvider, [FromUri]int tabId)
+        {
+            try
+            {
+                if (!_securityService.CanManagePage(tabId))
+                {
+                    return GetForbiddenResponse();
+                }
+
+                OutputCachingProvider.Instance(cacheProvider).Remove(tabId);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
         #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding

@@ -152,6 +152,11 @@ class App extends Component {
             Localization.get("Cancel"),
             onDelete);
     }
+
+    onClearCache() {
+        const {props} = this;
+        props.onClearCache();
+    }
     
     showCancelWithoutSavingDialog() {
         const onConfirm = () => this.props.onCancelPage();
@@ -258,7 +263,9 @@ class App extends Component {
                     onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
                     onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
                     pageDetailsFooterComponents={props.pageDetailsFooterComponents}
-                    pageTypeSelectorComponents={props.pageTypeSelectorComponents} />
+                    pageTypeSelectorComponents={props.pageTypeSelectorComponents}
+                    onGetCachedPageCount={props.onGetCachedPageCount}
+                    onClearCache={props.onClearCache} />
             </PersonaBarPageBody>
         </PersonaBarPage>);
     }
@@ -395,7 +402,9 @@ App.propTypes = {
     isContentLocalizationEnabled: PropTypes.object.isRequired,
     getContentLocalizationEnabled: PropTypes.func.isRequired,
     selectPage: PropTypes.func.isRequired,
-    selectedPagePath: PropTypes.array.isRequired
+    selectedPagePath: PropTypes.array.isRequired,
+    onGetCachedPageCount: PropTypes.array.isRequired,
+    onClearCache: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -444,7 +453,9 @@ function mapDispatchToProps(dispatch) {
         onShowPanel: VisiblePanelActions.showPanel,
         onHidePanel: VisiblePanelActions.hidePanel,
         getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
-        selectPage: PageHierarchyActions.selectPage
+        selectPage: PageHierarchyActions.selectPage,
+        onGetCachedPageCount: PageActions.getCachedPageCount,
+        onClearCache: PageActions.clearCache
     }, dispatch);
 }
 
