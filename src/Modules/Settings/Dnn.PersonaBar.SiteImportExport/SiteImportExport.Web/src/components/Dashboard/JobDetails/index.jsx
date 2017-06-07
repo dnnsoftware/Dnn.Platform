@@ -279,7 +279,7 @@ class JobDetails extends Component {
                                         labelType="inline"
                                         label={item.name}
                                     />
-                                    <div className="import-summary-item">{props.jobDetail.Summary.SummaryItems.find(x => x.Category === item.name) ? Localization.get("Yes") : Localization.get("No")}</div>
+                                    <div className="import-summary-item">{props.jobDetail.Summary.SummaryItems.find(x => x.Category === item.category) ? Localization.get("Yes") : Localization.get("No")}</div>
                                 </GridCell>)
                             }
                             <GridCell>

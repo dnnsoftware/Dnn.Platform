@@ -60,7 +60,7 @@ class ExportModal extends Component {
         const registeredItemsToExport = application.getRegisteredItemsToExport();
         for (let i = 0; i < registeredItemsToExport.length; i++) {
             if (registeredItemsToExport[i].defaultSelected) {
-                ItemsToExport.push(registeredItemsToExport[i].name);
+                ItemsToExport.push(registeredItemsToExport[i].category);
             }
         }
     }
@@ -379,8 +379,8 @@ class ExportModal extends Component {
                                         label={item.name}
                                     />
                                     <Switch
-                                        value={state.exportRequest.ItemsToExport.indexOf(item.name) !== -1}
-                                        onChange={this.onChangeItemsToExport.bind(this, item.name)}
+                                        value={state.exportRequest.ItemsToExport.indexOf(item.category) !== -1}
+                                        onChange={this.onChangeItemsToExport.bind(this, item.category)}
                                     />
 
                                 </InputGroup>)
