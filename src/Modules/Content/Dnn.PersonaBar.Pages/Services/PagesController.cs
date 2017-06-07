@@ -380,8 +380,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetThemes()
         {
-            var themes = _themesController.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site);
-            var defaultPortalThemeName = GetDefaultPortalTheme();
+            var themes = _themesController.GetLayouts(PortalSettings, ThemeLevel.All);
+
+            var defaultTheme = GetDefaultPortalTheme();
+            var defaultPortalThemeName = defaultTheme?.ThemeName;
+            var defaultPortalThemeLevel = defaultTheme?.Level;
             var defaultPortalLayout = _defaultPortalThemeController.GetDefaultPortalLayout();
             var defaultPortalContainer = _defaultPortalThemeController.GetDefaultPortalContainer();
 
@@ -389,17 +392,19 @@ namespace Dnn.PersonaBar.Pages.Services
             {
                 themes,
                 defaultPortalThemeName,
+                defaultPortalThemeLevel,
                 defaultPortalLayout,
                 defaultPortalContainer
             });
         }
 
         [HttpGet]
-        public HttpResponseMessage GetThemeFiles(string themeName)
+        public HttpResponseMessage GetThemeFiles(string themeName, ThemeLevel level)
         {
-            const ThemeLevel level = ThemeLevel.Global | ThemeLevel.Site;
-            var themeLayout = _themesController.GetLayouts(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
-            var themeContainer = _themesController.GetContainers(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+            var themeLayout = _themesController.GetLayouts(PortalSettings, level)
+                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == level);
+            var themeContainer = _themesController.GetContainers(PortalSettings, level)
+                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == level);
 
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -1212,7 +1217,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "The user is not allowed to access this method." });
         }
 
-        private string GetDefaultPortalTheme()
+        private ThemeFileInfo GetDefaultPortalTheme()
         {
             var layoutSrc = _defaultPortalThemeController.GetDefaultPortalLayout();
             if (string.IsNullOrWhiteSpace(layoutSrc))
@@ -1220,7 +1225,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 return null;
             }
             var layout = _themesController.GetThemeFile(PortalSettings.Current, layoutSrc, ThemeType.Skin);
-            return layout?.ThemeName;
+            return layout;
         }
 
         private TabInfo GetLocalizedTab(int tabId, string cultureCode)

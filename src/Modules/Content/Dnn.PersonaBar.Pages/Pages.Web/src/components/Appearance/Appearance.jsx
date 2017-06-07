@@ -15,18 +15,19 @@ import style from "./style.less";
 class Appearance extends Component {
 
     componentWillMount() {
-        const { page, defaultPortalThemeName, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
+        const { page, defaultPortalThemeName, defaultPortalThemeLevel, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
 
         onRetrieveThemes();
 
         const selectedThemeName = page.themeName || defaultPortalThemeName;
+        const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
         if (selectedThemeName) {
-            onRetrieveThemeFiles(selectedThemeName);
+            onRetrieveThemeFiles(selectedThemeName, selectedThemeLevel);
         }
     }
 
     componentWillReceiveProps(newProps) {
-        const { page, containers, defaultPortalThemeName, onRetrieveThemeFiles } = this.props;
+        const { page, containers, defaultPortalThemeName, defaultPortalThemeLevel, onRetrieveThemeFiles } = this.props;
 
         if (newProps.containers !== containers) {
             this.autoSelectFirstContainerIfNoOneIsSelected(newProps.page, newProps.containers);
@@ -37,7 +38,7 @@ class Appearance extends Component {
         }
 
         if (defaultPortalThemeName !== newProps.defaultPortalThemeName && newProps.defaultPortalThemeName !== null) {
-            onRetrieveThemeFiles(newProps.defaultPortalThemeName);
+            onRetrieveThemeFiles(newProps.defaultPortalThemeName,newProps.defaultPortalThemeLevel);
         }
     }
 
@@ -77,9 +78,10 @@ class Appearance extends Component {
 
     onSelectTheme(theme) {
         this.props.onChangeField("themeName", theme.packageName);
+        this.props.onChangeField("themeLevel", theme.level);
         const skinSrc = this.addAscxExtension(theme.defaultThemeFile);
         this.props.onChangeField("skinSrc", skinSrc);
-        this.props.onRetrieveThemeFiles(theme.packageName);
+        this.props.onRetrieveThemeFiles(theme.packageName, theme.level);
     }
 
     onSelectLayout(layout) {
@@ -118,9 +120,10 @@ class Appearance extends Component {
     }
 
     render() {
-        const { page, themes, layouts, containers, defaultPortalThemeName, defaultPortalLayout, defaultPortalContainer } = this.props;
+        const { page, themes, layouts, containers, defaultPortalThemeName, defaultPortalThemeLevel, defaultPortalLayout, defaultPortalContainer } = this.props;
         const selectedThemeName = page.themeName || defaultPortalThemeName;
-        const selectedTheme = themes.find(t => t.packageName === selectedThemeName);
+        const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
+        const selectedTheme = themes.find(t => t.packageName === selectedThemeName && t.level === selectedThemeLevel);
         const noThemeSelected = !selectedTheme;
         const selectedLayoutPath = page.skinSrc || defaultPortalLayout;
         const selectedLayout = layouts.find(this.findByPath(selectedLayoutPath));
@@ -133,6 +136,7 @@ class Appearance extends Component {
                     <ThemeSelector
                         themes={themes}
                         defaultPortalThemeName={defaultPortalThemeName}
+                        defaultPortalThemeLevel={defaultPortalThemeLevel}
                         selectedTheme={selectedTheme}
                         onSelectTheme={this.onSelectTheme.bind(this) } />
                 </GridCell>
@@ -181,13 +185,15 @@ Appearance.propTypes = {
     containers: PropTypes.array.isRequired,
     defaultPortalLayout: PropTypes.string,
     defaultPortalContainer: PropTypes.string,
-    defaultPortalThemeName: PropTypes.string
+    defaultPortalThemeName: PropTypes.string,
+    defaultPortalThemeLevel: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
         themes: state.theme.themes,
         defaultPortalThemeName: state.theme.defaultPortalThemeName,
+        defaultPortalThemeLevel: state.theme.defaultPortalThemeLevel,
         defaultPortalLayout: state.theme.defaultPortalLayout,
         defaultPortalContainer: state.theme.defaultPortalContainer,
         layouts: state.theme.layouts,

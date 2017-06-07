@@ -118,9 +118,10 @@ namespace Dnn.PersonaBar.Themes.Services
         {
             try
             {
-                var themeInfo = _controller.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
+                var themeInfo = _controller.GetLayouts(PortalSettings, ThemeLevel.All)
                                     .FirstOrDefault(
-                                        t => t.PackageName.Equals(defaultTheme.ThemeName, StringComparison.InvariantCultureIgnoreCase));
+                                        t => t.PackageName.Equals(defaultTheme.ThemeName, StringComparison.InvariantCultureIgnoreCase)
+                                                && t.Level == defaultTheme.Level);
 
                 if (themeInfo == null)
                 {
@@ -133,7 +134,7 @@ namespace Dnn.PersonaBar.Themes.Services
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "NoThemeFile");
                 }
 
-                _controller.ApplyDefaultTheme(PortalSettings, defaultTheme.ThemeName);
+                _controller.ApplyDefaultTheme(PortalSettings, defaultTheme.ThemeName, defaultTheme.Level);
                 return Request.CreateResponse(HttpStatusCode.OK, GetCurrentThemeObject());
             }
             catch (Exception ex)
@@ -294,16 +295,16 @@ namespace Dnn.PersonaBar.Themes.Services
             {
                 var themeName = parseTheme.ThemeName;
 
-                var layout = _controller.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
-                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+                var layout = _controller.GetLayouts(PortalSettings, ThemeLevel.All)
+                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == parseTheme.Level);
 
                 if (layout != null)
                 {
                     _controller.ParseTheme(PortalSettings, layout, parseTheme.ParseType);
                 }
 
-                var container = _controller.GetContainers(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
-                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+                var container = _controller.GetContainers(PortalSettings, ThemeLevel.All)
+                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == parseTheme.Level);
 
                 if (container != null)
                 {

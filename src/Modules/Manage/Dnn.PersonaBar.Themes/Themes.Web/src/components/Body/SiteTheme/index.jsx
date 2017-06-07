@@ -32,7 +32,7 @@ class SiteTheme extends Component {
         let source = props.themes.layouts;
         let isHost = utils.params.settings.isHost;
         let hasData = source.filter(l => {
-            return isHost || l.level === 1;
+            return isHost || l.level === 1 || l.level === 2;
         }).length > 0;
 
         return isHost || hasData;

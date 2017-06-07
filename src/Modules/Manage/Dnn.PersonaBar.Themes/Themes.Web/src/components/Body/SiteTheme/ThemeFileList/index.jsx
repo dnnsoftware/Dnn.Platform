@@ -37,7 +37,7 @@ class ThemeFileList extends Component {
 
         let themeName = props.type == 0 ? props.theme.SiteLayout.themeName : props.theme.SiteContainer.themeName;
         let path = props.type == 0 ? props.theme.SiteLayout.path : props.theme.SiteContainer.path;
-        let level = path.indexOf("[G]") > -1 ? 2 : 1;
+        let level = path.indexOf("[G]") > -1 ? 4 : (path.indexOf("[S]") > -1 ? 2 : 1);
 
         this.setState({ themeName: themeName, level: level }, function () {
             this.loadThemeFiles();
