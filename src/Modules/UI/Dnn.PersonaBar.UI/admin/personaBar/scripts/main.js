@@ -418,9 +418,87 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         }
 
         function calculateHoverMenuPosition($menu) {
+            if ($menu.length === 0) {
+                return;
+            }
+
             var bottom = $menu.parent().offset().top + $menu.outerHeight();
             var availableArea = $(window).height() + $(window).scrollTop() - bottom;
             $menu.css('top', availableArea < 0 ? availableArea + 'px' : '');
+        }
+
+        function getSiteRoot() {
+            return config.siteRoot || "/";
+        }
+
+        function saveBtnEditSettings(callback) {
+            util.persistent.save({
+                expandPersonaBar: false,
+                activePath: null,
+                activeIdentifier: null
+            }, callback);
+        }
+
+        function inLockEditMode() {
+            if (typeof window.top.dnn != "undefined") {
+                return window.top.dnn.dom.getCookie('StayInEditMode') === "YES";
+            }
+
+            return false;
+        }
+
+        function setLockEditMode(locked) {
+            if (typeof window.top.dnn != "undefined") {
+                window.top.dnn.dom.setCookie('StayInEditMode', locked ? "YES" : "NO", '', getSiteRoot());
+
+                updateLockModeTooltip(locked);
+            }
+        }
+
+        function updateLockModeTooltip(locked) {
+            var $btnEdit = $("#Edit.btn_panel");
+            var title, message;
+            if (locked) {
+                title = util.resx.PersonaBar["UnlockEditMode"];
+                message = util.resx.PersonaBar["UnlockEditMode.Help"];
+            } else {
+                title = util.resx.PersonaBar["LockEditMode"];
+                message = util.resx.PersonaBar["LockEditMode.Help"];
+            }
+
+            $btnEdit.find(".editmode-tooltip > span").fadeOut('fast', '', function() {
+                $btnEdit.find('.tooltip-title').html(title);
+                $btnEdit.find('.tooltip-message').html(message);
+
+                $btnEdit.find(".editmode-tooltip > span").fadeIn('fast');
+            });
+
+            if (locked) {
+                $btnEdit.removeClass('unlocked').addClass('locked');
+            } else {
+                $btnEdit.removeClass('locked').addClass('unlocked');
+            }
+        }
+
+        function handleLockEditState($btnEdit) {
+            var $tooltip = $('<div class="editmode-tooltip"><span class="tooltip-title"></span><span class="tooltip-message"></span></div>');
+            $tooltip.click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+            $btnEdit.append($tooltip);
+            var lockEdit = inLockEditMode();
+            updateLockModeTooltip(lockEdit);
+
+
+            $btnEdit.on('click', function handleEdit() {
+                setLockEditMode(!inLockEditMode());
+                util.closePersonaBar(saveBtnEditSettings);
+            });
+
+            eventEmitter.addPanelCloseEventListener(function handleClosingPersonaBar() {
+                saveBtnEditSettings();
+            });
         }
 
         util.asyncParallel([
@@ -630,7 +708,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         var $hoverMenu = $('#' + hoverMenuId);
                                         $this.hover(function () {
                                             mouseOnButton = true;
-                                            if ($hoverMenu.css('display') === 'none') {
+                                            if ($hoverMenu.css('display') === 'none' || $this.find('> div').length > 0) {
                                                 
                                                 if (showMenuHandlers.length > 0) {
                                                     $.each(showMenuHandlers, function (index, item) {
@@ -647,7 +725,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                 }
 
                                                 showMenuHandlers.push(setTimeout(function () {
-                                                    if ($hoverMenu.css('display') === 'none' && mouseOnButton) {
+                                                    if (($hoverMenu.css('display') === 'none' || $this.find('> div').length > 0) && mouseOnButton) {
                                                         if (!activePath) iframe.style.width = "100%";
 
                                                         $hoverMenu.css({
@@ -686,9 +764,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                             }
                                         }, function () {
                                             mouseOnButton = false;
-                                            if ($hoverMenu.css('display') == 'block' && !mouseOnHovermenu) {
+                                            if (($hoverMenu.css('display') == 'block' || $this.find('> div').length > 0) && !mouseOnHovermenu) {
                                                 setTimeout(function () {
-                                                    if ($hoverMenu.css('display') == 'block' && !mouseOnButton && !mouseOnHovermenu) {
+                                                    if (($hoverMenu.css('display') == 'block' || $this.find('> div').length > 0) && !mouseOnButton && !mouseOnHovermenu) {
                                                         if (!activePath) {
                                                             $iframe.width(personaBarMenuWidth);
                                                         }
@@ -735,13 +813,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                     return;
                                 }
 
-                                function saveBtnEditSettings(callback) {
-                                    util.persistent.save({
-                                        expandPersonaBar: false,
-                                        activePath: null,
-                                        activeIdentifier: null
-                                    }, callback);
-                                };
                                 eventEmitter.addPanelCloseEventListener(function handleClosingPersonaBar() {
                                     $btnEdit.show();
                                 });
@@ -758,20 +829,14 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                 window.parent.location.reload();
                                             });
                                         };
-                                        util.closePersonaBar(saveBtnEditSettings(function() {
-                                            toogleUserMode('EDIT');
-                                        }));
+                                        util.closePersonaBar(function() {
+                                            saveBtnEditSettings(function() {
+                                                toogleUserMode('EDIT');
+                                            });
+                                        });
                                     });
                                 } else {
-                                    $btnEdit.on('click', function handleEdit() {
-                                        util.closePersonaBar(saveBtnEditSettings());
-                                    });
-
-                                    $btnEdit.addClass('selected');
-                                    eventEmitter.addPanelCloseEventListener(function handleClosingPersonaBar() {
-                                        $btnEdit.addClass('selected');
-                                        saveBtnEditSettings();
-                                    });
+                                    handleLockEditState($btnEdit);
                                 }
                             })();
 

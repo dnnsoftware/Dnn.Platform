@@ -303,4 +303,16 @@
   <data name="NormalUpdate.Text" xml:space="preserve">
     <value>[ New Update ]</value>
   </data>
+  <data name="LockEditMode.Help" xml:space="preserve">
+    <value>When locked, the icon will appear blue, and you will remain in Edit Mode even when navigating to other pages.</value>
+  </data>
+  <data name="LockEditMode.Text" xml:space="preserve">
+    <value>Click to lock Edit Mode.</value>
+  </data>
+  <data name="UnlockEditMode.Help" xml:space="preserve">
+    <value>When unlocked, you will exit Edit Mode whenever you navigate to other page or complete your changes.</value>
+  </data>
+  <data name="UnlockEditMode.Text" xml:space="preserve">
+    <value>Click to unlock Edit Mode.</value>
+  </data>
 </root>
