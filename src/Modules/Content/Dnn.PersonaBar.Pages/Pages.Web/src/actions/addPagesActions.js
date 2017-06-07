@@ -35,7 +35,7 @@ const addPagesActions = {
 
             PagesService.addPages(addPages.bulkPage).then(response => {
                 if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(Localization.get("Error_" + response.Message), 3000);
+                    utils.notifyError(response.Message, 3000);
                     return;
                 }
 

@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Pages.Components
             _defaultPortalThemeController = DefaultPortalThemeController.Instance;
         }
         
-        public bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
+        public bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var valid = true;
@@ -88,11 +88,11 @@ namespace Dnn.PersonaBar.Pages.Components
                 var existingTab = _tabController.GetTab(tabId, portalSettings.PortalId, false);
                 if (existingTab != null && existingTab.IsDeleted)
                 {
-                    errorMessage = "TabRecycled";
+                    errorMessage = Localization.GetString("TabRecycled");
                 }
                 else
                 {
-                    errorMessage = "TabExists";
+                    errorMessage = Localization.GetString("TabExists");
                 }
 
                 valid = false;
@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.Pages.Components
             //check whether have conflict between tab path and portal alias.
             if (TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
             {
-                errorMessage = "PathDuplicateWithAlias";
+                errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), newTabName, newTabPath);
                 valid = false;
             }
 
@@ -144,7 +144,7 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 string errorMessage;
 
-                if (!IsValidTabPath(tab, Globals.GenerateTabPath(request.ParentId, tab.TabName), out errorMessage))
+                if (!IsValidTabPath(tab, Globals.GenerateTabPath(request.ParentId, tab.TabName), tab.TabName, out errorMessage))
                 {
                     throw new PageException(errorMessage);
                 }
@@ -308,7 +308,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 invalidField = pageSettings.PageType == "template" ? "templateName" : "name";
                 if (string.IsNullOrEmpty(errorMessage))
                 {
-                    errorMessage = "EmptyTabName";
+                    errorMessage = Localization.GetString("EmptyTabName");
                 }
                 return false;
             }
@@ -320,7 +320,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 parentId = GetTemplateParentId(tab?.PortalID ?? portalSettings.PortalId);
             }
 
-            isValid = IsValidTabPath(tab, Globals.GenerateTabPath(parentId, pageSettings.Name), out errorMessage);
+            isValid = IsValidTabPath(tab, Globals.GenerateTabPath(parentId, pageSettings.Name), pageSettings.Name, out errorMessage);
             if (!isValid)
             {
                 invalidField = pageSettings.PageType == "template" ? "templateName" : "name";
@@ -330,7 +330,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (pageSettings.StartDate.HasValue && pageSettings.EndDate.HasValue && pageSettings.StartDate > pageSettings.EndDate)
             {
-                errorMessage = "StartDateAfterEndDate";
+                errorMessage = Localization.GetString("StartDateAfterEndDate");
                 invalidField = "endDate";
                 return false;
             }
@@ -359,7 +359,7 @@ namespace Dnn.PersonaBar.Pages.Components
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {
-                errorMessage = "UrlPathCleaned";
+                errorMessage = Localization.GetString("UrlPathCleaned");
                 invalidField = "url";
                 return false;
             }
@@ -368,7 +368,7 @@ namespace Dnn.PersonaBar.Pages.Components
             FriendlyUrlController.ValidateUrl(urlPath, tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
             if (modified)
             {
-                errorMessage = "UrlPathNotUnique";
+                errorMessage = Localization.GetString("UrlPathNotUnique");
                 invalidField = "url";
                 return false;
             }

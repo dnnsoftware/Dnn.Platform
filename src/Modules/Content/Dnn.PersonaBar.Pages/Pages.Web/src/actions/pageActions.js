@@ -142,7 +142,7 @@ const pageActions = {
             PagesService.deletePage(page).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(Localization.get("Error_" + response.Message), 3000);
+                    utils.notifyError(response.Message, 3000);
                     return;
                 }
 
@@ -175,7 +175,7 @@ const pageActions = {
             PagesService.savePage(page, pages.urlChanged).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(Localization.get("Error_" + response.Message), 3000);
+                    utils.notifyError(response.Message, 3000);
                     return;
                 }
                 
