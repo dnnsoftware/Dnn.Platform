@@ -6,8 +6,7 @@ import Gallery from "../Gallery/Gallery";
 
 class ThemeSelector extends Component {
 
-    onThemeClick(packageName) {
-        const theme = this.props.themes.find(t => t.packageName === packageName);
+    onThemeClick(theme) {
         this.props.onSelectTheme(theme);
     }
 
@@ -16,7 +15,8 @@ class ThemeSelector extends Component {
         if (!selectedTheme) {
             return false;
         }
-        return selectedTheme.packageName === theme.packageName;
+
+        return selectedTheme.packageName === theme.packageName && selectedTheme.level === theme.level;
     }
 
     getSelectedIndex() {
@@ -29,8 +29,9 @@ class ThemeSelector extends Component {
 
     getThemeCards() {
         const { themes } = this.props;
-        let {defaultPortalThemeName} = this.props;
+        let {defaultPortalThemeName, defaultPortalThemeLevel} = this.props;
         defaultPortalThemeName = defaultPortalThemeName === null ? "" : defaultPortalThemeName;
+        defaultPortalThemeLevel = defaultPortalThemeLevel === null ? "" : defaultPortalThemeLevel;
 
         if (themes.length === 0) {
             return <div className="no-appearance-items">{localization.get("NoThemes") }</div>;
@@ -38,10 +39,10 @@ class ThemeSelector extends Component {
         return themes.map(theme => {
             return <Card
                 cardId={theme.packageName}
-                onClick={this.onThemeClick.bind(this) }
+                onClick={this.onThemeClick.bind(this, theme) }
                 hoverText={localization.get("SetPageTheme") }
                 label={theme.packageName}
-                isSiteDefault={defaultPortalThemeName.toString().toLowerCase() === theme.packageName.toString().toLowerCase() }
+                isSiteDefault={(defaultPortalThemeName.toString().toLowerCase() === theme.packageName.toString().toLowerCase()) && defaultPortalThemeLevel === theme.level }
                 selected={this.isSelected(theme) }
                 image={theme.thumbnail} />;
         });
@@ -66,7 +67,8 @@ ThemeSelector.propTypes = {
     selectedTheme: PropTypes.object,
     themes: PropTypes.array.isRequired,
     onSelectTheme: PropTypes.func.isRequired,
-    defaultPortalThemeName: PropTypes.string
+    defaultPortalThemeName: PropTypes.string,
+    defaultPortalThemeLevel: PropTypes.number
 };
 
 export default ThemeSelector;

@@ -81,6 +81,6 @@ namespace Dnn.PersonaBar.Themes.Components
         /// </summary>
         /// <param name="portalSettings">portal settings.</param>
         /// <param name="themeName"></param>
-        void ApplyDefaultTheme(PortalSettings portalSettings, string themeName);
+        void ApplyDefaultTheme(PortalSettings portalSettings, string themeName, ThemeLevel level);
     }
 }

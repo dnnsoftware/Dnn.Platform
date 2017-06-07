@@ -178,9 +178,9 @@ const themeActions = {
             }, errorCallback);
         };
     },
-    applyDefaultTheme(themeName, callback) {
+    applyDefaultTheme(themeName, level, callback) {
         return (dispatch) => {
-            ThemeService.applyDefaultTheme(themeName, data => {
+            ThemeService.applyDefaultTheme(themeName, level, data => {
                 dispatch({
                     type: ActionTypes.APPLY_DEFAULT_THEME,
                     data: {

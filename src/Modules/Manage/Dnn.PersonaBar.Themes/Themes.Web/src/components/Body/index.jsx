@@ -18,7 +18,7 @@ class Body extends Component {
         super();
         this.state = {
             searchText: "",
-            level: 3
+            level: 7
         };
     }
 
