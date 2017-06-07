@@ -798,8 +798,8 @@ transform: rotate(180deg);
     position: absolute;
     top: 20px;
     left: 64px;
-    width: 128px;
-    min-height: 53px;
+    width: 256px;
+    min-height: 80px;
     border: 1px solid #ccc;
     border: 1px solid rgba(64, 64, 64, 0.7);
     background-color: #fff;
@@ -818,12 +818,12 @@ transform: rotate(180deg);
 @keyframes tooltip {
     0% { display: none;opacity: 0;}
     1%{ display: block; opacity: 0;}
-    100%{ display: block;opacity: 1;top: 0px;}
+    100%{ display: block;opacity: 1;top: -30px;}
 }
 .personabarnav > li#Edit .editmode-tooltip > span {
     display: block;
     text-align: left;
-    font-size: 6px;
+    font-size: 12px;
 }
 .personabarnav > li#Edit .editmode-tooltip .tooltip-title{
      color: #0a85c3;
