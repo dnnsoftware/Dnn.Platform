@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
@@ -434,7 +434,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, false, true, false)
+                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
                                  .Where(tab => searchFunc(tab) 
                                             && tab.ParentId == parentId 
                                             && (includeDisabled || !tab.DisableLink) 
