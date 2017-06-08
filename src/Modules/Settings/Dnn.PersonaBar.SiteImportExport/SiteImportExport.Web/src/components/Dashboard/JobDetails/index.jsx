@@ -38,7 +38,7 @@ class JobDetails extends Component {
     getSummaryItem(category) {
         const { props, state } = this;
         if (props.jobDetail.Summary) {
-            let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
+            let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category.toUpperCase() === category.toUpperCase());
             if (detail) {
                 if (detail.Completed || state.cancelled || props.jobDetail.Status !== 1 || detail.TotalItems === 0) {
                     return detail.ProcessedItems > detail.TotalItems ? detail.TotalItemsString : detail.ProcessedItemsString + " / " + detail.TotalItemsString;
@@ -279,7 +279,7 @@ class JobDetails extends Component {
                                         labelType="inline"
                                         label={item.name}
                                     />
-                                    <div className="import-summary-item">{props.jobDetail.Summary.SummaryItems.find(x => x.Category === item.category) ? Localization.get("Yes") : Localization.get("No")}</div>
+                                    <div className="import-summary-item">{this.getSummaryItem(item.category)}</div>
                                 </GridCell>)
                             }
                             <GridCell>

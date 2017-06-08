@@ -25,7 +25,7 @@ class ApplicationService {
 
     getInitialPortalTabs(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("PersonaBar", "Tabs");
-        sf.get(`GetPortalTabs?` + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
+        sf.get("GetPortalTabs?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
     getDescendantPortalTabs(parameters, parentIdObj, callback, errorCallback) {

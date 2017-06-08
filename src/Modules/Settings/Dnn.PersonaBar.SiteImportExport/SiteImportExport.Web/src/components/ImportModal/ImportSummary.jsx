@@ -9,7 +9,7 @@ import application from "../../globals/application";
 class ImportSummary extends Component {
     getSummaryItem(category) {
         const { props } = this;
-        let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
+        let detail = props.importSummary.SummaryItems.find(c => c.Category.toUpperCase() === category.toUpperCase());
         return detail ? detail.TotalItemsString : "-";
     }
 
@@ -133,7 +133,7 @@ class ImportSummary extends Component {
                                             labelType="inline"
                                             label={item.name}
                                         />
-                                        <div className="import-summary-item">{props.importSummary.SummaryItems.find(x => x.Category === item.category) ? Localization.get("Yes") : Localization.get("No")}</div>
+                                        <div className="import-summary-item">{this.getSummaryItem(item.category)}</div>
                                     </GridCell>)
                                 }
                                 <GridCell>
