@@ -23,6 +23,5 @@
     <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Deprecated.dll" target="lib\net40\" />
     <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Deprecated.pdb" target="lib\net40\" />
     <file src="DNN.Platform\Website\bin\Telerik.Web.UI.dll" target="lib\net40\" />
-    <file src="DNN.Platform\Website\Licenses\Telerik RadControls for ASP.NET AJAX (Custom).pdf" />
   </files>
 </package>
