@@ -468,4 +468,10 @@
   <data name="EmptyDateTime.Text" xml:space="preserve">
     <value>-- --</value>
   </data>  
+  <data name="SwitchOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data> 
+  <data name="SwitchOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
 </root>
