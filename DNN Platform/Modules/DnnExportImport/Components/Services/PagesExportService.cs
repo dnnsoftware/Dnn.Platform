@@ -1260,26 +1260,29 @@ namespace Dnn.ExportImport.Components.Services
                 if (IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var tab = _tabController.GetTab(otherPg.TabID, portalId);
-                    var exportPage = SaveExportPage(tab);
+                    //Do not export tab which has never been published.
+                    if (tab.HasBeenPublished)
+                    {
+                        var exportPage = SaveExportPage(tab);
 
-                    _totals.TotalTabSettings +=
-                        ExportTabSettings(exportPage, toDate, fromDate);
+                        _totals.TotalTabSettings +=
+                            ExportTabSettings(exportPage, toDate, fromDate);
 
-                    _totals.TotalTabPermissions +=
-                        ExportTabPermissions(exportPage, toDate, fromDate);
+                        _totals.TotalTabPermissions +=
+                            ExportTabPermissions(exportPage, toDate, fromDate);
 
-                    _totals.TotalTabUrls +=
-                        ExportTabUrls(exportPage, toDate, fromDate);
+                        _totals.TotalTabUrls +=
+                            ExportTabUrls(exportPage, toDate, fromDate);
 
-                    _totals.TotalModules +=
-                        ExportTabModulesAndRelatedItems(exportPage, toDate, fromDate);
+                        _totals.TotalModules +=
+                            ExportTabModulesAndRelatedItems(exportPage, toDate, fromDate);
 
-                    _totals.TotalTabModules +=
-                        ExportTabModules(exportPage, _exportDto.IncludeDeletions, toDate, fromDate);
+                        _totals.TotalTabModules +=
+                            ExportTabModules(exportPage, _exportDto.IncludeDeletions, toDate, fromDate);
 
-                    _totals.TotalTabModuleSettings +=
-                        ExportTabModuleSettings(exportPage, toDate, fromDate);
-
+                        _totals.TotalTabModuleSettings +=
+                            ExportTabModuleSettings(exportPage, toDate, fromDate);
+                    }
                     _totals.TotalTabs++;
                     _totals.LastProcessedId = index;
                 }
@@ -1504,7 +1507,7 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = tab.StateID,
+                StateID = tab.StateID
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
