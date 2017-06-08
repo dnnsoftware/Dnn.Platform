@@ -44,7 +44,6 @@ class Logs extends Component {
             <div>
                 <Scrollbars
                     renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
-                    autoHide
                     style={{ height: 500 }} >
                     <div className="log-file-display">{props.logData}</div>
                 </Scrollbars>
