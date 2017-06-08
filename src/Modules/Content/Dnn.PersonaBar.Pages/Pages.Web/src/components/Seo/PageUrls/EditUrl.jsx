@@ -70,20 +70,21 @@ class EditUrl extends Component {
         const aliases = this.getOptions(siteAliases);
         const siteAliasUsageOptions = this.getSiteAliasUsageOptions(pageHasParent);
         return (
-            <Collapse accordion={true} isOpened={isOpened} keepCollapsedContent={true} className="editUrl">
+            <Collapse accordion={true} isOpened={isOpened} keepCollapsedContent={true} className={"editUrl"}>
                 <GridCell>
-                    <GridCell columnSize="30">
+                    <GridCell columnSize="50" className="left-column">
                         <Label
                             labelType="block"
                             tooltipMessage={Localization.get("Pages_Seo_SiteAlias.Help")}
                             label={Localization.get("Pages_Seo_SiteAlias")} />
-                        <Dropdown options={aliases} style={{width: "90%"}}
+                        <Dropdown options={aliases}
                             value={url.siteAlias.Key} 
                             onSelect={this.onChangeField.bind(this, "siteAlias")} 
                             withBorder={true} />
                     </GridCell>
-                    <GridCell columnSize="70">
-                        <SingleLineInputWithError style={{width: "90%"}}
+                    <GridCell columnSize="50" className="right-column">
+                        <SingleLineInputWithError
+                            style={{width: "100%"}}
                             label={Localization.get("Pages_Seo_UrlPath")}
                             tooltipMessage={Localization.get("Pages_Seo_UrlPath.Help")}
                             value={url.path} 
@@ -97,34 +98,34 @@ class EditUrl extends Component {
                             labelType="block"
                             tooltipMessage={Localization.get("Pages_Seo_SelectedAliasUsage.Help")}
                             label={Localization.get("Pages_Seo_SelectedAliasUsage")} />
-                        <RadioButtons style={{width: "90%"}}
+                        <RadioButtons
                                 options={siteAliasUsageOptions} 
                                 onChange={this.onChangeField.bind(this, "siteAliasUsage")}
                                 value={url.siteAliasUsage}/>                        
                     </GridCell>
                 </GridCell>}
                 <GridCell>
-                    <GridCell columnSize="30">
+                    <GridCell columnSize="50" className="left-column">
                         <Label
                             labelType="block"
                             tooltipMessage={Localization.get("Pages_Seo_UrlType.Help")}
                             label={Localization.get("Pages_Seo_UrlType")} />
-                        <Dropdown options={this.getUrlTypeOptions()} style={{width: "90%"}}
+                        <Dropdown options={this.getUrlTypeOptions()}
                             value={url.statusCode.Key} 
                             onSelect={this.onChangeField.bind(this, "statusCode")} 
                             withBorder={true} />
                     </GridCell>
-                    <GridCell columnSize="70">
+                    <GridCell columnSize="50" className="right-column">
                         {url.statusCode.Key === 301 && 
                         <SingleLineInputWithError
-                            style={{width: "90%"}}
+                            style={{width: "100%"}}
                             label={Localization.get("Pages_Seo_QueryString")}
                             tooltipMessage={Localization.get("Pages_Seo_QueryString.Help")}
                             value={url.queryString} 
                             onChange={this.onChangeField.bind(this, "queryString")} />}
                     </GridCell>
                 </GridCell>
-                <div className="buttons-box" style={{float: "left"}}>
+                <div className="buttons-box" style={{float: "left", margin: "0 0 20px 0"}}>
                     <Button type="secondary" onClick={onCancel} disabled={saving}>
                         {Localization.get("Cancel")}
                     </Button>
