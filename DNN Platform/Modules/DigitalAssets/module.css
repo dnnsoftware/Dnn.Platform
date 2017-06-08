@@ -804,6 +804,7 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
 .dnnModuleDigitalAssetsListViewItem input {
     text-align: center;
     width: 144px;
+    color: black;
 }
 
 div.dnnModuleDigitalAssetsListViewItem:hover {
