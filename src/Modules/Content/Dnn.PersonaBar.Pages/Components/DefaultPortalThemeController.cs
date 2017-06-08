@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var portalSettings = PortalSettings.Current;
             if (portalSettings == null) return null;
-            return PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId, Host.DefaultPortalSkin, portalSettings.CultureCode);
+            return PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId, Host.DefaultPortalContainer, portalSettings.CultureCode);
         }
 
         public string GetDefaultPortalLayout()

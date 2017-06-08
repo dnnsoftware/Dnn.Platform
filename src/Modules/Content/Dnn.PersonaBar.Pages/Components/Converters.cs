@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 LinkNewWindow = LinkNewWindow(tab),
                 PageStyleSheet = (string)tab.TabSettings["CustomStylesheet"],
                 ThemeName = themeFile?.ThemeName,
-                ThemeLevel = themeFile?.Level ?? ThemeLevel.Site,
+                ThemeLevel = (int)(themeFile?.Level ?? ThemeLevel.Site),
                 SkinSrc = tab.SkinSrc,
                 ContainerSrc = tab.ContainerSrc,
                 HasChild = pageManagementController.TabHasChildren(tab)

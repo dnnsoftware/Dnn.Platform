@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         public string ThemeName { get; set; }
 
         [DataMember(Name = "themeLevel")]
-        public ThemeLevel ThemeLevel { get; set; }
+        public int ThemeLevel { get; set; }
 
         [DataMember(Name = "skinSrc")]
         public string SkinSrc { get; set; }
