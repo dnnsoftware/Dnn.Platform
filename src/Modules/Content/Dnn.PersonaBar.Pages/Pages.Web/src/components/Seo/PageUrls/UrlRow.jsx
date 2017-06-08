@@ -41,7 +41,7 @@ class UrlRow extends Component {
         
         return (
             /* eslint-disable react/no-danger */
-            <div className={styles.urlRow} >
+            <div className={styles.urlRow + (opened ? " row-opened" : "")} >
                 <GridCell columnSize={50} >
                     {url.path}
                 </GridCell>
@@ -55,7 +55,7 @@ class UrlRow extends Component {
                     <GridCell  columnSize={10}>
                         <div className="extension-action" 
                             onClick={this.onDelete.bind(this, url)} dangerouslySetInnerHTML={{ __html: TrashIcon }}></div>
-                        <div className="extension-action" 
+                        <div className={"extension-action" + (opened ? " active" : "")} 
                             onClick={this.onOpenEditForm.bind(this, url)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
                     </GridCell>
                 }

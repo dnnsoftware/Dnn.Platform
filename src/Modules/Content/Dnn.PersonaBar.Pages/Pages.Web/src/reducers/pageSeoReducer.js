@@ -85,7 +85,8 @@ export default function  pageSeoReducer(state = {
             };
         case ActionTypes.SEO_OPEN_EDIT_FORM:
             return { ...state,
-                editedUrl: action.payload.url
+                editedUrl: action.payload.url,
+                newFormOpened: false
             };
         case ActionTypes.SEO_CLOSE_EDIT_FORM:
             return { ...state,

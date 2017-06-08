@@ -11,14 +11,12 @@
     &.false {
         background-color: @alabaster;
     }
-
     .extension-action {
         width: 16px;
         height: 16px;
         float: right;
         cursor: pointer;
         margin-right: 5px;
-
         &.selected {
             svg {
                 fill: @curiousBlue;
@@ -27,14 +25,19 @@
                 fill: @thunder;
             }
         }
+        &.active {
+            svg {
+                fill: @curiousBlue;
+            }
+        }
     }
-
     .url-settings {
         width: 100%;
         height: 450px;
     }
 }
-:local(.AddItemRow){
+
+:local(.AddItemRow) {
     width: 100%;
     margin: 0 0 15px 0;
     font-weight: bolder;
@@ -44,13 +47,17 @@
         font-weight: bolder;
         float: left;
         line-height: 25px;
-    }                            
+    }
     .AddItemBox {
         width: auto;
         float: right;
         color: @thunder;
         cursor: pointer;
         line-height: 25px;
+        &.active {
+            color: @curiousBlue;
+            cursor: inherit;
+        }
         .add-icon {
             margin-left: 20px;
             margin-right: 5px;
@@ -63,9 +70,14 @@
                 height: 16px;
                 fill: @thunder;
             }
+            &.active {
+                svg {
+                    fill: @curiousBlue;
+                }
+                cursor: inherit;
+            }
         }
     }
-    
     .newUrlContainer {
         width: 100%;
         clear: both;
