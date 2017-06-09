@@ -222,7 +222,6 @@ export default class TreeControl extends Component {
 
     render_ListCheckbox(tab) {
         const checkbox = (() => {
-
             return (
                 <div style={merge(floatLeft)}>
                     <input

@@ -233,8 +233,6 @@ export default class TreeControlInteractor extends Component {
         parents = filterOutIfAllSelected(parents, parents);
         const exports = parents.concat(children);
         this.props.OnSelect(exports);
-
-        console.log(exports);
     }
 
 
