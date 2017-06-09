@@ -30,6 +30,8 @@ class More extends Component {
         this.props.onChangeField("cacheProvider", option.value);
         if (!this.props.page.cacheProvider && option.value) {
             this.props.onChangeField("cacheIncludeExclude", true);
+            this.props.onChangeField("cacheDuration", "");
+            this.props.onChangeField("cacheMaxVaryByCount", "");
         }
         if (option.value) {
             this.props.onGetCachedPageCount(option.value);
@@ -49,7 +51,7 @@ class More extends Component {
     }
 
     render() {
-        const { page, onChangeField, cacheProviderList } = this.props;
+        const { page, errors, onChangeField, cacheProviderList } = this.props;
         const cacheProviderOptions = cacheProviderList &&
             [{ value: null, label: Localization.get("None") },
             ...cacheProviderList.map(x => ({ value: x, label: x }))];
@@ -106,6 +108,8 @@ class More extends Component {
 
                         {page.cacheProvider &&
                             <SingleLineInputWithError
+                                error={!!errors.cacheDuration}
+                                errorMessage={errors.cacheDuration}
                                 label={Localization.get("CacheDuration")}
                                 tooltipMessage={Localization.get("CacheDuration_tooltip")}
                                 value={page.cacheDuration}
@@ -151,6 +155,8 @@ class More extends Component {
                                     onChange={this.onChangeField.bind(this, "cacheExcludeVaryBy")} />}
 
                             <SingleLineInputWithError
+                                error={!!errors.cacheMaxVaryByCount}
+                                errorMessage={errors.cacheMaxVaryByCount}
                                 label={Localization.get("VaryByLimit")}
                                 tooltipMessage={Localization.get("VaryByLimit_tooltip")}
                                 value={page.cacheMaxVaryByCount}
@@ -171,7 +177,8 @@ More.propTypes = {
     onFetchCacheProviderList: PropTypes.func.isRequired,
     onGetCachedPageCount: PropTypes.func.isRequired,
     cachedPageCount: PropTypes.number,
-    onClearCache: PropTypes.func.isRequired
+    onClearCache: PropTypes.func.isRequired,
+    errors: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {

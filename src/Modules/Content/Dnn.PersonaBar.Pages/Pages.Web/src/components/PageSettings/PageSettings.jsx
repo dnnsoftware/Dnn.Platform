@@ -137,6 +137,7 @@ class PageSettings extends Component {
                 label: Localization.get("More"),
                 component: <div className="dnn-simple-tab-item">
                                 <More page={selectedPage}
+                                    errors={selectedPageErrors} 
                                     onChangeField={onChangeField} 
                                     onGetCachedPageCount={onGetCachedPageCount}
                                     onClearCache={onClearCache} />
