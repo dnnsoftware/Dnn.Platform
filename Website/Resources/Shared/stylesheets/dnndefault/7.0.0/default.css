@@ -2441,6 +2441,14 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     position: absolute;
     z-index: 9999;
 }
+.dnnPanelLoading {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    -ms-opacity: 0.7;
+    opacity: 0.7;
+}
 
 /*-------------------------------------*/
 /* URL ACTION */
