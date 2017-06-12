@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Dnn.PersonaBar.Pages.Components.Dto;
+using Dnn.PersonaBar.Themes.Components;
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
@@ -122,6 +123,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         
         [DataMember(Name = "themeName")]
         public string ThemeName { get; set; }
+
+        [DataMember(Name = "themeLevel")]
+        public int ThemeLevel { get; set; }
 
         [DataMember(Name = "skinSrc")]
         public string SkinSrc { get; set; }

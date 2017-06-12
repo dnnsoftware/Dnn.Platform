@@ -10,7 +10,7 @@ function errorCallback(xhr) {
     }
 
     let utils = window.dnn.initThemes().utility;
-    utils.notifyError(Localization.get(message));
+    utils.notifyError(Localization.get(message), 5000);
 }
 const themeActions = {
     getCurrentTheme(callback) {
@@ -178,9 +178,9 @@ const themeActions = {
             }, errorCallback);
         };
     },
-    applyDefaultTheme(themeName, callback) {
+    applyDefaultTheme(themeName, level, callback) {
         return (dispatch) => {
-            ThemeService.applyDefaultTheme(themeName, data => {
+            ThemeService.applyDefaultTheme(themeName, level, data => {
                 dispatch({
                     type: ActionTypes.APPLY_DEFAULT_THEME,
                     data: {

@@ -29,34 +29,37 @@ class ContainerSelector extends Component {
 
     getContainerCards() {
         const { containers, noThemeSelected } = this.props;
+        let {defaultPortalContainer} = this.props;
+        defaultPortalContainer = defaultPortalContainer === null ? "" : defaultPortalContainer;
 
         if (noThemeSelected) {
-            return <div className="no-appearance-items">{localization.get("NoThemeSelectedForContainers")}</div>;
+            return <div className="no-appearance-items">{localization.get("NoThemeSelectedForContainers") }</div>;
         }
         if (containers.length === 0) {
-            return <div className="no-appearance-items">{localization.get("NoContainers")}</div>;
+            return <div className="no-appearance-items">{localization.get("NoContainers") }</div>;
         }
         return containers.map(container => {
-            return <Card 
+            return <Card
                 cardId={container.name}
-                onClick={this.onContainerClick.bind(this)}
-                hoverText={localization.get("SetPageContainer")}
+                onClick={this.onContainerClick.bind(this) }
+                hoverText={localization.get("SetPageContainer") }
                 label={container.name}
+                isSiteDefault={defaultPortalContainer.toString().toLowerCase() === container.path.toString().toLowerCase() }
                 image={container.thumbnail}
-                selected={this.isSelected(container)}
+                selected={this.isSelected(container) }
                 size="small" />;
         });
     }
 
-    render() {        
+    render() {
         const selectedIndex = this.getSelectedIndex();
         return (
             <div>
-                <Label 
-                    label={localization.get("PageContainer")} 
-                    tooltipMessage={localization.get("PageContainerTooltip")} />
+                <Label
+                    label={localization.get("PageContainer") }
+                    tooltipMessage={localization.get("PageContainerTooltip") } />
                 <Gallery size="small" scrollToIndex={selectedIndex}>
-                    {this.getContainerCards()}
+                    {this.getContainerCards() }
                 </Gallery>
             </div>
         );
@@ -67,7 +70,8 @@ ContainerSelector.propTypes = {
     noThemeSelected: PropTypes.bool.isRequired,
     selectedContainer: PropTypes.object,
     containers: PropTypes.array.isRequired,
-    onSelectContainer: PropTypes.func.isRequired
+    onSelectContainer: PropTypes.func.isRequired,
+    defaultPortalContainer: PropTypes.string
 };
 
 export default ContainerSelector;

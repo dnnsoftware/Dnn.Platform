@@ -48,9 +48,10 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
         {
             var settings = new Dictionary<string, object>
             {
+                {"canSeePagesList", _securityService.IsPageAdminUser()},
                 {"portalName", PortalSettings.Current.PortalName},
                 {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
-                {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName }
+                {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName}
             };
 
             return settings;

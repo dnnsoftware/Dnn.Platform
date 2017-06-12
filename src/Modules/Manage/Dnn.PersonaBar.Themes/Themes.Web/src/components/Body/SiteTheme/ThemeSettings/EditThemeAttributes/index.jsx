@@ -25,7 +25,7 @@ class EditThemeAttributes extends Component {
             setting: "",
             value: "",
             openEditPopup: false,
-            level: 3,
+            level: 7,
             startSave: false
         };
 
@@ -52,9 +52,9 @@ class EditThemeAttributes extends Component {
         let source = type == 1 ? props.themes.containers : props.themes.layouts;
         let isHost = utils.params.settings.isHost;
         return source.filter(l => {
-            return isHost || l.level === 1;
+            return isHost || l.level === 1 || l.level === 2;
         }).map(function (t) {
-            return { value: t.packageName, label: t.packageName };
+            return { value: t.packageName, label: t.packageName, level: t.level };
         });
     }
 
@@ -102,11 +102,10 @@ class EditThemeAttributes extends Component {
 
     onThemeChanged(themeName) {
         const {props, state} = this;
-
-        this.setState({ themeName: themeName.value, path: "", token: "", setting: "", value: "" }, function () {
+        this.setState({ themeName: themeName.value, level: themeName.level, path: "", token: "", setting: "", value: "" }, function () {
             let themeName = this.state.themeName;
             let type = this.getThemeType();
-            let level = state.level;
+            let level = this.state.level;
 
             props.dispatch(ThemeActions.getEditableThemeFiles(themeName, type, level));
         });

@@ -288,6 +288,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Content")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeContent}
                                     onChange={this.onChange.bind(this, "IncludeContent")}
                                 />
@@ -298,6 +300,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Assets")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeFiles}
                                     onChange={this.onChange.bind(this, "IncludeFiles")}
                                 />
@@ -308,6 +312,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Users")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeUsers}
                                     onChange={this.onChange.bind(this, "IncludeUsers")}
                                 />
@@ -318,6 +324,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Roles")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeRoles}
                                     onChange={this.onChange.bind(this, "IncludeRoles")}
                                 />
@@ -328,6 +336,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Vocabularies")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeVocabularies}
                                     onChange={this.onChange.bind(this, "IncludeVocabularies")}
                                 />
@@ -338,6 +348,8 @@ class ExportModal extends Component {
                                     label={Localization.get("PageTemplates")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeTemplates}
                                     onChange={this.onChange.bind(this, "IncludeTemplates")}
                                 />
@@ -348,6 +360,8 @@ class ExportModal extends Component {
                                     label={Localization.get("ProfileProperties")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeProperfileProperties}
                                     onChange={this.onChange.bind(this, "IncludeProperfileProperties")}
                                 />
@@ -358,6 +372,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Permissions")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludePermissions}
                                     onChange={this.onChange.bind(this, "IncludePermissions")}
                                 />
@@ -368,6 +384,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Extensions")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeExtensions}
                                     onChange={this.onChange.bind(this, "IncludeExtensions")}
                                 />
@@ -392,6 +410,8 @@ class ExportModal extends Component {
                                     label={Localization.get("DeletionsInExport")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeDeletions}
                                     onChange={this.onChange.bind(this, "IncludeDeletions")}
                                 />
@@ -402,6 +422,8 @@ class ExportModal extends Component {
                                     label={Localization.get("RunNow")}
                                 />
                                 <Switch
+                                    onText={Localization.get("SwitchOn")}
+                                    offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.RunNow}
                                     onChange={this.onChange.bind(this, "RunNow")}
                                 />

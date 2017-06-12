@@ -142,7 +142,7 @@ const pageActions = {
             PagesService.deletePage(page).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(Localization.get("Error_" + response.Message), 3000);
+                    utils.notifyError(response.Message, 3000);
                     return;
                 }
 
@@ -175,7 +175,7 @@ const pageActions = {
             PagesService.savePage(page, pages.urlChanged).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(Localization.get("Error_" + response.Message), 3000);
+                    utils.notifyError(response.Message, 3000);
                     return;
                 }
                 
@@ -354,6 +354,34 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.ERROR_COPYING_PERMISSIONS_TO_DESCENDANT_PAGES,
                     data: { error }
+                });
+            });
+        };
+    },
+
+    getCachedPageCount(cacheProvider) {
+        return (dispatch, getState) => {
+            const page = getState().pages.selectedPage;
+            PagesService.getCachedPageCount(cacheProvider, page.tabId).then(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_CACHED_PAGE_COUNT,
+                    data: {
+                        cachedPageCount: data.Count
+                    }
+                });
+            });
+        };
+    },
+
+    clearCache(cacheProvider) {
+        return (dispatch, getState) => {
+            const page = getState().pages.selectedPage;
+            PagesService.clearCache(cacheProvider, page.tabId).then(() => {
+                dispatch({
+                    type: ActionTypes.CLEARED_CACHED_PAGE,
+                    data: {
+                        cachedPageCount: 0
+                    }
                 });
             });
         };

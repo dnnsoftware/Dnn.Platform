@@ -14,6 +14,7 @@ const themeActions = {
                     data: {
                         themes: response.themes,
                         defaultPortalThemeName: response.defaultPortalThemeName,
+                        defaultPortalThemeLevel: response.defaultPortalThemeLevel,
                         defaultPortalLayout: response.defaultPortalLayout,
                         defaultPortalContainer: response.defaultPortalContainer
                     }
@@ -27,13 +28,13 @@ const themeActions = {
         };
     },
 
-    retrieveThemeFiles(themeName) {
+    retrieveThemeFiles(themeName, level) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.RETRIEVING_THEME_FILES
             });    
 
-            ThemeService.getThemeFiles(themeName).then(response => {
+            ThemeService.getThemeFiles(themeName, level).then(response => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_THEME_FILES,
                     data: {

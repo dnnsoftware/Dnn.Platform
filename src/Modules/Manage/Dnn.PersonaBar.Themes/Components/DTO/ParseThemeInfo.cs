@@ -12,6 +12,9 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         [DataMember(Name = "themeName")]
         public string ThemeName { get; set; }
 
+        [DataMember(Name = "level")]
+        public ThemeLevel Level { get; set; }
+
         [DataMember(Name = "parseType")]
         public ParseType ParseType { get; set; }
     }

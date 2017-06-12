@@ -2,16 +2,12 @@ import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Table from "./Table";
-import NewUrl from "./NewUrl";
 import {
     pageSeoActions as SeoActions
 } from "../../../actions";
 
 class PageUrls extends Component {
-    
-    onAddNewUrl() {
-        this.props.onAddNewUrl(this.props.editedUrl, this.props.primaryAliasId);
-    }
+        
     onSaveUrl() {
         this.props.onSaveUrl(this.props.editedUrl, this.props.primaryAliasId);
     }
@@ -19,19 +15,10 @@ class PageUrls extends Component {
     render() {
         const {pageHasParent, addingNewUrl, editingUrl, onOpenEditForm, onDeleteUrl,
             editedUrl, onCloseEditUrl, onOpenNewForm, onCloseNewUrl, newFormOpened, siteAliases, primaryAliasId, 
-            pageUrls, onChange} = this.props;
+            pageUrls, onChange, onAddNewUrl} = this.props;
         
         return (
-            <div>
-                <NewUrl onOpenNewForm={onOpenNewForm}
-                    opened={newFormOpened}
-                    pageHasParent={pageHasParent}
-                    onChange={onChange}
-                    onAdd={this.onAddNewUrl.bind(this)}  
-                    onCancel={onCloseNewUrl}
-                    addingNewUrl={addingNewUrl}
-                    url={editedUrl}
-                    siteAliases={siteAliases} primaryAliasId={primaryAliasId} />
+            <div>                
                 <Table pageUrls={pageUrls} 
                     onOpenEditForm={onOpenEditForm}
                     pageHasParent={pageHasParent}
@@ -41,7 +28,12 @@ class PageUrls extends Component {
                     onCancel={onCloseEditUrl}
                     editingUrl={editingUrl}
                     editedUrl={editedUrl}
-                    siteAliases={siteAliases} primaryAliasId={primaryAliasId} />
+                    siteAliases={siteAliases} primaryAliasId={primaryAliasId} 
+                    addingNewUrl={addingNewUrl}
+                    onOpenNewForm={onOpenNewForm}
+                    onCloseNewUrl={onCloseNewUrl}
+                    newFormOpened={newFormOpened} 
+                    onAddNewUrl={onAddNewUrl}/>
             </div>
         );
     }

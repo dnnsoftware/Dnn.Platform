@@ -230,24 +230,24 @@ class ProfilePropertiesPanel extends Component {
                         propertyId={item.PropertyDefinitionId}
                         name={item.PropertyName}
                         dataType={item.DataType}
-                        defaultVisibility={resx.get(item.DefaultVisibility)}
+                        defaultVisibility={resx.get(item.DefaultVisibility) }
                         required={item.Required}
                         visible={item.Visible}
                         index={index}
                         key={"propertyItem-" + index}
                         closeOnClick={true}
                         openId={this.state.openId}
-                        OpenCollapse={this.toggle.bind(this)}
-                        Collapse={this.collapse.bind(this)}
-                        onDelete={this.onDeleteProperty.bind(this, item.PropertyDefinitionId)}
-                        onMoveUp={this.onMovePropertyUp.bind(this, item.PropertyDefinitionId)}
-                        onMoveDown={this.onMovePropertyDown.bind(this, item.PropertyDefinitionId)}
+                        OpenCollapse={this.toggle.bind(this) }
+                        Collapse={this.collapse.bind(this) }
+                        onDelete={this.onDeleteProperty.bind(this, item.PropertyDefinitionId) }
+                        onMoveUp={this.onMovePropertyUp.bind(this, item.PropertyDefinitionId) }
+                        onMoveDown={this.onMovePropertyDown.bind(this, item.PropertyDefinitionId) }
                         id={id}>
                         <ProfilePropertyEditor
                             portalId={this.props.portalId}
                             cultureCode={this.props.cultureCode}
                             propertyId={item.PropertyDefinitionId}
-                            Collapse={this.collapse.bind(this)}
+                            Collapse={this.collapse.bind(this) }
                             id={id}
                             openId={this.state.openId} />
                     </ProfilePropertyRow>
@@ -262,14 +262,14 @@ class ProfilePropertiesPanel extends Component {
             <div>
                 <div className="property-items">
                     <div className="AddItemRow">
-                        <div className="sectionTitle">{resx.get("UserProfileFields")}</div>
-                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
+                        <div className="sectionTitle">{resx.get("UserProfileFields") }</div>
+                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
                             <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> {resx.get("cmdAddField")}
+                            </div> {resx.get("cmdAddField") }
                         </div>
                     </div>
                     <div className="property-items-grid">
-                        {this.renderHeader()}
+                        {this.renderHeader() }
                         <Collapse isOpened={opened} autoScroll={true} style={{ float: "left", width: "100%" }}>
                             <ProfilePropertyRow
                                 name={"-"}
@@ -279,29 +279,32 @@ class ProfilePropertiesPanel extends Component {
                                 key={"propertyItem-add"}
                                 closeOnClick={true}
                                 openId={this.state.openId}
-                                OpenCollapse={this.toggle.bind(this)}
-                                Collapse={this.collapse.bind(this)}
-                                onDelete={this.onDeleteProperty.bind(this)}
-                                onMoveUp={this.onMovePropertyUp.bind(this)}
-                                onMoveDown={this.onMovePropertyDown.bind(this)}
+                                OpenCollapse={this.toggle.bind(this) }
+                                Collapse={this.collapse.bind(this) }
+                                onDelete={this.onDeleteProperty.bind(this) }
+                                onMoveUp={this.onMovePropertyUp.bind(this) }
+                                onMoveDown={this.onMovePropertyDown.bind(this) }
                                 id={"add"}>
                                 <ProfilePropertyEditor
                                     portalId={this.props.portalId}
                                     cultureCode={this.props.cultureCode}
-                                    Collapse={this.collapse.bind(this)}
+                                    Collapse={this.collapse.bind(this) }
                                     id={"add"}
                                     openId={this.state.openId} />
                             </ProfilePropertyRow>
                         </Collapse>
-                        {this.props.profileProperties && 
+                        {this.props.profileProperties && this.state.openId &&
+                            this.renderedProfileProperties()
+                        }
+                        {this.props.profileProperties && !this.state.openId &&
                             <Sortable
-                                onSort={this.onSort.bind(this)}
+                                onSort={this.onSort.bind(this) }
                                 items={this.props.profileProperties.Properties}
                                 sortOnDrag={true}
                                 >
-                                 {this.renderedProfileProperties()}
+                                {this.renderedProfileProperties() }
                             </Sortable>
-                    }
+                        }
                     </div>
                 </div>
 

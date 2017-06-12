@@ -22,11 +22,12 @@ class Theme extends Component {
         const {props} = this;
         let theme = props.theme;
         let currentTheme = props.currentTheme;
-
         if (theme.type === 0) {
-            return currentTheme.SiteLayout.themeName === theme.packageName;
+            return currentTheme.SiteLayout.themeName === theme.packageName
+                    && currentTheme.SiteLayout.level == theme.level;
         } else {
-            return currentTheme.SiteContainer.themeName === theme.packageName;
+            return currentTheme.SiteContainer.themeName === theme.packageName
+                    && currentTheme.SiteContainer.level == theme.level;
         }
     }
 
@@ -47,7 +48,7 @@ class Theme extends Component {
         let theme = props.theme;
 
         utils.utilities.confirm(Localization.get("ApplyConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function () {
-            props.dispatch(ThemeActions.applyDefaultTheme(theme.packageName));
+            props.dispatch(ThemeActions.applyDefaultTheme(theme.packageName, theme.level));
         });
     }
 
@@ -81,7 +82,7 @@ class Theme extends Component {
             <ul className={(isHost || theme.level === 1) ? "" : "short"}>
                 <li onClick={this.previewTheme.bind(this) } title={Localization.get("PreviewTheme") }><SvgIcon name="View" /></li>
                 {canEdit && <li onClick={this.applyDefaultTheme.bind(this) } title={Localization.get("ApplyTheme") }><SvgIcon name="Apply" /></li>}
-                {((isHost || theme.level === 1) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this) } title={Localization.get("DeleteTheme") }><SvgIcon name="Trash" /></li>}
+                {((isHost || theme.level === 1 || theme.level === 2) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this) } title={Localization.get("DeleteTheme") }><SvgIcon name="Trash" /></li>}
             </ul>
         </span>;
     }
