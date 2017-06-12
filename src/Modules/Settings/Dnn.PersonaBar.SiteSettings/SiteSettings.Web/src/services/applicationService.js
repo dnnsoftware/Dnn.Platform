@@ -292,6 +292,26 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.get("GetPortals", {}, callback);
     }   
+
+    getListInfo(listName, portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.get("GetListInfo?portalId=" + portalId + "&listName=" + listName, {}, callback);
+    }
+
+    updateListEntry(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateListEntry", payload, callback, failureCallback);
+    }
+
+    deleteListEntry(entryId, portalId, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("DeleteListEntry?entryId=" + entryId + "&portalId=" + portalId, {}, callback, failureCallback);
+    }
+
+    updateListEntryOrders(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateListEntryOrders", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

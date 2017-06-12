@@ -145,6 +145,19 @@ export default function siteBehavior(state = {
                 otherSettings: action.data.settings,
                 otherSettingsClientModified: action.data.otherSettingsClientModified
             };
+        case ActionTypes.RETRIEVED_SITESETTINGS_LIST_INFO: 
+            return { ...state,
+                enableSortOrder: action.data.enableSortOrder,
+                entries: action.data.entries
+            };
+        case ActionTypes.DELETED_SITESETTINGS_LIST_ENTRY:
+            return { ...state,
+                entries: action.data.entries
+            };
+        case ActionTypes.UPDATED_SITESETTINGS_LIST_ENTRY_ORDER:
+            return { ...state,
+                entries: action.data.entries
+            };
         default:
             return state;
     }
