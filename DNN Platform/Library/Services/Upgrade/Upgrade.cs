@@ -29,8 +29,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Web.Configuration;
 using System.Xml;
@@ -106,6 +108,8 @@ namespace DotNetNuke.Services.Upgrade
         #region Private Shared Field
 
         private static DateTime _startTime;
+        private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
+        private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
 
         #endregion
 
@@ -5902,6 +5906,55 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return activationResult;
+        }
+
+        internal static void CheckFipsCompilanceAssemblies()
+        {
+            if (CryptoConfig.AllowOnlyFipsAlgorithms && !HostController.Instance.GetBoolean(FipsCompilanceAssembliesCheckedKey, false))
+            {
+                var assemblyFolder = Path.Combine(Globals.ApplicationMapPath, FipsCompilanceAssembliesFolder);
+                var assemblyFiles = Directory.GetFiles(assemblyFolder, "*.dll", SearchOption.TopDirectoryOnly);
+                foreach (var assemblyFile in assemblyFiles)
+                {
+                    FixFipsCompilanceAssembly(assemblyFile);
+                }
+
+                HostController.Instance.Update(FipsCompilanceAssembliesCheckedKey, "Y");
+
+                if (HttpContext.Current != null)
+                {
+                    Globals.Redirect(HttpContext.Current.Request.RawUrl, true);
+                }
+            }
+        }
+
+        private static void FixFipsCompilanceAssembly(string filePath)
+        {
+            try
+            {
+                var fileName = Path.GetFileName(filePath);
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    return;
+                }
+
+                var assemblyPath = Path.Combine(Globals.ApplicationMapPath, "bin", fileName);
+                if (File.Exists(assemblyPath))
+                {
+                    var backupFolder = Path.Combine(Globals.ApplicationMapPath, FipsCompilanceAssembliesFolder, "Backup");
+                    if (!Directory.Exists(backupFolder))
+                    {
+                        Directory.CreateDirectory(backupFolder);
+                    }
+
+                    File.Copy(assemblyPath, Path.Combine(backupFolder, fileName + "." + DateTime.Now.Ticks), true);
+                    File.Copy(filePath, assemblyPath, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         private static void FixTabsMissingLocalizedFields()
