@@ -25,16 +25,15 @@ export default class TreeControlInteractor extends Component {
     init() {
 
         const ExportInitialSelection = () => {
-            const selection = this.generateSelectionObject(this.state.tabs);
-            this.props.OnSelect(selection);
+            this.export();
         };
 
         this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
             const tabs = [response.Results];
+            tabs[0].CheckedState=2;
             this.setState({ tabs: tabs }, ()=> {
                 ExportInitialSelection();
             });
-            
         });
 
     }
@@ -55,6 +54,7 @@ export default class TreeControlInteractor extends Component {
                 const condition = parseInt(tab.ParentTabId) === parseInt(parentTab.TabId);
                 condition ? parentTab.ChildTabs.push(tab) : null;
             });
+
         };
 
         this.props.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
@@ -140,6 +140,7 @@ export default class TreeControlInteractor extends Component {
     }
 
     updateTree(tabData) {
+
         let newState = null;
         const capture = (tab, copy) => {
             tab = JSON.parse(JSON.stringify(tabData));
@@ -223,7 +224,6 @@ export default class TreeControlInteractor extends Component {
             return exists === false;
         });
 
-
         const generateSelections = (tab) => tabs.push(this.generateSelectionObject(tab));
         this.traverse(generateSelections);
         tabs = filterOutZeros(tabs);
@@ -233,7 +233,6 @@ export default class TreeControlInteractor extends Component {
         parents = filterOutIfAllSelected(parents, parents);
         const exports = parents.concat(children);
         this.props.OnSelect(exports);
-
     }
 
 
