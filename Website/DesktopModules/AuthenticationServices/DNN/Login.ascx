@@ -75,7 +75,7 @@
 
 		    //redirect to show in main page if auto-fill enabled in chrome and show in popup.
 			setTimeout(function () {
-			    if ($('input:-webkit-autofill').length > 0 && window !== window.top) {
+			    if ($('input:-webkit-autofill').length > 0 && $('#<%=txtPassword.ClientID%>').val() === '' && window !== window.top) {
 			        var loginUrl = location.href.replace('/popUp/true', '').replace('&popUp=true', '');
 			        window.top.location.href = loginUrl;
 			    };
