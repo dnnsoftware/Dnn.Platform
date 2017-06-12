@@ -46,8 +46,6 @@ module.exports = [
     "concat",
     "resize",
     "sortable",
-    "socialpanelheader",
-    "socialpanelbody",
     "asc",
     "dx",
     "dy",

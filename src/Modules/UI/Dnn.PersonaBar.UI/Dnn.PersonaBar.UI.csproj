@@ -44,13 +44,12 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\..\..\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.HttpModules, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\DotNetNuke.HttpModules.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,10 +66,6 @@
     <Reference Include="DotNetNuke.Web.Client">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Deprecated, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -184,9 +179,7 @@
     <Content Include="admin\personaBar\scripts\menuIconLoader.js" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
-    <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx" />
     <Content Include="admin\personaBar\css\pikaday.css" />
     <Content Include="admin\personaBar\css\tokenInput.css" />
     <Content Include="admin\personaBar\index.html" />
@@ -213,6 +206,7 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Providers\DataProviders\SqlDataProvider\01.04.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.03.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.01.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Install.SqlDataprovider" />

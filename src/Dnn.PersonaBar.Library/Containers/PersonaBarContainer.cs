@@ -53,6 +53,8 @@ namespace Dnn.PersonaBar.Library.Containers
 
         #region IPersonaBarContainer Implements
 
+        public virtual IList<string> RootItems => new List<string> {"Content", "Manage", "Settings", "Edit"}; 
+
         public virtual bool Visible => true;
 
         public virtual void Initialize(UserControl personaBarControl)
@@ -99,6 +101,17 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("debugMode", HttpContext.Current != null && HttpContext.Current.IsDebuggingEnabled);
             settings.Add("portalId", portalId);
             settings.Add("preferredTimeZone", preferredTimeZone);
+
+            if (!settings.ContainsKey("isAdmin"))
+            {
+                settings.Add("isAdmin", user.IsInRole(portalSettings.AdministratorRoleName));
+            }
+
+            if (!settings.ContainsKey("isHost"))
+            {
+                settings.Add("isHost", user.IsSuperUser);
+            }
+
             if (BeaconService.Instance.IsBeaconEnabledForPersonaBar())
             {
                 settings.Add("beaconUrl", GetBeaconUrl());

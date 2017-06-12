@@ -45,6 +45,6 @@ namespace Dnn.PersonaBar.Library.Data
 
         IDataReader GetPersonaBarPermissions();
 
-        void UpdateMenuController(string identifier, string controller);
+        void UpdateMenuController(string identifier, string controller, int userId);
     }
 }

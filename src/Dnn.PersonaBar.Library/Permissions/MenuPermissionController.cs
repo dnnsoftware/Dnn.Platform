@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         #region Private Members
 
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuPermissionController));
-        
+
         private static readonly IDataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();
         private static readonly object DefaultPermissionLocker = new object();
@@ -158,12 +158,12 @@ namespace Dnn.PersonaBar.Library.Permissions
             var user = UserController.Instance.GetCurrentUserInfo();
 
             permissionInfo.MenuPermissionId = DataService.SavePersonaBarMenuPermission(
-                portalId, 
-                menu.MenuId, 
+                portalId,
+                menu.MenuId,
                 permissionInfo.PermissionID,
-                permissionInfo.RoleID, 
-                permissionInfo.UserID, 
-                permissionInfo.AllowAccess, 
+                permissionInfo.RoleID,
+                permissionInfo.UserID,
+                permissionInfo.AllowAccess,
                 user.UserID);
 
             ClearCache(portalId);
@@ -271,7 +271,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             try
             {
-                var defaultPermissions = roleName.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var defaultPermissions = roleName.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 if (defaultPermissions.Count > 1)
                 {
                     roleName = defaultPermissions[0];
@@ -281,8 +281,8 @@ namespace Dnn.PersonaBar.Library.Permissions
 
                 var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing);
                 var permissions = GetPermissions(menuItem.MenuId)
-                    .Where(p => p.MenuId == Null.NullInteger 
-                                    || roleName == administratorRole
+                    .Where(p => p.MenuId == Null.NullInteger
+                                    || (roleName == administratorRole && defaultPermissions.Count == 1)
                                     || defaultPermissions.Contains(p.PermissionKey));
 
                 var roleId = nullRoleId;
@@ -300,7 +300,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                         {
                             roleId = role.RoleID;
                         }
-                        else if(role != null)
+                        else if (role != null)
                         {
                             Logger.Error($"Role \"{roleName}\" in portal \"{portalId}\" doesn't marked as system role, will ignore add this default permission to {menuItem.Identifier}.");
                         }

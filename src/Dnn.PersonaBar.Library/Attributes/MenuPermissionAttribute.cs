@@ -3,6 +3,7 @@ using System.Threading;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Repository;
+using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
@@ -67,12 +68,28 @@ namespace Dnn.PersonaBar.Library.Attributes
                 }
             }
 
-            var menuItem = GetMenuByIdentifier();
-            if (menuItem != null && portalSettings != null)
+            //if menu identifier defined, then will check the menu permission, multiple identifier should split with ",".
+            if (!string.IsNullOrEmpty(MenuName))
             {
-                //if supported extension defined, then will check the menu permission.
-                return PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
+                if (isAdmin)
+                    return true;
+
+                var hasPermission = false;
+                MenuName.Split(',').ForEach(menuName =>
+                {
+                    if (!hasPermission)
+                    {
+                        var menuItem = GetMenuByIdentifier(menuName);
+                        if (menuItem != null && portalSettings != null)
+                        {
+                            hasPermission = PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
+                        }
+                    }
+                });
+
+                return hasPermission;
             }
+            
 
             //when menu identifier not defined, will check the service scope permission.
             switch (Scope)
@@ -92,14 +109,14 @@ namespace Dnn.PersonaBar.Library.Attributes
             }
         }
 
-        private MenuItem GetMenuByIdentifier()
+        private MenuItem GetMenuByIdentifier(string menuName)
         {
-            if (string.IsNullOrEmpty(MenuName))
+            if (string.IsNullOrEmpty(menuName))
             {
                 return null;
             }
 
-            return PersonaBarRepository.Instance.GetMenuItem(MenuName);
+            return PersonaBarRepository.Instance.GetMenuItem(menuName.Trim());
         }
     }
 }

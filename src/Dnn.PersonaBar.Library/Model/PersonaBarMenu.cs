@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Library.Model
         public IList<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
 
         [IgnoreDataMember]
-        internal IList<MenuItem> AllItems
+        public IList<MenuItem> AllItems
         {
             get
             {

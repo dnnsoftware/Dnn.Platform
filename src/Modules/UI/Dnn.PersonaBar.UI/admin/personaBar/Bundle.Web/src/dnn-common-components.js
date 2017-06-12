@@ -28,8 +28,6 @@ import Select from "dnn-select";
 import SearchableTags from "dnn-searchable-tags";
 import SingleLineInput from "dnn-single-line-input";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import SocialPanelBody from "dnn-social-panel-body";
-import SocialPanelHeader from "dnn-social-panel-header";
 import Sortable from "dnn-sortable";
 import * as SvgIcons from "dnn-svg-icons";
 import Switch from "dnn-switch";
@@ -72,8 +70,6 @@ export {
     Select,
     SingleLineInput,
     SingleLineInputWithError,
-    SocialPanelBody,
-    SocialPanelHeader,
     Sortable,
     SvgIcons,
     Switch,
