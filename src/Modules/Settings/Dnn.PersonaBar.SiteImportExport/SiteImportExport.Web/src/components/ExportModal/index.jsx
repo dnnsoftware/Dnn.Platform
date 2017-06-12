@@ -397,6 +397,8 @@ class ExportModal extends Component {
                                         label={item.name}
                                     />
                                     <Switch
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         value={state.exportRequest.ItemsToExport.indexOf(item.category) !== -1}
                                         onChange={this.onChangeItemsToExport.bind(this, item.category)}
                                     />
