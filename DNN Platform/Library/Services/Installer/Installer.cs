@@ -522,6 +522,12 @@ namespace DotNetNuke.Services.Installer
             //Clear Host Cache
             DataCache.ClearHostCache(true);
 
+            if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
+            {
+                // force application restart after the new changes only when FCN is disabled
+                Config.Touch();
+            }
+
             return bStatus;
         }
 
