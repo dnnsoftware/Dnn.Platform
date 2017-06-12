@@ -9,6 +9,7 @@ import {
     importExport as ImportExportActions
 } from "../../../actions";
 import Localization from "localization";
+import itemsToExportService from "../../../services/itemsToExportService";
 
 class JobDetails extends Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class JobDetails extends Component {
     getSummaryItem(category) {
         const { props, state } = this;
         if (props.jobDetail.Summary) {
-            let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
+            let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category.toUpperCase() === category.toUpperCase());
             if (detail) {
                 if (detail.Completed || state.cancelled || props.jobDetail.Status !== 1 || detail.TotalItems === 0) {
                     return detail.ProcessedItems > detail.TotalItems ? detail.TotalItemsString : detail.ProcessedItemsString + " / " + detail.TotalItemsString;
@@ -171,6 +172,7 @@ class JobDetails extends Component {
 
     renderExportSummary() {
         const { props, state } = this;
+        const registeredItemsToExport = itemsToExportService.getRegisteredItemsToExport();
         return <div style={{ float: "left", width: "100%" }}>
             {props.jobDetail &&
                 <div className="export-summary">
@@ -263,6 +265,7 @@ class JobDetails extends Component {
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Packages")}</div>
                             </GridCell>
+
                             <GridCell>
                                 <Label
                                     labelType="inline"
@@ -270,6 +273,15 @@ class JobDetails extends Component {
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
                             </GridCell>
+                            {registeredItemsToExport.map(item =>
+                                <GridCell>
+                                    <Label
+                                        labelType="inline"
+                                        label={item.name}
+                                    />
+                                    <div className="import-summary-item">{this.getSummaryItem(item.category)}</div>
+                                </GridCell>)
+                            }
                             <GridCell>
                                 <Label
                                     labelType="inline"

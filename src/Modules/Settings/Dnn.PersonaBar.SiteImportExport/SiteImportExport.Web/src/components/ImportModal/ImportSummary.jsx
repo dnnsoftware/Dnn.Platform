@@ -4,11 +4,12 @@ import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import Switch from "dnn-switch";
+import itemsToExportService from "../../services/itemsToExportService";
 
 class ImportSummary extends Component {
     getSummaryItem(category) {
         const { props } = this;
-        let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
+        let detail = props.importSummary.SummaryItems.find(c => c.Category.toUpperCase() === category.toUpperCase());
         return detail ? detail.TotalItemsString : "-";
     }
 
@@ -18,6 +19,7 @@ class ImportSummary extends Component {
 
     render() {
         const { props } = this;
+        const registeredItemsToExport = itemsToExportService.getRegisteredItemsToExport();
         return (
             <div style={{ float: "left", width: "100%" }}>
                 {props.importSummary && props.selectedPackage &&
@@ -125,6 +127,15 @@ class ImportSummary extends Component {
                                     />
                                     <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
                                 </GridCell>
+                                {registeredItemsToExport.map(item =>
+                                    <GridCell>
+                                        <Label
+                                            labelType="inline"
+                                            label={item.name}
+                                        />
+                                        <div className="import-summary-item">{this.getSummaryItem(item.category)}</div>
+                                    </GridCell>)
+                                }
                                 <GridCell>
                                     <Label
                                         labelType="inline"

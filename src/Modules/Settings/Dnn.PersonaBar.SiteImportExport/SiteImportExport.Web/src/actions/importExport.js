@@ -11,7 +11,7 @@ const jobsActions = {
         });
     },
 
-    getDescendantPortalTabs(PortalTabsParameters, ParentTabId, callback){
+    getDescendantPortalTabs(PortalTabsParameters, ParentTabId, callback) {
         const ParentTabIdObj = {parentId: ParentTabId};
         ApplicationService.getDescendantPortalTabs(PortalTabsParameters, ParentTabIdObj, (response) => {
             if (callback) {
