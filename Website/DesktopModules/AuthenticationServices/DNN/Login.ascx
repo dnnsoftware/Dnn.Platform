@@ -42,7 +42,7 @@
 <script type="text/javascript">
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
-		function setUpLogin() {
+	    function setUpLogin() {
 			var actionLinks = $("a#dnn_ctr<%#ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin");
 			actionLinks.click(function () {
 				if ($(this).hasClass("dnnDisabledAction")) {
@@ -72,6 +72,14 @@
 			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 				setUpLogin();
 			});
+
+		    //redirect to show in main page if auto-fill enabled in chrome and show in popup.
+			setTimeout(function () {
+			    if ($('input:-webkit-autofill').length > 0 && $('#<%=txtPassword.ClientID%>').val() === '' && window !== window.top) {
+			        var loginUrl = location.href.replace('/popUp/true', '').replace('&popUp=true', '');
+			        window.top.location.href = loginUrl;
+			    };
+			}, 0);
 		});
 	}(jQuery, window.Sys));
 </script>  
