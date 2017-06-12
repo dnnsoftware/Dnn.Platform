@@ -1,5 +1,4 @@
 import utilities from "../utils";
-const itemsToExport = [];
 
 const siteImportExport = {
     init() {
@@ -19,13 +18,7 @@ const siteImportExport = {
     },
     dispatch() {
         throw new Error("dispatch method needs to be overwritten from the Redux store");
-    },
-    registerItemToExport(item) {
-        itemsToExport.push(item);
-    },
-    getRegisteredItemsToExport() {
-        return itemsToExport;
-    }
+    }   
 };
 
 

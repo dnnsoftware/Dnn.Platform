@@ -4,7 +4,7 @@ import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import Switch from "dnn-switch";
-import application from "../../globals/application";
+import itemsToExportService from "../../services/itemsToExportService";
 
 class ImportSummary extends Component {
     getSummaryItem(category) {
@@ -19,7 +19,7 @@ class ImportSummary extends Component {
 
     render() {
         const { props } = this;
-        const registeredItemsToExport = application.getRegisteredItemsToExport();
+        const registeredItemsToExport = itemsToExportService.getRegisteredItemsToExport();
         return (
             <div style={{ float: "left", width: "100%" }}>
                 {props.importSummary && props.selectedPackage &&

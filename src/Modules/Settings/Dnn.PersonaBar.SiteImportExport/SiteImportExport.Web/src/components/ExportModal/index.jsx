@@ -17,7 +17,7 @@ import RadioButtons from "dnn-radio-buttons";
 import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
-import application from "../../globals/application";
+import itemsToExportService from "../../services/itemsToExportService";
 
 import TreeControlInteractor from "dnn-tree-control-interactor";
 
@@ -27,7 +27,6 @@ class ExportModal extends Component {
     constructor(props) {
         super();
 
-        const ItemsToExport = [];
         this.state = {
             wizardStep: 0,
             exportRequest: {
@@ -45,7 +44,7 @@ class ExportModal extends Component {
                 IncludeExtensions: true,
                 IncludeFiles: true,
                 ExportMode: props.lastExportTime ? "Differential" : "Full",
-                ItemsToExport,
+                ItemsToExport: this.getRegisteredItemsToExport(),
                 RunNow: true
             },
             errors: {
@@ -56,13 +55,12 @@ class ExportModal extends Component {
         };        
 
         this.getInitialPortalTabs = props.getInitialPortalTabs;
+    }
 
-        const registeredItemsToExport = application.getRegisteredItemsToExport();
-        for (let i = 0; i < registeredItemsToExport.length; i++) {
-            if (registeredItemsToExport[i].defaultSelected) {
-                ItemsToExport.push(registeredItemsToExport[i].category);
-            }
-        }
+    getRegisteredItemsToExport() {     
+        return itemsToExportService.getRegisteredItemsToExport()
+            .filter(x => x.defaultSelected)
+            .map(item => item.category);
     }
 
     componentWillMount() {
@@ -233,7 +231,7 @@ class ExportModal extends Component {
             roles: "",
             sortOrder: 0
         };
-        const registeredItemsToExport = application.getRegisteredItemsToExport();
+        const registeredItemsToExport = itemsToExportService.getRegisteredItemsToExport();
         return (
             <div className={styles.exportModal}>
                 <div className="pageTitle">{Localization.get("ExportSettings")}</div>

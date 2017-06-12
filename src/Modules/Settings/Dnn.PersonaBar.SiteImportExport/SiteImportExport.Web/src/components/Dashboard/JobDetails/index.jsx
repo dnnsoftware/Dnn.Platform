@@ -9,7 +9,7 @@ import {
     importExport as ImportExportActions
 } from "../../../actions";
 import Localization from "localization";
-import application from "../../../globals/application";
+import itemsToExportService from "../../../services/itemsToExportService";
 
 class JobDetails extends Component {
     constructor(props) {
@@ -172,7 +172,7 @@ class JobDetails extends Component {
 
     renderExportSummary() {
         const { props, state } = this;
-        const registeredItemsToExport = application.getRegisteredItemsToExport();
+        const registeredItemsToExport = itemsToExportService.getRegisteredItemsToExport();
         return <div style={{ float: "left", width: "100%" }}>
             {props.jobDetail &&
                 <div className="export-summary">
