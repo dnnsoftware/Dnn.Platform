@@ -229,9 +229,6 @@ namespace DesktopModules.Admin.Security
                 //Update DisplayName to conform to Format
                 UpdateDisplayName();
 
-                //update the user details
-                DataCache.ClearCache();
-
                 if (PortalSettings.Registration.RequireUniqueDisplayName)
                 {
                     var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
