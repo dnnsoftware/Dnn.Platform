@@ -1813,7 +1813,7 @@ namespace DotNetNuke.Entities.Modules
         {
             dataProvider.RestoreTabModule(objModule.TabID, objModule.ModuleID);
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            TabChangeTracker.Instance.TrackModuleCopy(objModule, 1, objModule.TabID, userId);
+            TabChangeTracker.Instance.TrackModuleAddition(objModule, 1, userId);
             ClearCache(objModule.TabID);
         }
 
