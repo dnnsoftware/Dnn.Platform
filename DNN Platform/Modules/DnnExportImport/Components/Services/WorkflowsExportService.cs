@@ -265,11 +265,16 @@ namespace Dnn.ExportImport.Components.Services
                                              (x.Username == importPermission.Username || string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(importPermission.Username)));
 
 
-                                    if (local != null)
+                                    if (local == null)
                                     {
                                         workflowStateManager.AddWorkflowStatePermission(permission, -1);
                                         importPermission.LocalId = permission.WorkflowStatePermissionID;
-                                        Result.AddLogEntry("Added workflow state permission", permission.WorkflowStatePermissionID.ToString());
+                                        Result.AddLogEntry("Added workflow state permission",
+                                            permission.WorkflowStatePermissionID.ToString());
+                                    }
+                                    else
+                                    {
+                                        importPermission.LocalId = local.WorkflowStatePermissionID;
                                     }
                                 }
                                 catch (Exception ex)

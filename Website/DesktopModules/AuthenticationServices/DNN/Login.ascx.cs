@@ -94,8 +94,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 			cancelLink.NavigateUrl = GetRedirectUrl(false);
 
-			ClientAPI.RegisterKeyCapture(Parent, cmdLogin, 13);
-
             if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration)
             {
                 liRegister.Visible = false;

@@ -358,6 +358,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             if (Request.IsAuthenticated)
             {
+                Localization.LocalizeDataGrid(ref grdServices, LocalResourceFile);
                 grdServices.DataSource = RoleController.Instance.GetUserRoles(UserInfo, false);
                 grdServices.DataBind();
 
@@ -404,22 +405,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             cmdRSVP.Click += cmdRSVP_Click;
             grdServices.ItemCommand += grdServices_ItemCommand;
-
-            try
-            {
-                lblRSVP.Text = "";
-
-                //If this is the first visit to the page, localize the datalist
-                if (Page.IsPostBack == false)
-                {
-					//Localize the Headers
-                    Localization.LocalizeDataGrid(ref grdServices, LocalResourceFile);
-                }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            lblRSVP.Text = "";
         }
 
         /// -----------------------------------------------------------------------------

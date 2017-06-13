@@ -150,7 +150,7 @@ namespace DotNetNuke.Entities.Urls
                         parmRedirects.AddRange(allRedirects); //add the 'all' range to the tab range
                         tabId = result.TabId;
                     }
-                    if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLower().Contains("default.aspx"))
+                    if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
                     {
                         //for the default.aspx page
                         if (parmRedirects == null)

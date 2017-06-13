@@ -35,11 +35,13 @@ using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -47,9 +49,6 @@ using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 using Util = Dnn.ExportImport.Components.Common.Util;
 using InstallerUtil = DotNetNuke.Services.Installer.Util;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Workflow;
 
 // ReSharper disable SuggestBaseTypeForParameter
 
@@ -76,7 +75,6 @@ namespace Dnn.ExportImport.Components.Services
         private DataProvider _dataProvider;
         private ITabController _tabController;
         private IModuleController _moduleController;
-        private IContentController _contentController;
         private ExportImportJob _exportImportJob;
         private ImportDto _importDto;
         private ExportDto _exportDto;
@@ -90,7 +88,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
-            var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.Partial);
+            var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.CheckedWithAllChildren);
             if (checkedPages.Any())
             {
                 _exportImportJob = exportJob;
@@ -117,7 +115,6 @@ namespace Dnn.ExportImport.Components.Services
             _exportDto = importDto.ExportDto;
             _tabController = TabController.Instance;
             _moduleController = ModuleController.Instance;
-            _contentController = ContentController.Instance;
 
             ProcessImportPages();
 
@@ -283,7 +280,7 @@ namespace Dnn.ExportImport.Components.Services
                 _tabController.UpdateTab(localTab);
                 TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
             }
@@ -521,7 +518,6 @@ namespace Dnn.ExportImport.Components.Services
             var localExportModules = isNew ? new List<ExportModule>()
                 : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MaxDbTime, null).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
-
             var allExistingIds = localTabModules.Select(l => l.ModuleID).ToList();
             var allImportedIds = new List<int>();
 
@@ -576,7 +572,7 @@ namespace Dnn.ExportImport.Components.Services
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
                         //UniqueId = other.UniqueId,
-                        UniqueId = Guid.NewGuid(),
+                        UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
@@ -599,8 +595,7 @@ namespace Dnn.ExportImport.Components.Services
                         if (other.IsDeleted)
                         {
                             local.IsDeleted = other.IsDeleted;
-                            EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
-                            //_moduleController.UpdateModule(local); // to clear cache
+                            _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
                         }
 
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -639,7 +634,7 @@ namespace Dnn.ExportImport.Components.Services
                     for (var i = 0; i < locals.Count; i++)
                     {
                         var local = locals.ElementAt(i);
-
+                        var isDeleted = local.IsDeleted;
                         try
                         {
                             var localExpModule = localExportModules.FirstOrDefault(
@@ -690,12 +685,14 @@ namespace Dnn.ExportImport.Components.Services
                                 Repository.UpdateItem(otherModule);
                                 allImportedIds.Add(local.ModuleID);
 
-                                // this is not saved upon adding the module
-                                if (other.IsDeleted)
+                                // this is not saved upon updating the module
+                                if (isDeleted != other.IsDeleted)
                                 {
                                     local.IsDeleted = other.IsDeleted;
-                                    EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
-                                    //_moduleController.UpdateModule(local); // to clear cache
+                                    if (other.IsDeleted)
+                                        _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
+                                    else
+                                        _moduleController.RestoreModule(local);
                                 }
                             }
                             else
@@ -750,15 +747,23 @@ namespace Dnn.ExportImport.Components.Services
                                 // this coould cause problem in some cases
                                 //if (local.UniqueId != other.UniqueId) local.UniqueId = other.UniqueId;
 
-                                // this is not saved upon updating the module
-                                EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
-
                                 // updates both module and tab module db records
                                 _moduleController.UpdateModule(local);
                                 other.LocalId = local.TabModuleID;
                                 otherModule.LocalId = localExpModule.ModuleID;
                                 Repository.UpdateItem(otherModule);
                                 allImportedIds.Add(local.ModuleID);
+
+                                // this is not saved upon updating the module
+                                if (isDeleted != other.IsDeleted)
+                                {
+                                    local.IsDeleted = other.IsDeleted;
+                                    if (other.IsDeleted)
+                                        _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
+                                    else
+                                        _moduleController.RestoreModule(local);
+                                }
+
                             }
 
                             var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -1229,7 +1234,7 @@ namespace Dnn.ExportImport.Components.Services
             var toDate = _exportImportJob.CreatedOnDate.ToLocalTime();
             var fromDate = (_exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var isAllIncluded =
-                selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.Checked);
+                selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.CheckedWithAllChildren);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
                     _exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate) // ordered by TabID
@@ -1255,26 +1260,29 @@ namespace Dnn.ExportImport.Components.Services
                 if (IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var tab = _tabController.GetTab(otherPg.TabID, portalId);
-                    var exportPage = SaveExportPage(tab);
+                    //Do not export tab which has never been published.
+                    if (tab.HasBeenPublished)
+                    {
+                        var exportPage = SaveExportPage(tab);
 
-                    _totals.TotalTabSettings +=
-                        ExportTabSettings(exportPage, toDate, fromDate);
+                        _totals.TotalTabSettings +=
+                            ExportTabSettings(exportPage, toDate, fromDate);
 
-                    _totals.TotalTabPermissions +=
-                        ExportTabPermissions(exportPage, toDate, fromDate);
+                        _totals.TotalTabPermissions +=
+                            ExportTabPermissions(exportPage, toDate, fromDate);
 
-                    _totals.TotalTabUrls +=
-                        ExportTabUrls(exportPage, toDate, fromDate);
+                        _totals.TotalTabUrls +=
+                            ExportTabUrls(exportPage, toDate, fromDate);
 
-                    _totals.TotalModules +=
-                        ExportTabModulesAndRelatedItems(exportPage, toDate, fromDate);
+                        _totals.TotalModules +=
+                            ExportTabModulesAndRelatedItems(exportPage, toDate, fromDate);
 
-                    _totals.TotalTabModules +=
-                        ExportTabModules(exportPage, _exportDto.IncludeDeletions, toDate, fromDate);
+                        _totals.TotalTabModules +=
+                            ExportTabModules(exportPage, _exportDto.IncludeDeletions, toDate, fromDate);
 
-                    _totals.TotalTabModuleSettings +=
-                        ExportTabModuleSettings(exportPage, toDate, fromDate);
-
+                        _totals.TotalTabModuleSettings +=
+                            ExportTabModuleSettings(exportPage, toDate, fromDate);
+                    }
                     _totals.TotalTabs++;
                     _totals.LastProcessedId = index;
                 }
@@ -1499,7 +1507,7 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = tab.StateID,
+                StateID = tab.StateID
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
@@ -1513,28 +1521,27 @@ namespace Dnn.ExportImport.Components.Services
         private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
         {
             var first = true;
-            do
+            while (tab != null)
             {
                 var pg = selectedPages.FirstOrDefault(p => p.TabId == tab.TabID);
                 if (pg != null)
                 {
-                    // this is the current page or a parent page for the one we are checking for.
-                    if (pg.CheckedState == TriCheckedState.UnChecked)
-                        return false;
-
-                    // this is the current page or a parent page for the one we are checking for.
-                    // it must be fully checked
-                    if (pg.CheckedState == TriCheckedState.Checked)
-                        return true;
-
-                    // this is the current page we are checking for and it is partially checked.
                     if (first)
+                    {
+                        // this is the current page we are checking for.
+                        return pg.CheckedState == TriCheckedState.Checked || pg.CheckedState == TriCheckedState.CheckedWithAllChildren;
+                    }
+
+                    // this is a [grand] parent of the page we are checking for.
+                    if (pg.CheckedState == TriCheckedState.CheckedWithAllChildren)
+                    {
                         return true;
+                    }
                 }
 
                 first = false;
                 tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
-            } while (tab != null);
+            }
 
             return false;
         }

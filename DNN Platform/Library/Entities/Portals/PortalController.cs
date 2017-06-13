@@ -943,8 +943,8 @@ namespace DotNetNuke.Entities.Portals
         {
             if (ComponentFactory.GetComponent<CryptographyProvider>() == null)
             {
-                ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(CoreCryptographyProvider)));
-                ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new CoreCryptographyProvider());
+                ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
+                ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new FipsCompilanceCryptographyProvider());
             }
         }
 

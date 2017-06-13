@@ -54,9 +54,8 @@
 		}
 		
 		$(document).ready(function () {
-
-			$('.dnnLoginService').on('keydown', function(e) {
-				if (e.keyCode === 13) {
+		    $('.dnnLoginService').on('keydown', function (e) {
+				if ($(e.target).is('input:text,input:password') && e.keyCode === 13) {
 					var $loginButton = $('#dnn_ctr<%#ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin');
 					if ($loginButton.hasClass("dnnDisabledAction")) {
 						return false;

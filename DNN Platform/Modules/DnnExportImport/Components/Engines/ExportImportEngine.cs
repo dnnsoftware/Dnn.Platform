@@ -509,7 +509,7 @@ namespace Dnn.ExportImport.Components.Engines
 
             includedItems.Remove(Constants.Category_Content);
 
-            if (exportDto.Pages.Length > 0)
+            if (exportDto.Pages?.Length > 0)
             {
                 includedItems.Add(Constants.Category_Pages);
                 includedItems.Add(Constants.Category_Workflows);

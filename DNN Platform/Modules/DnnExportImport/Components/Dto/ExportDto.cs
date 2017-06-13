@@ -179,8 +179,16 @@ namespace Dnn.ExportImport.Components.Dto
 
     public enum TriCheckedState
     {
-        Checked,
-        UnChecked,
-        Partial,
+#if false
+        // for schema 1.0.0
+        Checked = 0,
+        UnChecked = 1,
+        Partial = 2,
+#else
+        UnChecked = 0,
+        Checked = 1,
+        CheckedWithAllChildren = 2,
+#endif
+
     }
 }

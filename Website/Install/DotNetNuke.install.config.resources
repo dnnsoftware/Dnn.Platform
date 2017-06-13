@@ -28,7 +28,7 @@
     <AuthenticatedCacheability>4</AuthenticatedCacheability>
     <UnauthenticatedCacheability>4</UnauthenticatedCacheability>
     <AutoAccountUnlockDuration>10</AutoAccountUnlockDuration>
-    <AutoAddPortalAlias>Y</AutoAddPortalAlias>
+    <AutoAddPortalAlias>N</AutoAddPortalAlias>
     <CheckUpgrade>Y</CheckUpgrade>
     <ControlPanel>Admin/ControlPanel/ControlBar.ascx</ControlPanel>
     <IgnoreControlPanelWrapper>Y</IgnoreControlPanelWrapper>

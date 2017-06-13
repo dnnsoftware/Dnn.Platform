@@ -471,8 +471,10 @@ namespace DotNetNuke.Entities.Urls
                     //look for a 404 result from the rewrite, because of a deleted page or rule
                     if (!finished && result.Action == ActionType.Output404)
                     {
-                        if (result.OriginalPath == result.HttpAlias && result.PortalAlias != null
-                                && result.Reason != RedirectReason.Deleted_Page && result.Reason != RedirectReason.Disabled_Page)
+                        if (result.OriginalPath.Equals(result.HttpAlias, StringComparison.InvariantCultureIgnoreCase)
+                                && result.PortalAlias != null
+                                && result.Reason != RedirectReason.Deleted_Page
+                                && result.Reason != RedirectReason.Disabled_Page)
                         {
                             //Request for domain with no page identified (and no home page set in Site Settings)
                             result.Action = ActionType.Continue;
@@ -957,7 +959,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 //944 : check the original Url in case the requested Url has been rewritten before discovering it's a 404 error
                                 string requestedUrl = request.Url.ToString();
-                                if (result != null && string.IsNullOrEmpty(result.OriginalPath) == false)
+                                if (result != null && !string.IsNullOrEmpty(result.OriginalPath))
                                 {
                                     requestedUrl = result.OriginalPath;
                                 }
@@ -1843,7 +1845,17 @@ namespace DotNetNuke.Entities.Urls
             {
                 result.Action = ActionType.Redirect301;
                 result.Reason = redirectReason;
-                string destUrl = result.OriginalPath.Replace(wrongAlias, rightAlias);
+                var destUrl = result.OriginalPath;
+                if (result.OriginalPath.Contains(wrongAlias))
+                {
+                    destUrl = result.OriginalPath.Replace(wrongAlias, rightAlias);
+                }
+                else if (result.OriginalPath.ToLowerInvariant().Contains(wrongAlias))
+                {
+
+                    destUrl = result.OriginalPath.ToLowerInvariant().Replace(wrongAlias, rightAlias);
+                }
+
                 if (redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture ||
                     redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture_And_Browser)
                 {

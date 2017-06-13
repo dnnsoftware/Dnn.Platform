@@ -743,7 +743,7 @@
 
         getTree: function (sortOrder, onGetFirstLevelItemsCallback) {
             var onGetFirstLevelItemsHandler = $.proxy(this._onGetTree, this, onGetFirstLevelItemsCallback);
-            this._callGet({ sortOrder: sortOrder }, onGetFirstLevelItemsHandler, this.options.getTreeMethod);
+            this._callGet({ sortOrder: sortOrder, includeAllTypes: true }, onGetFirstLevelItemsHandler, this.options.getTreeMethod);
         },
 
         sortTree: function (sortOrder, rootNode, searchText, onSortTreeCallback) {
