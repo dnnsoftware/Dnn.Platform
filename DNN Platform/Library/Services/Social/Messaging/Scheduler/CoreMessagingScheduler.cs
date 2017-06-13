@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>True if the user can receive email, otherwise false</returns>
         private static bool IsUserAbleToReceiveAnEmail(UserInfo recipientUser)
         {
-            return recipientUser != null && !recipientUser.IsDeleted;
+            return recipientUser != null && !recipientUser.IsDeleted && recipientUser.Membership.Approved;
         }
 
         /// <summary>Gets the sender address.</summary>

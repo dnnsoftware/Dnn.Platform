@@ -1800,7 +1800,7 @@ namespace DotNetNuke.Security.Membership
                     else
                     {
                         var ps = new PortalSecurity();
-                        if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
+                        if (verificationCode == ps.Encrypt(Config.GetDecryptionkey(), portalId + "-" + user.UserID))
                         {
                             UserController.ApproveUser(user);
                         }

@@ -190,6 +190,7 @@
     <Compile Include="Api\TraceWriter.cs" />
     <Compile Include="Api\UrlHelperExtensions.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Common\DotNetNukeShutdownOverload.cs" />
     <Compile Include="Common\DynamicSharedConstants.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
     <Compile Include="Api\WebApiException.cs" />

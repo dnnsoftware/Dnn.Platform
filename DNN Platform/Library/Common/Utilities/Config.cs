@@ -246,7 +246,8 @@ namespace DotNetNuke.Common.Utilities
         public static string GetFcnMode()
         {
             var section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
-            return section?.FcnMode.ToString() ?? FcnMode.NotSet.ToString();
+            var mode = section?.FcnMode;
+            return ((ValueType) mode ?? FcnMode.NotSet).ToString();
         }
 
         /// -----------------------------------------------------------------------------

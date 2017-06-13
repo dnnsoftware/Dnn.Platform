@@ -305,7 +305,7 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
                     var ps = new PortalSecurity();
-                    var code = ps.EncryptString(PortalID + "-" + UserID, Config.GetDecryptionkey());
+                    var code = ps.Encrypt(Config.GetDecryptionkey(), PortalID + "-" + UserID);
                     return code.Replace("+", ".").Replace("/", "-").Replace("=", "_");
                 case "affiliateid":
                     if (internScope < Scope.SystemMessages)
