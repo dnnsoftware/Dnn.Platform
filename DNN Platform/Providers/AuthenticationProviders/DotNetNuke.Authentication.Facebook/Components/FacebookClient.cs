@@ -24,7 +24,8 @@
 #region Usings
 
 using System;
-
+using System.Collections.Generic;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
@@ -42,7 +43,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
             TokenEndpoint = new Uri("https://graph.facebook.com/oauth/access_token");
             TokenMethod = HttpMethod.GET;
             AuthorizationEndpoint = new Uri("https://graph.facebook.com/oauth/authorize");
-            MeGraphEndpoint = new Uri("https://graph.facebook.com/me?fields=id,name,first_name,last_name,link,birthday,gender,locale,timezone,updated_time");
+            MeGraphEndpoint = new Uri("https://graph.facebook.com/me?fields=id,name,email,first_name,last_name,link,birthday,gender,locale,timezone,updated_time");
 
             Scope = "email";
 
@@ -58,15 +59,10 @@ namespace DotNetNuke.Authentication.Facebook.Components
         protected override TimeSpan GetExpiry(string responseText)
         {
             TimeSpan expiry = TimeSpan.MinValue;
-            if (!String.IsNullOrEmpty(responseText))
+            if (!string.IsNullOrEmpty(responseText))
             {
-                foreach (string token in responseText.Split('&'))
-                {
-                    if (token.StartsWith("expires"))
-                    {
-                        expiry = new TimeSpan(0, 0, Convert.ToInt32(token.Replace("expires=", "")));
-                    }
-                }
+                var dictionary = Json.Deserialize<IDictionary<string, object>>(responseText);
+                expiry = new TimeSpan(0, 0, Convert.ToInt32(dictionary["expires_in"]));
             }
             return expiry;
         }
@@ -74,15 +70,10 @@ namespace DotNetNuke.Authentication.Facebook.Components
         protected override string GetToken(string responseText)
         {
             string authToken = String.Empty;
-            if (!String.IsNullOrEmpty(responseText))
+            if (!string.IsNullOrEmpty(responseText))
             {
-                foreach (string token in responseText.Split('&'))
-                {
-                    if (token.StartsWith("access_token"))
-                    {
-                        authToken = token.Replace("access_token=", "");
-                    }
-                }
+                var dictionary = Json.Deserialize<IDictionary<string, object>>(responseText);
+                authToken = Convert.ToString(dictionary["access_token"]);
             }
             return authToken;
         }
