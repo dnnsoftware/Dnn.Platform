@@ -274,17 +274,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     return false;
                 }
                 _moduleController.RestoreModule(module);
-
-                TrackRestoreModuleAction(module);
             }
             return true;
-        }
-
-        private void TrackRestoreModuleAction(ModuleInfo module)
-        {
-            var currentUser = UserController.Instance.GetCurrentUserInfo();
-            var currentModuleVersion = TabVersionBuilder.Instance.GetModuleContentLatestVersion(module);
-            TabChangeTracker.Instance.TrackModuleAddition(module, currentModuleVersion, currentUser.UserID);
         }
 
         public List<TabInfo> GetDeletedTabs()
