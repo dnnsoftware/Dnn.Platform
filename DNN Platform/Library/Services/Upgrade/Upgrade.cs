@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Upgrade
         #region Private Shared Field
 
         private static DateTime _startTime;
-        private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked{0}";
+        private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
         private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
 
         #endregion
@@ -5910,8 +5910,8 @@ namespace DotNetNuke.Services.Upgrade
 
         internal static void CheckFipsCompilanceAssemblies()
         {
-            var settingKey = string.Format(FipsCompilanceAssembliesCheckedKey, Globals.FormatVersion(DotNetNukeContext.Current.Application.Version));
-            if (CryptoConfig.AllowOnlyFipsAlgorithms && !HostController.Instance.GetBoolean(settingKey, false))
+            var currentVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version);
+            if (CryptoConfig.AllowOnlyFipsAlgorithms && HostController.Instance.GetString(FipsCompilanceAssembliesCheckedKey) != currentVersion)
             {
                 var assemblyFolder = Path.Combine(Globals.ApplicationMapPath, FipsCompilanceAssembliesFolder);
                 var assemblyFiles = Directory.GetFiles(assemblyFolder, "*.dll", SearchOption.TopDirectoryOnly);
@@ -5920,7 +5920,7 @@ namespace DotNetNuke.Services.Upgrade
                     FixFipsCompilanceAssembly(assemblyFile);
                 }
 
-                HostController.Instance.Update(settingKey, "Y");
+                HostController.Instance.Update(FipsCompilanceAssembliesCheckedKey, currentVersion);
 
                 if (HttpContext.Current != null)
                 {
