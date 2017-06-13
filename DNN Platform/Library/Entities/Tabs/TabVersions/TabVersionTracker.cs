@@ -137,8 +137,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                var targetVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID) ??
-                                    TabVersionBuilder.Instance.GetCurrentVersion(module.TabID);
+                var targetVersion = module.IsDeleted ? GetOrCreateUnPublishedTabVersion(module.PortalID, module.TabID, userId)
+                                        : (TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID) ??TabVersionBuilder.Instance.GetCurrentVersion(module.TabID));
                 if (targetVersion == null)
                 {
                     return;
