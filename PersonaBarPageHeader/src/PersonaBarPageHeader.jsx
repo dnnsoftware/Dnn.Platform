@@ -1,11 +1,42 @@
-import React, {PropTypes} from "react";
+import React, { PropTypes } from "react";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import "./style.less";
 
-const PersonaBarPageHeader = ({title, children, tooltip, titleMaxWidth}) => (
+const hotspotStyles = {
+    position: "absolute",
+    zIndex: 10000,
+    top: "50px",
+    left: 0,
+    wordWrap: "break-word",
+    textOverflow: "wrap",
+    height: "20px",
+    width: "200px"
+};
+
+const tooltipStyles = {
+    style: {
+        position: "absolute",
+        zIndex: 10000,
+        top: 0,
+        left: 0,
+        wordWrap: "break-word",
+        textOverflow: "ellipsis",
+        maxWidth: "255px",
+        pointerEvents: "auto",
+        marginTop: "0px"
+    },
+    arrowStyle: {
+    }
+};
+
+
+const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth }) => (
     <div className="dnn-persona-bar-page-header">
-        <h3 title={tooltip}><TextOverflowWrapper text={title} maxWidth={titleMaxWidth}/></h3>
-        {children}
+        <h3>{title}</h3>
+        {title.length > 20 ? <TextOverflowWrapper text={title} hotspotStyles={hotspotStyles} tooltipStyles={tooltipStyles} /> : null}
+        <div style={{ marginTop: "-50px" }}>
+            {children}
+        </div>
     </div>
 );
 
