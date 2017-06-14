@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
+import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new";
 import "./style.less";
 
 const hotspotStyles = {
@@ -33,7 +33,7 @@ const tooltipStyles = {
 const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth }) => (
     <div className="dnn-persona-bar-page-header">
         <h3>{title}</h3>
-        {title.length > 20 ? <TextOverflowWrapper text={title} hotspotStyles={hotspotStyles} tooltipStyles={tooltipStyles} /> : null}
+        {title.length > 20 ? <TextOverflowWrapperNew text={title} hotspotStyles={hotspotStyles} tooltipStyles={tooltipStyles} /> : null}
         <div style={{ marginTop: "-50px" }}>
             {children}
         </div>
