@@ -1336,6 +1336,186 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        /// GET: api/SiteSettings/GetListInfo
+        /// <summary>
+        /// Gets list info
+        /// </summary>
+        /// <param name="listName"></param>
+        /// <param name="portalId"></param>
+        /// <returns>list entries</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage GetListInfo(string listName, int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && PortalId != pid)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var listController = new ListController();
+                var entries = listController.GetListEntryInfoItems(listName, "", pid);
+                var response = new
+                {
+                    Success = true,
+                    listController.GetListInfo(listName, "", pid)?.EnableSortOrder,
+                    Entries = entries.Select(t => new
+                    {
+                        t.EntryID,
+                        t.Text,
+                        t.Value,
+                        t.SortOrder
+                    })
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateListEntry
+        /// <summary>
+        /// Adds/Updates list entry
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage UpdateListEntry(UpdateListEntryRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && pid != PortalId)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var listController = new ListController();
+                var entry = new ListEntryInfo
+                {
+                    DefinitionID = Null.NullInteger,
+                    PortalID = pid,
+                    ListName = request.ListName,
+                    Value = request.Value,
+                    Text = request.Text,
+                    SortOrder = request.EnableSortOrder ? 1 : 0
+                };
+
+                if (request.EntryId.HasValue)
+                {
+                    entry.EntryID = request.EntryId.Value;
+                    listController.UpdateListEntry(entry);
+                }
+                else
+                {
+                    listController.AddListEntry(entry);
+                }
+                
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/DeleteListEntry
+        /// <summary>
+        /// Deletes list entry
+        /// </summary>
+        /// <param name="entryId"></param>
+        /// <param name="portalId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage DeleteListEntry([FromUri]int entryId, [FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && pid != PortalId)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var listController = new ListController();
+                listController.DeleteListEntryByID(entryId, true);
+                
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateListEntryOrders
+        /// <summary>
+        /// Updates list entry sort order
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage UpdateListEntryOrders(UpdateListEntryOrdersRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && PortalId != pid)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var listController = new ListController();
+                for (var i = 0; i <= request.Entries.Length - 1; i++)
+                {
+                    if (request.Entries[i].EntryId.HasValue)
+                    {
+                        var entry = listController.GetListEntryInfo(request.Entries[i].EntryId.Value);
+                        if (entry.SortOrder == i + 1) continue;
+                        if (entry.SortOrder > i + 1)
+                        {
+                            var j = entry.SortOrder - i - 1;
+                            while (j > 0)
+                            {
+                                listController.UpdateListSortOrder(entry.EntryID, true);
+                                j--;
+                            }
+                        }
+                        else
+                        {
+                            var j = i + 1 - entry.SortOrder;
+                            while (j > 0)
+                            {
+                                listController.UpdateListSortOrder(entry.EntryID, false);
+                                j--;
+                            }
+                        }
+                    }
+                }
+
+                DataCache.ClearListsCache(pid);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         #endregion
 
         #region Search Settings API
@@ -3116,6 +3296,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 return null;
             }
+        }
+
+        private void ClearEntriesCache(string listName, int portalId)
+        {
+            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            DataCache.RemoveCache(cacheKey);
         }
 
         #endregion

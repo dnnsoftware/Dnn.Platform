@@ -9,6 +9,7 @@ import Switch from "dnn-switch";
 import DropdownWithError from "dnn-dropdown-with-error";
 import MultiLineInput from "dnn-multi-line-input";
 import InputGroup from "dnn-input-group";
+import ListEntries from "./listEntries";
 import Dropdown from "dnn-dropdown";
 import {
     siteBehavior as SiteBehaviorActions
@@ -41,17 +42,18 @@ class ProfilePropertyEditor extends Component {
                 length: false
             },
             triedToSubmit: false,
-            showFirstPage: true
+            showFirstPage: true,
+            showListPage: false
         };
     }
 
     componentWillMount() {
-        const {props} = this;
+        const { props } = this;
         props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId, props.portalId));
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
+        let { state } = this;
 
         if (!props.profileProperty) {
             return;
@@ -101,7 +103,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     isValidLength(val) {
-        let {props} = this;
+        let { props } = this;
         if (props.profileProperty) {
             if (props.profileProperty["DataType"] !== "" && props.profileProperty["DataType"] !== undefined) {
                 if (props.profileProperty["DataType"] === 349) {
@@ -121,7 +123,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     onSettingChange(key, event) {
-        let {state, props} = this;
+        let { state, props } = this;
         let profileProperty = Object.assign({}, state.profileProperty);
 
         if (profileProperty[key] === "" && key === "PropertyName") {
@@ -167,7 +169,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     onLanguageChange(event) {
-        let {state, props} = this;
+        let { state, props } = this;
         let propertyLocalization = Object.assign({}, state.propertyLocalization);
 
         propertyLocalization["Language"] = event.value;
@@ -181,7 +183,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     onLocaleSettingChange(key, event) {
-        let {state, props} = this;
+        let { state, props } = this;
         let propertyLocalization = Object.assign({}, state.propertyLocalization);
 
         if (propertyLocalization[key] === "" && key === "PropertyName") {
@@ -242,7 +244,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     getDefaultVisibility() {
-        const {props, state} = this;
+        const { props, state } = this;
         if (!state.profileProperty) {
             if (props.id === "add") {
                 return 2;
@@ -254,7 +256,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     onNext() {
-        const {props, state} = this;
+        const { props, state } = this;
         this.setState({
             triedToSubmit: true
         });
@@ -272,7 +274,8 @@ class ProfilePropertyEditor extends Component {
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
                     props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
-                        showFirstPage: false
+                        showFirstPage: false,
+                        showListPage: state.profileProperty.DataType === 358 ? true : false
                     });
                 }, () => {
                     util.utilities.notifyError(resx.get("SettingsError"));
@@ -284,7 +287,8 @@ class ProfilePropertyEditor extends Component {
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
                     props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
-                        showFirstPage: false
+                        showFirstPage: false,
+                        showListPage: state.profileProperty.DataType === 358 ? true : false
                     });
                 }, () => {
                     util.utilities.notifyError(resx.get("SettingsError"));
@@ -296,14 +300,27 @@ class ProfilePropertyEditor extends Component {
                 state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode, (data) => {
                     this.setState({
                         propertyLocalization: data.PropertyLocalization,
-                        showFirstPage: false
+                        showFirstPage: false,
+                        showListPage: state.profileProperty.DataType === 358 ? true : false
                     });
                 }));
         }
     }
 
+    onListNext() {
+        const { props, state } = this;
+        props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId,
+            state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode, (data) => {
+                this.setState({
+                    propertyLocalization: data.PropertyLocalization,
+                    showFirstPage: false,
+                    showListPage: false
+                });
+            }));
+    }
+
     onSave() {
-        const {props, state} = this;
+        const { props, state } = this;
         this.setState({
             triedToSubmit: true
         });
@@ -332,7 +349,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     onCancel() {
-        const {props} = this;
+        const { props } = this;
         if (props.profilePropertyClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
                 props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
@@ -592,8 +609,28 @@ class ProfilePropertyEditor extends Component {
                             </Button>
                         </div>
                     </div>
+                    {this.state.showListPage &&
+                        <div className="property-editor-page">
+                            <div className="topMessage">{resx.get("ListEntries.Help")}</div>
+                            <ListEntries
+                                portalId={this.props.portalId}
+                                listName={this.props.profileProperty.PropertyName}
+                            />
+                            <div className="editor-buttons-box">
+                                <Button
+                                    type="secondary"
+                                    onClick={this.onCancel.bind(this)}>
+                                    {resx.get("Cancel")}
+                                </Button>
+                                <Button                                    
+                                    type="primary"
+                                    onClick={this.onListNext.bind(this)}>
+                                    {resx.get("Next")}
+                                </Button>
+                            </div>
+                        </div>}
                     {this.state.propertyLocalization &&
-                        <div className={this.state.showFirstPage ? "property-editor-page-hidden" : "property-editor-page"}>
+                        <div className={this.state.showFirstPage || this.state.showListPage ? "property-editor-page-hidden" : "property-editor-page"}>
                             <div className="topMessage">{resx.get("Localization.Help")}</div>
                             <InputGroup>
                                 <Label
