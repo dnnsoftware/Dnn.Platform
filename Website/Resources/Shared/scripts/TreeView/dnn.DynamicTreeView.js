@@ -728,7 +728,7 @@
 
         getChildren: function (parentId, sortOrder, searchText, onGetChildrenCallback) {
             var onGetChildrenHandler = $.proxy(this._onGetChildren, this, onGetChildrenCallback);
-            this._callGet({ parentId: parentId, sortOrder: sortOrder, searchText: searchText }, onGetChildrenHandler, this.options.getNodeDescendantsMethod);
+            this._callGet({ parentId: parentId, sortOrder: sortOrder, searchText: searchText, includeAllTypes: true }, onGetChildrenHandler, this.options.getNodeDescendantsMethod);
         },
 
         _onGetChildren: function(onGetChildrenCallback, data, textStatus, jqXhr) {
@@ -738,7 +738,7 @@
 
         search: function(searchText, sortOrder, onSearchCallback) {
             var onSearchHandler = $.proxy(this._onGetTree, this, onSearchCallback);
-            this._callGet({ searchText: searchText, sortOrder: sortOrder }, onSearchHandler, this.options.searchTreeMethod);
+            this._callGet({ searchText: searchText, sortOrder: sortOrder, includeAllTypes: true }, onSearchHandler, this.options.searchTreeMethod);
         },
 
         getTree: function (sortOrder, onGetFirstLevelItemsCallback) {
