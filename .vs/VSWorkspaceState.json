@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\Modules",
+    "\\src\\Modules\\Prompt",
+    "\\src\\Modules\\Prompt\\Dnn.PersonaBar.Prompt"
+  ],
+  "SelectedNode": "\\src\\Dnn.PersonaBar.Extensions.sln",
+  "PreviewInSolutionExplorer": false
+}
