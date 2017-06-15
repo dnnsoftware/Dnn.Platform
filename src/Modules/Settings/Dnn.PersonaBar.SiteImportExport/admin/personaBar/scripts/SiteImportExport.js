@@ -20,6 +20,10 @@
             utility = util;
 
             window.dnn.initSiteImportExport = function initializeSiteImportExport() {
+                if (typeof callback === 'function') {
+                    callback();
+                }
+
                 return {
                     utility: utility,
                     settings: params.settings,
@@ -27,10 +31,6 @@
                 };
             };
             loadScript();
-
-            if (typeof callback === 'function') {
-                callback();
-            }
         };
 
         var load = function (params, callback) {
