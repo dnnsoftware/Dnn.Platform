@@ -53,10 +53,11 @@ using DotNetNuke.Web.Api.Internal;
 using ContentDisposition = System.Net.Mime.ContentDisposition;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using System.Web;
+using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Web.InternalServices
 {
-    [DnnAuthorize]    
+    [DnnAuthorize]
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
@@ -79,7 +80,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage LoadFiles(FolderItemDTO folderItem)
         {
             int effectivePortalId = PortalSettings.PortalId;
-            
+
 
             if (folderItem.FolderId <= 0)
             {
@@ -137,7 +138,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (!request.Content.IsMimeMultipartContent())
             {
-                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType); 
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
             var provider = new MultipartMemoryStreamProvider();
@@ -199,15 +200,15 @@ namespace DotNetNuke.Web.InternalServices
                         if (!string.IsNullOrEmpty(fileName) && stream != null)
                         {
                             // Everything ready
-                            
+
                             // The SynchronizationContext keeps the main thread context. Send method is synchronous
                             currentSynchronizationContext.Send(
                                 delegate
                                     {
                                         returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
-                                    },null
+                                    }, null
                                 );
-                            
+
                         }
 
                         /* Response Content Type cannot be application/json 
@@ -227,11 +228,11 @@ namespace DotNetNuke.Web.InternalServices
                                     Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
                                 }, mediaTypeFormatter, "text/plain");
                         }
-                        
+
                         return Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
                     });
 
-            return task; 
+            return task;
         }
 
         private static SavedFileDTO SaveFile(
@@ -257,7 +258,7 @@ namespace DotNetNuke.Web.InternalServices
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
                     return savedFileDto;
                 }
-            
+
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
@@ -273,7 +274,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE")) 
+                if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
                     && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
                 {
                     errorMessage = GetLocalizedString("NoPermission");
@@ -288,8 +289,8 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
-	            var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-				var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
+                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
 
                 if (extract && extension.ToLower() == "zip")
                 {
@@ -342,7 +343,7 @@ namespace DotNetNuke.Web.InternalServices
             return null;
         }
 
-        private static readonly List<string> ImageExtensions = new List<string> { "JPG", "JPE", "BMP", "GIF", "PNG", "JPEG", "ICO" }; 
+        private static readonly List<string> ImageExtensions = new List<string> { "JPG", "JPE", "BMP", "GIF", "PNG", "JPEG", "ICO" };
 
         private static bool IsImageExtension(string extension)
         {
@@ -363,6 +364,7 @@ namespace DotNetNuke.Web.InternalServices
             public bool Unzip { get; set; }
             public string Filter { get; set; }
             public bool IsHostMenu { get; set; }
+            public int PortalId { get; set; }
         }
 
         [DataContract]
@@ -512,7 +514,7 @@ namespace DotNetNuke.Web.InternalServices
                 return result;
             }
             catch (InvalidFileExtensionException)
-            { 
+            {
                 result.Message = GetLocalizedString("ExtensionNotAllowed");
                 return result;
             }
@@ -542,17 +544,32 @@ namespace DotNetNuke.Web.InternalServices
         [AllowAnonymous]
         public Task<HttpResponseMessage> UploadFromLocal()
         {
+            return UploadFromLocal(PortalSettings.PortalId);
+        }
+
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public Task<HttpResponseMessage> UploadFromLocal(int portalId)
+        {
             var request = Request;
             FileUploadDto result = null;
             if (!request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
+            if (portalId > -1)
+            {
+                if (!IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
+            else
+            {
+                portalId = GetActivePortalId();
+            }
 
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
-            var portalId = PortalSettings.PortalId;
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
@@ -604,10 +621,10 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
-                                if (Globals.FileEscapingRegex.Match(fileName).Success==false )
-                                    {
-                                        stream = item.ReadAsStreamAsync().Result;
-                                    }
+                                if (Globals.FileEscapingRegex.Match(fileName).Success == false)
+                                {
+                                    stream = item.ReadAsStreamAsync().Result;
+                                }
                                 break;
                         }
                     }
@@ -657,7 +674,6 @@ namespace DotNetNuke.Web.InternalServices
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-
             try
             {
                 var request = (HttpWebRequest)WebRequest.Create(dto.Url);
@@ -669,15 +685,23 @@ namespace DotNetNuke.Web.InternalServices
                     throw new Exception("No server response");
                 }
 
-	            var fileName = GetFileName(response);
-	            if (string.IsNullOrEmpty(fileName))
-	            {
-		            fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
-	            }
+                var fileName = GetFileName(response);
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
+                }
 
-                var portalId = PortalSettings.PortalId;
+                var portalId = dto.PortalId;
+                if (portalId > -1)
+                {
+                    if (!IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                }
+                else
+                {
+                    portalId = GetActivePortalId();
+                }
 
-	            result = UploadFile(responseStream, portalId, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
+                result = UploadFile(responseStream, portalId, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
                 /* Response Content Type cannot be application/json 
@@ -715,16 +739,16 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-		private string GetFileName(WebResponse response)
-		{
-			if (!response.Headers.AllKeys.Contains("Content-Disposition"))
-			{
-				return string.Empty;
-			}
+        private string GetFileName(WebResponse response)
+        {
+            if (!response.Headers.AllKeys.Contains("Content-Disposition"))
+            {
+                return string.Empty;
+            }
 
-			var contentDisposition = response.Headers["Content-Disposition"];
-			return new ContentDisposition(contentDisposition).FileName;
-		}
+            var contentDisposition = response.Headers["Content-Disposition"];
+            return new ContentDisposition(contentDisposition).FileName;
+        }
 
         private bool VerifySafeUrl(string url)
         {
@@ -759,6 +783,38 @@ namespace DotNetNuke.Web.InternalServices
                 return true;
             }
             return false;
+        }
+
+        private static IEnumerable<PortalInfo> GetMyPortalGroup()
+        {
+            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
+            var mygroup = (from @group in groups
+                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                               into portals
+                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                           select portals.ToArray()).FirstOrDefault();
+            return mygroup;
+        }
+
+        private bool IsPortalIdValid(int portalId)
+        {
+            if (UserInfo.IsSuperUser) return true;
+            if (PortalSettings.PortalId == portalId) return true;
+
+            var isAdminUser = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+            if (!isAdminUser) return false;
+
+            var mygroup = GetMyPortalGroup();
+            return (mygroup != null && mygroup.Any(p => p.PortalID == portalId));
+        }
+
+        private int GetActivePortalId()
+        {
+            var portalId = -1;
+            if (!TabController.CurrentPage.IsSuperTab)
+                portalId = PortalSettings.PortalId;
+
+            return portalId;
         }
     }
 
