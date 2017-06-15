@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{29521C64-3269-40DA-9B4C-CD492246C889}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dnn.PersonaBar.Prompt</RootNamespace>
+    <AssemblyName>Dnn.PersonaBar.Prompt</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.PersonaBar.Prompt.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.PersonaBar.Prompt.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.PersonaBar.Prompt.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="Dnn.PersonaBar.Library">
+      <HintPath>..\..\..\bin\Dnn.PersonaBar.Library.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Attributes\ConsoleCommandAttribute.cs" />
+    <Compile Include="Commands\Application\RestartApplication.cs" />
+    <Compile Include="Commands\Client\ClearHistory.cs" />
+    <Compile Include="Commands\Client\Cls.cs" />
+    <Compile Include="Commands\Client\Exit.cs" />
+    <Compile Include="Commands\Client\Reload.cs" />
+    <Compile Include="Commands\Commands\ListCommands.cs" />
+    <Compile Include="Commands\Extensions\NewExtension.cs" />
+    <Compile Include="Commands\Host\ClearCache.cs" />
+    <Compile Include="Commands\Host\GetHost.cs" />
+    <Compile Include="Commands\Module\CopyModule.cs" />
+    <Compile Include="Commands\Module\DeleteModule.cs" />
+    <Compile Include="Commands\Module\GetModule.cs" />
+    <Compile Include="Commands\Module\ListModules.cs" />
+    <Compile Include="Commands\Module\MoveModule.cs" />
+    <Compile Include="Commands\Module\PurgeModule.cs" />
+    <Compile Include="Commands\Module\RestoreModule.cs" />
+    <Compile Include="Commands\Module\AddModule.cs" />
+    <Compile Include="Commands\Page\GetPage.cs" />
+    <Compile Include="Commands\Page\GotoPage.cs" />
+    <Compile Include="Commands\Page\ListPages.cs" />
+    <Compile Include="Commands\Page\NewPage.cs" />
+    <Compile Include="Commands\Page\PurgePage.cs" />
+    <Compile Include="Commands\Page\RestorePage.cs" />
+    <Compile Include="Commands\Page\SetPage.cs" />
+    <Compile Include="Commands\Page\DeletePage.cs" />
+    <Compile Include="Commands\Portal\ClearLog.cs" />
+    <Compile Include="Commands\Portal\GetSite.cs" />
+    <Compile Include="Commands\Portal\GetPortal.cs" />
+    <Compile Include="Commands\Portal\ListSites.cs" />
+    <Compile Include="Commands\Portal\ListPortals.cs" />
+    <Compile Include="Commands\Roles\GetRole.cs" />
+    <Compile Include="Commands\Roles\ListRoles.cs" />
+    <Compile Include="Commands\Roles\NewRole.cs" />
+    <Compile Include="Commands\Roles\SetRole.cs" />
+    <Compile Include="Commands\Roles\DeleteRole.cs" />
+    <Compile Include="Commands\Scheduler\ListTask.cs" />
+    <Compile Include="Commands\Scheduler\SetTask.cs" />
+    <Compile Include="Commands\Scheduler\GetTask.cs" />
+    <Compile Include="Commands\User\DeleteUser.cs" />
+    <Compile Include="Commands\User\SetUser.cs" />
+    <Compile Include="Commands\User\GetUser.cs" />
+    <Compile Include="Commands\User\ListUsers.cs" />
+    <Compile Include="Commands\User\NewUser.cs" />
+    <Compile Include="Commands\User\PurgeUser.cs" />
+    <Compile Include="Commands\User\ResetPassword.cs" />
+    <Compile Include="Commands\User\RestoreUser.cs" />
+    <Compile Include="Commands\User\AddRoles.cs" />
+    <Compile Include="Commands\Utilities\Echo.cs" />
+    <Compile Include="Common\ConsoleCommandBase.cs" />
+    <Compile Include="Common\ControllerBase.cs" />
+    <Compile Include="Common\Command.cs" />
+    <Compile Include="Common\EmailValidator.cs" />
+    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Interfaces\IConsoleCommand.cs" />
+    <Compile Include="Models\CommandInputModel.cs" />
+    <Compile Include="Models\ConsoleErrorResultModel.cs" />
+    <Compile Include="Models\ConsoleResultModel.cs" />
+    <Compile Include="Models\HostModel.cs" />
+    <Compile Include="Models\ModuleInfoModel.cs" />
+    <Compile Include="Models\ModuleInstanceModel.cs" />
+    <Compile Include="Models\PageModel.cs" />
+    <Compile Include="Models\PageModelBase.cs" />
+    <Compile Include="Models\PortalModel.cs" />
+    <Compile Include="Models\PortalModelBase.cs" />
+    <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\RoleModel.cs" />
+    <Compile Include="Models\RoleModelBase.cs" />
+    <Compile Include="Models\TaskModel.cs" />
+    <Compile Include="Models\TaskModelBase.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserModelBase.cs" />
+    <Compile Include="Models\UserRoleModel.cs" />
+    <Compile Include="Repositories\CommandRepository.cs" />
+    <Compile Include="Services\CommandController.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="VersionInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\css\Prompt.css" />
+    <Content Include="admin\personaBar\help\add-roles.html" />
+    <Content Include="admin\personaBar\help\clear-log.html" />
+    <Content Include="admin\personaBar\help\clear-cache.html" />
+    <Content Include="admin\personaBar\help\clear-history.html" />
+    <Content Include="admin\personaBar\help\clear-screen.html" />
+    <Content Include="admin\personaBar\help\clh.html" />
+    <Content Include="admin\personaBar\help\cls.html" />
+    <Content Include="admin\personaBar\help\config.html" />
+    <Content Include="admin\personaBar\help\copy-module.html" />
+    <Content Include="admin\personaBar\help\delete-module.html" />
+    <Content Include="admin\personaBar\help\delete-page.html" />
+    <Content Include="admin\personaBar\help\delete-role.html" />
+    <Content Include="admin\personaBar\help\delete-user.html" />
+    <Content Include="admin\personaBar\help\exit.html" />
+    <Content Include="admin\personaBar\help\get-host.html" />
+    <Content Include="admin\personaBar\help\get-module.html" />
+    <Content Include="admin\personaBar\help\get-page.html" />
+    <Content Include="admin\personaBar\help\get-portal.html" />
+    <Content Include="admin\personaBar\help\get-role.html" />
+    <Content Include="admin\personaBar\help\get-task.html" />
+    <Content Include="admin\personaBar\help\set-user.html" />
+    <Content Include="admin\personaBar\help\get-user.html" />
+    <Content Include="admin\personaBar\help\goto.html" />
+    <Content Include="admin\personaBar\help\index.html" />
+    <Content Include="admin\personaBar\help\learn.html" />
+    <Content Include="admin\personaBar\help\list-modules.html" />
+    <Content Include="admin\personaBar\help\list-pages.html" />
+    <Content Include="admin\personaBar\help\list-roles.html" />
+    <Content Include="admin\personaBar\help\list-tasks.html" />
+    <Content Include="admin\personaBar\help\list-users.html" />
+    <Content Include="admin\personaBar\help\move-module.html" />
+    <Content Include="admin\personaBar\help\new-extension.html" />
+    <Content Include="admin\personaBar\help\new-page.html" />
+    <Content Include="admin\personaBar\help\new-role.html" />
+    <Content Include="admin\personaBar\help\new-user.html" />
+    <Content Include="admin\personaBar\help\purge-module.html" />
+    <Content Include="admin\personaBar\help\purge-page.html" />
+    <Content Include="admin\personaBar\help\purge-user.html" />
+    <Content Include="admin\personaBar\help\reload.html" />
+    <Content Include="admin\personaBar\help\reset-password.html" />
+    <Content Include="admin\personaBar\help\restart-application.html" />
+    <Content Include="admin\personaBar\help\restore-module.html" />
+    <Content Include="admin\personaBar\help\restore-page.html" />
+    <Content Include="admin\personaBar\help\restore-user.html" />
+    <Content Include="admin\personaBar\help\set-mode.html" />
+    <Content Include="admin\personaBar\help\set-page.html" />
+    <Content Include="admin\personaBar\help\set-role.html" />
+    <Content Include="admin\personaBar\help\set-task.html" />
+    <Content Include="admin\personaBar\help\syntax.html" />
+    <Content Include="admin\personaBar\Prompt.html" />
+    <Content Include="admin\personaBar\scripts\bundles\prompt-bundle.js" />
+    <Content Include="admin\personaBar\scripts\Prompt.js" />
+    <Content Include="Dnn.PersonaBar.Prompt.dnn" />
+    <Content Include="Dnn.PersonaBar.Prompt.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License.txt" />
+    <Content Include="Module.build" />
+    <Content Include="ReleaseNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\scripts\bundles\prompt-bundle.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\App_LocalResources\Prompt.resx" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="Module.build" />
+</Project>
