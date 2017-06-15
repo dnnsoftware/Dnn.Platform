@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import ReactTooltip from "react-tooltip";
+
 import "./style.less";
-import ToolTip from "react-portal-tooltip";
 
 const generateID = () => "a" + Math.random().toString(36).substr(2, 10);
 class TextOverflowWrapperNew extends Component {
@@ -28,46 +29,38 @@ class TextOverflowWrapperNew extends Component {
     render() {
         const { props, state } = this;
 
-        const TooltipStyle = {
-            style: {
-                wordWrap: "break-word",
-                textOverflow: "ellipsis",
-                zIndex: 10000,
-                maxWidth: "255px",
-                padding: "7px 15px",
-                pointerEvents: "auto"
-            },
-            arrowStyle: {
-            }
-        };
-
         const hotspotStyles = {
-            wordWrap: "break-word",
-            textOverflow: "wrap",
-            marginTop: "150px",
+            marginLeft:"20px",
+            backgroundColor:"transparent",
+            position:"absolute",
+            top:0,
+            left:0,
             height: "20px",
-            width: "200px"
+            width: "200px",
+            zIndex: 10000
         };
 
         return (
             <div>
                 <div
-                    style={props.hotspotStyles || hotspotStyles}
-                    id={this.state.id}
-                    onMouseEnter={this.showTooltip.bind(this)}
-                    onMouseLeave={this.hideTooltip.bind(this)} >
-                    &nbsp;
+                    data-tip data-for={state.id}
+                    style={hotspotStyles}
+                    id={state.id} >
                 </div>
-                <ToolTip
-                    tooltipTimeout={10}
-                    active={this.state.isTooltipActive}
-                    position={props.position || "bottom"}
-                    parent={`#${this.state.id}`}
-                    style={props.tooltipStyles || TooltipStyle} >
+                <ReactTooltip
+                    id={state.id}
+                    type={props.type || "light"}
+                    place={props.place || "bottom"}
+                    effect={props.effect || "float"}
+                    offset={props.offset}
+                    multiline={props.multiline || true}
+                    className={props.className || "page-picker-tooltip-style"}
+                    border={props.bool || false}
+                    >
                     <div>
                         {props.text}
                     </div>
-                </ToolTip>
+                </ReactTooltip>
             </div>
         );
     }
@@ -75,9 +68,14 @@ class TextOverflowWrapperNew extends Component {
 
 TextOverflowWrapperNew.propTypes = {
     text: PropTypes.string,
-    position: PropTypes.string,
-    hotspotStyles: PropTypes.object,
-    tooltipStyles: PropTypes.object
+    hotspotStyles: PropTypes.hotspotStyles,
+    type: PropTypes.string.isRequired,
+    place: PropTypes.string.isRequired,
+    effect: PropTypes.string,
+    offset: PropTypes.offset,
+    multiline: PropTypes.bool,
+    className: PropTypes.string,
+    border: PropTypes.bool
 };
 
 export default TextOverflowWrapperNew;

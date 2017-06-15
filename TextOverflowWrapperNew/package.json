@@ -1,6 +1,6 @@
 {
   "name": "dnn-text-overflow-wrapper-new",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "DNN Text Overflow Wrapper New. Appends ellipsis and adds tooltip.",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,6 @@
   "dependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-portal-tooltip": "^0.14.2",
     "react-tooltip": "^3.3.0"
   }
 }
