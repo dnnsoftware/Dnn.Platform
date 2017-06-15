@@ -88,6 +88,11 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+        protected bool NeedAcceptTerms
+        {
+            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
+        }
+
         #endregion
 
         #region Private Properties
@@ -375,6 +380,8 @@ namespace DotNetNuke.Services.Install
             }
 
             base.OnLoad(e);
+
+            pnlAcceptTerms.Visible = NeedAcceptTerms;
             LocalizePage();
 
 			if (Request.RawUrl.EndsWith("?complete"))
@@ -385,6 +392,8 @@ namespace DotNetNuke.Services.Install
             //Create Status Files
             if (!Page.IsPostBack)
             {
+                //Reset the accept terms flag
+                HostController.Instance.Update("AcceptDnnTerms", "N");
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
             }
         }
@@ -436,6 +445,13 @@ namespace DotNetNuke.Services.Install
             {
                 IsAuthenticated = true;
             }
+
+            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != "Y"))
+            {
+                result = false;
+                errorMsg = LocalizeStringStatic("AcceptTerms.Required");
+            }
+
             return result;
         }
 

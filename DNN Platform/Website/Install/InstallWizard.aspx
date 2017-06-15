@@ -110,7 +110,7 @@
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblEmail" runat="server" ControlName="txtEmail" ResourceKey="Email" CssClass="dnnFormRequired"/>
                             <asp:TextBox ID="txtEmail" runat="server"/>
-                            <asp:RequiredFieldValidator ID="valEmal" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Email.Required" Display="Dynamic" ControlToValidate="txtEmail" />
+                            <asp:RequiredFieldValidator ID="valEmail" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Email.Required" Display="Dynamic" ControlToValidate="txtEmail" />
                             <asp:RegularExpressionValidator ID="valEmailValid" runat="server" cssclass="dnnFormMessage dnnFormError dnnRequired" display="Dynamic" resourcekey="Email.Invalid" ControlToValidate="txtEmail" />
                         </div>
                     </div>
@@ -231,8 +231,17 @@
                     </div>
                 </div>
                 <hr/>
-                <ul class="dnnActions dnnClear">
-                    <li><asp:LinkButton id="continueLink" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdContinue" /></li>
+                <ul class="dnnForm dnnActions dnnClear">
+                    <li>
+                        <asp:LinkButton id="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="cmdContinue" />
+                    </li>
+                    <li id="pnlAcceptTerms" runat="server" class="accept-terms">
+                        <asp:CheckBox ID="chkAcceptTerms" runat="server" />
+                        <asp:Label runat="server" ResourceKey="AcceptTerms" />
+                        <asp:CustomValidator runat="server" ID="valAcceptTerms" EnableClientScript="true"
+                            CssClass="dnnFormMessage dnnFormError dnnRequired" resourcekey="AcceptTerms.Required" Display="Dynamic"
+                            ClientValidationFunction="validateAcceptTerms" />
+                    </li>
                 </ul>
             </div>
             <div class="installInstallation dnnClear" id="installInstallation">
@@ -288,6 +297,9 @@
 
     <!-- InstallWizard() -->
     <script type="text/javascript">
+        function validateAcceptTerms(sender, args) {
+            args.IsValid = $('input[id$="chkAcceptTerms"]').is(':checked');
+        }
         var installWizard = new InstallWizard();
         function InstallWizard() {
             this.installInfo = { };
@@ -305,7 +317,9 @@
                     $("#continueLink").addClass('dnnDisabledAction');
                 } else {
                     $('#<%= lblAdminInfoError.ClientID %>').text('');
-                    $("#continueLink").removeClass('dnnDisabledAction');
+                    if (installWizard.validateInput()) {
+                        $("#continueLink").removeClass('dnnDisabledAction');
+                    }
                 }
                 return ($('#<%= txtPassword.ClientID %>')[0].value == $('#<%= txtConfirmPassword.ClientID %>')[0].value);
             };
@@ -320,7 +334,9 @@
                     PageMethods.ValidatePassword($('#<%= txtPassword.ClientID %>')[0].value, function(result) {
                         if (result) {
                             $('#<%= lblAdminInfoError.ClientID %>').text('');
-                            $("#continueLink").removeClass('dnnDisabledAction');
+                            if (installWizard.validateInput()) {
+                                $("#continueLink").removeClass('dnnDisabledAction');
+                            }
                         } else {
                             $('#<%= lblAdminInfoError.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("InputErrorInvalidPassword"))%>');
                             $("#continueLink").addClass('dnnDisabledAction');
@@ -329,12 +345,28 @@
                 }
             };
             this.validateInput = function () {
+                var validated = true;
                 $.each($(".dnnRequired"), function () {
                     var id = $(this).attr("id");
-                    if ($("#" + id.replace("val", "txt")).val().length < 1) {
-                        $(this).show();
+                    var $input = $("#" + id.replace("val", "txt"));
+                    if ($input.length) {
+                        if ($input.is(':visible') && $input.val().length < 1) {
+                            $(this).show();
+                            validated = false;
+                        }
+                    } else {
+                        var $check = $("#" + id.replace("val", "chk"));
+                        if ($check.length && !$check.is(':checked')) {
+                            if ($check.data('show-error')) {
+                                $(this).show();
+                            }
+                            validated = false;
+                        } else {
+                            $(this).hide();
+                        }
                     }
                 });
+                return validated;
             };
             this.disableValidators = function () {
                 if ((typeof (Page_Validators) != 'undefined') && (Page_Validators != null)) {
@@ -353,22 +385,22 @@
                 this.toggleDatabaseType(true);
                 this.toggleDatabaseSecurity(true);
                 this.checkingDatabase();
-	            this.checkingPermission();
+                this.checkingPermission();
                 $('#<%= lblDatabaseInfoMsg.ClientID %>').text('');
                 $("#databaseError").hide();
                 $('#StandardDatabaseMsg').hide();
                 $('#valQualifier').hide();
                 PageMethods.VerifyDatabaseConnectionOnLoad(function (result) {
-                	clearInterval(installWizard.loadingIntervalId);
+                    clearInterval(installWizard.loadingIntervalId);
                     $('#<%= lblDatabaseInfoMsg.ClientID %>').text('');
                     if (result) {
-                    	$('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
+                        $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                         $('#advancedDatabase').slideUp('fast');
                         $('#advancedDatabase').hide();
                         $('#StandardDatabaseMsg').hide();
                         installWizard.ValidDatabaseConnection = true;
                     } else {
-                    	$('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
+                        $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                         $('#StandardDatabaseMsg').show();
                         $('#advancedDatabase').slideDown();
                         $('#advancedDatabase').show();
@@ -377,25 +409,25 @@
                         $('#databaseSetupType input:radio:checked').trigger('click');
                     }
                 });
-            	PageMethods.ValidatePermissions(function (result) {
-            		clearInterval(installWizard.checkPermissionIntervalId);
-            		$(".permissionCheck").html('');
-	            	if (!result.Item1) {
-	            		$(".permissionCheck").html(result.Item2).removeClass("promptMessage").dialog({
-	            			dialogClass: "dnnFormPopup",
-	            			modal: true,
-	            			width: 950,
-	            			height: 550,
-	            			position: "center",
-	            			autoOpen: true,
-	            			resizable: false,
-	            			closeOnEscape: false,
-	            			draggable: false
-	            		});
-	            	} else {
-	            		$(".permissionCheck").parent().hide();
-	            	}
-	            });
+                PageMethods.ValidatePermissions(function (result) {
+                    clearInterval(installWizard.checkPermissionIntervalId);
+                    $(".permissionCheck").html('');
+                    if (!result.Item1) {
+                        $(".permissionCheck").html(result.Item2).removeClass("promptMessage").dialog({
+                            dialogClass: "dnnFormPopup",
+                            modal: true,
+                            width: 950,
+                            height: 550,
+                            position: "center",
+                            autoOpen: true,
+                            resizable: false,
+                            closeOnEscape: false,
+                            draggable: false
+                        });
+                    } else {
+                        $(".permissionCheck").parent().hide();
+                    }
+                });
             };
             this.toggleAdvancedDatabase = function(animation) {
                 var databaseType = $('#<%= databaseSetupType.ClientID %> input:checked').val(); /*standard, advanced*/
@@ -431,28 +463,28 @@
             this.checkingDatabase = function () {
                 clearInterval(installWizard.loadingIntervalId);
                 $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessageError");
-            	$('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessage");
+                $('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessage");
                 var i = 0;
                 $(".databaseCheck").html('<%= Localization.GetSafeJSString(LocalizeString("TestingDatabase"))%>');
-            	var origtext = $(".databaseCheck").html();
+                var origtext = $(".databaseCheck").html();
                 var text = origtext;
                 installWizard.loadingIntervalId = setInterval(function () {
-                	$(".databaseCheck").html(text + Array((++i % 6) + 1).join("."));
+                    $(".databaseCheck").html(text + Array((++i % 6) + 1).join("."));
                     if (i === 6) text = origtext;
                 }, 500);
             };
-        	this.checkingPermission = function () {
-        		clearInterval(installWizard.checkPermissionIntervalId);
-        		$('.permissionCheck').removeClass("promptMessageError").addClass("promptMessage").parent().show();
-	        	var i = 0;
-	        	$(".permissionCheck").html('<%= Localization.GetSafeJSString(LocalizeString("FileAndFolderPermissionCheckTitle.Text"))%>');
-        		var origtext = $(".permissionCheck").html();
+            this.checkingPermission = function () {
+                clearInterval(installWizard.checkPermissionIntervalId);
+                $('.permissionCheck').removeClass("promptMessageError").addClass("promptMessage").parent().show();
+                var i = 0;
+                $(".permissionCheck").html('<%= Localization.GetSafeJSString(LocalizeString("FileAndFolderPermissionCheckTitle.Text"))%>');
+                var origtext = $(".permissionCheck").html();
                 var text = origtext;
                 installWizard.checkPermissionIntervalId = setInterval(function () {
-                	$(".permissionCheck").html(text + Array((++i % 6) + 1).join("."));
-                	if (i === 6) text = origtext;
+                    $(".permissionCheck").html(text + Array((++i % 6) + 1).join("."));
+                    if (i === 6) text = origtext;
                 }, 500);
-	        };
+            };
             this.showInstallationTab = function () {
                 $("#tabs").tabs('enable', 1);
                 $("#tabs").tabs('option', 'active', 1);
@@ -510,9 +542,9 @@
                 //Call PageMethod which triggers long running operation
                 PageMethods.RunInstall(function () {
                 }, function (err) {
-					if (err._statusCode === 500 && !err._stackTrace) { //the error thrown by azure proxy, then need ignore.
-		                return;
-	                }
+                    if (err._statusCode === 500 && !err._stackTrace) { //the error thrown by azure proxy, then need ignore.
+                        return;
+                    }
 
                     $.stopProgressbarOnError();
                 });
@@ -557,7 +589,7 @@
         // Banner Rotator
         jQuery(document).ready(function ($) {
             if (installWizard.online) {
-            	installWizard.bannerTimer = setInterval(function () {
+                installWizard.bannerTimer = setInterval(function () {
                     if (installWizard.bannerIndex != -1) {
                         if (installWizard.bannerIndex == installWizard.bannerMaxIndex) {
                             installWizard.bannerIndex = 1;
@@ -655,9 +687,20 @@
             $('#<%= txtConfirmPassword.ClientID %>').focusout(function () {
                 installWizard.validatePassword();
             });
+
+            $('#<%=chkAcceptTerms.ClientID%>').click(function () {
+                $(this).data('show-error', true);
+                if (!installWizard.validateInput()) {
+                    $("#continueLink").addClass('dnnDisabledAction');
+                } else {
+                    $("#continueLink").removeClass('dnnDisabledAction');
+                }
+            });
             //Next Step
             $('#<%= continueLink.ClientID %>').click(function () {
-            	if (!$("#continueLink").hasClass('dnnDisabledAction')) {
+                var $acceptTerms = $('#<%= chkAcceptTerms.ClientID %>');
+                $acceptTerms.data('show-error', true);
+                if (!$("#continueLink").hasClass('dnnDisabledAction')) {
                     $("#continueLink").addClass('dnnDisabledAction');
                     if (installWizard.confirmPasswords()) {
                         installWizard.installInfo = {
@@ -679,7 +722,8 @@
                             databaseUsername: "",
                             databasePassword: "",
                             databaseRunAsOwner: null,
-                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N"
+                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N",
+                            acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
                         };
                         $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none');
                         var databaseType = $('#<%= databaseSetupType.ClientID %> input:checked').val();
@@ -693,7 +737,7 @@
                             installWizard.installInfo.databaseUsername = $('#<%= txtDatabaseUsername.ClientID %>')[0].value;
                             installWizard.installInfo.databasePassword = $('#<%= txtDatabasePassword.ClientID %>')[0].value;
                             installWizard.installInfo.databaseRunAsOwner = $('#<%= databaseRunAs.ClientID %>')[0].value;
-                       }
+                        }
 
                         PageMethods.ValidateInput(installWizard.installInfo, function(result) {
                             if (result.Item1) {
@@ -702,17 +746,17 @@
                                 $("#databaseError").hide();
 
                                 installWizard.checkingDatabase();
-                                PageMethods.VerifyDatabaseConnection(installWizard.installInfo, function (valid) {
-                                	clearInterval(installWizard.loadingIntervalId);
+                                PageMethods.VerifyDatabaseConnection(installWizard.installInfo, function(valid) {
+                                    clearInterval(installWizard.loadingIntervalId);
                                     $('#<%= lblDatabaseInfoMsg.ClientID %>').text('');
                                     if (valid.Item1) {
-                                    	$('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
+                                        $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                                         //Restart app to refresh config from web.config
-                                        window.location.replace(window.location + "?culture=" + $("#PageLocale")[0].value + "&initiateinstall");
+                                        window.location.replace(window.location + "?culture=" + $("#PageLocale")[0].value + "&acceptterms=true&initiateinstall");
                                     } else {
                                         $("#databaseError").show();
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
-                                    	$('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessageError");
+                                        $('#<%= lblDatabaseInfoMsg.ClientID %>').addClass("promptMessageError");
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').text('<%= Localization.GetSafeJSString(LocalizeString("DatabaseError"))%>');
                                         $('#<%= lblDatabaseError.ClientID %>').html(valid.Item2);
                                     }
@@ -726,6 +770,8 @@
                             }
                         });
                     }
+                } else {
+                    installWizard.validateInput();
                 }
                 return false;
             });
@@ -747,19 +793,19 @@
                     } catch (err) {
                     } // ignore the error
                 }).fail(function () {
-                    installWizard.Status = "";
-                }).always(function () {
-                    installWizard.IsQueryingInstallProgress = false;
-                });
+                installWizard.Status = "";
+            }).always(function () {
+                installWizard.IsQueryingInstallProgress = false;
+            });
         };
 
         $.updateProgressbar = function (status) {
             var result = jQuery.parseJSON(status);
             if (result !== null) {
-	            if (result.progress < $("#progressbar").progressbar('value')) return;
+                if (result.progress < $("#progressbar").progressbar('value')) return;
                 //Updating progress
-	            $("#progressbar").progressbar('value', result.progress);
-	            installWizard.dnnProgressbar.update(result.progress);
+                $("#progressbar").progressbar('value', result.progress);
+                installWizard.dnnProgressbar.update(result.progress);
                 $("#percentage").text(result.progress + '% ' + result.details);
                 var installationError = result.details.toUpperCase().indexOf('ERROR') > -1;
                 if (installationError) {
@@ -797,18 +843,18 @@
         $.applyCssStyle = function (state, ele) {
             if (!state) state = '';
             switch (state.toLowerCase()) {
-                case 'done':
-                    ele.attr('class', 'step-done');
-                    break;
-                case 'running':
-                    ele.attr('class', 'step-running');
-                    break;
-                case 'error':
-                    ele.attr('class', 'step-error');
-                    break;
-                default:
-                    ele.attr('class', 'step-notstarted');
-                    break;
+            case 'done':
+                ele.attr('class', 'step-done');
+                break;
+            case 'running':
+                ele.attr('class', 'step-running');
+                break;
+            case 'error':
+                ele.attr('class', 'step-error');
+                break;
+            default:
+                ele.attr('class', 'step-notstarted');
+                break;
             }
         };
 
@@ -889,10 +935,10 @@
                 if ($(this).hasClass('dnnDisabledAction')) {
                     e.preventDefault();
                 } else {
-	                $(this).addClass('dnnDisabledAction');
-                	if(installWizard.bannerTimer) {
-                		clearInterval(installWizard.bannerTimer);
-                	}
+                    $(this).addClass('dnnDisabledAction');
+                    if(installWizard.bannerTimer) {
+                        clearInterval(installWizard.bannerTimer);
+                    }
                 }
             });
         });

@@ -210,6 +210,11 @@ namespace DotNetNuke.Services.Install
             get { return _installConfig.DisplayBanners; }
         }
 
+        protected bool NeedAcceptTerms
+        {
+            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
+        }
+
         #endregion
 
         #region IClientAPICallbackEventHandler Members
@@ -953,6 +958,7 @@ namespace DotNetNuke.Services.Install
 
             // Hide Licensing Step if no License Info is available
             LicenseActivation.Visible = IsProOrEnterprise && !String.IsNullOrEmpty(_installConfig.License.AccountEmail) && !String.IsNullOrEmpty(_installConfig.License.InvoiceNumber);
+            pnlAcceptTerms.Visible = NeedAcceptTerms;
 
             if ((!IsProOrEnterprise) && templateList.FindItemByValue("Mobile Website.template") != null)
             {
@@ -969,6 +975,12 @@ namespace DotNetNuke.Services.Install
             {
                 try
                 {
+                    if (HttpContext.Current.Request.QueryString["acceptterms"] != "true")
+                    {
+                        //Redirect back to first page if not accept terms.
+                        Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&executeinstall", ""), true);
+                    }
+
                     _installerRunning = true;
                     LaunchAutoInstall();
                 }
@@ -1196,7 +1208,8 @@ namespace DotNetNuke.Services.Install
 		    var errorMsg=string.Empty;
             
             // Check Required Fields
-            if (installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
+            if (!installInfo.ContainsKey("acceptTerms") || installInfo["acceptTerms"] != "Y" || 
+                installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
                  || installInfo["websiteName"] == string.Empty || installInfo["email"] == string.Empty)
             {
                 result = false;
