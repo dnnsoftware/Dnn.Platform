@@ -846,7 +846,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         {
                             node = AddResourceKey(resDoc, resourceKey);
                         }
-                        node.InnerXml = HttpUtility.HtmlEncode(txtValue);
+                        node.InnerXml = IsHtmlEncoded(txtValue) ? txtValue : HttpUtility.HtmlEncode(txtValue);
                         if (txtValue != entry.DefaultValue)
                             changedResources.Add(resourceKey, txtValue);
                         break;
@@ -859,7 +859,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             {
                                 node = AddResourceKey(resDoc, resourceKey);
                             }
-                            node.InnerXml = HttpUtility.HtmlEncode(txtValue);
+                            node.InnerXml = IsHtmlEncoded(txtValue) ? txtValue : HttpUtility.HtmlEncode(txtValue);
                             changedResources.Add(resourceKey, txtValue);
                         }
                         else
@@ -975,6 +975,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     }));
             }
             return pages;
+        }
+
+        private bool IsHtmlEncoded(string text)
+        {
+            return HttpUtility.HtmlDecode(text) != text;
         }
     }
 
