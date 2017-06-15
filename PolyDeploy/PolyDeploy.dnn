@@ -1,0 +1,77 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Cantarus.PolyDeploy" type="Module" version="01.00.00">
+      <friendlyName>Cantarus PolyDeploy</friendlyName>
+      <description>Cantarus PolyDeploy module</description>
+      <iconFile>Images/cantarus.png</iconFile>
+      <owner>
+        <name>Cantarus</name>
+        <organization>Cantarus</organization>
+        <url>http://www.cantarus.com</url>
+        <email>dotnetnuke@cantarus.com</email>
+      </owner>
+      <license></license>
+      <releaseNotes></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">06.01.05</dependency>
+      </dependencies>
+
+      <components>
+
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/Cantarus/PolyDeploy</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <component type="Module">
+          <desktopModule>
+            <moduleName>PolyDeploy</moduleName>
+            <foldername>/Cantarus/PolyDeploy</foldername>
+            <businessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</businessControllerClass>
+            <supportedFeatures />
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>PolyDeploy</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Settings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>PolyDeploy Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <basePath>bin</basePath>
+            <assembly>
+              <name>Cantarus.Modules.PolyDeploy.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
