@@ -1111,4 +1111,10 @@
   <data name="CheckHiddenSystemFilesSuccess.Text" xml:space="preserve">
     <value>There are no files marked as system file or hidden in the website folder.</value>
   </data>
+  <data name="plDisplayCopyright.Help" xml:space="preserve">
+    <value>Check this box to add the DNN copyright credits to the page source.</value>
+  </data>
+  <data name="plDisplayCopyright.Text" xml:space="preserve">
+    <value>Show Copyright Credits</value>
+  </data>
 </root>

@@ -134,7 +134,7 @@ function getTemplateFolder() {
 
 function getIsSuperUser() {
     checkInit();
-    return settings.isSuperUser;
+    return settings.isHost || settings.isAdmin || settings.canSeePagesList;
 }
 
 function getCurrentPagePermissions() {

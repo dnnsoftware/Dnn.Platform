@@ -12,6 +12,7 @@ import {
     pagination as PaginationActions
 } from "../../actions";
 import LocalizedResources from "../../resources";
+import util from "../../utils";
 import styles from "./style.less";
 
 class CreateVocabulary extends Component {
@@ -149,13 +150,13 @@ class CreateVocabulary extends Component {
                             buttonGroup="vocabularyType"
                             buttonWidth={130}
                             value={state.term.TypeId} />
-                        <RadioButtons
+                        {util.isHost() && <RadioButtons
                             onChange={this.onTermValueChange.bind(this, "ScopeTypeId")}
                             options={scopeOptions}
                             label={LocalizedResources.get("Scope.Header") + ":"}
                             buttonGroup="scopeType"
                             buttonWidth={130}
-                            value={state.term.ScopeTypeId} />
+                            value={state.term.ScopeTypeId} />}
                         <GridCell className="action-buttons">
                             <Button type="secondary" onClick={this.onCloseVocabulary.bind(this)}>{LocalizedResources.get("cancelCreate")}</Button>
                             <Button type="primary" onClick={this.onAddNewVocabulary.bind(this)}>{LocalizedResources.get("CreateVocabulary")}</Button>

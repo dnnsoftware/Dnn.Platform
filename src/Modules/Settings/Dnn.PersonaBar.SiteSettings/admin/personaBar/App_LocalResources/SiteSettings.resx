@@ -1215,4 +1215,49 @@
   <data name="LanguageSelectionLabel.Text" xml:space="preserve">
     <value>LANGUAGE</value>
   </data>
+  <data name="ListEntryText.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="ListEntryValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="NoData.Text" xml:space="preserve">
+    <value>No records to display</value>
+  </data>
+  <data name="cmdAddEntry.Text" xml:space="preserve">
+    <value>Add Entry</value>
+  </data>
+  <data name="ListEntries.Text" xml:space="preserve">
+    <value>List Entries</value>
+  </data>
+  <data name="ListEntries.Help" xml:space="preserve">
+    <value>MANAGE LIST ENTRIES: The property details have been updated. This property is a List type property. The next step is to define the list entries.</value>
+  </data>
+  <data name="ListEntryCreateSuccess.Text" xml:space="preserve">
+    <value>The list entry has been created.</value>
+  </data>
+  <data name="ListEntryUpdateSuccess.Text" xml:space="preserve">
+    <value>The list entry has been updated.</value>
+  </data>
+  <data name="ListEntryDeleteSuccess.Text" xml:space="preserve">
+    <value>The list entry has been deleted.</value>
+  </data>
+  <data name="ListEntryDeleteError.Text" xml:space="preserve">
+    <value>Could not delete the list entry. Please try later.</value>
+  </data>
+  <data name="ListEntryDeletedWarning.Text" xml:space="preserve">
+    <value>Are you sure you want to delete the list entry?</value>
+  </data>
+  <data name="InvalidEntryText.Text" xml:space="preserve">
+    <value>Text is required</value>
+  </data>
+  <data name="InvalidEntryValue.Text" xml:space="preserve">
+    <value>Value is required</value>
+  </data>
+  <data name="EnableSortOrder.Text" xml:space="preserve">
+    <value>Enable Sort Order</value>
+  </data>
+  <data name="EnableSortOrder.Help" xml:space="preserve">
+    <value>Check this box to enable custom sorting of entries in this list.</value>
+  </data>
 </root>

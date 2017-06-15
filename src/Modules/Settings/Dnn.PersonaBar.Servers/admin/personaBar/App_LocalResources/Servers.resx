@@ -232,7 +232,7 @@
     <value>The default Friendly URL provider for the site.</value>
   </data>
   <data name="HostInfo_FriendlyUrlProvider.Text" xml:space="preserve">
-    <value>Friendy URL Provider:</value>
+    <value>Friendly URL Provider:</value>
   </data>
   <data name="HostInfo_FriendlyUrlType.Help" xml:space="preserve">
     <value>Displays the type of Friendly URLs used for the site.</value>

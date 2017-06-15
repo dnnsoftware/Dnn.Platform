@@ -30,7 +30,7 @@ class LanguageInfoView extends Component {
             <GridCell className="edit-language-info">
                 <GridCell className="edit-language-top-bar">
                     <GridCell columnSize={40} className="language-info">
-                        <img src={languageBeingEdited.Icon} className="language-flag" />
+                        <img src={languageBeingEdited.Icon} className="language-flag" alt={languageBeingEdited.NativeName} />
                         <p>{languageBeingEdited.NativeName}</p>
                     </GridCell>
                     <GridCell columnSize={60} className="mode-container">

@@ -282,4 +282,7 @@
   <data name="BackToVocabularies.Text" xml:space="preserve">
     <value>Back To Vocabularies</value>
   </data>
+  <data name="EditFieldHelper.Text" xml:space="preserve">
+    <value>Press ENTER when done, or ESC to cancel</value>
+  </data>
 </root>

@@ -49,9 +49,9 @@ namespace Dnn.PersonaBar.Vocabularies.Components
             _validator.Validators.Add(new VocabularyNameValidator(_vocabularyController, _termController));
         }
 
-        public List<Vocabulary> GetVocabularies(int pageIndex, int pageSize, int scopeTypeId, out int total)
+        public List<Vocabulary> GetVocabularies(int portalId, int pageIndex, int pageSize, int scopeTypeId, out int total)
         {
-            var vocabularies = _vocabularyController.GetVocabularies();
+            var vocabularies = _vocabularyController.GetVocabularies().Where(v => v.ScopeType.ScopeType == "Application" || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId));
             if (scopeTypeId != Null.NullInteger)
             {
                 vocabularies = vocabularies.Where(v => v.ScopeTypeId == scopeTypeId);
@@ -84,6 +84,10 @@ namespace Dnn.PersonaBar.Vocabularies.Components
 
         public void UpdateVocabulary(Vocabulary vocabulary)
         {
+            if (vocabulary.ScopeType.ScopeType == Constants.VocabularyScopeTypeWebsite)
+            {
+                vocabulary.ScopeId = PortalSettings.Current.PortalId;
+            }
             var result = _validator.ValidateObject(vocabulary);
             if (result.IsValid)
             {

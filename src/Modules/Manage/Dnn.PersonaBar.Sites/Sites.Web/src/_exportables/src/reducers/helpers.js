@@ -60,4 +60,3 @@ export function getFinalSwitchCase(switchCase, additionalCases) {
     }
     return _switchCase;
 }
-

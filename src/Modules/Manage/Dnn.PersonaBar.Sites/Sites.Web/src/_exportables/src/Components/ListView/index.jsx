@@ -10,7 +10,9 @@ import {
     TrashIcon,
     PreviewIcon,
     SettingsIcon,
-    TemplateIcon
+    TemplateIcon,
+    DownloadIcon,
+    UploadIcon
 } from "dnn-svg-icons";
 import styles from "./style.less";
 
@@ -19,7 +21,7 @@ class ListView extends Component {
         super();
     }
     onDelete(portal, index) {
-        const {props} = this;
+        const { props } = this;
         utilities.confirm(Localization.get("deletePortal").replace("{0}", portal.PortalName),
             Localization.get("ConfirmPortalDelete"),
             Localization.get("CancelPortalDelete"),
@@ -37,7 +39,7 @@ class ListView extends Component {
 
         let settings = {
             portalId: portal.PortalID,
-            referrer: this.props.sitesModule,  
+            referrer: this.props.sitesModule,
             referrerText: Localization.get("BackToSites"),
             backToReferrerFunc: this.backToSites.bind(this),
             isHost: true
@@ -57,13 +59,35 @@ class ListView extends Component {
         }
     }
     navigateMap(page) {
-        const {props} = this;
+        const { props } = this;
         props.dispatch(CommonVisiblePanelActions.selectPanel(page));
     }
-    onExport(portalBeingExported) {
-        const {props} = this;
-        props.dispatch(CommonExportPortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
+
+    onImportExport(portal, type) {
+        let event = document.createEvent("Event");
+
+        event.initEvent("siteImportExport", true, true);
+
+        let settings = {
+            importExportJob: {
+                portalId: portal.PortalID,
+                portalName: portal.PortalName,
+                jobType: type
+            },
+            referrer: this.props.sitesModule,
+            referrerText: Localization.get("BackToSites"),
+            backToReferrerFunc: this.backToSites.bind(this)            
+        };
+
+        event = Object.assign(event, settings);
+
+        utilities.loadPanel(this.props.siteImportExportModule, {
+            settings
+        });
+
+        document.dispatchEvent(event);
     }
+
     getPortalButtons(portal, index) {
         let portalButtons = [
             {
@@ -77,9 +101,14 @@ class ListView extends Component {
                 title: Localization.get("SiteSettings")
             },
             {
-                icon: TemplateIcon,
-                onClick: this.onExport.bind(this, portal, index),
-                title: Localization.get("ExportTemplate")
+                icon: UploadIcon,
+                onClick: this.onImportExport.bind(this, portal, "Export", index),
+                title: Localization.get("SiteExport")
+            },
+            {
+                icon: DownloadIcon,
+                onClick: this.onImportExport.bind(this, portal, "Import", index),
+                title: Localization.get("SiteImport")
             }
         ];
         if (portal.allowDelete) {
@@ -109,7 +138,7 @@ class ListView extends Component {
             },
             {
                 label: Localization.get("SiteDetails_Updated"),
-                value: Moment(portal.LastModifiedOnDate).fromNow()
+                value: Moment(portal.LastModifiedOnDate).locale(this.props.culture).fromNow()
             },
             {
                 label: Localization.get("SiteDetails_Pages"),
@@ -118,13 +147,13 @@ class ListView extends Component {
         ].concat((this.props.getPortalMapping && this.props.getPortalMapping(portal)) || []);
     }
     getDetailList() {
-        const {props} = this;
+        const { props } = this;
         return props.portals.map((portal, index) => {
-            return <PortalListItem
+            return (portal.PortalAliases && <PortalListItem
                 key={"portal-" + portal.PortalID}
                 portal={portal}
                 portalButtons={this.getPortalButtons(portal, index)}
-                portalStatisticInfo={this.getPortalMapping(portal)} />;
+                portalStatisticInfo={this.getPortalMapping(portal)} />);
         });
     }
     cancelExport(event) {
@@ -136,7 +165,7 @@ class ListView extends Component {
         this.navigateMap(0);
     }
     render() {
-        const portalList = this.getDetailList(), {props} = this;
+        const portalList = this.getDetailList(), { props } = this;
 
         return (
             <GridCell className={styles.siteList}>
@@ -159,12 +188,16 @@ ListView.propTypes = {
     onSettingClick: PropTypes.func,
     onDeletePortal: PropTypes.func,
     onPreviewPortal: PropTypes.func,
-    sitesModule: PropTypes.string
+    sitesModule: PropTypes.string,
+    culture: PropTypes.string,
+    siteImportExportModule: PropTypes.string
 };
 
 ListView.defaultProps = {
     siteSettingModule: "Dnn.SiteSettings",
-    sitesModule: "Dnn.Sites"
+    sitesModule: "Dnn.Sites",
+    siteImportExportModule: "Dnn.SiteImportExport",
+    culture: 'en-US'
 };
 
 function mapStateToProps(state) {

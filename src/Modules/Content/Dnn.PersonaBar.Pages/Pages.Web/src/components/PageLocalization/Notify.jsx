@@ -10,6 +10,7 @@ class Notify extends Component {
                 placeholder={Localization.get("NotifyModalPlaceholder")}
                 value={this.props.notifyMessage}
                 onChange={this.props.onUpdateMessage}
+                aria-label="Message"
                 />
             <div className="buttons-container">
                 <Button

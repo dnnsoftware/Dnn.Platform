@@ -46,16 +46,6 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.SiteSettings.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="Dnn.PersonaBar.Library">
@@ -111,6 +101,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Constants\Constants.cs" />
     <Compile Include="Components\Constants\LanguageResourceEnums.cs" />
     <Compile Include="MenuControllers\SiteSettingsMenuController.cs" />
     <Compile Include="Components\LanguagesControllerTasks.cs" />
@@ -125,7 +116,9 @@
     <Compile Include="Services\Dto\UpdateLanguageSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateIgnoreWordsRequest.cs" />
     <Compile Include="Services\Dto\UpdateOtherSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateListEntryOrdersRequest.cs" />
     <Compile Include="Services\Dto\UpdateProfilePropertyOrdersRequest.cs" />
+    <Compile Include="Services\Dto\UpdateListEntryRequest.cs" />
     <Compile Include="Services\Dto\UpdateSynonymsGroupRequest.cs" />
     <Compile Include="Services\Dto\UpdateBasicSearchSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateTransaltionsRequest.cs" />
@@ -173,29 +166,4 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="Module.build" />
-  <PropertyGroup>
-    <PreBuildEvent>if /i not "$(ConfigurationName)"=="Npm_Release" goto end
-
-cd /D $(ProjectDir)SiteSettings.Web
-if exist .\node_modules goto build
-
-if not exist c:\npm_cache\$(ProjectName)\SiteSettings.Web\node_modules goto restore
-echo "Copy node_modules from cache"
-xcopy c:\npm_cache\$(ProjectName)\SiteSettings.Web\node_modules .\node_modules /E /Q /S /Y /I
-goto build
-
-:restore
-echo "Restore node modules"
-cmd /c npm install --cache-min 999999
-xcopy .\node_modules c:\npm_cache\$(ProjectName)\SiteSettings.Web\node_modules /E /Q /S /Y /I
-goto build
-
-:build
-echo "Start build bundle"
-cmd /c npm run build
-goto end
-
-:end
-echo "$(ProjectName)\SiteSettings.Web build successful"</PreBuildEvent>
-  </PropertyGroup>
 </Project>

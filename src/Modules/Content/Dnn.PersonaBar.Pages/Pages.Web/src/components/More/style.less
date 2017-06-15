@@ -15,6 +15,21 @@
 
         .left-column {
             padding-right: 30px;
+            .clear-cache {
+                float: left;
+                margin-top: -10px;
+                width: 100%;
+                background-color: @gallery;
+                text-align: center;
+                label {
+                    width: 100%;
+                    margin: 0;
+                    padding: 10px;
+                }
+                button {
+                    margin: 0 0 25px 0;
+                }
+            }
         }
     }
     
@@ -38,5 +53,9 @@
 
     .dnn-switch-container {
         float: right;
+    }
+
+    .dnn-single-line-input-with-error {
+        width: 100%;
     }
 }

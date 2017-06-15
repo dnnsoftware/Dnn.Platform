@@ -37,7 +37,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="allow-icon" dangerouslySetInnerHTML={{ __html: allowIcon }} />
-                        <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("AllowIP")}</div>
+                        <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("AllowIP") }</div>
                     </div>
                 );
             }
@@ -45,7 +45,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="deny-icon" dangerouslySetInnerHTML={{ __html: denyIcon }} />
-                        <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("DenyIP")}</div>
+                        <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("DenyIP") }</div>
                     </div>
                 );
             }
@@ -61,20 +61,20 @@ class IpFilterRow extends Component {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
 
         return (
-            <div className={"collapsible-component-ipfilters" + (opened ? " row-opened" : "")}>
+            <div className={"collapsible-component-ipfilters" + (opened ? " row-opened" : "") }>
                 {props.visible &&
                     <div className={"collapsible-ipfilters " + !opened} >
                         <div className={"row"}>
                             <div className="ip-filter-item item-row-ruleType">
-                                {this.getRuleTypeDisplay()}
+                                {this.getRuleTypeDisplay() }
                             </div>
                             <div className="ip-filter-item item-row-ipAddress">
                                 {props.ipFilter}
                             </div>
-                            {props.id !== "add" &&
+                            {props.id !== "add" && !props.readOnly &&
                                 <div className="ip-filter-item item-row-editButton">
-                                    <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: deleteIcon }} onClick={this.props.onDelete.bind(this)}></div>
-                                    <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: editIcon }} onClick={this.toggle.bind(this)} />
+                                    <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: deleteIcon }} onClick={this.props.onDelete.bind(this) }></div>
+                                    <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: editIcon }} onClick={this.toggle.bind(this) } />
                                 </div>
                             }
                         </div>
@@ -96,11 +96,13 @@ IpFilterRow.propTypes = {
     onDelete: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    visible: PropTypes.bool
+    visible: PropTypes.bool,
+    readOnly: PropTypes.bool
 };
 
 IpFilterRow.defaultProps = {
     collapsed: true,
-    visible: true
+    visible: true,
+    readOnly: false
 };
 export default (IpFilterRow);

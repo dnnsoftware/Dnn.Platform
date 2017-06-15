@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Servers" type="PersonaBar" version="01.02.00">
+        <package name="Dnn.PersonaBar.Servers" type="PersonaBar" version="01.04.00">
             <friendlyName>Dnn.PersonaBar.Servers</friendlyName>
             <description></description>
             <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
@@ -33,6 +33,21 @@
                             <path>bin</path>
                         </assembly>
                     </assemblies>
+                </component>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Servers</basePath>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>01.03.00.SqlDataProvider</name>
+                            <version>01.03.00</version>
+                        </script>
+                        <script type="UnInstall">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>Uninstall.SqlDataProvider</name>
+                            <version>01.00.00</version>
+                        </script>
+                    </scripts>
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>

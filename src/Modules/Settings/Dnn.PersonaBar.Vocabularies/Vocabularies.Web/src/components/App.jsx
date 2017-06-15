@@ -33,7 +33,7 @@ class App extends Component {
             <div className="taxonomy-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <PersonaBarPageHeader title={LocalizedResources.get("ControlTitle_")}>
-                        {util.settings.isHost && <Button type="primary" size="large" onClick={this.openCreateVocabulary.bind(this)}>{LocalizedResources.get("Create")}</Button>}
+                        {util.canEdit() && <Button type="primary" size="large" onClick={this.openCreateVocabulary.bind(this)}>{LocalizedResources.get("Create")}</Button>}
                     </PersonaBarPageHeader>
                     <VocabularyList />
                 </PersonaBarPage>

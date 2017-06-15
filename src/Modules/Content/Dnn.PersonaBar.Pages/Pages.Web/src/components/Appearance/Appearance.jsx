@@ -15,19 +15,20 @@ import style from "./style.less";
 class Appearance extends Component {
 
     componentWillMount() {
-        const { page, defaultPortalThemeName, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
+        const { page, defaultPortalThemeName, defaultPortalThemeLevel, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
 
         onRetrieveThemes();
 
         const selectedThemeName = page.themeName || defaultPortalThemeName;
+        const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
         if (selectedThemeName) {
-            onRetrieveThemeFiles(selectedThemeName);
+            onRetrieveThemeFiles(selectedThemeName, selectedThemeLevel);
         }
     }
 
     componentWillReceiveProps(newProps) {
-        const { page, containers, defaultPortalThemeName, onRetrieveThemeFiles } = this.props;
-        
+        const { page, containers, defaultPortalThemeName, defaultPortalThemeLevel, onRetrieveThemeFiles } = this.props;
+
         if (newProps.containers !== containers) {
             this.autoSelectFirstContainerIfNoOneIsSelected(newProps.page, newProps.containers);
         }
@@ -37,18 +38,18 @@ class Appearance extends Component {
         }
 
         if (defaultPortalThemeName !== newProps.defaultPortalThemeName && newProps.defaultPortalThemeName !== null) {
-            onRetrieveThemeFiles(newProps.defaultPortalThemeName);
-        }          
+            onRetrieveThemeFiles(newProps.defaultPortalThemeName,newProps.defaultPortalThemeLevel);
+        }
     }
 
     autoSelectFirstContainerIfNoOneIsSelected(page, containers) {
         const { onChangeField, defaultPortalContainer } = this.props;
         const selectedContainerPath = page.containerSrc || defaultPortalContainer;
-        const selectedContainer = containers.find(this.findByPath(selectedContainerPath)); 
+        const selectedContainer = containers.find(this.findByPath(selectedContainerPath));
         if (!selectedContainer && containers.length !== 0) {
             const container = containers[0];
             onChangeField("containerSrc", this.addAscxExtension(container.path));
-        } 
+        }
     }
 
     getPagePreviewUrl(skinSrc, containerSrc) {
@@ -58,7 +59,7 @@ class Appearance extends Component {
         const skinSrcQueryString = encodeURI(this.trimAscxExtension(skinSrc));
         const containerSrcQueryString = encodeURI(this.trimAscxExtension(containerSrc));
         const queryStringSeparator = pageUrl.indexOf("?") === -1 ? "?" : "&";
-        return pageUrl + queryStringSeparator + "SkinSrc=" + skinSrcQueryString + "&ContainerSrc=" + containerSrcQueryString;        
+        return pageUrl + queryStringSeparator + "SkinSrc=" + skinSrcQueryString + "&ContainerSrc=" + containerSrcQueryString;
     }
 
     previewPage() {
@@ -77,9 +78,10 @@ class Appearance extends Component {
 
     onSelectTheme(theme) {
         this.props.onChangeField("themeName", theme.packageName);
+        this.props.onChangeField("themeLevel", theme.level);
         const skinSrc = this.addAscxExtension(theme.defaultThemeFile);
         this.props.onChangeField("skinSrc", skinSrc);
-        this.props.onRetrieveThemeFiles(theme.packageName);
+        this.props.onRetrieveThemeFiles(theme.packageName, theme.level);
     }
 
     onSelectLayout(layout) {
@@ -117,49 +119,54 @@ class Appearance extends Component {
         return (c) => utils.areEqualInvariantCase(this.addAscxExtension(c.path), componentSrc);
     }
 
-    render() {   
-        const { page, themes, layouts, containers, defaultPortalThemeName, defaultPortalLayout, defaultPortalContainer } = this.props;
+    render() {
+        const { page, themes, layouts, containers, defaultPortalThemeName, defaultPortalThemeLevel, defaultPortalLayout, defaultPortalContainer } = this.props;
         const selectedThemeName = page.themeName || defaultPortalThemeName;
-        const selectedTheme = themes.find(t => t.packageName === selectedThemeName);
+        const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
+        const selectedTheme = themes.find(t => t.packageName === selectedThemeName && t.level === selectedThemeLevel);
         const noThemeSelected = !selectedTheme;
         const selectedLayoutPath = page.skinSrc || defaultPortalLayout;
         const selectedLayout = layouts.find(this.findByPath(selectedLayoutPath));
         const selectedContainerPath = page.containerSrc || defaultPortalContainer;
-        const selectedContainer = containers.find(this.findByPath(selectedContainerPath)); 
+        const selectedContainer = containers.find(this.findByPath(selectedContainerPath));
 
         return (
             <div className={style.moduleContainer}>
                 <GridCell>
-                    <ThemeSelector 
+                    <ThemeSelector
                         themes={themes}
+                        defaultPortalThemeName={defaultPortalThemeName}
+                        defaultPortalThemeLevel={defaultPortalThemeLevel}
                         selectedTheme={selectedTheme}
-                        onSelectTheme={this.onSelectTheme.bind(this)} />
+                        onSelectTheme={this.onSelectTheme.bind(this) } />
                 </GridCell>
                 <GridCell>
-                    <LayoutSelector 
+                    <LayoutSelector
                         noThemeSelected={noThemeSelected}
                         layouts={layouts}
+                        defaultPortalLayout={this.trimAscxExtension(defaultPortalLayout) }
                         selectedLayout={selectedLayout}
-                        onSelectLayout={this.onSelectLayout.bind(this)} />
+                        onSelectLayout={this.onSelectLayout.bind(this) } />
                 </GridCell>
                 <GridCell>
-                    <ContainerSelector 
+                    <ContainerSelector
                         noThemeSelected={noThemeSelected}
                         containers={containers}
+                        defaultPortalContainer={this.trimAscxExtension(defaultPortalContainer) }
                         selectedContainer={selectedContainer}
-                        onSelectContainer={this.onSelectContainer.bind(this)} />
+                        onSelectContainer={this.onSelectContainer.bind(this) } />
                 </GridCell>
                 <GridCell>
                     <GridCell columnSize="50">
-                        <SingleLineInputWithError
-                            label={Localization.get("PageStyleSheet")}
-                            tooltipMessage={Localization.get("PageStyleSheetTooltip")}
-                            value={page.pageStyleSheet} 
-                            onChange={this.onChangePageStyleSheet.bind(this)} />
+                        <SingleLineInputWithError style={{ width: "100%" }}
+                            label={Localization.get("PageStyleSheet") }
+                            tooltipMessage={Localization.get("PageStyleSheetTooltip") }
+                            value={page.pageStyleSheet}
+                            onChange={this.onChangePageStyleSheet.bind(this) } />
                     </GridCell>
                     <GridCell columnSize="50">
-                        <Button type="secondary" onClick={this.previewPage.bind(this)} style={{marginTop: "25px", float: "right"}}>
-                            {Localization.get("PreviewThemeLayoutAndContainer")}
+                        <Button type="secondary" onClick={this.previewPage.bind(this) } style={{ marginTop: "25px", float: "right" }}>
+                            {Localization.get("PreviewThemeLayoutAndContainer") }
                         </Button>
                     </GridCell>
                 </GridCell>
@@ -178,13 +185,15 @@ Appearance.propTypes = {
     containers: PropTypes.array.isRequired,
     defaultPortalLayout: PropTypes.string,
     defaultPortalContainer: PropTypes.string,
-    defaultPortalThemeName: PropTypes.string
+    defaultPortalThemeName: PropTypes.string,
+    defaultPortalThemeLevel: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
         themes: state.theme.themes,
         defaultPortalThemeName: state.theme.defaultPortalThemeName,
+        defaultPortalThemeLevel: state.theme.defaultPortalThemeLevel,
         defaultPortalLayout: state.theme.defaultPortalLayout,
         defaultPortalContainer: state.theme.defaultPortalContainer,
         layouts: state.theme.layouts,
@@ -193,7 +202,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({
+    return bindActionCreators({
         onRetrieveThemes: ThemeActions.retrieveThemes,
         onRetrieveThemeFiles: ThemeActions.retrieveThemeFiles
     }, dispatch);

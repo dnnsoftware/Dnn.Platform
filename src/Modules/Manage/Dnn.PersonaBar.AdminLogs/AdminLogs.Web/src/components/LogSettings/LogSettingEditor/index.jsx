@@ -57,7 +57,7 @@ class LogSettingEditor extends Component {
             case "LogType":
                 return state.logSettingDetail.LogTypeKey !== undefined ? state.logSettingDetail.LogTypeKey.toString() : "*";
             case "Website":
-                return state.logSettingDetail.LogTypePortalID !== undefined ? (state.logSettingDetail.LogTypePortalID.toString() == "*" ? "-1" : state.logSettingDetail.LogTypePortalID.toString()) : "-1";
+                return state.logSettingDetail.LogTypePortalID !== "-1" ? (state.logSettingDetail.LogTypePortalID.toString() == "*" ? "-1" : state.logSettingDetail.LogTypePortalID.toString()) : this.props.portalList[0].value.toString();
             case "Recent":
                 return state.logSettingDetail.KeepMostRecent !== undefined && state.logSettingDetail.KeepMostRecent > 0 ? state.logSettingDetail.KeepMostRecent.toString() : "*";
             case "Threshold":

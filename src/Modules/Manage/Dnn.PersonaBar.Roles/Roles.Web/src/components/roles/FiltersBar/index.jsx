@@ -9,11 +9,12 @@ import IconButton from "../../common/IconButton";
 import SearchBox from "dnn-search-box";
 import GridCell from "dnn-grid-cell";
 import RoleGroupEditor from "../RoleEditor/RoleGroupEditor";
-import util from "../../../utils";
 import {
     roles as RolesActions
 } from "../../../actions";
+import util from "utils";
 
+let canEdit = false;
 class FiltersBar extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +25,7 @@ class FiltersBar extends Component {
             },
             showPopup: false
         };
+        canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
     }
     componentWillMount() {
     }
@@ -102,12 +104,14 @@ class FiltersBar extends Component {
             group = Object.assign({}, props.roleGroups.filter(group => group.id === value)[0]);
         }
         if (value > -1) {
-            label = <div className="group-actions">{label}
-                <div className="role-group-actions">
-                    <IconButton type="Edit" onClick={this.toggleEditGroup.bind(this) } />
-                    {this.props.DeleteAllowed && <IconButton type="Trash" onClick={this.onDeleteGroup.bind(this) } />}
-                </div>
-            </div>;
+            if (canEdit) {
+                label = <div className="group-actions">{label}
+                    <div className="role-group-actions">
+                        <IconButton type="Edit" onClick={this.toggleEditGroup.bind(this) } />
+                        {this.props.DeleteAllowed && <IconButton type="Trash" onClick={this.onDeleteGroup.bind(this) } />}
+                    </div>
+                </div>;
+            }
         }
         return label;
     }

@@ -9,6 +9,7 @@ import LogSettingEditor from "./LogSettingEditor";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import GridCell from "dnn-grid-cell";
+import util from "../../utils";
 import Localization from "localization";
 import {
     createPortalOptions,
@@ -16,26 +17,28 @@ import {
 } from "../../reducerHelpers";
 
 
+let canEdit = false;
 class LogSettingsPanel extends Component {
     constructor() {
         super();
         this.state = {
-            logTypeList: [],
-            logSettingList: [],
-            portalList: [],
             openId: ""
         };
+        canEdit = util.settings.isHost || util.settings.permissions.LOG_SETTINGS_EDIT;
     }
 
     componentWillMount() {
         const {props} = this;
         props.dispatch(LogSettingActions.getLogSettings());
-        if (this.props.logTypeList === null || this.props.logTypeList === [] || this.props.logTypeList === undefined)
-            props.dispatch(LogActions.getLogTypeList());
-        if (this.props.portalList === null || this.props.portalList === [] || this.props.portalList === undefined)
-            props.dispatch(LogActions.getPortalList());
-        props.dispatch(LogSettingActions.getKeepMostRecentOptions());
-        props.dispatch(LogSettingActions.getOccurrenceOptions());
+        if (canEdit) {
+            if (this.props.logTypeList === null || this.props.logTypeList === undefined || this.props.logTypeList.length === 0) {
+                props.dispatch(LogActions.getLogTypeList());
+            }
+            if (this.props.portalList === null || this.props.portalList === undefined || this.props.portalList.length === 0)
+                props.dispatch(LogActions.getPortalList(util.settings.isHost));
+            props.dispatch(LogSettingActions.getKeepMostRecentOptions());
+            props.dispatch(LogSettingActions.getOccurrenceOptions());
+        }
     }
 
     renderHeader() {
@@ -94,7 +97,8 @@ class LogSettingsPanel extends Component {
                     openId={this.state.openId }
                     OpenCollapse={this.toggle.bind(this) }
                     Collapse={this.collapse.bind(this) }
-                    id={id}>
+                    id={id}
+                    readOnly={!canEdit}>
                     <LogSettingEditor
                         logTypeList={logTypeOptions }
                         portalList={portalOptions }
@@ -115,15 +119,17 @@ class LogSettingsPanel extends Component {
         return (
             <div>
                 <div className="log-settings">
-                    <div className="add-setting-row" onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                        <div className={"add-setting-box " + !opened}>
-                            <div className={"add-icon"} dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> {Localization.get("AddContent.Action") }
+                    {canEdit &&
+                        <div className="add-setting-row" onClick={this.toggle.bind(this, opened ? "" : "add") }>
+                            <div className={"add-setting-box " + !opened}>
+                                <div className={"add-icon"} dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                </div> {Localization.get("AddContent.Action") }
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div className="container">
                         {this.renderHeader() }
-                        <div className="add-setting-editor">
+                        {canEdit && <div className="add-setting-editor">
                             <SettingRow
                                 typeName={"-"}
                                 website={"-"}
@@ -147,8 +153,8 @@ class LogSettingsPanel extends Component {
                                     notificationTimeTypesOptions={this.props.notificationTimeTypesOptions}
                                     logTypeSettingId=""  Collapse={this.collapse.bind(this) }  id={"add"} openId={this.state.openId}/>
                             </SettingRow>
-
                         </div>
+                        }
                         {this.renderedLogSettingList(logTypeOptions, portalOptions) }
                     </div>
                 </div>

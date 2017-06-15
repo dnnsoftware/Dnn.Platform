@@ -33,7 +33,7 @@ define(['jquery',
         init = function (wrapper, util, params, callback) {
             utility = util;
 
-            dnnPageRecycleBin = new DnnPageRecycleBin(utility.resx.Recyclebin, utility.sf, utility);
+            dnnPageRecycleBin = new DnnPageRecycleBin(utility.resx.Recyclebin, utility.sf, utility, null, params.settings);
 
             initRecycleBin(wrapper);
 

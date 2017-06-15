@@ -297,7 +297,7 @@ namespace Dnn.PersonaBar.Pages.Components
             //check whether have conflict between tab path and portal alias.
             if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
             {
-                errorMessage = Localization.GetString("PathDuplicateWithAlias");
+                errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);
                 valid = false;
             }
 

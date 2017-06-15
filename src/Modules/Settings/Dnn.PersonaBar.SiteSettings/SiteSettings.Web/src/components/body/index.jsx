@@ -20,12 +20,15 @@ import util from "../../utils";
 import resx from "../../resources";
 
 let isHost = false;
-
+let isAdmin = false;
+let canViewSiteInfo = false;
 export class Body extends Component {
     constructor() {
         super();
         this.handleSelect = this.handleSelect.bind(this);
         isHost = util.settings.isHost;
+        isAdmin = util.settings.isHost || util.settings.isAdmin;
+        canViewSiteInfo = isAdmin || util.settings.permissions.SITE_INFO_VIEW;
     }
 
     handleSelect(index) {
@@ -36,25 +39,25 @@ export class Body extends Component {
     renderSiteBehaviorTab() {
         const {props} = this;
         if (isHost) {
-            return <Tabs onSelect={this.handleSelect.bind(this)}
+            return <Tabs onSelect={this.handleSelect.bind(this) }
                 tabHeaders={[resx.get("TabDefaultPages"),
-                resx.get("TabMessaging"),
-                resx.get("TabUserProfiles"),
-                resx.get("TabSiteAliases"),
-                resx.get("TabMore")]}
+                    resx.get("TabMessaging"),
+                    resx.get("TabUserProfiles"),
+                    resx.get("TabSiteAliases"),
+                    resx.get("TabMore")]}
                 type="secondary">
                 <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <SiteAliasSettings portalId={props.portalId} cultureCode={props.cultureCode} />
-                <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this)} />
+                <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this) } />
             </Tabs>;
         }
         else {
-            return <Tabs onSelect={this.handleSelect.bind(this)}
+            return <Tabs onSelect={this.handleSelect.bind(this) }
                 tabHeaders={[resx.get("TabDefaultPages"),
-                resx.get("TabMessaging"),
-                resx.get("TabUserProfiles")]}
+                    resx.get("TabMessaging"),
+                    resx.get("TabUserProfiles")]}
                 type="secondary">
                 <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode} />
@@ -68,8 +71,8 @@ export class Body extends Component {
 
         let searchTabHeaders = [resx.get("TabBasicSettings"), resx.get("TabSynonyms"), resx.get("TabIgnoreWords")];
         let searchTabContent = [<BasicSearchSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />,
-        <SynonymsGroups portalId={this.props.portalId} cultureCode={this.props.cultureCode} />,
-        <IgnoreWords portalId={this.props.portalId} cultureCode={this.props.cultureCode} />];
+            <SynonymsGroups portalId={this.props.portalId} cultureCode={this.props.cultureCode} />,
+            <IgnoreWords portalId={this.props.portalId} cultureCode={this.props.cultureCode} />];
 
         if (SearchExtras && SearchExtras.length > 0) {
             SearchExtras.sort(function (a, b) {
@@ -82,7 +85,7 @@ export class Body extends Component {
             });
         }
 
-        return <Tabs onSelect={this.handleSelect.bind(this)}
+        return <Tabs onSelect={this.handleSelect.bind(this) }
             tabHeaders={searchTabHeaders}
             type="secondary">
             {searchTabContent}
@@ -91,27 +94,33 @@ export class Body extends Component {
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
+        let tabHeaders = [];
+        if (canViewSiteInfo)
+            tabHeaders.push([resx.get("TabSiteInfo")]);
+        if (isAdmin) {
+            tabHeaders.push(resx.get("TabSiteBehavior"));
+            tabHeaders.push(resx.get("TabLanguage"));
+            tabHeaders.push(resx.get("TabSearch"));
+        }
+
         return (
             <PersonaBarPageBody backToLinkProps={{
                 text: this.props.referrer && this.props.referrerText,
                 onClick: this.props.backToReferrerFunc
             }}>
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabSiteInfo"),
-                    resx.get("TabSiteBehavior"),
-                    resx.get("TabLanguage"),
-                    resx.get("TabSearch")]}
+                <Tabs onSelect={this.handleSelect.bind(this) }
+                    tabHeaders={tabHeaders}
                     type="primary">
-                    {this.props.showing && <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />}
-                    {this.props.showing && this.renderSiteBehaviorTab()}
-                    {this.props.showing && <LanguageSettings
+                    {this.props.showing && canViewSiteInfo && <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />}
+                    {this.props.showing && isAdmin && this.renderSiteBehaviorTab() }
+                    {this.props.showing && isAdmin && <LanguageSettings
                         portalId={this.props.portalId}
                         openLanguageVerifier={this.props.openLanguageVerifier}
                         openLanguagePack={this.props.openLanguagePack}
                         openLocalizedContent={this.props.openLocalizedContent}
                         cultureCode={this.props.cultureCode}
                         />}
-                    {this.props.showing && this.getSearchSecondaryTabs()}
+                    {this.props.showing && isAdmin && this.getSearchSecondaryTabs() }
                 </Tabs>
             </PersonaBarPageBody>
         );

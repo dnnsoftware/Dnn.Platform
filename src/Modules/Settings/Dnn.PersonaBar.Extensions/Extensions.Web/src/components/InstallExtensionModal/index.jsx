@@ -169,6 +169,9 @@ class InstallExtensionModal extends Component {
             } else if (this.state.selectedLegacyType) {
                 props.dispatch(ExtensionActions.getInstalledPackages(this.state.selectedLegacyType));
             }
+            else if (props.selectedInstalledPackageType) {
+                props.dispatch(ExtensionActions.getInstalledPackages(props.selectedInstalledPackageType));
+            }
         }
         props.onCancel();
         this.cancelInstall();

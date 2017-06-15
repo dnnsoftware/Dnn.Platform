@@ -24,7 +24,7 @@ using Constants = Dnn.PersonaBar.Vocabularies.Components.Constants;
 
 namespace Dnn.PersonaBar.Vocabularies.Services
 {
-    [MenuPermission(Scope = ServiceScope.Admin)]
+    [MenuPermission(MenuName = Constants.MenuIdentifier)]
     public class VocabulariesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             try
             {
                 int total = 0;
-                var vocabularies = _controller.GetVocabularies(pageIndex, pageSize, scopeTypeId, out total).Select(v => new
+                var vocabularies = _controller.GetVocabularies(PortalId, pageIndex, pageSize, scopeTypeId, out total).Select(v => new
                 {
                     v.VocabularyId,
                     v.Name,
@@ -79,6 +79,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns>Id of the new added vocabulary</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage CreateVocabulary(VocabularyDto vocabularyDto)
         {
             try
@@ -111,13 +112,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage UpdateVocabulary(VocabularyDto vocabularyDto)
         {
             try
             {
                 if (_controller.IsSystemVocabulary(vocabularyDto.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
 
                 var vocabulary = new Vocabulary(vocabularyDto.Name, vocabularyDto.Description);
@@ -147,13 +149,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage DeleteVocabulary(int vocabularyId)
         {
             try
             {
                 if (_controller.IsSystemVocabulary(vocabularyId))
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = "CannotDeleteSystemVocabulary" });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = "CannotDeleteSystemVocabulary" });
                 }
                 _controller.DeleteVocabulary(new Vocabulary() { VocabularyId = vocabularyId });
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -238,13 +241,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns>Id of the new created term</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage CreateTerm(TermDto termDto)
         {
             try
             {
                 if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 if (termDto.ParentTermId != Null.NullInteger)
@@ -273,13 +277,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage UpdateTerm(TermDto termDto)
         {
             try
             {
                 if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 term.TermId = termDto.TermId;
@@ -309,6 +314,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
         public HttpResponseMessage DeleteTerm(int termId)
         {
             try
@@ -316,7 +322,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 var term = _controller.GetTerm(termId);
                 if (_controller.IsSystemVocabulary(term.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 _controller.DeleteTerm(term);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });

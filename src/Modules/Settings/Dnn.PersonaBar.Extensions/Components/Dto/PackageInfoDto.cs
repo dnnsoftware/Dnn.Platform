@@ -125,16 +125,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
             ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
 
-            var locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
-            var tabId = TabController.GetTabByTabPath(portalId, "//Admin//Extensions", locale.Culture.Name);
-            var tabInfo = TabController.Instance.GetTab(tabId, portalId);
-            var module = tabInfo.Modules.OfType<ModuleInfo>().First();
-            SiteSettingsLink = (module == null)
-                ? ""
-                : Globals.NavigateURL(tabId, "Edit",
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var tabId = portalSettings.ActiveTab.TabID;
+            SiteSettingsLink = Globals.NavigateURL(tabId, "EditExtension",
                     new[]
                     {
-                        $"mid={module.ModuleID}",
                         $"packageid={PackageId}",
                         "Display=editor",
                         "popUp=true",

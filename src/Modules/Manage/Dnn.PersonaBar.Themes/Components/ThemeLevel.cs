@@ -14,8 +14,18 @@ namespace Dnn.PersonaBar.Themes.Components
         Site = 1,
 
         /// <summary>
+        /// Themes only available in current site which saved in portal system directory.
+        /// </summary>
+        SiteSystem = 2,
+
+        /// <summary>
         /// Themes available in all sites.
         /// </summary>
-        Global = 2
+        Global = 4,
+
+        /// <summary>
+        /// All Themes.
+        /// </summary>
+        All = 7
     }
 }

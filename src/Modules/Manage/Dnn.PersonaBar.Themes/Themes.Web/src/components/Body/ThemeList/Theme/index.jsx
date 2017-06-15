@@ -9,21 +9,25 @@ import SvgIcon from "../../SvgIcon";
 import utils from "utils";
 import "./style.less";
 
+let canEdit = false;
+
 class Theme extends Component {
     constructor() {
         super();
         this.state = {};
+        canEdit = utils.params.settings.isHost || utils.params.settings.isAdmin || (utils.params.settings.permissions && utils.params.settings.permissions.EDIT === true);
     }
 
     selectedAsSite() {
         const {props} = this;
         let theme = props.theme;
         let currentTheme = props.currentTheme;
-
         if (theme.type === 0) {
-            return currentTheme.SiteLayout.themeName === theme.packageName;
+            return currentTheme.SiteLayout.themeName === theme.packageName
+                    && currentTheme.SiteLayout.level == theme.level;
         } else {
-            return currentTheme.SiteContainer.themeName === theme.packageName;
+            return currentTheme.SiteContainer.themeName === theme.packageName
+                    && currentTheme.SiteContainer.level == theme.level;
         }
     }
 
@@ -44,7 +48,7 @@ class Theme extends Component {
         let theme = props.theme;
 
         utils.utilities.confirm(Localization.get("ApplyConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function () {
-            props.dispatch(ThemeActions.applyDefaultTheme(theme.packageName));
+            props.dispatch(ThemeActions.applyDefaultTheme(theme.packageName, theme.level));
         });
     }
 
@@ -76,9 +80,9 @@ class Theme extends Component {
         let isHost = utils.params.settings.isHost;
         return <span className="actions">
             <ul className={(isHost || theme.level === 1) ? "" : "short"}>
-                <li onClick={this.previewTheme.bind(this)} title={Localization.get("PreviewTheme")}><SvgIcon name="View" /></li>
-                <li onClick={this.applyDefaultTheme.bind(this)} title={Localization.get("ApplyTheme")}><SvgIcon name="Apply" /></li>
-                {((isHost || theme.level === 1) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this)} title={Localization.get("DeleteTheme")}><SvgIcon name="Trash" /></li>}
+                <li onClick={this.previewTheme.bind(this) } title={Localization.get("PreviewTheme") }><SvgIcon name="View" /></li>
+                {canEdit && <li onClick={this.applyDefaultTheme.bind(this) } title={Localization.get("ApplyTheme") }><SvgIcon name="Apply" /></li>}
+                {((isHost || theme.level === 1 || theme.level === 2) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this) } title={Localization.get("DeleteTheme") }><SvgIcon name="Trash" /></li>}
             </ul>
         </span>;
     }
@@ -90,8 +94,8 @@ class Theme extends Component {
         let className = "thumbnail" + (theme.thumbnail ? "" : " empty");
 
         return <span className={className}>
-            {theme.thumbnail ? <img src={theme.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
-            {this.renderActions()}
+            {theme.thumbnail ? <img src={theme.thumbnail} alt={theme.packageName} /> : <SvgIcon name="EmptyThumbnail" />}
+            {this.renderActions() }
         </span>;
     }
 
@@ -99,8 +103,8 @@ class Theme extends Component {
         const {props} = this;
 
         return (
-            <div className={this.getClassName()}>
-                {this.renderThumbnail()}
+            <div className={this.getClassName() }>
+                {this.renderThumbnail() }
                 <OverflowText text={props.theme.packageName} maxWidth={168} className="title" />
             </div>
         );

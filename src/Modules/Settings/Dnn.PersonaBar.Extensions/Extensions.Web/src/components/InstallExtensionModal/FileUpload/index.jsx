@@ -166,7 +166,7 @@ export default class FileUpload extends Component {
                             onMouseEnter={this.onMouseEnter.bind(this, Localization.get("InstallExtension_UploadAFile"))}
                             onMouseLeave={this.onMouseLeave.bind(this)}>
                             <div dangerouslySetInnerHTML={{ __html: svg }} />
-                            <input type="file" onChange={this.onFileUpload.bind(this)} />
+                            <input type="file" onChange={this.onFileUpload.bind(this)} aria-label="File" />
                         </div>
                     </div>
                     <span>{this.state.text}</span>

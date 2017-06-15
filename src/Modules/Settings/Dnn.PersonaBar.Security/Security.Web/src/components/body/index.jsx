@@ -21,12 +21,17 @@ import util from "../../utils";
 import resx from "../../resources";
 
 let isHost = false;
-
+let isAdmin = false;
+let canViewBasicLoginSettings = false;
+let canViewRegistrationSettings = false;
 export class Body extends Component {
     constructor() {
         super();
         this.handleSelect = this.handleSelect.bind(this);
         isHost = util.settings.isHost;
+        isAdmin = isHost || util.settings.isAdmin;
+        canViewBasicLoginSettings = isHost || isAdmin || util.settings.permissions.BASIC_LOGIN_SETTINGS_VIEW;
+        canViewRegistrationSettings = isHost || isAdmin || util.settings.permissions.REGISTRATION_SETTINGS_VIEW;
     }
 
     handleSelect(index) {
@@ -35,74 +40,21 @@ export class Body extends Component {
     }
 
     renderTabs() {
-        if (isHost) {
-            return <Tabs onSelect={this.handleSelect.bind(this)}
-                tabHeaders={[resx.get("TabLoginSettings"),
-                resx.get("TabMemberAccounts"),
-                resx.get("TabSecurityAnalyzer"),
-                resx.get("TabSecurityBulletins"),
-                resx.get("TabMore")]}
-                type="primary">
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabBasicLoginSettings"),
-                    <div style={{ fontSize: "9pt" }}>
-                        {resx.get("TabIpFilters")}
-                        <Tooltip
-                            messages={[resx.get("GlobalSettingsTab")]}
-                            type="global"
-                            style={{
-                                position: "absolute",
-                                right: -27,
-                                top: 15,
-                                textTransform: "none"
-                            }}
-                            />
-                    </div>
-                    ]}
-                    type="secondary">
-                    <BasicSettings cultureCode={this.props.cultureCode} />
-                    <IpFilters />
-                </Tabs>
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[
-                        <div style={{ fontSize: "9pt" }}>
-                            {resx.get("TabMemberSettings")}
-                            <Tooltip
-                                messages={[resx.get("GlobalSettingsTab")]}
-                                type="global"
-                                style={{
-                                    position: "absolute",
-                                    right: -27,
-                                    top: 15,
-                                    textTransform: "none"
-                                }}
-                                />
-                        </div>,
-                        <div style={{ marginLeft: 35 }}>
-                            <div style={{
-                                width: 35,
-                                height: 3,
-                                position: "absolute",
-                                left: 0,
-                                bottom: -3,
-                                backgroundColor: "white"
-                            }}></div>
-                            {resx.get("TabRegistrationSettings")}
-                        </div>]}
-                    type="secondary">
-                    <MemberManagement />
-                    <RegistrationSettings />
-                </Tabs>
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabAuditChecks"), resx.get("TabScannerCheck"), resx.get("TabSuperuserActivity")]}
-                    type="secondary">
-                    <AuditCheck />
-                    <ScannerCheck />
-                    <SuperuserActivity />
-                </Tabs>
-                <SecurityBulletins />
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabSslSettings"), <div style={{ fontSize: "9pt" }}>{resx.get("TabMoreSecuritySettings")} <Tooltip
+        let securityTabs = [];
+        let tabHeaders = [];
+        let loginSettingTabHeaders = [];
+        let memberAccountsTabHeaders = [];
+        let moreTabHeaders = [];
+        let moreTabs = [];
+        let memberAccountsTabs = [];
+        if (canViewBasicLoginSettings || isHost) {
+            tabHeaders.push([resx.get("TabLoginSettings")]);
+            if (canViewBasicLoginSettings)
+                loginSettingTabHeaders.push(resx.get("TabBasicLoginSettings"));
+            if (isHost) {
+                loginSettingTabHeaders.push(<div style={{ fontSize: "9pt" }}>
+                    {resx.get("TabIpFilters") }
+                    <Tooltip
                         messages={[resx.get("GlobalSettingsTab")]}
                         type="global"
                         style={{
@@ -111,43 +63,111 @@ export class Body extends Component {
                             top: 15,
                             textTransform: "none"
                         }}
-                        /></div>]}
-                    type="secondary">
-                    <SslSettings />
-                    <OtherSettings />
-                </Tabs>
-            </Tabs >;
+                        />
+                </div>);
+            }
         }
-        else {
-            return <Tabs onSelect={this.handleSelect.bind(this)}
-                tabHeaders={[resx.get("TabLoginSettings"),
-                resx.get("TabMemberAccounts"),
-                resx.get("TabMore")]}
-                type="primary">
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabBasicLoginSettings")]}
-                    type="secondary">
-                    <BasicSettings cultureCode={this.props.cultureCode} />
-                </Tabs>
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabRegistrationSettings")]}
-                    type="secondary">
-                    <RegistrationSettings />
-                </Tabs>
-                <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabSslSettings")]}
-                    type="secondary">
-                    <SslSettings />
-                </Tabs>
-            </Tabs>;
+        if (isHost || canViewRegistrationSettings) {
+            tabHeaders.push([resx.get("TabMemberAccounts")]);
+            if (isHost) {
+                memberAccountsTabHeaders.push(<div style={{ fontSize: "9pt" }}>
+                    {resx.get("TabMemberSettings") }
+                    <Tooltip
+                        messages={[resx.get("GlobalSettingsTab")]}
+                        type="global"
+                        style={{
+                            position: "absolute",
+                            right: -27,
+                            top: 15,
+                            textTransform: "none"
+                        }}
+                        />
+                </div>);
+                memberAccountsTabs.push(<MemberManagement />);
+            }
+            if (canViewRegistrationSettings) {
+                memberAccountsTabHeaders.push(<div style={{ marginLeft: (isHost ? 35 : 0) }}>
+                    <div style={{
+                        width: isHost ? 35 : "auto",
+                        height: 3,
+                        position: "absolute",
+                        left: 0,
+                        bottom: -3,
+                        backgroundColor: "white"
+                    }}></div>
+                    {resx.get("TabRegistrationSettings") }
+                </div>);
+                memberAccountsTabs.push(<RegistrationSettings />);
+            }
         }
+        if (isAdmin) {
+            moreTabHeaders.push(resx.get("TabSslSettings"));
+            moreTabs.push(<SslSettings />);
+        }
+        if (isHost) {
+            tabHeaders.push(resx.get("TabSecurityAnalyzer"));
+            tabHeaders.push(resx.get("TabSecurityBulletins"));
+            moreTabHeaders.push(<div style={{ fontSize: "9pt" }}>
+                {resx.get("TabMoreSecuritySettings") }
+                <Tooltip
+                    messages={[resx.get("GlobalSettingsTab")]}
+                    type="global"
+                    style={{
+                        position: "absolute",
+                        right: -27,
+                        top: 15,
+                        textTransform: "none"
+                    }}
+                    /></div>);
+            moreTabs.push(<OtherSettings />);
+        }
+        if (isAdmin) {
+            tabHeaders.push(resx.get("TabMore"));
+        }
+        if (canViewBasicLoginSettings || isHost) {
+            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+                tabHeaders={loginSettingTabHeaders}
+                type="secondary">
+                {canViewBasicLoginSettings && <BasicSettings cultureCode={this.props.cultureCode} />}
+                {isHost && <IpFilters />}
+            </Tabs>);
+        }
+        if (isHost || canViewRegistrationSettings) {
+            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+                tabHeaders={memberAccountsTabHeaders}
+                type="secondary">
+                {memberAccountsTabs}
+            </Tabs>);
+        }
+        if (isHost) {
+            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+                tabHeaders={[resx.get("TabAuditChecks"), resx.get("TabScannerCheck"), resx.get("TabSuperuserActivity")]}
+                type="secondary">
+                <AuditCheck />
+                <ScannerCheck />
+                <SuperuserActivity />
+            </Tabs>);
+            securityTabs.push(<SecurityBulletins />);
+        }
+        if (isAdmin) {
+            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+                tabHeaders={moreTabHeaders}
+                type="secondary">
+                {moreTabs}
+            </Tabs>);
+        }
+        return <Tabs onSelect={this.handleSelect.bind(this) }
+            tabHeaders={tabHeaders}
+            type="primary">
+            {securityTabs}
+        </Tabs >;
     }
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
             <PersonaBarPageBody>
-                {this.renderTabs()}
+                {this.renderTabs() }
             </PersonaBarPageBody>
         );
     }

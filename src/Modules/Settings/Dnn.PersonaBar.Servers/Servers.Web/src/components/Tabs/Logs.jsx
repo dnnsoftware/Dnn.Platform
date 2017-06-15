@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from "react";
+import { Scrollbars } from "react-custom-scrollbars";
 import GridCell from "dnn-grid-cell";
 import Dropdown from "dnn-dropdown";
-import MultiLineInput from "dnn-multi-line-input";
+
 import Localization from "../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LogsTabActions from "../../actions/logsTab";
 import utils from "../../utils";
+
 import "./tabs.less";
 
 class Logs extends Component {
@@ -14,7 +16,6 @@ class Logs extends Component {
         if (this.props.logs.length > 0) {
             return;
         }
-
         this.props.onRetrieveLogsServerInfo();
     }
 
@@ -25,7 +26,7 @@ class Logs extends Component {
     }
 
     render() {
-        const {props} = this;
+        const { props } = this;
 
         return <div className="dnn-servers-info-panel-big logsTab">
             <GridCell columnSize={60} className="log-file-cell">
@@ -37,13 +38,15 @@ class Logs extends Component {
                         value={props.selectedLog}
                         prependWith={Localization.get("Logs_LogFiles")}
                         onSelect={this.props.onSelectedLog}
-                        />}
+                    />}
             </GridCell>
             <div className="clear" />
             <div>
-                <MultiLineInput
-                    value={props.logData}
-                    />
+                <Scrollbars
+                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
+                    style={{ height: 500 }} >
+                    <div className="log-file-display">{props.logData}</div>
+                </Scrollbars>
             </div>
         </div>;
     }

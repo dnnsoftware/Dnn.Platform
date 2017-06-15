@@ -18,8 +18,7 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
+            return true;
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
@@ -27,7 +26,6 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
             return new Dictionary<string, object>
             {
                 {"previewUrl", Globals.NavigateURL()},
-                {"isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser}
             };
         }
     }

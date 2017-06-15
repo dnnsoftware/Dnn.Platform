@@ -64,14 +64,14 @@ class PageLanguage extends Component {
         return (
             <div className="page-language">
                 <div className="page-language-row">
-                    <img src={iconSrc} />
+                    <img src={iconSrc} alt={cultureCode} />
                     <span>{cultureCode}</span>
-                    <a className="icon" href={page.PageUrl} dangerouslySetInnerHTML={{ __html: EyeIcon }}></a>
+                    <a className="icon" href={page.PageUrl} dangerouslySetInnerHTML={{ __html: EyeIcon }} aria-label="View"></a>
                 </div>
                 <div className="page-language-row">
-                    <input type="text" value={page.TabName} onChange={this.onUpdatePages.bind(this, "TabName") } />
-                    <input type="text" value={page.Title} onChange={this.onUpdatePages.bind(this, "Title") } />
-                    <textarea value={page.Description} onChange={this.onUpdatePages.bind(this, "Description") }/>
+                    <input type="text" value={page.TabName} onChange={this.onUpdatePages.bind(this, "TabName") } aria-label="Name" />
+                    <input type="text" value={page.Title} onChange={this.onUpdatePages.bind(this, "Title") } aria-label="Title" />
+                    <textarea value={page.Description} onChange={this.onUpdatePages.bind(this, "Description") } aria-label="Description"/>
                 </div>
                 <div className="page-language-row">
                     <div className="page-language-row-header">

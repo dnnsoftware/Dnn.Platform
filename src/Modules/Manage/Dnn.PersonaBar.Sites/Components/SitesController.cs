@@ -98,19 +98,17 @@ namespace Dnn.PersonaBar.Sites.Components
 
         public IList<HttpAliasDto> FormatPortalAliases(int portalId)
         {
-            var aliases = new List<HttpAliasDto>();
-
-            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
-            foreach (var portalAliasInfo in arr)
+            var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).OrderByDescending(a => a.IsPrimary).FirstOrDefault();
+            if (alias == null)
             {
-                var httpAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
-                var originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"];
-
-                httpAlias = Globals.AddPort(httpAlias, originalUrl?.ToString().ToLowerInvariant() ?? httpAlias);
-                aliases.Add(new HttpAliasDto { Url = portalAliasInfo.HTTPAlias, Link = httpAlias });
+                return null;
             }
 
-            return aliases;
+            var httpAlias = Globals.AddHTTP(alias.HTTPAlias);
+            var originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"];
+
+            httpAlias = Globals.AddPort(httpAlias, originalUrl?.ToString().ToLowerInvariant() ?? httpAlias);
+            return new List<HttpAliasDto> { new HttpAliasDto { Url = alias.HTTPAlias, Link = httpAlias } };
         }
 
         public string FormatExpiryDate(DateTime dateTime)
@@ -230,7 +228,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 WriteEndDocumentOnClose = true
             };
 
-            var filename = (Globals.HostMapPath + request.FileName.Replace("/", @"\")).Replace(@"\\", @"\");
+            var filename = Globals.HostMapPath + request.FileName.Replace("/", @"\");
             if (!filename.EndsWith(".template", StringComparison.InvariantCultureIgnoreCase))
             {
                 filename += ".template";

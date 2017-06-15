@@ -109,7 +109,7 @@ class CreatePortal extends Component {
         let rootDomain = extractDomain(window.location.href);
         let subUrl = value.replace(rootDomain + "/", "");
         if (!isChildSite) {
-            let regex = /[^\/a-z0-9.:]/i;
+            let regex = /[^\/a-z0-9-.:]/i;
             return value === "" || regex.test(value) || value.indexOf(" ") > 0;
         } else {
             let regex = /[^\/a-z0-9_-]/i;
@@ -304,7 +304,7 @@ class CreatePortal extends Component {
                             </GridCell>
                             <GridCell columnSize={45}>
                                 <SingleLineInputWithError
-                                    label={Localization.get("Description.Label")}
+                                    label={Localization.get("Directory")}
                                     className="home-directory"
                                     inputId="home-directory"
                                     value={state.newPortal.HomeDirectory}

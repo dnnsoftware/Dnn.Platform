@@ -107,15 +107,15 @@ class IpFiltersPanelBody extends Component {
                     key={"ipFilter-" + index}
                     closeOnClick={true}
                     openId={this.state.openId}
-                    OpenCollapse={this.toggle.bind(this)}
-                    Collapse={this.collapse.bind(this)}
-                    onDelete={this.onDeleteIpFilter.bind(this, item.IPFilterID)}
+                    OpenCollapse={this.toggle.bind(this) }
+                    Collapse={this.collapse.bind(this) }
+                    onDelete={this.onDeleteIpFilter.bind(this, item.IPFilterID) }
                     id={id}>
-                    <IpFilterEditor
-                        ipFilterId={item.IPFilterID}
-                        Collapse={this.collapse.bind(this)}
-                        onUpdate={this.onUpdateIpFilter.bind(this)}
-                        id={id}
+                        <IpFilterEditor
+                            ipFilterId={item.IPFilterID}
+                            Collapse={this.collapse.bind(this) }
+                            onUpdate={this.onUpdateIpFilter.bind(this) }
+                            id={id}
                         openId={this.state.openId} />
                 </IpFilterRow>
             );
@@ -126,45 +126,45 @@ class IpFiltersPanelBody extends Component {
         let opened = (this.state.openId === "add");
         if (this.props.ipFilters) {
             return (
-                    <div className={styles.ipFilterItems}>
-                        <div className="ip-filter-topbar">
-                            {!this.props.enableIPChecking &&
-                                <div className="warning-container">
-                                    <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
-                                    {resx.get("IPFiltersDisabled")}
-                                </div>
-                            }
-                            <div className="AddItemRow">
-                                <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                                    <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                                    </div> {resx.get("cmdAdd")}
-                                </div>
+                <div className={styles.ipFilterItems}>
+                    <div className="ip-filter-topbar">
+                        {!this.props.enableIPChecking &&
+                            <div className="warning-container">
+                                <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
+                                {resx.get("IPFiltersDisabled") }
                             </div>
-                        </div>
-                        <div className="ip-filter-items-grid">
-                            {this.renderHeader()}
-                                <IpFilterRow
-                                    ipFilterId={"-"}
-                                    ruleType={"-"}
-                                    ipFilter={"-"}
-                                    index={"add"}
-                                    key={"ipFilter-add"}
-                                    closeOnClick={true}
-                                    openId={this.state.openId}
-                                    OpenCollapse={this.toggle.bind(this)}
-                                    Collapse={this.collapse.bind(this)}
-                                    onDelete={this.onDeleteIpFilter.bind(this)}
-                                    id={"add"}
-                                    visible={opened}>
-                                    <IpFilterEditor
-                                        Collapse={this.collapse.bind(this)}
-                                        onUpdate={this.onUpdateIpFilter.bind(this)}
-                                        id={"add"}
-                                        openId={this.state.openId} />
-                                </IpFilterRow>
-                            {this.renderedIpFilters()}
+                        }
+                        <div className="AddItemRow">
+                                <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
+                                    <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                    </div> {resx.get("cmdAdd") }
+                                </div>
                         </div>
                     </div>
+                    <div className="ip-filter-items-grid">
+                        {this.renderHeader() }
+                                <IpFilterRow
+                            ipFilterId={"-"}
+                            ruleType={"-"}
+                            ipFilter={"-"}
+                            index={"add"}
+                            key={"ipFilter-add"}
+                            closeOnClick={true}
+                            openId={this.state.openId}
+                            OpenCollapse={this.toggle.bind(this) }
+                            Collapse={this.collapse.bind(this) }
+                            onDelete={this.onDeleteIpFilter.bind(this) }
+                            id={"add"}
+                                    visible={opened}>
+                            <IpFilterEditor
+                                Collapse={this.collapse.bind(this) }
+                                onUpdate={this.onUpdateIpFilter.bind(this) }
+                                id={"add"}
+                                        openId={this.state.openId} />
+                        </IpFilterRow>
+                        {this.renderedIpFilters() }
+                    </div>
+                </div>
             );
         }
         else return <div />;

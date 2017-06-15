@@ -7,13 +7,15 @@ import Localization from "localization";
 import OverflowText from "dnn-text-overflow-wrapper";
 
 import SvgIcon from "../../../SvgIcon";
-
+import utils from "utils";
 import "./style.less";
 
+let canEdit = false;
 class ThemeFile extends Component {
     constructor() {
         super();
         this.state = {};
+        canEdit = utils.params.settings.isHost || utils.params.settings.isAdmin || (utils.params.settings.permissions && utils.params.settings.permissions.EDIT === true);
     }
 
     selectedAsSite() {
@@ -90,12 +92,12 @@ class ThemeFile extends Component {
 
         return <span className="actions">
             {!this.selectedAsSite() ?
-                <a href="#" className="set-site" onClick={this.setSiteTheme.bind(this)}>
-                    {type == 0 ? Localization.get("SetSiteLayout") : Localization.get("SetSiteContainer")}
+                <a href="#" className="set-site" onClick={this.setSiteTheme.bind(this) }>
+                    {type == 0 ? Localization.get("SetSiteLayout") : Localization.get("SetSiteContainer") }
                 </a> : null}
             {!this.selectedAsEdit() ?
-                <a href="#" className={"set-edit" + (!this.selectedAsSite() ? " split" : "")} onClick={this.setEditTheme.bind(this)}>
-                    {type == 0 ? Localization.get("SetEditLayout") : Localization.get("SetEditContainer")}
+                <a href="#" className={"set-edit" + (!this.selectedAsSite() ? " split" : "") } onClick={this.setEditTheme.bind(this) }>
+                    {type == 0 ? Localization.get("SetEditLayout") : Localization.get("SetEditContainer") }
                 </a> : null}
         </span>;
     }
@@ -107,12 +109,12 @@ class ThemeFile extends Component {
         let className = "thumbnail" + (themeFile.thumbnail ? "" : " empty");
 
         return <span className={className}>
-            {themeFile.thumbnail ? <img src={themeFile.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
+            {themeFile.thumbnail ? <img src={themeFile.thumbnail} alt={themeFile.name} /> : <SvgIcon name="EmptyThumbnail" />}
             <span className="status">
                 <span className="status-site"><SvgIcon name="Site" /></span>
                 <span className="status-edit"><SvgIcon name="Edit" /></span>
             </span>
-            {this.renderActions()}
+            {canEdit && this.renderActions() }
 
         </span>;
     }
@@ -121,8 +123,8 @@ class ThemeFile extends Component {
         const {props} = this;
 
         return (
-            <li className={this.getClassName()}>
-                {this.renderThumbnail()}
+            <li className={this.getClassName() }>
+                {this.renderThumbnail() }
                 <OverflowText text={props.themeFile.name} maxWidth={80} className="title" />
             </li>
         );

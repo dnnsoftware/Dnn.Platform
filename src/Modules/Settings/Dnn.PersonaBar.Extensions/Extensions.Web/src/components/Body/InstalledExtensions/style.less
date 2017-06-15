@@ -1,3 +1,4 @@
+@import "~dnn-global-styles/index";
 .extension-list {
     .filter-dropdown {
         width: auto;
@@ -8,6 +9,27 @@
                     white-space: nowrap;
                 }
             }
+        }
+    }
+
+    & > .filter-section{
+        float: none;
+    }
+
+    .loading-extensions{
+        width: 550px;
+        margin: 58px auto 100px auto;
+
+        h2{
+            font-size: 28px;
+            text-align: center;
+            color: #333;
+        }
+        p{
+            text-align: center;
+            font-size: 14px;
+            color: #808080;
+            margin-top: 13px;
         }
     }
 }

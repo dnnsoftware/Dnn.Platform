@@ -483,29 +483,8 @@
   <data name="CancelWithoutSaving.Text" xml:space="preserve">
     <value>Are you sure you want to close? Any changes will be lost.</value>
   </data>
-  <data name="Error_EmptyTabName.Text" xml:space="preserve">
-    <value>The page name can't be empty.</value>
-  </data>
-  <data name="Error_PathDuplicateWithAlias.Text" xml:space="preserve">
-    <value>There is a site domain identical to your page path.</value>
-  </data>
-  <data name="Error_TabExists.Text" xml:space="preserve">
-    <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
-  </data>
-  <data name="Error_TabRecycled.Text" xml:space="preserve">
-    <value>A page with this name exists in the Recycle Bin.  To restore this page use the Recycle Bin.</value>
-  </data>
-  <data name="Error_UrlPathCleaned.Text" xml:space="preserve">
-    <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.&amp;lt;br&amp;gt;[NOTE: The illegal characters list is the following: &amp;lt;&amp;gt;\?:&amp;amp;=+|%# ]</value>
-  </data>
-  <data name="Error_UrlPathNotUnique.Text" xml:space="preserve">
-    <value>The submitted URL is not available as there is another page already use this URL.</value>
-  </data>
-  <data name="Error_StartDateAfterEndDate.Text" xml:space="preserve">
-    <value>The start date cannot be after end date.</value>
-  </data>
   <data name="PathDuplicateWithAlias.Text" xml:space="preserve">
-    <value>There is a site domain identical to your page path.</value>
+    <value>There is already a page with the same name, {0} at the same URL path {1}.</value>
   </data>
   <data name="TabExists.Text" xml:space="preserve">
     <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
@@ -728,5 +707,83 @@
   </data>
   <data name="PageDeletedMessage.Text" xml:space="preserve">
     <value>Page deleted successfully</value>
+  </data>
+  <data name="DisableLink.Text" xml:space="preserve">
+    <value>Disable Page</value>
+  </data>
+  <data name="DisableLink_tooltip.Text" xml:space="preserve">
+    <value>If the page is disabled it cannot be clicked in any navigation menu. This option is used to provide place-holders for child menu items.</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="AddRole.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddRolePlaceHolder.Text" xml:space="preserve">
+    <value>Begin typing to add a role</value>
+  </data>
+  <data name="AddUser.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddUserPlaceHolder.Text" xml:space="preserve">
+    <value>Begin typing to add a user</value>
+  </data>
+  <data name="AllGroups.Text" xml:space="preserve">
+    <value>[All Roles]</value>
+  </data>
+  <data name="EditTab.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EmptyRole.Text" xml:space="preserve">
+    <value>Add a role to set permissions by role</value>
+  </data>
+  <data name="EmptyUser.Text" xml:space="preserve">
+    <value>Add a user to set permissions by user</value>
+  </data>
+  <data name="FilterByGroup.Text" xml:space="preserve">
+    <value>Filter By Group:</value>
+  </data>
+  <data name="GlobalGroups.Text" xml:space="preserve">
+    <value>[Global Roles]</value>
+  </data>
+  <data name="PermissionsByRole.Text" xml:space="preserve">
+    <value>PERMISSIONS BY ROLE</value>
+  </data>
+  <data name="PermissionsByUser.Text" xml:space="preserve">
+    <value>PERMISSIONS BY USER</value>
+  </data>
+  <data name="Role.Text" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="Status_Hidden.Text" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="Status_Visible.Text" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ViewTab.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="SiteDefault.Text" xml:space="preserve">
+    <value>Site Default</value>
+  </data>
+  <data name="ClearPageCache.Text" xml:space="preserve">
+    <value>Clear Cache - This Page</value>
+  </data>
+  <data name="lblCachedItemCount.Text" xml:space="preserve">
+    <value>Current Cache Count: {0} variations for this page</value>
+  </data>
+  <data name="cacheDuration.ErrorMessage">
+    <value>Cache Duration must be an integer.</value>
+  </data>
+  <data name="cacheMaxVaryByCount.ErrorMessage">
+    <value>Vary By Limit must be an integer.</value>
   </data>
 </root>

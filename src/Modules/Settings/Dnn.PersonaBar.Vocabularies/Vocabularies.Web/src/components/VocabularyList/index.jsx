@@ -187,6 +187,7 @@ class VocabularyListComponent extends Component {
                             totalTermCount={props.totalTermCount}
                             index={index}
                             type={term.Type}
+                            scopeType={term.ScopeType}
                             onDeleteTerm={this.onDeleteTerm.bind(this)}
                             parentTerms={vocabularyList} />
                     </GridSystem>

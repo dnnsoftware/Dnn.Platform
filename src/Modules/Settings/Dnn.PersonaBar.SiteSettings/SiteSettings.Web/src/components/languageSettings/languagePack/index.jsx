@@ -46,7 +46,7 @@ class LanguagePackPanelBody extends Component {
                     return {
                         label: <div style={{ float: "left", display: "flex" }}>
                             <div className="language-flag">
-                                <img src={item.Icon} />
+                                <img src={item.Icon} alt={item.NativeName} />
                             </div>
                             <div className="language-name">{item.NativeName}</div>
                         </div>, value: item.Code
@@ -56,7 +56,7 @@ class LanguagePackPanelBody extends Component {
                     return {
                         label: <div style={{ float: "left", display: "flex" }}>
                             <div className="language-flag">
-                                <img src={item.Icon} />
+                                <img src={item.Icon} alt={item.EnglishName} />
                             </div>
                             <div className="language-name">{item.EnglishName}</div>
                         </div>, value: item.Code

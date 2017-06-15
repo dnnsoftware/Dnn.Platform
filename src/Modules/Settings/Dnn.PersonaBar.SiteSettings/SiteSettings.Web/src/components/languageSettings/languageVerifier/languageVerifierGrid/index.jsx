@@ -50,7 +50,7 @@ class LanguageVerifierGridPanel extends Component {
             <div>
                 <div className="verifier-grid">
                     <div className="language-flag">
-                        <img src={props.icon} />
+                        <img src={props.icon} alt={props.language + (props.isDefault ? "**" : "")} />
                     </div>
                     <div className="language-name">{props.language + (props.isDefault ? "**" : "")}</div>
                     {props.isDefault

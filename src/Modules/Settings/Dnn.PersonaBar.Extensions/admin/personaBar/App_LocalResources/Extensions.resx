@@ -667,7 +667,7 @@
     <value>This flag indicates whether the module control supports modal popups.</value>
   </data>
   <data name="AddModuleControl_SupportsPopups.Label" xml:space="preserve">
-    <value>Supprots Popups?</value>
+    <value>Supports Popups?</value>
   </data>
   <data name="AddModuleControl_Title.HelpText" xml:space="preserve">
     <value>Enter a title for this control. This will be displayed in the Module Header if supported in the theme.</value>
@@ -1204,5 +1204,23 @@ Common issues with bad installation files:
   </data>
   <data name="BackToExtensions.Text" xml:space="preserve">
     <value>Back To Extensions</value>
+  </data>
+  <data name="ModuleUsageTitle.Text" xml:space="preserve">
+    <value>Module Usage for {0}</value>
+  </data>
+  <data name="PagesFromSite.Text" xml:space="preserve">
+    <value>Showing Pages from Site:</value>
+  </data>
+  <data name="ModuleUsageDetail.Text" xml:space="preserve">
+    <value>This module is used on {0} {1} page(s):</value>
+  </data>
+  <data name="NoModuleUsageDetail.Text" xml:space="preserve">
+    <value>This module does not exist on any {0} pages.</value>
+  </data>
+  <data name="Loading.Text" xml:space="preserve">
+    <value>One sec...We are fetching your extensions</value>
+  </data>
+  <data name="Loading.Tooltip" xml:space="preserve">
+    <value>Your extensions will be here in a just a moment</value>
   </data>
 </root>

@@ -392,10 +392,10 @@
     <value>User name is required.</value>
   </data>
   <data name="PortalDeletionDenied.Text" xml:space="preserve">
-    <value>Portal deletion not allowed.</value>
+    <value>Site deletion not allowed.</value>
   </data>
   <data name="PortalNotFound.Text" xml:space="preserve">
-    <value>Portal not found.</value>
+    <value>Site not found.</value>
   </data>
   <data name="LoadMore.Button" xml:space="preserve">
     <value>Load More</value>
@@ -414,5 +414,20 @@
   </data>
   <data name="ViewSite.Text" xml:space="preserve">
     <value>View Site</value>
+  </data>
+  <data name="SiteExport.Text" xml:space="preserve">
+    <value>Site Export</value>
+  </data>
+  <data name="SiteImport.Text" xml:space="preserve">
+    <value>Site Import</value>
+  </data>
+  <data name="AddNewSite.Text" xml:space="preserve">
+    <value>Add New Site</value>
+  </data>
+  <data name="Sites.Text" xml:space="preserve">
+    <value>Sites</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
   </data>
 </root>

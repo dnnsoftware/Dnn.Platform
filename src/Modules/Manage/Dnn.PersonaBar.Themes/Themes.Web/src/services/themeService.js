@@ -59,9 +59,9 @@ class ThemeService {
         sf.post("RestoreTheme?language=" + utils.utilities.getCulture(), {}, callback, errorCallback);
     }
 
-    applyDefaultTheme(themeName, callback, errorCallback) {
+    applyDefaultTheme(themeName, level, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("ApplyDefaultTheme?language=" + utils.utilities.getCulture(), { themeName: themeName }, callback, errorCallback);
+        sf.post("ApplyDefaultTheme?language=" + utils.utilities.getCulture(), { themeName: themeName, level: level }, callback, errorCallback);
     }
 
     deleteTheme(theme, callback, errorCallback) {

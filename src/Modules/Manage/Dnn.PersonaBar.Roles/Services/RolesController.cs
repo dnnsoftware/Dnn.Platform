@@ -26,7 +26,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Roles.Services
 {
-    [MenuPermission(Scope  = ServiceScope.Admin)]
+    [MenuPermission(MenuName  = Components.Constants.MenuName)]
     public class RolesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RolesController));
@@ -68,6 +68,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage SaveRole(RoleDto roleDto, [FromUri] bool assignExistUsers)
         {
             try
@@ -143,6 +144,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage DeleteRole(RoleDto roleDto)
         {
             var role = RoleController.Instance.GetRoleById(PortalId, roleDto.Id);
@@ -198,6 +200,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage SaveRoleGroup(RoleGroupDto roleGroupDto)
         {
             try
@@ -250,6 +253,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage DeleteRoleGroup(RoleGroupDto roleGroupDto)
         {
             var roleGroup = RoleController.GetRoleGroup(PortalId, roleGroupDto.Id);
@@ -356,6 +360,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage AddUserToRole(UserRoleDto userRoleDto, bool notifyUser, bool isOwner)
         {
             try
@@ -416,6 +421,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage RemoveUserFromRole(UserRoleDto userRoleDto)
         {
             try

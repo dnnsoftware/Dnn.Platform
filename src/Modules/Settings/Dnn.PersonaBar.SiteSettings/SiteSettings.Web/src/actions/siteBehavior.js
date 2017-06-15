@@ -547,6 +547,80 @@ const siteBehaviorActions = {
                 data: { profileProperties }
             });
         };
+    },
+    getListInfo(listName, portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getListInfo(listName, portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LIST_INFO,
+                    data: {
+                        enableSortOrder: data.EnableSortOrder,
+                        entries: data.Entries
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateListEntry(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateListEntry(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_LIST_ENTRY,
+                    data: {
+                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    deleteListEntry(entryId, portalId, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.deleteListEntry(entryId, portalId, data => {
+                dispatch({
+                    type: ActionTypes.DELETED_SITESETTINGS_LIST_ENTRY,
+                    data: {
+                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    updateListEntryOrders(payload, object, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateListEntryOrders(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_LIST_ENTRY_ORDER,
+                    data: {
+                        entries: object
+
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

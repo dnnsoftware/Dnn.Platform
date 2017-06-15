@@ -1,7 +1,8 @@
 @import "~dnn-global-styles/index";
 .property-editor {
     float: left;
-    margin: 30px;
+    padding: 30px;
+    width: 100%;
     .property-editor-page {
         display: block;
     }
@@ -23,9 +24,13 @@
         .dnn-dropdown {
             width: 100% !important;
             box-sizing: border-box;
+            li {
+                float: left;
+                width: 100%;
+            }
             .language-flag {
                 float: left;
-                height: 16px;
+                height: 18px;
             }
             .language-name {
                 float: left;
@@ -37,6 +42,10 @@
         }
         .dnn-switch-container {
             float: right;
+        }
+        .dnn-ui-common-multi-line-input {
+            min-height: inherit;
+            height: 110px;
         }
         input {
             width: auto;

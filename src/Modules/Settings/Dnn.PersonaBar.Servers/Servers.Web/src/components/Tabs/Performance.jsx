@@ -207,7 +207,7 @@ class Performance extends Component {
                         <InfoBlock label={localization.get(versionLocalizationKey)}
                             text={version} />
                     </div>
-                    <Button type="secondary" style={{ marginBottom: "75px" }} disable={props.incrementingVersion}
+                    <Button type="secondary" style={{ marginBottom: "40px" }} disable={props.incrementingVersion}
                         onClick={this.onIncrementVersion.bind(this)}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
                 <div className="rightPane borderSeparation">

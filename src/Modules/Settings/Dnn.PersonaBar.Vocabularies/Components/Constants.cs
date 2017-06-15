@@ -30,5 +30,6 @@ namespace Dnn.PersonaBar.Vocabularies.Components
         internal const string VocabularyValidationError = "VocabularyValidationError";
         internal const string TermValidationError = "TermValidationError";
         internal const string TermValidationPropertyName = "TermName";
+        internal const string MenuIdentifier = "Dnn.Vocabularies";
     }
 }

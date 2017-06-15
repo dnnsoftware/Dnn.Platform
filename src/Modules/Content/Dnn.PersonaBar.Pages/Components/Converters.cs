@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
+using Dnn.PersonaBar.Themes.Components.DTO;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -61,6 +63,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var fileId = file?.FileId;
             var fileUrl = file?.Folder;
             var fileName = file?.FileName;
+            var themeFile = GetThemeFileFromSkinSrc(tab.SkinSrc);
 
             return new T
             {
@@ -85,6 +88,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 PageType = pageType,
                 CreatedOnDate = tab.CreatedOnDate,
                 IncludeInMenu = tab.IsVisible,
+                DisableLink = tab.DisableLink,
                 CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
                 StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?) null,
                 EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?) null,
@@ -101,22 +105,24 @@ namespace Dnn.PersonaBar.Pages.Components
                 PermanentRedirect = tab.PermanentRedirect,
                 LinkNewWindow = LinkNewWindow(tab),
                 PageStyleSheet = (string)tab.TabSettings["CustomStylesheet"],
-                ThemeName = GetThemeNameFromSkinSrc(tab.SkinSrc),
+                ThemeName = themeFile?.ThemeName,
+                ThemeLevel = (int)(themeFile?.Level ?? ThemeLevel.Site),
                 SkinSrc = tab.SkinSrc,
                 ContainerSrc = tab.ContainerSrc,
                 HasChild = pageManagementController.TabHasChildren(tab)
             };
         }
         
-        private static string GetThemeNameFromSkinSrc(string skinSrc)
+        private static ThemeFileInfo GetThemeFileFromSkinSrc(string skinSrc)
         {
             if (string.IsNullOrWhiteSpace(skinSrc))
             {
-                return null;
+                skinSrc = PortalSettings.Current.DefaultPortalSkin;
             }
+
             var themeController = ThemesController.Instance;
             var layout = themeController.GetThemeFile(PortalSettings.Current, skinSrc, ThemeType.Skin);
-            return layout?.ThemeName;
+            return layout;
         }
 
         private static IFileInfo GetFileRedirection(string tabUrl)

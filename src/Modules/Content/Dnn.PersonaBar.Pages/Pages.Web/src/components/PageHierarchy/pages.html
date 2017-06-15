@@ -26,7 +26,7 @@
             <span class="summary">
                 <span class="child-count" data-bind="html: childCount, style: {visibility: childCount > 0 ? 'visible' : 'hidden'}"></span>
                 <span class="subtitle field-name" data-bind="html: name, attr: {title: name}"></span>
-                <span class="status" data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }, attr: { title: (status == 'Hidden' ? $root.resx.Hidden : status) }"><label></label></span>
+                <span class="status" data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }, attr: { title: (status == 'Hidden' ? $root.resx.Hidden : status) }"><label>Status</label></span>
 
                 <span class="actions">
                     <span class="buttons">

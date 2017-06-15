@@ -8,10 +8,12 @@ import {
     visiblePanelActions as VisiblePanelActions
 } from "../actions";
 import resx from "../resources";
-
+import util from "utils";
+let canEdit = false;
 class Root extends Component {
     constructor() {
         super();
+        canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
     }
 
     navigateMap(page, index, event) {
@@ -28,8 +30,10 @@ class Root extends Component {
         return (
             <div className="roles-app">
                 <PersonaBarPage isOpen={true}>
-                    <PersonaBarPageHeader title={resx.get("Roles")}>
-                        <Button type="primary" size="large" onClick={this.onCreate.bind(this)}>{resx.get("Create")}</Button>
+                    <PersonaBarPageHeader title={resx.get("Roles") }>
+                        {canEdit &&
+                            <Button type="primary" size="large" onClick={this.onCreate.bind(this) }>{resx.get("Create") }</Button>
+                        }
                     </PersonaBarPageHeader>
                     <RolesPanel ref="rolesPanel" />
                 </PersonaBarPage>

@@ -20,7 +20,6 @@ using System.Web.Http;
 using System.Xml;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Security.Components;
 using Dnn.PersonaBar.Security.Services.Dto;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
@@ -39,12 +38,11 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Security.Services
 {
-    [MenuPermission(Scope = ServiceScope.Admin)]
+    [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController _controller = new Components.SecurityController();
-        private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx");
         private const string BULLETIN_XMLNODE_PATH = "//channel/item";
 
         #region Login Settings
@@ -56,6 +54,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="cultureCode"></param>
         /// <returns>Portal's basic login settings</returns>
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView)]
         public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
         {
             try
@@ -123,6 +122,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit)]
         public HttpResponseMessage UpdateBasicLoginSettings(UpdateBasicLoginSettingsRequest request)
         {
             try
@@ -235,8 +235,8 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [RequireHost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage UpdateIpFilter(UpdateIpFilterRequest request)
         {
             try
@@ -248,12 +248,12 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if ((ipf.IPAddress == "127.0.0.1" || ipf.IPAddress == "localhost" || ipf.IPAddress == "::1" || ipf.IPAddress == "*") && ipf.RuleType == 2)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteLocalhost.Text", LocalResourcesFile)));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteLocalhost.Text", Components.Constants.LocalResourcesFile)));
                 }
 
                 if (IPFilterController.Instance.IsAllowableDeny(HttpContext.Current.Request.UserHostAddress, ipf) == false)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteIPInUse.Text", LocalResourcesFile)));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteIPInUse.Text", Components.Constants.LocalResourcesFile)));
                 }
 
                 if (request.IPFilterID > 0)
@@ -281,8 +281,8 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="filterId"></param>
         /// <returns></returns>
         [HttpPost]
-        [RequireHost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage DeleteIpFilter(int filterId)
         {
             try
@@ -292,7 +292,7 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if (IPFilterController.Instance.CanIPStillAccess(HttpContext.Current.Request.UserHostAddress, currentWithDeleteRemoved) == false)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDelete.Text", LocalResourcesFile)));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDelete.Text", Components.Constants.LocalResourcesFile)));
                 }
                 else
                 {
@@ -360,8 +360,8 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [RequireHost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage UpdateMemberSettings(UpdateMemberSettingsRequest request)
         {
             try
@@ -391,19 +391,20 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Portal's registration settings</returns>
         [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView)]
         public HttpResponseMessage GetRegistrationSettings()
         {
             try
             {
                 var userRegistrationOptions = new List<KeyValuePair<string, int>>();
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("None", LocalResourcesFile), 0));
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Private", LocalResourcesFile), 1));
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Public", LocalResourcesFile), 2));
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Verified", LocalResourcesFile), 3));
+                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("None", Components.Constants.LocalResourcesFile), 0));
+                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Private", Components.Constants.LocalResourcesFile), 1));
+                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Public", Components.Constants.LocalResourcesFile), 2));
+                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Verified", Components.Constants.LocalResourcesFile), 3));
 
                 var registrationFormTypeOptions = new List<KeyValuePair<string, int>>();
-                registrationFormTypeOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Standard", LocalResourcesFile), 0));
-                registrationFormTypeOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Custom", LocalResourcesFile), 1));
+                registrationFormTypeOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Standard", Components.Constants.LocalResourcesFile), 0));
+                registrationFormTypeOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Custom", Components.Constants.LocalResourcesFile), 1));
 
                 var activeLanguage = LocaleController.Instance.GetDefaultLocale(PortalId).Code;
                 var portal = PortalController.Instance.GetPortal(PortalId, activeLanguage);
@@ -499,6 +500,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit)]
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
             try
@@ -508,13 +510,13 @@ namespace Dnn.PersonaBar.Security.Services
                     var setting = request.RegistrationFields;
                     if (!setting.Contains("Email"))
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("NoEmail", LocalResourcesFile));
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("NoEmail", Components.Constants.LocalResourcesFile));
                     }
 
                     if (!setting.Contains("DisplayName") && request.RequireUniqueDisplayName)
                     {
                         PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFormType", "0", false);
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("NoDisplayName", LocalResourcesFile));
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("NoDisplayName", Components.Constants.LocalResourcesFile));
                     }
 
                     PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFields", setting);
@@ -523,7 +525,7 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if (request.UseEmailAsUsername && UserController.GetDuplicateEmailCount() > 0)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("ContainsDuplicateAddresses", LocalResourcesFile));
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("ContainsDuplicateAddresses", Components.Constants.LocalResourcesFile));
                 }
                 else
                 {
@@ -567,6 +569,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Portal's ssl settings</returns>
         [HttpGet]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetSslSettings()
         {
             try
@@ -608,6 +611,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage UpdateSslSettings(UpdateSslSettingsRequest request)
         {
             try
@@ -671,11 +675,11 @@ namespace Dnn.PersonaBar.Security.Services
                     // connectivity issues
                     if (PortalSecurity.IsInRoles(PortalSettings.AdministratorRoleId.ToString()))
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("RequestFailed_Admin.Text", LocalResourcesFile), sRequest));
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("RequestFailed_Admin.Text", Components.Constants.LocalResourcesFile), sRequest));
                     }
                     else
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("RequestFailed_User.Text", LocalResourcesFile) + oExc.Message);
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("RequestFailed_User.Text", Components.Constants.LocalResourcesFile) + oExc.Message);
                     }
                 }
 
@@ -738,6 +742,7 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Settings = new
                         {
+                            Host.DisplayCopyright,
                             Host.ShowCriticalErrors,
                             Host.DebugMode,
                             Host.RememberCheckbox,
@@ -772,6 +777,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
+                HostController.Instance.Update("Copyright", request.DisplayCopyright ? "Y" : "N", false);
                 HostController.Instance.Update("ShowCriticalErrors", request.ShowCriticalErrors ? "Y" : "N", false);
                 HostController.Instance.Update("DebugMode", request.DebugMode ? "True" : "False", false);
                 HostController.Instance.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
@@ -812,7 +818,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new AuditChecks();
+                var audit = new Components.AuditChecks();
                 var results = audit.DoChecks();
                 var response = new
                 {
@@ -881,8 +887,8 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var foundinfiles = Utility.SearchFiles(term);
-                var foundindb = Utility.SearchDatabase(term);
+                var foundinfiles = Components.Utility.SearchFiles(term);
+                var foundindb = Components.Utility.SearchDatabase(term);
                 var response = new
                 {
                     Success = true,
@@ -913,12 +919,12 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var highRiskFiles = Utility.GetLastModifiedExecutableFiles().Select(f => new
+                var highRiskFiles = Components.Utility.GetLastModifiedExecutableFiles().Select(f => new
                 {
                     FilePath = GetFilePath(f.FullName),
                     LastWriteTime = DisplayDate(f.LastWriteTime)
                 });
-                var lowRiskFiles = Utility.GetLastModifiedFiles().Select(f => new
+                var lowRiskFiles = Components.Utility.GetLastModifiedFiles().Select(f => new
                 {
                     FilePath = GetFilePath(f.FullName),
                     LastWriteTime = DisplayDate(f.LastWriteTime)

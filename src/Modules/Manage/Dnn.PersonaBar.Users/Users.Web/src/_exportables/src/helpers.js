@@ -1,31 +1,19 @@
 import utilities from "utils";
+import Moment from "moment";
 
 export function formatDate(dateValue, longformat) {
     if (!dateValue) {
         return "";
     }
     let date = new Date(dateValue);
-    let dayValue = date.getDate(), 
-        monthValue = date.getMonth() + 1,
-        yearValue = date.getFullYear(),
-        hourValue = date.getHours(),
-        minsValue = date.getMinutes(),
-        secsValue = date.getSeconds();
-    let amPMValue = date.getHours() >= 12 ? "PM" : "AM";
-    hourValue = hourValue >= 12 ? hourValue - 12 : hourValue;
+    let yearValue = date.getFullYear();
     if (yearValue < 1900) {
         return "-";
     }
 
-    let returnValue = pad2(monthValue) + "/" + pad2(dayValue) + "/" + yearValue;
-    if (longformat === true) {
-        returnValue += " " + pad2(hourValue) + ":" + pad2(minsValue) + ":" + pad2(secsValue) + " " + amPMValue;
-    }
-    return returnValue;
+    return Moment(dateValue).locale(utilities.getCulture()).format(longformat === true ? "LLL" : "L");
 }
-function pad2(number) {
-     return (number < 10 ? '0' : '') + number;
-}
+
 export function validateEmail(value) {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(value);

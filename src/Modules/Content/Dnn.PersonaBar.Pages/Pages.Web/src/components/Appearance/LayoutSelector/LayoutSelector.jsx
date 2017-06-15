@@ -18,7 +18,7 @@ class LayoutSelector extends Component {
         }
         return selectedLayout.name === layout.name;
     }
-    
+
     getSelectedIndex() {
         const { selectedLayout, layouts } = this.props;
         if (!selectedLayout) {
@@ -29,34 +29,37 @@ class LayoutSelector extends Component {
 
     getLayoutCards() {
         const { layouts, noThemeSelected } = this.props;
-                 
+        let {defaultPortalLayout} = this.props;
+        defaultPortalLayout = defaultPortalLayout === null ? "" : defaultPortalLayout;
+
         if (noThemeSelected) {
-            return <div className="no-appearance-items">{localization.get("NoThemeSelectedForLayouts")}</div>;
+            return <div className="no-appearance-items">{localization.get("NoThemeSelectedForLayouts") }</div>;
         }
         if (layouts.length === 0) {
-            return <div className="no-appearance-items">{localization.get("NoLayouts")}</div>;
+            return <div className="no-appearance-items">{localization.get("NoLayouts") }</div>;
         }
         return layouts.map(layout => {
-            return <Card 
+            return <Card
                 cardId={layout.name}
-                onClick={this.onClickLayout.bind(this)}
-                hoverText={localization.get("SetPageLayout")}
+                onClick={this.onClickLayout.bind(this) }
+                hoverText={localization.get("SetPageLayout") }
                 label={layout.name}
+                isSiteDefault={defaultPortalLayout.toString().toLowerCase() === layout.path.toString().toLowerCase() }
                 image={layout.thumbnail}
-                selected={this.isSelected(layout)}
+                selected={this.isSelected(layout) }
                 size="small" />;
         });
     }
 
-    render() {    
-        const selectedIndex = this.getSelectedIndex();    
+    render() {
+        const selectedIndex = this.getSelectedIndex();
         return (
             <div>
-                <Label 
-                    label={localization.get("Layout")} 
-                    tooltipMessage={localization.get("PageLayoutTooltip")} />
+                <Label
+                    label={localization.get("Layout") }
+                    tooltipMessage={localization.get("PageLayoutTooltip") } />
                 <Gallery size="small" scrollToIndex={selectedIndex}>
-                    {this.getLayoutCards()}
+                    {this.getLayoutCards() }
                 </Gallery>
             </div>
         );
@@ -67,7 +70,8 @@ LayoutSelector.propTypes = {
     noThemeSelected: PropTypes.bool.isRequired,
     selectedLayout: PropTypes.object,
     layouts: PropTypes.array.isRequired,
-    onSelectLayout: PropTypes.func.isRequired
+    onSelectLayout: PropTypes.func.isRequired,
+    defaultPortalLayout: PropTypes.string
 };
 
 export default LayoutSelector;

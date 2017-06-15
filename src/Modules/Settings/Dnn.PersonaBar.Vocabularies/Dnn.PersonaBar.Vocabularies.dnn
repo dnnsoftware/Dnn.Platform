@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.PersonaBar.Vocabularies" type="PersonaBar" version="01.02.00">
+    <package name="Dnn.PersonaBar.Vocabularies" type="PersonaBar" version="01.04.00">
       <friendlyName>Dnn.PersonaBar.Vocabularies</friendlyName>
       <description></description>
       <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
@@ -38,7 +38,7 @@
           <menu>
             <identifier>Dnn.Vocabularies</identifier>
             <moduleName>Vocabularies</moduleName>
-            <controller>Dnn.PersonaBar.Vocabularies.MenuControllers.VocabulariesMenuController, Dnn.PersonaBar.Vocabularies</controller>
+            <controller></controller>
             <resourceKey>nav_Vocabularies</resourceKey>
             <path>vocabularies</path>
             <parent>Settings</parent>
@@ -47,6 +47,15 @@
           </menu>
         </component>
       </components>
+      <eventMessage>
+        <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+        <processorCommand>UpgradeModule</processorCommand>
+        <attributes>
+            <businessControllerClass>Dnn.PersonaBar.Vocabularies.Components.BusinessController, Dnn.PersonaBar.Vocabularies</businessControllerClass>
+            <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+            <upgradeVersionsList>01.04.00</upgradeVersionsList>
+        </attributes>
+      </eventMessage>
     </package>
   </packages>
 </dotnetnuke>

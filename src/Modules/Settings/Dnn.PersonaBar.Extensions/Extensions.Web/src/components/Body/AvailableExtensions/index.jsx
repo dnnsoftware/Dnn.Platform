@@ -15,7 +15,8 @@ class AvailableExtensions extends Component {
     constructor() {
         super();
         this.state = {
-            doingOperation: false
+            doingOperation: false,
+            loading: false
         };
     }
     checkIfAvailablePackageTypesEmpty(props) {
@@ -26,9 +27,19 @@ class AvailableExtensions extends Component {
         return !props.availablePackages || props.availablePackages.length === 0;
     }
     componentWillMount() {
-        const { props } = this;
+        const { props, state } = this;
+
         if (!this.checkIfAvailablePackageTypesEmpty(props) && this.checkIfAvailablePackagesEmpty(props) && props.selectedAvailablePackageType === "") {
-            props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackageTypes[0].Type));
+            this.setState({loading: true}, () => {
+                props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackageTypes[0].Type, () => {
+                    this.setState({loading: false});
+                }));
+            });
+        }
+    }
+    componentWillReceiveProps(props) {
+        if(props.availablePackages && props.availablePackages.length > 0){
+            this.setState({loading: false});
         }
     }
 
@@ -45,7 +56,11 @@ class AvailableExtensions extends Component {
     }
     onFilterSelect(option) {
         const {props} = this;
-        props.dispatch(ExtensionActions.getAvailablePackages(option.value));
+        this.setState({loading: true}, () => {
+            props.dispatch(ExtensionActions.getAvailablePackages(option.value, () => {
+                this.setState({loading: false});
+            }));
+        });
     }
 
     onInstall(name, event) {
@@ -87,11 +102,20 @@ class AvailableExtensions extends Component {
         }));
     }
 
+    renderLoading(){
+        /* eslint-disable react/no-danger */
+        return <div className="loading-extensions">
+            <h2>{Localization.get("Loading")}</h2>
+            <p>{Localization.get("Loading.Tooltip")}</p>
+            <div dangerouslySetInnerHTML={{ __html: require("!raw!./../../../img/fetching.svg") }} />
+        </div>;
+    }
+
     render() {
-        const {props} = this;
+        const {props, state} = this;
         return (
             <GridCell className="extension-list">
-                <GridCell className="collapse-section">
+                <GridCell className="collapse-section filter-section">
                     <DropdownWithError className="filter-dropdown" onSelect={this.onFilterSelect.bind(this)} options={props.availablePackageTypes && props.availablePackageTypes.map((_package) => {
                         return {
                             label: _package.DisplayName,
@@ -102,8 +126,8 @@ class AvailableExtensions extends Component {
                         value={props.selectedAvailablePackageType}
                         labelType="inline" />
                 </GridCell>
-
-                {(props.availablePackages && props.availablePackages.length > 0) &&
+                {state.loading && this.renderLoading()}
+                {(props.availablePackages && props.availablePackages.length > 0 && !state.loading) &&
                     <ExtensionList
                         packages={props.availablePackages}
                         doingOperation={this.state.doingOperation}

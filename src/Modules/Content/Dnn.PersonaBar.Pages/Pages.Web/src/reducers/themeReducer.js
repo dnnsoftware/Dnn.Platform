@@ -24,6 +24,7 @@ export default function themeReducer(state = {
                 defaultPortalLayout: action.data.defaultPortalLayout,
                 defaultPortalContainer: action.data.defaultPortalContainer,
                 defaultPortalThemeName: action.data.defaultPortalThemeName,
+                defaultPortalThemeLevel: action.data.defaultPortalThemeLevel,
                 retrievedThemes: true,
                 retrievingThemes: false
             };

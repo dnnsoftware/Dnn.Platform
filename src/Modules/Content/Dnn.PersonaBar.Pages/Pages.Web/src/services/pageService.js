@@ -136,12 +136,22 @@ const PageService = function () {
     
     const openPageInEditMode = function (id, url) {
         const api = getPagesApi();
-        return api.get("EditModeForPage", { id: id })
+        return api.post("EditModeForPage?id=" + id, {})
             .then(() => 
                 utils.getUtilities().closePersonaBar(function () {
                     window.top.location.href = url;
                 })
             );
+    };
+
+    const getCachedPageCount = function (cacheProvider, pageId) {
+        const api = getPagesApi();
+        return api.get("GetCachedItemCount", { cacheProvider: cacheProvider, tabId: pageId });
+    };
+
+    const clearCache = function (cacheProvider, pageId) {
+        const api = getPagesApi();
+        return api.post("ClearCache?cacheProvider=" + cacheProvider + "&tabId=" + pageId);
     };
 
     return {
@@ -155,7 +165,9 @@ const PageService = function () {
         getPageUrlPreview,
         copyAppearanceToDescendantPages,
         copyPermissionsToDescendantPages,
-        openPageInEditMode
+        openPageInEditMode,
+        getCachedPageCount,
+        clearCache
     };
 };
 

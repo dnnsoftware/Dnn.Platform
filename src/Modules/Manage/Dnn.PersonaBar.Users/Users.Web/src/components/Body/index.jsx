@@ -15,7 +15,7 @@ import utilities from "utils";
 
 const searchParameters = {
     searchText: "",
-    filter: 5,
+    filter: 0,
     pageIndex: 0,
     pageSize: 10,
     sortColumn: "",
@@ -82,7 +82,7 @@ class Body extends Component {
     }
     canAddUser()
     {
-        return appSettings.applicationSettings.settings.permissions.ADD_USER;
+        return appSettings.applicationSettings.settings.isAdmin || appSettings.applicationSettings.settings.permissions.ADD_USER;
     }
     render() {
         const {props, state} = this;

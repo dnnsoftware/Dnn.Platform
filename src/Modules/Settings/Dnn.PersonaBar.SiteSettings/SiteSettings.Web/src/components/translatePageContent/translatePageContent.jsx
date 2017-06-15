@@ -218,7 +218,7 @@ class TranslatePageContent extends Component {
             <div className="language-settings-page-list">
                 {language && <div className="top-block">
                     <div className="language-block">
-                        <img className="float-left" src={language.Icon} />
+                        <img className="float-left" src={language.Icon} alt={language.NativeName} />
                         <span >{language.NativeName}</span>
                         {state.basicSettings && <span className="float-right">{state.basicSettings.PortalName}</span>}
                     </div>

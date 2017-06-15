@@ -166,7 +166,8 @@ class CreateUserBox extends Component {
                                 inputStyle={{ marginBottom: 25 }}  tabIndex={3}/>
                             <Switch value={state.UserDetails.authorize}
                                 label={Localization.get("Approved")} title={Localization.get("Approved.Help")}
-                                onChange={this.onChange.bind(this, "authorize") }  tabIndex={5}/>
+                                onChange={this.onChange.bind(this, "authorize") }  tabIndex={5}
+                                onText={Localization.get("SwitchOn")} offText={Localization.get("SwitchOff")}/>
                         </div>
                         <div>
                             <SingleLineInputWithError value={state.UserDetails.lastName}
@@ -189,7 +190,8 @@ class CreateUserBox extends Component {
                                 inputStyle={{ marginBottom: 25 }}  tabIndex={4}/>
                             <Switch value={state.UserDetails.randomPassword} title={Localization.get("Random.Help")}
                                 label={Localization.get("Random") + ":" }
-                                onChange={this.onChange.bind(this, "randomPassword") }  tabIndex={6}/>
+                                onChange={this.onChange.bind(this, "randomPassword") }  tabIndex={6}
+                                onText={Localization.get("SwitchOn")} offText={Localization.get("SwitchOff")}/>
                         </div>
                     </GridSystem>
                     {!state.UserDetails.randomPassword && <GridCell><hr/></GridCell>}

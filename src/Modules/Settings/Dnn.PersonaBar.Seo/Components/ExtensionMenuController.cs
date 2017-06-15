@@ -19,7 +19,6 @@ namespace Dnn.PersonaBar.Seo.Components
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();
-            settings.Add("isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser);
             return settings;
         }
     }

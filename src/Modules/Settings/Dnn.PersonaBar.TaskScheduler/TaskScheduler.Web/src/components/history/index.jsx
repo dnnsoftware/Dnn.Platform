@@ -15,13 +15,13 @@ let pageSizeOptions = [];
 let tableFields = [];
 
 class HistoryPanelBody extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             taskHistoryList: [],
             scheduleId: -1,
             pageIndex: 0,
-            pageSize: 10,
+            pageSize: props.pageSize ? props.pageSize : 10,
             totalCount: 0
         };
     }
@@ -140,7 +140,8 @@ HistoryPanelBody.propTypes = {
     taskHistoryList: PropTypes.array,
     scheduleId: PropTypes.number,
     title: PropTypes.string,
-    totalCount: PropTypes.number
+    totalCount: PropTypes.number,
+    pageSize: PropTypes.number
 };
 
 function mapStateToProps(state) {

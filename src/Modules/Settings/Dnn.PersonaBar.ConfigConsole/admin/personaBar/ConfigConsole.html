@@ -12,11 +12,11 @@
             <div class="configForm">
                 <div class="form-item">
                     <div>
-                        <select data-bind="options: configs, value: config, optionsCaption: caption()"></select>
+                        <select data-bind="options: configs, value: config, optionsCaption: caption()" aria-label="Files"></select>
                     </div>
                 </div>
                 <div class="form-item">
-                    <textarea class="config-xml" data-bind="value: configxml"></textarea>
+                    <textarea class="config-xml" data-bind="value: configxml" aria-label="Content"></textarea>
                 </div>
                 <div class="actions">
                     <button class="create-page dnn-ui-common-button" role="primary" data-bind="html: resx.cmdSave, click: saveConfig"></button>
@@ -28,7 +28,7 @@
                 <div class="form-item">
                     <span class="fileupload-wrapper">
                         <button class="dnn-ui-common-button uploadbtn" role="secondary" data-bind="html: resx.cmdUpload"></button>
-                        <input type="file" />
+                        <input type="file" aria-label="File" />
                     </span>
                     <div class="note">
                         <span class="caption" data-bind="html: resx.plScriptNote"></span>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-item">
-                    <textarea class="script-xml" data-bind="value: mergexml"></textarea>
+                    <textarea class="script-xml" data-bind="value: mergexml" aria-label="Scripts"></textarea>
                 </div>
                 <div class="actions">
                     <button class="create-page dnn-ui-common-button" role="primary" href="#" data-bind="html: resx.cmdExecute, click: mergeConfig"></button>

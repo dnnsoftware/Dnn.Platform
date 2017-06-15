@@ -9,7 +9,7 @@ import ColumnSizes from "../ExtensionColumnSizes";
 const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation}) => (
     <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px 0 20px 20px" }}>
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
-            <img src={_package.packageIcon.replace("~", "")} />
+            <img src={_package.packageIcon.replace("~", "")} alt={_package.friendlyName} />
         </GridCell>
         <GridCell columnSize={ColumnSizes[1]} style={{ padding: "0 35px" }}>
             <span className="package-name">{_package.friendlyName}</span>

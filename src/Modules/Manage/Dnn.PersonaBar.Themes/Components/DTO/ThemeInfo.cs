@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Themes.Components.DTO
 {
@@ -31,8 +32,6 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         public bool CanDelete { get; set; } = true;
 
         [DataMember(Name = "level")]
-        public ThemeLevel Level => Path.Replace("\\", "/").IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
-            ? ThemeLevel.Global
-            : ThemeLevel.Site;
+        public ThemeLevel Level => ThemesController.GetThemeLevel(Path);
     }
 }

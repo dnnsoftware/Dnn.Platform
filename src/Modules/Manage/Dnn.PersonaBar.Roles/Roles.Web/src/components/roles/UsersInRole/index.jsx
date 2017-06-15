@@ -1,4 +1,5 @@
 import React, {Component, PropTypes } from "react";
+import ReactDOM, { findDOMNode } from "react-dom";
 import {debounce} from "throttle-debounce";
 import { connect } from "react-redux";
 import resx from "../../../resources";
@@ -32,6 +33,7 @@ class UsersInRole extends Component {
             loading: false
         };
 
+        this.comboBoxDom =null;
         this.debounceGetSuggestUsers = debounce(500, this.debounceGetSuggestUsers);
     }
     componentWillReceiveProps(newProps) {
@@ -40,6 +42,10 @@ class UsersInRole extends Component {
 
     componentWillMount() {
         this.getUsers();
+    }
+
+    componentDidMount(){
+        findDOMNode(this.comboBoxDom).childNodes[1].setAttribute('aria-label', 'Suggestion');
     }
 
     getUsers() {
@@ -203,6 +209,7 @@ class UsersInRole extends Component {
                     <GridCell columnSize={50}>
                         <span>
                             <Combobox suggest={false}
+                                ref={(dom) => {this.comboBoxDom = dom;}}
                                 placeholder={resx.get("AddUserPlaceHolder") }
                                 open={this.props.matchedUsers.length > 0 }
                                 onToggle={this.onUserSelectorToggle.bind(this) }
