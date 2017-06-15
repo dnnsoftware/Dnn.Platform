@@ -98,10 +98,14 @@
                         </div>
                     </div>
                     <hr />
-                    <ul class="dnnActions dnnClear">
+                    <ul class="dnnForm dnnActions dnnClear">
                         <li>
-                            <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction" resourcekey="Next" />
+                            <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="Next" />
                         </li>
+                        <li id="pnlAcceptTerms" runat="server" class="accept-terms">
+                        <asp:CheckBox ID="chkAcceptTerms" runat="server" />
+                        <asp:Label runat="server" ResourceKey="AcceptTerms" />
+                    </li>
                     </ul>
                 </div>
                 <div class="upgradeInstallation dnnClear" id="upgradeInstallation">
@@ -250,27 +254,43 @@
             //****************************************************************************************
             // EVENT HANDLER FUNCTIONS
             //****************************************************************************************
-            //Next Step
-            $('#<%= continueLink.ClientID %>').click(function () {
-                upgradeWizard.accountInfo = {
-                    username: $('#<%= txtUsername.ClientID %>')[0].value,
-                    password: $('#<%= txtPassword.ClientID %>')[0].value,
-                    dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N"
-                };
-
-                $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
-
-                PageMethods.ValidateInput(upgradeWizard.accountInfo, function (result) {
-                    if (result.Item1) {
-                        $('#<%= lblAccountInfoError.ClientID %>').text('');
-                        upgradeWizard.showInstallationTab();
-                        upgradeWizard.upgrade();
+            var $acceptTerms = $('#<%= chkAcceptTerms.ClientID %>');
+            if ($acceptTerms.length) {
+                $acceptTerms.click(function() {
+                    if (!$(this).is(':checked')) {
+                        $("#<%= continueLink.ClientID %>").addClass('dnnDisabledAction');
                     } else {
-                        $('#<%= lblAccountInfoError.ClientID %>').text(result.Item2);
-                        $('#<%= lblAccountInfoError.ClientID %>').css('display', 'block');
-                        setTimeout(function () { $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none') }, 3000);
+                        $("#<%= continueLink.ClientID %>").removeClass('dnnDisabledAction');
                     }
                 });
+            } else {
+                $("#<%= continueLink.ClientID %>").removeClass('dnnDisabledAction');
+            }
+            //Next Step
+            $('#<%= continueLink.ClientID %>').click(function () {
+                
+                if (!$(this).hasClass('dnnDisabledAction')) {
+                    upgradeWizard.accountInfo = {
+                        username: $('#<%= txtUsername.ClientID %>')[0].value,
+                        password: $('#<%= txtPassword.ClientID %>')[0].value,
+                        dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N",
+                        acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
+                    };
+
+                    $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
+
+                    PageMethods.ValidateInput(upgradeWizard.accountInfo, function(result) {
+                        if (result.Item1) {
+                            $('#<%= lblAccountInfoError.ClientID %>').text('');
+                            upgradeWizard.showInstallationTab();
+                            upgradeWizard.upgrade();
+                        } else {
+                            $('#<%= lblAccountInfoError.ClientID %>').text(result.Item2);
+                            $('#<%= lblAccountInfoError.ClientID %>').css('display', 'block');
+                            setTimeout(function() { $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none') }, 3000);
+                        }
+                    });
+                }
 
                 return false;
             });
