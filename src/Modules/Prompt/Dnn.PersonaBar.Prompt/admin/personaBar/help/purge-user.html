@@ -1,0 +1,38 @@
+<!-- purge-user -->
+<section class="dnn-prompt-inline-help">
+  <a name="purge-user"></a>
+  <h3 class="mono">purge-user</h3>
+  <p class="lead">Permanently deletes the specified user from the portal. The user <strong>must</strong> be deleted already. If you issue a <code>get-user</code> command and the <code>IsDeleted</code> property isn't <code>true</code>, then you will get an error when attempting this command. You must use the <code>delete-user</code> command on the user first.</p>
+
+  <div>
+    <h4>Options</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Flag</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="mono">--id</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td></td>
+        <td>The user's User ID. If the flag is not used, then the user's ID must be the first argument.</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>Permanently Delete a User</h4>
+    <p>Permanently delete's the user with a User ID of 345. If you issue the command: <code>get-user 345</code> you will receive a 'user not found' message. </p>
+    <code class="block">purge-user 345</code>
+    <p>This is the more explicit form of the above code.</p>
+    <code class="block">purge-user --id 345</code>
+  </div>
+
+</section>
+

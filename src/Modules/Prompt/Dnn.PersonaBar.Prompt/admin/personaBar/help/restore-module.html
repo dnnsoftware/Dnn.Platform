@@ -1,0 +1,83 @@
+<!-- restore-module -->
+<section class="dnn-prompt-inline-help">
+  <a name="restore-module"></a>
+  <h3 class="mono">restore-module</h3>
+  <p class="lead">Restores a module from the DNN Recycle Bin</p>
+
+  <div>
+    <h4>Options</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Flag</th>
+        <th>Value</th>
+        <th>Required</th>
+        <th>Default Value</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="mono">--id</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td></td>
+        <td>Explicitly specifies the Module ID of the module to retrieve. Use of the flag is not required. You can simply provide the ID value as the first argument.</td>
+      </tr>
+      <tr>
+        <td class="mono">--pageid</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td></td>
+        <td>The Page ID of the page on which the module you want to restore resided prior to deletion.</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>Restore A Module from the Recycle Bin</h4>
+    <code class="block">restore-module 359 --pageid 71</code>
+
+    <h4>Results</h4>
+    <table class="command-result-tbl">
+      <tr>
+        <td>ModuleId</td>
+        <td>:</td>
+        <td>358</td>
+      </tr>
+      <tr>
+        <td>Title</td>
+        <td>:</td>
+        <td>My Module</td>
+      </tr>
+      <tr>
+        <td>ModuleName</td>
+        <td>:</td>
+        <td>DNN_HTML</td>
+      </tr>
+      <tr>
+        <td>FriendlyName</td>
+        <td>:</td>
+        <td>HTML</td>
+      </tr>
+      <tr>
+        <td>ModuleDefId</td>
+        <td>:</td>
+        <td>120</td>
+      </tr>
+      <tr>
+        <td>TabModuleId</td>
+        <td>:</td>
+        <td>105</td>
+      </tr>
+      <tr>
+        <td>AddedToPages</td>
+        <td>:</td>
+        <td>41, 71</td>
+      </tr>
+      <tr>
+        <td colspan="3">Successfully restored the module.</td>
+      </tr>
+    </table>
+  </div>
+
+</section>

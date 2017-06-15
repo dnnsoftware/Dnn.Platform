@@ -1,0 +1,94 @@
+<!-- set-task -->
+<section class="dnn-prompt-inline-help">
+  <a name="set-task"></a>
+  <h3 class="mono">set-task</h3>
+  <p class="lead">Set or update properties on the specified Scheduled task.</p>
+
+  <h4>Options</h4>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="mono">--id</td>
+      <td>integer</td>
+      <td>Yes</td>
+      <td></td>
+      <td>The Schedule ID of the task you want to update. You can avoid explicitly typing the <span class="mono">--id</span> flag by just passing the Schedule ID as the first argument.</td>
+    </tr>
+    <tr>
+      <td class="mono">--enabled</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td></td>
+      <td>When true, the specified task will be enabled. When false, the specified task will be disabled.</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h4>Disable the &quot;Purge Schedule History&quot; Task</h4>
+  <code class="block">
+    set-task 3 --enabled false
+  </code>
+  OR
+  <code class="block">
+    set-task --id 3 --enabled false
+  </code>
+
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <tr>
+      <td>ScheduleId</td>
+      <td>:</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>FreindlyName</td>
+      <td>:</td>
+      <td>Purge Schedule History</td>
+    </tr>
+    <tr>
+      <td>TypeName</td>
+      <td>:</td>
+      <td>DotNetNuke.Services.Scheduling.PurgeScheduleHistory, DOTNETNUKE</td>
+    </tr>
+    <tr>
+      <td>NextStart</td>
+      <td>:</td>
+      <td>2017-01-02T09:08:55.2867143-07:00</td>
+    </tr>
+    <tr>
+      <td>Enabled</td>
+      <td>:</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>CatchUp</td>
+      <td>:</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>Created</td>
+      <td>:</td>
+      <td>0001-01-01T00:00:00</td>
+    </tr>
+    <tr>
+      <td>StartDate</td>
+      <td>:</td>
+      <td>2017-01-02T09:47:31.79</td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        1 task updated
+      </td>
+    </tr>
+  </table>
+
+</section>

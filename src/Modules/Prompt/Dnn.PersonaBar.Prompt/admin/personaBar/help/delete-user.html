@@ -1,0 +1,51 @@
+<!-- delete-user -->
+<section class="dnn-prompt-inline-help">
+  <a name="delete-user"></a>
+  <h3 class="mono">delete-user</h3>
+  <p class="lead">Deletes the specified user from the portal. After deletion, the user can still be recovered. To delete the user permanently, follow this command with the <code>purge-user</code> command.</p>
+
+  <div>
+    <h4>Options</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Flag</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="mono">--id</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td></td><td>The user's User ID. If the flag is not used, then the user's ID must be the first argument.</td>
+      </tr>
+      <tr>
+        <td class="mono">--notify</td>
+        <td>boolean</td>
+        <td>No</td>
+        <td>false</td>
+        <td>If true, the &quot;Unregister User&quot; notification email will be sent (typically to the site Admin)</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>Delete a User</h4>
+    <p>This delete's the user with a User ID of 345. The user is not permanently deleted at this point. It is in a kind of recycle bin. You can use <code>get-user 345</code> to see the user details and you'll see that the <code>IsDeleted</code> property is now True.  So, you can use the <code>restore-user</code> command to recover the user record or you can recover the user using DNN's user interface. If you want to permanently delete the user, then you'll need to execute a second command: <code>purge-user</code></p>
+    <code class="block">delete-user 345</code>
+    <p>This is the more explicit form of the above code.</p>
+    <code class="block">delete-user --id 345</code>
+
+    <h4>Delete a User and Send Notification</h4>
+    <p>This delete's the user with a User ID of 345 and sends an email notification. Like above, the user is not permanently deleted at this point. If you want to permanently delete the user, then you'll need to execute a second command: <code>purge-user</code></p>
+    <code class="block">delete-user 345 --notify true</code>
+    <p>This is the more explicit form of the above code.</p>
+    <code class="block">delete-user --id 345 --notify true</code>
+
+  </div>
+
+</section>
+
