@@ -1,0 +1,28 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+/* Cantarus_PolyDeploy v0.1.0                               */
+/************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
+/*********************************************************************************************************/
+
+IF NOT EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        CREATE TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]
+        (
+            [APIUserID]     [INT] NOT NULL IDENTITY,
+            [Name]          [VARCHAR](64) NOT NULL UNIQUE,
+            [APIKey]        [VARCHAR](32) NOT NULL UNIQUE,
+            [EncryptionKey] [VARCHAR](32) NOT NULL UNIQUE
+        )
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers] PRIMARY KEY CLUSTERED ([APIUserID])
+    END
+GO

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Cantarus.PolyDeploy" type="Module" version="01.00.00">
+    <package name="Cantarus.PolyDeploy" type="Module" version="00.01.00">
       <friendlyName>Cantarus PolyDeploy</friendlyName>
       <description>Cantarus PolyDeploy module</description>
       <iconFile>Images/cantarus.png</iconFile>
@@ -13,7 +13,7 @@
       <license></license>
       <releaseNotes></releaseNotes>
       <dependencies>
-        <dependency type="CoreVersion">06.01.05</dependency>
+        <dependency type="CoreVersion">07.00.00</dependency>
       </dependencies>
 
       <components>
@@ -63,6 +63,20 @@
             </moduleDefinitions>
           </desktopModule>
         </component>
+
+        <component type="Script">
+          <scripts>
+            
+            <!-- v0.1.0 -->
+            <script type="Install">
+              <path>/SqlDataProviders</path>
+              <name>00.01.00.SqlDataProvider</name>
+              <version>00.01.00</version>
+            </script>
+            
+          </scripts>
+        </component>
+        
         <component type="Assembly">
           <assemblies>
             <basePath>bin</basePath>
