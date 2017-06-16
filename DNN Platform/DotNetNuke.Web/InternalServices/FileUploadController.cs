@@ -364,7 +364,7 @@ namespace DotNetNuke.Web.InternalServices
             public bool Unzip { get; set; }
             public string Filter { get; set; }
             public bool IsHostMenu { get; set; }
-            public int PortalId { get; set; }
+            public int PortalId { get; set; } = -1;
         }
 
         [DataContract]
@@ -564,7 +564,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                portalId = GetActivePortalId();
+                portalId = PortalSettings.PortalId;
             }
 
             var provider = new MultipartMemoryStreamProvider();
@@ -698,7 +698,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    portalId = GetActivePortalId();
+                    portalId = PortalSettings.PortalId;
                 }
 
                 result = UploadFile(responseStream, portalId, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
@@ -806,15 +806,6 @@ namespace DotNetNuke.Web.InternalServices
 
             var mygroup = GetMyPortalGroup();
             return (mygroup != null && mygroup.Any(p => p.PortalID == portalId));
-        }
-
-        private int GetActivePortalId()
-        {
-            var portalId = -1;
-            if (!TabController.CurrentPage.IsSuperTab)
-                portalId = PortalSettings.PortalId;
-
-            return portalId;
         }
     }
 
