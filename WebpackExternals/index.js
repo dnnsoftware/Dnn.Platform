@@ -15,8 +15,8 @@ module.exports = {
         "react-modal": "window.dnn.nodeModules.ReactModal",
         "react-custom-scrollbars": "window.dnn.nodeModules.ReactCustomScrollBars",
         "react-tooltip": "window.dnn.nodeModules.ReactTooltip",
-	"react-widgets": "window.dnn.nodeModules.ReactWidgets",
-	"throttle-debounce": "window.dnn.nodeModules.ThrottleDebounce",
+    "react-widgets": "window.dnn.nodeModules.ReactWidgets",
+    "throttle-debounce": "window.dnn.nodeModules.ThrottleDebounce",
         "moment": "window.dnn.nodeModules.Moment",
         "es6-promise": "window.dnn.nodeModules.Es6Promise",
         "dnn-button": "window.dnn.nodeModules.CommonComponents.Button",
@@ -55,10 +55,11 @@ module.exports = {
         "dnn-tags": "window.dnn.nodeModules.CommonComponents.Tags",
         "dnn-tree-control-interactor": "window.dnn.nodeModules.CommonComponents.TreeController",
         "dnn-text-overflow-wrapper": "window.dnn.nodeModules.CommonComponents.TextOverflowWrapper",
+        "dnn-text-overflow-wrapper-new": "window.dnn.nodeModules.CommonComponents.TextOverflowWrapper",
         "dnn-tooltip": "window.dnn.nodeModules.CommonComponents.Tooltip",
         "dnn-modal": "window.dnn.nodeModules.CommonComponents.Modal",
         "dnn-page-picker": "window.dnn.nodeModules.CommonComponents.PagePicker",
         "dnn-searchable-tags": "window.dnn.nodeModules.CommonComponents.SearchableTags",
         "dnn-slider": "window.dnn.nodeModules.CommonComponents.NumberSlider",
-	"dnn-folder-picker": "window.dnn.nodeModules.CommonComponents.FolderPicker"
+    "dnn-folder-picker": "window.dnn.nodeModules.CommonComponents.FolderPicker"
 };

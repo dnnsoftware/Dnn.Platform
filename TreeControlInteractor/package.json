@@ -1,6 +1,6 @@
 {
   "name": "dnn-tree-control-interactor",
-  "version": "0.0.19",
+  "version": "0.0.21",
   "description": "Renders are selectable stateful tree",
   "main": "index.js",
   "scripts": {
@@ -44,6 +44,7 @@
     "react-portal-tooltip": "^1.1.4"
   },
   "dependencies": {
+    "dnn-text-overflow-wrapper-new": "0.0.4",
     "shortid": "^2.2.8"
   }
 }
