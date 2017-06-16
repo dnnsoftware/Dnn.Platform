@@ -56,11 +56,12 @@ export class ArrowIcon extends Component {
         const marginTop = styles.margin({ top: -3 });
         const padding = styles.padding({ all: 2 });
         const baseStyles = style(this.direction);
+        const height = {height:"20px"};
         return (
             <div
                 dangerouslySetInnerHTML={{ __html: arrow_svg }}
                 id={this.id}
-                style={merge(marginTop, padding, baseStyles)}
+                style={merge(marginTop, padding, baseStyles, height)}
                 ref={this.id}
                 src={arrow_svg}
                 alt="arrow_icon"
