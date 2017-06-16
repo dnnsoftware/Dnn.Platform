@@ -512,7 +512,7 @@
     <value>Gabarit</value>
   </data>
   <data name="AcceptTerms.Required" xml:space="preserve">
-    <value>You need accept the terms to continue install process.</value>
+    <value>Accept the terms of the license agreement to continue.</value>
   </data>
   <data name="AcceptTerms.Text" xml:space="preserve">
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>

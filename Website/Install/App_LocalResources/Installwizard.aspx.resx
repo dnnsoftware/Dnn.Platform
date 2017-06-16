@@ -550,6 +550,6 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
   <data name="AcceptTerms.Required" xml:space="preserve">
-    <value>You need accept the terms to continue install process.</value>
+    <value>Accept the terms of the license agreement to continue.</value>
   </data>
 </root>
