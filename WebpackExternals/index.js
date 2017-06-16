@@ -55,7 +55,7 @@ module.exports = {
         "dnn-tags": "window.dnn.nodeModules.CommonComponents.Tags",
         "dnn-tree-control-interactor": "window.dnn.nodeModules.CommonComponents.TreeController",
         "dnn-text-overflow-wrapper": "window.dnn.nodeModules.CommonComponents.TextOverflowWrapper",
-        "dnn-text-overflow-wrapper-new": "window.dnn.nodeModules.CommonComponents.TextOverflowWrapper",
+        "dnn-text-overflow-wrapper-new": "window.dnn.nodeModules.CommonComponents.TextOverflowWrapperNew",
         "dnn-tooltip": "window.dnn.nodeModules.CommonComponents.Tooltip",
         "dnn-modal": "window.dnn.nodeModules.CommonComponents.Modal",
         "dnn-page-picker": "window.dnn.nodeModules.CommonComponents.PagePicker",
