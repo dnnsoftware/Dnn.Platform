@@ -46,7 +46,6 @@ class TextOverflowWrapperNew extends Component {
                     data-tip data-for={state.id}
                     style={props.hotspotStyles || hotspotStyles}
                     id={state.id} >
-                    FJDIKFJDKFJKDFJL
                 </div>
                 <ReactTooltip
                     id={state.id}
