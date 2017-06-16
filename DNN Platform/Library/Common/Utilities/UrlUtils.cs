@@ -311,6 +311,7 @@ namespace DotNetNuke.Common.Utilities
                 return url;
             }
 
+            url = url.Replace("\\", "/");
             if (url.ToLowerInvariant().Contains("data:"))
             {
                 url = string.Empty;
