@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return "dll";
+                return "dll, pdb";
             }
         }
 		
