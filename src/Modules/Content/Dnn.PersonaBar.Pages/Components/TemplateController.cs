@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 var xmlDoc = new XmlDocument();
                 try
                 {
-                    // open the XML file
+                    // open the XML filew
                     var fileId = Convert.ToInt32(templateId);
                     var templateFile = FileManager.Instance.GetFile(fileId);
                     xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
@@ -198,6 +198,12 @@ namespace Dnn.PersonaBar.Pages.Components
                         {
                             tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", "");
                         }
+                        bool isSecure;
+                        if (bool.TryParse(XmlUtils.GetNodeValue(tabNode, "issecure", ""), out isSecure))
+                        {
+                            tab.IsSecure = isSecure;
+                        }
+
                         TabController.Instance.UpdateTab(tab);
                     }
                     tabIndex++;

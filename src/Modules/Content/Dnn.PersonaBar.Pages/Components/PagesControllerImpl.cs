@@ -1056,7 +1056,7 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.IconFileLarge = sourceTab.IconFileLarge;
             tab.PageHeadText = sourceTab.PageHeadText;
             tab.RefreshInterval = sourceTab.RefreshInterval;
-
+            tab.IsSecure = sourceTab.IsSecure;
             _tabController.UpdateTab(tab);
 
             //update need tab settings.
