@@ -76,6 +76,7 @@ class PageDetails extends Component {
                         <Label label={Localization.get("Tags")}/>
                         <Tags 
                             tags={tags} 
+                            addTagsPlaceholder={Localization.get("addTagsPlaceholder")}
                             onUpdateTags={this.onChangeTags.bind(this)}/>
                     </GridCell>
                     <GridCell className="right-column input-cell">

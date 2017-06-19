@@ -786,4 +786,7 @@
   <data name="cacheMaxVaryByCount.ErrorMessage">
     <value>Vary By Limit must be an integer.</value>
   </data>
+  <data name="addTagsPlaceholder.Text" xml:space="preserve">
+    <value>Add Tags</value>
+  </data>
 </root>
