@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import TreeControl from "./TreeControl";
 import {IconSelector} from "./icons/IconSelector";
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import "./styles.less";
 
@@ -22,18 +23,28 @@ export default class TreeControlInteractor extends Component {
         this.init();
     }
 
+    componentDidUpdate(){
+        const {scrollbars} = this.refs;
+        if (scrollbars.getClientWidth() > 200) {
+            scrollbars.scrollToRight();
+        }
+        scrollbars.scrollToBottom();
+
+    }
+
     init() {
 
         const ExportInitialSelection = () => {
-            this.export();
+            const selection = this.generateSelectionObject(this.state.tabs);
+            this.props.OnSelect(selection);
         };
 
         this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
             const tabs = [response.Results];
-            tabs[0].CheckedState=2;
             this.setState({ tabs: tabs }, ()=> {
                 ExportInitialSelection();
             });
+            
         });
 
     }
@@ -54,7 +65,6 @@ export default class TreeControlInteractor extends Component {
                 const condition = parseInt(tab.ParentTabId) === parseInt(parentTab.TabId);
                 condition ? parentTab.ChildTabs.push(tab) : null;
             });
-
         };
 
         this.props.getDescendantPortalTabs(this.PortalTabsParameters, ParentTabId, (response) => {
@@ -140,7 +150,6 @@ export default class TreeControlInteractor extends Component {
     }
 
     updateTree(tabData) {
-
         let newState = null;
         const capture = (tab, copy) => {
             tab = JSON.parse(JSON.stringify(tabData));
@@ -233,30 +242,43 @@ export default class TreeControlInteractor extends Component {
         parents = filterOutIfAllSelected(parents, parents);
         const exports = parents.concat(children);
         this.props.OnSelect(exports);
+
     }
 
 
     render() {
         return (
-            <TreeControl
-                icon_type="arrow_bullet"
-                tabs={this.state.tabs}
-                export={this.export}
-                PortalTabsParameters={this.PortalTabsParameters}
-                getDescendantPortalTabs={this.requestDescendantTabs.bind(this)}
-                fullyChecked={this.fullyChecked}
-                individuallyChecked={this.individuallyChecked}
-                unchecked={this.unchecked}
-                updateTree={this.updateTree.bind(this)}
-                reAlignTree={this.reAlignTree.bind(this)}
-                findParent={this.findParent.bind(this)}
-            />
+            <Scrollbars
+                    autoHeight
+                    autoHeightMin={405}
+                    autoHeightMax={405}
+                    style={{width:340, maxWidth:"100%"}}
+                    ref="scrollbars">
+
+                <TreeControl
+                    characterLimit={this.props.characterLimit}
+                    selectedColor={this.props.selectedColor}
+                    icon_type="arrow_bullet"
+                    tabs={this.state.tabs}
+                    export={this.export}
+                    PortalTabsParameters={this.PortalTabsParameters}
+                    getDescendantPortalTabs={this.requestDescendantTabs.bind(this)}
+                    fullyChecked={this.fullyChecked}
+                    individuallyChecked={this.individuallyChecked}
+                    unchecked={this.unchecked}
+                    updateTree={this.updateTree.bind(this)}
+                    reAlignTree={this.reAlignTree.bind(this)}
+                    findParent={this.findParent.bind(this)}
+                />
+            </Scrollbars>
         );
 
     }
 }
 
 TreeControlInteractor.propTypes = {
+    selectedColor: PropTypes.string.isRequired,
+    characterLimit: PropTypes.number.isRequired,
     PortalTabsParameters: PropTypes.object.isRequired,
     OnSelect: PropTypes.func.isRequired,
     PortalTabParameters: PropTypes.object.isRequired,

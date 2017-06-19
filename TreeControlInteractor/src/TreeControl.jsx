@@ -279,95 +279,114 @@ export default class TreeControl extends Component {
             };
             const clr = color();
 
-            return (
-                <span style={merge(margin, padding, nowrap, clr, bold)}>
-                    {name}
-                    <TextOverflowWrapperNew
-                        text={name}
-                        border={true}
-                        className="page-picker-tooltip-styles"/>
-                </span>
-            );
+            const renderName = () => {
+                switch (true) {
+                    case name.length > charLimit:
+                        return (
+                            <span>
+                                { name }
+                                <TextOverflowWrapperNew
+                                    text= { tab.Name }
+                                    border = { true}
+                                    className = "page-picker-tooltip-styles" />
+                            </span>
+                        );
+                    default:
+                        return (
+                            <span>
+                                {name}
+                                <div></div>
+                            </span>
+                        );
+
+            }
+};
+
+return (
+    <span style={merge(margin, padding, nowrap, clr, bold)}>
+        {renderName()}
+    </span>
+);
         })();
-        return render;
+return render;
     }
 
-    render_li(tabs) {
-        const render = (() => {
-            return tabs.map(tab => {
-                const tabName = this.render_tabName(tab);
-                const checkbox = this.render_ListCheckbox(tab);
-                const bullet = this.render_ListBullet.call(this, tab, this.expandParent.bind(this, tab));
-                const tree = this.render_tree(tab.ChildTabs);
-                const anyChildrenSelected = (tab) => {
-                    const ChildTabs = tab.ChildTabs;
-                    const left = () => {
-                        const trueCheckedState = [];
-                        const AreChildrenChecked = (t) => {
-                            const condition = t.CheckedState !== this.props.unchecked;
-                            condition ? trueCheckedState.push(true) : trueCheckedState.push(false);
-                        };
-                        this._mapToChildTabs(tab, AreChildrenChecked);
-                        const bool = trueCheckedState.indexOf(true) !== -1 ? true : false;
-                        return bool;
+render_li(tabs) {
+    const render = (() => {
+        return tabs.map(tab => {
+            const tabName = this.render_tabName(tab);
+            const checkbox = this.render_ListCheckbox(tab);
+            const bullet = this.render_ListBullet.call(this, tab, this.expandParent.bind(this, tab));
+            const tree = this.render_tree(tab.ChildTabs);
+            const anyChildrenSelected = (tab) => {
+                const ChildTabs = tab.ChildTabs;
+                const left = () => {
+                    const trueCheckedState = [];
+                    const AreChildrenChecked = (t) => {
+                        const condition = t.CheckedState !== this.props.unchecked;
+                        condition ? trueCheckedState.push(true) : trueCheckedState.push(false);
                     };
-                    const right = () => null;
-                    return ChildTabs.length ? left() : right();
+                    this._mapToChildTabs(tab, AreChildrenChecked);
+                    const bool = trueCheckedState.indexOf(true) !== -1 ? true : false;
+                    return bool;
                 };
+                const right = () => null;
+                return ChildTabs.length ? left() : right();
+            };
 
-                const li = () => (
-                    <li
-                        key={tab.Name}>
-                        {tab.HasChildren ? bullet : null}
-                        {checkbox}
-                        {tabName}
-                        {tree}
-                    </li>);
-                const parent = this.props.findParent(tab);
-                const show = parent.IsOpen || parseInt(tab.TabId) === -1 ? li() : null;
+            const li = () => (
+                <li
+                    key={tab.Name}>
+                    {tab.HasChildren ? bullet : null}
+                    {checkbox}
+                    {tabName}
+                    {tree}
+                </li>);
+            const parent = this.props.findParent(tab);
+            const show = parent.IsOpen || parseInt(tab.TabId) === -1 ? li() : null;
 
-                return (
-                    show
-                );
-            });
-        })();
-        return render;
-    }
-
-    render_tree(ChildTabs) {
-        const render = (() => {
             return (
-                <TreeControl
-                    tabs={ChildTabs}
-                    icon_type="arrow_bullet"
-                    updateTree={this.props.updateTree.bind(this)}
-                    reAlignTree={this.props.reAlignTree.bind(this)}
-                    findParent={this.props.findParent.bind(this)}
-                    fullyChecked={this.props.fullyChecked}
-                    individuallyChecked={this.props.individuallyChecked}
-                    unchecked={this.props.unchecked}
-                    selectedColor={this.props.selectedColor}
-                    characterLimit={this.props.characterLimit}
-                    export={this.props.export}
-                    PortalTabsParameters={this.props.PortalTabsParameters}
-                    getDescendantPortalTabs={this.props.getDescendantPortalTabs}
-                />
+                show
             );
-        })();
-        return render;
-    }
+        });
+    })();
+    return render;
+}
 
-
-    render() {
-        const listStyle = styles.listStyle();
-        const list_items = this.render_li(this.props.tabs);
-
+render_tree(ChildTabs) {
+    const render = (() => {
         return (
-            <ul className="page-picker" style={merge(listStyle)} >
-                {list_items}
-            </ul>
+            <TreeControl
+                tabs={ChildTabs}
+                icon_type="arrow_bullet"
+                updateTree={this.props.updateTree.bind(this)}
+                reAlignTree={this.props.reAlignTree.bind(this)}
+                findParent={this.props.findParent.bind(this)}
+                fullyChecked={this.props.fullyChecked}
+                individuallyChecked={this.props.individuallyChecked}
+                unchecked={this.props.unchecked}
+                selectedColor={this.props.selectedColor}
+                characterLimit={this.props.characterLimit}
+                export={this.props.export}
+                PortalTabsParameters={this.props.PortalTabsParameters}
+                getDescendantPortalTabs={this.props.getDescendantPortalTabs}
+            />
         );
-    }
+    })();
+    return render;
+}
+
+
+render() {
+    const listStyle = styles.listStyle();
+    const list_items = this.render_li(this.props.tabs);
+
+    return (
+        <ul className="page-picker" style={merge(listStyle)} >
+            {list_items}
+        </ul>
+    );
+}
 }
 
 TreeControl.propTypes = {
