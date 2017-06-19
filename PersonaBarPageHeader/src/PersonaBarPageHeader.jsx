@@ -15,18 +15,43 @@ const hotspotStyles = {
     marginLeft: "30px"
 };
 
-const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth }) => (
-    <div className="dnn-persona-bar-page-header">
-        <h3>{title}</h3>
-        {title.length > 4 ? <TextOverflowWrapperNew text={title} hotspotStyles={hotspotStyles}  /> : null}
-        <div style={{ marginTop: "-50px" }}>
-            {children}
+
+const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCharLimit }) => {
+
+    titleCharLimit = titleCharLimit ? titleCharLimit : 15;
+
+    const renderTitle = () => {
+        switch (true) {
+            case title.length > titleCharLimit:
+                return (
+                    <span>
+                        <h3>{`${title.substr(0, titleCharLimit)}...`}</h3>
+                        <TextOverflowWrapperNew text={title} hotspotStyles={hotspotStyles} />
+                    </span>
+                );
+
+            default:
+                return (
+                    <span>
+                        <h3>{title}</h3>
+                    </span>
+                );
+        }
+    };
+
+    return (
+        <div className="dnn-persona-bar-page-header">
+            {renderTitle()}
+            <div style={{ marginTop: "-50px" }}>
+                {children}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 PersonaBarPageHeader.propTypes = {
     title: PropTypes.string,
+    titleCharLimit: PropTypes.number,
     children: PropTypes.node,
     tooltip: PropTypes.string,
     titleMaxWidth: PropTypes.number
