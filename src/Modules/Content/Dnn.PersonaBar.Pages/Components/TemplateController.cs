@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 var xmlDoc = new XmlDocument();
                 try
                 {
-                    // open the XML filew
+                    // open the XML file
                     var fileId = Convert.ToInt32(templateId);
                     var templateFile = FileManager.Instance.GetFile(fileId);
                     xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
