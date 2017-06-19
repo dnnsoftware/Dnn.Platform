@@ -174,7 +174,7 @@ class BasicSettingsPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {state} = this;
+        const {props, state} = this;
         if (state.basicSettings) {
             const columnOne = <div className="left-column">
                 <InputGroup>
@@ -264,6 +264,7 @@ class BasicSettingsPanelBody extends Component {
                         />
                     <FileUpload
                         utils={util}
+                        portalId={props.portalId}
                         selectedFile={state.basicSettings.LogoFile}
                         folderName={state.basicSettings.LogoFile ? state.basicSettings.LogoFile.FolderName : null}
                         onSelectFile={this.onSettingChange.bind(this, "LogoFile") }
