@@ -37,7 +37,11 @@
         display: block;
         float: left;
         width: 100%;
-        position: relative;        
+        position: relative;
+        >div {
+            width: 100%;
+            pointer-events: none;
+        }
         input, textarea {
             width: 100%;
             opacity: 0;
@@ -50,7 +54,7 @@
         }
         .help-text {
             position: absolute;
-            bottom: 5px;
+            bottom: 10px;
             right: 5px;
             font-size: 13px;
             font-weight: bold;
@@ -59,6 +63,9 @@
             transition: .2s;
             transition-delay: 0s;
             height: 0px;
+        }
+        .dnn-ui-common-tooltip {
+            display: none;
         }
     }
     &.in-edit {
@@ -74,6 +81,10 @@
             }
         }
         div.editable-input {
+            >div {
+                width: 100%;
+                pointer-events: all;
+            }
             input, textarea {
                 opacity: 1;
                 pointer-events: all;
@@ -93,6 +104,9 @@
             svg {
                 fill: @curiousBlue;
             }
+        }
+        .dnn-ui-common-tooltip {
+            display: block !important;
         }
     }
 }

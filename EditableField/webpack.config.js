@@ -25,8 +25,8 @@ module.exports = {
         "react": "react",
         "react-dom": "react-dom",
         "dnn-svg-icons": "dnn-svg-icons",
-        "dnn-single-line-input": "dnn-single-line-input",
-        "dnn-multi-line-input": "dnn-multi-line-input"
+        "dnn-single-line-input-with-error": "dnn-single-line-input-with-error",
+        "dnn-multi-line-input-with-error": "dnn-multi-line-input-with-error"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 
