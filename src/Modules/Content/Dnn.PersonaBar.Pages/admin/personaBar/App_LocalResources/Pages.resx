@@ -789,4 +789,10 @@
   <data name="addTagsPlaceholder.Text" xml:space="preserve">
     <value>Add Tags</value>
   </data>
+  <data name="On.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Off.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
 </root>
