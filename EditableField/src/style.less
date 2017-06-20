@@ -40,6 +40,7 @@
         position: relative;
         >div {
             width: 100%;
+            pointer-events: none;
         }
         input, textarea {
             width: 100%;
@@ -63,6 +64,9 @@
             transition-delay: 0s;
             height: 0px;
         }
+        .dnn-ui-common-tooltip {
+            display: none;
+        }
     }
     &.in-edit {
         background-color: @alabaster;
@@ -79,6 +83,7 @@
         div.editable-input {
             >div {
                 width: 100%;
+                pointer-events: all;
             }
             input, textarea {
                 opacity: 1;
@@ -99,6 +104,9 @@
             svg {
                 fill: @curiousBlue;
             }
+        }
+        .dnn-ui-common-tooltip {
+            display: block !important;
         }
     }
 }
