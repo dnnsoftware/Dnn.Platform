@@ -16,6 +16,7 @@ export default class TreeControlInteractor extends Component {
         this.fullyChecked = 2;
         this.individuallyChecked = 1;
         this.unchecked = 0;
+        this.scrollbar = {};
     }
 
     componentWillMount() {
@@ -24,12 +25,10 @@ export default class TreeControlInteractor extends Component {
     }
 
     componentDidUpdate(){
-        const {scrollbars} = this.refs;
-        if (scrollbars.getClientWidth() > 200) {
-            scrollbars.scrollToRight();
+        if (this.scrollbar.getClientWidth() > 200) {
+            this.scrollbar.scrollToRight();
         }
-        scrollbars.scrollToBottom();
-
+        this.scrollbar.scrollToBottom();
     }
 
     init() {
@@ -253,7 +252,7 @@ export default class TreeControlInteractor extends Component {
                     autoHeightMin={405}
                     autoHeightMax={405}
                     style={{width:340, maxWidth:"100%"}}
-                    ref="scrollbars">
+                    ref={(scrollbar) => {this.scrollbar = scrollbar; }}>
 
                 <TreeControl
                     characterLimit={this.props.characterLimit}
