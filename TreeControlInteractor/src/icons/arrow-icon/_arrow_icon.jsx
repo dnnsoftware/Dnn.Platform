@@ -62,7 +62,6 @@ export class ArrowIcon extends Component {
                 dangerouslySetInnerHTML={{ __html: arrow_svg }}
                 id={this.id}
                 style={merge(marginTop, padding, baseStyles, height)}
-                ref={this.id}
                 src={arrow_svg}
                 alt="arrow_icon"
                 onClick={this.onMouseDown.bind(this)} />
