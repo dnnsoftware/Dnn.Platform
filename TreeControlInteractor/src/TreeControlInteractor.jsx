@@ -28,7 +28,7 @@ export default class TreeControlInteractor extends Component {
         if (this.scrollbar.getClientWidth() > 200) {
             this.scrollbar.scrollToRight();
         }
-        this.scrollbar.scrollToBottom();
+        
     }
 
     init() {
