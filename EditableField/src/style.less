@@ -37,7 +37,10 @@
         display: block;
         float: left;
         width: 100%;
-        position: relative;        
+        position: relative;
+        >div {
+            width: 100%;
+        }
         input, textarea {
             width: 100%;
             opacity: 0;
@@ -50,7 +53,7 @@
         }
         .help-text {
             position: absolute;
-            bottom: 5px;
+            bottom: 10px;
             right: 5px;
             font-size: 13px;
             font-weight: bold;
@@ -74,6 +77,9 @@
             }
         }
         div.editable-input {
+            >div {
+                width: 100%;
+            }
             input, textarea {
                 opacity: 1;
                 pointer-events: all;

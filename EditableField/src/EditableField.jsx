@@ -1,8 +1,8 @@
-import React, {PropTypes, Component} from "react";
+import React, { PropTypes, Component } from "react";
 import ReactDOM from "react-dom";
-import TextArea from "dnn-multi-line-input";
-import Input from "dnn-single-line-input";
-import {EditIcon} from "dnn-svg-icons";
+import TextArea from "dnn-multi-line-input-with-error";
+import Input from "dnn-single-line-input-with-error";
+import { EditIcon } from "dnn-svg-icons";
 import "./style.less";
 
 
@@ -13,10 +13,11 @@ class EditableField extends Component {
     }
 
     componentWillMount() {
-        const {props} = this;
+        const { props } = this;
         this.setState({
             editMode: false,
-            value: props.value
+            value: props.value,
+            error: false
         });
     }
     toggleEditMode() {
@@ -29,7 +30,7 @@ class EditableField extends Component {
     }
 
     getEditableLabelClass() {
-        const {props, state} = this;
+        const { props, state } = this;
 
         let editableLabelClass = state.editMode ? " in-edit" : "";
         let inputTypeClass = props.inputType === "textArea" ? " textArea" : " singleLine";
@@ -39,48 +40,68 @@ class EditableField extends Component {
 
     onFocus() {
         window.dnn.stopEscapeFromClosingPB = true;
-        if(typeof this.props.onFocus === "function") {
+        if (typeof this.props.onFocus === "function") {
             this.props.onFocus();
         }
     }
     getInputFromType() {
-        const {props, state} = this;
+        const { props, state } = this;
         if (props.inputType && props.inputType === "textArea") {
             return <TextArea
                 value={state.value}
-                onKeyDown={this.onKeyDown.bind(this) }
-                onChange={this.onKeyUp.bind(this) }
-                onBlur={this.onBlur.bind(this) }
-                onFocus={this.onFocus.bind(this) }
+                onKeyDown={this.onKeyDown.bind(this)}
+                onChange={this.onKeyUp.bind(this)}
+                onBlur={this.onBlur.bind(this)}
+                onFocus={this.onFocus.bind(this)}
                 ref="editableInput"
                 enabled={state.editMode}
-                />;
+                error={state.error}
+                errorMessage={props.errorMessage}
+            />;
         } else {
             return <Input
                 value={state.value}
-                onKeyDown={this.onKeyDown.bind(this) }
-                onChange={this.onKeyUp.bind(this) }
-                onBlur={this.onBlur.bind(this) }
-                onFocus={this.onFocus.bind(this) }
+                onKeyDown={this.onKeyDown.bind(this)}
+                onChange={this.onKeyUp.bind(this)}
+                onBlur={this.onBlur.bind(this)}
+                onFocus={this.onFocus.bind(this)}
                 ref="editableInput"
                 enabled={state.editMode}
-                />;
+                error={state.error}
+                errorMessage={props.errorMessage}
+            />;
         }
     }
 
     onKeyDown(event) {
-        const {props, state} = this;
-        if(typeof this.props.onKeyDown === "function") {
+        const { props, state } = this;
+        if (typeof this.props.onKeyDown === "function") {
             this.props.onKeyDown(event);
         }
         switch (event.keyCode) {
             case 13:
                 event.preventDefault();
-                props.onEnter(state.value);
-                ReactDOM.findDOMNode(this.refs.editableInput).blur();
-                this.setState({
-                    editMode: false
-                });
+                if (props.enableCallback) {
+                    props.onEnter(state.value, () => {
+                        ReactDOM.findDOMNode(this.refs.editableInput).blur();
+                        this.setState({
+                            editMode: false,
+                            error: false
+                        });
+                    }, () => {
+                        this.setState({
+                            error: true
+                        });
+                    });
+                }
+                else {
+                    props.onEnter(state.value);
+                    ReactDOM.findDOMNode(this.refs.editableInput).blur();
+                    this.setState({
+                        editMode: false,
+                        error: false
+                    });
+                }
                 //enter
                 break;
             case 27:
@@ -88,9 +109,10 @@ class EditableField extends Component {
                 //escape
                 this.setState({
                     value: props.value,
-                    editMode: false
+                    editMode: false,
+                    error: false
                 });
-                if(typeof this.props.onEscape === "function") {
+                if (typeof this.props.onEscape === "function") {
                     this.props.onEscape(event);
                 }
                 setTimeout(() => {
@@ -103,7 +125,7 @@ class EditableField extends Component {
     }
     onBlur() {
         window.dnn.stopEscapeFromClosingPB = false;
-        if(typeof this.props.onBlur === "function") {
+        if (typeof this.props.onBlur === "function") {
             this.props.onBlur();
         }
     }
@@ -112,14 +134,14 @@ class EditableField extends Component {
         this.setState({
             value
         });
-        if(typeof this.props.onKeyUp === "function") {
+        if (typeof this.props.onKeyUp === "function") {
             this.props.onKeyUp(event);
         }
     }
 
     /* eslint-disable react/no-danger */
     getEditButton() {
-        return <div className="edit-button" onClick={this.toggleEditMode.bind(this) } dangerouslySetInnerHTML={{ __html: EditIcon }}></div>;
+        return <div className="edit-button" onClick={this.toggleEditMode.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>;
     }
 
     getUrl(text) {
@@ -130,7 +152,7 @@ class EditableField extends Component {
     }
 
     getEditableValue() {
-        const {props, state} = this;
+        const { props, state } = this;
         if (!props.isUrl) {
             return <span className="editable-value">{state.value}</span>;
         }
@@ -138,11 +160,12 @@ class EditableField extends Component {
     }
 
     render() {
-        const {props, refs} = this;
+        const { props, refs } = this;
         const editableLabelClass = this.getEditableLabelClass();
         const input = this.getInputFromType();
         const editableValue = this.getEditableValue();
         const editButton = this.getEditButton();
+
         return (
             <div className={editableLabelClass}>
                 <label className="editable-label" htmlFor={refs.input}>{props.label}</label>
@@ -150,7 +173,7 @@ class EditableField extends Component {
                 {editableValue}
                 <div className="editable-input">
                     {input}
-                    <span className="help-text">{(props.helpText || "Press ENTER when done, or ESC to cancel") }</span>
+                    <span className="help-text">{(props.helpText || "Press ENTER when done, or ESC to cancel")}</span>
                 </div>
             </div>
         );
@@ -169,12 +192,15 @@ EditableField.propTypes = {
     onKeyDown: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
-    onEscape: PropTypes.func
+    onEscape: PropTypes.func,
+    errorMessage: PropTypes.string,
+    enableCallback: PropTypes.bool
 };
 
 EditableField.defaultProps = {
     editable: true,
-    isUrl: false
+    isUrl: false,
+    enableCallback: false
 };
 
 export default EditableField;
