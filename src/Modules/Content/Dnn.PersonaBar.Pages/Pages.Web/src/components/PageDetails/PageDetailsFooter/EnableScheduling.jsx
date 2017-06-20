@@ -11,11 +11,13 @@ class EnableScheduling extends Component {
         return <div>
             <Label
                 labelType="inline"
-                tooltipMessage={Localization.get("EnableSchedulingTooltip")}
-                label={Localization.get("EnableScheduling")}
+                tooltipMessage={Localization.get("EnableSchedulingTooltip") }
+                label={Localization.get("EnableScheduling") }
                 />
             <Switch
                 labelHidden={false}
+                onText={Localization.get("On") }
+                offText={Localization.get("Off") }
                 value={props.schedulingEnabled}
                 onChange={props.onChangeSchedulingEnabled} />
             <div style={{ clear: "both" }}></div>
@@ -23,7 +25,7 @@ class EnableScheduling extends Component {
                 <div className="scheduler-date-box">
                     <div className="scheduler-date-row">
                         <Label
-                            label={Localization.get("StartDate")} />
+                            label={Localization.get("StartDate") } />
                         <DatePicker
                             date={props.startDate}
                             updateDate={props.onChangeStartDate}
@@ -33,7 +35,7 @@ class EnableScheduling extends Component {
                     </div>
                     <div className="scheduler-date-row">
                         <Label
-                            label={Localization.get("EndDate")} />
+                            label={Localization.get("EndDate") } />
                         <DatePicker
                             date={props.endDate}
                             updateDate={props.onChangeEndDate}
