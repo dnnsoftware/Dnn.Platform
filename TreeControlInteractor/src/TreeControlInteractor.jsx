@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import TreeControl from "./TreeControl";
-import {IconSelector} from "./icons/IconSelector";
+import { IconSelector } from "./icons/IconSelector";
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import "./styles.less";
@@ -16,7 +16,7 @@ export default class TreeControlInteractor extends Component {
         this.fullyChecked = 2;
         this.individuallyChecked = 1;
         this.unchecked = 0;
-        this.scrollbar={};
+        this.scrollbar = {};
     }
 
     componentWillMount() {
@@ -24,26 +24,26 @@ export default class TreeControlInteractor extends Component {
         this.init();
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         if (this.scrollbar.getClientWidth() > 200) {
             this.scrollbar.scrollToRight();
         }
-        
+
     }
 
     init() {
 
         const ExportInitialSelection = () => {
-            const selection = this.generateSelectionObject(this.state.tabs);
-            this.props.OnSelect(selection);
+            this.export();
         };
 
         this.props.getInitialPortalTabs(this.PortalTabsParameters, (response) => {
             const tabs = [response.Results];
-            this.setState({ tabs: tabs }, ()=> {
+            tabs[0].CheckedState = 2;
+            this.setState({ tabs: tabs }, () => {
                 ExportInitialSelection();
             });
-            
+
         });
 
     }
@@ -248,12 +248,12 @@ export default class TreeControlInteractor extends Component {
     render() {
         return (
             <Scrollbars
-                    autoHeight
-                    autoHeightMin={405}
-                    autoHeightMax={405}
-                    style={{width:340, maxWidth:"100%"}}
-                    ref={(scrollbar)=>{this.scrollbar = scrollbar;}}
-                    >
+                autoHeight
+                autoHeightMin={405}
+                autoHeightMax={405}
+                style={{ width: 340, maxWidth: "100%" }}
+                ref={(scrollbar) => { this.scrollbar = scrollbar; }}
+            >
 
                 <TreeControl
                     characterLimit={this.props.characterLimit}
