@@ -43,15 +43,16 @@ export default class FolderPicker extends Component {
 
     getFolders(searchText) {
         const sf = this.getServiceFramework();
+        const portalId = `${this.props.portalId === -1 ? "" : "?portalId=" + this.props.portalId}`;
         if (!searchText) {
-            return sf.get("GetFolders", {}, this.setFolders.bind(this), this.props.onRetrieveFolderError);
+            return sf.get("GetFolders" + portalId, {}, this.setFolders.bind(this), this.props.onRetrieveFolderError);
         }
-        sf.get("SearchFolders", { searchText }, this.setFolders.bind(this), this.props.onRetrieveFolderError);
+        sf.get("SearchFolders" + portalId, { searchText }, this.setFolders.bind(this), this.props.onRetrieveFolderError);
     }
 
     getChildrenFolders(parentId) {
         const sf = this.getServiceFramework();
-        sf.get("GetFolderDescendants", { parentId }, this.addChildFolders.bind(this, parentId), this.props.onRetrieveFolderError);
+        sf.get(`GetFolderDescendants${this.props.portalId === -1 ? "" : "?portalId=" + this.props.portalId}`, { parentId }, this.addChildFolders.bind(this, parentId), this.props.onRetrieveFolderError);
     }
 
     setFolders(result) {
@@ -95,6 +96,12 @@ FolderPicker.propTypes = {
     selectedFolder: PropTypes.object,
     onSelectFolder: PropTypes.func.isRequired,
     onRetrieveFolderError: PropTypes.func,
+    portalId: PropTypes.number,
     noFolderSelectedValue: PropTypes.string.isRequired,
     searchFolderPlaceHolder: PropTypes.string.isRequired
 };
+
+FolderPicker.defaultProps = {
+    portalId: -1
+};
+
