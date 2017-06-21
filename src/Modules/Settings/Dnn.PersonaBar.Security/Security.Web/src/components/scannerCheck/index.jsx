@@ -153,12 +153,12 @@ class ScannerCheckPanelBody extends Component {
                     </div>
                     <div className="label-name">
                         <div className="label-wrapper">
-                            <p>{term.SettingName}</p>
+                            <span>{term.SettingName}</span>
                         </div>
                     </div>
                     <div className="label-value">
                         <div className="label-wrapper">
-                            <p>{term.SettingValue}</p>
+                            <span>{term.SettingValue}</span>
                         </div>
                     </div>
                     <div className="label-user">
