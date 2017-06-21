@@ -200,12 +200,12 @@ class ScannerCheckPanelBody extends Component {
                 <div className="scannerCheckItem">
                     <div className="label-name">
                         <div className="label-wrapper">
-                             <TextOverflowWrapper text={term.SettingName} maxWidth={150}/>
+                            <span>{term.SettingName}</span>
                         </div>
                     </div>
                     <div className="label-value">
                         <div className="label-wrapper">
-                             <TextOverflowWrapper text={term.SettingValue} maxWidth={150}/>
+                            <span>{term.SettingValue}</span>
                         </div>
                     </div>
                     <div className="label-user">
