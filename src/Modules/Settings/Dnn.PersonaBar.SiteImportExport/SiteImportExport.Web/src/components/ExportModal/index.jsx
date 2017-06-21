@@ -166,7 +166,8 @@ class ExportModal extends Component {
         const { exportRequest } = this.state;
         if (exportRequest.IncludeContent || exportRequest.IncludeFiles || exportRequest.IncludeUsers || exportRequest.IncludeRoles ||
             exportRequest.IncludeVocabularies || exportRequest.IncludeTemplates || exportRequest.IncludeProperfileProperties ||
-            exportRequest.IncludePermissions || exportRequest.IncludeExtensions || (exportRequest.pages && exportRequest.pages.length > 0)) {
+            exportRequest.IncludePermissions || exportRequest.IncludeExtensions || (exportRequest.pages && exportRequest.pages.length > 0)
+            || (exportRequest.ItemsToExport && exportRequest.ItemsToExport.length > 0)) {
             success = true;
         }
         else {
