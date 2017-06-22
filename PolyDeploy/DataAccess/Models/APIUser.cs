@@ -12,6 +12,8 @@ namespace Cantarus.Modules.PolyDeploy.DataAccess.Models
         public string APIKey { get; set; }
         public string EncryptionKey { get; set; }
 
+        public APIUser() { }
+
         public APIUser(string name)
         {
             if(name == null || name.Length < 1)
