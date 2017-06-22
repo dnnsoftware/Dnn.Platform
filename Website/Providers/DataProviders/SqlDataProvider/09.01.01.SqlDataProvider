@@ -156,7 +156,7 @@ AS
 		END  
 	IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}TabUrls WHERE TabId = @TabID AND SeqNum = @SeqNum)
 		BEGIN
-			IF NOT EXISTS (SELECT * FROM dbo.TabUrls 
+			IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}TabUrls 
 						WHERE TabId = @TabID 
 						AND (@PortalAliasID = @PortalAliasID OR (PortalAliasId IS NULL AND @PortalAliasID IS NULL))
 						AND PortalAliasUsage = @PortalAliasUsage 
@@ -166,7 +166,7 @@ AS
 						AND	HttpStatus = @HttpStatus
 						AND	SeqNum <> @SeqNum)
 			BEGIN
-				UPDATE dbo.TabUrls
+				UPDATE {databaseOwner}{objectQualifier}TabUrls
 					SET 
 						PortalAliasId = @PortalAliasID,
 						PortalAliasUsage = @PortalAliasUsage,
@@ -182,7 +182,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			IF NOT EXISTS (SELECT * FROM dbo.TabUrls 
+			IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}TabUrls 
 						WHERE TabId = @TabID 
 						AND (@PortalAliasID = @PortalAliasID OR (PortalAliasId IS NULL AND @PortalAliasID IS NULL))
 						AND PortalAliasUsage = 0 
@@ -192,7 +192,7 @@ AS
 						AND	HttpStatus = @HttpStatus
 						AND	SeqNum <> @SeqNum)
 			BEGIN
-				INSERT INTO dbo.TabUrls
+				INSERT INTO {databaseOwner}{objectQualifier}TabUrls
 						( TabId ,
 						  SeqNum ,
 						  Url ,
