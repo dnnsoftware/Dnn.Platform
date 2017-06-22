@@ -42,7 +42,7 @@ const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCh
     return (
         <div className="dnn-persona-bar-page-header">
             {renderTitle()}
-            <div style={{ marginTop: "-50px" }}>
+            <div>
                 {children}
             </div>
         </div>
