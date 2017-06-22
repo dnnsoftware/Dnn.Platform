@@ -17,7 +17,7 @@ module.exports = {
     output: {
         path: "../admin/personaBar/scripts/bundles/",
         filename: "siteimportexport-bundle.js",
-        publicPath: isProduction ? "" : "http://localhost:8080/dist/"
+        publicPath: isProduction ? "" : "http://localhost:8081/dist/"
     },
 
     module: {
