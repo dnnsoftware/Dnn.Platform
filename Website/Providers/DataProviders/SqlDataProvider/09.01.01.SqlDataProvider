@@ -124,6 +124,107 @@ BEGIN
 END
 GO
 
+/* Update SaveTabUrl */
+/*********************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveTabUrl]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveTabUrl]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveTabUrl] 
+	@TabID				int,
+	@SeqNum				int,
+	@PortalAliasID		int,
+	@PortalAliasUsage	int,
+	@Url				nvarchar(200),
+	@QueryString		nvarchar(200),
+	@CultureCode		nvarchar(50),
+	@HttpStatus			nvarchar(50),
+	@IsSystem			bit,
+	@ModifiedByUserID	int
+AS
+	IF @HttpStatus = '200'
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}TabUrls
+				SET HttpStatus = '301',
+				[LastModifiedByUserID]= @ModifiedByUserID,
+				[LastModifiedOnDate]= getdate()
+				WHERE TabID = @TabID
+					AND CultureCode = @CultureCode
+					AND (@PortalAliasID = @PortalAliasID OR (PortalAliasId IS NULL AND @PortalAliasID IS NULL))
+					AND HttpStatus = '200'
+		END  
+	IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}TabUrls WHERE TabId = @TabID AND SeqNum = @SeqNum)
+		BEGIN
+			IF NOT EXISTS (SELECT * FROM dbo.TabUrls 
+						WHERE TabId = @TabID 
+						AND (@PortalAliasID = @PortalAliasID OR (PortalAliasId IS NULL AND @PortalAliasID IS NULL))
+						AND PortalAliasUsage = @PortalAliasUsage 
+						AND Url = @Url
+						AND QueryString = @QueryString
+						AND CultureCode = @CultureCode
+						AND	HttpStatus = @HttpStatus
+						AND	SeqNum <> @SeqNum)
+			BEGIN
+				UPDATE dbo.TabUrls
+					SET 
+						PortalAliasId = @PortalAliasID,
+						PortalAliasUsage = @PortalAliasUsage,
+						Url = @Url,
+						QueryString = @QueryString,
+						CultureCode = @CultureCode,
+						HttpStatus = @HttpStatus,
+						IsSystem = @IsSystem,
+						[LastModifiedByUserID]= @ModifiedByUserID,
+						[LastModifiedOnDate]= getdate()
+				WHERE TabId = @TabID AND SeqNum = @SeqNum 
+			END
+		END
+	ELSE
+		BEGIN
+			IF NOT EXISTS (SELECT * FROM dbo.TabUrls 
+						WHERE TabId = @TabID 
+						AND (@PortalAliasID = @PortalAliasID OR (PortalAliasId IS NULL AND @PortalAliasID IS NULL))
+						AND PortalAliasUsage = 0 
+						AND Url = @Url
+						AND QueryString = @QueryString
+						AND CultureCode = @CultureCode
+						AND	HttpStatus = @HttpStatus
+						AND	SeqNum <> @SeqNum)
+			BEGIN
+				INSERT INTO dbo.TabUrls
+						( TabId ,
+						  SeqNum ,
+						  Url ,
+						  QueryString ,
+						  HttpStatus ,
+						  CultureCode ,
+						  IsSystem,
+						  PortalAliasId ,
+						  PortalAliasUsage,
+						  [CreatedByUserID],
+						  [CreatedOnDate],
+				  		  [LastModifiedByUserID],
+						  [LastModifiedOnDate]
+						)
+				VALUES  ( @TabID ,
+						  @SeqNum ,
+						  @Url ,
+						  @QueryString ,
+						  @HttpStatus ,
+						  @CultureCode ,
+						  @IsSystem,
+						  @PortalAliasID ,
+						  0,
+						  @ModifiedByUserID,
+						  getdate(),
+						  @ModifiedByUserID,
+						  getdate()
+						)
+			END
+		END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
