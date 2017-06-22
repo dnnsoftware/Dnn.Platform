@@ -1,0 +1,7 @@
+Unstaged changes after reset:
+D	src/Modules/Content/Dnn.PersonaBar.Pages/Pages.Web/.vscode/settings.json
+M	src/Modules/Content/Dnn.PersonaBar.Pages/Pages.Web/src/actions/pageActions.js
+U	src/Modules/Content/Dnn.PersonaBar.Pages/Pages.Web/src/components/PageDetails/PageDetailsFooter/EnableScheduling.jsx
+U	src/Modules/Content/Dnn.PersonaBar.Pages/Pages.Web/src/components/PageDetails/PageStandard/PageStandard.jsx
+M	src/Modules/Content/Dnn.PersonaBar.Pages/Pages.Web/src/services/pageService.js
+M	src/Modules/Settings/Dnn.PersonaBar.SiteSettings/.vscode/settings.json
