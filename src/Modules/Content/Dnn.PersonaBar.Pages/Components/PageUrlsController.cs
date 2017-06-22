@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var automaticUrls = GetSortedUrls(tab, portalId, locales, 1, true, true).ToList();
 
             automaticUrls.AddRange(customUrls);
-            return automaticUrls;
+            return automaticUrls.OrderBy(url => url.StatusCode, new KeyValuePairComparer()).ThenBy(url => url.Path);
         }
 
         public PageUrlResult CreateCustomUrl(SaveUrlDto dto, TabInfo tab)
