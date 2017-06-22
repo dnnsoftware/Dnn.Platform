@@ -1,6 +1,6 @@
 {
   "name": "dnn-persona-bar-page-header",
-  "version": "0.0.8",
+  "version": "0.0.17",
   "description": "DNN Persona Bar Page Header",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,6 @@
     "webpack": "1.13.1"
   },
   "dependencies": {
-    "dnn-text-overflow-wrapper-new": "0.0.2"
+    "dnn-text-overflow-wrapper-new": "0.0.5"
   }
 }

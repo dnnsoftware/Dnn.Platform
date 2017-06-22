@@ -24,7 +24,7 @@ const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCh
         switch (true) {
             case title.length > titleCharLimit:
                 return (
-                    <span>
+                    <span className="title">
                         <h3>{`${title.substr(0, titleCharLimit)}...`}</h3>
                         <TextOverflowWrapperNew text={title} hotspotStyles={hotspotStyles} />
                     </span>
@@ -32,7 +32,7 @@ const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCh
 
             default:
                 return (
-                    <span>
+                    <span className="title">
                         <h3>{title}</h3>
                     </span>
                 );
@@ -42,7 +42,7 @@ const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCh
     return (
         <div className="dnn-persona-bar-page-header">
             {renderTitle()}
-            <div style={{ marginTop: "-50px" }}>
+            <div className="children">
                 {children}
             </div>
         </div>
