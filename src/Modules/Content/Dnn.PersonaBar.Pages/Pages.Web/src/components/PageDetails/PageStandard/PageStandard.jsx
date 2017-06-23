@@ -99,8 +99,10 @@ class PageDetails extends Component {
                     </GridCell>
                     <GridCell className="right-column input-cell">
                         <InputGroup>
-                            <Label label={Localization.get("Url")}  style={{paddingBottom:"10px"}}/>
+                            <Label label={Localization.get("ParentPage")}  style={{paddingBottom:"10px"}}/>
                             <PagePicker
+                                noneSpecifiedText={Localization.get("NoneSpecified")}
+                                portalTabsParamters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={ this.onChangeParentId.bind(this) }
                                 serviceFramework={sf} />
