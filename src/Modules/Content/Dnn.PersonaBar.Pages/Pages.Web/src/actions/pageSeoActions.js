@@ -1,7 +1,7 @@
 import PageSeoService from "../services/pageSeoService";
 import {pageSeoTypes as ActionTypes}  from "../constants/actionTypes";
 import pageActionTypes  from "../constants/actionTypes/pageActionTypes";
-import util from "utils";
+import utils from "../utils";
 const pageSeoActions = {
     openNewForm() {
         return (dispatch) => {
@@ -62,6 +62,7 @@ const pageSeoActions = {
                         type: ActionTypes.ERROR_SEO_ADDING_URL,
                         data: {error: response.ErrorMessage}
                     });
+                    utils.notifyError(response.ErrorMessage);
                     return;
                 }
                 newUrl.id = response.Id;
@@ -96,7 +97,7 @@ const pageSeoActions = {
                         type: ActionTypes.ERROR_SEO_SAVING_URL,
                         data: {error: response.ErrorMessage}
                     });
-                    util.utilities.notifyError(response.ErrorMessage);
+                    utils.notifyError(response.ErrorMessage);
                     return;
                 }
                 
