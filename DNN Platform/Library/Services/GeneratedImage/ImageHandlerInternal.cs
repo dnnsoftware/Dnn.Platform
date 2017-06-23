@@ -141,7 +141,6 @@ namespace DotNetNuke.Services.GeneratedImage
         public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
         {
             context.Response.Clear();
-            context.Response.ContentType = GetImageMimeType(ContentType);
 
             string ipAddress = IPCount.GetVisitorIPAddress(context);
 
@@ -212,6 +211,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
             // Generate Image
             var imageMethodData = imageGenCallback(context.Request.QueryString);
+
+            context.Response.ContentType = GetImageMimeType(ContentType);
             if (imageMethodData == null)
             {
                 throw new InvalidOperationException("The DnnImageHandler cannot return null.");
