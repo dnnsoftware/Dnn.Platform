@@ -5,8 +5,8 @@
     
     Version 2.0
     
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
     various data types are done through the TypeConverter classes 
     associated with the data types.
     
@@ -37,7 +37,7 @@
     mimetype set.
     
     The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
     
     Note - application/x-microsoft.net.object.binary.base64 is the format 
@@ -562,7 +562,7 @@
     <value>Are you sure you want to remove this URL?</value>
   </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
-    <value>None Specified</value>
+    <value>&#60; None Specified &#62; </value>
   </data>
   <data name="CannotCopyPermissionsToDescendantPages.Text" xml:space="preserve">
     <value>You do not have permission to copy permissions to descendant pages</value>
@@ -794,5 +794,8 @@
   </data>
   <data name="Off.Text" xml:space="preserve">
     <value>Off</value>
+  </data>
+  <data name="ParentPage.Text" xml:space="preserve">
+    <value>Parent Page</value>
   </data>
 </root>

@@ -6,7 +6,8 @@ import Dropdown from "dnn-dropdown";
 
 const styles = {
     label: {
-        width: "100%"
+        width: "100%",
+        paddingBottom: "10px"
     },
     dropdown: {
         width: "95%"
