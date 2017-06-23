@@ -1,6 +1,6 @@
 {
   "name": "dnn-date-picker",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "DNN Date Picker",
   "main": "index.js",
   "scripts": {
