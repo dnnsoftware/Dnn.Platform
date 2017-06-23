@@ -8,7 +8,7 @@ class EnableScheduling extends Component {
 
     render() {
         const {props} = this;
-        return <div  style={{marginTop:"30px"}}>
+        return <div>
             <Label
                 labelType="inline"
                 tooltipMessage={Localization.get("EnableSchedulingTooltip") }
