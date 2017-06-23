@@ -22,6 +22,11 @@ function hasClass(element, className) {
     return (" " + element.className + " ").indexOf(" " + className + " ") > -1;
 }
 
+function validateDate(date, minDate, maxDate) {
+    return ((!minDate || date >= minDate) && 
+            (!maxDate || date <= maxDate));
+}
+
 Weekday.propTypes = WeekdayPropTypes;
 
 const clearButtonStyleVisible = {
@@ -273,13 +278,19 @@ class DatePicker extends Component {
     updateFirstDate(date, preventUpdateTime=false) {
         const firstDate = date ? date : this.state.Date.FirstDate;
         const secondDate = this.state.Date.SecondDate;
-        this.updateDate(firstDate, secondDate, { preventHide: true, callUpdateDate: true, preventUpdateTime: preventUpdateTime });
+        const {minDate, maxDate} = this.props;
+        if (validateDate(firstDate, minDate, maxDate)) {
+            this.updateDate(firstDate, secondDate, { preventHide: true, callUpdateDate: true, preventUpdateTime: preventUpdateTime });
+        }
     }
 
     updateSecondDate(date, preventUpdateTime=false) {
         const secondDate = date ? date : this.state.Date.SecondDate;
         const firstDate = this.state.Date.FirstDate;
-        this.updateDate(firstDate, secondDate, { preventHide: true, callUpdateDate: true, preventUpdateTime: preventUpdateTime });
+        const {minSecondDate, maxSecondDate} = this.props;
+        if (validateDate(secondDate, minSecondDate, maxSecondDate)) {
+            this.updateDate(firstDate, secondDate, { preventHide: true, callUpdateDate: true, preventUpdateTime: preventUpdateTime });
+        }
     }
 
     clearDates() {
