@@ -34,6 +34,7 @@
             <SourceExclude Include="$(checkoutDirectory)\src\**\bin\**\*" />
             <SourceExclude Include="$(checkoutDirectory)\src\**\obj\**\*" />
             <SourceExclude Include="$(checkoutDirectory)\src\packages\**\*" />
+            <SourceExclude Include="$(checkoutDirectory)\src\**\*.metaproj*" />
         </ItemGroup>
 
         <ItemGroup>
