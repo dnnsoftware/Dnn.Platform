@@ -182,7 +182,7 @@ namespace Dnn.ExportImport.Components.Controllers
             summaryItems.AddRange(checkpoints.Select(checkpoint => new SummaryItem
             {
                 TotalItems = checkpoint.TotalItems,
-                ProcessedItems = checkpoint.ProcessedItems,
+                ProcessedItems = checkpoint.ProcessedItems <= checkpoint.TotalItems ? checkpoint.ProcessedItems : checkpoint.TotalItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
                 Category = checkpoint.Category,
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,
