@@ -28,12 +28,11 @@ class FolderDropdown extends Component {
         }
     }
 
-    closeAddNewFolderBox(data) {
+    closeAddNewFolderBox() {
         this.setState({
             addNewFolderOpen: false,
             newFolderValue: ""
         });
-        this.props.onAddedNewFolder(data, this.props.type);
     }
 
     onAddNewFolder() {
