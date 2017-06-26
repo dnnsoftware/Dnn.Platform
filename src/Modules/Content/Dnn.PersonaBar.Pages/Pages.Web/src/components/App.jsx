@@ -176,7 +176,7 @@ class App extends Component {
         const {selectedPage} = this.props;
         return this.isNewPage() ?
             Localization.get("AddPage") :
-            Localization.get("PageSettings") + ": " + selectedPage.name;
+            selectedPage.name;
     }
 
     getSettingsButtons() {
@@ -188,7 +188,7 @@ class App extends Component {
             <div className="heading-buttons">                
                 <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true}>
                     <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                </Sec>                
+                </Sec>
                 <Sec permission={permissionTypes.EXPORT_PAGE}>
                     <SaveAsTemplateButton
                         type="secondary"
