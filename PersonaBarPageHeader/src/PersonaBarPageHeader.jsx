@@ -11,14 +11,14 @@ const hotspotStyles = {
     wordWrap: "break-word",
     textOverflow: "wrap",
     height: "20px",
-    width: "200px",
+    width: "400px",
     marginLeft: "30px"
 };
 
 
 const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCharLimit }) => {
 
-    titleCharLimit = titleCharLimit ? titleCharLimit : 15;
+    titleCharLimit = titleCharLimit ? titleCharLimit : 20;
 
     const renderTitle = () => {
         switch (true) {
