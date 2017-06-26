@@ -68,8 +68,7 @@ class AuditCheckPanelBody extends Component {
                         <div className="label-result-severity-fail">
                             {resx.get("Fail")}
                         </div>
-                        <div>
-                            {failureText}
+                        <div dangerouslySetInnerHTML={{__html: failureText}}>
                         </div>
                     </div>
                 );
