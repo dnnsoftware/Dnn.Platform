@@ -49,7 +49,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.HtmlEditorManager.Components.UpgradeController, DotNetNuke.Modules.HtmlEditorManager</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>07.04.00</upgradeVersionsList>
+              <upgradeVersionsList>07.04.00,09.01.01</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
