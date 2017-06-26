@@ -52,12 +52,12 @@ class ExportModal extends Component {
             },
             reloadPages: false,
             requestSubmitting: false
-        };        
+        };
 
         this.getInitialPortalTabs = props.getInitialPortalTabs;
     }
 
-    getRegisteredItemsToExport() {     
+    getRegisteredItemsToExport() {
         return itemsToExportService.getRegisteredItemsToExport()
             .filter(x => x.defaultSelected)
             .map(item => item.category);
@@ -70,8 +70,6 @@ class ExportModal extends Component {
         this.setState({
             exportRequest
         });
-
-
     }
 
     componentWillReceiveProps(props) {
@@ -210,7 +208,11 @@ class ExportModal extends Component {
     updatePagesToExport(selectedPages) {
         let { exportRequest } = this.state;
         exportRequest.pages = selectedPages;
-        this.setState({ exportRequest });
+        exportRequest["IncludeContent"] = !(selectedPages === undefined || selectedPages.length <= 0);
+        this.setState({ exportRequest }, () => {
+            if (keysToValidate.some(vkey => vkey === "IncludeContent"))
+                this.ValidateTexts("IncludeContent");
+        });
     }
 
     getExportModeOptions() {
