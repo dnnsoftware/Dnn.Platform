@@ -879,7 +879,9 @@ namespace Dnn.PersonaBar.Pages.Components
             CreateOrUpdateContentItem(tab);
 
             SaveTabUrl(tab, pageSettings);
-            
+
+            MovePageIfNeeded(pageSettings, tab);
+
             return tab.TabID;
         }
 

@@ -109,7 +109,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 ThemeLevel = (int)(themeFile?.Level ?? ThemeLevel.Site),
                 SkinSrc = tab.SkinSrc,
                 ContainerSrc = tab.ContainerSrc,
-                HasChild = pageManagementController.TabHasChildren(tab)
+                HasChild = pageManagementController.TabHasChildren(tab),
+                ParentId = tab.ParentId
             };
         }
         
