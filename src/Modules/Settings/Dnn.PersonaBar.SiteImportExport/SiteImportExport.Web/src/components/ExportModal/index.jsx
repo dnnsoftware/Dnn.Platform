@@ -50,6 +50,7 @@ class ExportModal extends Component {
             errors: {
                 ExportName: false
             },
+            IncludeContentEnabled: true,
             reloadPages: false,
             requestSubmitting: false
         };
@@ -212,6 +213,9 @@ class ExportModal extends Component {
         this.setState({ exportRequest }, () => {
             if (keysToValidate.some(vkey => vkey === "IncludeContent"))
                 this.ValidateTexts("IncludeContent");
+            let { state } = this;
+            state.IncludeContentEnabled = !(selectedPages === undefined || selectedPages.length <= 0);
+            this.setState({ state });
         });
     }
 
@@ -293,6 +297,7 @@ class ExportModal extends Component {
                                     offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeContent}
                                     onChange={this.onChange.bind(this, "IncludeContent")}
+                                    readOnly={!state.IncludeContentEnabled}
                                 />
                             </InputGroup>
                             <InputGroup>
