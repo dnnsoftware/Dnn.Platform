@@ -232,8 +232,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 ? AddTab(pageSettings)
                 : UpdateTab(tab, pageSettings);
 
-            MovePageIfNeeded(pageSettings, tab);
-
             return TabController.Instance.GetTab(tabId, portalSettings.PortalId);
         }
 
@@ -881,7 +879,9 @@ namespace Dnn.PersonaBar.Pages.Components
             CreateOrUpdateContentItem(tab);
 
             SaveTabUrl(tab, pageSettings);
-            
+
+            MovePageIfNeeded(pageSettings, tab);
+
             return tab.TabID;
         }
 
