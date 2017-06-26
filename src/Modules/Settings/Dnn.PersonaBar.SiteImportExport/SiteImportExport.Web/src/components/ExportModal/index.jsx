@@ -208,8 +208,11 @@ class ExportModal extends Component {
 
     updatePagesToExport(selectedPages) {
         let { exportRequest } = this.state;
+        let prevCount = (exportRequest.pages !== null && exportRequest.pages !== undefined) ? exportRequest.pages.length : 0;
         exportRequest.pages = selectedPages;
-        exportRequest["IncludeContent"] = !(selectedPages === undefined || selectedPages.length <= 0);
+        if (prevCount === 0) {
+            exportRequest["IncludeContent"] = !(selectedPages === undefined || selectedPages.length <= 0);
+        }
         this.setState({ exportRequest }, () => {
             if (keysToValidate.some(vkey => vkey === "IncludeContent"))
                 this.ValidateTexts("IncludeContent");
