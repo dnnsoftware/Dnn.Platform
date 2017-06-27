@@ -278,26 +278,24 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return true;
         }
 
-        public List<TabInfo> GetDeletedTabs()
+        public List<TabInfo> GetDeletedTabs(int pageIndex = -1, int pageSize = -1)
         {
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, true, true, true, true);
             var deletedtabs =
-                tabs.Where(t => t.ParentId != adminTabId && t.IsDeleted && TabPermissionController.CanDeletePage(t))
-                    .ToList();
-            return deletedtabs;
+                tabs.Where(t => t.ParentId != adminTabId && t.IsDeleted && TabPermissionController.CanDeletePage(t));
+            return pageIndex == -1 || pageSize == -1 ? deletedtabs.ToList() : deletedtabs.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
-        public List<ModuleInfo> GetDeletedModules()
+        public List<ModuleInfo> GetDeletedModules(int pageIndex = -1, int pageSize = -1)
         {
             var deletedModules = _moduleController.GetModules(PortalSettings.PortalId)
                 .Cast<ModuleInfo>()
                 .Where(module => module.IsDeleted && (
                     TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) ||
                     ModulePermissionController.CanDeleteModule(module))
-                )
-                .ToList();
-            return deletedModules;
+                );
+            return pageIndex == -1 || pageSize == -1 ? deletedModules.ToList() : deletedModules.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
         public string GetTabStatus(TabInfo tab)
@@ -310,10 +308,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return tab.IsVisible ? "Visible" : "Hidden";
         }
 
-        public List<UserInfo> GetDeletedUsers()
+        public List<UserInfo> GetDeletedUsers(int pageIndex = -1, int pageSize = -1)
         {
-            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(CanManageUser).ToList();
-            return deletedusers;
+            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(CanManageUser);
+            return pageIndex == -1 || pageSize == -1 ? deletedusers.ToList() : deletedusers.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
         public void DeleteUsers(IEnumerable<UserInfo> users)
