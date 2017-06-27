@@ -558,7 +558,6 @@ namespace DotNetNuke.Entities.Profile
                         user.Profile.SetProfileProperty(propertyName, propertyValue);
                     }
                 }
-                UpdateUserProfile(user);
 
                 //if user's photo changed, then create different size thumbnails of profile pictures.
                 if (photoChanged)
