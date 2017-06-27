@@ -46,9 +46,9 @@ namespace Dnn.PersonaBar.Recyclebin.Services
     {
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView)]
-        public HttpResponseMessage GetDeletedPageList()
+        public HttpResponseMessage GetDeletedPageList(int pageIndex = -1, int pageSize = -1)
         {
-            var tabs = Components.RecyclebinController.Instance.GetDeletedTabs();
+            var tabs = Components.RecyclebinController.Instance.GetDeletedTabs(pageIndex, pageSize);
             var deletedtabs = from t in tabs
                               select ConvertToPageItem(t, tabs);
             return Request.CreateResponse(HttpStatusCode.OK, deletedtabs);
@@ -56,18 +56,18 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView)]
-        public HttpResponseMessage GetDeletedModuleList()
+        public HttpResponseMessage GetDeletedModuleList(int pageIndex = -1, int pageSize = -1)
         {
-            var mods = Components.RecyclebinController.Instance.GetDeletedModules();
+            var mods = Components.RecyclebinController.Instance.GetDeletedModules(pageIndex, pageSize);
             var deletedmodules = from t in mods select ConvertToModuleItem(t);
             return Request.CreateResponse(HttpStatusCode.OK, deletedmodules);
         }
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView)]
-        public HttpResponseMessage GetDeletedUserList()
+        public HttpResponseMessage GetDeletedUserList(int pageIndex = -1, int pageSize = -1)
         {
-            var users = Components.RecyclebinController.Instance.GetDeletedUsers();
+            var users = Components.RecyclebinController.Instance.GetDeletedUsers(pageIndex, pageSize);
             var deletedusers = from t in users select ConvertToUserItem(t);
             return Request.CreateResponse(HttpStatusCode.OK, deletedusers);
         }
