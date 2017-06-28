@@ -85,8 +85,9 @@ class PageSettings extends Component {
                 {Localization.get("CopyPermissionsToDescendantPages")}
             </Button>;
     }
-    onSelectPageName(selectedPageName) {
-        this.setState({selectedPageName});
+
+    onSelectParentPageId(parentPageId, parentPageName){
+        this.setState({parentPageId, parentPageName});
     }
 
     render() {
@@ -157,7 +158,7 @@ class PageSettings extends Component {
                 label: Localization.get("Modules"),
                 component: <div className="dnn-simple-tab-item">
                                 <Modules 
-                                    modules={selectedPage.modules} 
+                                    modules={selectedPage.modules}
                                     onDeleteModule={onDeletePageModule}
                                     onEditingModule={onEditingPageModule}
                                     onCancelEditingModule={onCancelEditingPageModule}
@@ -178,11 +179,12 @@ class PageSettings extends Component {
                             components={pageTypeSelectorComponents} />
                         <PageDetails
                             page={selectedPage}
-                            selectedPageName={this.state.selectedPageName}
-                            onSelectPageName={this.onSelectPageName.bind(this)}
+                            selectedParentPageName={this.state.parentPageName}
+                            selectedParentPageId={this.state.parentPageId}
+                            onSelectParentPageId={this.onSelectParentPageId.bind(this)}
                             errors={selectedPageErrors}
                             onChangeField={onChangeField}
-                            components={pageDetailsFooterComponents}                             
+                            components={pageDetailsFooterComponents}
                             />
                         {footer}
                     </div>);

@@ -33,14 +33,15 @@ class PageDetails extends Component {
         onChangeField("parentId", value);
     }
 
-    onSelect(tabId, pageName) {
+    onSelect(parentPageId, parentPageName) {
         const {page} = this.props;
-        this.props.onSelectPageName(pageName);
-        this.onChangeParentId(tabId);
+        this.props.onSelectParentPageId(parentPageId, parentPageName);
+        this.onChangeParentId(parentPageId);
     }
 
     render() {
         const {page, errors} = this.props;
+        
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
             portalId:  -2,
@@ -112,8 +113,9 @@ class PageDetails extends Component {
                             <Label label={Localization.get("ParentPage")}  style={{paddingBottom:"10px"}}/>
                             <PagePicker
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
-                                defaultLabel={ this.props.selectedPageName || page.hierarchy || Localization.get("NoneSpecified")}
-                                selectedTabId={this.props.selectedPageName || page.hierarchy || false}
+                                IsMultiSelect={false}
+                                defaultLabel={ this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified")}
+                                selectedTabId={this.props.selectedParentPageId || page.parentId|| false}
                                 portalTabsParamters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
@@ -129,8 +131,9 @@ class PageDetails extends Component {
 }
 
 PageDetails.propTypes = {
-    onSelectPageName: PropTypes.func.isRequired,
-    selectedPageName: PropTypes.string.isRequired,
+    onSelectParentPageId: PropTypes.func.isRequired,
+    selectedParentPageName: PropTypes.string.isRequired,
+    selectedParentPageId: PropTypes.number.isRequired,
     page: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired
