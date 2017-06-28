@@ -13,6 +13,10 @@ import PagePicker from "dnn-page-picker";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {
+    constructor() {
+        super();
+        this.state={};
+    }
 
     onChangeField(key, event) {
         const {onChangeField} = this.props;
@@ -29,8 +33,15 @@ class PageDetails extends Component {
         onChangeField("parentId", value);
     }
 
+    onSelect(parentPageId, parentPageName) {
+        const {page} = this.props;
+        this.props.onSelectParentPageId(parentPageId, parentPageName);
+        this.onChangeParentId(parentPageId);
+    }
+
     render() {
         const {page, errors} = this.props;
+        
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
             portalId:  -2,
@@ -102,10 +113,12 @@ class PageDetails extends Component {
                             <Label label={Localization.get("ParentPage")}  style={{paddingBottom:"10px"}}/>
                             <PagePicker
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
-                                defaultLabel={Localization.get("NoneSpecified")}
+                                IsMultiSelect={false}
+                                defaultLabel={ this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified")}
+                                selectedTabId={this.props.selectedParentPageId || page.parentId|| false}
                                 portalTabsParamters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
-                                OnSelect={ this.onChangeParentId.bind(this) }
+                                OnSelect={this.onSelect.bind(this)}
                                 serviceFramework={sf} />
                         </InputGroup>
                     </GridCell>
@@ -118,6 +131,9 @@ class PageDetails extends Component {
 }
 
 PageDetails.propTypes = {
+    onSelectParentPageId: PropTypes.func.isRequired,
+    selectedParentPageName: PropTypes.string.isRequired,
+    selectedParentPageId: PropTypes.number.isRequired,
     page: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired

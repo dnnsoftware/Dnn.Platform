@@ -16,6 +16,9 @@ import permissionTypes from "../../services/permissionTypes";
 
 class PageSettings extends Component {
 
+    componentWillMount(){
+        this.setState({selectedPageName:""});
+    }
     hasPageErrors() {
         const {selectedPageErrors} = this.props;
         return Object.keys(selectedPageErrors)
@@ -81,6 +84,10 @@ class PageSettings extends Component {
                 onClick={this.props.onCopyPermissionsToDescendantPages}> 
                 {Localization.get("CopyPermissionsToDescendantPages")}
             </Button>;
+    }
+
+    onSelectParentPageId(parentPageId, parentPageName){
+        this.setState({parentPageId, parentPageName});
     }
 
     render() {
@@ -151,7 +158,7 @@ class PageSettings extends Component {
                 label: Localization.get("Modules"),
                 component: <div className="dnn-simple-tab-item">
                                 <Modules 
-                                    modules={selectedPage.modules} 
+                                    modules={selectedPage.modules}
                                     onDeleteModule={onDeletePageModule}
                                     onEditingModule={onEditingPageModule}
                                     onCancelEditingModule={onCancelEditingPageModule}
@@ -170,11 +177,14 @@ class PageSettings extends Component {
                             page={selectedPage}
                             onChangePageType={onChangePageType} 
                             components={pageTypeSelectorComponents} />
-                        <PageDetails 
+                        <PageDetails
                             page={selectedPage}
-                            errors={selectedPageErrors} 
+                            selectedParentPageName={this.state.parentPageName}
+                            selectedParentPageId={this.state.parentPageId}
+                            onSelectParentPageId={this.onSelectParentPageId.bind(this)}
+                            errors={selectedPageErrors}
                             onChangeField={onChangeField}
-                            components={pageDetailsFooterComponents}                             
+                            components={pageDetailsFooterComponents}
                             />
                         {footer}
                     </div>);
