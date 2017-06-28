@@ -16,7 +16,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         {
             base.OnActionExecuting(actionContext);
 
-            bool apiAuthFailure = true;
+            bool authenticated = false;
 
             // Is there an api key header present?
             if (actionContext.Request.Headers.Contains("x-api-key"))
@@ -34,13 +34,13 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                     if (apiUser != null && apiUser.APIKey == apiKey)
                     {
                         // Genuine API user.
-                        apiAuthFailure = false;
+                        authenticated = true;
                     }
                 }
             }
 
             // If authentication failure occurs, return a response without carrying on executing actions.
-            if (apiAuthFailure)
+            if (!authenticated)
             {
                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Access denied.");
             }
