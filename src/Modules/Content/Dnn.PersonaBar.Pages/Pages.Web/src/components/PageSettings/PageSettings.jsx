@@ -86,8 +86,7 @@ class PageSettings extends Component {
             </Button>;
     }
     onSelectPageName(selectedPageName) {
-        console.log("calling selected", selectedPageName);
-       this.setState({selectedPageName});
+        this.setState({selectedPageName});
     }
 
     render() {
@@ -181,7 +180,7 @@ class PageSettings extends Component {
                             page={selectedPage}
                             selectedPageName={this.state.selectedPageName}
                             onSelectPageName={this.onSelectPageName.bind(this)}
-                            errors={selectedPageErrors} 
+                            errors={selectedPageErrors}
                             onChangeField={onChangeField}
                             components={pageDetailsFooterComponents}                             
                             />
