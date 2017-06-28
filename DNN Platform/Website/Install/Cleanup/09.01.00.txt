@@ -42,7 +42,6 @@ DesktopModules\Admin\UrlManagement\Resources.zip.manifest
 DesktopModules\Admin\UrlManagement\TestUrl.ascx
 DesktopModules\Admin\UrlManagement\UrlManagement.ascx
 DesktopModules\Admin\UrlManagement\UrlSettings.ascx
-bin\DotNetNuke.Professional.UrlManagement.dll
 
 ' Other modules
 DesktopModules\DevicePreviewManagement\
