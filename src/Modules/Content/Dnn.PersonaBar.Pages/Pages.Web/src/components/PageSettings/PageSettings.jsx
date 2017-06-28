@@ -16,6 +16,9 @@ import permissionTypes from "../../services/permissionTypes";
 
 class PageSettings extends Component {
 
+    componentWillMount(){
+        this.setState({selectedPageName:""});
+    }
     hasPageErrors() {
         const {selectedPageErrors} = this.props;
         return Object.keys(selectedPageErrors)
@@ -81,6 +84,10 @@ class PageSettings extends Component {
                 onClick={this.props.onCopyPermissionsToDescendantPages}> 
                 {Localization.get("CopyPermissionsToDescendantPages")}
             </Button>;
+    }
+    onSelectPageName(selectedPageName) {
+        console.log("calling selected", selectedPageName);
+       this.setState({selectedPageName});
     }
 
     render() {
@@ -170,8 +177,10 @@ class PageSettings extends Component {
                             page={selectedPage}
                             onChangePageType={onChangePageType} 
                             components={pageTypeSelectorComponents} />
-                        <PageDetails 
+                        <PageDetails
                             page={selectedPage}
+                            selectedPageName={this.state.selectedPageName}
+                            onSelectPageName={this.onSelectPageName.bind(this)}
                             errors={selectedPageErrors} 
                             onChangeField={onChangeField}
                             components={pageDetailsFooterComponents}                             

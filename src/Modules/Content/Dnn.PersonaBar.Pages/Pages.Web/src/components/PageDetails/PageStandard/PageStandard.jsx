@@ -13,6 +13,10 @@ import PagePicker from "dnn-page-picker";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {
+    constructor() {
+        super();
+        this.state={};
+    }
 
     onChangeField(key, event) {
         const {onChangeField} = this.props;
@@ -27,6 +31,12 @@ class PageDetails extends Component {
     onChangeParentId(value) {
         const {onChangeField} = this.props;
         onChangeField("parentId", value);
+    }
+
+    onSelect(tabId, pageName) {
+        const {page} = this.props;
+        this.props.onSelectPageName(pageName);
+        this.onChangeParentId(tabId);
     }
 
     render() {
@@ -102,10 +112,10 @@ class PageDetails extends Component {
                             <Label label={Localization.get("ParentPage")}  style={{paddingBottom:"10px"}}/>
                             <PagePicker
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
-                                defaultLabel={page.hierarchy || Localization.get("NoneSpecified")}
+                                defaultLabel={this.props.selectedPageName || page.hierarchy || Localization.get("NoneSpecified")}
                                 portalTabsParamters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
-                                OnSelect={ this.onChangeParentId.bind(this) }
+                                OnSelect={this.onSelect.bind(this)}
                                 serviceFramework={sf} />
                         </InputGroup>
                     </GridCell>
@@ -118,6 +128,8 @@ class PageDetails extends Component {
 }
 
 PageDetails.propTypes = {
+    onSelectPageName: PropTypes.func.isRequired,
+    selectedPageName: PropTypes.string.isRequired,
     page: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired
