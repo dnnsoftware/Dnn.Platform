@@ -118,7 +118,10 @@
   <ItemGroup>
     <Compile Include="Components\APIUserController.cs" />
     <Compile Include="Components\FeatureController.cs" />
+    <Compile Include="Components\InstallJob.cs" />
     <Compile Include="Components\InstallManager.cs" />
+    <Compile Include="Components\PackageDependency.cs" />
+    <Compile Include="Components\PackageJob.cs" />
     <Compile Include="DataAccess\Models\APIUser.cs" />
     <Compile Include="DataAccess\DataControllers\APIUserDataController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

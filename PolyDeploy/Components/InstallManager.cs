@@ -1,22 +1,30 @@
 ﻿using DotNetNuke.Modules.Dashboard.Components.Server;
 using DotNetNuke.Services.Installer;
+using DotNetNuke.Services.Installer.Dependencies;
+using DotNetNuke.Services.Installer.Installers;
 using DotNetNuke.Services.Installer.Packages;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Xml.XPath;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal class InstallManager
     {
-        public IList<InstallJob> InstallJobs { get; set; }
+        private List<InstallJob> InstallJobs { get; set; }
+        public SortedList<int, PackageJob> OrderedPackages { get; set; }
 
         private string directory { get; set; }
 
         public InstallManager(string dir)
         {
+            // Initialise install jobs list.
+            InstallJobs = new List<InstallJob>();
+
+            // Check that the passed directory exists.
             if (!Directory.Exists(dir))
             {
                 throw new Exception("Directory doesn't exist. " + dir);
@@ -24,98 +32,101 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
             directory = dir;
 
-            BuildGraph();
-        }
-
-        private void BuildGraph()
-        {
-            // Clear.
-            InstallJobs = new List<InstallJob>();
-
-            foreach(string file in Directory.GetFiles(directory).ToList<string>())
+            // Create an install job for each zip.
+            foreach (string file in Directory.GetFiles(directory).ToList<string>())
             {
                 InstallJobs.Add(new InstallJob(file));
             }
-        }
-    }
 
-    internal class ModuleIdentity
-    {
-        public string moduleName { get; set; }
-        public string version { get; set; }
-    }
-
-    internal class InstallJob : ModuleIdentity
-    {
-        public IList<ModuleIdentity> dependencies { get; set; }
-        private string zipPath { get; set; }
-        public string temporaryDirectory { get; set; }
-        public string manifestFileName { get; set; }
-
-        public InstallJob(string path)
-        {
-            zipPath = path;
-            temporaryDirectory = AvailableTemporaryDirectory();
-
-            // Create temporary directory.
-            Directory.CreateDirectory(temporaryDirectory);
-
-            // Unzip module zip in to the temporary directory.
-            ZipFile.ExtractToDirectory(zipPath, temporaryDirectory);
-
-            try
-            {
-                // Find the manifest.
-                manifestFileName = ModuleManifestName(temporaryDirectory);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Format("Unable to retrieve manifest for {0}", Path.GetFileName(zipPath)), ex);
-            }
-
-            ServerInfo servInfo = new ServerInfo();
-
-            Installer jobInstaller = new Installer(this.temporaryDirectory, manifestFileName, servInfo.PhysicalPath, true);
-
-            PackageInfo package = jobInstaller.Packages[0].Package;
-
-            moduleName = package.Name;
-            Version ver = package.Version;
-
-            version = ver.ToString();
+            OrderedPackages = SortPackages(InstallJobs);
         }
 
-        private string ModuleManifestName(string directory)
+        public void InstallPackages ()
         {
-            string manifestFileName = null;
-
-            foreach (string filePath in Directory.GetFiles(this.temporaryDirectory))
+            foreach (KeyValuePair<int, PackageJob> keyPair in OrderedPackages)
             {
-                if (filePath.EndsWith(".dnn"))
+                PackageJob packJob = keyPair.Value;
+
+                packJob.Install();
+            }
+        }
+
+        private SortedList<int, PackageJob> SortPackages(List<InstallJob> installJobs)
+        {
+            SortedList<int, PackageJob> orderedPackages = new SortedList<int, PackageJob>();
+
+            List<PackageJob> packages = AggregatePackages(installJobs);
+
+            foreach (PackageJob package in packages)
+            {
+                AddPackage(package, packages, orderedPackages);
+            }
+
+            foreach (KeyValuePair<int, PackageJob> keyPair in orderedPackages)
+            {
+                int checkIndex = keyPair.Key;
+                PackageJob checkPackage = keyPair.Value;
+
+                foreach (PackageDependency packDep in checkPackage.Dependencies)
                 {
-                    if (manifestFileName == null)
+                    foreach (KeyValuePair<int, PackageJob> depKeyPair in orderedPackages)
                     {
-                        manifestFileName = Path.GetFileName(filePath);
-                    }
-                    else
-                    {
-                        throw new Exception("More than one manifest found.");
+                        int depIndex = depKeyPair.Key;
+                        PackageJob depPackage = depKeyPair.Value;
+
+                        if (depPackage.Name.Equals(packDep.Value) && checkIndex > depIndex)
+                        {
+                            packDep.WillFulfill = true;
+                            break;
+                        }
                     }
                 }
             }
 
-            return manifestFileName;
+            return orderedPackages;
         }
 
-        private string AvailableTemporaryDirectory()
+        private void AddPackage(PackageJob package, List<PackageJob> packages, SortedList<int, PackageJob> orderedPackages)
         {
-            string dir = Path.Combine(Path.GetTempPath(), "tmp-" + Guid.NewGuid().ToString().ToUpper());
+            // First of all, are we in the list already?
+            if (!orderedPackages.ContainsValue(package))
+            {
+                // No, do we have any dependencies?
+                if (package.Dependencies.Count > 0)
+                {
+                    // Yes, we need to add those first.
+                    foreach (PackageDependency dependency in package.Dependencies)
+                    {
+                        // Only evaluate package dependencies.
+                        if (dependency.Type.Equals("package"))
+                        {
+                            // Find it in packages.
+                            PackageJob depPack = packages.Find(x => x.Name == dependency.Value);
 
-            if (Directory.Exists(dir)) {
-                return AvailableTemporaryDirectory();
+                            // Did we find it?
+                            if (depPack != null)
+                            {
+                                AddPackage(depPack, packages, orderedPackages);
+                            }
+                        }
+                    }
+                }
+
+                // Add to the list.
+                orderedPackages.Add(orderedPackages.Count, package);
+            }
+        }
+
+        private List<PackageJob> AggregatePackages(List<InstallJob> installJobs)
+        {
+            List<PackageJob> packages = new List<PackageJob>();
+
+            foreach(InstallJob installJob in installJobs)
+            {
+                packages.AddRange(installJob.Packages);
             }
 
-            return dir;
+            return packages;
         }
     }
 }
