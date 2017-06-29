@@ -145,7 +145,7 @@ class EditableField extends Component {
     }
 
     getUrl(text) {
-        if (!text.startsWith("http://") || !text.startsWith("https://")) {
+        if (text.indexOf("http://") !== 0 && text.indexOf("https://") !== 0) {
             return "http://" + text;
         }
         return text;
