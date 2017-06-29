@@ -115,7 +115,7 @@ class PageDetails extends Component {
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
                                 IsMultiSelect={false}
                                 defaultLabel={ this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified")}
-                                selectedTabId={this.props.selectedParentPageId || page.parentId|| false}
+                                selectedTabId={this.props.selectedParentPageId || page.parentId|| -1}
                                 portalTabsParamters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
