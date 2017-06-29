@@ -197,9 +197,8 @@ namespace Dnn.ExportImport.Components.Services
                         }
 
                         // this is not saved when adding the tab; so set it explicitly
-                        localTab.IsDeleted = otherTab.IsDeleted;
                         localTab.IsVisible = otherTab.IsVisible;
-                        EntitiesController.Instance.SetTabSpecificData(localTab.TabID, localTab.IsDeleted, localTab.IsVisible);
+                        EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
 
                         try
                         {
@@ -239,7 +238,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     localTab.ParentId = parentId;
                     localTab.UniqueId = Guid.NewGuid();
-                    otherTab.LocalId = _tabController.AddTab(localTab);
+                    otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab);
                     localTabs.Add(localTab);
                 }
                 catch (Exception ex)
@@ -251,9 +250,8 @@ namespace Dnn.ExportImport.Components.Services
                 UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
 
                 // this is not saved upon updating the tab
-                localTab.IsDeleted = otherTab.IsDeleted;
                 localTab.IsVisible = otherTab.IsVisible;
-                EntitiesController.Instance.SetTabSpecificData(localTab.TabID, localTab.IsDeleted, localTab.IsVisible);
+                EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
                 //_tabController.UpdateTab(localTab); // to clear cache
 
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
@@ -261,6 +259,38 @@ namespace Dnn.ExportImport.Components.Services
                 AddTabRelatedItems(localTab, otherTab, true);
 
                 TriggerImportEvent(localTab);
+            }
+            var portalSettings = new PortalSettings(portalId);
+
+            if (otherTab.IsDeleted)
+            {
+                _tabController.SoftDeleteTab(localTab.TabID, portalSettings);
+            }
+            else
+            {
+                var tab = _tabController.GetTab(localTab.TabID, portalId);
+                if (tab.IsDeleted)
+                {
+                    RestoreTab(tab, portalSettings);
+                }
+            }
+        }
+
+        public void RestoreTab(TabInfo tab, PortalSettings portalSettings)
+        {
+            var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tab.PortalID, tab.TabID);
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
+            }
+
+            _tabController.RestoreTab(tab, portalSettings);
+
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
             }
         }
 
@@ -565,7 +595,7 @@ namespace Dnn.ExportImport.Components.Services
                         WebSliceTitle = other.WebSliceTitle,
                         WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MinValue,
                         WebSliceTTL = other.WebSliceTTL ?? -1,
-                        IsDeleted = other.IsDeleted,
+                        IsDeleted = false,
                         CacheMethod = other.CacheMethod,
                         ModuleTitle = other.ModuleTitle,
                         Header = other.Header,

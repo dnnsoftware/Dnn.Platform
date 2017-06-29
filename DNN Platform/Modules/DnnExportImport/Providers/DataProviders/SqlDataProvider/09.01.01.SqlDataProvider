@@ -39,11 +39,12 @@ BEGIN
 		WHERE TV.TabId=@TabID AND TV.IsPublished=1;
 
 		--Delete modules which have been deleted from page
-		DELETE FROM @ModuleIds 
-		WHERE ModuleId IN(
-		SELECT DISTINCT TVD.ModuleId FROM  {databaseOwner}[{objectQualifier}TabVersionDetails] TVD 
-		INNER JOIN {databaseOwner}[{objectQualifier}TabVersions] TV ON TV.TabVersionId=TVD.TabVersionId
-		WHERE TV.TabId=@TabID AND TV.IsPublished=1 and Action=2)
+
+		--DELETE FROM @ModuleIds 
+		--WHERE ModuleId IN(
+		--SELECT DISTINCT TVD.ModuleId FROM  {databaseOwner}[{objectQualifier}TabVersionDetails] TVD 
+		--INNER JOIN {databaseOwner}[{objectQualifier}TabVersions] TV ON TV.TabVersionId=TVD.TabVersionId
+		--WHERE TV.TabId=@TabID AND TV.IsPublished=1 and Action=2)
 	END
 	ELSE
 	BEGIN
