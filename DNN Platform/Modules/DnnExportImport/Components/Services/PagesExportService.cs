@@ -622,7 +622,7 @@ namespace Dnn.ExportImport.Components.Services
                         allImportedIds.Add(local.ModuleID);
 
                         // this is not saved upon adding the module
-                        if (other.IsDeleted)
+                        if (other.IsDeleted && !otherTab.IsDeleted)
                         {
                             local.IsDeleted = other.IsDeleted;
                             _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
@@ -716,7 +716,7 @@ namespace Dnn.ExportImport.Components.Services
                                 allImportedIds.Add(local.ModuleID);
 
                                 // this is not saved upon updating the module
-                                if (isDeleted != other.IsDeleted)
+                                if (isDeleted != other.IsDeleted && !otherTab.IsDeleted)
                                 {
                                     local.IsDeleted = other.IsDeleted;
                                     if (other.IsDeleted)
@@ -785,7 +785,7 @@ namespace Dnn.ExportImport.Components.Services
                                 allImportedIds.Add(local.ModuleID);
 
                                 // this is not saved upon updating the module
-                                if (isDeleted != other.IsDeleted)
+                                if (isDeleted != other.IsDeleted && !otherTab.IsDeleted)
                                 {
                                     local.IsDeleted = other.IsDeleted;
                                     if (other.IsDeleted)
