@@ -1312,8 +1312,8 @@ namespace Dnn.ExportImport.Components.Services
 
                         _totals.TotalTabModuleSettings +=
                             ExportTabModuleSettings(exportPage, toDate, fromDate);
+                        _totals.TotalTabs++;
                     }
-                    _totals.TotalTabs++;
                     _totals.LastProcessedId = index;
                 }
 
