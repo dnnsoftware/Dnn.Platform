@@ -3203,13 +3203,13 @@ namespace DotNetNuke.Services.Upgrade
         }
 
 
-        private static void UninstallPackage(string packageName, string packageType)
+        private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true)
         {
             var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName && p.PackageType == packageType);
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
-                searchInputInstaller.UnInstall(true);
+                searchInputInstaller.UnInstall(deleteFiles);
             }
         }
 
@@ -5525,7 +5525,7 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Google Analytics", "Module");
             UninstallPackage("DotNetNuke.Taxonomy", "Module");
 
-            UninstallPackage("UrlManagement", "Library");
+            UninstallPackage("UrlManagement", "Library", false);
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
