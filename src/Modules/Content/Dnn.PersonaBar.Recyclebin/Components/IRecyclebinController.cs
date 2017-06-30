@@ -38,10 +38,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         bool RestoreUser(UserInfo user, out string resultmessage);
 
-        List<TabInfo> GetDeletedTabs(int pageIndex = -1, int pageSize = -1);
+        List<TabInfo> GetDeletedTabs(out int totalRecords, int pageIndex = -1, int pageSize = -1);
 
-        List<ModuleInfo> GetDeletedModules(int pageIndex = -1, int pageSize = -1);
+        List<ModuleInfo> GetDeletedModules(out int totalRecords, int pageIndex = -1, int pageSize = -1);
 
-        List<UserInfo> GetDeletedUsers(int pageIndex = -1, int pageSize = -1);
+        List<UserInfo> GetDeletedUsers(out int totalRecords, int pageIndex = -1, int pageSize = -1);
     }
 }

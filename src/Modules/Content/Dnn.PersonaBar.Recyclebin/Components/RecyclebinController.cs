@@ -227,7 +227,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             resultmessage = null;
 
             //if parent of the page is deleted, then can't restore - parent should be restored first
-            var deletedTabs = GetDeletedTabs();
+            var totalRecords = 0;
+            var deletedTabs = GetDeletedTabs(out totalRecords);
             if (!Null.IsNull(tab.ParentId) && deletedTabs.Any(t => t.TabID == tab.ParentId))
             {
                 resultmessage = string.Format(LocalizeString("Service_RestoreTabError"), tab.TabName);
@@ -238,7 +239,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                 _tabController.RestoreTab(tab, PortalSettings);
 
                 //restore modules in this tab
-                var tabdeletedModules = GetDeletedModules().Where(m => m.TabID == tab.TabID);
+                var tabdeletedModules = GetDeletedModules(out totalRecords).Where(m => m.TabID == tab.TabID);
 
                 foreach (var m in tabdeletedModules)
                 {
@@ -263,7 +264,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             var module = _moduleController.GetModule(moduleId, tabId, false);
             if ((module != null))
             {
-                var deletedTabs = GetDeletedTabs().Where(t => t.TabID == module.TabID);
+                var totalRecords = 0;
+                var deletedTabs = GetDeletedTabs(out totalRecords).Where(t => t.TabID == module.TabID);
                 if (deletedTabs.Any())
                 {
                     var title = !string.IsNullOrEmpty(module.ModuleTitle)
@@ -278,16 +280,17 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return true;
         }
 
-        public List<TabInfo> GetDeletedTabs(int pageIndex = -1, int pageSize = -1)
+        public List<TabInfo> GetDeletedTabs(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, true, true, true, true);
             var deletedtabs =
                 tabs.Where(t => t.ParentId != adminTabId && t.IsDeleted && TabPermissionController.CanDeletePage(t));
+            totalRecords = deletedtabs.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedtabs.ToList() : deletedtabs.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
-        public List<ModuleInfo> GetDeletedModules(int pageIndex = -1, int pageSize = -1)
+        public List<ModuleInfo> GetDeletedModules(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
             var deletedModules = _moduleController.GetModules(PortalSettings.PortalId)
                 .Cast<ModuleInfo>()
@@ -295,6 +298,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) ||
                     ModulePermissionController.CanDeleteModule(module))
                 );
+            totalRecords = deletedModules.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedModules.ToList() : deletedModules.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
@@ -308,9 +312,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return tab.IsVisible ? "Visible" : "Hidden";
         }
 
-        public List<UserInfo> GetDeletedUsers(int pageIndex = -1, int pageSize = -1)
+        public List<UserInfo> GetDeletedUsers(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
             var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(CanManageUser);
+            totalRecords = deletedusers.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedusers.ToList() : deletedusers.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
