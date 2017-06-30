@@ -48,28 +48,49 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView)]
         public HttpResponseMessage GetDeletedPageList(int pageIndex = -1, int pageSize = -1)
         {
-            var tabs = Components.RecyclebinController.Instance.GetDeletedTabs(pageIndex, pageSize);
+            var totalRecords = 0;
+            var tabs = Components.RecyclebinController.Instance.GetDeletedTabs(out totalRecords, pageIndex, pageSize);
             var deletedtabs = from t in tabs
                               select ConvertToPageItem(t, tabs);
-            return Request.CreateResponse(HttpStatusCode.OK, deletedtabs);
+            var response = new
+            {
+                Success = true,
+                Results = deletedtabs,
+                TotalResults = totalRecords
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView)]
         public HttpResponseMessage GetDeletedModuleList(int pageIndex = -1, int pageSize = -1)
         {
-            var mods = Components.RecyclebinController.Instance.GetDeletedModules(pageIndex, pageSize);
+            var totalRecords = 0;
+            var mods = Components.RecyclebinController.Instance.GetDeletedModules(out totalRecords, pageIndex, pageSize);
             var deletedmodules = from t in mods select ConvertToModuleItem(t);
-            return Request.CreateResponse(HttpStatusCode.OK, deletedmodules);
+            var response = new
+            {
+                Success = true,
+                Results = deletedmodules,
+                TotalResults = totalRecords
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView)]
         public HttpResponseMessage GetDeletedUserList(int pageIndex = -1, int pageSize = -1)
         {
-            var users = Components.RecyclebinController.Instance.GetDeletedUsers(pageIndex, pageSize);
+            var totalRecords = 0;
+            var users = Components.RecyclebinController.Instance.GetDeletedUsers(out totalRecords, pageIndex, pageSize);
             var deletedusers = from t in users select ConvertToUserItem(t);
-            return Request.CreateResponse(HttpStatusCode.OK, deletedusers);
+            var response = new
+            {
+                Success = true,
+                Results = deletedusers,
+                TotalResults = totalRecords
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpPost]
@@ -248,9 +269,10 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 Components.Constants.RecycleBinModulesEdit + "&" + Components.Constants.RecycleBinUsersEdit)]
         public HttpResponseMessage EmptyRecycleBin()
         {
-            var deletedTabs = Components.RecyclebinController.Instance.GetDeletedTabs();
-            var deletedModules = Components.RecyclebinController.Instance.GetDeletedModules();
-            var deletedUsers = Components.RecyclebinController.Instance.GetDeletedUsers();
+            var totalRecords = 0;
+            var deletedTabs = Components.RecyclebinController.Instance.GetDeletedTabs(out totalRecords);
+            var deletedModules = Components.RecyclebinController.Instance.GetDeletedModules(out totalRecords);
+            var deletedUsers = Components.RecyclebinController.Instance.GetDeletedUsers(out totalRecords);
             var errors = new StringBuilder();
 
             Components.RecyclebinController.Instance.DeleteModules(deletedModules, errors);
