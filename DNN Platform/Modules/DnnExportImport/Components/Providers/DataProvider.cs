@@ -282,8 +282,8 @@ namespace Dnn.ExportImport.Components.Providers
                         CBO.FillCollection<PermissionInfo>(
                             _dataProvider.ExecuteReader("GetPermissions")))
                     .FirstOrDefault(x => x.PermissionCode == permissionCode &&
-                                         x.PermissionKey == permissionKey
-                                         && x.PermissionName == permissionName)?.PermissionID;
+                    x.PermissionKey == permissionKey
+                    && x.PermissionName.Equals(permissionName, StringComparison.InvariantCultureIgnoreCase))?.PermissionID;
         }
 
         public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)

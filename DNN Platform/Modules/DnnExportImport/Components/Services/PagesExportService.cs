@@ -374,18 +374,19 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabPermissions(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             if (!_exportDto.IncludePermissions) return 0;
-
+            var noRole = Convert.ToInt32(Globals.glbRoleNothing);
             var count = 0;
             var tabPermissions = Repository.GetRelatedItems<ExportTabPermission>(otherTab.Id).ToList();
             var localTabPermissions = localTab.TabPermissions.OfType<TabPermissionInfo>().ToList();
             foreach (var other in tabPermissions)
             {
+                var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
+                var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
+
                 var local = isNew ? null : localTabPermissions.FirstOrDefault(
-                    x => x.PermissionCode == other.PermissionCode &&
-                         x.PermissionKey == other.PermissionKey &&
-                         x.PermissionName == other.PermissionName &&
-                        (x.RoleName == other.RoleName || (string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(other.RoleName))) &&
-                    (x.Username == other.Username || (string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(other.Username))));
+                    x => x.PermissionCode == other.PermissionCode && x.PermissionKey == other.PermissionKey
+                    && x.PermissionName.Equals(other.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
+                    x.RoleID == roleId && x.UserID == userId);
                 var isUpdate = false;
                 if (local != null)
                 {
@@ -412,7 +413,7 @@ namespace Dnn.ExportImport.Components.Services
                     var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
                     if (permissionId != null)
                     {
-                        var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+
                         local = new TabPermissionInfo
                         {
                             TabID = localTab.TabID,
@@ -427,7 +428,6 @@ namespace Dnn.ExportImport.Components.Services
                         };
                         if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                         {
-                            var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
                             if (userId == null)
                             {
                                 Result.AddLogEntry("Couldn't add tab permission; User is undefined!",
@@ -438,7 +438,6 @@ namespace Dnn.ExportImport.Components.Services
                         }
                         if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
                         {
-                            var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
                             if (roleId == null)
                             {
                                 Result.AddLogEntry("Couldn't add tab permission; Role is undefined!",
@@ -896,19 +895,19 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportModulePermissions(ModuleInfo localModule, ExportModule otherModule, bool isNew)
         {
             var count = 0;
+            var noRole = Convert.ToInt32(Globals.glbRoleNothing);
             var modulePermissions = Repository.GetRelatedItems<ExportModulePermission>(otherModule.Id).ToList();
             var localModulePermissions = isNew
                 ? new List<ModulePermissionInfo>()
                 : localModule.ModulePermissions.OfType<ModulePermissionInfo>().ToList();
             foreach (var other in modulePermissions)
             {
+                var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
+                var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
                 var local = localModulePermissions.FirstOrDefault(
-                    x => x.PermissionCode == other.PermissionCode &&
-                         x.PermissionKey == other.PermissionKey
-                         && x.PermissionName == other.PermissionName &&
-                         (x.RoleName == other.RoleName || string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(other.RoleName))
-                         &&
-                         (x.Username == other.Username || string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(other.Username)));
+                    x => x.PermissionCode == other.PermissionCode && x.PermissionKey == other.PermissionKey
+                    && x.PermissionName.Equals(other.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
+                    x.RoleID == roleId && x.UserID == userId);
 
                 var isUpdate = false;
                 if (local != null)
@@ -937,7 +936,6 @@ namespace Dnn.ExportImport.Components.Services
 
                     if (permissionId != null)
                     {
-                        var noRole = Convert.ToInt32(Globals.glbRoleNothing);
 
                         local = new ModulePermissionInfo
                         {
@@ -952,14 +950,12 @@ namespace Dnn.ExportImport.Components.Services
                         };
                         if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                         {
-                            var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
                             if (userId == null)
                                 continue;
                             local.UserID = userId.Value;
                         }
                         if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
                         {
-                            var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
                             if (roleId == null)
                                 continue;
                             local.RoleID = roleId.Value;

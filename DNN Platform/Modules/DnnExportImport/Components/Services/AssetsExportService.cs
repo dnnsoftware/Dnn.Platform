@@ -385,6 +385,7 @@ namespace Dnn.ExportImport.Components.Services
                         folder.FolderId = 0;
                         return false;
                     }
+                    userInfo.IsSuperUser = false;
                     var newFolder = FolderManager.Instance.GetUserFolder(userInfo);
                     folder.FolderId = newFolder.FolderID;
                     folder.FolderPath = newFolder.FolderPath;
@@ -404,21 +405,18 @@ namespace Dnn.ExportImport.Components.Services
             ExportFolderPermission folderPermission, IEnumerable<ExportFolderPermission> localPermissions)
         {
             var portalId = importJob.PortalId;
-
+            var noRole = Convert.ToInt32(Globals.glbRoleNothing);
             if (folderPermission == null) return;
+            var roleId = Util.GetRoleIdByName(portalId, folderPermission.RoleId ?? noRole, folderPermission.RoleName);
+            var userId = UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
 
             var existingFolderPermission = localPermissions.FirstOrDefault(
                 x =>
                     (x.FolderPath == folderPermission.FolderPath ||
                      (string.IsNullOrEmpty(x.FolderPath) && string.IsNullOrEmpty(folderPermission.FolderPath))) &&
-                    x.PermissionCode == folderPermission.PermissionCode &&
-                    x.PermissionKey == folderPermission.PermissionKey
-                    && x.PermissionName == folderPermission.PermissionName &&
-                    (x.RoleName == folderPermission.RoleName ||
-                     (string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(folderPermission.RoleName)))
-                    &&
-                    (x.Username == folderPermission.Username ||
-                     (string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(folderPermission.Username))));
+                    x.PermissionCode == folderPermission.PermissionCode && x.PermissionKey == folderPermission.PermissionKey
+                    && x.PermissionName.Equals(folderPermission.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
+                    x.RoleId == roleId && x.UserId == userId);
 
             var isUpdate = false;
             if (existingFolderPermission != null)
@@ -454,18 +452,16 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (permissionId != null)
                 {
-                    var noRole = Convert.ToInt32(Globals.glbRoleNothing);
-
                     folderPermission.PermissionId = Convert.ToInt32(permissionId);
                     if (folderPermission.UserId != null && folderPermission.UserId > 0 && !string.IsNullOrEmpty(folderPermission.Username))
                     {
-                        folderPermission.UserId = UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
+                        folderPermission.UserId = userId;
                         if (folderPermission.UserId == null)
                             return;
                     }
                     if (folderPermission.RoleId != null && folderPermission.RoleId > noRole && !string.IsNullOrEmpty(folderPermission.RoleName))
                     {
-                        folderPermission.RoleId = Util.GetRoleIdByName(portalId, folderPermission.RoleId ?? noRole, folderPermission.RoleName);
+                        folderPermission.RoleId = roleId;
                         if (folderPermission.RoleId == null)
                             return;
                     }
@@ -587,7 +583,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private int GetLocalWorkFlowId(int? exportedWorkFlowId)
         {
-            if (exportedWorkFlowId!=null && exportedWorkFlowId > 1) // 1 is direct publish
+            if (exportedWorkFlowId != null && exportedWorkFlowId > 1) // 1 is direct publish
             {
                 var state = Repository.GetItem<ExportWorkflow>(item => item.WorkflowID == exportedWorkFlowId);
                 return state?.LocalId ?? -1;
