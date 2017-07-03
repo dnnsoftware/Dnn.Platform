@@ -6,16 +6,6 @@ define(['jquery',
         var utility;
         var config = cf.init();
 
-        function loadScript() {
-             var url = "modules/dnn.extensions/scripts/bundles/extensions-bundle.js";
-            
-            $.ajax({
-                dataType: "script",
-                cache: true,
-                url: url
-            });
-        }
-
         return {
             init: function (wrapper, util, params, callback) {
                 utility = util;
@@ -27,7 +17,7 @@ define(['jquery',
                         moduleName: 'Extensions'
                     };
                 };
-                loadScript();
+                utility.loadBundleScript('modules/dnn.extensions/scripts/bundles/extensions-bundle.js');
 
                 if (typeof callback === "function") {
                     callback();

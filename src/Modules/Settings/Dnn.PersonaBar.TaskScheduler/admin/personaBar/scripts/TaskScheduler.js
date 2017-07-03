@@ -6,19 +6,9 @@ define(['jquery',
         var utility;
         var config = cf.init();
 
-        function loadScript() {
-            var url = "modules/dnn.taskscheduler/scripts/bundles/task-scheduler-bundle.js";
-            $.ajax({
-                dataType: "script",
-                cache: true,
-                url: url
-            });
-        }
-
         return {
             init: function (wrapper, util, params, callback) {
                 utility = util;
-
 
                 window.dnn.initScheduler = function initializeScheduler() {
                     return {
@@ -26,7 +16,7 @@ define(['jquery',
                         moduleName: 'TaskScheduler'
                     };
                 };
-                loadScript();
+                utility.loadBundleScript('modules/dnn.taskscheduler/scripts/bundles/task-scheduler-bundle.js');
 
                 if (typeof callback === 'function') {
                     callback();
