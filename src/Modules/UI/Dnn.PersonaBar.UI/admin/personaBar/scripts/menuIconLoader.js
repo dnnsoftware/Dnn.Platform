@@ -7,7 +7,6 @@ define(['jquery', 'main/config'], function ($, cf) {
 
     var loadSvg = function (wrapper, path) {
         $.get(path, {}, function (data) {
-            console.log(data);
             wrapper.html(data);
         }, 'text');
     }
