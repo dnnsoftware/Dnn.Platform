@@ -4963,9 +4963,20 @@ namespace DotNetNuke.Services.Upgrade
 	                {
 		                //check whether have version conflict and remove old version.
 		                var package = packages[file];
-		                if (packages.Values.Count(p => p.FriendlyName == package.FriendlyName) > 1)
+
+                        var installedPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, 
+                            p => p.Name == package.Name && p.PackageType == package.PackageType);
+
+                        if (packages.Values.Count(p => p.FriendlyName == package.FriendlyName) > 1 || installedPackage != null)
 		                {
 			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName == package.FriendlyName && kvp.Value.Version < package.Version).ToList();
+
+                            //if there already have higher version installed, remove current one from list.
+		                    if (installedPackage != null && package.Version <= installedPackage.Version)
+		                    {
+		                        oldPackages.Add(new KeyValuePair<string, PackageInfo>(file, package));
+		                    }
+
 			                if (oldPackages.Any())
 			                {
 				                foreach (var oldPackage in oldPackages)
