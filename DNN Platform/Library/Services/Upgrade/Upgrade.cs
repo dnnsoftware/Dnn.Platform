@@ -5514,7 +5514,6 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Tabs", "Module");
 
             // at last remove "/Admin" / "/Host" pages
-            UninstallPackage("DotNetNuke.Console", "Module");
             UninstallPackage("DotNetNuke.Portals", "Module");
             UninstallPackage("DotNetNuke.Scheduler", "Module");
             UninstallPackage("DotNetNuke.SearchAdmin", "Module");
