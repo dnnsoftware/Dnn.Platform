@@ -27,6 +27,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -120,24 +121,21 @@ namespace DotNetNuke.Modules.Html
                 else
                 {
                     // get default content from resource file
-                    if (!IsPostBack)
+                    if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
                     {
-                        if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                        if (EditorEnabled)
                         {
-                            if (EditorEnabled)
-                            {
-                                contentString = Localization.GetString("AddContentFromToolBar.Text", LocalResourceFile);
-                            }
-                            else
-                            {
-                                contentString = Localization.GetString("AddContentFromActionMenu.Text", LocalResourceFile);
-                            }
+                            contentString = Localization.GetString("AddContentFromToolBar.Text", LocalResourceFile);
                         }
                         else
                         {
-                            // hide the module if no content and in view mode
-                            ContainerControl.Visible = false;
+                            contentString = Localization.GetString("AddContentFromActionMenu.Text", LocalResourceFile);
                         }
+                    }
+                    else
+                    {
+                        // hide the module if no content and in view mode
+                        ContainerControl.Visible = false;
                     }
                 }
 
@@ -145,19 +143,16 @@ namespace DotNetNuke.Modules.Html
                 EditorEnabled = EditorEnabled && !Settings.ReplaceTokens;
 
                 // localize toolbar
-                if (!IsPostBack)
+                if (EditorEnabled)
                 {
-                    if (EditorEnabled)
+                    foreach (DNNToolBarButton button in editorDnnToobar.Buttons)
                     {
-                        foreach (DNNToolBarButton button in editorDnnToobar.Buttons)
-                        {
-                            button.ToolTip = Localization.GetString(button.ToolTip + ".ToolTip", LocalResourceFile);
-                        }
+                        button.ToolTip = Localization.GetString(button.ToolTip + ".ToolTip", LocalResourceFile);
                     }
-                    else
-                    {
-                        editorDnnToobar.Visible = false;
-                    }
+                }
+                else
+                {
+                    editorDnnToobar.Visible = false;
                 }
 
                 lblContent.EditEnabled = EditorEnabled;
@@ -169,6 +164,15 @@ namespace DotNetNuke.Modules.Html
                 if (!Settings.UseDecorate)
                 {
                     lblContent.CssClass = string.Format("{0} normalCheckBox", lblContent.CssClass);
+                }
+
+                if (IsPostBack && AJAX.IsEnabled() && AJAX.GetScriptManager(Page).IsInAsyncPostBack)
+                {
+                    var resetScript = $@"
+if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof dnn.controls.controls !== 'undefined'){{
+    dnn.controls.controls['{lblContent.ClientID}'] = null;
+}};";
+                    ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), $"ResetHtmlModule{ClientID}", resetScript, true);
                 }
             }
             catch (Exception exc)
