@@ -108,6 +108,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteSettings
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteImportExport", "Modules\Settings\Dnn.PersonaBar.SiteImportExport\Dnn.PersonaBar.SiteImportExport.csproj", "{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Connectors", "Modules\Settings\Dnn.PersonaBar.Connectors\Dnn.PersonaBar.Connectors.csproj", "{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,6 +196,10 @@ Global
 		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -222,5 +228,6 @@ Global
 		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 		{C0A07377-E031-4C5B-AC56-0080555C9AC2} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
+		{271F868B-2395-4652-B2EA-EF5FEC3CCBEA} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 	EndGlobalSection
 EndGlobal
