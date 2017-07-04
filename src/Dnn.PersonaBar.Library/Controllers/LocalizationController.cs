@@ -18,9 +18,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Cache;
 
-namespace Dnn.PersonaBar.UI.Components.Controllers
+namespace Dnn.PersonaBar.Library.Controllers
 {
-    internal class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
+    public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);

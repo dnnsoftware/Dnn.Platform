@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.UI.Services
 
         private IDictionary<string, string> GetLocalizedDictionary(string relativePath, string culture)
         {
-            var localizedDict = Components.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
+            var localizedDict = Dnn.PersonaBar.Library.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
             if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
             {
                 var fallbackCulture = GetFallbackCulture(culture);
@@ -160,7 +160,7 @@ namespace Dnn.PersonaBar.UI.Services
 
                 if (File.Exists(HttpContext.Current.Server.MapPath(fallbackFilePath)))
                 {
-                    var fallbackDict = Components.Controllers.LocalizationController.Instance.GetLocalizedDictionary(fallbackFilePath, culture);
+                    var fallbackDict = Dnn.PersonaBar.Library.Controllers.LocalizationController.Instance.GetLocalizedDictionary(fallbackFilePath, culture);
                     foreach (var kvp in fallbackDict)
                     {
                         if (!localizedDict.ContainsKey(kvp.Key))

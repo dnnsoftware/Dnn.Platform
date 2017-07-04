@@ -122,9 +122,6 @@
     <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\Controllers\AdminMenuController.cs" />
     <Compile Include="Components\Controllers\IAdminMenuController.cs" />
-    <Compile Include="Components\Dto\Localization.cs" />
-    <Compile Include="Components\Controllers\ILocalizationController.cs" />
-    <Compile Include="Components\Controllers\LocalizationController.cs" />
     <Compile Include="Components\EventHandlers\TabEventsHandler.cs" />
     <Compile Include="Components\Installers\PersonaBarMenuInstaller.cs" />
     <Compile Include="HttpModules\PersonaBarModule.cs" />

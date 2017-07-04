@@ -6,7 +6,7 @@
 #endregion
 
 
-namespace Dnn.PersonaBar.UI.Components.Dto
+namespace Dnn.PersonaBar.Library.Dto
 {
     public class Localization
     {

@@ -8,9 +8,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Dnn.PersonaBar.UI.Components.Controllers
+namespace Dnn.PersonaBar.Library.Controllers
 {
-    internal interface ILocalizationController
+    public interface ILocalizationController
     {
         string CultureName { get; }
 
