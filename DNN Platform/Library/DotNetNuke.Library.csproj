@@ -677,6 +677,13 @@
     <Compile Include="Services\Authentication\OAuth\QueryParameterComparer.cs" />
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
     <Compile Include="Services\ClientDependency\PurgeClientDependencyFiles.cs" />
+    <Compile Include="Services\Connections\ConnectionsController.cs" />
+    <Compile Include="Services\Connections\ConnectionsManager.cs" />
+    <Compile Include="Services\Connections\ConnectorCategories.cs" />
+    <Compile Include="Services\Connections\DynamicJsonConverter.cs" />
+    <Compile Include="Services\Connections\IConnectionsController.cs" />
+    <Compile Include="Services\Connections\IConnectionsManager.cs" />
+    <Compile Include="Services\Connections\IConnector.cs" />
     <Compile Include="Services\Cryptography\FipsCompilanceCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CoreCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
