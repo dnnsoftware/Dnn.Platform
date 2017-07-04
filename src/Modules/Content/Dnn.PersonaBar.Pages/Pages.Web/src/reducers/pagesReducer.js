@@ -102,34 +102,10 @@ export default function pagesReducer(state = {
             };
         }      
         
-        case ActionTypes.ADD_CUSTOM_URL: {
-            const pageUrls = [...state.selectedPage.pageUrls];
-            pageUrls.push(action.payload.newUrl);
-            
-            return { ...state,
-                selectedPage: {
-                    ...state.selectedPage, 
-                    pageUrls
-                }
-            };
-        }
-        
-        case ActionTypes.REPLACE_CUSTOM_URL: {
-            const pageUrls = [...state.selectedPage.pageUrls];
-            const index = getIndexById(pageUrls, action.payload.url.id);
-            if (index > -1) {
-                pageUrls[index] = action.payload.url;
-            }            
-            
-            return { ...state,
-                selectedPage: {
-                    ...state.selectedPage, 
-                    pageUrls
-                }
-            };
-        }
+        case ActionTypes.ADD_CUSTOM_URL:
+        case ActionTypes.REPLACE_CUSTOM_URL:
         case ActionTypes.DELETE_CUSTOM_URL: {
-            const pageUrls = [...state.selectedPage.pageUrls.filter(f => f.id !== action.payload.id)];
+            const pageUrls = action.payload.pageUrls;
             
             return { ...state,
                 selectedPage: {

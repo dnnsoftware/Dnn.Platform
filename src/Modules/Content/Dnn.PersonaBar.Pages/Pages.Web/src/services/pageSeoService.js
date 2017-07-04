@@ -57,11 +57,17 @@ const PageService = function () {
         const api = getApi();
         return api.post("DeleteCustomUrl", {id: url.id, tabId});
     };
+
+    const getUrls = function (pageId) {
+        const api = getApi();
+        return api.get("GetCustomUrls", { pageId });
+    };
     
     return {
         add: add,
         save: save,
-        delete: deleteUrl
+        delete: deleteUrl,
+        get: getUrls
     };
 };
 

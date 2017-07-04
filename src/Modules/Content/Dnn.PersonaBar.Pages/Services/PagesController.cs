@@ -96,6 +96,23 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
+        /// GET: api/Pages/GetCustomUrls
+        /// <summary>
+        /// Get custom Urls of a page
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetCustomUrls(int pageId)
+        {
+            if (!_securityService.CanManagePage(pageId))
+            {
+                return GetForbiddenResponse();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, _pagesController.GetPageUrls(pageId));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
