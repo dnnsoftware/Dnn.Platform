@@ -219,6 +219,9 @@ namespace Dnn.ExportImport.Components.Services
                             if (permissionId != null)
                             {
                                 var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+                                var userId = UserController.GetUserByName(importDto.PortalId, importPermission.Username)?.UserID;
+                                var roleId = Util.GetRoleIdByName(importDto.PortalId, importPermission.RoleID ?? noRole, importPermission.RoleName);
+
                                 var permission = new WorkflowStatePermission
                                 {
                                     PermissionID = permissionId ?? -1,
@@ -231,7 +234,6 @@ namespace Dnn.ExportImport.Components.Services
 
                                 if (importPermission.UserID != null && importPermission.UserID > 0 && !string.IsNullOrEmpty(importPermission.Username))
                                 {
-                                    var userId = UserController.GetUserByName(importDto.PortalId, importPermission.Username)?.UserID;
                                     if (userId == null)
                                     {
                                         Result.AddLogEntry("Couldn't add tab permission; User is undefined!",
@@ -243,7 +245,6 @@ namespace Dnn.ExportImport.Components.Services
 
                                 if (importPermission.RoleID != null && importPermission.RoleID > noRole && !string.IsNullOrEmpty(importPermission.RoleName))
                                 {
-                                    var roleId = Util.GetRoleIdByName(importDto.PortalId, importPermission.RoleID ?? noRole, importPermission.RoleName);
                                     if (roleId == null)
                                     {
                                         Result.AddLogEntry("Couldn't add tab permission; Role is undefined!",
@@ -257,12 +258,9 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     var existingPermissions = workflowStateManager.GetWorkflowStatePermissionByState(workflowState.StateID);
                                     var local = existingPermissions.FirstOrDefault(
-                                        x => x.PermissionCode == importPermission.PermissionCode &&
-                                             x.PermissionKey == importPermission.PermissionKey
-                                             && x.PermissionName == importPermission.PermissionName &&
-                                             (x.RoleName == importPermission.RoleName || string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(importPermission.RoleName))
-                                             &&
-                                             (x.Username == importPermission.Username || string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(importPermission.Username)));
+                                        x => x.PermissionCode == importPermission.PermissionCode && x.PermissionKey == importPermission.PermissionKey
+                                        && x.PermissionName.Equals(importPermission.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
+                                        x.RoleID == roleId && x.UserID == userId);
 
 
                                     if (local == null)

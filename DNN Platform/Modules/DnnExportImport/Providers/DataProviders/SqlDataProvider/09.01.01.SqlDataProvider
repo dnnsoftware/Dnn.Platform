@@ -34,9 +34,10 @@ BEGIN
 	BEGIN
 		-- Get all distinct module ids which belong to any published version of the tab
 		INSERT INTO @ModuleIds (ModuleId)
-		SELECT DISTINCT TVD.ModuleId From {databaseOwner}[{objectQualifier}TabVersions] TV 
-		INNER JOIN {databaseOwner}[{objectQualifier}TabVersionDetails] TVD ON TV.TabVersionId=TVD.TabVersionId 
-		WHERE TV.TabId=@TabID AND TV.IsPublished=1;
+		SELECT DISTINCT TM.ModuleId From {databaseOwner}[{objectQualifier}TabModules] TM
+		LEFT JOIN {databaseOwner}[{objectQualifier}TabVersions] TV ON TM.TabID=TV.TabId
+		LEFT JOIN {databaseOwner}[{objectQualifier}TabVersionDetails] TVD ON TV.TabVersionId=TVD.TabVersionId 
+		WHERE TM.TabId=@TabID AND (TV.IsPublished=1 OR TV.IsPublished IS NULL)
 
 		--Delete modules which have been deleted from page
 
