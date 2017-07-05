@@ -170,7 +170,10 @@ namespace DotNetNuke.Modules.Html
                 {
                     var resetScript = $@"
 if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof dnn.controls.controls !== 'undefined'){{
-    dnn.controls.controls['{lblContent.ClientID}'] = null;
+    var control = dnn.controls.controls['{lblContent.ClientID}'];
+    if(control && control.container !== $get('{lblContent.ClientID}')){{
+        dnn.controls.controls['{lblContent.ClientID}'] = null;
+    }}
 }};";
                     ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), $"ResetHtmlModule{ClientID}", resetScript, true);
                 }
