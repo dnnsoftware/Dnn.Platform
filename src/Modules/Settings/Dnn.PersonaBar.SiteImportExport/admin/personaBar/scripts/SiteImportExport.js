@@ -6,15 +6,6 @@
         var utility;
         var config = cf.init();
 
-        function loadScript() {
-            var url = "modules/dnn.siteimportexport/scripts/bundles/siteimportexport-bundle.js";
-            $.ajax({
-                dataType: "script",
-                cache: true,
-                url: url
-            });
-        }
-
         var init = function (wrapper, util, params, callback) {
             identifier = params.identifier;
             utility = util;
@@ -30,7 +21,7 @@
                     moduleName: 'SiteImportExport'
                 };
             };
-            loadScript();
+            utility.loadBundleScript('modules/dnn.siteimportexport/scripts/bundles/siteimportexport-bundle.js');
         };
 
         var load = function (params, callback) {

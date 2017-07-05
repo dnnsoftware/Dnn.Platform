@@ -6,19 +6,9 @@ define(['jquery',
         var utility;
         var config = cf.init();
 
-        function loadScript() {
-            var url = "modules/dnn.vocabularies/scripts/bundles/vocabulary-bundle.js";
-            $.ajax({
-                dataType: "script",
-                cache: true,
-                url: url
-            });
-        }
-
         return {
             init: function (wrapper, util, params, callback) {
                 utility = util;
-
 
                 window.dnn.initVocabularies = function initializeVocabularies() {
                     return {
@@ -27,7 +17,7 @@ define(['jquery',
                         moduleName: 'Vocabularies'
                     };
                 };
-                loadScript();
+                utility.loadBundleScript('modules/dnn.vocabularies/scripts/bundles/vocabulary-bundle.js');
 
                 if (typeof callback === 'function') {
                     callback();
