@@ -383,6 +383,17 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 }
 
                 return settings;
+            },
+            loadBundleScript: function (path) {
+                if (path.indexOf('cdv=') === -1) {
+                    path += (path.indexOf('?') > -1 ? '&' : '?') + 'cdv=' + config.buildNumber;
+                }
+
+                $.ajax({
+                    dataType: "script",
+                    cache: true,
+                    url: path
+                });
             }
         };
         util = $.extend(util, utility);

@@ -1,6 +1,6 @@
 'use strict';
-define(['jquery'], function ($) {
-
+define(['jquery', 'main/config'], function ($, cf) {
+    var config = cf.init();
     var loadImage = function(wrapper, path) {
         wrapper.append($('<img />').attr('src', path));
     }
@@ -19,7 +19,11 @@ define(['jquery'], function ($) {
                 return;
             }
 
-            var ext = path.split('.').pop().toLowerCase();
+            if (path.indexOf('cdv=') === -1) {
+                path += (path.indexOf('?') > -1 ? '&' : '?') + 'cdv=' + config.buildNumber;
+            }
+
+            var ext = path.split('?')[0].split('.').pop().toLowerCase();
             if (ext === "svg") {
                 loadSvg($this, path);
             } else {
