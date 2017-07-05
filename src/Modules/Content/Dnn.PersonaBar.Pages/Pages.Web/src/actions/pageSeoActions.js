@@ -1,6 +1,6 @@
 import PageSeoService from "../services/pageSeoService";
-import {pageSeoTypes as ActionTypes}  from "../constants/actionTypes";
-import pageActionTypes  from "../constants/actionTypes/pageActionTypes";
+import { pageSeoTypes as ActionTypes } from "../constants/actionTypes";
+import pageActionTypes from "../constants/actionTypes/pageActionTypes";
 import utils from "../utils";
 const pageSeoActions = {
     openNewForm() {
@@ -43,7 +43,7 @@ const pageSeoActions = {
                     value: value
                 }
             });
-        };        
+        };
     },
     addUrl(url, primaryAliasId) {
         return (dispatch, getState) => {
@@ -51,36 +51,36 @@ const pageSeoActions = {
                 type: ActionTypes.SEO_ADD_URL
             });
 
-            const {pages} = getState();
+            const { pages } = getState();
             const tabId = pages.selectedPage.tabId;
             PageSeoService.add(url, tabId, primaryAliasId).then((response) => {
-                const newUrl = {
-                    ...url
-                };  
                 if (!response.Success) {
                     dispatch({
                         type: ActionTypes.ERROR_SEO_ADDING_URL,
-                        data: {error: response.ErrorMessage}
+                        data: { error: response.ErrorMessage }
                     });
                     utils.notifyError(response.ErrorMessage);
                     return;
                 }
-                newUrl.id = response.Id;
+
                 dispatch({
                     type: ActionTypes.SEO_ADDED_URL
                 });
-                dispatch({
-                    type: pageActionTypes.ADD_CUSTOM_URL,
-                    payload: {
-                        newUrl
-                    }
-                });                                
+
+                PageSeoService.get(tabId).then((response) => {
+                    dispatch({
+                        type: pageActionTypes.ADD_CUSTOM_URL,
+                        payload: {
+                            pageUrls: response
+                        }
+                    });
+                });
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SEO_ADDING_URL,
-                    data: {error}
+                    data: { error }
                 });
-            }); 
+            });
         };
     },
     saveUrl(url, primaryAliasId) {
@@ -89,33 +89,36 @@ const pageSeoActions = {
                 type: ActionTypes.SEO_SAVE_URL
             });
 
-            const {pages} = getState();
+            const { pages } = getState();
             const tabId = pages.selectedPage.tabId;
             PageSeoService.save(url, tabId, primaryAliasId).then((response) => {
                 if (!response.Success) {
                     dispatch({
                         type: ActionTypes.ERROR_SEO_SAVING_URL,
-                        data: {error: response.ErrorMessage}
+                        data: { error: response.ErrorMessage }
                     });
                     utils.notifyError(response.ErrorMessage);
                     return;
                 }
-                
+
                 dispatch({
                     type: ActionTypes.SEO_SAVED_URL
                 });
-                dispatch({
-                    type: pageActionTypes.REPLACE_CUSTOM_URL,
-                    payload: {
-                        url
-                    }
-                });                           
+
+                PageSeoService.get(tabId).then((response) => {
+                    dispatch({
+                        type: pageActionTypes.REPLACE_CUSTOM_URL,
+                        payload: {
+                            pageUrls: response
+                        }
+                    });
+                });
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SEO_SAVING_URL,
-                    data: {error: error.ErrorMessage}
+                    data: { error: error.ErrorMessage }
                 });
-            }); 
+            });
         };
     },
     deleteUrl(url) {
@@ -124,32 +127,35 @@ const pageSeoActions = {
                 type: ActionTypes.SEO_DELETE_URL
             });
 
-            const {pages} = getState();
+            const { pages } = getState();
             const tabId = pages.selectedPage.tabId;
             PageSeoService.delete(url, tabId).then((response) => {
                 if (!response.Success) {
                     dispatch({
                         type: ActionTypes.ERROR_SEO_DELETING_URL,
-                        data: {error: response.ErrorMessage}
+                        data: { error: response.ErrorMessage }
                     });
                     return;
                 }
-                
+
                 dispatch({
                     type: ActionTypes.SEO_DELETED_URL
                 });
-                dispatch({
-                    type: pageActionTypes.DELETE_CUSTOM_URL,
-                    payload: {
-                        id: url.id
-                    }
-                });                           
+
+                PageSeoService.get(tabId).then((response) => {
+                    dispatch({
+                        type: pageActionTypes.DELETE_CUSTOM_URL,
+                        payload: {
+                            pageUrls: response
+                        }
+                    });
+                });                
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SEO_DELETING_URL,
-                    data: {error: error.ErrorMessage}
+                    data: { error: error.ErrorMessage }
                 });
-            }); 
+            });
         };
     }
 };
