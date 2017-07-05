@@ -76,6 +76,13 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+/***** DNN-9991: Add Connectors packages type. *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PackageTypes WHERE PackageType='Connector')
+BEGIN
+    INSERT INTO {databaseOwner}{objectQualifier}PackageTypes(PackageType, Description, SecurityAccessLevel)
+    VALUES ('Connector', 'Connector', 2)
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
