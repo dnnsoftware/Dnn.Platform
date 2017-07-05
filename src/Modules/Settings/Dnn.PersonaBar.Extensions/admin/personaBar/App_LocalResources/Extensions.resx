@@ -402,8 +402,8 @@
   <data name="JavaScript_Library.Type" xml:space="preserve">
     <value>JavaScript Libraries</value>
   </data>
-  <data name="EvoqConnector.Type" xml:space="preserve">
-    <value>Evoq Connectors</value>
+  <data name="Connector.Type" xml:space="preserve">
+    <value>Connectors</value>
   </data>
   <data name="CollapseAll.Text" xml:space="preserve">
     <value>Collapse All</value>
