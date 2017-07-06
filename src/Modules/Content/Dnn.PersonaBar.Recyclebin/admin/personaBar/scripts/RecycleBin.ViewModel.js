@@ -673,7 +673,7 @@ define(['jquery', 'knockout',
 
             var TotalResults = {}
             var timeout = null;
-            var pageSize=15;
+            var pageSize=10;
 
             Paginate = function(API_METHOD, viewModelProp, elementId){
                 var element = $(elementId).jScrollPane();
@@ -766,11 +766,15 @@ define(['jquery', 'knockout',
             getDeletedPageList = function () {
                 if (_settings.canViewPages) {
                     var listOfPages, viewModel;
+                    var element = $('#pageList').jScrollPane();
+                    var api = element.data("jsp");
 
+                    api.scrollToPercentY(0);
                     listOfPages = [];
                     viewModel = getViewModel();
                     viewModel.deletedPagesReady(false);
                     viewModel.deletedpagesList.removeAll();
+
 
                     getService().get('GetDeletedPageList', {pageIndex:0, pageSize:pageSize}, function (data) {
                         var results = data.Results;
@@ -796,8 +800,13 @@ define(['jquery', 'knockout',
             getDeletedModuleList = function () {
                 if (_settings.canViewModules) {
                     var viewModel = getViewModel();
+                    var element = $('#moduleList').jScrollPane();
+                    var api = element.data("jsp");
+
+                    api.scrollToPercentY(0);
                     viewModel.deletedModulesReady(false);
                     viewModel.deletedmodulesList.removeAll();
+
 
                     getService().get('GetDeletedModuleList', {pageIndex:0, pageSize:pageSize}, function (data) {
                         var results = data.Results;
@@ -822,6 +831,11 @@ define(['jquery', 'knockout',
             getDeletedUserList = function () {
                 if (_settings.canViewUsers) {
                     var viewModel = getViewModel();
+                    var element = $('#userList').jScrollPane();
+                    var api = element.data("jsp");
+
+                    api.scrollToPercentY(0);
+
                     viewModel.deletedUsersReady(false);
                     viewModel.deletedusersList.removeAll();
 
