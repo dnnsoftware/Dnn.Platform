@@ -673,7 +673,7 @@ define(['jquery', 'knockout',
 
             var TotalResults = {}
             var timeout = null;
-            var pageSize=10;
+            var pageSize=15;
 
             Paginate = function(API_METHOD, viewModelProp, elementId){
                 var element = $(elementId).jScrollPane();
@@ -690,7 +690,7 @@ define(['jquery', 'knockout',
                 };
 
 
-                $(elementId).on("mouseup", function(){
+                $(elementId).on("scroll", function(){
 
                     if(!timeout){
 
