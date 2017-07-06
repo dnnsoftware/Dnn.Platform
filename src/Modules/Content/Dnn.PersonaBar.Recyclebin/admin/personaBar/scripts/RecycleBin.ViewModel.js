@@ -673,7 +673,7 @@ define(['jquery', 'knockout',
 
             var TotalResults = {}
             var timeout = null;
-            var pageSize=15;
+            var pageSize=10;
 
             Paginate = function(API_METHOD, viewModelProp, elementId){
                 var element = $(elementId).jScrollPane();
@@ -690,10 +690,11 @@ define(['jquery', 'knockout',
                 };
 
 
-                $(elementId).on("scroll", function(scrollData){
+                $(elementId).on("mouseup", function(){
 
                     if(!timeout){
-                        if( api.getPercentScrolledY() == 1 && !timeout && currentResultsLessThanTotal() ) {
+
+                        if(api.getPercentScrolledY() == 1 && !timeout && currentResultsLessThanTotal() ) {
                             timeout = setTimeout(function(){
                                 timeout=null;
                             },2000);
@@ -739,9 +740,11 @@ define(['jquery', 'knockout',
                                             viewModel[viewModelProp].push(module);
                                         });
                                     break;
+
                                 }
                                 api.reinitialise();
-                            });
+                                api.scrollToPercentY(.95);
+                         });
                         }
                     }
                 });
@@ -937,13 +940,14 @@ define(['jquery', 'knockout',
 
                 var viewModel = getViewModel();
                 ko.applyBindings(viewModel, wrapper[0]);
+                 initPagination();
             };
 
             DnnPageRecycleBin.prototype.show = function () {
                 getDeletedPageList();
                 getDeletedModuleList();
                 getDeletedUserList();
-                initPagination();
+
             };
 
             return DnnPageRecycleBin;
