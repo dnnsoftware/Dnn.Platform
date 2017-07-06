@@ -225,7 +225,7 @@ define(['jquery', 'knockout',
             };
 
             // var _privateVar;
-            var _options, _resx, _serviceController, _utility, _viewModel, _settings;
+            var _options, _resx, _serviceController, _utility, _viewModel, _settings, _listOfPages;
 
             // var privateMethod
             var getSelectedElements, markAllElementsAs, markAllModulesAsIfPossible, getTreesOfPages, setOddEvenOrderInRoots, calculateDepthOfPages,
@@ -234,7 +234,7 @@ define(['jquery', 'knockout',
                 restoreSelectedModulesHandler, removeSelectedModulesHandler,
                 restorePageHandler, removePageHandler, restoreModuleHandler, removeModuleHandler, emptyRecycleBinHandler,
                 restoreUserHandler, removeUserHandler, restoreSelectedUsersHandler, removeSelectedUsersHandler, userRestoreRevomeOperationsCallback,
-                getDeletedPageList, getDeletedModuleList, getDeletedUserList,
+                Paginate, getDeletedPageList, getDeletedModuleList, getDeletedUserList,
                 getService, getViewModel, tabActivated;
 
             /* Class properties */
@@ -671,58 +671,188 @@ define(['jquery', 'knockout',
                 return roots;
             };
 
+            var TotalResults = {}
+            var timeout = null;
+            var pageSize=15;
+
+            Paginate = function(API_METHOD, viewModelProp, elementId){
+                var element = $(elementId).jScrollPane();
+                var api = element.data("jsp");
+                var viewModel = getViewModel();
+
+                var compare = TotalResults.hasOwnProperty(viewModelProp)==true
+
+                TotalResults[viewModelProp] = (compare) ? TotalResults[viewModelProp] : {modelName:viewModelProp, paginationRequestCount:1};
+
+                var currentResultsLessThanTotal = function(){
+                    var comparator = TotalResults[viewModelProp].remainingPages > 0;
+                    return comparator;
+                };
+
+
+                $(elementId).on("scroll", function(){
+
+                    if(!timeout){
+
+                        if(api.getPercentScrolledY() == 1 && !timeout && currentResultsLessThanTotal() ) {
+                            timeout = setTimeout(function(){
+                                timeout=null;
+                            },2000);
+
+                            TotalResults[viewModelProp].paginationRequestCount = TotalResults[viewModelProp].paginationRequestCount || 1;
+
+                            getService().get(API_METHOD, {pageIndex: TotalResults[viewModelProp].paginationRequestCount++, pageSize: pageSize }, function (data) {
+
+                                var results = data.Results;
+                                var conditional = TotalResults[viewModelProp].remainingPages-results.length > 0;
+                                var temp = [];
+                                TotalResults[viewModelProp].remainingPages = (conditional) ?  TotalResults[viewModelProp].remainingPages-results.length : 0;
+
+                                switch(viewModelProp) {
+                                    case 'deletedpagesList':
+                                        results.forEach(function(temppage){
+                                            var page = new PageInfo(temppage);
+                                            temp.push(page);
+                                        });
+                                        var treeOfPages = getTreesOfPages(temp);
+                                        treeOfPages.forEach(function(pageTemp) {
+                                            viewModel[viewModelProp].push(pageTemp);
+                                         });
+                                    break;
+
+                                    case 'deletedusersList':
+                                        results.forEach(function(tempUser){
+                                            var user = new UserInfo(tempUser);
+                                            viewModel[viewModelProp].push(user)
+                                        });
+                                    break;
+
+                                    case 'deletedtemplatesList':
+                                        results.forEach(function(tempTemplate){
+                                            var template = new TemplateInfo(tempTemplate);
+                                            viewModel[viewModelProp].push(template);
+                                        });
+                                    break;
+
+                                    case 'deletedmodulesList':
+                                        results.forEach(function(tempModule){
+                                            var module = new ModuleInfo(tempModule);
+                                            viewModel[viewModelProp].push(module);
+                                        });
+                                    break;
+
+                                }
+                                api.reinitialise();
+                                api.scrollToPercentY(.95);
+                         });
+                        }
+                    }
+                });
+            };
+
+            var initPagination = function() {
+                var tabs = [
+                    {apiMethod: "GetDeletedPageList", viewModelProp: "deletedpagesList", elementId:"#pageList" },
+                    {apiMethod: "GetDeletedUserList", viewModelProp: "deletedusersList", elementId: "#userList"},
+                    {apiMethod: "GetDeletedModuleList", viewModelProp: "deletedmodulesList", elementId:"#moduleList"},
+                    {apiMethod: "GetDeletedTemplates", viewModelProp: "deletedtemplatesList", elementId:"#templateList"}
+                ];
+
+                tabs.forEach(function(tab){
+                    Paginate(tab.apiMethod, tab.viewModelProp, tab.elementId );
+                });
+            };
+
             getDeletedPageList = function () {
                 if (_settings.canViewPages) {
                     var listOfPages, viewModel;
+                    var element = $('#pageList').jScrollPane();
+                    var api = element.data("jsp");
 
+                    api.scrollToPercentY(0);
                     listOfPages = [];
                     viewModel = getViewModel();
                     viewModel.deletedPagesReady(false);
-
                     viewModel.deletedpagesList.removeAll();
 
-                    getService().get('GetDeletedPageList', {}, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            var page = new PageInfo(data[i]);
 
+                    getService().get('GetDeletedPageList', {pageIndex:0, pageSize:pageSize}, function (data) {
+                        var results = data.Results;
+                        var viewModelProp = "deletedpagesList";
+                        TotalResults[viewModelProp]={};
+                        TotalResults[viewModelProp].remainingPages = data.TotalResults-pageSize;
+                        TotalResults[viewModelProp].moduleName = viewModelProp;
+
+                        for (var i = 0; i < results.length; i++) {
+                            var page = new PageInfo(results[i]);
                             listOfPages.push(page);
                         }
+
+                        _listOfPages = listOfPages.concat();
                         viewModel.selectAllPages(false);
-                        viewModel.deletedpagesList(getTreesOfPages(listOfPages));
+                        viewModel.deletedpagesList(getTreesOfPages(_listOfPages));
                         viewModel.deletedPagesReady(true);
                     });
                 }
+
             };
 
             getDeletedModuleList = function () {
                 if (_settings.canViewModules) {
                     var viewModel = getViewModel();
+                    var element = $('#moduleList').jScrollPane();
+                    var api = element.data("jsp");
+
+                    api.scrollToPercentY(0);
                     viewModel.deletedModulesReady(false);
                     viewModel.deletedmodulesList.removeAll();
 
-                    getService().get('GetDeletedModuleList', {}, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            var module = new ModuleInfo(data[i]);
+
+                    getService().get('GetDeletedModuleList', {pageIndex:0, pageSize:pageSize}, function (data) {
+                        var results = data.Results;
+                        var viewModelPropName = 'deletedmodulesList';
+
+                        TotalResults[viewModelPropName]={};
+                        TotalResults[viewModelPropName].remainingPages = data.TotalResults-pageSize;
+                        TotalResults[viewModelPropName].paginationRequestCount=1;
+                        TotalResults[viewModelPropName].moduleName = viewModelPropName;
+
+                        for (var i = 0; i < results.length; i++) {
+                            var module = new ModuleInfo(results[i]);
                             viewModel.deletedmodulesList.push(module);
                         }
                         viewModel.deletedModulesReady(true);
+
                     });
                 }
             };
 
+
             getDeletedUserList = function () {
                 if (_settings.canViewUsers) {
                     var viewModel = getViewModel();
+                    var element = $('#userList').jScrollPane();
+                    var api = element.data("jsp");
+
+                    api.scrollToPercentY(0);
+
                     viewModel.deletedUsersReady(false);
                     viewModel.deletedusersList.removeAll();
 
-                    getService().get('GetDeletedUserList', {}, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            var user = new UserInfo(data[i]);
+                    getService().get('GetDeletedUserList', {pageIndex:0, pageSize:pageSize}, function (data) {
+                        var results = data.Results;
+                        var viewModelPropName = "deletedusersList";
+                        TotalResults[viewModelPropName]={};
+                        TotalResults[viewModelPropName].remainingPages = data.TotalResults-pageSize;
+                        TotalResults[viewModelPropName].moduleName = viewModelPropName;
+
+                        for (var i = 0; i < results.length; i++) {
+                            var user = new UserInfo(results[i]);
                             viewModel.deletedusersList.push(user);
                         }
                         viewModel.selectAllUsers(false);
                         viewModel.deletedUsersReady(true);
+
                     });
                 }
             };
@@ -821,15 +951,16 @@ define(['jquery', 'knockout',
 
             DnnPageRecycleBin.prototype.init = function (wrapper) {
                 _options = $.extend({}, RECYCLE_BIN_DEFAULT_OPTIONS, _options);
-
                 var viewModel = getViewModel();
                 ko.applyBindings(viewModel, wrapper[0]);
+                 initPagination();
             };
 
             DnnPageRecycleBin.prototype.show = function () {
                 getDeletedPageList();
                 getDeletedModuleList();
                 getDeletedUserList();
+
             };
 
             return DnnPageRecycleBin;
