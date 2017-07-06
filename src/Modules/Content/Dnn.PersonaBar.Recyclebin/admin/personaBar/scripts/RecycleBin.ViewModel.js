@@ -673,7 +673,7 @@ define(['jquery', 'knockout',
 
             var TotalResults = {}
             var timeout = null;
-            var pageSize=10;
+            var pageSize=15;
 
             Paginate = function(API_METHOD, viewModelProp, elementId){
                 var element = $(elementId).jScrollPane();
@@ -951,7 +951,6 @@ define(['jquery', 'knockout',
 
             DnnPageRecycleBin.prototype.init = function (wrapper) {
                 _options = $.extend({}, RECYCLE_BIN_DEFAULT_OPTIONS, _options);
-
                 var viewModel = getViewModel();
                 ko.applyBindings(viewModel, wrapper[0]);
                  initPagination();
