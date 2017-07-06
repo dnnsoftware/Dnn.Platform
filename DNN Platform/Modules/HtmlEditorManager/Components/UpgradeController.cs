@@ -92,6 +92,12 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                             UpdateWebConfigFile();
                         }
                         break;
+                    case "09.02.00":
+                        if (TelerikAssemblyExists())
+                        {
+                            UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
+                        }
+                        break;
                 }
             }
             catch (Exception ex)
@@ -196,7 +202,11 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
         private static string UpdateWebConfigFile()
         {
-            const string keyName = "Telerik.AsyncUpload.ConfigurationEncryptionKey";
+            return UpdateTelerikEncryptionKey("Telerik.AsyncUpload.ConfigurationEncryptionKey");
+        }
+
+        private static string UpdateTelerikEncryptionKey(string keyName)
+        {
             const string defaultValue = "MDEyMzQ1Njc4OUFCQ0RFRjAxMjM0NTY3ODlBQkNERUYwMTIzNDU2Nzg5QUJDREVG";
 
             var strError = "";
