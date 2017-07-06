@@ -1525,7 +1525,7 @@ Please do not reply to this email.</value>
         &lt;td&gt;
             &lt;table width="80" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;&lt;a href="PROFILEURL"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;br/&gt;[DISPLAYNAME]&lt;/td&gt;
+                    &lt;td&gt;&lt;a href="[PROFILEURL]"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;br/&gt;[DISPLAYNAME]&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
             &lt;table width="350" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
