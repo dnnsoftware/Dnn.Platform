@@ -195,6 +195,16 @@ namespace Dnn.ExportImport.Components.Services
                             Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                             return;
                         }
+                        var urlTabId = -1;
+                        if (!string.IsNullOrEmpty(otherTab.Url))
+                        {
+                            urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
+                            if (urlTabId == -1)
+                            {
+                                Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                                return;
+                            }
+                        }
 
                         // this is not saved when adding the tab; so set it explicitly
                         localTab.IsVisible = otherTab.IsVisible;
@@ -204,6 +214,10 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             localTab.TabPermissions.Clear(); // without this the UpdateTab() could fail
                             localTab.ParentId = parentId;
+                            if (urlTabId > -1)
+                            {
+                                localTab.Url = urlTabId.ToString();
+                            }
                             _tabController.UpdateTab(localTab);
                         }
                         catch (Exception ex)
@@ -233,10 +247,24 @@ namespace Dnn.ExportImport.Components.Services
                     Result.AddLogEntry("Importing new tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                     return;
                 }
+                var urlTabId = -1;
+                if (!string.IsNullOrEmpty(otherTab.Url))
+                {
+                    urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
+                    if (urlTabId == -1)
+                    {
+                        Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                        return;
+                    }
+                }
 
                 try
                 {
                     localTab.ParentId = parentId;
+                    if (urlTabId > -1)
+                    {
+                        localTab.Url = urlTabId.ToString();
+                    }
                     localTab.UniqueId = Guid.NewGuid();
                     otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab);
                     localTabs.Add(localTab);
@@ -1127,12 +1155,26 @@ namespace Dnn.ExportImport.Components.Services
             return count;
         }
 
+        private static int TryFindLocalUrlTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
+        {
+            int urlTabId;
+            if (int.TryParse(exportedTab.Url, out urlTabId))
+            {
+                return TryFindLocalTabId(exportedTab, exportedTabs, localTabs, urlTabId);
+            }
+            return -1;
+        }
+
         private static int TryFindLocalParentTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
         {
-            var otherParentId = exportedTab.ParentId;
-            if (otherParentId.HasValue && otherParentId.Value > 0)
+            return TryFindLocalTabId(exportedTab, exportedTabs, localTabs, exportedTab.ParentId);
+        }
+
+        private static int TryFindLocalTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs, int? tabId)
+        {
+            if (tabId.HasValue && tabId.Value > 0)
             {
-                var otherParent = exportedTabs.FirstOrDefault(t => t.TabId == otherParentId);
+                var otherParent = exportedTabs.FirstOrDefault(t => t.TabId == tabId);
                 if (otherParent != null)
                 {
                     if (otherParent.LocalId.HasValue)
