@@ -1,0 +1,10 @@
+Install an umbraco site on godaddy shared hosting
+
+1. Download the lastest version of umbraco in this case UmbracoCms.7.5.13.zip
+2. Clear the webroot
+3. Upload the zip file
+4. Edit the web.config file
+5. Add Full trust level under <system.web> 
+                                <trust level="Full" />
+                                <customErrors mode="Off" />
+6. Add SQL Database

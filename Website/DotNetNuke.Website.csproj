@@ -91,6 +91,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated">
+      <HintPath>..\..\..\..\WEBROOT\DNN9\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Controls\DotNetNuk.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
