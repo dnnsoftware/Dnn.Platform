@@ -673,6 +673,7 @@ define(['jquery', 'knockout',
 
             var TotalResults = {}
             var timeout = null;
+            var pageSize=15;
 
             Paginate = function(API_METHOD, viewModelProp, elementId){
                 var element = $(elementId).jScrollPane();
@@ -689,7 +690,8 @@ define(['jquery', 'knockout',
                 };
 
 
-                $(elementId).on("scroll", function(){
+                $(elementId).on("scroll", function(scrollData){
+
                     if(!timeout){
                         if( api.getPercentScrolledY() == 1 && !timeout && currentResultsLessThanTotal() ) {
                             timeout = setTimeout(function(){
@@ -698,7 +700,7 @@ define(['jquery', 'knockout',
 
                             TotalResults[viewModelProp].paginationRequestCount = TotalResults[viewModelProp].paginationRequestCount || 1;
 
-                            getService().get(API_METHOD, {pageIndex: TotalResults[viewModelProp].paginationRequestCount++, pageSize: 10 }, function (data) {
+                            getService().get(API_METHOD, {pageIndex: TotalResults[viewModelProp].paginationRequestCount++, pageSize: pageSize }, function (data) {
 
                                 var results = data.Results;
                                 var conditional = TotalResults[viewModelProp].remainingPages-results.length > 0;
@@ -726,7 +728,7 @@ define(['jquery', 'knockout',
 
                                     case 'deletedtemplatesList':
                                         results.forEach(function(tempTemplate){
-                                            var template = new PageOrTemplateInfo(tempTemplate);
+                                            var template = new TemplateInfo(tempTemplate);
                                             viewModel[viewModelProp].push(template);
                                         });
                                     break;
@@ -745,6 +747,18 @@ define(['jquery', 'knockout',
                 });
             };
 
+            var initPagination = function() {
+                var tabs = [
+                    {apiMethod: "GetDeletedPageList", viewModelProp: "deletedpagesList", elementId:"#pageList" },
+                    {apiMethod: "GetDeletedUserList", viewModelProp: "deletedusersList", elementId: "#userList"},
+                    {apiMethod: "GetDeletedModuleList", viewModelProp: "deletedmodulesList", elementId:"#moduleList"},
+                    {apiMethod: "GetDeletedTemplates", viewModelProp: "deletedtemplatesList", elementId:"#templateList"}
+                ];
+
+                tabs.forEach(function(tab){
+                    Paginate(tab.apiMethod, tab.viewModelProp, tab.elementId );
+                });
+            };
 
             getDeletedPageList = function () {
                 if (_settings.canViewPages) {
@@ -755,11 +769,11 @@ define(['jquery', 'knockout',
                     viewModel.deletedPagesReady(false);
                     viewModel.deletedpagesList.removeAll();
 
-                    getService().get('GetDeletedPageList', {pageIndex:0, pageSize:10}, function (data) {
+                    getService().get('GetDeletedPageList', {pageIndex:0, pageSize:pageSize}, function (data) {
                         var results = data.Results;
                         var viewModelProp = "deletedpagesList";
                         TotalResults[viewModelProp]={};
-                        TotalResults[viewModelProp].remainingPages = data.TotalResults-10;
+                        TotalResults[viewModelProp].remainingPages = data.TotalResults-pageSize;
                         TotalResults[viewModelProp].moduleName = viewModelProp;
 
                         for (var i = 0; i < results.length; i++) {
@@ -771,7 +785,6 @@ define(['jquery', 'knockout',
                         viewModel.selectAllPages(false);
                         viewModel.deletedpagesList(getTreesOfPages(_listOfPages));
                         viewModel.deletedPagesReady(true);
-                        Paginate('GetDeletedPageList', viewModelProp, '#pageList');
                     });
                 }
 
@@ -783,12 +796,12 @@ define(['jquery', 'knockout',
                     viewModel.deletedModulesReady(false);
                     viewModel.deletedmodulesList.removeAll();
 
-                    getService().get('GetDeletedModuleList', {pageIndex:0, pageSize:10}, function (data) {
+                    getService().get('GetDeletedModuleList', {pageIndex:0, pageSize:pageSize}, function (data) {
                         var results = data.Results;
                         var viewModelPropName = 'deletedmodulesList';
 
                         TotalResults[viewModelPropName]={};
-                        TotalResults[viewModelPropName].remainingPages = data.TotalResults-10;
+                        TotalResults[viewModelPropName].remainingPages = data.TotalResults-pageSize;
                         TotalResults[viewModelPropName].paginationRequestCount=1;
                         TotalResults[viewModelPropName].moduleName = viewModelPropName;
 
@@ -797,7 +810,7 @@ define(['jquery', 'knockout',
                             viewModel.deletedmodulesList.push(module);
                         }
                         viewModel.deletedModulesReady(true);
-                        Paginate('GetDeletedModuleList', viewModelPropName, '#moduleList');
+
                     });
                 }
             };
@@ -809,13 +822,11 @@ define(['jquery', 'knockout',
                     viewModel.deletedUsersReady(false);
                     viewModel.deletedusersList.removeAll();
 
-                    getService().get('GetDeletedUserList', {pageIndex:0, pageSize:10}, function (data) {
-                        console.log(data);
-
+                    getService().get('GetDeletedUserList', {pageIndex:0, pageSize:pageSize}, function (data) {
                         var results = data.Results;
                         var viewModelPropName = "deletedusersList";
                         TotalResults[viewModelPropName]={};
-                        TotalResults[viewModelPropName].remainingPages = data.TotalResults-10;
+                        TotalResults[viewModelPropName].remainingPages = data.TotalResults-pageSize;
                         TotalResults[viewModelPropName].moduleName = viewModelPropName;
 
                         for (var i = 0; i < results.length; i++) {
@@ -824,7 +835,7 @@ define(['jquery', 'knockout',
                         }
                         viewModel.selectAllUsers(false);
                         viewModel.deletedUsersReady(true);
-                        Paginate('GetDeletedUserList', viewModelPropName, '#userList');
+
                     });
                 }
             };
@@ -932,6 +943,7 @@ define(['jquery', 'knockout',
                 getDeletedPageList();
                 getDeletedModuleList();
                 getDeletedUserList();
+                initPagination();
             };
 
             return DnnPageRecycleBin;
