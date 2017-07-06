@@ -157,7 +157,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 viewProfileLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
                 viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
                 logoffLink.NavigateUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
+<<<<<<< HEAD
                 editProfileLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=2");
+=======
+                editProfileLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=3");
+>>>>>>> upstream/master
                 accountLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=1");
                 messagesLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
                 notificationsLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId), "view=notifications", "action=notifications");
@@ -176,6 +180,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                         : String.Format(LocalizeString("MessageCount"), unreadMessages);
                     messages.Visible = true;
                 }
+<<<<<<< HEAD
 
                 if (unreadAlerts > 0)
                 {
@@ -183,6 +188,15 @@ namespace DotNetNuke.UI.Skins.Controls
                     notificationCount.Visible = true;
                 }
 
+=======
+
+                if (unreadAlerts > 0)
+                {
+                    notificationCount.Text = unreadAlerts.ToString(CultureInfo.InvariantCulture);
+                    notificationCount.Visible = true;
+                }
+
+>>>>>>> upstream/master
                 profilePicture.ImageUrl = AvatarImageUrl;
                 profilePicture.AlternateText = Localization.GetString("ProfilePicture", Localization.GetResourceFile(this, MyFileName));
             }

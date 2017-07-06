@@ -1,0 +1,114 @@
+﻿<dotnetnuke type="Package" version="6.0">
+	<packages>
+		<package name="DotNetNuke.MobileManagement" type="Module" version="07.04.00" isSystem="true">
+			<friendlyName>Site Redirection Management</friendlyName>
+			<iconFile>Images/MobileManagement_Standard_32x32.png</iconFile>
+			<description>The Site Redirection Management module allows users to manage their website redirects.</description>
+			<owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+			<azureCompatible>true</azureCompatible>
+			<dependencies>
+				<dependency type="CoreVersion">06.01.00</dependency>
+			</dependencies>
+			<components>
+				<component type="Module">
+					<desktopModule>
+						<moduleName>DotNetNuke.MobileManagement</moduleName>
+						<foldername>DNNCorp/MobileManagement</foldername>
+						<businessControllerClass/>
+						<supportedFeatures />
+						<isPremium>true</isPremium>
+						<isAdmin>true</isAdmin>
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>DNN Site Redirection Management</friendlyName>
+								<defaultCacheTime>0</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey/>
+										<controlSrc>DesktopModules/MobileManagement/RedirectionManagerView.ascx</controlSrc>
+										<supportsPopUps>True</supportsPopUps>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Site Redirection Management</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Site Redirection Management/About the Site Redirection Management Module.html</helpUrl>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>RedirectionSettings</controlKey>
+										<controlSrc>DesktopModules/MobileManagement/RedirectionSettingsView.ascx</controlSrc>
+										<supportsPopUps>True</supportsPopUps>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Redirection Settings</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl></helpUrl>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>SimpleSettings</controlKey>
+										<controlSrc>DesktopModules/MobileManagement/SimpleSettingsView.ascx</controlSrc>
+										<supportsPopUps>True</supportsPopUps>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Simple Settings</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl></helpUrl>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+								</moduleControls>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+					<eventMessage>
+						<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+						<processorCommand>UpgradeModule</processorCommand>
+						<attributes>
+							<businessControllerClass>DotNetNuke.Modules.MobileManagement.Components.MobileManagementController, DotNetNuke.Modules.MobileManagement</businessControllerClass>
+							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+							<upgradeVersionsList>06.01.05</upgradeVersionsList>
+						</attributes>
+					</eventMessage>
+				</component>
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>DotNetNuke.Modules.MobileManagement.dll</name>
+						</assembly>
+					</assemblies>
+				</component>
+				<component type="File">
+					<files>
+						<basePath>DesktopModules\MobileManagement</basePath>
+						<file>
+							<name>RedirectionManagerView.ascx</name>
+							<sourceFileName>Views\RedirectionManagerView.ascx</sourceFileName>
+						</file>
+						<file>
+							<name>RedirectionSettingsView.ascx</name>
+							<sourceFileName>Views\RedirectionSettingsView.ascx</sourceFileName>
+						</file>
+						<file>
+							<name>SimpleSettingsView.ascx</name>
+							<sourceFileName>Views\SimpleSettingsView.ascx</sourceFileName>
+						</file>
+					</files>
+				</component>
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules/MobileManagement</basePath>
+						<resourceFile>
+							<name>Resources.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+			</components>
+		</package>
+	</packages>
+</dotnetnuke>

@@ -280,7 +280,10 @@ namespace DotNetNuke.Services.Cache
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
                 RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
                 RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+<<<<<<< HEAD
                 RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, defaultLocale);
+=======
+>>>>>>> upstream/master
             }
             else
             {
@@ -290,7 +293,10 @@ namespace DotNetNuke.Services.Cache
                     RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, portalLocale.Code);
                 }
                 RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+<<<<<<< HEAD
                 RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, Null.NullString);
+=======
+>>>>>>> upstream/master
             }
             if (cascade)
             {

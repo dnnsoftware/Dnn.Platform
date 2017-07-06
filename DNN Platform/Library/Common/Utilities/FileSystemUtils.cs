@@ -1258,9 +1258,15 @@ namespace DotNetNuke.Common.Utilities
                 while (zipEntry != null)
                 {
                     HtmlUtils.WriteKeepAlive();
+<<<<<<< HEAD
                     var localFileName = zipEntry.Name;
                     var relativeDir = Path.GetDirectoryName(zipEntry.Name);
                     if (!string.IsNullOrEmpty(relativeDir) && (!Directory.Exists(Path.Combine(destPath, relativeDir))))
+=======
+                    LocalFileName = objZipEntry.Name;
+                    RelativeDir = Path.GetDirectoryName(objZipEntry.Name);
+                    if ((RelativeDir != string.Empty) && (!Directory.Exists(Path.Combine(destPath, RelativeDir))))
+>>>>>>> upstream/master
                     {
                         Directory.Create(Path.Combine(destPath, relativeDir), true);
                     }

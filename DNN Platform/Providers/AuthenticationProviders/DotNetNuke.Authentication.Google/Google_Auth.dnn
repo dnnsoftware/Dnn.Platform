@@ -1,6 +1,10 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
+<<<<<<< HEAD
     <package name="DNN_GoogleAuthentication" type="Auth_System" version="09.01.00">
+=======
+    <package name="DNN_GoogleAuthentication" type="Auth_System" version="07.04.00">
+>>>>>>> upstream/master
       <friendlyName>DotNetNuke Google Authentication Project</friendlyName>
       <description>The DotNetNuke Google Authentication Project is an Authentication provider for DotNetNuke that uses 
         Google authentication to authenticate users.

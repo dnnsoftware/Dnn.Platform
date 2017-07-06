@@ -431,6 +431,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                         {
                             if (file.FileId == Null.NullInteger)
                             {
+<<<<<<< HEAD
                                 AddFile(file, createdByUserID);
                                 fileExists = true;
                             }  
@@ -438,6 +439,13 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                             {
                                 //File Events for updating will be not fired. Only events for adding nust be fired
                                 UpdateFile(file, true, false);
+=======
+                                AddFile(file, fileHash, createdByUserID);
+                            }  
+                            else
+                            {
+                                UpdateFile(file);
+>>>>>>> upstream/master
                             }
                             contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
@@ -460,7 +468,14 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
+<<<<<<< HEAD
 				var isDatabaseProvider = folderMapping.FolderProviderType == "DatabaseFolderProvider";
+=======
+                if (folderWorkflow == null || !fileExists)
+                {
+                    AddFile(file, fileHash, createdByUserID);
+                }
+>>>>>>> upstream/master
 
                 try
                 {
@@ -541,6 +556,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             }
         }
 
+<<<<<<< HEAD
         private void CheckFileAddingRestrictions(IFolderInfo folder, string fileName, bool checkPermissions,
             bool ignoreWhiteList)
         {
@@ -660,6 +676,9 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
         }
 
         private void AddFile(IFileInfo file, int createdByUserID)
+=======
+        private void AddFile(IFileInfo file, string fileHash, int createdByUserID)
+>>>>>>> upstream/master
         {
             file.FileId = DataProvider.Instance().AddFile(file.PortalId,
                                                     file.UniqueId,
@@ -673,6 +692,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                                                     file.Folder,
                                                     file.FolderId,
                                                     createdByUserID,
+<<<<<<< HEAD
                                                     file.SHA1Hash,
                                                     file.LastModificationTime,
                                                     file.Title,
@@ -681,6 +701,16 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                                                     file.EndDate,
                                                     file.EnablePublishPeriod,
                                                     file.ContentItemID);          
+=======
+                                                    fileHash,
+                                                    file.LastModificationTime,
+                                                    file.Title,
+                                                    file.StartDate,
+                                                    file.EndDate,
+                                                    file.EnablePublishPeriod,
+                                                    file.ContentItemID);
+          
+>>>>>>> upstream/master
         }
 
         private string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserID)
@@ -1920,10 +1950,14 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             ClearFolderCache(file.PortalId);
             var updatedFile = GetFile(file.FileId);
 
+<<<<<<< HEAD
             if (fireEvent)
             {
                 OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
             }
+=======
+            OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
+>>>>>>> upstream/master
             return updatedFile;
         }
 

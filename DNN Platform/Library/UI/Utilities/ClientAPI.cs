@@ -426,6 +426,7 @@ namespace DotNetNuke.UI.Utilities
                         var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLower())
                         {
                             Expires = DateTime.MaxValue,
+<<<<<<< HEAD
                             Path = (!string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/")
                         };
                         HttpContext.Current.Response.AppendCookie(objModuleVisible);
@@ -507,3 +508,86 @@ namespace DotNetNuke.UI.Utilities
         }
     }
 }
+=======
+                            Path = (!string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/")
+                        };
+                        HttpContext.Current.Response.AppendCookie(objModuleVisible);
+                        break;
+                    case MinMaxPersistanceType.Personalization:
+                        Personalization.SetProfile(Globals.GetAttribute(objButton, "userctr"), Globals.GetAttribute(objButton, "userkey"), value.ToString());
+                        break;
+                }
+            }
+        }
+
+        private static void AddAttribute(Control objControl, string strName, string strValue)
+        {
+            if (objControl is HtmlControl)
+            {
+                ((HtmlControl) objControl).Attributes.Add(strName, strValue);
+            }
+            else if (objControl is WebControl)
+            {
+                ((WebControl) objControl).Attributes.Add(strName, strValue);
+            }
+        }
+
+        private static void AddStyleAttribute(Control objControl, string strName, string strValue)
+        {
+            if (objControl is HtmlControl)
+            {
+                if (!String.IsNullOrEmpty(strValue))
+                {
+                    ((HtmlControl) objControl).Style.Add(strName, strValue);
+                }
+                else
+                {
+                    ((HtmlControl) objControl).Style.Remove(strName);
+                }
+            }
+            else if (objControl is WebControl)
+            {
+                if (!String.IsNullOrEmpty(strValue))
+                {
+                    ((WebControl) objControl).Style.Add(strName, strValue);
+                }
+                else
+                {
+                    ((WebControl) objControl).Style.Remove(strName);
+                }
+            }
+        }
+
+        //enables callbacks for request, and registers personalization key to be accessible from client
+        //returns true when browser is capable of callbacks
+        public static bool EnableClientPersonalization(string strNamingContainer, string strKey, Page objPage)
+        {
+            if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP))
+            {
+				//Instead of sending the callback js function down to the client, we are hardcoding
+                //it on the client.  DNN owns the interface, so there is no worry about an outside
+                //entity changing it on us.  We are simply calling this here to register all the appropriate
+                //js libraries
+                ClientAPI.GetCallbackEventReference(objPage, "", "", "", "");
+
+                //in order to limit the keys that can be accessed and written we are storing the enabled keys
+                //in this shared hash table
+                lock (m_objEnabledClientPersonalizationKeys.SyncRoot)
+                {
+                    if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)
+                    {
+                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, "");
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsPersonalizationKeyRegistered(string strKey)
+        {
+            return m_objEnabledClientPersonalizationKeys.ContainsKey(strKey);
+        }
+    }
+}
+>>>>>>> upstream/master

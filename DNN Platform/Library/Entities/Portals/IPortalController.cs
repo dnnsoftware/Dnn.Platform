@@ -131,6 +131,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>ArrayList of PortalInfo objects</returns>
         ArrayList GetPortals();
 
+
         /// <summary>
         /// Gets the portal settings dictionary.
         /// </summary>

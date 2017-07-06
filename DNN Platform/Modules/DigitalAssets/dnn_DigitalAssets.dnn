@@ -1,6 +1,10 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
+<<<<<<< HEAD
     <package name="DigitalAssetsManagement" type="Module" version="09.01.00" isSystem="true">
+=======
+    <package name="DigitalAssetsManagement" type="Module" version="07.04.00" isSystem="true">
+>>>>>>> upstream/master
       <friendlyName>Digital Asset Management</friendlyName>
       <description>DotNetNuke Corporation Digital Asset Management module</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>

@@ -473,7 +473,958 @@ namespace DotNetNuke.Entities.Host
             {
                 return HostController.Instance.GetString("SSLDomain");
             }
+<<<<<<< HEAD
         }
+=======
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether File AutoSync is Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableFileAutoSync
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableFileAutoSync", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether The Getting Started Page is Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to True
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableGettingStartedPage
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableGettingStartedPage", true);
+            }
+        }
+
+        /// <summary>
+        /// enable whether the IP address of the user is checked against a list during login
+        /// </summary>
+        public static bool EnableIPChecking
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableIPChecking", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether Module Online Help is Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableModuleOnLineHelp
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableModuleOnLineHelp", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether the Request Filters are Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableRequestFilters
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableRequestFilters", false);
+            }
+        }
+
+        /// <summary>
+        /// enable whether a client-side password strength meter is shown on registration screen
+        /// </summary>
+        public static bool EnableStrengthMeter
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableStrengthMeter", false);
+            }
+        }
+
+        /// <summary>
+        /// enable whether a previous passwords are stored to check if user is reusing them
+        /// </summary>
+        public static bool EnablePasswordHistory
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnablePasswordHistory", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether to use the Language in the Url
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to True
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	02/19/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableUrlLanguage
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EnableUrlLanguage", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether Users Online are Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableUsersOnline
+        {
+            get
+            {
+                return !HostController.Instance.GetBoolean("DisableUsersOnline", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether SSL is Enabled for SMTP
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool EnableSMTPSSL
+        {
+            get
+            {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", PortalSettings.Current.PortalId, false);
+                }
+                return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
+            }
+        }
+        
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether the Event Log Buffer is Enabled
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool EventLogBuffer
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("EventLogBuffer", false);
+            }
+        }
+
+        /// <summary>
+        ///   Gets the allowed file extensions.
+        /// </summary>
+        public static FileExtensionWhitelist AllowedExtensionWhitelist
+        {
+            get
+            {
+                return new FileExtensionWhitelist(HostController.Instance.GetString("FileExtensions"));
+            }
+        }
+        
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the GUID
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	12/10/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string GUID
+        {
+            get
+            {
+                return HostController.Instance.GetString("GUID");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Help URL
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string HelpURL
+        {
+            get
+            {
+                return HostController.Instance.GetString("HelpURL");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Host Currency
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to USD
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/29/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string HostCurrency
+        {
+            get
+            {
+                string setting = HostController.Instance.GetString("HostCurrency");
+                if (string.IsNullOrEmpty(setting))
+                {
+                    setting = "USD";
+                }
+                return setting;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Host Email
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string HostEmail
+        {
+            get
+            {
+                return HostController.Instance.GetString("HostEmail");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Host Fee
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 0
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static double HostFee
+        {
+            get
+            {
+                return HostController.Instance.GetDouble("HostFee", 0);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Host Portal's PortalId
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to Null.NullInteger
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int HostPortalID
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("HostPortalId");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Host Space
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 0
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static double HostSpace
+        {
+            get
+            {
+                return HostController.Instance.GetDouble("HostSpace", 0);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Host Title
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	12/10/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string HostTitle
+        {
+            get
+            {
+                return HostController.Instance.GetString("HostTitle");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Host URL
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	04/29/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string HostURL
+        {
+            get
+            {
+                return HostController.Instance.GetString("HostURL");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the HttpCompression Algorithm
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to Null.NullInteger(None)
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int HttpCompressionAlgorithm
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("HttpCompression");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Returns size of the batch used to determine how many emails are sent per CoreMessaging Scheduler run
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 50
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static int MessageSchedulerBatchSize
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("MessageSchedulerBatchSize",50);
+            }
+        }
+
+        /// <summary>
+        /// set length of time (in minutes) that reset links are valid for - default is 60
+        /// </summary>
+        public static int MembershipResetLinkValidity
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("MembershipResetLinkValidity", 60);
+            }
+        }
+
+        /// <summary>
+        /// set length of time (in minutes) that reset links are valid for - default is 24 hours (1440 min)
+        /// </summary>
+        public static int AdminMembershipResetLinkValidity
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("AdminMembershipResetLinkValidity", 1440);
+            }
+        }
+
+        /// <summary>
+        /// set number of passwords stored for password change comparison operations - default is 5
+        /// </summary>
+        public static int MembershipNumberPasswords
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("MembershipNumberPasswords", 5);
+            }
+        }
+
+        /// <summary>
+        /// sets the HTTP Status code returned if IP address filtering is enabled on login
+        /// and the users IP does not meet criteria -default is 403
+        /// </summary>
+        public static string MembershipFailedIPException
+        {
+            get
+            {
+                return HostController.Instance.GetString("MembershipFailedIPException", "403");
+            }
+        }
+
+
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Module Caching method
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string ModuleCachingMethod
+        {
+            get
+            {
+                return HostController.Instance.GetString("ModuleCaching");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Page Caching method
+        /// </summary>
+        /// <history>
+        ///   [jbrinkman]	11/17/2009   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string PageCachingMethod
+        {
+            get
+            {
+                return HostController.Instance.GetString("PageCaching");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Page Quota
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 0
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/29/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int PageQuota
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("PageQuota", 0);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the PageState Persister
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string PageStatePersister
+        {
+            get
+            {
+                string setting = HostController.Instance.GetString("PageStatePersister");
+                if (string.IsNullOrEmpty(setting))
+                {
+                    setting = "P";
+                }
+                return setting;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Password Expiry
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 0
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int PasswordExpiry
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("PasswordExpiry", 0);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Password Expiry Reminder window
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 7 (1 week)
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int PasswordExpiryReminder
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("PasswordExpiryReminder", 7);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Payment Processor
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	04/14/2009   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string PaymentProcessor
+        {
+            get
+            {
+                return HostController.Instance.GetString("PaymentProcessor");
+            }
+        }
+
+        private static Globals.PerformanceSettings? _performanceSetting;
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the PerformanceSettings
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to PerformanceSettings.ModerateCaching
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static Globals.PerformanceSettings PerformanceSetting
+        {
+            get
+            {
+                if (!_performanceSetting.HasValue)
+                {
+                    var s = HostController.Instance.GetString("PerformanceSetting");
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        return Globals.PerformanceSettings.ModerateCaching;
+                    }
+
+                    _performanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), s);
+                }
+
+                return _performanceSetting.Value;
+            }
+            set { _performanceSetting = value; }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Payment Processor Password
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	04/14/2009   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string ProcessorPassword
+        {
+            get
+            {
+                return HostController.Instance.GetString("ProcessorPassword");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Payment Processor User Id
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	04/14/2009   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string ProcessorUserId
+        {
+            get
+            {
+                return HostController.Instance.GetString("ProcessorUserId");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Proxy Server Password
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string ProxyPassword
+        {
+            get
+            {
+                return HostController.Instance.GetString("ProxyPassword");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Proxy Server Port
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int ProxyPort
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("ProxyPort");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Proxy Server
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string ProxyServer
+        {
+            get
+            {
+                return HostController.Instance.GetString("ProxyServer");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Proxy Server UserName
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string ProxyUsername
+        {
+            get
+            {
+                return HostController.Instance.GetString("ProxyUsername");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether to use the remember me checkbox
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	04/14/2009   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool RememberCheckbox
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("RememberCheckbox", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Scheduler Mode
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to SchedulerMode.TIMER_METHOD
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static SchedulerMode SchedulerMode
+        {
+            get
+            {
+                SchedulerMode setting = SchedulerMode.TIMER_METHOD;
+                string s = HostController.Instance.GetString("SchedulerMode");
+                if (!string.IsNullOrEmpty(s))
+                {
+                    setting = (SchedulerMode) Enum.Parse(typeof (SchedulerMode), s);
+                }
+                return setting;
+            }
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the delayAtAppStart value
+        /// </summary>
+        /// <remarks>
+        ///   Defaults is 1 min(60 sec)
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static int SchedulerdelayAtAppStart
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1);
+            }
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether to inlcude Common Words in the Search Index
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	03/10/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool SearchIncludeCommon
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("SearchIncludeCommon", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether to inlcude Numbers in the Search Index
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to False
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	03/10/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static bool SearchIncludeNumeric
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("SearchIncludeNumeric", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the maximum Search Word length to index
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 25
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	03/10/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SearchMaxWordlLength
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("MaxSearchWordLength", 50);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the maximum Search Word length to index
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 3
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	03/10/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SearchMinWordlLength
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("MinSearchWordLength", 4);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the filter used for inclusion of tag info
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to ""
+        /// </remarks>
+        /// <history>
+        ///   [vnguyen]   09/03/2010   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string SearchIncludedTagInfoFilter
+        {
+            get
+            {
+                return HostController.Instance.GetString("SearchIncludedTagInfoFilter", "");
+            }
+        }
+
+        /// <summary>
+        /// display the text of errors injected via the error querystring parameter
+        /// </summary>
+        public static bool ShowCriticalErrors
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("ShowCriticalErrors", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Site Log Buffer size
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 1
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/29/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SiteLogBuffer
+        {
+            get
+            {
+                var slb = HostController.Instance.GetInteger("SiteLogBuffer", 1);
+                return slb < 1 ? 1 : slb;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Site Log History
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to -1
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	01/29/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SiteLogHistory
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("SiteLogHistory");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the Site Log Storage location
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to "D"
+        /// </remarks>
+        /// <history>
+        ///   [cnurse]	03/05/2008   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string SiteLogStorage
+        {
+            get
+            {
+                string setting = HostController.Instance.GetString("SiteLogStorage");
+                if (string.IsNullOrEmpty(setting))
+                {
+                    setting = "D";
+                }
+                return setting;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the SMTP Authentication
+        /// </summary>
+        /// <history>
+        ///   [cnurse]	01/28/2008   Created
+        ///   [ohine]	02/01/2009   modifed for portal based smtp
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static string SMTPAuthentication
+        {
+            get
+            {
+                return GetSmtpSetting("SMTPAuthentication");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the SMTP mode (portal|host)
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static bool SMTPPortalEnabled
+        {
+            get
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+>>>>>>> upstream/master
 
         /// -----------------------------------------------------------------------------
         /// <summary>

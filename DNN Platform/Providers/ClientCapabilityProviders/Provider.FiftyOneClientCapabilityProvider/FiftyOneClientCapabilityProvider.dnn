@@ -1,6 +1,10 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
+<<<<<<< HEAD
     <package name="FiftyOneClientCapabilityProvider" type="Provider" version="09.01.00">
+=======
+    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.04.00">
+>>>>>>> upstream/master
       <friendlyName>DotNetNuke Client Capability Provider</friendlyName>
       <description>Device Detection / Client Capability Provider</description>
       <iconFile>~/DesktopModules/Admin/FiftyOneClientCapabilityProvider/Images/mobiledevicedet_16X16.png</iconFile>

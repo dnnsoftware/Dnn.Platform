@@ -766,6 +766,10 @@ namespace DotNetNuke.Entities.Portals
             {
                 cultureCode = GetActivePortalLanguage(portalId);
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
             var dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
             try
             {
@@ -1180,7 +1184,11 @@ namespace DotNetNuke.Entities.Portals
                 foreach (XmlNode node in xmlNodeList)
                 {
                     HtmlUtils.WriteKeepAlive();
+<<<<<<< HEAD
                     var folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
+=======
+                    folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
+>>>>>>> upstream/master
 
                     //First check if the folder exists
                     var objInfo = folderManager.GetFolder(portalId, folderPath);
@@ -1462,7 +1470,11 @@ namespace DotNetNuke.Entities.Portals
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablepopups")))
             {
+<<<<<<< HEAD
                 UpdatePortalSetting(portalId, "EnablePopUps", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
+=======
+                UpdatePortalSetting(PortalId, "EnablePopUps", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
+>>>>>>> upstream/master
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "hidefoldersenabled")))
@@ -1739,7 +1751,11 @@ namespace DotNetNuke.Entities.Portals
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
+<<<<<<< HEAD
                 ParseTab(nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
+=======
+                ParseTab(nodeTab, PortalId, IsAdminTemplate, mergeTabs, ref hModules, ref hTabs, IsNewPortal);
+>>>>>>> upstream/master
             }
 
             //Process tabs that are linked to tabs
@@ -2140,12 +2156,15 @@ namespace DotNetNuke.Entities.Portals
         {
             //Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
+<<<<<<< HEAD
 
             //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
             if (HttpContext.Current != null)
             {
                 HttpContext.Current.Items.Add("CreatingPortalId", portalId);
             }
+=======
+>>>>>>> upstream/master
 
             string message = Null.NullString;
 
@@ -2215,12 +2234,15 @@ namespace DotNetNuke.Entities.Portals
         {
             //Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
+<<<<<<< HEAD
 
             //Log the portal if into http context, if exception occurred in next step, we can remove the portal which is not really created.
             if (HttpContext.Current != null)
             {
                 HttpContext.Current.Items.Add("CreatingPortalId", portalId);
             }
+=======
+>>>>>>> upstream/master
 
             string message = Null.NullString;
 
@@ -2405,6 +2427,14 @@ namespace DotNetNuke.Entities.Portals
         {
 			return new ArrayList(GetPortalList(Null.NullString));
 		}
+<<<<<<< HEAD
+=======
+
+        //public ArrayList GetPortals()
+        //{
+        //    return new ArrayList(GetPortalList(Localization.SystemLocale));
+        //}
+>>>>>>> upstream/master
 
         /// <summary>
         /// Get portals in specific culture.

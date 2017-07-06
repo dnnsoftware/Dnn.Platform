@@ -1,0 +1,70 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="DotNetNuke.DNNTreeNavigationProvider" type="Provider" version="07.04.00">
+            <friendlyName>DotNetNuke DNN Tree Navigation Provider</friendlyName>
+            <description>DotNetNuke DNN Tree Navigation Provider Project provides a navigation system based on the DNNTree Control.</description>
+            <dependencies/>
+            <owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+            <license src="license.txt" />
+            <releaseNotes src="releaseNotes.txt" />
+			<azureCompatible>true</azureCompatible>
+            <components>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin\Providers</path>
+                            <name>DotNetNuke.DNNTreeNavigationProvider.dll</name>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="File">
+                    <files>
+                        <basePath>Providers\NavigationProviders\DNNTreeNavigationProvider</basePath>
+                        <file>
+                            <name>license.txt</name>
+                        </file>
+                        <file>
+                            <name>releaseNotes.txt</name>
+                        </file>
+                    </files>
+                </component>
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/dotnetnuke/navigationControl/providers" action="update" key="name" collision="overwrite">
+                                        <add name="DNNTreeNavigationProvider"
+                                             type="DotNetNuke.NavigationControl.DNNTreeNavigationProvider, DotNetNuke.DNNTreeNavigationProvider"
+                                             providerPath="~\Providers\NavigationProviders\DNNTreeNavigationProvider\" />
+                                    </node>
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/dotnetnuke/navigationControl/providers/add[@name='DNNTreeNavigationProvider']" action="remove" />
+                                </nodes>
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
+                <component type="Cleanup" version="05.01.00">
+                    <files>
+                        <file>
+                            <path>bin</path>
+                            <name>DotNetNuke.DNNTreeNavigationProvider.dll</name>
+                        </file>
+                    </files>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>

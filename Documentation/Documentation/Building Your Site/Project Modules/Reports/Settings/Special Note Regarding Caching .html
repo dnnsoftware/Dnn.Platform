@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="2" MadCap:lastHeight="284" MadCap:lastWidth="1027">
-    <head>
-    </head>
-    <body>
-        <h1>Special Note Regarding Caching </h1>
-        <p>When caching is enabled, a single copy of the data retrieved by the Data Source is stored in-memory so that future requests for the same report can use the cached data rather than re-executing the Data Source. However, since this cached copy is always used to satisfy requests, any parameters you have used in your queries will be disregarded. Therefore, when using caching, parameterized queries are not allowed. If you use parameters in your query and enable caching, you will see an error message similar to the following when trying to run the report: "There was an error while executing the configured data source: There is an error in your SQL at line 1: Must declare the scalar variable "@ParameterName""</p>
-    </body>
-</html>

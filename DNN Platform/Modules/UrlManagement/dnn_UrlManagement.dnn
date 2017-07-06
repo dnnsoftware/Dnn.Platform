@@ -1,0 +1,48 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="UrlManagement" type="Library" version="07.04.00" isSystem="true">
+      <friendlyName>Url Management</friendlyName>
+      <description>DotNetNuke Corporation URL Management module</description>
+      <iconFile>~/Icons/Sigma/AdvancedUrlMngmt_32x32.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.01.00</dependency>
+      </dependencies>
+      <components>
+          <component type="Assembly">
+              <assemblies>
+                  <assembly>
+                      <path>bin</path>
+                      <name>DotNetNuke.Modules.UrlManagement.dll</name>
+                  </assembly>
+              </assemblies>
+          </component>
+          <component type="File">
+              <files>
+                  <basePath>DesktopModules/Admin/UrlManagement</basePath>
+                  <file>
+                      <name>PortalAliases.ascx</name>
+                      <sourceFileName>PortalAliases.ascx</sourceFileName>
+                  </file>
+              </files>
+          </component>
+          <component type="ResourceFile">
+              <resourceFiles>
+                  <basePath>DesktopModules/Admin/UrlManagement</basePath>
+                  <resourceFile>
+                      <name>Resources.zip</name>
+                  </resourceFile>
+              </resourceFiles>
+          </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

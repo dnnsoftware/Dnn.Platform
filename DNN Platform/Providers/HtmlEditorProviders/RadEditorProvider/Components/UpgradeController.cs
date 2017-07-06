@@ -45,11 +45,15 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		private const string ModuleFolder = "~/DesktopModules/Admin/RadEditorProvider";
 		private const string ResourceFile = ModuleFolder + "/App_LocalResources/ProviderConfig.ascx.resx";
 
+<<<<<<< HEAD
         private static readonly Regex HostNameRegex = new Regex("\\.host", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex AdminNameRegex = new Regex("\\.admin", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex RegisteredNameRegex = new Regex("\\.registered", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         /// <summary>
+=======
+		/// <summary>
+>>>>>>> upstream/master
 		/// 
 		/// </summary>
 		/// <param name="Version"></param>

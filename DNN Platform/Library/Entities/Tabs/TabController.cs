@@ -761,6 +761,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private bool SoftDeleteTabInternal(TabInfo tabToDelete, PortalSettings portalSettings)
         {
+<<<<<<< HEAD
             Dto.ChangeControlState changeControlStateForTab = null;
             if (tabToDelete.PortalID > -1)
             {
@@ -771,6 +772,13 @@ namespace DotNetNuke.Entities.Tabs
                     TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, false);
                     TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, false);
                 }
+=======
+            var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tabToDelete.PortalID, tabToDelete.TabID);
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, false);
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, false);
+>>>>>>> upstream/master
             }
 
             var deleted = false;
@@ -794,7 +802,11 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
+<<<<<<< HEAD
             if (changeControlStateForTab != null && changeControlStateForTab.IsChangeControlEnabledForTab)
+=======
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+>>>>>>> upstream/master
             {
                 TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
                 TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
@@ -1304,6 +1316,7 @@ namespace DotNetNuke.Entities.Tabs
             TabInfo tab = null;
 
             if (tabId <= 0)
+<<<<<<< HEAD
             {
                 Logger.WarnFormat("Invalid tabId {0} of portal {1}", tabId, portalId);
             }
@@ -1311,6 +1324,15 @@ namespace DotNetNuke.Entities.Tabs
             {
                 //if we are using the cache
                 tab = CBO.FillObject<TabInfo>(_dataProvider.GetTab(tabId));
+=======
+            {
+                Logger.WarnFormat("Invalid tabId {0} of portal {1}", tabId, portalId);
+            }
+            else if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
+            {
+                //if we are using the cache
+                tab = CBO.FillObject<TabInfo>(Provider.GetTab(tabId));
+>>>>>>> upstream/master
             }
             else
             {
@@ -2223,7 +2245,22 @@ namespace DotNetNuke.Entities.Tabs
 
             //if deserialize tab from install wizard, we need parse desiralize handlers first.
             var installFromWizard = HttpContext.Current != null && HttpContext.Current.Items.Contains("InstallFromWizard");
+<<<<<<< HEAD
             if (installFromWizard)
+=======
+            if (installFromWizard && TabDeserialize == null)
+            {
+                HttpContext.Current.Items.Remove("InstallFromWizard");
+                foreach (var handlers in new EventHandlersContainer<ITabSyncEventHandler>().EventHandlers)
+                {
+                    TabSerialize += handlers.Value.TabSerialize;
+                    TabDeserialize += handlers.Value.TabDeserialize;
+                }
+            }
+
+
+            if (TabDeserialize != null)
+>>>>>>> upstream/master
             {
                 HttpContext.Current.Items.Remove("InstallFromWizard");
                 EventManager.Instance.RefreshTabSyncHandlers();

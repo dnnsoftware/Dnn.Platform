@@ -1,6 +1,10 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
+<<<<<<< HEAD
     <package name="Social Groups" type="Module" version="09.01.00" isSystem="true">
+=======
+    <package name="Social Groups" type="Module" version="07.04.00" isSystem="true">
+>>>>>>> upstream/master
       <friendlyName>Social Groups</friendlyName>
       <description>DotNetNuke Corporation Social Groups module</description>
       <iconFile>~/DesktopModules/SocialGroups/Images/Social_Groups_32X32.png</iconFile>

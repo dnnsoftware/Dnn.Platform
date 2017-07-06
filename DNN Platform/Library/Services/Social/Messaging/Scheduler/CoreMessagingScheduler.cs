@@ -584,9 +584,90 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             MarkMessagesAsDispatched(messageRecipients);
         }
 
+<<<<<<< HEAD
         /// <summary>Gets the schedule item date setting.</summary>
         /// <param name="settingKey">The setting key.</param>
         /// <returns>The date the schedule was ran</returns>
+=======
+        private static bool IsUserAbleToReceiveAnEmail(UserInfo recipientUser)
+        {
+            return recipientUser != null && !recipientUser.IsDeleted;
+        }
+
+        private static string GetSenderAddress(string sender, string fromAddress)
+        {
+            return string.Format("{0} < {1} >", sender, fromAddress);
+        }
+
+        private static string GetEmailBody(string template, string messageBody, PortalSettings portalSettings, UserInfo recipientUser)
+        {
+
+            template = template.Replace("[MESSAGEBODY]", messageBody); //moved to top since that we we can replace tokens in there too...
+            template = template.Replace("[RECIPIENTUSERID]", recipientUser.UserID.ToString());
+            template = template.Replace("[RECIPIENTDISPLAYNAME]", recipientUser.DisplayName);
+            template = template.Replace("[RECIPIENTEMAIL]", recipientUser.Email.ToString());    
+            template = template.Replace("[SITEURL]", GetPortalHomeUrl(portalSettings));
+            template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(portalSettings, recipientUser.UserID));
+            template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
+            template = template.Replace("[LOGOURL]", GetPortalLogoUrl(portalSettings));
+            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));            
+            template = template.Replace("href=\"/", "href=\"http://" + portalSettings.DefaultPortalAlias + "/");
+            template = template.Replace("src=\"/", "src=\"http://" + portalSettings.DefaultPortalAlias + "/");
+
+            return template;
+        }
+
+        private static string GetEmailItemContent(PortalSettings portalSettings, MessageRecipient message, string itemTemplate)
+        {
+            var messageDetails = InternalMessagingController.Instance.GetMessage(message.MessageID);
+
+            var authorId = message.CreatedByUserID > 0 ? message.CreatedByUserID : messageDetails.SenderUserID;
+
+            var emailItemContent = itemTemplate;
+            emailItemContent = emailItemContent.Replace("[TITLE]", messageDetails.Subject);
+            emailItemContent = emailItemContent.Replace("[CONTENT]", messageDetails.Body);
+            emailItemContent = emailItemContent.Replace("[PROFILEPICURL]", GetProfilePicUrl(portalSettings, authorId));
+            emailItemContent = emailItemContent.Replace("[PROFILEURL]", GetProfileUrl(portalSettings, authorId));
+
+            if (messageDetails.NotificationTypeID == 1)
+            {
+
+                var toUser = UserController.Instance.GetUser(messageDetails.PortalID, message.UserID);
+                var defaultLanguage = toUser.Profile.PreferredLocale;
+
+                var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "AcceptFriend");
+                var profileUrl = GetProfileUrl(portalSettings, authorId);
+                var linkContent = GetFriendRequestActionsTemplate(defaultLanguage);
+                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));                
+            }
+            if (messageDetails.NotificationTypeID == 3)
+            {
+
+                var toUser = UserController.Instance.GetUser(messageDetails.PortalID, message.UserID);
+                var defaultLanguage = toUser.Profile.PreferredLocale;
+
+                var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "FollowBack");
+                var profileUrl = GetProfileUrl(portalSettings, authorId);
+                var linkContent = GetFollowRequestActionsTemplate(defaultLanguage);
+                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));            
+            }
+
+            //No social actions for the rest of notifications types
+            emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", "");
+            emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", "");    
+            
+            return emailItemContent;
+        }
+
+        private static void MarkMessagesAsDispatched(IEnumerable<MessageRecipient> messages)
+        {
+            foreach (var message in messages)
+            {
+                InternalMessagingController.Instance.MarkMessageAsDispatched(message.MessageID, message.RecipientID);
+            }
+        }
+
+>>>>>>> upstream/master
         private DateTime GetScheduleItemDateSetting(string settingKey)
         {
             var colScheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(ScheduleHistoryItem.ScheduleID);

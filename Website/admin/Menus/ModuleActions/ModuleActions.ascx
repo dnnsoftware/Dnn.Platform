@@ -84,6 +84,7 @@
                                 var containerPosition = container.offset();
                                 var containerWidth = container.width();
 
+<<<<<<< HEAD
                                 var rootMenuWidth = (supportsQuickSettings) ? 85 : 65;
 
                                 root.css({
@@ -127,6 +128,35 @@
                                 }
                                
                             }
+=======
+                    var ul = $(this).find('ul');
+                    var ulHeight = ul.height();
+                    
+                    if(!atViewPortTop) {
+                        ul.css({top: -ulHeight, right: 0}).show('slide', { direction: 'down'},  80, function () {
+                              if($(this).parent().hasClass('actionMenuMove')) {
+                                    $(this).jScrollPane();    
+                              }
+                        });
+                    }
+                    else {
+                        ul.css({top: 20, right: 0}).show('slide', { direction: 'up'},  80, function () {
+                              if($(this).parent().hasClass('actionMenuMove')) {
+                                    $(this).jScrollPane();    
+                              }
+                        });
+                    }
+                 
+                },
+                out: function() {
+                    var ul = $(this).find('ul');
+                    
+                    if(ul && ul.position()) {
+                        if (ul.position().top > 0) {
+                            ul.hide('slide', { direction: 'up' }, 80);
+                        } else {
+                            ul.hide('slide', { direction: 'down' }, 80);
+>>>>>>> upstream/master
                         }
                     });
                     resizeThrottle = null;

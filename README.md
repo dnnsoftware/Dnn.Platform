@@ -24,7 +24,12 @@ In addition to robust content management, the free, open source DNN Platform inc
 
 Quick Links
 -----------
+<<<<<<< HEAD
 * [DNN on Facebook](http://www.facebook.com/DNNsoftware)
+=======
+* [Contributing] (https://github.com/dnnsoftware/Dnn.Platform/blob/master/CONTRIBUTING.md)
+* [DNN on Facebook](http://www.facebook.com/dotnetnuke)
+>>>>>>> upstream/master
 * [Community](http://www.dnnsoftware.com/Community)
 * [Questions & Answers](http://answers.dnnsoftware.com/)
 * [Discussion Forums](http://forums.dnnsoftware.com/)

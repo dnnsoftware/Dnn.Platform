@@ -1,0 +1,96 @@
+﻿<dotnetnuke type="Package" version="5.0">
+	<packages>
+		<package name="DotNetNuke.Taxonomy" type="Module" version="07.04.00" isSystem="true">
+			<friendlyName>Taxonomy Manager</friendlyName>
+			<description>Administrators can manage the Taxonomy for their site.</description>
+			<iconFile>~/Icons/Sigma/Tag_32X32_Standard.png</iconFile>
+			<owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+			<license src="license.txt" />
+			<releaseNotes src="releaseNotes.txt" />
+			<azureCompatible>true</azureCompatible>
+			<dependencies>
+				<dependency type="CoreVersion">05.04.00</dependency>
+			</dependencies>
+			<components>
+				<component type="Module">
+					<desktopModule>
+						<moduleName>DotNetNuke.Taxonomy</moduleName>
+						<foldername>Admin/Taxonomy</foldername>
+						<businessControllerClass>DotNetNuke.Modules.Taxonomy.TaxonomyController, DotNetNuke.Modules.Taxonomy</businessControllerClass>
+						<supportedFeatures />
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>Taxonomy Manager</friendlyName>
+								<defaultCacheTime>0</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey />
+										<controlSrc>DesktopModules/Admin/Taxonomy/VocabularyList.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Taxonomy/About the Taxonomy Manager Module.html</helpUrl>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>CreateVocabulary</controlKey>
+										<controlSrc>DesktopModules/Admin/Taxonomy/CreateVocabulary.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Create Vocabulary</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+                    <supportsPopUps>True</supportsPopUps>
+                  </moduleControl>
+									<moduleControl>
+										<controlKey>EditVocabulary</controlKey>
+										<controlSrc>DesktopModules/Admin/Taxonomy/EditVocabulary.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Edit Vocabulary</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+                    <helpUrl></helpUrl>
+										<viewOrder>0</viewOrder>
+                    <supportsPopUps>True</supportsPopUps>
+                  </moduleControl>
+								</moduleControls>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+					<eventMessage>
+						<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+						<processorCommand>UpgradeModule</processorCommand>
+						<attributes>
+							<businessControllerClass>DotNetNuke.Modules.Taxonomy.TaxonomyController, DotNetNuke.Modules.Taxonomy</businessControllerClass>
+							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+							<upgradeVersionsList>01.00.00,06.00.00</upgradeVersionsList>
+						</attributes>
+					</eventMessage>
+				</component>
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Modules.Taxonomy.dll</name>
+						</assembly>
+					</assemblies>
+				</component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/Admin/Taxonomy</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+		</package>
+	</packages>
+</dotnetnuke>

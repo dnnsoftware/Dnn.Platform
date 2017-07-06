@@ -1,6 +1,10 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
+<<<<<<< HEAD
     <package name="DNN_TwitterAuthentication" type="Auth_System" version="09.01.00">
+=======
+    <package name="DNN_TwitterAuthentication" type="Auth_System" version="07.04.00">
+>>>>>>> upstream/master
       <friendlyName>DotNetNuke Twitter Authentication Project</friendlyName>
       <description>
         The DotNetNuke Twitter Authentication Project is an Authentication provider for DotNetNuke that uses

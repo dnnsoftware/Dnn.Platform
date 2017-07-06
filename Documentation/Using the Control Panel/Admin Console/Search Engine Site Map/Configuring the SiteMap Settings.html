@@ -1,29 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="8" MadCap:lastHeight="1105" MadCap:lastWidth="1242">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:lastBlockDepth="8" MadCap:lastHeight="1480" MadCap:lastWidth="1241">
     <head>
-        
     </head>
     <body>
         <h1>Configuring the SiteMap Settings</h1>
-        <p>How to configure the search engine settings and priorities using the Sitemap module.</p>
+        <p>How to configure the search engine settings and priorities using the Sitemap.</p>
         <ol>
             <li>Navigate to Admin &gt; Advanced Settings &gt; <b><img alt="" src="../../../Resources/Images/Icons/Sitemap_16X16_Standard.png" /> Search Engine Site Map</b> - OR - Go to a <b>Sitemap</b> module.</li>
             <li>The <b>Sitemap URL</b> field located at the top of the module displays the URL of your Sitemap as well as the Sitemap providers that are enabled. E.g. http://awesomecycles.biz/SiteMap.aspx</li>
             <li><b>Optional. </b>Expand the Base Page URL's Settings section. Here you can modify the basic settings that apply to general DNN pages.
     <ol><li>At <b>Use page level based priorities?</b>, select from these options:
-        <ul><li><MadCap:snippetText  src="../../../../../Resources/Snippets/Check.flsnp" />to set the priority for each page based on the hierarchical level of the page. Top level (parent) pages will have a value of 1, second level (first level child pages) 0.9, third level 0.8,  (second level child pages), etc. This setting will not change the value stored in the actual page but it will use the computed value when required.</li><li value="2"><MadCap:snippetText  src="../../../../../Resources/Snippets/Uncheck.flsnp" />if you don't wish to use page level based priorities. Skip to step 3c.</li></ul></li><li>In the <b>Minimum Priority for pages</b> text box, if <b>Use page level based priorities?</b> is checked, this field allows you set the lowest priority that will be used on low level pages.  You must provide a valid number between 0.0 and 1.0.</li><li>At <b>Include Hidden Pages?</b> select from these options:
-        <ul><li><MadCap:snippetText  src="../../../../../Resources/Snippets/Check.flsnp" />to include hidden pages (those not visible in the menu)  in the Sitemap. </li><li><MadCap:snippetText  src="../../../../../Resources/Snippets/Uncheck.flsnp" />to exclude hidden pages from the Sitemap. This is the default setting.</li></ul></li><li>Click the <span style="text-decoration: underline;">Refresh Sitemap Priorities</span> link.</li></ol></li>
+        <ul><li>Mark <img src="../../../Resources/Images/Icons/check.png" style="vertical-align: bottom;" />&#160;the check box to set the priority for each page based on the hierarchical level of the page. Top level (parent) pages will have a value of 1, second level (first level child pages) 0.9, third level 0.8,  (second level child pages), etc. This setting will not change the value stored in the actual page but it will use the computed value when required.</li><li value="2">Unmark <img src="../../../Resources/Images/Icons/uncheck.png" style="visibility: visible;mso-wrap-style: square;width: 13px;height: 13px;vertical-align: bottom;" />&#160;the check box&#160;if you don't wish to use page level based priorities. Skip to step 3c.</li></ul></li><li>At <b>Minimum Priority for pages</b>,  choose a valid number between 0.0 and 1.0. If <b>Use page level based priorities?</b> is marked then this field allows you set the lowest priority that will be used on low level pages. </li><li>At <b>Include Hidden Pages?</b> select from these options:
+        <ul><li>Mark <img src="../../../Resources/Images/Icons/check.png" style="vertical-align: bottom;" />&#160;the check box to include hidden pages (those not visible in the menu)  in the Sitemap. </li><li>Unmark <img src="../../../Resources/Images/Icons/uncheck.png" style="visibility: visible;mso-wrap-style: square;width: 13px;height: 13px;vertical-align: bottom;" />&#160;the check box&#160;to exclude hidden pages from the Sitemap. This is the default setting.</li></ul></li><li>Click the <b>Refresh Sitemap Priorities</b> button.</li></ol></li>
         </ol>
         <p>
-            <img alt="" src="../../../Resources/Images/Modules/Sitemap/Sitemap_BasePageURLs.png" />
+            <img alt="" src="../../../Resources/Images/Admin/Sitemap/Sitemap_BasePageURLs.png" />
         </p>
         <ol>
-            <li value="4"><b>Optional. </b>Go to the General Sitemap Settings section. Here you can configure the settings that apply to all URL's included in the Sitemap.
-    <ol><li value="1">In the <b>Exclude URL's with a priority lower than</b> text box, enter a number between 0.0 and 1.0 This option can be used to remove certain pages from the Sitemap. For example you can setup a priority of -1 for a page and enter -1 here to cause the page to be excluded from the generated Sitemap.</li><li value="2">At <b>Days To Cache Sitemap For</b> select from these options:
-        <ul><li value="1">To enable Sitemap caching: Select the number of days (from 1 Day to 7 Days) the Sitemap is cached for. This stops the Sitemap from being generated every time it is requested. This is especially necessary for big sites. If your site has more than 50000 URL's the Sitemap will be cached with a default value of 1 day. </li><li value="2">To disable Sitemap caching: Set this value to zero. I.e. 0</li></ul></li><li value="3">Click the <span style="text-decoration: underline;">Save Sitemap Configuration</span> link.</li></ol></li>
+            <li value="4"><b>Optional. </b>Expand the General Sitemap Settings section. Here you can configure the settings that apply to all URL's included in the Sitemap.
+    <ol><li value="1">At <b>Exclude URL's with a priority lower than</b>, select a number between 0.0 and 1.0 This option can be used to remove certain pages from the Sitemap. For example you can setup a priority of -1 for a page and enter -1 here to cause the page to be excluded from the generated Sitemap.</li><li value="2">At <b>Days To Cache Sitemap For</b> select from these options:
+        <ul><li value="1">To enable Sitemap caching: Select the number of days (from 1 Day to 7 Days) the Sitemap is cached for. This stops the Sitemap from being generated every time it is requested. This is especially necessary for big sites. If your site has more than 50000 URL's the Sitemap will be cached with a default value of 1 day. </li><li value="2">To disable Sitemap caching: Set this value to zero. I.e. 0</li></ul></li><li value="3">Click the <b>Save Sitemap Configuration</b> button.</li></ol></li>
         </ol>
         <p>
-            <img alt="" src="../../../Resources/Images/Modules/Sitemap/Sitemap_GeneralSitemapSettings.png" />
+            <img alt="" src="../../../Resources/Images/Admin/Sitemap/Sitemap_GeneralSitemapSettings.png" />
             <br /><small>Configuring Sitemap Settings</small>
         </p>
     </body>

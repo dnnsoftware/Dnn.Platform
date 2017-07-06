@@ -270,4 +270,252 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{839E7C68-1867-4B99-8507-FB50CE45EB10}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DotNetNuke.Modules.Groups</RootNamespace>
+    <AssemblyName>DotNetNuke.Modules.Groups</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>Bin\</OutputPath>
+    <DocumentationFile>Bin\DotNetNuke.Modules.Groups.XML</DocumentationFile>
+    <WarningLevel>1</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\</OutputPath>
+    <DocumentationFile>Bin\DotNetNuke.Modules.Groups.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\WebAPI\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\WebAPI\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\WebAPI\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="DotNetNuke" />
+    <Import Include="DotNetNuke.Common" />
+    <Import Include="DotNetNuke.Common.Utilities" />
+    <Import Include="DotNetNuke.Data" />
+    <Import Include="DotNetNuke.Entities" />
+    <Import Include="DotNetNuke.Entities.Tabs" />
+    <Import Include="DotNetNuke.Framework" />
+    <Import Include="DotNetNuke.Modules" />
+    <Import Include="DotNetNuke.Security" />
+    <Import Include="DotNetNuke.Services" />
+    <Import Include="DotNetNuke.Services.Exceptions" />
+    <Import Include="DotNetNuke.Services.Localization" />
+    <Import Include="DotNetNuke.UI" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Components\Constants.cs" />
+    <Compile Include="Components\Content.cs" />
+    <Compile Include="Components\GroupItemPropertyAccess.cs" />
+    <Compile Include="Components\GroupMemberType.cs" />
+    <Compile Include="Components\GroupsBusinessController.cs" />
+    <Compile Include="Components\GroupsRouteMapper.cs" />
+    <Compile Include="Components\GroupUtilities.cs" />
+    <Compile Include="Components\GroupViewParser.cs" />
+    <Compile Include="Components\Notifications.cs" />
+    <Compile Include="Components\Utilities.cs" />
+    <Compile Include="Create.ascx.cs">
+      <DependentUpon>Create.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Create.ascx.designer.cs">
+      <DependentUpon>Create.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Components\GroupInfo.cs" />
+    <Compile Include="GroupEdit.ascx.cs">
+      <DependentUpon>GroupEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GroupEdit.ascx.designer.cs">
+      <DependentUpon>GroupEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GroupListControl.cs" />
+    <Compile Include="ModerationServiceController.cs" />
+    <Compile Include="GroupView.ascx.cs">
+      <DependentUpon>GroupView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GroupView.ascx.designer.cs">
+      <DependentUpon>GroupView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="List.ascx.cs">
+      <DependentUpon>List.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="List.ascx.designer.cs">
+      <DependentUpon>List.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Loader.ascx.cs">
+      <DependentUpon>Loader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Loader.ascx.designer.cs">
+      <DependentUpon>Loader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ListSettings.ascx.designer.cs">
+      <DependentUpon>ListSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ListSettings.ascx.cs">
+      <DependentUpon>ListSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GroupsSettingsBase.cs" />
+    <Compile Include="Setup.ascx.cs">
+      <DependentUpon>Setup.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup.ascx.designer.cs">
+      <DependentUpon>Setup.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="View.ascx.designer.cs">
+      <DependentUpon>View.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="View.ascx.cs">
+      <DependentUpon>View.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GroupsModuleBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_LocalResources\Edit.ascx.resx" />
+    <None Include="App_LocalResources\ListSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App_LocalResources\View.ascx.resx" />
+    <Content Include="Module.build" />
+    <None Include="SocialGroups.dnn">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="module.css" />
+    <None Include="ReleaseNotes.txt" />
+    <None Include="License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Create.ascx" />
+    <Content Include="GroupEdit.ascx" />
+    <Content Include="GroupView.ascx" />
+    <Content Include="Images\docs-icn.png" />
+    <Content Include="Images\join-group-icn.png" />
+    <Content Include="Images\member-icn.png" />
+    <Content Include="Images\photo-icn.png" />
+    <Content Include="Images\posts-icn.png" />
+    <Content Include="Images\sample-group-profile.jpg" />
+    <Content Include="List.ascx" />
+    <Content Include="ListSettings.ascx" />
+    <Content Include="Loader.ascx" />
+    <Content Include="Setup.ascx" />
+    <Content Include="View.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{DDF18E36-41A0-4CA7-A098-78CA6E6F41C1}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{537B45EB-2EC3-4849-BC6B-D761F43674A5}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
+      <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
+      <Name>DotNetNuke.Web</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
+      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Name>DotNetNuke.Library</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\CreateSettings.ascx.resx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="Module.build" />
 </Project>

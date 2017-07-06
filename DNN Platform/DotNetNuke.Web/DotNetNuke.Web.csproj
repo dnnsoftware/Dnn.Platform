@@ -416,4 +416,546 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EE1329FE-FD88-4E1A-968C-345E394EF080}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DotNetNuke.Web</RootNamespace>
+    <AssemblyName>DotNetNuke.Web</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WebControl</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <Nonshipping>true</Nonshipping>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\Evoq.Content\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\DotNetNuke.Web.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\DotNetNuke.Web.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\Components\WebAPI\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\Components\WebAPI\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\Components\WebAPI\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\Components\WebAPI\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Components\MVC4\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="WebFormsMvp">
+      <HintPath>..\..\packages\WebFormsMVP.1.4.1.0\lib\WebFormsMvp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Api\AuthFilterBase.cs" />
+    <Compile Include="Api\AuthFilterContext.cs" />
+    <Compile Include="Api\AuthorizeAttributeBase.cs" />
+    <Compile Include="Api\DnnAuthorizeAttribute.cs" />
+    <Compile Include="Api\DnnExceptionAttribute.cs" />
+    <Compile Include="Api\DnnHttpControllerSelector.cs" />
+    <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
+    <Compile Include="Api\HttpConfigurationExtensions.cs" />
+    <Compile Include="Api\Internal\AntiForgery.cs" />
+    <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
+    <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
+    <Compile Include="Api\Internal\IAntiForgery.cs" />
+    <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Api\Internal\Auth\AuthMessageHandlerBase.cs" />
+    <Compile Include="Api\Internal\Auth\BasicAuthMessageHandler.cs" />
+    <Compile Include="Api\Internal\Auth\DigestAuthMessageHandler.cs" />
+    <Compile Include="Api\Internal\Auth\WebFormsAuthMessageHandler.cs" />
+    <Compile Include="Api\Internal\DnnActionFilterProvider.cs" />
+    <Compile Include="Api\Internal\DnnContextMessageHandler.cs" />
+    <Compile Include="Api\Internal\DnnPageEditorAttribute.cs" />
+    <Compile Include="Api\Internal\PagePermissionsAttributesHelper.cs" />
+    <Compile Include="Api\IPortalAliasRouteManager.cs" />
+    <Compile Include="Api\ITabAndModuleInfoProvider.cs" />
+    <Compile Include="Api\PortalAliasRouteManager.cs" />
+    <Compile Include="Api\RouteExtensions.cs" />
+    <Compile Include="Api\RequireHostAttribute.cs" />
+    <Compile Include="Api\StandardTabAndModuleInfoProvider.cs" />
+    <Compile Include="Api\StringPassThroughMediaTypeFormatter.cs" />
+    <Compile Include="Api\SupportedModulesAttribute.cs" />
+    <Compile Include="Api\TraceWriter.cs" />
+    <Compile Include="Api\UrlHelperExtensions.cs" />
+    <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Common\DotNetNukeHttpApplication.cs" />
+    <Compile Include="Components\Controllers\ControlBarController.cs" />
+    <Compile Include="Components\Controllers\IControlBarController.cs" />
+    <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
+    <Compile Include="Components\Controllers\Models\UpgradeIndicatorViewModel.cs" />
+    <Compile Include="Components\LocalizationHelper.cs" />
+    <Compile Include="InternalServices\ControlBarController.cs" />
+    <Compile Include="InternalServices\ContentWorkflowServiceController.cs" />
+    <Compile Include="InternalServices\CountryRegionController.cs" />
+    <Compile Include="InternalServices\EventLogServiceController.cs" />
+    <Compile Include="InternalServices\LanguageServiceController.cs" />
+    <Compile Include="InternalServices\GettingStartedController.cs" />
+    <Compile Include="InternalServices\ImageHeader.cs" />
+    <Compile Include="InternalServices\NotificationDTO.cs" />
+    <Compile Include="InternalServices\PageServiceController.cs" />
+    <Compile Include="InternalServices\ItemListServiceController.cs" />
+    <Compile Include="InternalServices\SearchServiceController.cs" />
+    <Compile Include="InternalServices\FileUploadController.cs" />
+    <Compile Include="InternalServices\ModuleServiceController.cs" />
+    <Compile Include="InternalServices\NotificationsServiceController.cs" />
+    <Compile Include="InternalServices\ProfileServiceController.cs" />
+    <Compile Include="InternalServices\RelationshipServiceController.cs" />
+    <Compile Include="InternalServices\MessagingServiceController.cs" />
+    <Compile Include="InternalServices\ServiceRouteMapper.cs" />
+    <Compile Include="InternalServices\NewUserNotificationServiceController.cs" />
+    <Compile Include="InternalServices\UserFileController.cs" />
+    <Compile Include="InternalServices\Views\Search\GroupedDetailView.cs" />
+    <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />
+    <Compile Include="InternalServices\Views\Search\BasicView.cs" />
+    <Compile Include="InternalServices\Views\Search\DetailedView.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenterOfT.cs" />
+    <Compile Include="Mvp\ISettingsViewOfT.cs" />
+    <Compile Include="Mvp\ProfileModuleViewBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mvp\SettingsModel.cs" />
+    <Compile Include="Mvp\SettingsView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Api\Internal\Auth\DigestAuthentication.cs" />
+    <Compile Include="Api\Internal\Auth\DigestAuthenticationRequest.cs" />
+    <Compile Include="Api\DnnApiController.cs" />
+    <Compile Include="Api\HttpRequestMessageExtensions.cs" />
+    <Compile Include="Api\IOverrideDefaultAuthLevel.cs" />
+    <Compile Include="Api\IMapRoute.cs" />
+    <Compile Include="Api\IServiceRouteMapper.cs" />
+    <Compile Include="Api\Internal\ServicesRoutingManager.cs" />
+    <Compile Include="Common\SharedConstants.cs" />
+    <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFileUpload.cs" />
+    <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnDropDownListOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFolderDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnGenericHiddenField.cs" />
+    <Compile Include="UI\WebControls\DnnDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnConfirmPasswordOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFormPasswordItem.cs" />
+    <Compile Include="UI\WebControls\DnnDateTimePicker.cs" />
+    <Compile Include="UI\WebControls\DnnFilePickerUploader.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\DnnFormEnumItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormPagesItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormPanel.cs" />
+    <Compile Include="UI\WebControls\DnnFormTabStrip.cs" />
+    <Compile Include="UI\WebControls\DnnGridImageCommandColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridImageCommandColumnTemplate.cs" />
+    <Compile Include="UI\WebControls\DnnImageButton.cs" />
+    <Compile Include="UI\WebControls\DnnImage.cs" />
+    <Compile Include="UI\WebControls\DnnMemberListControl.cs" />
+    <Compile Include="UI\WebControls\DnnPageDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnPaswordStrengthOptions.cs" />
+    <Compile Include="UI\WebControls\DnnSkinComboBox.cs" />
+    <Compile Include="UI\WebControls\DnnToolTip.cs" />
+    <Compile Include="UI\WebControls\DnnTreeNode.cs" />
+    <Compile Include="Mvp\IWebServiceViewOfT.cs" />
+    <Compile Include="Mvp\IWebServiceView.cs" />
+    <Compile Include="Mvp\WebServicePresenter.cs" />
+    <Compile Include="Mvp\WebServiceView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Mvp\WebServiceViewBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Mvp\IWebServiceViewBase.cs" />
+    <Compile Include="Mvp\HttpHandlerPresenter.cs" />
+    <Compile Include="Mvp\HttpHandlerView.cs" />
+    <Compile Include="Mvp\IHttpHandlerView.cs" />
+    <Compile Include="Mvp\IModuleViewBase.cs" />
+    <Compile Include="Mvp\IModuleViewOfT.cs" />
+    <Compile Include="Mvp\ISettingsView.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenter.cs" />
+    <Compile Include="Mvp\SettingsViewBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mvp\WebServiceViewOfT.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mvp\AttributeBasedViewStateSerializer.cs" />
+    <Compile Include="Mvp\ViewStateAttribute.cs" />
+    <Compile Include="UI\RibbonBarManager.cs" />
+    <Compile Include="UI\Utilities.cs" />
+    <Compile Include="UI\WebControls\DnnAjaxLoadingPanel.cs" />
+    <Compile Include="UI\WebControls\DnnAjaxPanel.cs" />
+    <Compile Include="UI\WebControls\DnnFormEditControlItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormLabel.cs" />
+    <Compile Include="UI\WebControls\DnnFormTextBoxItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormRadioButtonListItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormListItemBase.cs" />
+    <Compile Include="UI\WebControls\DnnFormNumericTextBoxItem.cs" />
+    <Compile Include="UI\WebControls\DnnModuleComboBox.cs" />
+    <Compile Include="UI\WebControls\DnnFormComboBoxItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormToggleButtonItem.cs" />
+    <Compile Include="UI\WebControls\DnnCalendarDay.cs" />
+    <Compile Include="UI\WebControls\DnnChartAxisItem.cs" />
+    <Compile Include="UI\WebControls\DnnChartSeries.cs" />
+    <Compile Include="UI\WebControls\DnnChartSeriesItem.cs" />
+    <Compile Include="UI\WebControls\DnnColorPickerItem.cs" />
+    <Compile Include="UI\WebControls\DnnComboBoxItem.cs" />
+    <Compile Include="UI\WebControls\DnnContextMenuElementTarget.cs" />
+    <Compile Include="UI\WebControls\DnnContextMenuTagNameTarget.cs" />
+    <Compile Include="UI\WebControls\DnnDataPagerButtonField.cs" />
+    <Compile Include="UI\WebControls\DnnDataPagerGoToPageField.cs" />
+    <Compile Include="UI\WebControls\DnnDataPagerPageSizeField.cs" />
+    <Compile Include="UI\WebControls\DnnDataPagerSliderField.cs" />
+    <Compile Include="UI\WebControls\DnnDataPagerTemplatePageField.cs" />
+    <Compile Include="UI\WebControls\DnnDockCloseCommand.cs" />
+    <Compile Include="UI\WebControls\DnnDockCommand.cs" />
+    <Compile Include="UI\WebControls\DnnDockLayout.cs" />
+    <Compile Include="UI\WebControls\DnnDockZone.cs" />
+    <Compile Include="UI\WebControls\DnnGridDataItem.cs" />
+    <Compile Include="UI\WebControls\DnnGridEditFormSettings.cs" />
+    <Compile Include="UI\WebControls\DnnGridFooterItem.cs" />
+    <Compile Include="UI\WebControls\DnnGridHeaderItem.cs" />
+    <Compile Include="UI\WebControls\DnnGridItem.cs" />
+    <Compile Include="UI\WebControls\DnnListBoxItem.cs" />
+    <Compile Include="UI\WebControls\DnnListViewItem.cs" />
+    <Compile Include="UI\WebControls\DnnListViewItemDragHandle.cs" />
+    <Compile Include="UI\WebControls\DnnMenuItem.cs" />
+    <Compile Include="UI\WebControls\DnnMenuItemBinding.cs" />
+    <Compile Include="UI\WebControls\DnnMonthYearPicker.cs" />
+    <Compile Include="UI\WebControls\DnnPanelItem.cs" />
+    <Compile Include="UI\WebControls\DnnPanelItemBinding.cs" />
+    <Compile Include="UI\WebControls\DnnRadRibbonBar.cs" />
+    <Compile Include="UI\WebControls\DnnRatingItem.cs" />
+    <Compile Include="UI\WebControls\DnnRotatorItem.cs" />
+    <Compile Include="UI\WebControls\DnnSchedulerContextMenu.cs" />
+    <Compile Include="UI\WebControls\DnnSchedulerResourceStyleMapping.cs" />
+    <Compile Include="UI\WebControls\DnnSchedulerResourceType.cs" />
+    <Compile Include="UI\WebControls\DnnScriptBlock.cs" />
+    <Compile Include="UI\WebControls\DnnScriptManager.cs" />
+    <Compile Include="UI\WebControls\DnnSiteMapLevelSetting.cs" />
+    <Compile Include="UI\WebControls\DnnSiteMapNode.cs" />
+    <Compile Include="UI\WebControls\DnnSiteMapNodeBinding.cs" />
+    <Compile Include="UI\WebControls\DnnFormSkinsItem.cs" />
+    <Compile Include="UI\WebControls\DnnSliderItem.cs" />
+    <Compile Include="UI\WebControls\DnnSplitBar.cs" />
+    <Compile Include="UI\WebControls\DnnSplitPane.cs" />
+    <Compile Include="UI\WebControls\DnnSplitSlidingPane.cs" />
+    <Compile Include="UI\WebControls\DnnSplitSlidingZone.cs" />
+    <Compile Include="UI\WebControls\DnnTagCloudItem.cs" />
+    <Compile Include="UI\WebControls\DnnTextButton.cs" />
+    <Compile Include="UI\WebControls\DnnTextLink.cs" />
+    <Compile Include="UI\WebControls\DnnTickerItem.cs" />
+    <Compile Include="UI\WebControls\DnnTimeView.cs" />
+    <Compile Include="UI\WebControls\DnnTimeZoneComboBox.cs" />
+    <Compile Include="UI\WebControls\DnnTimeZoneEditControl.cs" />
+    <Compile Include="UI\WebControls\DnnToolBarButton.cs" />
+    <Compile Include="UI\WebControls\DnnToolBarDropDown.cs" />
+    <Compile Include="UI\WebControls\DnnToolBarSplitButton.cs" />
+    <Compile Include="UI\WebControls\Core Wrappers\DnnRadTab.cs" />
+    <Compile Include="UI\WebControls\DnnAsyncUpload.cs" />
+    <Compile Include="UI\WebControls\DnnBinaryImage.cs" />
+    <Compile Include="UI\WebControls\DnnButton.cs" />
+    <Compile Include="UI\WebControls\DnnCalendar.cs" />
+    <Compile Include="UI\WebControls\DnnCaptcha.cs" />
+    <Compile Include="UI\WebControls\DnnChart.cs" />
+    <Compile Include="UI\WebControls\DnnCodeBlock.cs" />
+    <Compile Include="UI\WebControls\DnnColorPicker.cs" />
+    <Compile Include="UI\WebControls\DnnComboBox.cs" />
+    <Compile Include="UI\WebControls\DnnContextMenu.cs" />
+    <Compile Include="UI\WebControls\DnnDataPager.cs" />
+    <Compile Include="UI\WebControls\DnnDateInput.cs" />
+    <Compile Include="UI\WebControls\DnnDatePicker.cs" />
+    <Compile Include="UI\WebControls\DnnDock.cs" />
+    <Compile Include="UI\WebControls\DnnEditor.cs" />
+    <Compile Include="UI\WebControls\DnnFieldLabel.cs" />
+    <Compile Include="UI\WebControls\DnnFieldLiteral.cs" />
+    <Compile Include="UI\WebControls\DnnFileExplorer.cs" />
+    <Compile Include="UI\WebControls\DnnFilter.cs" />
+    <Compile Include="UI\WebControls\DnnFormDecorator.cs" />
+    <Compile Include="UI\WebControls\DnnFormEditor.cs" />
+    <Compile Include="UI\WebControls\DnnFormEmptyTemplate.cs" />
+    <Compile Include="UI\WebControls\DnnFormItemBase.cs" />
+    <Compile Include="UI\WebControls\DnnFormTab.cs" />
+    <Compile Include="UI\WebControls\DnnFormSection.cs" />
+    <Compile Include="UI\WebControls\DnnFormSectionTemplate.cs" />
+    <Compile Include="UI\WebControls\DnnFormTemplateItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormLiteralItem.cs" />
+    <Compile Include="UI\WebControls\DnnGrid.cs" />
+    <Compile Include="UI\WebControls\DnnGridAttachmentColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridBinaryImageColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridCalculatedColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridDateTimeColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridDropDownColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridExpandColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridGroupSplitterColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridHTMLEditorColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridMaskedColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridNumericColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridRatingColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridRowIndicatorColumn.cs" />
+    <Compile Include="UI\WebControls\DnnInputManager.cs" />
+    <Compile Include="UI\WebControls\DnnLabel.cs" />
+    <Compile Include="UI\WebControls\DnnListBox.cs" />
+    <Compile Include="UI\WebControls\DnnListView.cs" />
+    <Compile Include="UI\WebControls\DnnLiteral.cs" />
+    <Compile Include="UI\WebControls\DnnMaskedTextBox.cs" />
+    <Compile Include="UI\WebControls\DnnMenu.cs" />
+    <Compile Include="UI\WebControls\DnnMultiPage.cs" />
+    <Compile Include="UI\WebControls\DnnNumericTextBox.cs" />
+    <Compile Include="UI\WebControls\DnnPageView.cs" />
+    <Compile Include="UI\WebControls\DnnPanelBar.cs" />
+    <Compile Include="UI\WebControls\DnnRadButton.cs" />
+    <Compile Include="UI\WebControls\DnnRadioButton.cs" />
+    <Compile Include="UI\WebControls\DnnRating.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBar.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBarGroup.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBarGroupCollection.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\DnnRotator.cs" />
+    <Compile Include="UI\WebControls\DnnScheduler.cs" />
+    <Compile Include="UI\WebControls\DnnSiteMap.cs" />
+    <Compile Include="UI\WebControls\DnnSlider.cs" />
+    <Compile Include="UI\WebControls\DnnSpell.cs" />
+    <Compile Include="UI\WebControls\DnnSplitter.cs" />
+    <Compile Include="UI\WebControls\DnnTab.cs" />
+    <Compile Include="UI\WebControls\DnnTabCollection.cs" />
+    <Compile Include="UI\WebControls\DnnTabPanel.cs" />
+    <Compile Include="UI\WebControls\DnnTabStrip.cs" />
+    <Compile Include="UI\WebControls\DnnTagCloud.cs" />
+    <Compile Include="UI\WebControls\DnnTextBox.cs" />
+    <Compile Include="UI\WebControls\DnnTicker.cs" />
+    <Compile Include="UI\WebControls\DnnTimePicker.cs" />
+    <Compile Include="UI\WebControls\DnnToolBar.cs" />
+    <Compile Include="UI\WebControls\DnnTreeList.cs" />
+    <Compile Include="UI\WebControls\DnnTreeView.cs" />
+    <Compile Include="UI\WebControls\DnnTreeViewContextMenu.cs" />
+    <Compile Include="UI\WebControls\DnnUpload.cs" />
+    <Compile Include="UI\WebControls\DnnWindow.cs" />
+    <Compile Include="UI\WebControls\DnnWindowManager.cs" />
+    <Compile Include="UI\WebControls\DnnFormMode.cs" />
+    <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
+    <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
+    <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\ItemListOptions.cs" />
+    <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
+    <Compile Include="UI\WebControls\PropertyEditorControls\DateEditControl.cs" />
+    <Compile Include="UI\WebControls\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\RibbonBarToolInfo.cs" />
+    <Compile Include="UI\WebControls\TypedControlCollection.cs" />
+    <Compile Include="UI\WebControls\UniformControlCollection.cs" />
+    <Compile Include="UI\WebControls\DnnUnsortedList.cs" />
+    <Compile Include="UI\WebControls\DnnUnsortedListItem.cs" />
+    <Compile Include="UI\WebControls\DnnUrlControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Validators\AttributeBasedObjectValidator.cs" />
+    <Compile Include="Validators\DataAnnotationsObjectValidator.cs" />
+    <Compile Include="Validators\ObjectValidator.cs" />
+    <Compile Include="Validators\PropertyBasedObjectValidator.cs" />
+    <Compile Include="Validators\ValidationError.cs" />
+    <Compile Include="Validators\ValidationResult.cs" />
+    <Compile Include="Validators\Validator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Management" />
+    <ProjectReference Include="..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3B64E72E-63CC-4A90-ADFF-4B919EF17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{537b45eb-2ec3-4849-bc6b-d761f43674a5}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
+      <Project>{3d9c3f5f-1d2d-4d89-995b-438055a5e3a6}</Project>
+      <Name>DotNetNuke.HttpModules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mvp\ModulePresenter.cs" />
+    <Compile Include="Mvp\ModuleView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mvp\IModuleView.cs" />
+    <Compile Include="Mvp\ModulePresenterBase.cs" />
+    <Compile Include="Mvp\ModulePresenterOfT.cs" />
+    <Compile Include="Mvp\ModuleViewBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mvp\ModuleViewOfT.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\DnnCheckBox.cs" />
+    <Compile Include="UI\WebControls\DnnFileEditControl.cs" />
+    <Compile Include="UI\WebControls\DnnFilePicker.cs" />
+    <Compile Include="UI\WebControls\DnnGridBoundColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridCheckBoxColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridClientSelectColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridEditColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridHyperlinkColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridImageColumn.cs" />
+    <Compile Include="UI\WebControls\DnnGridItemSelectedEventArgs.cs" />
+    <Compile Include="UI\WebControls\DnnGridItemSelectedEventHandler.cs" />
+    <Compile Include="UI\WebControls\DnnGridTableView.cs" />
+    <Compile Include="UI\WebControls\DnnGridTemplateColumn.cs" />
+    <Compile Include="UI\WebControls\DnnImageEditControl.cs" />
+    <Compile Include="UI\ILocalizable.cs" />
+    <Compile Include="UI\MessageWindowParameters.cs" />
+    <Compile Include="UI\WebControls\DnnLanguageComboBox.cs" />
+    <Compile Include="UI\WebControls\DnnLanguageLabel.cs" />
+    <Compile Include="UI\WebControls\DnnProgressArea.cs" />
+    <Compile Include="UI\WebControls\DnnProgressManager.cs" />
+    <Compile Include="UI\WebControls\DnnToolTipManager.cs" />
+    <Compile Include="UI\WebControls\Tags.cs" />
+    <Compile Include="UI\WebControls\TermsEventArgs.cs" />
+    <Compile Include="UI\WebControls\TermsList.cs" />
+    <Compile Include="UI\WebControls\TermsSelector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\WebControls\DnnGridButtonColumn.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Library.build" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="Library.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

@@ -89,6 +89,14 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
                     var src = scripts[i].match(/src=""(.+?)""/i)[1];
                     if($('script[src=""' + src + '""]').length == 0){
                         window.dnnLoadScriptsInAjaxMode.push(src);
+<<<<<<< HEAD
+=======
+                        var s = document.createElement( 'script' );
+                        s.type = 'text/javascript';
+                        s.src = src;
+                        s.onload = window.dnnLoadScriptsInAjaxModeComplete;
+                        document.body.appendChild(s);
+>>>>>>> upstream/master
                     }
                 }
             }
@@ -126,14 +134,19 @@ if(typeof window.dnnLoadScriptsInAjaxModeComplete == 'undefined'){
                 }
             }
             if(window.dnnLoadScriptsInAjaxMode.length == 0){
+<<<<<<< HEAD
                 window.loadingScriptsInAsyncRequest = false;
                 $(window).trigger('dnnScriptLoadComplete');
             }else if(isFirefox){
                 loadScriptInSingleMode();
+=======
+                $(window).trigger('dnnScriptLoadComplete');
+>>>>>>> upstream/master
             }
         }
     }
 }
+<<<<<<< HEAD
 
 var originalScriptLoad = Sys._ScriptLoader.getInstance().loadScripts;
 Sys._ScriptLoader.getInstance().loadScripts = function(){
@@ -146,6 +159,8 @@ Sys._ScriptLoader.getInstance().loadScripts = function(){
         originalScriptLoad.apply(self, args);
     }
 };
+=======
+>>>>>>> upstream/master
 }(jQuery));
 ";
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);

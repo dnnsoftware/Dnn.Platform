@@ -1911,6 +1911,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
+<<<<<<< HEAD
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings == null)
             {
@@ -1918,6 +1919,10 @@ namespace DotNetNuke.Common
             }
 
             return portalSettings.UserMode == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
+=======
+            return PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit &&
+                TabPermissionController.CanAddContentToPage();
+>>>>>>> upstream/master
         }
 
         /// -----------------------------------------------------------------------------
