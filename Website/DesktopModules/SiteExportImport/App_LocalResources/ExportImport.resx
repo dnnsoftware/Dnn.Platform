@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ASSETS.InfoText" xml:space="preserve">
+    <value>Assets:</value>
+  </data>
   <data name="InvalidPortal.Text" xml:space="preserve">
     <value>Invalid portal.</value>
   </data>
@@ -146,5 +149,26 @@
   </data>
   <data name="NotPortalAdmin.Text" xml:space="preserve">
     <value>User is not a portal administrator</value>
+  </data>
+  <data name="PAGES.InfoText" xml:space="preserve">
+    <value>Pages:</value>
+  </data>
+  <data name="PORTAL.InfoText" xml:space="preserve">
+    <value>Portal Configurations:</value>
+  </data>
+  <data name="PROFILE_PROPERTIES.InfoText" xml:space="preserve">
+    <value>Profile Definitions:</value>
+  </data>
+  <data name="ROLES.InfoText" xml:space="preserve">
+    <value>Roles:</value>
+  </data>
+  <data name="USERS.InfoText" xml:space="preserve">
+    <value>Users:</value>
+  </data>
+  <data name="USERS_DATA.InfoText" xml:space="preserve">
+    <value>Users additional Data:</value>
+  </data>
+  <data name="VOCABULARIES.InfoText" xml:space="preserve">
+    <value>Vocabularies:</value>
   </data>
 </root>
