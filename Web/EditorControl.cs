@@ -857,6 +857,7 @@ namespace DNNConnect.CKEditorProvider.Web
             outWriter.AddAttribute("rows", "10");
 
             outWriter.AddAttribute("class", "editor");
+            outWriter.AddAttribute("aria-label", "editor");
 
             outWriter.AddAttribute("style", "visibility: hidden; display: none;");
 

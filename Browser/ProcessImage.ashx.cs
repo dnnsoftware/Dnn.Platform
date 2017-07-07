@@ -3,6 +3,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Exceptions;
 
 namespace DNNConnect.CKEditorProvider.Browser
 {
@@ -139,7 +143,15 @@ namespace DNNConnect.CKEditorProvider.Browser
             {
                 context.Response.ContentType = "text/plain";
 
-                imageP.Save(GenerateName(sNewFileName, context.Server.MapPath(imgSource)));
+                var sourceFilePath = context.Server.MapPath(imgSource);
+                var sourceFolder = sourceFilePath.Remove(sourceFilePath.LastIndexOf("\\"));
+                if (PortalSettings.Current != null 
+                        && !HasWritePermission(PathUtils.Instance.GetRelativePath(PortalSettings.Current.PortalId, sourceFolder)))
+                {
+                    throw new SecurityException("You don't have write permission to save files under this folder.");
+                }
+
+                imageP.Save(GenerateName(sNewFileName, sourceFilePath));
             }
             else
             {
@@ -149,6 +161,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             imageP.Dispose();
             img.Dispose();
+        }
+
+        private bool HasWritePermission(string relativePath)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+            return FolderPermissionController.HasFolderPermission(portalId, relativePath, "WRITE");
         }
 
         #endregion
@@ -299,7 +317,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             return name;
         }
-
 
         #endregion
     }

@@ -15,7 +15,6 @@ namespace DNNConnect.CKEditorProvider.Browser
     /// <summary>
     /// The File Upload Handler
     /// </summary>
-    /// <seealso cref="System.Web.IHttpHandler" />
     public class FileUploader : IHttpHandler
     {
         /// <summary>
@@ -206,6 +205,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                             Path.GetExtension(file.FileName));
                     }
                 }
+
                 var fileManager = FileManager.Instance;
                 var contentType = fileManager.GetContentType(Path.GetExtension(fileName));
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;

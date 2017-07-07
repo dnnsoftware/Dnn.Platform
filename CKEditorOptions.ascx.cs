@@ -332,6 +332,12 @@ namespace DNNConnect.CKEditorProvider
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
             InitializeComponent();
             base.OnInit(e);
+
+            var moduleId = Request.QueryString.GetValueOrDefault("ModuleId", Null.NullInteger);
+            if (moduleId != Null.NullInteger && ModuleId == Null.NullInteger)
+            {
+                ModuleId = moduleId;
+            }
         }
 
         /// <summary>
@@ -342,7 +348,8 @@ namespace DNNConnect.CKEditorProvider
         protected void Page_Load(object sender, EventArgs e)
         {
             AddJavaScripts();
-            
+            LocalResourceFile = ResXFile;
+
             if (IsAllInstances ? UserController.Instance.GetCurrentUserInfo().IsSuperUser : Utility.IsInRoles(_portalSettings.AdministratorRoleName, _portalSettings))
             {
                 _portalSettings = GetPortalSettings();
@@ -385,8 +392,7 @@ namespace DNNConnect.CKEditorProvider
                     "errorcloseScript",
                     $"javascript:alert('{Localization.GetString("Error1.Text", ResXFile, LangCode)}');self.close();",
                     true);
-            }
-            LocalResourceFile = ResXFile;
+            }         
         }
 
         /// <summary>
@@ -3026,9 +3032,8 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void SetMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindUserGroupsGridView();
-
             LoadSettings(rBlSetMode.SelectedIndex, false);
+            BindUserGroupsGridView();
         }
 
         /// <summary>
