@@ -9,7 +9,12 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// The default settings mode.
         /// </summary>
-        Default = -1,
+        Default = -2,
+
+        /// <summary>
+        /// The host settings mode.
+        /// </summary>
+        Host = -1,
 
         /// <summary>
         /// The portal settings mode.
@@ -24,6 +29,6 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// The module instance settings mode.
         /// </summary>
-        ModuleInstance = 2
+        ModuleInstance = 2,
     }
 }

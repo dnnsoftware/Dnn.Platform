@@ -58,6 +58,42 @@ namespace DNNConnect.CKEditorProvider.Module {
         protected global::System.Web.UI.WebControls.Label IconLegendLabel;
         
         /// <summary>
+        /// HostHasSettingImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image HostHasSettingImage;
+        
+        /// <summary>
+        /// HostHasSettingLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label HostHasSettingLabel;
+        
+        /// <summary>
+        /// HostNoSettingImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image HostNoSettingImage;
+        
+        /// <summary>
+        /// HostNoSettingLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label HostNoSettingLabel;
+        
+        /// <summary>
         /// PortalHasSettingImage control.
         /// </summary>
         /// <remarks>

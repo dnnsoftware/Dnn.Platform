@@ -1,5 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="01.00.03">
+  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="01.00.04">
+
   <friendlyName>DNN Connect CKEditor Provider</friendlyName>
   <description>CKEditor Provider by DNN Connect for DNN</description>
   <iconFile>~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png</iconFile>
@@ -40,6 +41,11 @@
           <name>01.00.00.SqlDataProvider</name>
           <version>01.00.00</version>
         </script>
+        <script type="Install">
+          <path>Install</path>
+          <name>01.00.02.SqlDataProvider</name>
+          <version>01.00.02</version>
+        </script>
         <script type="UnInstall">
           <path>Install</path>
           <name>Uninstall.SqlDataProvider</name>
@@ -78,6 +84,7 @@
             <install>
               <configuration>
                 <nodes>
+                  <node path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='']" action="updateattribute" name="defaultProvider" value="DNNConnect.CKE" />
                   <node path="/configuration/dotnetnuke/htmlEditor/providers" action="update" key="name" collision="ignore">
                     <add name="DNNConnect.CKE" type="DNNConnect.CKEditorProvider.CKHtmlEditorProvider, DNNConnect.CKEditorProvider" providerPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/" settingsControlPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx" />
                   </node>
