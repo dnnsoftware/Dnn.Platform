@@ -48,6 +48,8 @@ namespace DNNConnect.CKEditorProvider.Browser
     {
         #region Constants and Fields
 
+        private const string fileItemDisplayFormat =
+            "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>";
         /// <summary>
         /// The Image or Link that is selected inside the Editor.
         /// </summary>
@@ -258,19 +260,15 @@ namespace DNNConnect.CKEditorProvider.Browser
             filesTable.Columns.Add(new DataColumn("FileId", typeof(int)));
 
             HttpRequest httpRequest = HttpContext.Current.Request;
-
+            
             var type = "Link";
 
             if (!string.IsNullOrEmpty(httpRequest.QueryString["Type"]))
             {
                 type = httpRequest.QueryString["Type"];
             }
-
-            // Get Folder Info Secure?
-            var isSecure = currentFolderInfo.StorageLocation == (int)FolderController.StorageLocationTypes.SecureFileSystem;
-
-            var isDatabaseSecure = currentFolderInfo.StorageLocation == (int)FolderController.StorageLocationTypes.DatabaseSecure;
-
+            
+            //Get the files
             var files = (List<IFileInfo>)FolderManager.Instance.GetFiles(currentFolderInfo);
 
             if (SortFilesDescending)
@@ -280,18 +278,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             foreach (var fileItem in files)
             {
-                // Check if File Exists
-                /*if (!File.Exists(string.Format("{0}{1}", fileItem.PhysicalPath, isSecure ? ".resources" : string.Empty)))
-                {
-                    continue;
-                }*/
-
                 var item = fileItem;
 
                 var name = fileItem.FileName;
                 var extension = fileItem.Extension;
 
-                if (isSecure)
+                if (currentFolderInfo.IsProtected)
                 {
                     name = GetFileNameCleaned(name);
                     extension = Path.GetExtension(name);
@@ -306,23 +298,12 @@ namespace DNNConnect.CKEditorProvider.Browser
                                 where name.ToLower().EndsWith(sAllowExt)
                                 select filesTable.NewRow())
                             {
-                                if (isSecure || isDatabaseSecure)
-                                {
-                                    var link = string.Format("fileID={0}", fileItem.FileId);
-
-                                    dr["PictureURL"] = Globals.LinkClick(link, int.Parse(request.QueryString["tabid"]), Null.NullInteger);
-                                }
-                                else
-                                {
-                                    dr["PictureURL"] = MapUrl(fileItem.PhysicalPath);
-                                }
-
+                                dr["PictureURL"] = FileManager.Instance.GetUrl(fileItem);
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
 
                                 dr["Info"] =
-                                    string.Format(
-                                        "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>",
+                                    string.Format(fileItemDisplayFormat,
                                             Localization.GetString("Size.Text", ResXFile, LanguageCode),
                                             Localization.GetString("Created.Text", ResXFile, LanguageCode),
                                             name,
@@ -344,8 +325,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                 dr["PictureURL"] = "images/types/swf.png";
 
                                 dr["Info"] =
-                                    string.Format(
-                                        "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>",
+                                    string.Format(fileItemDisplayFormat,
                                             Localization.GetString("Size.Text", ResXFile, LanguageCode),
                                             Localization.GetString("Created.Text", ResXFile, LanguageCode),
                                             name,
@@ -374,7 +354,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                             }
 
                             DataRow dr = filesTable.NewRow();
-
+                            
                             var imageExtension = string.Format("images/types/{0}.png", extension);
 
                             if (File.Exists(MapPath(imageExtension)))
@@ -388,24 +368,14 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                             if (allowedImageExt.Any(sAllowImgExt => name.ToLower().EndsWith(sAllowImgExt)))
                             {
-                                if (isSecure || isDatabaseSecure)
-                                {
-                                    var link = string.Format("fileID={0}", fileItem.FileId);
-
-                                    dr["PictureURL"] = Globals.LinkClick(link, int.Parse(request.QueryString["tabid"]), Null.NullInteger);
-                                }
-                                else
-                                {
-                                    dr["PictureURL"] = MapUrl(fileItem.PhysicalPath);
-                                }
+                                dr["PictureUrl"] = FileManager.Instance.GetUrl(fileItem);
                             }
 
                             dr["FileName"] = name;
                             dr["FileId"] = fileItem.FileId;
 
                             dr["Info"] =
-                                string.Format(
-                                    "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>",
+                                string.Format(fileItemDisplayFormat,
                                         Localization.GetString("Size.Text", ResXFile, LanguageCode),
                                         Localization.GetString("Created.Text", ResXFile, LanguageCode),
                                         name,
@@ -578,43 +548,6 @@ namespace DNNConnect.CKEditorProvider.Browser
                         }
 
                         break;
-                    case "lnkClick":
-                        {
-                            fileName = Globals.LinkClick(
-                                selectTab.TabID.ToString(),
-                                TrackClicks.Checked
-                                    ? int.Parse(request.QueryString["tabid"])
-                                    : Null.NullInteger,
-                                Null.NullInteger);
-
-                            if (fileName.Contains("&language"))
-                            {
-                                fileName = fileName.Remove(fileName.IndexOf("&language"));
-                            }
-
-                            break;
-                        }
-
-                    case "lnkAbsClick":
-                        {
-                            fileName = string.Format(
-                                "{0}://{1}{2}",
-                                HttpContext.Current.Request.Url.Scheme,
-                                HttpContext.Current.Request.Url.Authority,
-                                Globals.LinkClick(
-                                    selectTab.TabID.ToString(),
-                                    TrackClicks.Checked
-                                        ? int.Parse(request.QueryString["tabid"])
-                                        : Null.NullInteger,
-                                    Null.NullInteger));
-
-                            if (fileName.Contains("&language"))
-                            {
-                                fileName = fileName.Remove(fileName.IndexOf("&language"));
-                            }
-
-                            break;
-                        }
                 }
 
                 // Add Page Anchor if one is selected
@@ -634,57 +567,15 @@ namespace DNNConnect.CKEditorProvider.Browser
                 if (!string.IsNullOrEmpty(lblFileName.Text) && !string.IsNullOrEmpty(FileId.Text))
                 {
                     var fileInfo = FileManager.Instance.GetFile(int.Parse(FileId.Text));
+                
+                    var filePath = FileManager.Instance.GetUrl(fileInfo);
 
-                    var fileName = fileInfo.FileName;
-                    var filePath = string.Empty;
+                    if (rblLinkType.SelectedValue.Equals("absLnk", StringComparison.InvariantCultureIgnoreCase))
+                        filePath = BuildAbsoluteUrl(filePath);
 
-                    // Relative or Absolute Url  
-                    switch (rblLinkType.SelectedValue)
-                    {
-                        case "relLnk":
-                            {
-                                filePath = MapUrl(GetCurrentFolder().PhysicalPath);
-                                break;
-                            }
-
-                        case "absLnk":
-                            {
-                                filePath = string.Format(
-                                    "{0}://{1}{2}",
-                                    HttpContext.Current.Request.Url.Scheme,
-                                    HttpContext.Current.Request.Url.Authority,
-                                    MapUrl(GetCurrentFolder().PhysicalPath));
-                                break;
-                            }
-
-                        case "lnkClick":
-                            {
-                                var link = string.Format("fileID={0}", fileInfo.FileId);
-
-                                fileName = Globals.LinkClick(link, int.Parse(request.QueryString["tabid"]), Null.NullInteger, TrackClicks.Checked);
-                                filePath = string.Empty;
-
-                                break;
-                            }
-
-                        case "lnkAbsClick":
-                            {
-                                var link = string.Format("fileID={0}", fileInfo.FileId);
-
-                                fileName = string.Format(
-                                    "{0}://{1}{2}",
-                                    HttpContext.Current.Request.Url.Scheme,
-                                    HttpContext.Current.Request.Url.Authority,
-                                    Globals.LinkClick(link, int.Parse(request.QueryString["tabid"]), Null.NullInteger, TrackClicks.Checked));
-
-                                filePath = string.Empty;
-
-                                break;
-                            }
-                    }
 
                     Response.Write("<script type=\"text/javascript\">");
-                    Response.Write(GetJavaScriptCode(fileName, filePath, false));
+                    Response.Write(GetJavaScriptCode(string.Empty, filePath, false));
                     Response.Write("</script>");
 
                     Response.End();
@@ -714,15 +605,18 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </returns>
         protected virtual string GetJavaScriptCode(string fileName, string fileUrl, bool isPageLink)
         {
-            if (!string.IsNullOrEmpty(fileUrl))
+            
+            if (!string.IsNullOrEmpty(fileUrl) && !string.IsNullOrEmpty(fileName))
             {
+                //If we have both, combine them
                 fileUrl = !fileUrl.EndsWith("/")
                                ? string.Format("{0}/{1}", fileUrl, fileName)
                                : string.Format("{0}{1}", fileUrl, fileName);
             }
-            else
+            else if(string.IsNullOrEmpty(fileUrl))
             {
-                fileUrl = string.Format("{0}{1}", fileUrl, fileName);
+                //If no URL, default to the file name
+                fileUrl = fileName;
             }
 
             if (!fileUrl.Contains("?") && !isPageLink)
@@ -891,28 +785,35 @@ namespace DNNConnect.CKEditorProvider.Browser
                         objProvider.Attributes["ck_configFolder"],
                         portalRoles);
                     break;
-                case SettingsMode.Portal:
-                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                case SettingsMode.Host:
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
                         _portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        string.Format("DNNCKP#{0}#", request.QueryString["PortalID"]),
+                        "DNNCKH#",
+                        portalRoles);
+                    break;
+                case SettingsMode.Portal:
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                        _portalSettings,
+                        currentSettings,
+                        settingsDictionary,
+                        $"DNNCKP#{request.QueryString["PortalID"]}#",
                         portalRoles);
                     break;
                 case SettingsMode.Page:
-                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
                         _portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        string.Format("DNNCKT#{0}#", request.QueryString["tabid"]),
+                        $"DNNCKT#{request.QueryString["tabid"]}#",
                         portalRoles);
                     break;
                 case SettingsMode.ModuleInstance:
                     currentSettings = SettingsUtil.LoadModuleSettings(
                         _portalSettings,
                         currentSettings,
-                        string.Format(
-                            "DNNCKMI#{0}#INS#{1}#", request.QueryString["mid"], request.QueryString["ckId"]),
+                        $"DNNCKMI#{request.QueryString["mid"]}#INS#{request.QueryString["ckId"]}#",
                         int.Parse(request.QueryString["mid"]),
                         portalRoles);
                     break;
@@ -971,12 +872,6 @@ namespace DNNConnect.CKEditorProvider.Browser
                                 case LinkMode.AbsoluteURL:
                                     rblLinkType.SelectedValue = "absLnk";
                                     break;
-                                case LinkMode.RelativeSecuredURL:
-                                    rblLinkType.SelectedValue = "lnkClick";
-                                    break;
-                                case LinkMode.AbsoluteSecuredURL:
-                                    rblLinkType.SelectedValue = "lnkAbsClick";
-                                    break;
                             }
 
                             switch (browserModus)
@@ -989,8 +884,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                         BrowserMode.SelectedValue = "page";
                                         panLinkMode.Visible = false;
                                         panPageMode.Visible = true;
-
-                                        TrackClicks.Visible = false;
+                                        
                                         lblModus.Text = string.Format(
                                             "Browser-Modus: {0}",
                                             string.Format("Page {0}", browserModus));
@@ -1565,15 +1459,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             rblLinkType.Items[0].Text = Localization.GetString("relLnk.Text", ResXFile, LanguageCode);
             rblLinkType.Items[1].Text = Localization.GetString("absLnk.Text", ResXFile, LanguageCode);
-
-            if (rblLinkType.Items.Count <= 2)
-            {
-                return;
-            }
-
-            rblLinkType.Items[2].Text = Localization.GetString("lnkClick.Text", ResXFile, LanguageCode);
-            rblLinkType.Items[3].Text = Localization.GetString(
-                "lnkAbsClick.Text", ResXFile, LanguageCode);
         }
 
         /// <summary>
@@ -1797,7 +1682,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             BrowserMode.SelectedIndexChanged += BrowserMode_SelectedIndexChanged;
             dnntreeTabs.SelectedNodeChanged += TreeTabs_NodeClick;
-            rblLinkType.SelectedIndexChanged += LinkType_SelectedIndexChanged;
 
             // this.FoldersTree.SelectedNodeChanged += new EventHandler(FoldersTree_SelectedNodeChanged);
             FoldersTree.SelectedNodeChanged += FoldersTree_NodeClick;
@@ -2143,7 +2027,6 @@ namespace DNNConnect.CKEditorProvider.Browser
             // CheckBoxes
             chkAspect.Text = Localization.GetString("chkAspect.Text", ResXFile, LanguageCode);
             chkHumanFriendy.Text = Localization.GetString("chkHumanFriendy.Text", ResXFile, LanguageCode);
-            TrackClicks.Text = Localization.GetString("TrackClicks.Text", ResXFile, LanguageCode);
             OverrideFile.Text = Localization.GetString("OverrideFile.Text", ResXFile, LanguageCode);
 
             // LinkButtons (with Image)
@@ -2289,110 +2172,54 @@ namespace DNNConnect.CKEditorProvider.Browser
                 CheckFolderAccess(fileInfo.FolderId, true);
 
                 var folder = FolderManager.Instance.GetFolder(fileInfo.FolderId);
-                var isSecureFolder = false;
+                var isSecureFolder = folder.IsStorageSecure;
 
-                switch (folder.StorageLocation)
+                if (isSecureFolder)
                 {
-                    case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                        {
-                            isSecureFolder = true;
-
-                            fileName += ".resources";
-
-                            cmdResizer.Enabled = false;
-                            cmdResizer.CssClass = "LinkDisabled";
-
-                            rblLinkType.Items[2].Selected = true;
-                        }
-
-                        break;
-                    case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                        {
-                            isSecureFolder = true;
-
-                            cmdResizer.Enabled = false;
-                            cmdResizer.CssClass = "LinkDisabled";
-
-                            rblLinkType.Items[2].Selected = true;
-                        }
-
-                        break;
-                    default:
-                        {
-                            rblLinkType.Items[0].Selected = true;
-
-                            var extension = Path.GetExtension(fileName);
-                            extension = extension.TrimStart('.');
-
-                            var isAllowedExtension =
-                                allowedImageExt.Any(sAllowExt => sAllowExt.Equals(extension.ToLower()));
-
-                            cmdResizer.Enabled = isAllowedExtension;
-                            cmdResizer.CssClass = isAllowedExtension ? "LinkNormal" : "LinkDisabled";
-                        }
-
-                        break;
+                    fileName += ".resources";
+                    cmdResizer.Enabled = false;
+                    cmdResizer.CssClass = "LinkDisabled";
                 }
+                else
+                {
+                    rblLinkType.Items[0].Selected = true;
 
-                rblLinkType.Items[0].Enabled = !isSecureFolder;
-                rblLinkType.Items[1].Enabled = !isSecureFolder;
-                //////
+                    var extension = Path.GetExtension(fileName);
+                    extension = extension.TrimStart('.');
+
+                    var isAllowedExtension =
+                        allowedImageExt.Any(sAllowExt => sAllowExt.Equals(extension.ToLower()));
+
+                    cmdResizer.Enabled = isAllowedExtension;
+                    cmdResizer.CssClass = isAllowedExtension ? "LinkNormal" : "LinkDisabled";
+                }
 
                 FileId.Text = fileInfo.FileId.ToString();
                 lblFileName.Text = fileName;
+                var providerFileUrl = FileManager.Instance.GetUrl(fileInfo);
 
-                // Relative Url  
-                rblLinkType.Items[0].Text = Regex.Replace(
-                    rblLinkType.Items[0].Text,
-                    "/Images/MyImage.jpg",
-                    MapUrl(Path.Combine(GetCurrentFolder().PhysicalPath, fileName)),
-                    RegexOptions.IgnoreCase);
-
-                var absoluteUrl = string.Format(
-                    "{0}://{1}{2}{3}",
-                    HttpContext.Current.Request.Url.Scheme,
-                    HttpContext.Current.Request.Url.Authority,
-                    MapUrl(GetCurrentFolder().PhysicalPath),
-                    fileName);
+                // Relative Url  (Or provider default)
+                rblLinkType.Items[0].Text = Regex.Replace(rblLinkType.Items[0].Text, "/Images/MyImage.jpg", providerFileUrl, RegexOptions.IgnoreCase);
 
                 // Absolute Url
-                rblLinkType.Items[1].Text = Regex.Replace(
-                    rblLinkType.Items[1].Text,
-                    "http://www.MyWebsite.com/Images/MyImage.jpg",
-                    absoluteUrl,
-                    RegexOptions.IgnoreCase);
-
-                if (rblLinkType.Items.Count <= 2)
-                {
-                    return;
-                }
-
-                // LinkClick Url
-                var link = string.Format("fileID={0}", fileInfo.FileId);
-
-                var secureLink = Globals.LinkClick(link, int.Parse(request.QueryString["tabid"]), Null.NullInteger);
-
-                rblLinkType.Items[2].Text =
-                    rblLinkType.Items[2].Text.Replace(
-                        @"/LinkClick.aspx?fileticket=xyz",
-                        secureLink);
-
-                absoluteUrl = string.Format(
-                    "{0}://{1}{2}",
-                    HttpContext.Current.Request.Url.Scheme,
-                    HttpContext.Current.Request.Url.Authority,
-                    secureLink);
-
-                rblLinkType.Items[3].Text =
-                    rblLinkType.Items[3].Text.Replace(
-                        @"http://www.MyWebsite.com/LinkClick.aspx?fileticket=xyz",
-                        absoluteUrl);
-                ////////
+                rblLinkType.Items[1].Text = Regex.Replace(rblLinkType.Items[1].Text, "http://www.MyWebsite.com/Images/MyImage.jpg", BuildAbsoluteUrl(providerFileUrl), RegexOptions.IgnoreCase);
             }
             catch (Exception)
             {
                 SetDefaultLinkTypeText();
             }
+        }
+
+        private string BuildAbsoluteUrl(string fileUrl)
+        {
+            if (fileUrl.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
+                return fileUrl;
+
+            return string.Format(
+                    "{0}://{1}{2}",
+                    HttpContext.Current.Request.Url.Scheme,
+                    HttpContext.Current.Request.Url.Authority,
+                    fileUrl);
         }
 
         /// <summary>
@@ -3018,7 +2845,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Show Preview of the Page links
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="eeventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="eventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void TreeTabs_NodeClick(object sender, EventArgs eventArgs)
         {
             if (dnntreeTabs.SelectedNode == null)
@@ -3085,29 +2912,6 @@ namespace DNNConnect.CKEditorProvider.Browser
                     string.Format("{2}/tabid/{0}/{1}Default.aspx", selectTab.TabID, locale, sDomainName),
                     RegexOptions.IgnoreCase);
             }
-
-            /////
-
-            var secureLink = Globals.LinkClick(
-               selectTab.TabID.ToString(), int.Parse(request.QueryString["tabid"]), Null.NullInteger);
-
-            if (secureLink.Contains("&language"))
-            {
-                secureLink = secureLink.Remove(secureLink.IndexOf("&language"));
-            }
-
-            rblLinkType.Items[2].Text =
-                rblLinkType.Items[2].Text.Replace(@"/LinkClick.aspx?fileticket=xyz", secureLink);
-
-            var absoluteUrl = string.Format(
-                "{0}://{1}{2}",
-                HttpContext.Current.Request.Url.Scheme,
-                HttpContext.Current.Request.Url.Authority,
-                secureLink);
-
-            rblLinkType.Items[3].Text =
-                rblLinkType.Items[3].Text.Replace(
-                    @"http://www.MyWebsite.com/LinkClick.aspx?fileticket=xyz", absoluteUrl);
 
             if (currentSettings.UseAnchorSelector)
             {
@@ -3224,7 +3028,6 @@ namespace DNNConnect.CKEditorProvider.Browser
                 case "page":
                     panLinkMode.Visible = false;
                     panPageMode.Visible = true;
-                    TrackClicks.Visible = false;
                     lblModus.Text = string.Format("Browser-Modus: {0}", string.Format("Page {0}", browserModus));
 
                     RenderTabs();
@@ -3236,32 +3039,12 @@ namespace DNNConnect.CKEditorProvider.Browser
             SetDefaultLinkTypeText();
         }
 
-        /// <summary>
-        /// Show / Hide "Track Clicks" Setting
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void LinkType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (rblLinkType.SelectedValue)
-            {
-                case "lnkClick":
-                    TrackClicks.Visible = true;
-                    break;
-                case "lnkAbsClick":
-                    TrackClicks.Visible = true;
-                    break;
-                default:
-                    TrackClicks.Visible = false;
-                    break;
-            }
-        }
 
         /// <summary>
         /// Load Files of Selected Folder
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RadTreeNodeEventArgs" /> instance containing the event data.</param>
+        /// <param name="eventArgs">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FoldersTree_NodeClick(object sender, EventArgs eventArgs)
         {
             var folderId = Convert.ToInt32(FoldersTree.SelectedNode.Value);

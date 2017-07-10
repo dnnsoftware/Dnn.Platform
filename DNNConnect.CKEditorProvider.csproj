@@ -107,6 +107,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Extensions\CustomAttributeExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Module\EditorConfigManager.ascx.cs">
       <DependentUpon>EditorConfigManager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -221,6 +222,7 @@
     <Content Include="css\CKEditorOverride.css" />
     <Content Include="css\CkEditorContents.css" />
     <Content Include="css\CkEditorToolBars.css" />
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
     <Content Include="Install\Dnn.CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
