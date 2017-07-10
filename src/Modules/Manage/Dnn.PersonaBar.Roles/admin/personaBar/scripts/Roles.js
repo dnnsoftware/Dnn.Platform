@@ -3,15 +3,6 @@
     var identifier, utility;
     var config = cf.init();
 
-    function loadScript() {
-        var url = "modules/dnn.roles/scripts/bundles/roles-bundle.js";
-        $.ajax({
-            dataType: "script",
-            cache: true,
-            url: url
-        });
-    }
-
     var init = function (wrapper, util, params, callback) { 
         identifier = params.identifier;
         utility = util;
@@ -23,7 +14,7 @@
                 moduleName: 'Roles'
             };
         };
-        loadScript();
+        utility.loadBundleScript('modules/dnn.roles/scripts/bundles/roles-bundle.js');
 
         if (typeof callback === 'function') {
             callback();

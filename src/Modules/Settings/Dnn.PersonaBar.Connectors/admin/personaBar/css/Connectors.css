@@ -1,0 +1,577 @@
+/* connections */
+
+.connections-col-checkmark {
+    width: 36px;
+}
+
+.connections-col-favicon {
+    width: 56px;
+}
+
+.connections-col-actions {
+    width: 115px;
+}
+
+table#connectionstbl.common-table tr td {
+    background-color: #fff !important;
+    border-top: 1px solid #ddd;
+}
+
+table#connectionstbl.common-table tr:first-child td, table#connectionstbl.common-table tr.edit-row td {
+    border-top: none;
+}
+
+table#connectionstbl span.socialnetwork-connection {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+table#connectionstbl span.socialnetwork-connection.verified {
+    background: url('../images/icon-connector-verified.png') no-repeat center center;
+}
+
+table#connectionstbl span.socialnetwork-favicon {
+    display: block;
+    width: 38px;
+    height: 37px;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    position: relative;
+}
+
+table#connectionstbl span.socialnetwork-favicon div {
+    position: absolute;
+    background: black;
+    color: white;
+    padding: 1px 4px;
+    font-size: 10px;
+    border-radius: 4px;
+    top: -4px;
+    right: -4px;
+}
+
+table#connectionstbl span.socialnetwork-favicon.connected {
+    background-position: 0 -37px;
+}
+
+table#connectionstbl span.socialnetwork-name {
+    text-transform: uppercase;
+}
+/* table */
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.common-table td, .common-table th {
+    padding: 8px 9px 7px 9px;
+    border: none;
+
+    text-align: left;
+}
+
+.common-table td a{ color: #0087c6;text-decoration: none;}
+.common-table td a:hover{ color: #2fa6eb;}
+
+
+.common-table tfoot {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 5px;
+}
+
+.common-table tfoot td {
+    border-bottom: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 1px solid #ddd;
+}
+
+.common-table th {
+    padding: 6px 0 6px 0;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.common-table th > a {
+    display: block;
+    padding: 5px 9px;
+    color: #777;
+    text-transform: uppercase;
+    font-family: proxima_nova_c_semibold;
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: normal;
+}
+
+.common-table th > a[data-column] {
+    cursor: pointer;
+    background: url('../images/grid-sprite.png') no-repeat 100% 10px;
+}
+
+.common-table th > a.asc {
+    background-position: 100% -32px;
+    text-decoration: underline;
+    color: #0e181c;
+}
+
+.common-table th > a.desc {
+    background-position: 100% -12px;
+    text-decoration: underline;
+    color: #0e181c;
+}
+
+.common-table th:first-child, .common-table td:first-child {
+    border-left: none;
+}
+
+.common-table td em {
+    font-style: normal;
+    font-family: proxima_nova_semibold;
+}
+
+.common-table tr:nth-child(2n) td {
+    background: rgba(0,0,0,0.04);
+}
+
+.non-touch .common-table tr:hover td {
+    background: rgba(2,139,255,0.15);
+}
+
+.common-table tr.edit-row td,
+.common-table tr.edit-row:hover td,
+.non-touch .common-table tfoot:hover td {
+    background: #fff;
+}
+
+.common-table tr.edit-row td,
+.common-table tr.edit-row:hover td {
+    padding: 0;
+}
+
+.common-table tbody.edit-body tr.edit-row td {
+    border-bottom: none;
+}
+
+.common-table tr.edit-row > td > div {
+    display: none;
+    padding: 33px 9px 15px 9px;
+    border-bottom: 2px solid #0087c6;
+}
+
+.common-table tr.edit-row > td > div > h5 {
+    display: block;
+    padding: 15px 0 15px 0;
+}
+
+.common-table tr.edit-row > td > div > div {
+    width: 50%;
+    float: left;
+    margin: 0 0 9px 0;
+    position: relative;
+}
+
+.common-table tr.edit-row > td > div div.clear {
+    width: 100%;
+    float: none;
+}
+
+.common-table tr.edit-row > td > div > div > label {
+    width: 40%;
+    display: inline-block;
+    text-align: right;
+    margin-right: 8px;
+}
+
+.common-table tr.edit-row > td > div > div > label.formRequired:after {
+    content: "*";
+    display: inline-block;
+    margin: 0 0 0 5px;
+    color: Red;
+    font-size: 16px;
+    line-height: 1em;
+    font-family: proxima_nova_semibold;
+}
+
+.common-table tr.edit-row > td > div > div > input[type="text"],
+.common-table tr.edit-row > td > div > div > select {
+    width: 45%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.common-table tr.edit-row > td > div > div > a.secondarybtn {
+    display: block;
+    float: right;
+    margin-right: 5px;
+}
+
+.common-table tr.edit-row > td > div > div > a.primarybtn {
+    display: block;
+    float: left;
+    margin-left: 5px;
+}
+
+.common-table tr.in-edit-row td,
+.common-table tr.in-edit-row:hover td {
+    background: #0087c6;
+    color: #fff;    
+    border-color: #0087c6;
+}
+.common-table tr.in-edit-row td > a,
+.common-table tr.in-edit-row:hover td > a {
+    color: #fff;
+}
+
+.common-table tbody td.edit-cell {
+    padding: 0;
+}
+
+.common-table tbody td.edit-cell > a {
+    float: right;
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/edit.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: none;
+    margin-right: 5px;
+}
+
+.common-table tbody td.edit-cell > a.delete {
+    float: right;
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/delete.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: none;
+    margin-right: 5px;
+}
+.common-table tbody td.edit-cell > a.calendar{
+    float: right;
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/icon-calendar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: none;
+    margin-right: 5px;
+}
+
+.common-table tbody tr.in-edit-row td.edit-cell > a {
+    background-image: url('../images/up.png');
+}
+
+.non-touch .common-table > tbody > tr:hover > td.edit-cell > a,
+.common-table tr.in-edit-row td > a {
+    display: block;
+}
+
+.touch .common-table tbody tr td.edit-cell > a.delete {
+    display: block;
+}
+
+.common-table tbody tr.in-edit-row td.edit-cell > a.delete {
+    display: none;
+}
+.common-table tr.last-row td:first-child {
+    -ms-border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.common-table tr.last-row td:last-child {
+    -ms-border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.common-table tr.edit-row > td > div > div.edit-items {
+    width: 100%;
+    float: none;
+}
+
+.common-table tr.edit-row > td > div > div.edit-buttons > div, .common-table tr.edit-row > td > div > div.edit-fields > div > div {
+    width: 50%;
+    float: left;
+    margin: 0 0 9px 0;
+    position: relative;
+}
+
+.common-table tr.edit-row > td > div .loading {
+    height: 32px;
+    width: 100% !important;
+}
+
+.common-table tr.edit-row > td > div > div.edit-items div.clear {
+    width: 100%;
+    float: none;
+}
+
+.common-table tr.edit-row > td > div > div.edit-items label {
+    width: 40%;
+    display: inline-block;
+    text-align: right;
+    margin-right: 8px;
+}
+
+.common-table tr.edit-row > td > div > div.edit-items label.formRequired:after {
+    content: "*";
+    display: inline-block;
+    margin: 0 0 0 5px;
+    color: Red;
+    font-size: 16px;
+    line-height: 1em;
+    font-family: proxima_nova_semibold;
+}
+
+.common-table tr.edit-row > td > div > div.edit-items input[type="password"], .common-table tr.edit-row > td > div > div.edit-items input[type="text"], .common-table tr.edit-row > td > div > div.edit-items select {
+    width: 45%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.common-table tr.edit-row > td > div > div.edit-items a.secondarybtn {
+    display: block;
+    float: right;
+    margin-right: 5px;
+}
+
+.common-table tr.edit-row > td > div > div.edit-items a.primarybtn {
+    display: block;
+    float: left;
+    margin-left: 5px;
+}
+
+.common-table tr.edit-row>td>div.sub-connector {
+    display: block !important;
+    float: left;
+}
+
+
+/*sdf*/
+
+.common-table tr.edit-row>td>div.parent-container {
+    transition: .6s;
+    display: block !important;
+    padding: 0px;
+    border: none;
+    max-height: 0px;
+    overflow: hidden;
+}
+
+.common-table tr.edit-row>td>div.parent-container.open {
+    max-height: 1000px;
+    overflow-y: auto;
+}
+
+.common-table tr.edit-row>td>div.parent-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+/*.common-table tr:not(.edit-row) {
+    transition: .6s;
+    border-top: 2px solid transparent;
+}
+.common-table tr.open {
+    border-top: 2px solid #0087c6;
+
+}*/
+
+.common-table tr.edit-row>td>div.parent-container .inner-container {
+    padding: 20px 40px;
+    margin: 0 !important;
+    float: left;
+    box-sizing: border-box;
+    width: 100%;
+    border-bottom: 2px solid #0087c6;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector {
+    float: left;
+    width: 100%;
+    height: 53px;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-top: none;
+    transition: .4s;
+    border-top: 2px solid transparent;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector.open {
+    border-top: 2px solid #0087c6 !important;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .edit-form-multiple {
+    border-bottom: 2px solid #0087c6 !important;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector:first-of-type {
+    box-shadow: 0px -1px 0px 0px #ddd;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit {
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    float: left;
+    width: 100%;
+    transition: .4s max-height;
+    max-height: 0px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit.open {
+    max-height: 600px;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector * {
+    float: left;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector .socialnetwork-connection {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector .socialnetwork-name {
+    padding: 8px;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector .icon {
+    height: 20px;
+    width: 20px;
+    margin-top: 7px;
+    margin-left: 10px;
+    background-repeat: no-repeat;
+    float: right;
+    opacity: .3;
+    cursor: pointer;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector .icon:hover {
+    opacity: .7;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector .trash {
+    background-image: url(../images/trash.svg);
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector .edit {
+    background-image: url(../images/edit.svg);
+}
+
+.common-table tr.edit-row>td>div.parent-container div {
+    display: block !important;
+}
+
+
+/*inner*/
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit {}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit div.edit-fields > div > div, .common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit div.edit-buttons > div {
+    width: 50%;
+    float: left;
+    margin: 0 0 9px 0;
+    position: relative;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit div.clear {
+    width: 100%;
+    float: none;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit label {
+    width: 40%;
+    display: inline-block;
+    text-align: right;
+    margin-right: 8px;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit label.formRequired:after {
+    content: "*";
+    display: inline-block;
+    margin: 0 0 0 5px;
+    color: Red;
+    font-size: 16px;
+    line-height: 1em;
+    font-family: proxima_nova_semibold;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="password"], .common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="text"], .common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit select {
+    width: 45%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit a.secondarybtn {
+    display: block;
+    float: right;
+    margin-right: 5px;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit a.primarybtn {
+    display: block;
+    float: left;
+    margin-left: 5px;
+}
+
+.common-table tr.edit-row>td>div.open {
+    display: block !important;
+}
+
+.primarybtn.add-new-connection {
+    color: #0087c6 !important;
+    background: transparent !important;
+    font-weight: 600;
+}
+
+.primarybtn.add-new-connection em {
+    margin-right: 4px;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .connector-row-header {
+    position: relative;
+    float: left;
+    width: calc(100% - 160px);
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .connector-row-header span {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    white-space: nowrap;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .connector-row-header input {
+    position: absolute;
+    left: 4px;
+    min-width: 160px;
+    width: 100%;
+}
+
+.edit-form-multiple .edit-items.edit-buttons {
+    float: left;
+    width: 100%;
+}
+
+table#connectionstbl.common-table tr input:focus {
+    box-shadow: 0px 0px 0px 1px rgb(77, 144, 254);
+}

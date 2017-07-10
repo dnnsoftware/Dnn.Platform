@@ -36,12 +36,12 @@ class ScannerCheckPanelBody extends Component {
                 <div className="scannerCheckItem">
                     <div className="label-name">
                         <div className="label-wrapper">
-                            <span>{term.FileName}&nbsp; </span>
+                            <span>{term.FileName}&nbsp;</span>
                         </div>
                     </div>
                     <div className="label-date">
                         <div className="label-wrapper">
-                            <span>{term.LastWriteTime}&nbsp; </span>
+                            <span>{term.LastWriteTime}&nbsp;</span>
                         </div>
                     </div>
                 </div>
@@ -153,12 +153,12 @@ class ScannerCheckPanelBody extends Component {
                     </div>
                     <div className="label-name">
                         <div className="label-wrapper">
-                            <span>{term.SettingName}&nbsp; </span>
+                            <span>{term.SettingName}&nbsp;</span>
                         </div>
                     </div>
                     <div className="label-value">
                         <div className="label-wrapper">
-                            <span>{term.SettingValue}&nbsp; </span>
+                            <span>{term.SettingValue}&nbsp;</span>
                         </div>
                     </div>
                     <div className="label-user">
@@ -200,12 +200,12 @@ class ScannerCheckPanelBody extends Component {
                 <div className="scannerCheckItem">
                     <div className="label-name">
                         <div className="label-wrapper">
-                            <span>{term.SettingName}&nbsp; </span>
+                            <span>{term.SettingName}&nbsp;</span>
                         </div>
                     </div>
                     <div className="label-value">
                         <div className="label-wrapper">
-                            <span>{term.SettingValue}&nbsp; </span>
+                            <span>{term.SettingValue}&nbsp;</span>
                         </div>
                     </div>
                     <div className="label-user">
@@ -438,12 +438,12 @@ class ScannerCheckPanelBody extends Component {
                     <div
                         className={this.showModifiedSettings() ? "settings-filter-active" : "settings-filter"}
                         onClick={this.getModifiedSettings.bind(this) }>
-                        <TextOverflowWrapper text={resx.get("ModifiedSettings") } maxWidth={150}/>                        
+                        <TextOverflowWrapper text={resx.get("ModifiedSettings") } maxWidth={150}/>
                     </div>
                     <div
                         className={this.showModifiedFiles() ? "files-filter-active" : "files-filter"}
                         onClick={this.getModifiedFiles.bind(this) }>
-                        <TextOverflowWrapper text={resx.get("ModifiedFiles") } maxWidth={150}/>   
+                        <TextOverflowWrapper text={resx.get("ModifiedFiles") } maxWidth={150}/>
                     </div>
                 </div>
                 {this.showSearchResults() && props.searchResults.FoundInFiles &&

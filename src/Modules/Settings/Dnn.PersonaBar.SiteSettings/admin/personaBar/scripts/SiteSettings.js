@@ -6,16 +6,6 @@ define(['jquery',
         var utility;
         var config = cf.init();
 
-        function loadScript() {
-            var url = "modules/dnn.sitesettings/scripts/bundles/site-settings-bundle.js";
-            
-            $.ajax({
-                dataType: "script",
-                cache: true,
-                url: url
-            });
-        }
-
         return {
             init: function (wrapper, util, params, callback) {
                 utility = util;
@@ -28,7 +18,7 @@ define(['jquery',
                         identifier: params.identifier
                     };
                 };
-                loadScript();
+                utility.loadBundleScript('modules/dnn.sitesettings/scripts/bundles/site-settings-bundle.js');
                 
                 if (typeof callback === "function") {
                     callback();

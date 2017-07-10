@@ -19,32 +19,36 @@ class PageUrlCommons extends Component {
 
     render() {
         const {page, display} = this.props;
-        const gridClass = "page-url-commons-grid " + display; 
-        
+        const gridClass = "page-url-commons-grid " + display;
+
         return (
             <div className={styles.pageUrlCommons}>
                 <div className={gridClass}>
                     <div className="left-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={Localization.get("PermanentRedirectTooltip")}
-                            label={Localization.get("PermanentRedirect")}
+                            tooltipMessage={Localization.get("PermanentRedirectTooltip") }
+                            label={Localization.get("PermanentRedirect") }
                             />
                         <Switch
-                            labelHidden={true}
+                            labelHidden={false}
+                            onText={Localization.get("On") }
+                            offText={Localization.get("Off") }
                             value={page.permanentRedirect}
-                            onChange={this.onChangeValue.bind(this, "permanentRedirect")} />
+                            onChange={this.onChangeValue.bind(this, "permanentRedirect") } />
                     </div>
                     <div className="right-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={Localization.get("OpenLinkInNewWindowTooltip")}
-                            label={Localization.get("OpenLinkInNewWindow")}
+                            tooltipMessage={Localization.get("OpenLinkInNewWindowTooltip") }
+                            label={Localization.get("OpenLinkInNewWindow") }
                             />
                         <Switch
-                            labelHidden={true}
+                            labelHidden={false}
+                            onText={Localization.get("On") }
+                            offText={Localization.get("Off") }
                             value={page.linkNewWindow}
-                            onChange={this.onChangeValue.bind(this, "linkNewWindow")} />
+                            onChange={this.onChangeValue.bind(this, "linkNewWindow") } />
                     </div>
                 </div>
             </div>
@@ -59,7 +63,7 @@ PageUrlCommons.propTypes = {
 };
 
 PageUrlCommons.defaultProps = {
-    display: "horizontal" 
+    display: "horizontal"
 };
 
 export default PageUrlCommons;

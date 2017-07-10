@@ -96,6 +96,14 @@ class App extends Component {
 
     render() {
         const { props, state } = this;
+        const PageHeaderSubtitleStyles = {
+            clear:"both",
+            display:"block",
+            position:"relative",
+            top:"-10px"
+        };
+
+
         return (
             <div>
                 <PersonaBarPage isOpen={props.selectedPage === 0} className={(props.selectedPage !== 0 ? "hidden" : "")}>
@@ -127,7 +135,7 @@ class App extends Component {
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>
                     <PersonaBarPageHeader title={Localization.get("Import")}>
-                        <div style={{marginTop: "-10"}}>{props.portalName}</div>
+                        <div style={PageHeaderSubtitleStyles}>{props.portalName}</div>
                     </PersonaBarPageHeader>
                     <PersonaBarPageBody backToLinkProps={{
                         text: state.referrer && state.referrerText || Localization.get("BackToImportExport"),

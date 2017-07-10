@@ -107,6 +107,7 @@
     <Compile Include="Components\Checks\CheckAllowableFileExtensions.cs" />
     <Compile Include="Components\Checks\CheckBiography.cs" />
     <Compile Include="Components\Checks\CheckDebug.cs" />
+    <Compile Include="Components\Checks\CheckTelerikVulnerability.cs" />
     <Compile Include="Components\Checks\CheckDefaultPage.cs" />
     <Compile Include="Components\Checks\CheckDiskAcccessPermissions.cs" />
     <Compile Include="Components\Checks\CheckModuleHeaderAndFooter.cs" />

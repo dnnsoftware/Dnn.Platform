@@ -15,7 +15,7 @@ class Scheduler extends Component {
 
     onChangeScheduling(enabled) {
         this.setState({
-            schedulingEnabled: enabled 
+            schedulingEnabled: enabled
         });
     }
 
@@ -27,32 +27,34 @@ class Scheduler extends Component {
             <div className={styles.scheduler}>
                 <Label
                     labelType="inline"
-                    tooltipMessage={Localization.get("EnableSchedulingTooltip")}
-                    label={Localization.get("EnableScheduling")}
+                    tooltipMessage={Localization.get("EnableSchedulingTooltip") }
+                    label={Localization.get("EnableScheduling") }
                     />
                 <Switch
                     labelHidden={false}
+                    onText={Localization.get("On") }
+                    offText={Localization.get("Off") }
                     value={schedulingEnabled}
-                    onChange={this.onChangeScheduling.bind(this)} />
-                <div style={{clear: "both"}}></div>
+                    onChange={this.onChangeScheduling.bind(this) } />
+                <div style={{ clear: "both" }}></div>
                 {schedulingEnabled &&
                     <div className="scheduler-date-box">
                         <div className="scheduler-date-row">
                             <Label
-                                label={Localization.get("StartDate")} />
+                                label={Localization.get("StartDate") } />
                             <DatePicker
                                 date={startDate}
-                                updateDate={(date) => onChange("startDate", date)}
+                                updateDate={(date) => onChange("startDate", date) }
                                 isDateRange={false}
                                 hasTimePicker={true}
                                 showClearDateButton={false} />
                         </div>
                         <div className="scheduler-date-row">
                             <Label
-                                label={Localization.get("EndDate")} />
+                                label={Localization.get("EndDate") } />
                             <DatePicker
                                 date={endDate}
-                                updateDate={(date) => onChange("endDate", date)}
+                                updateDate={(date) => onChange("endDate", date) }
                                 isDateRange={false}
                                 hasTimePicker={true}
                                 showClearDateButton={false} />

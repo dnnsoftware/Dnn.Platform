@@ -50,14 +50,15 @@ class ExportModal extends Component {
             errors: {
                 ExportName: false
             },
+            IncludeContentEnabled: true,
             reloadPages: false,
             requestSubmitting: false
-        };        
+        };
 
         this.getInitialPortalTabs = props.getInitialPortalTabs;
     }
 
-    getRegisteredItemsToExport() {     
+    getRegisteredItemsToExport() {
         return itemsToExportService.getRegisteredItemsToExport()
             .filter(x => x.defaultSelected)
             .map(item => item.category);
@@ -70,8 +71,6 @@ class ExportModal extends Component {
         this.setState({
             exportRequest
         });
-
-
     }
 
     componentWillReceiveProps(props) {
@@ -166,7 +165,8 @@ class ExportModal extends Component {
         const { exportRequest } = this.state;
         if (exportRequest.IncludeContent || exportRequest.IncludeFiles || exportRequest.IncludeUsers || exportRequest.IncludeRoles ||
             exportRequest.IncludeVocabularies || exportRequest.IncludeTemplates || exportRequest.IncludeProperfileProperties ||
-            exportRequest.IncludePermissions || exportRequest.IncludeExtensions || (exportRequest.pages && exportRequest.pages.length > 0)) {
+            exportRequest.IncludePermissions || exportRequest.IncludeExtensions || (exportRequest.pages && exportRequest.pages.length > 0)
+            || (exportRequest.ItemsToExport && exportRequest.ItemsToExport.length > 0)) {
             success = true;
         }
         else {
@@ -208,8 +208,18 @@ class ExportModal extends Component {
 
     updatePagesToExport(selectedPages) {
         let { exportRequest } = this.state;
+        let prevCount = (exportRequest.pages !== null && exportRequest.pages !== undefined) ? exportRequest.pages.length : 0;
         exportRequest.pages = selectedPages;
-        this.setState({ exportRequest });
+        if (prevCount === 0) {
+            exportRequest["IncludeContent"] = !(selectedPages === undefined || selectedPages.length <= 0);
+        }
+        this.setState({ exportRequest }, () => {
+            if (keysToValidate.some(vkey => vkey === "IncludeContent"))
+                this.ValidateTexts("IncludeContent");
+            let { state } = this;
+            state.IncludeContentEnabled = !(selectedPages === undefined || selectedPages.length <= 0);
+            this.setState({ state });
+        });
     }
 
     getExportModeOptions() {
@@ -290,6 +300,7 @@ class ExportModal extends Component {
                                     offText={Localization.get("SwitchOff")}
                                     value={state.exportRequest.IncludeContent}
                                     onChange={this.onChange.bind(this, "IncludeContent")}
+                                    readOnly={!state.IncludeContentEnabled}
                                 />
                             </InputGroup>
                             <InputGroup>

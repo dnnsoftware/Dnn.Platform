@@ -1,6 +1,6 @@
 /*
 DotNetNuke® - http://www.dotnetnuke.com
-Copyright (c) 2002-2016
+Copyright (c) 2002-2017
 by DotNetNuke Corporation
 All Rights Reserved
 */

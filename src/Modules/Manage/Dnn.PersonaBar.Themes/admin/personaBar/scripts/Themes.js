@@ -3,14 +3,6 @@
     var identifier;
     var config = cf.init();
 
-    function loadScript() {
-        var url = "modules/dnn.themes/scripts/bundles/themes-bundle.js";
-        $.ajax({
-            dataType: "script",
-            cache: true,
-            url: url
-        });
-    }
     var init = function (wrapper, util, params, callback) {
         identifier = params.identifier;
         window.dnn.initThemes = function () {
@@ -21,7 +13,7 @@
             };
         };
 
-        loadScript();
+        util.loadBundleScript('modules/dnn.themes/scripts/bundles/themes-bundle.js');
 
         if (typeof callback === 'function') {
             callback();

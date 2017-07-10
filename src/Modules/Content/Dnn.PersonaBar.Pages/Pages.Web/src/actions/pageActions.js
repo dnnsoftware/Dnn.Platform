@@ -56,7 +56,7 @@ const loadPage = function (dispatch, pageId) {
             data: { error }
         });
     });
-} ;
+};
 const pageActions = {
     selectPageSettingTab(selectedPageSettingTab) {
         return (dispatch) => {
@@ -74,7 +74,7 @@ const pageActions = {
 
     duplicatePage() {
         return (dispatch, getState) => {
-            const {pages} = getState();
+            const { pages } = getState();
             const duplicatedPage = cloneDeep(pages.selectedPage);
 
             dispatch({
@@ -97,7 +97,7 @@ const pageActions = {
 
     addPage() {
         return (dispatch, getState) => {
-            const {pages} = getState();
+            const { pages } = getState();
             const previousPage = pages.selectedPage;
             dispatch({
                 type: ActionTypes.LOAD_PAGE
@@ -108,7 +108,7 @@ const pageActions = {
                     page.hierarchy = previousPage.name;
                     page.permissions = cloneDeep(previousPage.permissions);
                 }
-                
+
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
                     data: { page }
@@ -123,10 +123,10 @@ const pageActions = {
                 utils.getUtilities().closePersonaBar(function () {
                     loadPage(dispatch, utils.getCurrentPageId());
                 });
-                
-                return;    
+
+                return;
             }
-            
+
             dispatch({
                 type: ActionTypes.CANCEL_PAGE,
                 data: {}
@@ -149,7 +149,7 @@ const pageActions = {
                 if (page.tabId === 0 && !securityService.isSuperUser()) {
                     utils.getUtilities().closePersonaBar();
                 }
-                
+
                 dispatch({
                     type: ActionTypes.DELETED_PAGE
                 });
@@ -170,7 +170,7 @@ const pageActions = {
             dispatch({
                 type: ActionTypes.SAVE_PAGE
             });
-            const {pages} = getState();
+            const { pages } = getState();
 
             PagesService.savePage(page, pages.urlChanged).then(response => {
 
@@ -178,14 +178,9 @@ const pageActions = {
                     utils.notifyError(response.Message, 3000);
                     return;
                 }
-                
+
                 if (page.tabId > 0 && securityService.isSuperUser()) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
-                }
-                
-                if (page.tabId === 0 && !securityService.isSuperUser()) {
-                    PagesService.openPageInEditMode(response.Page.id, response.Page.url);
-                    return;    
                 }
 
                 if (page.tabId > 0 && !securityService.isSuperUser()) {
@@ -193,12 +188,8 @@ const pageActions = {
                     return;
                 }
 
-                dispatch({
-                    type: ActionTypes.SAVED_PAGE,
-                    data: {
-                        createdPage: page.tabId === 0 ? response.Page : null
-                    }
-                });
+                PagesService.openPageInEditMode(response.Page.id, response.Page.url);
+
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PAGE,
@@ -210,7 +201,7 @@ const pageActions = {
 
     changePageField(key, value) {
         return (dispatch, getState) => {
-            const {pages} = getState();
+            const { pages } = getState();
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,

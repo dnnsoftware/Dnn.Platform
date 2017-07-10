@@ -6,19 +6,9 @@ define(['jquery',
         var utility;
         var config = cf.init();
 
-        function loadScript() {
-            var url = "modules/dnn.licensing/scripts/bundles/licensing-bundle.js";
-            $.ajax({
-                dataType: "script",
-                cache: true,
-                url: url
-            });
-        }
-
         return {
             init: function (wrapper, util, params, callback) {
                 utility = util;
-
 
                 window.dnn.initLicensing = function initializeLicensing() {
                     return {
@@ -26,7 +16,7 @@ define(['jquery',
                         moduleName: 'Licensing'
                     };
                 };
-                loadScript();
+                utility.loadBundleScript('modules/dnn.licensing/scripts/bundles/licensing-bundle.js');
 
                 if (typeof callback === 'function') {
                     callback();
