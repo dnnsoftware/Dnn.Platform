@@ -1,0 +1,116 @@
+<!-- set-user -->
+<section class="dnn-prompt-inline-help">
+  <a name="set-user"></a>
+  <h3 class="mono">set-user</h3>
+  <p class="lead">Enables you to set various values related to the specified user.</p>
+
+
+  <h4>Options</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Flag</th>
+        <th>Value</th>
+        <th>Required</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">--id</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td></td>
+        <td>
+          The UserId for the user being updated. This value is required, but if you 
+          pass the value as the first argument after the command name, you do not need 
+          to explicitly use the <span class="mono">--id</span> flag. (see the examples below)
+        </td>
+      </tr>
+      <tr>
+        <td class="mono">--email</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>The email address to set for the user.</td>
+      </tr>
+      <tr>
+        <td class="mono">--username</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>The username to set for the user.</td>
+      </tr>
+      <tr>
+        <td class="mono">--displayname</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>The name to be displayed for the user.</td>
+      </tr>
+      <tr>
+        <td class="mono">--firstname</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>The first name of the user.</td>
+      </tr>
+      <tr>
+        <td class="mono">--lastname</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>The last name of the user.</td>
+      </tr>
+      <tr>
+        <td class="mono">--approved</td>
+        <td>boolean</td>
+        <td>No</td>
+        <td></td>
+        <td>You can just pass the flag. It does not need a value. 
+          Users can only be approved, not un-approved so 'true' is assumed. </td>
+      </tr>
+      <tr>
+        <td class="mono">--password</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>The new password to assign to the user. The password must be valid according to 
+          the site's password rules.</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div>
+    <h4>Approve a User</h4>
+    <p>
+      Approves the user with a User ID of 345. In this example, no value is passed 
+      for the <span class="mono">--approve</span> flag. Users cannot be un-approved, 
+      so <span class="mono">true</span> 
+      is always the value for this flag, when specified.
+    </p>
+    <code class="block">
+      set-user 345 --approve
+    </code>
+
+    <h4>Change a User's Username</h4>
+    <p>Changes the username of the user with a User ID of 345 to <em>john.smith</em>.</p>
+    <code class="block">
+      set-user 345 --username "john.smith"
+    </code>
+
+    <h4>Change a User's Name Properties</h4>
+    <p>
+      Sets the first, last, and display name for the user with an ID of 345.
+      Note that <em>John</em> and <em>Smith</em> do not need to be surrounded by quotes 
+      but <em>Johnny Smith</em> does since it is more than one word.
+    </p>
+    <code class="block">
+      set-user 345 --firstname John --lastname Smith --displayname "Johnny Smith"
+    </code>
+
+  </div>
+
+</section>
+

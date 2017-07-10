@@ -1,0 +1,71 @@
+<section class="dnn-prompt-inline-help">
+  <a name="get-page"></a>
+  <h3 class="mono">get-page</h3>
+  <p class="lead">Provides information on the specified page.</p>
+  <blockquote>
+    <strong>Pages vs. Tabs</strong>: For historical reasons, DNN
+    internally refers to pages as &quot;tabs&quot;. So, whenever you see a reference to <em>tab</em>
+    or <em>page</em>, remember that they are equivalent. Values returned from Prompt will usually
+    use DNN's internal naming conventions (hence <em>tab</em>), though Prompt's own syntax will usually use the word <em>page</em> instead of <em>tab</em>.
+  </blockquote>
+
+  <h4>Options</h4>
+  <table class="table">
+    <thead>
+    <tr><th>Flag</th><th>Value</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+    <tr><td class="mono">--name</td><td>string</td><td>The name (not title) of the page</td></tr>
+    <tr><td class="mono">--id</td><td>integer</td><td>Explicitly specifies the Page ID to retrieve. Use of the flag is not required. You can simply provide the ID value as the first argument.</td></tr>
+    <tr><td class="mono">--parentid</td><td>number</td><td>The Page/Tab ID of the page's parent in the page hierarchy</td></tr>
+    </tbody>
+  </table>
+
+  <div>
+    <h4>Get Current Page</h4>
+    <code class="block">
+      get-page
+    </code>
+    <h4>Get Page By Page (Tab) ID</h4>
+    <code class="block">
+      get-page <em>pageId</em>
+    </code>
+
+    <h4>Get Page by Page Name</h4>
+    <p>
+      NOTE: You cannot retrieve Host pages using this method as it only retrieves pages within a portal. Host pages technically live outside the portal. You can, however, retrieve them using the page's ID (TabID in DNN parlance).
+    </p>
+    <code class="block">get-page --name Home</code>
+    <table class="command-result-tbl">
+      <tr><td>TabId</td><td>:</td><td>345</td></tr>
+      <tr><td>Name</td><td>:</td><td>Home</td></tr>
+      <tr><td>Title</td><td>:</td><td>My Website Home</td></tr>
+      <tr><td>ParentId</td><td>:</td><td>-1</td></tr>
+      <tr><td>Container</td><td>:</td><td>null</td></tr>
+      <tr><td>Theme</td><td>:</td><td>[G]Skins/Xcillion/Home.ascx</td></tr>
+      <tr><td>Path</td><td>:</td><td>//Home</td></tr>
+      <tr><td>IncludeInMenu</td><td>:</td><td>true</td></tr>
+      <tr><td>Url</td><td>:</td><td></td></tr>
+      <tr><td>Keywords</td><td>:</td><td>DNN, KnowBetter, Prompt</td></tr>
+      <tr><td>Description</td><td>:</td><td>Gnome, gnome on the range....</td></tr>
+    </table>
+
+    <h4>Get Page by Page Name and Parent</h4>
+
+    <code class="block">get-page --name "Page 1a" --parentid 71</code>
+    <table class="command-result-tbl">
+      <tr><td>TabId</td><td>:</td><td>72</td></tr>
+      <tr><td>Name</td><td>:</td><td>Page 1a</td></tr>
+      <tr><td>Title</td><td>:</td><td>Page 1a</td></tr>
+      <tr><td>ParentId</td><td>:</td><td>71</td></tr>
+      <tr><td>Container</td><td>:</td><td>null</td></tr>
+      <tr><td>Theme</td><td>:</td><td></td></tr>
+      <tr><td>Path</td><td>:</td><td>//Page1//Page1a</td></tr>
+      <tr><td>IncludeInMenu</td><td>:</td><td>true</td></tr>
+      <tr><td>Url</td><td>:</td><td></td></tr>
+      <tr><td>Keywords</td><td>:</td><td></td></tr>
+      <tr><td>Description</td><td>:</td><td>Page 1 is my parent. I'm Page 1a</td></tr>
+    </table>
+  </div>
+
+</section>
