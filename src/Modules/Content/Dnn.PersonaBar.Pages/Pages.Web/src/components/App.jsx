@@ -25,6 +25,8 @@ import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
 
+import GridCell from "dnn-grid-cell";
+
 function getSelectedTabBeingViewed(viewTab) {
     switch (viewTab) {
         case "details":
@@ -330,6 +332,29 @@ class App extends Component {
         return additionalPanels;
     }
 
+    render_PagesTreeViewEditor(){
+        return (
+            <GridCell columnSize={30}  style={{marginTop:"120px", backgroundColor:"#aaa"}} >
+                <p>Tree Controller</p>
+            </GridCell>
+        );
+    }
+
+    render_PagesDetailEditor(){
+        return (
+            <GridCell columnSize={70}  style={{marginTop:"120px", backgroundColor:"#ddd"}} >
+                <p>Pages Details Editor</p>
+            </GridCell>
+        );
+    }
+
+    render_pageList() {
+        return (
+            <PageList onPageSettings={this.onPageSettings.bind(this)} />
+        );
+    }
+
+
     render() {
         const {props} = this;
         const additionalPanels = this.getAdditionalPanels();
@@ -341,9 +366,12 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
-                            <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage}/>                            
+                            <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage}/>
                         </PersonaBarPageHeader>
-                        <PageList onPageSettings={this.onPageSettings.bind(this)} />
+                        <GridCell columnSize={100} style={{backgroundColor: "#fff"}}>
+                            {this.render_PagesTreeViewEditor()}
+                            {this.render_PagesDetailEditor()}
+                        </GridCell>
                     </PersonaBarPage>
                 }
                 {props.selectedView === panels.PAGE_SETTINGS_PANEL && props.selectedPage &&
