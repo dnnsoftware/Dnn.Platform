@@ -27,6 +27,8 @@ import BreadCrumbs from "./BreadCrumbs";
 
 import GridCell from "dnn-grid-cell";
 
+import {PersonaBarPageTreeviewInteractor} from "./dnn-persona-bar-page-treeview";
+
 function getSelectedTabBeingViewed(viewTab) {
     switch (viewTab) {
         case "details":
@@ -48,6 +50,7 @@ class App extends Component {
             referralText: ""
         };
     }
+
     componentDidMount() {
         const {props} = this;
         const viewName = utils.getViewName();
@@ -369,7 +372,7 @@ class App extends Component {
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage}/>
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{backgroundColor: "#fff"}}>
-                            {this.render_PagesTreeViewEditor()}
+                            <PersonaBarPageTreeviewInteractor />
                             {this.render_PagesDetailEditor()}
                         </GridCell>
                     </PersonaBarPage>
