@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            return _securityService.IsVisible(menuItem);
+            return true;
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)

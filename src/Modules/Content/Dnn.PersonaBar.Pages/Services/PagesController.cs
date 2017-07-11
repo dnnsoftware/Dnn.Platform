@@ -202,11 +202,6 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageList(int parentId = -1, string searchKey = "")
         {
-            if (!_securityService.IsPageAdminUser())
-            {
-                return GetForbiddenResponse();
-            }
-
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
             var pages = from p in _pagesController.GetPageList(parentId, searchKey)
