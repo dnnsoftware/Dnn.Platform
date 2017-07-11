@@ -10,6 +10,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
 
 namespace Dnn.PersonaBar.Pages.Components
@@ -29,7 +30,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 Level = tab.Level,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 TabPath = tab.TabPath.Replace("//", "/"),
-                PageType = GetPageType(tab.Url)
+                PageType = GetPageType(tab.Url),
+                CanViewPage = TabPermissionController.CanViewPage(tab)
         };
         }
         
