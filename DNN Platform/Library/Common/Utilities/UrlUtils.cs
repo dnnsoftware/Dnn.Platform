@@ -334,7 +334,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 var portalSettings = PortalSettings.Current;
                 if (portalSettings == null ||
-                        !url.StartsWith(Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias), StringComparison.InvariantCultureIgnoreCase))
+                        !url.StartsWith(Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias) + "/", StringComparison.InvariantCultureIgnoreCase))
                 {
                     url = string.Empty;
                 }
@@ -345,7 +345,7 @@ namespace DotNetNuke.Common.Utilities
                 var urlWithNoProtocol = url.Substring(2);
                 var portalSettings = PortalSettings.Current;
                 if (portalSettings == null ||
-                        !urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase))
+                        !urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
                 {
                     url = string.Empty;
                 }
