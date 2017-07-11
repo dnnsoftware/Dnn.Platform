@@ -124,6 +124,7 @@
     <Compile Include="Components\InstallManager.cs" />
     <Compile Include="Components\PackageDependency.cs" />
     <Compile Include="Components\PackageJob.cs" />
+    <Compile Include="Components\Utilities.cs" />
     <Compile Include="DataAccess\Models\APIUser.cs" />
     <Compile Include="DataAccess\DataControllers\APIUserDataController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

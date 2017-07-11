@@ -9,7 +9,10 @@ namespace Cantarus.Modules.PolyDeploy.Components
     internal class PackageJob
     {
         public string Name { get; set; }
-        public List<PackageDependency> Dependencies { get; set; }
+
+        public bool DidInstall { get; set; }
+
+        internal List<PackageDependency> Dependencies { get; set; }
         
         private PackageInstaller PackageInstaller { get; set; }
 
@@ -26,7 +29,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
-        public bool Installable
+        private bool Installable
         {
             get
             {
@@ -52,6 +55,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
             Name = packageInstaller.Package.Name;
             version = packageInstaller.Package.Version;
             Dependencies = new List<PackageDependency>();
+            DidInstall = false;
 
             PackageInstaller = packageInstaller;
 
@@ -69,7 +73,12 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public void Install()
         {
-            PackageInstaller.Install();
+            if (Installable)
+            {
+                PackageInstaller.Install();
+
+                DidInstall = true;
+            }
         }
     }
 }

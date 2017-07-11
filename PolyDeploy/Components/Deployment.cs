@@ -38,7 +38,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         public Deployment()
         {
             // Generate a temporary directory.
-            WorkingPath = AvailableDirectory();
+            WorkingPath = Utilities.AvailableDirectory();
 
             // Create working directory if it doesn't exist.
             CreateDirectoryIfNotExist(WorkingPath);
@@ -53,7 +53,26 @@ namespace Cantarus.Modules.PolyDeploy.Components
             CreateDirectoryIfNotExist(TempPath);
         }
 
-        public List<string> IdentifyPackages()
+        public SortedList<int, PackageJob> Deploy()
+        {
+            // Identify package zips.
+            List<string> packageZips = IdentifyPackages();
+
+            // Copy them to the modules path.
+            foreach (string packagePath in packageZips)
+            {
+                string destinationPath = Path.Combine(ModulesPath, Path.GetFileName(packagePath));
+
+                File.Copy(packagePath, destinationPath);
+            }
+
+            // Create an install manager.
+            InstallManager installManager = new InstallManager(ModulesPath);
+
+            return installManager.InstallPackages();
+        }
+
+        protected List<string> IdentifyPackages()
         {
             return IdentifyPackagesInDirectory(IntakePath);
         }
@@ -79,7 +98,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
                         // Does it have other zips?
                         if (ZipHasOtherZip(testPath))
                         {
-                            string tempPath = AvailableDirectory(TempPath);
+                            string tempPath = Utilities.AvailableDirectory(TempPath);
 
                             CreateDirectoryIfNotExist(tempPath);
 
@@ -140,32 +159,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
             {
                 Directory.CreateDirectory(directoryPath);
             }
-        }
-
-        protected string AvailableDirectory(string basePath = null)
-        {
-            // Need to set sensible base?
-            if (basePath == null)
-            {
-                basePath = Path.GetTempPath();
-            }
-
-            // Generate a random folder in the desired path.
-            string dir = Path.Combine(basePath, "tmp-" + RandomName());
-
-            // Does it already exist? I doubt it.
-            if (Directory.Exists(dir))
-            {
-                // My mistake, try again!
-                return AvailableDirectory();
-            }
-
-            return dir;
-        }
-
-        protected string RandomName()
-        {
-            return Guid.NewGuid().ToString().ToUpper();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         private List<InstallJob> InstallJobs { get; set; }
         public SortedList<int, PackageJob> OrderedPackages { get; set; }
 
-        private string directory { get; set; }
+        private string WorkingDirectory { get; set; }
 
         public InstallManager(string dir)
         {
@@ -30,10 +30,10 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 throw new Exception("Directory doesn't exist. " + dir);
             }
 
-            directory = dir;
+            WorkingDirectory = dir;
 
             // Create an install job for each zip.
-            foreach (string file in Directory.GetFiles(directory).ToList<string>())
+            foreach (string file in Directory.GetFiles(WorkingDirectory).ToList<string>())
             {
                 InstallJobs.Add(new InstallJob(file));
             }
@@ -41,7 +41,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
             OrderedPackages = SortPackages(InstallJobs);
         }
 
-        public void InstallPackages ()
+        public SortedList<int, PackageJob> InstallPackages ()
         {
             foreach (KeyValuePair<int, PackageJob> keyPair in OrderedPackages)
             {
@@ -49,6 +49,14 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
                 packJob.Install();
             }
+
+            //foreach (InstallJob inst in InstallJobs)
+            //{
+            //    inst.Installer.InstallerInfo.RepairInstall = true;
+            //    inst.Installer.Install();
+            //}
+
+            return OrderedPackages;
         }
 
         private SortedList<int, PackageJob> SortPackages(List<InstallJob> installJobs)
