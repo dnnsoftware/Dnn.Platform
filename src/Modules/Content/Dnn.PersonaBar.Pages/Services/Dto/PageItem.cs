@@ -34,5 +34,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "pageType")]
         public string PageType { get; set; }
+
+        [DataMember(Name = "canViewPage")]
+        public bool CanViewPage { get; set; }
     }
 }
