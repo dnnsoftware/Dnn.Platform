@@ -1,13 +1,11 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
-using Dnn.PersonaBar.Prompt.Models;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Repositories;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using System;
 using System.Linq;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Commands
 {
     [ConsoleCommand("list-commands", "Lists all available commands", new string[] { })]
@@ -33,8 +31,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Commands
                 var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name);
                 return new ConsoleResultModel(string.Format("Found {0} commands", lstOut.Count()))
                 {
-                    data = lstOut,
-                    fieldOrder = new string[] {
+                    Data = lstOut,
+                    FieldOrder = new string[] {
                     "Name", "Description", "Version", "NameSpace" }
                 };
             }

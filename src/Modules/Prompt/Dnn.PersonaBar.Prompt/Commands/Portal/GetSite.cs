@@ -1,4 +1,4 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {

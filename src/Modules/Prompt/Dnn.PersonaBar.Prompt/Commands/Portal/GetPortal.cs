@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using DotNetNuke;
-using DotNetNuke.Entities;
+﻿using System.Collections.Generic;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Models;
 using System.Text;
 
@@ -95,7 +88,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
                 lst.Add(new PortalModel(portal));
             }
 
-            return new ConsoleResultModel(string.Empty) { data = lst };
+            return new ConsoleResultModel(string.Empty) { Data = lst };
         }
 
 

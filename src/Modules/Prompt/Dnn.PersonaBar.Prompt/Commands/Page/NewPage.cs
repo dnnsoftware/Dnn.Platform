@@ -1,6 +1,4 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -8,7 +6,8 @@ using DotNetNuke.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
     [ConsoleCommand("new-page", "Create a new page in the portal", new string[]{
@@ -179,7 +178,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     return new ConsoleErrorResultModel(string.Format("Unable to create the new page"));
                 }
 
-                return new ConsoleResultModel("The page has been created") { data = lstResults };
+                return new ConsoleResultModel("The page has been created") { Data = lstResults };
             }
             catch (Exception ex)
             {

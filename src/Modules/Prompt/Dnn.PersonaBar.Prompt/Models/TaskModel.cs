@@ -1,5 +1,5 @@
 ﻿using DotNetNuke.Services.Scheduling;
-using Dnn.PersonaBar.Prompt.Common;
+using Dnn.PersonaBar.Library.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {

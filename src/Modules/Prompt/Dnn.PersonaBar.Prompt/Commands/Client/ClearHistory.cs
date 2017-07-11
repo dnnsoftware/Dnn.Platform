@@ -1,9 +1,9 @@
 ﻿using System;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Interfaces;
-using Dnn.PersonaBar.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Client
 {

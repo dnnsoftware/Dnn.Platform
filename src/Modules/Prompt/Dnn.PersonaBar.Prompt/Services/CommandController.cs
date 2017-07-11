@@ -1,20 +1,18 @@
 ﻿using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+using Dnn.PersonaBar.Library.Prompt.Common;
+
 using Dnn.PersonaBar.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Repositories;
-using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Web.Api;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Http;
+using Dnn.PersonaBar.Library.Prompt;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {

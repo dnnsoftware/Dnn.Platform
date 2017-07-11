@@ -1,12 +1,11 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using System.Collections.Generic;
 using System.Text;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
     [ConsoleCommand("list-portals", "Retrieves a list of portals for the current DNN Installation", new string[] { })]
@@ -49,7 +48,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
                 lst.Add(new PortalModelBase(portal));
             }
 
-            return new ConsoleResultModel(string.Empty) { data = lst };
+            return new ConsoleResultModel(string.Empty) { Data = lst };
         }
 
 

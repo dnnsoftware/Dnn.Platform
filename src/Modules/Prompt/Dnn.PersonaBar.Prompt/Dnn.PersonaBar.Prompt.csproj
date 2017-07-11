@@ -112,7 +112,6 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Attributes\ConsoleCommandAttribute.cs" />
     <Compile Include="Commands\Application\RestartApplication.cs" />
     <Compile Include="Commands\Client\ClearHistory.cs" />
     <Compile Include="Commands\Client\Cls.cs" />
@@ -161,15 +160,7 @@
     <Compile Include="Commands\User\RestoreUser.cs" />
     <Compile Include="Commands\User\AddRoles.cs" />
     <Compile Include="Commands\Utilities\Echo.cs" />
-    <Compile Include="Common\ConsoleCommandBase.cs" />
-    <Compile Include="Common\ControllerBase.cs" />
-    <Compile Include="Common\Command.cs" />
-    <Compile Include="Common\EmailValidator.cs" />
-    <Compile Include="Common\Extensions.cs" />
-    <Compile Include="Interfaces\IConsoleCommand.cs" />
     <Compile Include="Models\CommandInputModel.cs" />
-    <Compile Include="Models\ConsoleErrorResultModel.cs" />
-    <Compile Include="Models\ConsoleResultModel.cs" />
     <Compile Include="Models\HostModel.cs" />
     <Compile Include="Models\ModuleInfoModel.cs" />
     <Compile Include="Models\ModuleInstanceModel.cs" />
@@ -177,7 +168,6 @@
     <Compile Include="Models\PageModelBase.cs" />
     <Compile Include="Models\PortalModel.cs" />
     <Compile Include="Models\PortalModelBase.cs" />
-    <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\RoleModelBase.cs" />
     <Compile Include="Models\TaskModel.cs" />

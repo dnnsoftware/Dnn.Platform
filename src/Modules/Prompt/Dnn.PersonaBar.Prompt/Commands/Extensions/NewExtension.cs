@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
-using DotNetNuke;
 using DotNetNuke.Common;
 using static DotNetNuke.Common.Globals;
-using DotNetNuke.Services;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
-using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
-using Dnn.PersonaBar.Prompt.Models;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 using System.Text;
 using System.Web.UI;
 
@@ -123,7 +116,7 @@ public class NewExtension : ConsoleCommandBase, IConsoleCommand
             Exceptions.LogException(ex);
             return new ConsoleErrorResultModel("An error occurred while attempting to add the extension. Please see the DNN Event Viewer for details.");
         }
-        return new ConsoleResultModel(res) { isHtml = true };
+        return new ConsoleResultModel(res) { IsHtml = true };
     }
 
     public string InstallPackage(PortalSettings portalSettings, UserInfo user, string filePath)

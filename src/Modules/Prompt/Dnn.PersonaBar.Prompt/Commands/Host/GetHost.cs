@@ -1,9 +1,9 @@
 ﻿using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using System.Collections.Generic;
-using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Models;
 using System.Text;
 
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Host
                 lst.Add(HostModel.Current());
             }
 
-            return new ConsoleResultModel(string.Empty) { data = lst };
+            return new ConsoleResultModel(string.Empty) { Data = lst };
         }
 
 

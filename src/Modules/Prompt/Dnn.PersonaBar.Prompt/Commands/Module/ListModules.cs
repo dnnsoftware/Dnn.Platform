@@ -1,8 +1,5 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Models;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using System.Collections.Generic;
@@ -10,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Text.RegularExpressions;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("list-modules", "Lists modules on current page", new string[]{
@@ -121,7 +119,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 var newList = GetDeletedModules(PortalId, (bool)Deleted, ModuleName, ModuleTitle);
                 return new ConsoleResultModel(string.Format("{0} module{1} found", 
                     newList.Count, 
-                    (newList.Count != 1 ? "s" : string.Empty))) { data = newList };
+                    (newList.Count != 1 ? "s" : string.Empty))) { Data = newList };
 
             }
             else if (All)
@@ -152,7 +150,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             if (lst == null)
                 lst = new List<ModuleInfoModel>();
 
-            return new ConsoleResultModel(string.Format("{0} module{1} found", lst.Count, (lst.Count != 1 ? "s" : string.Empty))) { data = lst };
+            return new ConsoleResultModel(string.Format("{0} module{1} found", lst.Count, (lst.Count != 1 ? "s" : string.Empty))) { Data = lst };
         }
 
 

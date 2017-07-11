@@ -1,6 +1,4 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -9,7 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
     [ConsoleCommand("list-pages", "Retrieves a list of pages based on the specified criteria", new string[]{
@@ -219,8 +218,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
             var msg = string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""));
             return new ConsoleResultModel(msg) {
-                data = lstOut,
-                fieldOrder = new string[] {
+                Data = lstOut,
+                FieldOrder = new string[] {
                     "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted" }
             };
         }

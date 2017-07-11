@@ -1,4 +1,4 @@
-﻿using Dnn.PersonaBar.Prompt.Common;
+﻿using Dnn.PersonaBar.Library.Prompt.Common;
 using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.PersonaBar.Prompt.Models

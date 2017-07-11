@@ -1,14 +1,12 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
-using Dnn.PersonaBar.Prompt.Models;
-using DotNetNuke.Common.Utilities;
+﻿using System;
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
-using System;
 
-namespace Dnn.PersonaBar.Prompt.Commands.Host
+namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
     [ConsoleCommand("clear-log", "Clears the Event Logo for the current portal", new string[] {})]
     public class ClearLog : ConsoleCommandBase, IConsoleCommand

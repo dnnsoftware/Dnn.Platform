@@ -1,13 +1,12 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using System.Collections.Generic;
 using System.Text;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
     [ConsoleCommand("get-page", "Retrieves information about the specified or current page", new string[]{
@@ -112,7 +111,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     lst.Add(new PageModel(tab));
             }
 
-            return new ConsoleResultModel(string.Format("{0} page{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { data = lst };
+            return new ConsoleResultModel(string.Format("{0} page{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
         }
 
 

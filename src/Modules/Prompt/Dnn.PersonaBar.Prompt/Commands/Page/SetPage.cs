@@ -1,6 +1,4 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -8,7 +6,8 @@ using DotNetNuke.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
     [ConsoleCommand("set-page", "Update page with new data", new string[]{
@@ -160,7 +159,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
                 var lstResults = new List<PageModel>();
                 lstResults.Add(new PageModel(TabController.Instance.GetTab(tab.TabID, tab.PortalID)));
-                return new ConsoleResultModel("Page has been updated") { data = lstResults };
+                return new ConsoleResultModel("Page has been updated") { Data = lstResults };
             }
             catch (Exception ex)
             {

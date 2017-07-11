@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Dnn.PersonaBar.Prompt.Models
+﻿namespace Dnn.PersonaBar.Prompt.Models
 {
     /// <summary>
     /// Similar to ModuleInfoModel, however this one has information more specific to a module's 

@@ -1,12 +1,10 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
-using Dnn.PersonaBar.Prompt.Models;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using System;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Host
 {
     [ConsoleCommand("clear-cache", "Clears the cache and reloads the page", new string[] {})]
@@ -38,7 +36,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Host
             DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             return new ConsoleErrorResultModel("An error occurred while attempting to clear the cache.");
         }
-        return new ConsoleResultModel("Cache Cleared") { mustReload = true };
+        return new ConsoleResultModel("Cache Cleared") { MustReload = true };
 
     }
 

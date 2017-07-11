@@ -1,11 +1,12 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt.Common;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Web.Caching;
+using Dnn.PersonaBar.Library.Prompt;
 
 namespace Dnn.PersonaBar.Prompt.Repositories
 {

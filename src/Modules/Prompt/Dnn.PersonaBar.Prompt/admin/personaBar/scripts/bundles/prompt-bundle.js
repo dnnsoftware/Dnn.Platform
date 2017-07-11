@@ -492,7 +492,7 @@ var DnnPrompt = function () {
                         }
                         var output = result.output;
                         var style = result.isError ? "error" : "ok";
-                        var data = result.data;
+                        var Data = result.data;
                         var fieldOrder = result.fieldOrder;
                         if (typeof fieldOrder === 'undefined' || !fieldOrder || fieldOrder.length === 0) {
                             fieldOrder = null;

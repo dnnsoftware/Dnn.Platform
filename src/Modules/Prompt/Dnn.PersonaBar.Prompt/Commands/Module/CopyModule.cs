@@ -1,6 +1,4 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -9,7 +7,8 @@ using DotNetNuke.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("copy-module", "Copies the module specified", new string[] { "id" })]
@@ -173,7 +172,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 return new ConsoleResultModel(string.Format("No module found with ID '{0}'", ModuleId));
             }
 
-            return new ConsoleResultModel("Successfully copied the module") { data = lst };
+            return new ConsoleResultModel("Successfully copied the module") { Data = lst };
         }
 
     }

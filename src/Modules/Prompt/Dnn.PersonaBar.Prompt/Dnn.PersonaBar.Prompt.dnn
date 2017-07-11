@@ -40,7 +40,7 @@
                         <moduleName>Prompt</moduleName>
                         <resourceKey>nav_Prompt</resourceKey>
                         <path>Prompt</path>
-                        <parent></parent>
+                        <parent>Settings</parent>
                         <order>17</order>
                         <defaultPermissions>Administrators</defaultPermissions>
                     </menu>

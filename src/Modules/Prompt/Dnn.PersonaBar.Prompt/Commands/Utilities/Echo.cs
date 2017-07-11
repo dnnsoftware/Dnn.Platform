@@ -1,17 +1,8 @@
-﻿using Dnn.PersonaBar.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Interfaces;
-using Dnn.PersonaBar.Prompt.Models;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
+﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Utilities
 {
     [ConsoleCommand("echo", "Echos back the first argument received", new string[] { })]
@@ -22,7 +13,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Utilities
 
         public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            Initialize(args, portalSettings, userInfo, activeTabId);
         }
 
         public bool IsValid()
@@ -32,9 +23,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Utilities
 
         public ConsoleResultModel Run()
         {
-            if (args.Length > 1)
+            if (Args.Length > 1)
             {
-                return new ConsoleResultModel(args[1]);
+                return new ConsoleResultModel(Args[1]);
             }
 
 

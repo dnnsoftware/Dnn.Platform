@@ -1,11 +1,24 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\..\Solution.build" />
   <PropertyGroup>
-      <Extension>zip</Extension>
-      <DNNFileName>Dnn.PersonaBar.Prompt</DNNFileName>
-      <PackageName>Dnn.PersonaBar.Prompt</PackageName>
-      <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Prompt</ModuleFolderName>
+    <Extension>zip</Extension>
+    <DNNFileName>Dnn.PersonaBar.Prompt</DNNFileName>
+    <PackageName>Dnn.PersonaBar.Prompt</PackageName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Prompt</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <PersonaBar-views Include="admin/personaBar/*.html" />
+      <PersonaBar-images Include="admin/personaBar/images/**/*" />
+      <PersonaBar-data Include="admin/personaBar/data/*.resources" />
+      <PersonaBar-css Include="admin/personaBar/css/**/*" />
+      <PersonaBar-resources Include="admin/personaBar/App_LocalResources/*.resx" />
+      <PersonaBar-controls Include="admin/personaBar/UserControls/*.ascx" />
+      <PersonaBar-scripts Include="admin/personaBar/scripts/*;admin/personaBar/scripts/**/*" />
+      <PersonaBar-help Include="admin/personaBar/help/*.html" />
+      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls);@(PersonaBar-help)" />
+    </ItemGroup>
+  </Target>
 </Project>
