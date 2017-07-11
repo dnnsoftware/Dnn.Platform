@@ -53,23 +53,113 @@ namespace Cantarus.Modules.PolyDeploy.Components
             CreateDirectoryIfNotExist(TempPath);
         }
 
-        public SortedList<int, PackageJob> Deploy()
+        public SortedList<int, InstallJob> Deploy()
         {
             // Identify package zips.
             List<string> packageZips = IdentifyPackages();
 
-            // Copy them to the modules path.
-            foreach (string packagePath in packageZips)
-            {
-                string destinationPath = Path.Combine(ModulesPath, Path.GetFileName(packagePath));
+            // Create install jobs.
+            List<InstallJob> installJobs = new List<InstallJob>();
+            List<PackageJob> packageJobs = new List<PackageJob>();
 
-                File.Copy(packagePath, destinationPath);
+            foreach (string packageZip in packageZips)
+            {
+                InstallJob installJob = new InstallJob(packageZip);
+                installJobs.Add(installJob);
+                packageJobs.AddRange(installJob.Packages);
             }
 
-            // Create an install manager.
-            InstallManager installManager = new InstallManager(ModulesPath);
+            // Are package dependencies fulfulled?
+            foreach (InstallJob installJob in installJobs)
+            {
+                installJob.CheckDependencies(packageJobs);
+            }
 
-            return installManager.InstallPackages();
+            return OrderInstallJobs(installJobs);
+        }
+
+        private SortedList<int, InstallJob> OrderInstallJobs (List<InstallJob> installJobs)
+        {
+            SortedList<int, InstallJob> orderedInstall = new SortedList<int, InstallJob>();
+
+            foreach (InstallJob ij in installJobs)
+            {
+                // Already in the list?
+                if (!orderedInstall.ContainsValue(ij))
+                {
+                    // No, add.
+                    AddInstallJob(ij, orderedInstall, installJobs);
+                }
+            }
+
+            return orderedInstall;
+        }
+
+        private void AddInstallJob(InstallJob installJob, SortedList<int, InstallJob> orderedInstall, List<InstallJob> installJobs, List<InstallJob> dependencyStack = null)
+        {
+            // Initialise dependency stack if needed.
+            if (dependencyStack == null)
+            {
+                dependencyStack = new List<InstallJob>();
+            }
+
+            // Is this job already in the dependency stack?
+            if (dependencyStack.Contains(installJob))
+            {
+                // Yes, that's a circular dependency detection then.
+                throw new Exception("Circular package dependency!");
+            }
+
+            // Add this job to the dependency stack.
+            dependencyStack.Add(installJob);
+
+            // Loop packages in this install job.
+            foreach (PackageJob pj in installJob.Packages)
+            {
+                // Loop dependencies in this package.
+                foreach (PackageDependency pd in pj.Dependencies)
+                {
+                    // Is this dependency met by our deployment and is it a package dependency?
+                    if (pd.DeployMet && pd.Type.Equals("package"))
+                    {
+                        // Try and find the install job that provides this dependency.
+                        InstallJob foundInstallDependency = FindInstallJobWithPackage(pd.Value, installJobs);
+
+                        // Did we find it?
+                        if (foundInstallDependency == null)
+                        {
+                            // No, unfulfilled dependency.
+                            throw new Exception("Unfulfilled package dependency.");
+                        }
+
+                        // Is it already in the ordered jobs?
+                        if (!orderedInstall.ContainsValue(foundInstallDependency))
+                        {
+                            // No, add that install job first.
+                            AddInstallJob(foundInstallDependency, orderedInstall, installJobs, dependencyStack);
+                        }
+                    }
+                }
+            }
+
+            // Add ourself.
+            orderedInstall.Add(orderedInstall.Count, installJob);
+        }
+
+        private InstallJob FindInstallJobWithPackage(string name, List<InstallJob> installJobs)
+        {
+            foreach (InstallJob ij in installJobs)
+            {
+                foreach (PackageJob pj in ij.Packages)
+                {
+                    if (pj.Name.ToLower().Equals(name.ToLower()))
+                    {
+                        return ij;
+                    }
+                }
+            }
+
+            return null;
         }
 
         protected List<string> IdentifyPackages()

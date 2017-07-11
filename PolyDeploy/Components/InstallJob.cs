@@ -11,42 +11,30 @@ namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal class InstallJob
     {
-        public string ZipPath { get; set; }
-        public string TemporaryDirectory { get; set; }
-        public string ManifestFilename { get; set; }
         public List<PackageJob> Packages { get; set; }
 
-        public Installer Installer { get; set; }
+        public bool CanInstall
+        {
+            get
+            {
+                foreach (PackageJob package in Packages)
+                {
+                    if (!package.CanInstall)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        private Installer Installer { get; set; }
 
         public InstallJob(string path)
         {
-            ZipPath = path;
-            TemporaryDirectory = Utilities.AvailableDirectory(Path.GetDirectoryName(path));
             Packages = new List<PackageJob>();
-
-            // Create temporary directory.
-            Directory.CreateDirectory(TemporaryDirectory);
-
-            // Unzip module zip in to the temporary directory.
-            ZipFile.ExtractToDirectory(ZipPath, TemporaryDirectory);
-
-            try
-            {
-                // Find the manifest.
-                ManifestFilename = ModuleManifestName(TemporaryDirectory);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Format("Unable to retrieve manifest for {0}", Path.GetFileName(ZipPath)), ex);
-            }
-
-            // Grab server info for physical path.
-            ServerInfo servInfo = new ServerInfo();
-
-            // Create an installer. This call will also delete the temporary folder.
             Installer = new Installer(new FileStream(path, FileMode.Open, FileAccess.Read), Globals.ApplicationMapPath, true, false);
-
-            //Installer = new Installer(TemporaryDirectory, ManifestFilename, Globals.ApplicationMapPath, true);
 
             Installer.InstallerInfo.PortalID = 0;
 
@@ -56,26 +44,34 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
-        private string ModuleManifestName(string directory)
+        public void CheckDependencies(List<PackageJob> packageJobs)
         {
-            string manifestFileName = null;
-
-            foreach (string filePath in Directory.GetFiles(this.TemporaryDirectory))
+            foreach (PackageJob package in Packages)
             {
-                if (filePath.EndsWith(".dnn"))
+                foreach (PackageDependency packageDependency in package.Dependencies)
                 {
-                    if (manifestFileName == null)
+                    if (packageDependency.Type.Equals("package"))
                     {
-                        manifestFileName = Path.GetFileName(filePath);
-                    }
-                    else
-                    {
-                        throw new Exception("More than one manifest found.");
+                        if (FindDependency(packageDependency.Value, packageJobs))
+                        {
+                            packageDependency.DeployMet = true;
+                        }
                     }
                 }
             }
+        }
 
-            return manifestFileName;
+        private bool FindDependency(string name, List<PackageJob> packageJobs)
+        {
+            foreach (PackageJob pj in packageJobs)
+            {
+                if (pj.Name.ToLower().Equals(name.ToLower()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

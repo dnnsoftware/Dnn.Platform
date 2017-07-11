@@ -121,7 +121,6 @@
     <Compile Include="Components\Deployment.cs" />
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\InstallJob.cs" />
-    <Compile Include="Components\InstallManager.cs" />
     <Compile Include="Components\PackageDependency.cs" />
     <Compile Include="Components\PackageJob.cs" />
     <Compile Include="Components\Utilities.cs" />

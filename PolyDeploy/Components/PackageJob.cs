@@ -9,55 +9,38 @@ namespace Cantarus.Modules.PolyDeploy.Components
     internal class PackageJob
     {
         public string Name { get; set; }
-
-        public bool DidInstall { get; set; }
-
-        internal List<PackageDependency> Dependencies { get; set; }
+        private Version Version { get; set; }
+        public List<PackageDependency> Dependencies { get; set; }
         
-        private PackageInstaller PackageInstaller { get; set; }
-
-        public string Version
+        public string VersionStr
         {
             get
             {
-                if (version == null)
-                {
-                    return null;
-                }
-
-                return version.ToString();
+                return Version.ToString();
             }
         }
 
-        private bool Installable
+        public bool CanInstall
         {
             get
             {
-                var canInstall = true;
-
-                foreach (PackageDependency packDep in Dependencies)
+                foreach (PackageDependency dependency in Dependencies)
                 {
-                    if (!(packDep.DnnFulfilled || packDep.WillFulfill))
+                    if (!dependency.IsMet)
                     {
-                        canInstall = false;
-                        break;
+                        return false;
                     }
                 }
 
-                return canInstall;
+                return true;
             }
         }
-
-        protected Version version { get; set; }
 
         public PackageJob(PackageInstaller packageInstaller)
         {
             Name = packageInstaller.Package.Name;
-            version = packageInstaller.Package.Version;
+            Version = packageInstaller.Package.Version;
             Dependencies = new List<PackageDependency>();
-            DidInstall = false;
-
-            PackageInstaller = packageInstaller;
 
             XPathDocument document = new XPathDocument(new StringReader(packageInstaller.Package.Manifest));
 
@@ -68,16 +51,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
             foreach (XPathNavigator nav in rootNav.Select("dependencies/dependency"))
             {
                 Dependencies.Add(new PackageDependency(nav));
-            }
-        }
-
-        public void Install()
-        {
-            if (Installable)
-            {
-                PackageInstaller.Install();
-
-                DidInstall = true;
             }
         }
     }

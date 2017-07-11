@@ -19,30 +19,5 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
 
             return Request.CreateResponse(HttpStatusCode.OK, newUser.APIKey);
         }
-
-        [AllowAnonymous]
-        [APIAuthentication]
-        [HttpGet]
-        public HttpResponseMessage Test()
-        {
-
-            string folderPath = Path.Combine("C:\\", "DNNDev", "INTO", "CompiledModules");
-
-            try
-            {
-                InstallManager installManager = new InstallManager(folderPath);
-
-                installManager.InstallPackages();
-
-                return Request.CreateResponse(HttpStatusCode.OK, installManager);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
-            }
-            
-
-            return Request.CreateResponse(HttpStatusCode.OK, "API User Controller");
-        }
     }
 }

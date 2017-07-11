@@ -7,19 +7,27 @@ namespace Cantarus.Modules.PolyDeploy.Components
     {
         public string Type { get; set; }
         public string Value { get; set; }
-        public bool DnnFulfilled { get; set; }
-        public bool WillFulfill { get; set; }
+        internal bool DnnMet { get; set; }
+        internal bool DeployMet { get; set; }
+
+        internal bool IsMet
+        {
+            get
+            {
+                return DnnMet || DeployMet;
+            }
+        }
 
         public PackageDependency(XPathNavigator dependencyRoot)
         {
             Type = dependencyRoot.GetAttribute("type", "");
             Value = dependencyRoot.Value;
-            DnnFulfilled = false;
-            WillFulfill = false;
+            DnnMet = false;
+            DeployMet = false;
 
             IDependency dep = DependencyFactory.GetDependency(dependencyRoot);
 
-            DnnFulfilled = dep.IsValid;
+            DnnMet = dep.IsValid;
         }
     }
 }
