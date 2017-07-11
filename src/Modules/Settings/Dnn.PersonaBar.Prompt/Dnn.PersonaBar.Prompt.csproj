@@ -160,6 +160,7 @@
     <Compile Include="Commands\User\RestoreUser.cs" />
     <Compile Include="Commands\User\AddRoles.cs" />
     <Compile Include="Commands\Utilities\Echo.cs" />
+    <Compile Include="Common\ControllerBase.cs" />
     <Compile Include="MenuControllers\PromptMenuController.cs" />
     <Compile Include="Models\CommandInputModel.cs" />
     <Compile Include="Models\HostModel.cs" />
