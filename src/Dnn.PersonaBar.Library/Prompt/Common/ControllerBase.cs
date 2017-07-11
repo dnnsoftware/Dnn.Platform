@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             return Request.CreateResponse(HttpStatusCode.InternalServerError, new ResponseModel(true, msg, data?.ToString() ?? ""));
         }
 
-        protected HttpResponseMessage NotImplementedrResponse(string msg = "", object data = null)
+        protected HttpResponseMessage NotImplementedResponse(string msg = "", object data = null)
         {
             if (string.IsNullOrEmpty(msg))
             {
