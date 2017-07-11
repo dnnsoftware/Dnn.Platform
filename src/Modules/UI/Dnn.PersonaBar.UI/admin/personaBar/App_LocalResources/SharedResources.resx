@@ -255,4 +255,22 @@
   <data name="AllSites.Text" xml:space="preserve">
     <value>All Sites</value>
   </data>
+  <data name="Prompt_InvalidData.Text" xml:space="preserve">
+    <value>You've submitted invalid data. Your request cannot be processed.</value>
+  </data>
+  <data name="Prompt_InvalidSyntax.Text" xml:space="preserve">
+    <value>Invalid syntax</value>
+  </data>
+  <data name="Prompt_NotAuthorized.Text" xml:space="preserve">
+    <value>You are not authorized to access to this resource. Your session may have timed-out. If so login again.</value>
+  </data>
+  <data name="Prompt_NotImplemented.Text" xml:space="preserve">
+    <value>This functionality has not yet been implemented.</value>
+  </data>
+  <data name="Prompt_ServerError.Text" xml:space="preserve">
+    <value>The server has encoutered an issue and was unable to process your request. Please try again later.</value>
+  </data>
+  <data name="Prompt_SessionTimedOut.Text" xml:space="preserve">
+    <value>Your session may have timed-out. If so login again.</value>
+  </data>
 </root>

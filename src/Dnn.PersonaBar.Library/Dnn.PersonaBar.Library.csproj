@@ -124,6 +124,16 @@
     <Compile Include="Permissions\MenuPermissionController.cs" />
     <Compile Include="Model\PermissionInfo.cs" />
     <Compile Include="Model\MenuPermissionInfo.cs" />
+    <Compile Include="Prompt\Attributes\ConsoleCommandAttribute.cs" />
+    <Compile Include="Prompt\Common\Command.cs" />
+    <Compile Include="Prompt\Common\ControllerBase.cs" />
+    <Compile Include="Prompt\Common\EmailValidator.cs" />
+    <Compile Include="Prompt\Common\Extensions.cs" />
+    <Compile Include="Prompt\ConsoleCommandBase.cs" />
+    <Compile Include="Prompt\IConsoleCommand.cs" />
+    <Compile Include="Prompt\Models\ConsoleErrorResultModel.cs" />
+    <Compile Include="Prompt\Models\ConsoleResultModel.cs" />
+    <Compile Include="Prompt\Models\ResponseModel.cs" />
     <Compile Include="Repository\IPersonaBarExtensionRepository.cs" />
     <Compile Include="Repository\IPersonaBarRepository.cs" />
     <Compile Include="Repository\PersonaBarExtensionRepository.cs" />
