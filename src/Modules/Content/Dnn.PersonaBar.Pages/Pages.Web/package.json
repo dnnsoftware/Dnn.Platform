@@ -44,5 +44,9 @@
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "promise": "^8.0.0",
+    "prop-types": "^15.5.10"
   }
 }
