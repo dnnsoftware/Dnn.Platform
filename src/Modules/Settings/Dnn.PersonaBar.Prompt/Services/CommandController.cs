@@ -1,7 +1,4 @@
-﻿using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Common;
-
-using Dnn.PersonaBar.Prompt.Models;
+﻿using Dnn.PersonaBar.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Repositories;
 using DotNetNuke.Web.Api;
 using System;
@@ -11,7 +8,9 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Http;
+using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
