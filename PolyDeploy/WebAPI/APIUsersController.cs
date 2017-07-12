@@ -11,13 +11,6 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
 {
     public class APIUsersController : DnnApiController
     {
-        [RequireHost]
-        [HttpGet]
-        public HttpResponseMessage CreateUser()
-        {
-            APIUser newUser = APIUserController.Create("TestAPIUser");
-
-            return Request.CreateResponse(HttpStatusCode.OK, newUser.APIKey);
-        }
+        // Nothing here yet.
     }
 }

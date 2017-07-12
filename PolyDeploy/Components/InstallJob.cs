@@ -70,6 +70,13 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 // Is the installer valid?
                 if (Installer.IsValid)
                 {
+                    // Already installed?
+                    if (Installer.InstallerInfo.Installed)
+                    {
+                        // Yes, make a repair install.
+                        Installer.InstallerInfo.RepairInstall = true;
+                    }
+
                     // Install.
                     Installer.Install();
 
