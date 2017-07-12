@@ -36,8 +36,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
             Packages = new List<PackageJob>();
             Installer = new Installer(new FileStream(path, FileMode.Open, FileAccess.Read), Globals.ApplicationMapPath, true, false);
 
-            Installer.InstallerInfo.PortalID = 0;
-
             foreach (KeyValuePair<int, PackageInstaller> orderedPackage in Installer.Packages)
             {
                 Packages.Add(new PackageJob(orderedPackage.Value));
@@ -61,6 +59,28 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
+        public bool Install()
+        {
+            // Can this be installed at this point?
+            if (CanInstall)
+            {
+                // Possibly need to recreate the installer at the point.
+                Installer = new Installer(Installer.TempInstallFolder, ModuleManifestName(Installer.TempInstallFolder), Globals.ApplicationMapPath, true);
+
+                // Is the installer valid?
+                if (Installer.IsValid)
+                {
+                    // Install.
+                    Installer.Install();
+
+                    // Did the package install successfully?
+                    return Installer.IsValid;
+                }
+            }
+
+            return false;
+        }
+
         private bool FindDependency(string name, List<PackageJob> packageJobs)
         {
             foreach (PackageJob pj in packageJobs)
@@ -72,6 +92,26 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
 
             return false;
+        }
+
+        private string ModuleManifestName(string directory)
+        {
+            string manifestFileName = null;
+            foreach (string filePath in Directory.GetFiles(directory))
+            {
+                if (filePath.EndsWith(".dnn"))
+                {
+                    if (manifestFileName == null)
+                    {
+                        manifestFileName = Path.GetFileName(filePath);
+                    }
+                    else
+                    {
+                        throw new Exception("More than one manifest found.");
+                    }
+                }
+            }
+            return manifestFileName;
         }
     }
 }

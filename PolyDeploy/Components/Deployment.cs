@@ -53,7 +53,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
             CreateDirectoryIfNotExist(TempPath);
         }
 
-        public SortedList<int, InstallJob> Deploy()
+        public Dictionary<string, List<InstallJob>> Deploy()
         {
             // Identify package zips.
             List<string> packageZips = IdentifyPackages();
@@ -75,7 +75,32 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 installJob.CheckDependencies(packageJobs);
             }
 
-            return OrderInstallJobs(installJobs);
+            // Order jobs.
+            SortedList<int, InstallJob> orderedInstall = OrderInstallJobs(installJobs);
+
+            // Do the install.
+            List<InstallJob> successJobs = new List<InstallJob>();
+            List<InstallJob> failedJobs = new List<InstallJob>();
+
+            foreach (KeyValuePair<int, InstallJob> keyPair in orderedInstall)
+            {
+                InstallJob job = keyPair.Value;
+
+                if (job.Install())
+                {
+                    successJobs.Add(job);
+                } else
+                {
+                    failedJobs.Add(job);
+                }
+            }
+
+            Dictionary<string, List<InstallJob>> results = new Dictionary<string, List<InstallJob>>();
+
+            results.Add("Installed", successJobs);
+            results.Add("Failed", failedJobs);
+
+            return results;
         }
 
         private SortedList<int, InstallJob> OrderInstallJobs (List<InstallJob> installJobs)
