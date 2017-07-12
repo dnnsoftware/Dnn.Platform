@@ -20,6 +20,6 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
         [DataMember]
         public string Version { get; set; }
         public Type CommandType { get; set; }
-        public ConsoleCommandAttribute CommandAttribute { get; set; }
+        //public ConsoleCommandAttribute CommandAttribute { get; set; }
     }
 }
