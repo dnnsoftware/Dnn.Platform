@@ -71,18 +71,24 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     getChildListItems(id) {
 
-        const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?parentId=${id}`;
-
-        this.GET(url)
-            .then((childListItems)=> {
-                this._traverse((item, listItems) => {
-                    const left = () => item.childListItems=childListItems;
-                    const right = () => null;
-                    (item.id === id ) ? left() : right();
-                    this.setState({pageList:listItems});
+        const left = () => {
+            const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?parentId=${id}`;
+            console.log('in left');
+            this.GET(url)
+                .then((childListItems)=> {
+                    this._traverse((item, listItems) => {
+                        const left = () => item.childListItems=childListItems;
+                        const right = () => null;
+                        (item.id === id ) ? left() : right();
+                        this.setState({pageList:listItems});
+                    });
                 });
-                this.toggleParentCollapsedState(id);
-            });
+        };
+
+        const right = () => console.log('in right');
+        
+        this._traverse((item) => (item.id === id && !item.hasOwnProperty('childListItems')) ? left() : right());
+        this.toggleParentCollapsedState(id);
     }
 
     addNewPageData(pageData) {
