@@ -9,14 +9,11 @@ namespace Dnn.PersonaBar.Prompt.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string LastLogin { get; set; }
-
         public bool IsDeleted { get; set; }
         public bool IsAuthorized { get; set; }
         public bool IsLockedOut { get; set; }
-
         // provide a default field order for use of callers
-        public static string[] FieldOrder = new string[]
-        {
+        public static string[] FieldOrder = {
             "UserId",
             "Username",
             "Email",
@@ -30,40 +27,23 @@ namespace Dnn.PersonaBar.Prompt.Models
         public UserModelBase()
         {
         }
-        public UserModelBase(UserInfo user)
+        public UserModelBase(UserInfo userInfo)
         {
-            Email = user.Email;
-            LastLogin = user.Membership.LastLoginDate.ToPromptShortDateString();
-            UserId = user.UserID;
-            Username = user.Username;
-            IsDeleted = user.IsDeleted;
-            IsAuthorized = user.Membership.Approved;
-            IsLockedOut = user.Membership.LockedOut;
+            Email = userInfo.Email;
+            LastLogin = userInfo.Membership.LastLoginDate.ToPromptShortDateString();
+            UserId = userInfo.UserID;
+            Username = userInfo.Username;
+            IsDeleted = userInfo.IsDeleted;
+            IsAuthorized = userInfo.Membership.Approved;
+            IsLockedOut = userInfo.Membership.LockedOut;
         }
         #endregion
 
         #region Command Links
-        public string __Email
-        {
-            get
-            {
-                return $"get-user '{Email}'";
-            }
-        }
-        public string __UserId
-        {
-            get
-            {
-                return $"get-user {UserId}";
-            }
-        }
-        public string __Username
-        {
-            get
-            {
-                return $"get-user '{Username}'";
-            }
-        }
+        public string __Email => $"get-user '{Email}'";
+        public string __UserId => $"get-user {UserId}";
+        public string __Username => $"get-user '{Username}'";
+
         #endregion
 
     }

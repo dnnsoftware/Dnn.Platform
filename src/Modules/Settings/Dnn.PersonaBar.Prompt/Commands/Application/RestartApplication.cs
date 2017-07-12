@@ -2,31 +2,16 @@
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Application
 {
-    [ConsoleCommand("restart-application", "Restarts the application and reloads the page", new string[] { })]
-    public class RestartApplication : ConsoleCommandBase, IConsoleCommand
+    [ConsoleCommand("restart-application", "Restarts the application and reloads the page")]
+    public class RestartApplication : ConsoleCommandBase
     {
-        public string ValidationMessage { get; }
-
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override ConsoleResultModel Run()
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
-        }
-
-        public bool IsValid()
-        {
-            return true;
-        }
-
-        public ConsoleResultModel Run()
-        {
-
             try
             {
                 var log = new LogInfo
@@ -44,7 +29,6 @@ namespace Dnn.PersonaBar.Prompt.Commands.Application
                 return new ConsoleErrorResultModel("An error occurred while attempting to restart the application.");
             }
             return new ConsoleResultModel("Application Restarted") { MustReload = true };
-
         }
     }
 }

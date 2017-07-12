@@ -11,23 +11,23 @@ namespace Dnn.PersonaBar.Prompt
 {
     public class Utilities
     {
-        public static void AddToRoles(int UserId, int PortalId, string RoleNames, string RoleDelimiter = ",", DateTime? EffectiveDate = null, DateTime? ExpiryDate = null)
+        public static void AddToRoles(int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null)
         {
-            DateTime effDate = EffectiveDate.GetValueOrDefault(Null.NullDate);
-            DateTime expDate = ExpiryDate.GetValueOrDefault(Null.NullDate);
+            var effDate = effectiveDate.GetValueOrDefault(Null.NullDate);
+            var expDate = expiryDate.GetValueOrDefault(Null.NullDate);
             
             // get the specified RoleName
-            RoleController rc = new RoleController();
-            string[] lstRoles = RoleNames.Split(RoleDelimiter.ToCharArray());
-            RoleInfo role = default(RoleInfo);
+            var rc = new RoleController();
+            var lstRoles = roleNames.Split(roleDelimiter.ToCharArray());
+            var role = default(RoleInfo);
             string curRole = null;
-            for (int i = 0; i <= lstRoles.Length - 1; i++)
+            for (var i = 0; i <= lstRoles.Length - 1; i++)
             {
                 curRole = lstRoles[i].Trim();
-                role = rc.GetRoleByName(PortalId, curRole);
-                if ((role != null))
+                role = rc.GetRoleByName(portalId, curRole);
+                if (role != null)
                 {
-                    rc.AddUserRole(PortalId, UserId, role.RoleID, effDate, expDate);
+                    rc.AddUserRole(portalId, userId, role.RoleID, effDate, expDate);
                 }
             }
         }
@@ -35,8 +35,8 @@ namespace Dnn.PersonaBar.Prompt
         public static List<UserRoleModel> GetUserRoles(UserInfo user)
         {
             var roles = RoleController.Instance.GetUserRoles(user, true);
-            List<UserRoleModel> lst = new List<UserRoleModel>();
-            foreach (UserRoleInfo userRole in roles)
+            var lst = new List<UserRoleModel>();
+            foreach (var userRole in roles)
             {
                 lst.Add(UserRoleModel.FromDnnUserRoleInfo(userRole));
             }
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Prompt
 
         public static string SendSystemEmail(UserInfo user, DotNetNuke.Services.Mail.MessageType msgType, DotNetNuke.Entities.Portals.PortalSettings ps)
         {
-            string msg = string.Empty;
+            var msg = string.Empty;
             try
             {
                 msg = DotNetNuke.Services.Mail.Mail.SendMail(user, msgType, ps);
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Prompt
             var match = Regex.Match(skin, "skins\\/(\\w*)\\/(.*)\\.ascx", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                return string.Format("{0} ({1})", match.Groups[1].Value, match.Groups[2].Value);
+                return $"{match.Groups[1].Value} ({match.Groups[2].Value})";
             }
             else
             {
@@ -130,40 +130,17 @@ namespace Dnn.PersonaBar.Prompt
         {
             if (string.IsNullOrEmpty(container))
                 return container;
-            Regex r = new Regex("containers\\/(\\w*)\\/(.*)\\.ascx", RegexOptions.IgnoreCase);
-            Match match = r.Match(container);
+            var r = new Regex("containers\\/(\\w*)\\/(.*)\\.ascx", RegexOptions.IgnoreCase);
+            var match = r.Match(container);
             if (match.Success)
             {
-                return string.Format("{0} ({1})", match.Groups[1].Value, match.Groups[2].Value);
+                return $"{match.Groups[1].Value} ({match.Groups[2].Value})";
             }
             else
             {
                 return container;
                 // unable to find a match
             }
-        }
-
-        public static VersionInfo GetDNNVersion()
-        {
-            System.Version ver = System.Reflection.Assembly.GetAssembly(typeof(DotNetNuke.Common.Globals)).GetName().Version;
-            VersionInfo retVer = new VersionInfo();
-            if (ver != null)
-            {
-                var _with1 = retVer;
-                _with1.Major = ver.Major;
-                _with1.Minor = ver.Minor;
-                _with1.Build = ver.Build;
-                _with1.Revision = ver.Revision;
-            }
-            else
-            {
-                var _with2 = retVer;
-                _with2.Major = 0;
-                _with2.Minor = 0;
-                _with2.Build = 0;
-                _with2.Revision = 0;
-            }
-            return retVer;
         }
     }
 }

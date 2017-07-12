@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using DotNetNuke.Common;
 using static DotNetNuke.Common.Globals;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -14,196 +13,186 @@ using System.Web.UI;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Extensions
 {
-    [ConsoleCommand("new-extension", "Creates a new extension from a manifest or package", new string[]{ "path" })]
-public class NewExtension : ConsoleCommandBase, IConsoleCommand
-{
-
-    public string ValidationMessage { get; private set; }
-
-
-    private const string FLAG_PATH = "path";
-    private string Path = "";
-    private bool IsPackage = false;
-
-    private bool IsManifest = false;
-    public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+    [ConsoleCommand("new-extension", "Creates a new extension from a manifest or package", new[] { "path" })]
+    public class NewExtension : ConsoleCommandBase
     {
-        Initialize(args, portalSettings, userInfo, activeTabId);
-        StringBuilder sbErrors = new StringBuilder();
+        private const string FlagPath = "path";
+        private string _path = "";
+        private bool _isPackage;
 
-        if (HasFlag(FLAG_PATH))
+        private bool _isManifest;
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Path = Flag(FLAG_PATH);
-        }
-        else if (args.Length >= 2 && !IsFlag(args[1]))
-        {
-            // assume first argument is the module name
-            Path = args[1];
-        }
-        else
-        {
-            sbErrors.AppendFormat("You must supply the path to the extension package or manifest");
-        }
-        Path = Path.ToLower().Replace("/", "\\");
-        if (Path.EndsWith(".dnn"))
-        {
-            IsManifest = true;
-        }
-        else if (Path.EndsWith(".zip"))
-        {
-            IsPackage = true;
-        }
-        else
-        {
-            sbErrors.AppendFormat("You must supply a path to a package (.zip) or a manifest (.dnn)");
-        }
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
-        Path.TrimStart("~".ToCharArray());
-        Path.TrimStart("/".ToCharArray());
-        if (Path.StartsWith("desktopmodules"))
-        {
-            Path = Path.Substring(15);
-        }
-        Path = System.IO.Path.Combine(ApplicationMapPath, "desktopmodules/" + Path);
-        if (File.Exists(Path))
-        {
-        }
-        else
-        {
-            sbErrors.AppendFormat("Cannot find {0}", Path);
-        }
-
-        ValidationMessage = sbErrors.ToString();
-    }
-
-    public bool IsValid()
-    {
-        return string.IsNullOrEmpty(ValidationMessage);
-    }
-
-    public ConsoleResultModel Run()
-    {
-
-        string res = "";
-        try
-        {
-            if (IsPackage)
+            if (HasFlag(FlagPath))
             {
-                res = InstallPackage(PortalSettings, User, Path);
+                _path = Flag(FlagPath);
             }
-            else if (IsManifest)
+            else if (args.Length >= 2 && !IsFlag(args[1]))
             {
-                DotNetNuke.Services.Installer.Installer installer = new DotNetNuke.Services.Installer.Installer(Path, ApplicationMapPath, true);
-                if (installer.IsValid)
+                // assume first argument is the module name
+                _path = args[1];
+            }
+            else
+            {
+                sbErrors.AppendFormat("You must supply the path to the extension package or manifest");
+            }
+            _path = _path.ToLower().Replace("/", "\\");
+            if (_path.EndsWith(".dnn"))
+            {
+                _isManifest = true;
+            }
+            else if (_path.EndsWith(".zip"))
+            {
+                _isPackage = true;
+            }
+            else
+            {
+                sbErrors.AppendFormat("You must supply a path to a package (.zip) or a manifest (.dnn)");
+            }
+
+            _path = _path.TrimStart("~".ToCharArray()).TrimStart("/".ToCharArray());
+            if (_path.StartsWith("desktopmodules"))
+            {
+                _path = _path.Substring(15);
+            }
+            _path = Path.Combine(ApplicationMapPath, "desktopmodules/" + _path);
+            if (File.Exists(_path))
+            {
+            }
+            else
+            {
+                sbErrors.AppendFormat("Cannot find {0}", _path);
+            }
+
+            ValidationMessage = sbErrors.ToString();
+        }
+
+        public override ConsoleResultModel Run()
+        {
+
+            var res = "";
+            try
+            {
+                if (_isPackage)
                 {
-                    installer.InstallerInfo.Log.Logs.Clear();
-                    installer.Install();
-                    if (installer.IsValid)
-                    {
-                        res = string.Format("<strong>Successfully added {0}</strong>", Path);
-                        // Return installer.InstallerInfo.PackageID
-                    }
-                    else
-                    {
-                        return new ConsoleErrorResultModel("An error occurred while attempting to add the extension. Please see the DNN Event Viewer for details.");
-                    }
+                    res = InstallPackage(PortalSettings, User, _path);
                 }
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Exceptions.LogException(ex);
-            return new ConsoleErrorResultModel("An error occurred while attempting to add the extension. Please see the DNN Event Viewer for details.");
-        }
-        return new ConsoleResultModel(res) { IsHtml = true };
-    }
-
-    public string InstallPackage(PortalSettings portalSettings, UserInfo user, string filePath)
-    {
-        //Dim installResult = New InstallResultDto()
-        var fileName = System.IO.Path.GetFileName(Path);
-        string res = "";
-        try
-        {
-            using (FileStream stream = File.OpenRead(Path))
-            {
-                var installer = GetInstaller(stream, fileName, portalSettings.PortalId);
-
-                try
+                else if (_isManifest)
                 {
+                    var installer = new DotNetNuke.Services.Installer.Installer(_path, ApplicationMapPath, true);
                     if (installer.IsValid)
                     {
-                        //Reset Log
                         installer.InstallerInfo.Log.Logs.Clear();
-
-                        //Set the IgnnoreWhiteList flag
-                        installer.InstallerInfo.IgnoreWhiteList = true;
-
-                        //Set the Repair flag
-                        installer.InstallerInfo.RepairInstall = true;
-
-                        //Install
                         installer.Install();
-                        if (!installer.IsValid)
+                        if (installer.IsValid)
                         {
-                            res = "Install Error";
+                            res = $"<strong>Successfully added {_path}</strong>";
+                            // Return installer.InstallerInfo.PackageID
                         }
                         else
                         {
-                            using (StringWriter sw = new StringWriter())
-                            {
-                                installer.InstallerInfo.Log.GetLogsTable().RenderControl(new HtmlTextWriter(sw));
-                                res = sw.ToString();
-                            }
+                            return new ConsoleErrorResultModel("An error occurred while attempting to add the extension. Please see the DNN Event Viewer for details.");
                         }
                     }
-                    else
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return new ConsoleErrorResultModel("An error occurred while attempting to add the extension. Please see the DNN Event Viewer for details.");
+            }
+            return new ConsoleResultModel(res) { IsHtml = true };
+        }
+
+        public string InstallPackage(PortalSettings portalSettings, UserInfo user, string filePath)
+        {
+            //Dim installResult = New InstallResultDto()
+            var fileName = Path.GetFileName(_path);
+            string res;
+            try
+            {
+                using (var stream = File.OpenRead(_path))
+                {
+                    var installer = GetInstaller(stream, fileName, portalSettings.PortalId);
+
+                    try
                     {
-                        res = "Install Error";
+                        if (installer.IsValid)
+                        {
+                            //Reset Log
+                            installer.InstallerInfo.Log.Logs.Clear();
+
+                            //Set the IgnnoreWhiteList flag
+                            installer.InstallerInfo.IgnoreWhiteList = true;
+
+                            //Set the Repair flag
+                            installer.InstallerInfo.RepairInstall = true;
+
+                            //Install
+                            installer.Install();
+                            if (!installer.IsValid)
+                            {
+                                res = "Install Error";
+                            }
+                            else
+                            {
+                                using (var sw = new StringWriter())
+                                {
+                                    installer.InstallerInfo.Log.GetLogsTable().RenderControl(new HtmlTextWriter(sw));
+                                    res = sw.ToString();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            res = "Install Error";
+                        }
+                    }
+                    finally
+                    {
+                        DeleteTempInstallFiles(installer);
                     }
                 }
-                finally
+            }
+            catch (Exception ex)
+            {
+                res = "ZipCriticalError";
+            }
+            return res;
+        }
+
+        private static DotNetNuke.Services.Installer.Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null)
+        {
+            var installer = new DotNetNuke.Services.Installer.Installer(stream, ApplicationMapPath, false, false);
+            // We always assume we are installing from //Host/Extensions (in the previous releases)
+            // This will not work when we try to install a skin/container under a specific portal.
+            installer.InstallerInfo.PortalID = Null.NullInteger;
+            //Read the manifest
+            if (installer.InstallerInfo.ManifestFile != null)
+            {
+                installer.ReadManifest(true);
+            }
+            return installer;
+        }
+
+        private static void DeleteTempInstallFiles(DotNetNuke.Services.Installer.Installer installer)
+        {
+            try
+            {
+                var tempFolder = installer.TempInstallFolder;
+                if (!string.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
                 {
-                    DeleteTempInstallFiles(installer);
+                    DeleteFolderRecursive(tempFolder);
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            res = "ZipCriticalError";
-        }
-        return res;
-    }
-
-    private static DotNetNuke.Services.Installer.Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null)
-    {
-        var installer = new DotNetNuke.Services.Installer.Installer(stream, ApplicationMapPath, false, false);
-        // We always assume we are installing from //Host/Extensions (in the previous releases)
-        // This will not work when we try to install a skin/container under a specific portal.
-        installer.InstallerInfo.PortalID = Null.NullInteger;
-        //Read the manifest
-        if (installer.InstallerInfo.ManifestFile != null)
-        {
-            installer.ReadManifest(true);
-        }
-        return installer;
-    }
-
-    private static void DeleteTempInstallFiles(DotNetNuke.Services.Installer.Installer installer)
-    {
-        try
-        {
-            var tempFolder = installer.TempInstallFolder;
-            if (!string.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
+            catch (Exception ex)
             {
-                Globals.DeleteFolderRecursive(tempFolder);
+                //
             }
         }
-        catch (Exception ex)
-        {
-            //
-        }
     }
-}
 }

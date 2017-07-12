@@ -11,22 +11,22 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
-    [ConsoleCommand("new-role", "Creates a new DNN security roles in the portal.", new string[]{
+    [ConsoleCommand("new-role", "Creates a new DNN security roles in the portal.", new[]{
         "name",
         "description",
         "public",
         "autoassign"
     })]
-    public class NewRole : ConsoleCommandBase, IConsoleCommand
+    public class NewRole : ConsoleCommandBase
     {
 
-        private const string FLAG_IS_PUBLIC = "public";
-        private const string FLAG_AUTO_ASSIGN = "autoassign";
-        private const string FLAG_ROLE_NAME = "name";
-        private const string FLAG_DESCRIPTION = "description";
-        private const string FLAG_STATUS = "status";
+        private const string FlagIsPublic = "public";
+        private const string FlagAutoAssign = "autoassign";
+        private const string FlagRoleName = "name";
+        private const string FlagDescription = "description";
+        private const string FlagStatus = "status";
 
-        public string ValidationMessage { get; private set; }
+
         public string RoleName { get; private set; }
         public string Description { get; private set; }
         public bool? IsPublic { get; private set; }
@@ -34,21 +34,21 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
         public RoleStatus Status { get; private set; }
 
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_ROLE_NAME))
+            if (HasFlag(FlagRoleName))
             {
-                if (string.IsNullOrEmpty(Flag(FLAG_ROLE_NAME)))
+                if (string.IsNullOrEmpty(Flag(FlagRoleName)))
                 {
-                    sbErrors.AppendFormat("--{0} cannot be empty; ", FLAG_ROLE_NAME);
+                    sbErrors.AppendFormat("--{0} cannot be empty; ", FlagRoleName);
                 }
                 else
                 {
                     // non-empty roles flag.
-                    RoleName = Flag(FLAG_ROLE_NAME);
+                    RoleName = Flag(FlagRoleName);
                 }
             }
             else
@@ -62,49 +62,49 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
 
             if (string.IsNullOrEmpty(RoleName))
             {
-                sbErrors.AppendFormat("You must specify a name for the role as the first argument or by using the --{0} flag. " + "Names with spaces And special characters should be enclosed in double quotes.", FLAG_ROLE_NAME);
+                sbErrors.AppendFormat("You must specify a name for the role as the first argument or by using the --{0} flag. " + "Names with spaces And special characters should be enclosed in double quotes.", FlagRoleName);
             }
 
-            if (HasFlag(FLAG_DESCRIPTION))
+            if (HasFlag(FlagDescription))
             {
-                Description = Flag(FLAG_DESCRIPTION);
+                Description = Flag(FlagDescription);
             }
             if (Description == null)
                 Description = string.Empty;
 
-            if (HasFlag(FLAG_IS_PUBLIC))
+            if (HasFlag(FlagIsPublic))
             {
-                bool tmpPublic = false;
-                if (bool.TryParse(Flag(FLAG_IS_PUBLIC), out tmpPublic))
+                var tmpPublic = false;
+                if (bool.TryParse(Flag(FlagIsPublic), out tmpPublic))
                 {
                     IsPublic = tmpPublic;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the --{0} flag value '{1}'. Value should be True or False; ", FLAG_IS_PUBLIC, Flag(FLAG_IS_PUBLIC));
+                    sbErrors.AppendFormat("Unable to parse the --{0} flag value '{1}'. Value should be True or False; ", FlagIsPublic, Flag(FlagIsPublic));
                 }
             }
             if (!IsPublic.HasValue)
                 IsPublic = false;
 
-            if (HasFlag(FLAG_AUTO_ASSIGN))
+            if (HasFlag(FlagAutoAssign))
             {
-                bool tmpAutoAssign = false;
-                if (bool.TryParse(Flag(FLAG_AUTO_ASSIGN), out tmpAutoAssign))
+                var tmpAutoAssign = false;
+                if (bool.TryParse(Flag(FlagAutoAssign), out tmpAutoAssign))
                 {
                     AutoAssign = tmpAutoAssign;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the --{0} flag value '{1}'. Value should be True or False; ", FLAG_AUTO_ASSIGN, Flag(FLAG_AUTO_ASSIGN));
+                    sbErrors.AppendFormat("Unable to parse the --{0} flag value '{1}'. Value should be True or False; ", FlagAutoAssign, Flag(FlagAutoAssign));
                 }
             }
             if (!AutoAssign.HasValue)
                 AutoAssign = false;
 
-            if (HasFlag(FLAG_STATUS))
+            if (HasFlag(FlagStatus))
             {
-                string status = Flag(FLAG_STATUS).ToLower();
+                var status = Flag(FlagStatus).ToLower();
                 switch (status)
                 {
                     case "pending":
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                         Status = RoleStatus.Disabled;
                         break;
                     default:
-                        sbErrors.AppendFormat("Invalid value '{0}' passed for --{1}. Expecting 'pending', 'approved', or 'disabled'", Flag(FLAG_STATUS), FLAG_STATUS);
+                        sbErrors.AppendFormat("Invalid value '{0}' passed for --{1}. Expecting 'pending', 'approved', or 'disabled'", Flag(FlagStatus), FlagStatus);
                         break;
                 }
 
@@ -130,24 +130,20 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
             try
             {
-                List<RoleModel> lstResults = new List<RoleModel>();
+                var lstResults = new List<RoleModel>();
 
                 // only act if role doesn't yet exist
                 if (Prompt.Utilities.RoleExists(RoleName, PortalId))
                 {
-                    return new ConsoleErrorResultModel(string.Format("Cannot create role: A role with the name '{0}' already exists.", RoleName));
+                    return new ConsoleErrorResultModel(
+                        $"Cannot create role: A role with the name '{RoleName}' already exists.");
                 }
 
                 var newRole = Prompt.Utilities.CreateRole(RoleName, PortalId, Status, Description, (bool)IsPublic, (bool)AutoAssign);

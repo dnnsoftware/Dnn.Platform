@@ -10,7 +10,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
-    [ConsoleCommand("set-page", "Update page with new data", new string[]{
+    [ConsoleCommand("set-page", "Update page with new data", new[]{
         "id",
         "title",
         "name",
@@ -20,18 +20,18 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "keywords",
         "visible"
     })]
-    public class SetPage : ConsoleCommandBase, IConsoleCommand
+    public class SetPage : ConsoleCommandBase
     {
-        private const string FLAG_ID = "id";
-        private const string FLAG_TITLE = "title";
-        private const string FLAG_NAME = "name";
-        private const string FLAG_DESCRIPTION = "description";
-        private const string FLAG_KEYWORDS = "keywords";
-        private const string FLAG_VISIBLE = "visible";
-        private const string FLAG_URL = "url";
-        private const string FLAG_PARENTID = "parentid";
+        private const string FlagId = "id";
+        private const string FlagTitle = "title";
+        private const string FlagName = "name";
+        private const string FlagDescription = "description";
+        private const string FlagKeywords = "keywords";
+        private const string FlagVisible = "visible";
+        private const string FlagUrl = "url";
+        private const string FlagParentid = "parentid";
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public int? ParentId { get; private set; }
         public string Title { get; private set; }
@@ -42,17 +42,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public bool? Visible { get; private set; }
 
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
 
-            StringBuilder sbErrors = new StringBuilder();
-            if (HasFlag(FLAG_ID))
+            var sbErrors = new StringBuilder();
+            if (HasFlag(FlagId))
             {
-                int tempId = 0;
-                if (!int.TryParse(Flag(FLAG_ID), out tempId))
+                var tempId = 0;
+                if (!int.TryParse(Flag(FlagId), out tempId))
                 {
-                    sbErrors.AppendFormat("The --{0} flag's value must be a valid Page (Tab) ID; ", FLAG_ID);
+                    sbErrors.AppendFormat("The --{0} flag's value must be a valid Page (Tab) ID; ", FlagId);
                 }
                 else
                 {
@@ -61,28 +61,28 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
             else
             {
-                int tempId = 0;
+                var tempId = 0;
                 if (!int.TryParse(args[1], out tempId))
                 {
-                    PageId = base.TabId;
+                    PageId = TabId;
                 }
                 else
                 {
                     PageId = tempId;
                 }
             }
-            if (HasFlag(FLAG_PARENTID))
+            if (HasFlag(FlagParentid))
             {
-                int tempId = 0;
-                if (!int.TryParse(Flag(FLAG_PARENTID), out tempId))
+                var tempId = 0;
+                if (!int.TryParse(Flag(FlagParentid), out tempId))
                 {
-                    sbErrors.AppendFormat("The --{0} flag's value must be a valid Page ID; ", FLAG_PARENTID);
+                    sbErrors.AppendFormat("The --{0} flag's value must be a valid Page ID; ", FlagParentid);
                 }
                 else
                 {
                     if (tempId == PageId)
                     {
-                        sbErrors.AppendFormat("The --{0} flag value cannot be the same as the page you are trying to update; ", FLAG_PARENTID);
+                        sbErrors.AppendFormat("The --{0} flag value cannot be the same as the page you are trying to update; ", FlagParentid);
                     }
                     else
                     {
@@ -90,22 +90,22 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     }
                 }
             }
-            if (HasFlag(FLAG_TITLE))
-                Title = Flag(FLAG_TITLE);
-            if (HasFlag(FLAG_NAME))
-                Name = Flag(FLAG_NAME);
-            if (HasFlag(FLAG_URL))
-                Url = Flag(FLAG_URL);
-            if (HasFlag(FLAG_DESCRIPTION))
-                Description = Flag(FLAG_DESCRIPTION);
-            if (HasFlag(FLAG_KEYWORDS))
-                Keywords = Flag(FLAG_KEYWORDS);
-            if (HasFlag(FLAG_VISIBLE))
+            if (HasFlag(FlagTitle))
+                Title = Flag(FlagTitle);
+            if (HasFlag(FlagName))
+                Name = Flag(FlagName);
+            if (HasFlag(FlagUrl))
+                Url = Flag(FlagUrl);
+            if (HasFlag(FlagDescription))
+                Description = Flag(FlagDescription);
+            if (HasFlag(FlagKeywords))
+                Keywords = Flag(FlagKeywords);
+            if (HasFlag(FlagVisible))
             {
-                bool tempVisible = false;
-                if (!bool.TryParse(Flag(FLAG_VISIBLE), out tempVisible))
+                var tempVisible = false;
+                if (!bool.TryParse(Flag(FlagVisible), out tempVisible))
                 {
-                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FLAG_VISIBLE);
+                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FlagVisible);
                 }
                 else
                 {
@@ -113,21 +113,16 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 }
             }
 
-            if (Title == null && Name == null && Description == null && Keywords == null && Url == null && (!ParentId.HasValue) && (!Visible.HasValue))
+            if (Title == null && Name == null && Description == null && Keywords == null && Url == null && !ParentId.HasValue && !Visible.HasValue)
             {
-                sbErrors.AppendFormat("Nothing to Update! Tell me what to update with flags like --{0} --{1} --{2} --{3}, etc.", FLAG_TITLE, FLAG_DESCRIPTION, FLAG_NAME, FLAG_VISIBLE);
+                sbErrors.AppendFormat("Nothing to Update! Tell me what to update with flags like --{0} --{1} --{2} --{3}, etc.", FlagTitle, FlagDescription, FlagName, FlagVisible);
             }
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            StringBuilder sbMessage = new StringBuilder();
+            var sbMessage = new StringBuilder();
             try
             {
                 var tab = TabController.Instance.GetTab((int)PageId, PortalId);

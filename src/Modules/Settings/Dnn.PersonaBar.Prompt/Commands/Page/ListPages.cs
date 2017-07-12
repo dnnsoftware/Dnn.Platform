@@ -11,7 +11,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
-    [ConsoleCommand("list-pages", "Retrieves a list of pages based on the specified criteria", new string[]{
+    [ConsoleCommand("list-pages", "Retrieves a list of pages based on the specified criteria", new[]{
         "parentid",
         "deleted",
         "name",
@@ -19,17 +19,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "path",
         "skin"
     })]
-    public class ListPages : ConsoleCommandBase, IConsoleCommand
+    public class ListPages : ConsoleCommandBase
     {
-        private const string FLAG_PARENTID = "parentid";
-        private const string FLAG_DELETED = "deleted";
-        private const string FLAG_NAME = "name";
-        private const string FLAG_TITLE = "title";
-        private const string FLAG_PATH = "path";
-        private const string FLAG_SKIN = "skin";
-        private const string FLAG_VISIBLE = "visible";
+        private const string FlagParentid = "parentid";
+        private const string FlagDeleted = "deleted";
+        private const string FlagName = "name";
+        private const string FlagTitle = "title";
+        private const string FlagPath = "path";
+        private const string FlagSkin = "skin";
+        private const string FlagVisible = "visible";
 
-        public string ValidationMessage { get; private set; }
+
         public int? ParentId { get; private set; }
         public bool? Deleted { get; private set; }
         public string PageName { get; private set; }
@@ -38,93 +38,88 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public string PageSkin { get; private set; }
         public bool? PageVisible { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_PARENTID))
+            if (HasFlag(FlagParentid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PARENTID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagParentid), out tmpId))
                 {
                     ParentId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When specifying --{0}, you must supply a valid numeric Page (Tab) ID", FLAG_PARENTID);
+                    sbErrors.AppendFormat("When specifying --{0}, you must supply a valid numeric Page (Tab) ID", FlagParentid);
                 }
             }
             else if (args.Length > 1 && !IsFlag(args[1]))
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (int.TryParse(args[1], out tmpId))
                 {
                     ParentId = tmpId;
                 }
             }
 
-            if (HasFlag(FLAG_DELETED))
+            if (HasFlag(FlagDeleted))
             {
                 // if flag is specified but has no value, default to it being true
-                if (string.IsNullOrEmpty(Flag(FLAG_DELETED)))
+                if (string.IsNullOrEmpty(Flag(FlagDeleted)))
                 {
                     Deleted = true;
                 }
                 else
                 {
-                    bool tmpDeleted = false;
-                    if (bool.TryParse(Flag(FLAG_DELETED), out tmpDeleted))
+                    var tmpDeleted = false;
+                    if (bool.TryParse(Flag(FlagDeleted), out tmpDeleted))
                     {
                         Deleted = tmpDeleted;
                     }
                     else
                     {
-                        sbErrors.AppendFormat("When specifying the --{0} flag, you must pass a true or false value or leave it empty (to default to true)", FLAG_DELETED);
+                        sbErrors.AppendFormat("When specifying the --{0} flag, you must pass a true or false value or leave it empty (to default to true)", FlagDeleted);
                     }
                 }
             }
 
-            if (HasFlag(FLAG_VISIBLE))
+            if (HasFlag(FlagVisible))
             {
-                bool tmp = false;
-                if (bool.TryParse(Flag(FLAG_VISIBLE), out tmp))
+                var tmp = false;
+                if (bool.TryParse(Flag(FlagVisible), out tmp))
                 {
                     PageVisible = tmp;
                 }
-                else if (Flag(FLAG_VISIBLE, null) == null)
+                else if (Flag(FlagVisible, null) == null)
                 {
                     // default to true
                     PageVisible = true;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When specifying the --{0} flag, you must pass a true or false value or leave it empty (to default to true)", FLAG_VISIBLE);
+                    sbErrors.AppendFormat("When specifying the --{0} flag, you must pass a true or false value or leave it empty (to default to true)", FlagVisible);
                 }
             }
 
-            if (HasFlag(FLAG_NAME))
-                PageName = Flag(FLAG_NAME);
-            if (HasFlag(FLAG_TITLE))
-                PageTitle = Flag(FLAG_TITLE);
-            if (HasFlag(FLAG_PATH))
-                PagePath = Flag(FLAG_PATH);
-            if (HasFlag(FLAG_SKIN))
-                PageSkin = Flag(FLAG_SKIN);
+            if (HasFlag(FlagName))
+                PageName = Flag(FlagName);
+            if (HasFlag(FlagTitle))
+                PageTitle = Flag(FlagTitle);
+            if (HasFlag(FlagPath))
+                PagePath = Flag(FlagPath);
+            if (HasFlag(FlagSkin))
+                PageSkin = Flag(FlagSkin);
 
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            TabController tc = new TabController();
-            List<PageModelBase> lst = new List<PageModelBase>();
-            List<PageModelBase> lstOut = new List<PageModelBase>();
+            var tc = new TabController();
+            var lst = new List<PageModelBase>();
+            var lstOut = new List<PageModelBase>();
 
             if (ParentId.HasValue)
             {
@@ -132,8 +127,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
             else
             {
-                TabCollection tabs = tc.GetTabsByPortal(PortalId);
-                foreach (KeyValuePair<int, TabInfo> kvp in tabs)
+                var tabs = tc.GetTabsByPortal(PortalId);
+                foreach (var kvp in tabs)
                 {
                     lst.Add(new PageModelBase(kvp.Value));
                 }
@@ -145,20 +140,20 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 var query = from page in lst
                             where page.IsDeleted == Deleted
                             select page;
-                List<PageModelBase> filteredList = query.ToList();
+                var filteredList = query.ToList();
                 lst = filteredList;
             }
 
 
-            bool bSearchTitle = false;
+            var bSearchTitle = false;
             string searchTitle = null;
-            bool bSearchName = false;
+            var bSearchName = false;
             string searchName = null;
-            bool bSearchPath = false;
+            var bSearchPath = false;
             string searchPath = null;
-            bool bSearchSkin = false;
+            var bSearchSkin = false;
             string searchSkin = null;
-            bool bMatchVisibility = PageVisible.HasValue;
+            var bMatchVisibility = PageVisible.HasValue;
 
             if (!string.IsNullOrEmpty(PageName))
             {
@@ -183,8 +178,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
             if (bSearchTitle || bSearchName || bSearchPath || bSearchSkin || bMatchVisibility)
             {
-                bool bIsMatch = false;
-                foreach (PageModelBase pim in lst)
+                var bIsMatch = false;
+                foreach (var pim in lst)
                 {
                     bIsMatch = true;
                     if (bSearchTitle)
@@ -216,10 +211,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 lstOut = lst;
             }
 
-            var msg = string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""));
-            return new ConsoleResultModel(msg) {
+            var msg = $"{lstOut.Count} page{(lstOut.Count != 1 ? "s" : "")} found";
+            return new ConsoleResultModel(msg)
+            {
                 Data = lstOut,
-                FieldOrder = new string[] {
+                FieldOrder = new[] {
                     "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted" }
             };
         }
@@ -227,9 +223,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         private List<PageModelBase> GetPagesByParentId(int parentId)
         {
             var lstTabs = TabController.GetTabsByParent(parentId, PortalId);
-            List<PageModelBase> lstOut = new List<PageModelBase>();
+            var lstOut = new List<PageModelBase>();
 
-            foreach (TabInfo tab in lstTabs)
+            foreach (var tab in lstTabs)
             {
                 lstOut.Add(new PageModelBase(tab));
             }

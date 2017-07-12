@@ -18,46 +18,40 @@ namespace Dnn.PersonaBar.Prompt.Repositories
         }
         public SortedDictionary<string, Command> GetCommands()
         {
-            return DotNetNuke.Common.Utilities.DataCache.GetCachedData<SortedDictionary<string, Command>>(new DotNetNuke.Common.Utilities.CacheItemArgs("PromptCommands", CacheItemPriority.Default), c => GetCommandsInternal());
+            return DotNetNuke.Common.Utilities.DataCache.GetCachedData<SortedDictionary<string, Command>>(new DotNetNuke.Common.Utilities.CacheItemArgs("DnnPromptCommands", CacheItemPriority.Default), c => GetCommandsInternal());
         }
         private SortedDictionary<string, Command> GetCommandsInternal()
         {
-            var res = new SortedDictionary<string, Command>();
+            var commands = new SortedDictionary<string, Command>();
             var typeLocator = new TypeLocator();
-            var types = typeLocator.GetAllMatchingTypes(
+            var allCommandTypes = typeLocator.GetAllMatchingTypes(
                 t => t != null &&
                      t.IsClass &&
                      !t.IsAbstract &&
                      t.IsVisible &&
                      typeof(ConsoleCommandBase).IsAssignableFrom(t));
-            foreach (var cmd in types)
+            foreach (var cmd in allCommandTypes)
             {
                 var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault();
-                if (attr != null)
+                if (attr == null) continue;
+                var assemblyName = cmd.Assembly.GetName();
+                var version = assemblyName.Version.ToString();
+                var name = assemblyName.Name;
+                var commandAttribute = (ConsoleCommandAttribute)attr;
+                var key = commandAttribute.NameSpace == "" ? commandAttribute.Name.ToUpper() :
+                    $"{commandAttribute.NameSpace.ToUpper()}.{commandAttribute.Name.ToUpper()}";
+                commands.Add(key, new Command()
                 {
-                    var assy = cmd.Assembly.GetName();
-                    var version = assy.Version.ToString();
-                    var assyName = assy.Name;
-                    var cmdAttr = (ConsoleCommandAttribute)attr;
-                    var key = cmdAttr.NameSpace == "" ? cmdAttr.Name.ToUpper() : string.Format("{0}.{1}", cmdAttr.NameSpace.ToUpper(), cmdAttr.Name.ToUpper());
-                    res.Add(key, new Command()
-                    {
-                        AssemblyName = assyName,
-                        CommandAttribute = cmdAttr,
-                        CommandType = cmd,
-                        Description = cmdAttr.Description,
-                        Key = key,
-                        Name = cmdAttr.Name,
-                        NameSpace = cmdAttr.NameSpace,
-                        Version = version
-                    });
-                }
+                    AssemblyName = name,
+                    CommandType = cmd,
+                    Description = commandAttribute.Description,
+                    Key = key,
+                    Name = commandAttribute.Name,
+                    NameSpace = commandAttribute.NameSpace,
+                    Version = version
+                });
             }
-            return res;
+            return commands;
         }
-    }
-    public interface ICommandRepository
-    {
-        SortedDictionary<string, Command> GetCommands();
     }
 }

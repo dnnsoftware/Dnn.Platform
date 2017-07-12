@@ -9,32 +9,32 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
-    [ConsoleCommand("get-page", "Retrieves information about the specified or current page", new string[]{
+    [ConsoleCommand("get-page", "Retrieves information about the specified or current page", new[]{
         "id",
         "parentid",
         "name"
     })]
-    public class GetPage : ConsoleCommandBase, IConsoleCommand
+    public class GetPage : ConsoleCommandBase
     {
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public string PageName { get; private set; }
         public int? ParentId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
             // default usage: return current page if nothing else specified
             if (args.Length == 1)
             {
-                PageId = base.TabId;
+                PageId = TabId;
             }
             else if (args.Length == 2)
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (!int.TryParse(args[1], out tmpId))
                 {
                     sbErrors.Append("No valid Page ID specified; ");
@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
             else
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (HasFlag("id"))
                 {
                     if (!int.TryParse(Flag("id"), out tmpId))
@@ -62,7 +62,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
             if (HasFlag("parentid"))
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (int.TryParse(Flag("parentid"), out tmpId))
                     ParentId = tmpId;
             }
@@ -76,15 +76,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            TabController tc = new TabController();
-            List<PageModel> lst = new List<PageModel>();
+            var tc = new TabController();
+            var lst = new List<PageModel>();
 
             if (PageId.HasValue)
             {
@@ -111,7 +106,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     lst.Add(new PageModel(tab));
             }
 
-            return new ConsoleResultModel(string.Format("{0} page{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} page{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
         }
 
 

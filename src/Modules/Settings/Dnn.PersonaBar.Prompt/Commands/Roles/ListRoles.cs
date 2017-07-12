@@ -3,45 +3,27 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
-    [ConsoleCommand("list-roles", "Retrieves a list of DNN security roles for this portal", new string[] { })]
-    public class ListRoles : ConsoleCommandBase, IConsoleCommand
+    [ConsoleCommand("list-roles", "Retrieves a list of DNN security roles for this portal")]
+    public class ListRoles : ConsoleCommandBase
     {
-
-        public string ValidationMessage { get; }
-
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override ConsoleResultModel Run()
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
-        }
-
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            RoleController rc = new RoleController();
-            List<RoleModelBase> lst = new List<RoleModelBase>();
+            var rc = new RoleController();
+            var lst = new List<RoleModelBase>();
 
             var results = rc.GetRoles(PortalId);
             if (results != null)
             {
-                foreach (RoleInfo role in results)
+                foreach (var role in results)
                 {
                     lst.Add(new RoleModelBase(role));
                 }
             }
-
-            return new ConsoleResultModel(string.Format("{0} role{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} role{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
         }
-
-
     }
 }

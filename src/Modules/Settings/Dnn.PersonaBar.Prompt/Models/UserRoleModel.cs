@@ -4,26 +4,25 @@ namespace Dnn.PersonaBar.Prompt.Models
 {
     public class UserRoleModel
     {
-        public int RoleId;
-        public string RoleName;
-        public bool IsPublic;
-        public int PortalId;
-        public int UserRoleId;
-        public string Start;
-
-        public string End;
-        public static UserRoleModel FromDnnUserRoleInfo(DotNetNuke.Entities.Users.UserRoleInfo ri)
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+        public bool IsPublic { get; set; }
+        public int PortalId { get; set; }
+        public int UserRoleId { get; set; }
+        public string Start { get; set; }
+        public string End { get; set; }
+        public static UserRoleModel FromDnnUserRoleInfo(DotNetNuke.Entities.Users.UserRoleInfo userRoleInfo)
         {
-            UserRoleModel urm = new UserRoleModel
+            var userRoleModel = new UserRoleModel
             {
-                RoleId = ri.RoleID,
-                RoleName = ri.RoleName,
-                IsPublic = ri.IsPublic,
-                PortalId = ri.PortalID,
-                Start = ri.EffectiveDate.ToPromptShortDateString(),
-                End = ri.ExpiryDate.ToPromptShortDateString()
+                RoleId = userRoleInfo.RoleID,
+                RoleName = userRoleInfo.RoleName,
+                IsPublic = userRoleInfo.IsPublic,
+                PortalId = userRoleInfo.PortalID,
+                Start = userRoleInfo.EffectiveDate.ToPromptShortDateString(),
+                End = userRoleInfo.ExpiryDate.ToPromptShortDateString()
             };
-            return urm;
+            return userRoleModel;
         }
     }
 }

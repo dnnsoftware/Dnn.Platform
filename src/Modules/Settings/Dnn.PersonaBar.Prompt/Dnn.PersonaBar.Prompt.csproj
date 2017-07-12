@@ -178,9 +178,9 @@
     <Compile Include="Models\UserModelBase.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
     <Compile Include="Repositories\CommandRepository.cs" />
+    <Compile Include="Repositories\ICommandRepository.cs" />
     <Compile Include="Services\CommandController.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="VersionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\Prompt.css" />

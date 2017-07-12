@@ -10,7 +10,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
-    [ConsoleCommand("new-page", "Create a new page in the portal", new string[]{
+    [ConsoleCommand("new-page", "Create a new page in the portal", new[]{
         "title",
         "name",
         "url",
@@ -19,17 +19,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "keywords",
         "visible"
     })]
-    public class NewPage : ConsoleCommandBase, IConsoleCommand
+    public class NewPage : ConsoleCommandBase
     {
-        private const string FLAG_PARENTID = "parentid";
-        private const string FLAG_TITLE = "title";
-        private const string FLAG_NAME = "name";
-        private const string FLAG_URL = "url";
-        private const string FLAG_DESCRIPTION = "description";
-        private const string FLAG_KEYWORDS = "keywords";
-        private const string FLAG_VISIBLE = "visible";
+        private const string FlagParentid = "parentid";
+        private const string FlagTitle = "title";
+        private const string FlagName = "name";
+        private const string FlagUrl = "url";
+        private const string FlagDescription = "description";
+        private const string FlagKeywords = "keywords";
+        private const string FlagVisible = "visible";
 
-        public string ValidationMessage { get; private set; }
+
         public string Title { get; private set; }
         public string Name { get; private set; }
         public string Url { get; private set; }
@@ -42,35 +42,35 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         private TabInfo ParentTab { get; set; }
 
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
 
-            CurrentTab = (new TabController()).GetTab(activeTabId, portalSettings.PortalId);
+            CurrentTab = new TabController().GetTab(activeTabId, portalSettings.PortalId);
 
-            StringBuilder sbErrors = new StringBuilder();
-            if (HasFlag(FLAG_PARENTID))
+            var sbErrors = new StringBuilder();
+            if (HasFlag(FlagParentid))
             {
-                int tempId = 0;
-                if (int.TryParse(Flag(FLAG_PARENTID), out tempId))
+                var tempId = 0;
+                if (int.TryParse(Flag(FlagParentid), out tempId))
                 {
                     ParentId = tempId;
                 }
-                else if (Flag(FLAG_PARENTID) == "me")
+                else if (Flag(FlagParentid) == "me")
                 {
                     ParentId = activeTabId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag's value must be a valid Page (Tab) ID; ", FLAG_PARENTID);
+                    sbErrors.AppendFormat("The --{0} flag's value must be a valid Page (Tab) ID; ", FlagParentid);
                 }
             }
 
-            if (HasFlag(FLAG_TITLE))
-                Title = Flag(FLAG_TITLE);
-            if (HasFlag(FLAG_NAME))
+            if (HasFlag(FlagTitle))
+                Title = Flag(FlagTitle);
+            if (HasFlag(FlagName))
             {
-                Name = Flag(FLAG_NAME);
+                Name = Flag(FlagName);
             }
             else
             {
@@ -81,18 +81,18 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 }
             }
 
-            if (HasFlag(FLAG_URL))
-                Url = Flag(FLAG_URL);
-            if (HasFlag(FLAG_DESCRIPTION))
-                Description = Flag(FLAG_DESCRIPTION);
-            if (HasFlag(FLAG_KEYWORDS))
-                Keywords = Flag(FLAG_KEYWORDS);
-            if (HasFlag(FLAG_VISIBLE))
+            if (HasFlag(FlagUrl))
+                Url = Flag(FlagUrl);
+            if (HasFlag(FlagDescription))
+                Description = Flag(FlagDescription);
+            if (HasFlag(FlagKeywords))
+                Keywords = Flag(FlagKeywords);
+            if (HasFlag(FlagVisible))
             {
-                bool tempVisible = false;
-                if (!bool.TryParse(Flag(FLAG_VISIBLE), out tempVisible))
+                var tempVisible = false;
+                if (!bool.TryParse(Flag(FlagVisible), out tempVisible))
                 {
-                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FLAG_VISIBLE);
+                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FlagVisible);
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             // Check for required fields here
             if (string.IsNullOrEmpty(Name))
             {
-                sbErrors.AppendFormat("--{0} is required", FLAG_NAME);
+                sbErrors.AppendFormat("--{0} is required", FlagName);
             }
 
             // validate that parent ID is a valid ID, if it has been passed
@@ -116,24 +116,19 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 var testTab = TabController.Instance.GetTab((int)ParentId, PortalId);
                 if (testTab == null)
                 {
-                    sbErrors.AppendFormat("Unable to find page specified for --{0} '{1}'", FLAG_PARENTID, ParentId);
+                    sbErrors.AppendFormat("Unable to find page specified for --{0} '{1}'", FlagParentid, ParentId);
                 }
             }
 
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            StringBuilder sbMessage = new StringBuilder();
+            var sbMessage = new StringBuilder();
             try
             {
-                TabInfo tab = new TabInfo();
+                var tab = new TabInfo();
                 tab.TabName = Name;
                 tab.PortalID = PortalId;
                 if (!string.IsNullOrEmpty(Title))
@@ -152,7 +147,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 {
                     tab.ParentId = CurrentTab.ParentId;
                 }
-                ParentTab = (new TabController()).GetTab(tab.ParentId, PortalId);
+                ParentTab = new TabController().GetTab(tab.ParentId, PortalId);
                 if (ParentTab != null)
                 {
                     tab.TabPermissions.AddRange(ParentTab.TabPermissions);
@@ -169,7 +164,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     var addedTab = TabController.Instance.GetTab(newTabId, PortalId);
                     if (addedTab == null)
                     {
-                        return new ConsoleErrorResultModel(string.Format("Unable to retrieve newly created page with ID of '{0}'", newTabId));
+                        return new ConsoleErrorResultModel(
+                            $"Unable to retrieve newly created page with ID of '{newTabId}'");
                     }
                     lstResults.Add(new PageModel(addedTab));
                 }

@@ -10,28 +10,28 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
-    [ConsoleCommand("purge-page", "Permanently deletes a page from the DNN Recycle Bin", new string[]{
+    [ConsoleCommand("purge-page", "Permanently deletes a page from the DNN Recycle Bin", new[]{
         "id",
         "parentid"
     })]
-    public class PurgePage : ConsoleCommandBase, IConsoleCommand
+    public class PurgePage : ConsoleCommandBase
     {
 
-        private const string FLAG_ID = "id";
-        private const string FLAG_PARENTID = "parentid";
+        private const string FlagId = "id";
+        private const string FlagParentid = "parentid";
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public int? ParentId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
             if (args.Length == 2)
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (!int.TryParse(args[1], out tmpId))
                 {
                     sbErrors.Append("No valid Page ID specified; ");
@@ -43,10 +43,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
             else
             {
-                int tmpId = 0;
-                if (HasFlag(FLAG_ID))
+                var tmpId = 0;
+                if (HasFlag(FlagId))
                 {
-                    if (!int.TryParse(Flag(FLAG_ID), out tmpId))
+                    if (!int.TryParse(Flag(FlagId), out tmpId))
                     {
                         sbErrors.Append("You must specify a valid number for Page ID; ");
                     }
@@ -57,10 +57,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 }
             }
 
-            if (HasFlag(FLAG_PARENTID))
+            if (HasFlag(FlagParentid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PARENTID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagParentid), out tmpId))
                 {
                     if (tmpId == -1 || tmpId > 0)
                     {
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     }
                     else
                     {
-                        sbErrors.AppendFormat("--{0} must be greater than zero (0) or -1", FLAG_PARENTID);
+                        sbErrors.AppendFormat("--{0} must be greater than zero (0) or -1", FlagParentid);
                     }
                 }
             }
@@ -80,16 +80,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            TabController tc = new TabController();
-            List<PageModel> lst = new List<PageModel>();
-            List<TabInfo> tabs = new List<TabInfo>();
+            var tc = new TabController();
+            var lst = new List<PageModel>();
+            var tabs = new List<TabInfo>();
 
             if (PageId.HasValue)
             {
@@ -106,10 +101,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
 
             // hard-delete deleted tabs only
-            StringBuilder sbResults = new StringBuilder();
+            var sbResults = new StringBuilder();
             if (tabs.Count > 0)
             {
-                foreach (TabInfo tab in tabs)
+                foreach (var tab in tabs)
                 {
                     if (tab.IsDeleted)
                     {

@@ -7,7 +7,7 @@ using System;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Client
 {
-    [ConsoleCommand("exit", "Exits console screen", new string[] { })]
+    [ConsoleCommand("exit", "Exits console screen")]
     public class Exit : IConsoleCommand
     {
 

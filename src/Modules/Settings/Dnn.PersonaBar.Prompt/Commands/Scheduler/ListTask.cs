@@ -11,42 +11,42 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
 {
-    [ConsoleCommand("list-tasks", "Retrieves a list of scheduled tasks", new string[]{
+    [ConsoleCommand("list-tasks", "Retrieves a list of scheduled tasks", new[]{
         "enabled",
         "name"
     })]
-    public class ListTasks : ConsoleCommandBase, IConsoleCommand
+    public class ListTasks : ConsoleCommandBase
     {
-        private const string FLAG_ENABLED = "enabled";
-        private const string FLAG_NAME = "name";
+        private const string FlagEnabled = "enabled";
+        private const string FlagName = "name";
 
-        public string ValidationMessage { get; private set; }
+
         public bool? Enabled { get; private set; }
         public string TaskName { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
-            bool bFirstArgProcessed = false;
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
+            var bFirstArgProcessed = false;
 
-            if (HasFlag(FLAG_ENABLED))
+            if (HasFlag(FlagEnabled))
             {
-                bool tmpEnabled = false;
-                if (bool.TryParse(Flag(FLAG_ENABLED), out tmpEnabled))
+                var tmpEnabled = false;
+                if (bool.TryParse(Flag(FlagEnabled), out tmpEnabled))
                 {
                     Enabled = tmpEnabled;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When specified, the --{0} flag must be True or False; ", FLAG_ENABLED);
+                    sbErrors.AppendFormat("When specified, the --{0} flag must be True or False; ", FlagEnabled);
                 }
             }
             else if (args.Length >= 2 && !IsFlag(args[1]))
             {
                 // if the Enabled flag isn't used but the first argument is a boolean, assume then
                 // user is passing Enabled as the first argument
-                bool tmpEnabled = false;
+                var tmpEnabled = false;
                 if (bool.TryParse(args[1], out tmpEnabled))
                 {
                     Enabled = tmpEnabled;
@@ -55,12 +55,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
                 }
             }
 
-            if (HasFlag(FLAG_NAME))
+            if (HasFlag(FlagName))
             {
-                TaskName = Flag(FLAG_NAME);
+                TaskName = Flag(FlagName);
                 if (string.IsNullOrEmpty(TaskName))
                 {
-                    sbErrors.AppendFormat("When specified, the --{0} flag cannot be empty; ", FLAG_NAME);
+                    sbErrors.AppendFormat("When specified, the --{0} flag cannot be empty; ", FlagName);
                     TaskName = null;
                 }
             }
@@ -75,15 +75,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             var lstSchedule = SchedulingController.GetSchedule();
-            List<TaskModelBase> lst = new List<TaskModelBase>();
+            var lst = new List<TaskModelBase>();
 
             if (!string.IsNullOrEmpty(TaskName))
             {
@@ -91,7 +86,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
                 var query = from task in lstSchedule
                             where Regex.Match(task.FriendlyName, search, RegexOptions.IgnoreCase).Success
                             select task;
-                foreach (ScheduleItem task in query)
+                foreach (var task in query)
                 {
                     if (!Enabled.HasValue || Enabled == task.Enabled)
                     {
@@ -101,7 +96,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             }
             else
             {
-                foreach (ScheduleItem task in lstSchedule)
+                foreach (var task in lstSchedule)
                 {
                     // By default, if Enabled is not specified, return all scheduled tasks.
                     if (!Enabled.HasValue || (Enabled == task.Enabled))
@@ -112,7 +107,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             }
 
 
-            return new ConsoleResultModel(string.Format("{0} task{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} task{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
         }
 
 

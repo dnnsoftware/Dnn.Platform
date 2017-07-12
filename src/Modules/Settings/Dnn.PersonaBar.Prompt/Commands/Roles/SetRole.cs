@@ -10,22 +10,22 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
-    [ConsoleCommand("set-role", "Update a DNN security role with new data", new string[]{
+    [ConsoleCommand("set-role", "Update a DNN security role with new data", new[]{
         "id",
         "name",
         "description",
         "public"
     })]
-    public class SetRole : ConsoleCommandBase, IConsoleCommand
+    public class SetRole : ConsoleCommandBase
     {
 
-        private const string FLAG_ID = "id";
-        private const string FLAG_IS_PUBLIC = "public";
-        private const string FLAG_AUTO_ASSIGN = "autoassign";
-        private const string FLAG_ROLE_NAME = "name";
-        private const string FLAG_DESCRIPTION = "description";
+        private const string FlagId = "id";
+        private const string FlagIsPublic = "public";
+        private const string FlagAutoAssign = "autoassign";
+        private const string FlagRoleName = "name";
+        private const string FlagDescription = "description";
 
-        public string ValidationMessage { get; private set; }
+
         public int? RoleId { get; private set; }
         public string RoleName { get; private set; }
         public string Description { get; private set; }
@@ -33,17 +33,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
         public bool? AutoAssign { get; private set; }
 
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
 
-            StringBuilder sbErrors = new StringBuilder();
-            if (HasFlag(FLAG_ID))
+            var sbErrors = new StringBuilder();
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (!int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (!int.TryParse(Flag(FlagId), out tmpId))
                 {
-                    sbErrors.AppendFormat("The --{0} flag's value must be a valid numeric Role ID; ", FLAG_ID);
+                    sbErrors.AppendFormat("The --{0} flag's value must be a valid numeric Role ID; ", FlagId);
                 }
                 else
                 {
@@ -52,10 +52,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
             }
             else
             {
-                int tempId = 0;
+                var tempId = 0;
                 if (!int.TryParse(args[1], out tempId))
                 {
-                    sbErrors.AppendFormat("No valid Role ID was passed. Pass it using the --{0} flag or as the first argument; ", FLAG_ID);
+                    sbErrors.AppendFormat("No valid Role ID was passed. Pass it using the --{0} flag or as the first argument; ", FlagId);
                 }
                 else
                 {
@@ -63,17 +63,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                 }
             }
 
-            if (HasFlag(FLAG_ROLE_NAME))
-                RoleName = Flag(FLAG_ROLE_NAME);
-            if (HasFlag(FLAG_DESCRIPTION))
-                Description = Flag(FLAG_DESCRIPTION);
+            if (HasFlag(FlagRoleName))
+                RoleName = Flag(FlagRoleName);
+            if (HasFlag(FlagDescription))
+                Description = Flag(FlagDescription);
 
-            if (HasFlag(FLAG_IS_PUBLIC))
+            if (HasFlag(FlagIsPublic))
             {
-                bool tmpPublic = false;
-                if (!bool.TryParse(Flag(FLAG_IS_PUBLIC), out tmpPublic))
+                var tmpPublic = false;
+                if (!bool.TryParse(Flag(FlagIsPublic), out tmpPublic))
                 {
-                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FLAG_IS_PUBLIC);
+                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FlagIsPublic);
                 }
                 else
                 {
@@ -81,12 +81,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                 }
             }
 
-            if (HasFlag(FLAG_AUTO_ASSIGN))
+            if (HasFlag(FlagAutoAssign))
             {
-                bool tmpAuto = false;
-                if (!bool.TryParse(Flag(FLAG_AUTO_ASSIGN), out tmpAuto))
+                var tmpAuto = false;
+                if (!bool.TryParse(Flag(FlagAutoAssign), out tmpAuto))
                 {
-                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FLAG_AUTO_ASSIGN);
+                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FlagAutoAssign);
                 }
                 else
                 {
@@ -94,27 +94,22 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                 }
             }
 
-            if (RoleName == null && Description == null && (!IsPublic.HasValue) && (!AutoAssign.HasValue))
+            if (RoleName == null && Description == null && !IsPublic.HasValue && !AutoAssign.HasValue)
             {
-                sbErrors.AppendFormat("Nothing to Update! Tell me what to update with flags like --{0} --{1} --{2} --{3}, etc.", FLAG_ROLE_NAME, FLAG_DESCRIPTION, FLAG_IS_PUBLIC, FLAG_AUTO_ASSIGN);
+                sbErrors.AppendFormat("Nothing to Update! Tell me what to update with flags like --{0} --{1} --{2} --{3}, etc.", FlagRoleName, FlagDescription, FlagIsPublic, FlagAutoAssign);
             }
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            StringBuilder sbMessage = new StringBuilder();
+            var sbMessage = new StringBuilder();
             try
             {
                 var role = Prompt.Utilities.GetRoleById((int)RoleId, PortalId);
                 if (role == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format("Unable to find a role with the ID of '{0}'", RoleId));
+                    return new ConsoleErrorResultModel($"Unable to find a role with the ID of '{RoleId}'");
                 }
 
                 // Do not modify any system roles

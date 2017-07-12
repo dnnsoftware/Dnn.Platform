@@ -11,20 +11,9 @@ namespace Dnn.PersonaBar.Prompt.Models
         public string AdminContainer { get; set; }
 
         #region Command Links
-        public string __PageCount
-        {
-            get
-            {
-                return "list-pages";
-            }
-        }
-        public string __UserCount
-        {
-            get
-            {
-                return "list-users";
-            }
-        }
+        public string __PageCount => "list-pages";
+
+        public string __UserCount => "list-users";
 
         #endregion
 
@@ -35,7 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public PortalModel(PortalInfo portal): base(portal)
         {
             // get portal settings for specified portal
-            PortalSettings ps = new PortalSettings(portal);
+            var ps = new PortalSettings(portal);
             CdfVersion = ps.CdfVersion;
             SiteTheme = Utilities.FormatSkinName(ps.DefaultPortalSkin);
             AdminTheme = Utilities.FormatSkinName(ps.DefaultAdminSkin);

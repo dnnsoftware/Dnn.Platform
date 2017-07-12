@@ -11,38 +11,38 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
-    [ConsoleCommand("move-module", "Copies the module specified", new string[] { "id" })]
-    public class MoveModule : ConsoleCommandBase, IConsoleCommand
+    [ConsoleCommand("move-module", "Copies the module specified", new[] { "id" })]
+    public class MoveModule : ConsoleCommandBase
     {
 
-        private const string FLAG_ID = "id";
-        private const string FLAG_PAGEID = "pageid";
-        private const string FLAG_TOPAGEID = "topageid";
-        private const string FLAG_PANE = "pane";
-        private const string FLAG_INCLUDESETTINGS = "includesettings";
+        private const string FlagId = "id";
+        private const string FlagPageid = "pageid";
+        private const string FlagTopageid = "topageid";
+        private const string FlagPane = "pane";
+        private const string FlagIncludesettings = "includesettings";
 
-        public string ValidationMessage { get; private set; }
+
         public int? ModuleId { get; private set; }
         public int? PageId { get; private set; }
         public int? TargetPageId { get; private set; }
         public string Pane { get; private set; }
         public bool? IncludeSettings { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_ID))
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                 {
                     ModuleId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer; ", FLAG_ID);
+                    sbErrors.AppendFormat("The --{0} flag must be an integer; ", FlagId);
                 }
             }
             else
@@ -50,22 +50,22 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 // attempt to get it as the first argument
                 if (args.Length >= 2 && !IsFlag(args[1]))
                 {
-                    int tmpId = 0;
+                    var tmpId = 0;
                     if (int.TryParse(args[1], out tmpId))
                     {
                         ModuleId = tmpId;
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name; ", FLAG_ID);
+                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name; ", FlagId);
                     }
                 }
             }
 
-            if (HasFlag(FLAG_PAGEID))
+            if (HasFlag(FlagPageid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PAGEID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagPageid), out tmpId))
                 {
                     PageId = tmpId;
                 }
@@ -73,41 +73,41 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             else
             {
                 // Assume it's on the current Page
-                PageId = base.TabId;
+                PageId = TabId;
             }
 
-            if (HasFlag(FLAG_TOPAGEID))
+            if (HasFlag(FlagTopageid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_TOPAGEID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagTopageid), out tmpId))
                 {
                     TargetPageId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("--{0} must be an integer; ", FLAG_TOPAGEID);
+                    sbErrors.AppendFormat("--{0} must be an integer; ", FlagTopageid);
                 }
             }
             else
             {
-                sbErrors.AppendFormat("--{0} is required; ", FLAG_TOPAGEID);
+                sbErrors.AppendFormat("--{0} is required; ", FlagTopageid);
             }
 
-            if (HasFlag(FLAG_PANE))
-                Pane = Flag(FLAG_PANE);
+            if (HasFlag(FlagPane))
+                Pane = Flag(FlagPane);
             if (string.IsNullOrEmpty(Pane))
                 Pane = "ContentPane";
 
-            if (HasFlag(FLAG_INCLUDESETTINGS))
+            if (HasFlag(FlagIncludesettings))
             {
-                bool tmpBool = false;
-                if (bool.TryParse(Flag(FLAG_INCLUDESETTINGS), out tmpBool))
+                var tmpBool = false;
+                if (bool.TryParse(Flag(FlagIncludesettings), out tmpBool))
                 {
                     IncludeSettings = tmpBool;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("--{0} must be a valid boolean (true/false) value; ", FLAG_INCLUDESETTINGS);
+                    sbErrors.AppendFormat("--{0} must be a valid boolean (true/false) value; ", FlagIncludesettings);
                 }
             }
             if (!IncludeSettings.HasValue)
@@ -134,21 +134,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
+            var lst = new List<ModuleInfoModel>();
 
             var moduleIToBeMoved = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
             var targetTab = TabController.Instance.GetTab((int)TargetPageId, PortalId);
 
             if (targetTab == null)
             {
-                return new ConsoleErrorResultModel(string.Format("Could not load Target Page. No page found in the portal with ID '{0}'", TargetPageId));
+                return new ConsoleErrorResultModel(
+                    $"Could not load Target Page. No page found in the portal with ID '{TargetPageId}'");
             }
 
 
@@ -169,7 +165,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             }
             else
             {
-                return new ConsoleResultModel(string.Format("No module found with ID '{0}'", ModuleId));
+                return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
             }
 
             return new ConsoleResultModel("Successfully copied the module") { Data = lst };

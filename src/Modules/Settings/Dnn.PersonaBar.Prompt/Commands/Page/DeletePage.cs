@@ -12,29 +12,29 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
-    [ConsoleCommand("delete-page", "Deletes the specified page", new string[]{
+    [ConsoleCommand("delete-page", "Deletes the specified page", new[]{
         "id",
         "name"
     })]
-    public class DeletePage : ConsoleCommandBase, IConsoleCommand
+    public class DeletePage : ConsoleCommandBase
     {
-        private const string FLAG_NAME = "name";
-        private const string FLAG_PARENTID = "parentid";
-        private const string FLAG_ID = "id";
+        private const string FlagName = "name";
+        private const string FlagParentid = "parentid";
+        private const string FlagId = "id";
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public string PageName { get; private set; }
         public int? ParentId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
             if (args.Length == 2)
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (!int.TryParse(args[1], out tmpId))
                 {
                     sbErrors.Append("No valid Page ID specified; ");
@@ -46,10 +46,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
             else
             {
-                int tmpId = 0;
-                if (HasFlag(FLAG_ID))
+                var tmpId = 0;
+                if (HasFlag(FlagId))
                 {
-                    if (!int.TryParse(Flag(FLAG_ID), out tmpId))
+                    if (!int.TryParse(Flag(FlagId), out tmpId))
                     {
                         sbErrors.Append("You must specify a valid number for Page ID; ");
                     }
@@ -65,10 +65,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 sbErrors.AppendFormat("Page ID must be greater than 0; ");
             }
 
-            if (HasFlag(FLAG_PARENTID))
+            if (HasFlag(FlagParentid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PARENTID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagParentid), out tmpId))
                 {
                     if (tmpId > 0)
                     {
@@ -76,12 +76,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     }
                     else
                     {
-                        sbErrors.AppendFormat("--{0} must be greater than 0", FLAG_PARENTID);
+                        sbErrors.AppendFormat("--{0} must be greater than 0", FlagParentid);
                     }
                 }
             }
 
-            PageName = Flag(FLAG_NAME);
+            PageName = Flag(FlagName);
 
             if (!PageId.HasValue && string.IsNullOrEmpty(PageName) && !ParentId.HasValue)
             {
@@ -90,16 +90,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            TabController tc = new TabController();
-            List<PageModel> lst = new List<PageModel>();
-            List<TabInfo> tabs = new List<TabInfo>();
+            var tc = new TabController();
+            var lst = new List<PageModel>();
+            var tabs = new List<TabInfo>();
 
             if (PageId.HasValue)
             {
@@ -113,7 +108,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             else if (ParentId.HasValue && !string.IsNullOrEmpty(PageName))
             {
                 // delete tab with a particular page name and parent 
-                TabInfo tab = tc.GetTabByName(PageName, PortalId, (int)ParentId);
+                var tab = tc.GetTabByName(PageName, PortalId, (int)ParentId);
                 if (tab != null)
                     tabs.Add(tab);
 
@@ -131,8 +126,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     tabs.Add(tab);
             }
 
-            StringBuilder sbErrors = new StringBuilder();
-            foreach (TabInfo tab in tabs)
+            var sbErrors = new StringBuilder();
+            foreach (var tab in tabs)
             {
                 if (tab.TabID == PortalSettings.HomeTabId)
                 {
@@ -174,7 +169,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
 
             var sbResults = new StringBuilder();
-            foreach (PageModel tabToDelete in lst)
+            foreach (var tabToDelete in lst)
             {
                 // delete the pages
                 try

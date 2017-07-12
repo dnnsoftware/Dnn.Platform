@@ -1,50 +1,50 @@
 ﻿using DotNetNuke.Entities.Host;
 using System.Web;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
     public class HostModel
     {
-
         // DNN Platform for example
-        public string Product;
-        public string Version;
-        public bool UpgradeAvailable;
+        public string Product { get; set; }
+        public string Version { get; set; }
+        public bool UpgradeAvailable { get; set; }
         // .NET Framework: 4.6 for example
-        public string Framework;
+        public string Framework { get; set; }
         // Could be IPv6
-        public string IPAddress;
+        public string IpAddress { get; set; }
         // ReflectionPermission, WebPermission, AspNetHostingPermission, etc.
-        public string Permissions;
+        public string Permissions { get; set; }
         // prompt.com
-        public string Site;
-        public string Title;
-        public string Url;
-        public string Email;
-        public string Theme;
-        public string Container;
-        public string EditTheme;
-        public string EditContainer;
-
-        public int PortalCount;
+        public string Site { get; set; }
+        public string Title { get; set; }
+        public string Url { get; set; }
+        public string Email { get; set; }
+        public string Theme { get; set; }
+        public string Container { get; set; }
+        public string EditTheme { get; set; }
+        public string EditContainer { get; set; }
+        public int PortalCount { get; set; }
         public static HostModel Current()
         {
-            var vsn = Utilities.GetDNNVersion().ToString();
-            var dnnApp = DotNetNuke.Application.DotNetNukeContext.Current.Application;
-            var cbc = DotNetNuke.Web.Components.Controllers.ControlBarController.Instance;
-            var req = HttpContext.Current.Request;
-            var upgradeIndicator = cbc.GetUpgradeIndicator(dnnApp.Version, req.IsLocal, req.IsSecureConnection);
+            var application = DotNetNuke.Application.DotNetNukeContext.Current.Application;
+            var controlBarController = DotNetNuke.Web.Components.Controllers.ControlBarController.Instance;
+            var request = HttpContext.Current.Request;
+            var upgradeIndicator = controlBarController.GetUpgradeIndicator(application.Version, request.IsLocal, request.IsSecureConnection);
             var hostName = System.Net.Dns.GetHostName();
             var hostPortal = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(Host.HostPortalID);
             var portalCount = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals().Count;
+            var isHost = UserController.Instance.GetCurrentUserInfo()?.IsSuperUser ?? false;
 
-            HostModel hm = new HostModel
+            var hostModel = new HostModel
             {
-                Version = dnnApp.Version.ToString(),
-                Product = dnnApp.Description,
+                Version = "v." + Globals.FormatVersion(application.Version, true),
+                Product = application.Description,
                 UpgradeAvailable = upgradeIndicator != null,
-                Framework = DotNetNuke.Common.Globals.NETFrameworkVersion.ToString(2),
-                IPAddress = System.Net.Dns.GetHostEntry(hostName).AddressList[0].ToString(),
+                Framework = isHost ? Globals.NETFrameworkVersion.ToString(2) : string.Empty,
+                IpAddress = System.Net.Dns.GetHostEntry(hostName).AddressList[0].ToString(),
                 Permissions = DotNetNuke.Framework.SecurityPolicy.Permissions,
                 Site = hostPortal.PortalName,
                 Title = Host.HostTitle,
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Prompt.Models
                 EditContainer = Utilities.FormatContainerName(Host.DefaultAdminContainer),
                 PortalCount = portalCount
             };
-            return hm;
+            return hostModel;
         }
 
     }

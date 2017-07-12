@@ -5,16 +5,16 @@ namespace Dnn.PersonaBar.Prompt.Models
 {
     public class UserModel : UserModelBase
     {
-        public string DisplayName;
-        public string FirstName;
-        public string LastName;
-        public string LastActivity;
-        public string LastLockout;
-        public string LastPasswordChange;
-        public string Created;
+        public string DisplayName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string LastActivity { get; set; }
+        public string LastLockout { get; set; }
+        public string LastPasswordChange { get; set; }
+        public string Created { get; set; }
 
         // provide a default field order for use of callers
-        public static new string[] FieldOrder = 
+        public new static string[] FieldOrder =
         {
             "UserId",
             "Username",
@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public UserModel()
         {
         }
-        public UserModel(UserInfo user): base(user)
+        public UserModel(UserInfo user) : base(user)
         {
             LastLogin = user.Membership.LastLoginDate.ToPromptLongDateString();
             DisplayName = user.DisplayName;

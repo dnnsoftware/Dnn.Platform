@@ -10,31 +10,31 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
-    [ConsoleCommand("delete-module", "Delete a module instance", new string[] { "id", "pageid" })]
-    public class DeleteModule : ConsoleCommandBase, IConsoleCommand
+    [ConsoleCommand("delete-module", "Delete a module instance", new[] { "id", "pageid" })]
+    public class DeleteModule : ConsoleCommandBase
     {
-        private const string FLAG_ID = "id";
-        private const string FLAG_PAGEID = "pageid";
+        private const string FlagId = "id";
+        private const string FlagPageid = "pageid";
 
-        public string ValidationMessage { get; private set; }
+
         public int? ModuleId { get; private set; }
         public int? PageId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_ID))
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                 {
                     ModuleId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer", FLAG_ID);
+                    sbErrors.AppendFormat("The --{0} flag must be an integer", FlagId);
                 }
             }
             else
@@ -42,22 +42,22 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 // attempt to get it as the first argument
                 if (args.Length >= 2 && !IsFlag(args[1]))
                 {
-                    int tmpId = 0;
+                    var tmpId = 0;
                     if (int.TryParse(args[1], out tmpId))
                     {
                         ModuleId = tmpId;
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name", FLAG_ID);
+                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name", FlagId);
                     }
                 }
             }
 
-            if (HasFlag(FLAG_PAGEID))
+            if (HasFlag(FlagPageid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PAGEID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagPageid), out tmpId))
                 {
                     if (tmpId > 0)
                     {
@@ -65,12 +65,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0", FLAG_PAGEID);
+                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0", FlagPageid);
                     }
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag value must be an integer", FLAG_PAGEID);
+                    sbErrors.AppendFormat("The --{0} flag value must be an integer", FlagPageid);
                 }
             }
 
@@ -81,14 +81,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
+        public override ConsoleResultModel Run()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
-        {
-            List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
+            var lst = new List<ModuleInfoModel>();
 
 
             var results = ModuleController.Instance.GetAllTabsModulesByModuleID((int)ModuleId);
@@ -99,18 +94,18 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 {
                     // we can do a soft Delete
                     ModuleController.Instance.DeleteTabModule((int)PageId, (int)ModuleId, true);
-                    return new ConsoleResultModel(string.Format("Module {0} sent to Recycle Bin", ModuleId));
+                    return new ConsoleResultModel($"Module {ModuleId} sent to Recycle Bin");
                 }
                 else
                 {
                     ModuleController.Instance.DeleteModule((int)ModuleId);
                     DataCache.ClearModuleCache(module.TabID);
-                    return new ConsoleResultModel(string.Format("Module {0} permanently deleted", ModuleId));
+                    return new ConsoleResultModel($"Module {ModuleId} permanently deleted");
                 }
             }
             else
             {
-                return new ConsoleResultModel(string.Format("No module found with ID '{0}'", ModuleId));
+                return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
             }
 
 

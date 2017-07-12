@@ -18,7 +18,6 @@ namespace Dnn.PersonaBar.Prompt.Services
     [RequireHost]
     public class CommandController : ControllerBase
     {
-
         [HttpGet]
         public HttpResponseMessage List()
         {
@@ -32,24 +31,25 @@ namespace Dnn.PersonaBar.Prompt.Services
 
             try
             {
-                var args = command.GetArgs();
+                var args = command.Args;
                 var cmdName = args.First().ToUpper();
-                var Commands = CommandRepository.Instance.GetCommands();
-                if (!Commands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
+                var allCommands = CommandRepository.Instance.GetCommands();
+                //If command not found and command contain namespace.
+                if (!allCommands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
                 {
-                    var seek = Commands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
+                    var seek = allCommands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
                     // if there is a command which matches then we assume the user meant that namespace
                     if (seek != null)
                     {
-                        cmdName = string.Format("{0}.{1}", seek.NameSpace.ToUpper(), cmdName);
+                        cmdName = $"{seek.NameSpace.ToUpper()}.{cmdName}";
                     }
                 }
 
                 // if no command found notify
-                if (!Commands.ContainsKey(cmdName))
+                if (!allCommands.ContainsKey(cmdName))
                 {
-                    StringBuilder sbError = new StringBuilder();
-                    string suggestion = GetSuggestedCommand(cmdName);
+                    var sbError = new StringBuilder();
+                    var suggestion = GetSuggestedCommand(cmdName);
                     sbError.AppendFormat("Command '{0}' not found.", cmdName.ToLower());
                     if (!string.IsNullOrEmpty(suggestion))
                     {
@@ -58,22 +58,17 @@ namespace Dnn.PersonaBar.Prompt.Services
 
                     return BadRequestResponse(sbError.ToString());
                 }
-                Type cmdTypeToRun = Commands[cmdName].CommandType;
+                var cmdTypeToRun = allCommands[cmdName].CommandType;
 
                 // Instantiate and run the command
                 try
                 {
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
                     // set env. data for command use
-                    cmdObj.Init(args, PortalSettings, UserInfo, command.currentPage);
-                    if (cmdObj.IsValid())
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, cmdObj.Run());
-                    }
-                    else
-                    {
-                        return BadRequestResponse(cmdObj.ValidationMessage);
-                    }
+                    cmdObj.Init(args, PortalSettings, UserInfo, command.CurrentPage);
+                    return cmdObj.IsValid()
+                        ? Request.CreateResponse(HttpStatusCode.OK, cmdObj.Run())
+                        : BadRequestResponse(cmdObj.ValidationMessage);
                 }
                 catch (Exception ex)
                 {

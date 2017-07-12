@@ -14,29 +14,28 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
-    [ConsoleCommand("add-module", "Adds a new module instance to a page", new string[] { "id" })]
-    public class AddModule : ConsoleCommandBase, IConsoleCommand
+    [ConsoleCommand("add-module", "Adds a new module instance to a page", new[] { "id" })]
+    public class AddModule : ConsoleCommandBase
     {
 
-        private const string FLAG_NAME = "name";
-        private const string FLAG_PAGEID = "pageid";
-        private const string FLAG_PANE = "pane";
-        private const string FLAG_TITLE = "title";
+        private const string FlagName = "name";
+        private const string FlagPageid = "pageid";
+        private const string FlagPane = "pane";
+        private const string FlagTitle = "title";
 
-        public string ValidationMessage { get; private set; }
         public string ModuleName { get; private set; }
         public int? PageId { get; private set; }    // the page on which to add the module
         public string Pane { get; private set; }
         public string Title { get; private set; }   // title for the new module. defaults to friendly name
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            base.Init(args, portalSettings, userInfo, activeTabId);
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_NAME))
+            if (HasFlag(FlagName))
             {
-                ModuleName = Flag(FLAG_NAME);
+                ModuleName = Flag(FlagName);
             }
             else if (args.Length >= 2 && !IsFlag(args[1]))
             {
@@ -45,32 +44,32 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             }
             if (string.IsNullOrEmpty(ModuleName))
             {
-                sbErrors.AppendFormat("You must supply the ModuleName for the module you wish to add. This can be passed using the --{0} flag or as the first argument after the command name; ", FLAG_NAME);
+                sbErrors.AppendFormat("You must supply the ModuleName for the module you wish to add. This can be passed using the --{0} flag or as the first argument after the command name; ", FlagName);
             }
 
-            if (HasFlag(FLAG_PAGEID))
+            if (HasFlag(FlagPageid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PAGEID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagPageid), out tmpId))
                 {
                     PageId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("--{0} must be an integer; ", FLAG_PAGEID);
+                    sbErrors.AppendFormat("--{0} must be an integer; ", FlagPageid);
                 }
             }
             else
             {
                 // Page ID is required
-                sbErrors.AppendFormat("--{0} is required; ", FLAG_PAGEID);
+                sbErrors.AppendFormat("--{0} is required; ", FlagPageid);
             }
 
-            if (HasFlag(FLAG_TITLE))
-                Title = Flag(FLAG_TITLE);
+            if (HasFlag(FlagTitle))
+                Title = Flag(FlagTitle);
 
-            if (HasFlag(FLAG_PANE))
-                Pane = Flag(FLAG_PANE);
+            if (HasFlag(FlagPane))
+                Pane = Flag(FlagPane);
             if (string.IsNullOrEmpty(Pane))
                 Pane = "ContentPane";
 
@@ -82,21 +81,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
             // get the desktop module id from the module name
             try
             {
-                var desktopModule = DotNetNuke.Entities.Modules.DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalId);
+                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalId);
                 if (desktopModule == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format("Unable to find a desktop module with the name '{0}' for this portal", ModuleName));
+                    return new ConsoleErrorResultModel(
+                        $"Unable to find a desktop module with the name '{ModuleName}' for this portal");
                 }
                 try
                 {
@@ -105,12 +100,13 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                     {
                         return new ConsoleResultModel("No modules were added");
                     }
-                    List<ModuleInstanceModel> lst = new List<ModuleInstanceModel>();
-                    foreach (ModuleInfo newModule in addedModules)
+                    var lst = new List<ModuleInstanceModel>();
+                    foreach (var newModule in addedModules)
                     {
                         lst.Add(ModuleInstanceModel.FromDnnModuleInfo(ModuleController.Instance.GetTabModule(newModule.TabModuleID)));
                     }
-                    return new ConsoleResultModel(string.Format("Successfully added {0} new module{1}", lst.Count, (lst.Count == 1 ? string.Empty : "s"))) { Data = lst };
+                    return new ConsoleResultModel(
+                        $"Successfully added {lst.Count} new module{(lst.Count == 1 ? string.Empty : "s")}") { Data = lst };
                 }
                 catch (Exception ex)
                 {
@@ -129,16 +125,16 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         private List<ModuleInfo> AddNewModule(string title, int desktopModuleId, string pane, int position, int permissionType, string align)
         {
 
-            List<ModuleInfo> lstOut = new List<ModuleInfo>();
+            var lstOut = new List<ModuleInfo>();
 
-            foreach (ModuleDefinitionInfo modDef in DotNetNuke.Entities.Modules.Definitions.ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
+            foreach (var modDef in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
             {
-                ModuleInfo mi = new ModuleInfo();
+                var mi = new ModuleInfo();
                 mi.Initialize(PortalId);
                 mi.PortalID = PortalId;
-                mi.TabID = base.TabId;
+                mi.TabID = TabId;
                 mi.ModuleOrder = position;
-                mi.ModuleTitle = (string.IsNullOrEmpty(title) ? modDef.FriendlyName : title);
+                mi.ModuleTitle = string.IsNullOrEmpty(title) ? modDef.FriendlyName : title;
                 mi.PaneName = pane;
                 mi.ModuleDefID = modDef.ModuleDefID;
                 if (modDef.DefaultCacheTime > 0)
@@ -163,7 +159,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 {
                     var defaultLocale = DotNetNuke.Services.Localization.LocaleController.Instance.GetDefaultLocale(PortalId);
                     var tabInfo = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(mi.TabID, PortalId, false);
-                    mi.CultureCode = (tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code);
+                    mi.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }
                 else
                 {

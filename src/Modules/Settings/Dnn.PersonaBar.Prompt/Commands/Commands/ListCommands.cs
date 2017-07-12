@@ -1,38 +1,24 @@
 ﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Repositories;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using System;
 using System.Linq;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Commands
 {
-    [ConsoleCommand("list-commands", "Lists all available commands", new string[] { })]
-    public class ListCommands : ConsoleCommandBase, IConsoleCommand
+    [ConsoleCommand("list-commands", "Lists all available commands")]
+    public class ListCommands : ConsoleCommandBase
     {
-        public string ValidationMessage { get; private set; }
-
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {
-            Initialize(args, portalSettings, userInfo, activeTabId);
-        }
-
-        public bool IsValid()
-        {
-            return true;
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
             try
             {
                 var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name);
-                return new ConsoleResultModel(string.Format("Found {0} commands", lstOut.Count()))
+                return new ConsoleResultModel($"Found {lstOut.Count()} commands")
                 {
                     Data = lstOut,
-                    FieldOrder = new string[] {
+                    FieldOrder = new[] {
                     "Name", "Description", "Version", "NameSpace" }
                 };
             }
