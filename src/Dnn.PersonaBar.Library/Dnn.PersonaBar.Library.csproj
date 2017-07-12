@@ -126,7 +126,6 @@
     <Compile Include="Model\MenuPermissionInfo.cs" />
     <Compile Include="Prompt\Attributes\ConsoleCommandAttribute.cs" />
     <Compile Include="Prompt\Common\Command.cs" />
-    <Compile Include="Prompt\Common\ControllerBase.cs" />
     <Compile Include="Prompt\Common\EmailValidator.cs" />
     <Compile Include="Prompt\Common\Extensions.cs" />
     <Compile Include="Prompt\ConsoleCommandBase.cs" />

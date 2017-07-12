@@ -1,10 +1,11 @@
 ﻿using System.Collections;
+using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Library.Prompt
 {
-    public class ConsoleCommandBase
+    public abstract class ConsoleCommandBase : IConsoleCommand
     {
         protected PortalSettings PortalSettings { get; private set; }
         protected UserInfo User { get; private set; }
@@ -12,17 +13,6 @@ namespace Dnn.PersonaBar.Library.Prompt
         protected int TabId { get; private set; }
         protected string[] Args { get; private set; }
         protected Hashtable Flags { get; private set; }
-
-        protected void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {
-            Args = args;
-            PortalSettings = portalSettings;
-            User = userInfo;
-            PortalId = portalSettings.PortalId;
-            TabId = activeTabId;
-
-            ParseFlags();
-        }
 
         private void ParseFlags()
         {
@@ -87,5 +77,24 @@ namespace Dnn.PersonaBar.Library.Prompt
             return flagName.ToLower().Trim();
         }
 
+        public virtual void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        {
+            Args = args;
+            PortalSettings = portalSettings;
+            User = userInfo;
+            PortalId = portalSettings.PortalId;
+            TabId = activeTabId;
+            ValidationMessage = "";
+            ParseFlags();
+        }
+
+        public abstract ConsoleResultModel Run();
+
+        public virtual bool IsValid()
+        {
+            return string.IsNullOrEmpty(ValidationMessage);
+        }
+
+        public virtual string ValidationMessage { get; protected set; }
     }
 }
