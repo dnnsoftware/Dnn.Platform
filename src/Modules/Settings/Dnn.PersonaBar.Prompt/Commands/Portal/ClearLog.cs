@@ -2,8 +2,6 @@
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Portal

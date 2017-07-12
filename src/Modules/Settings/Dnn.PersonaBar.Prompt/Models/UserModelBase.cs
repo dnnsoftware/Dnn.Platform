@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public bool IsLockedOut { get; set; }
 
         // provide a default field order for use of callers
-        public static string[] FieldOrder = new string[]
+        public static string[] FieldOrder = new[]
         {
             "UserId",
             "Username",

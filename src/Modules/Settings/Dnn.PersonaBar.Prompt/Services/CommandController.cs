@@ -18,7 +18,6 @@ namespace Dnn.PersonaBar.Prompt.Services
     [RequireHost]
     public class CommandController : ControllerBase
     {
-
         [HttpGet]
         public HttpResponseMessage List()
         {
@@ -34,10 +33,10 @@ namespace Dnn.PersonaBar.Prompt.Services
             {
                 var args = command.GetArgs();
                 var cmdName = args.First().ToUpper();
-                var Commands = CommandRepository.Instance.GetCommands();
-                if (!Commands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
+                var commands = CommandRepository.Instance.GetCommands();
+                if (!commands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
                 {
-                    var seek = Commands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
+                    var seek = commands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
                     // if there is a command which matches then we assume the user meant that namespace
                     if (seek != null)
                     {
@@ -46,10 +45,10 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
 
                 // if no command found notify
-                if (!Commands.ContainsKey(cmdName))
+                if (!commands.ContainsKey(cmdName))
                 {
-                    StringBuilder sbError = new StringBuilder();
-                    string suggestion = GetSuggestedCommand(cmdName);
+                    var sbError = new StringBuilder();
+                    var suggestion = GetSuggestedCommand(cmdName);
                     sbError.AppendFormat("Command '{0}' not found.", cmdName.ToLower());
                     if (!string.IsNullOrEmpty(suggestion))
                     {
@@ -58,14 +57,14 @@ namespace Dnn.PersonaBar.Prompt.Services
 
                     return BadRequestResponse(sbError.ToString());
                 }
-                Type cmdTypeToRun = Commands[cmdName].CommandType;
+                var cmdTypeToRun = commands[cmdName].CommandType;
 
                 // Instantiate and run the command
                 try
                 {
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
                     // set env. data for command use
-                    cmdObj.Init(args, PortalSettings, UserInfo, command.currentPage);
+                    cmdObj.Init(args, PortalSettings, UserInfo, command.CurrentPage);
                     if (cmdObj.IsValid())
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, cmdObj.Run());

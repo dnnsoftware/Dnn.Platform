@@ -9,13 +9,13 @@ using System.Text;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Host
 {
-    [ConsoleCommand("get-host", "Retrieves information about the current DNN Installation", new string[] { "id" })]
+    [ConsoleCommand("get-host", "Retrieves information about the current DNN Installation", new[] { "id" })]
     public class GetHost : ConsoleCommandBase
     {
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
             // HOST-ONLY ACCESS
             if (!userInfo.IsSuperUser)
@@ -35,9 +35,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Host
 
         public override ConsoleResultModel Run()
         {
-            List<HostModel> lst = new List<HostModel>();
+            var lst = new List<HostModel>();
             // double-check host access:
-            if (base.User.IsSuperUser)
+            if (User.IsSuperUser)
             {
                 lst.Add(HostModel.Current());
             }

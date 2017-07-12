@@ -9,14 +9,14 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
-    [ConsoleCommand("delete-user", "Deletes the specifed user from the portal.", new string[]{
+    [ConsoleCommand("delete-user", "Deletes the specifed user from the portal.", new[]{
         "id",
         "notify"
     })]
     public class DeleteUser : ConsoleCommandBase
     {
-        private const string FLAG_ID = "id";
-        private const string FLAG_NOTIFY = "notify";
+        private const string FlagId = "id";
+        private const string FlagNotify = "notify";
 
 
         public int? UserId { get; private set; }
@@ -25,17 +25,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_ID))
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
             else
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (int.TryParse(args[1], out tmpId))
                     UserId = tmpId;
             }
@@ -45,10 +45,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 sbErrors.Append("You must specify a valid User ID");
             }
 
-            if (HasFlag(FLAG_NOTIFY))
+            if (HasFlag(FlagNotify))
             {
-                bool tmpNotify = false;
-                if (bool.TryParse(Flag(FLAG_NOTIFY), out tmpNotify))
+                var tmpNotify = false;
+                if (bool.TryParse(Flag(FlagNotify), out tmpNotify))
                 {
                     Notify = tmpNotify;
                 }
@@ -67,9 +67,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public override ConsoleResultModel Run()
         {
-            List<UserModel> lst = new List<UserModel>();
+            var lst = new List<UserModel>();
 
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
             if (UserId.HasValue)
             {
                 // do lookup by user id

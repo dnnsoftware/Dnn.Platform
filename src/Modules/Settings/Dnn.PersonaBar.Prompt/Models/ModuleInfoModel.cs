@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public string AddedToPages;
         public static ModuleInfoModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule)
         {
-            ModuleInfoModel mim = new ModuleInfoModel
+            var mim = new ModuleInfoModel
             {
                 ModuleId = dnnModule.ModuleID,
                 Title = dnnModule.ModuleTitle,
@@ -31,8 +31,8 @@ namespace Dnn.PersonaBar.Prompt.Models
 
             // get a list of all pages this module is added to
             var addedTo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(mim.ModuleId);
-            StringBuilder sbAddedTo = new StringBuilder();
-            foreach (DotNetNuke.Entities.Modules.ModuleInfo modInfo in addedTo)
+            var sbAddedTo = new StringBuilder();
+            foreach (var modInfo in addedTo)
             {
                 if (sbAddedTo.Length > 0)
                     sbAddedTo.Append(", ");

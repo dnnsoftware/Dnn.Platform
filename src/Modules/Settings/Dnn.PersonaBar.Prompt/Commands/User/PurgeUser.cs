@@ -9,11 +9,11 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
-    [ConsoleCommand("purge-user", "Completely removes a previously deleted user from the portal.", new string[] { "id" })]
+    [ConsoleCommand("purge-user", "Completely removes a previously deleted user from the portal.", new[] { "id" })]
     public class PurgeUser : ConsoleCommandBase
     {
 
-        private const string FLAG_ID = "id";
+        private const string FlagId = "id";
 
 
         public int? UserId { get; private set; }
@@ -22,17 +22,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_ID))
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
             else
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (args.Length == 2 && int.TryParse(args[1], out tmpId))
                 {
                     UserId = tmpId;
@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
             if (!UserId.HasValue)
             {
-                sbErrors.AppendFormat("You must specify a valid numeric User ID using the --{0} flag or by passing it as the first argument; ", FLAG_ID);
+                sbErrors.AppendFormat("You must specify a valid numeric User ID using the --{0} flag or by passing it as the first argument; ", FlagId);
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -49,9 +49,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public override ConsoleResultModel Run()
         {
-            List<UserModel> lst = new List<UserModel>();
+            var lst = new List<UserModel>();
 
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
             if (UserId.HasValue)
             {
                 // do lookup by user id

@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         // .NET Framework: 4.6 for example
         public string Framework;
         // Could be IPv6
-        public string IPAddress;
+        public string IpAddress;
         // ReflectionPermission, WebPermission, AspNetHostingPermission, etc.
         public string Permissions;
         // prompt.com
@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public int PortalCount;
         public static HostModel Current()
         {
-            var vsn = Utilities.GetDNNVersion().ToString();
+            var vsn = Utilities.GetDnnVersion().ToString();
             var dnnApp = DotNetNuke.Application.DotNetNukeContext.Current.Application;
             var cbc = DotNetNuke.Web.Components.Controllers.ControlBarController.Instance;
             var req = HttpContext.Current.Request;
@@ -38,13 +38,13 @@ namespace Dnn.PersonaBar.Prompt.Models
             var hostPortal = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(Host.HostPortalID);
             var portalCount = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals().Count;
 
-            HostModel hm = new HostModel
+            var hm = new HostModel
             {
                 Version = dnnApp.Version.ToString(),
                 Product = dnnApp.Description,
                 UpgradeAvailable = upgradeIndicator != null,
                 Framework = DotNetNuke.Common.Globals.NETFrameworkVersion.ToString(2),
-                IPAddress = System.Net.Dns.GetHostEntry(hostName).AddressList[0].ToString(),
+                IpAddress = System.Net.Dns.GetHostEntry(hostName).AddressList[0].ToString(),
                 Permissions = DotNetNuke.Framework.SecurityPolicy.Permissions,
                 Site = hostPortal.PortalName,
                 Title = Host.HostTitle,

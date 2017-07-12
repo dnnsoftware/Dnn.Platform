@@ -24,14 +24,14 @@ namespace Dnn.PersonaBar.Prompt
 
         public VersionInfo(string vsn)
         {
-            VersionInfo vsnInfo = GetVersion(vsn);
+            var vsnInfo = GetVersion(vsn);
             if (vsnInfo != null)
             {
-                var _with1 = vsnInfo;
-                Major = _with1.Major;
-                Minor = _with1.Minor;
-                Build = _with1.Build;
-                Revision = _with1.Revision;
+                var with1 = vsnInfo;
+                Major = with1.Major;
+                Minor = with1.Minor;
+                Build = with1.Build;
+                Revision = with1.Revision;
             }
             else
             {
@@ -48,15 +48,15 @@ namespace Dnn.PersonaBar.Prompt
                 return null;
             VersionInfo vsnInfo = null;
 
-            Match matchVersionInfo = Regex.Match(vsn, "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)");
+            var matchVersionInfo = Regex.Match(vsn, "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)");
             if (matchVersionInfo.Success)
             {
                 vsnInfo = new VersionInfo();
-                var _with2 = vsnInfo;
-                _with2.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
-                _with2.Minor = Convert.ToInt32(matchVersionInfo.Groups[2].Value);
-                _with2.Revision = Convert.ToInt32(matchVersionInfo.Groups[3].Value);
-                _with2.Build = Convert.ToInt32(matchVersionInfo.Groups[4].Value);
+                var with2 = vsnInfo;
+                with2.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
+                with2.Minor = Convert.ToInt32(matchVersionInfo.Groups[2].Value);
+                with2.Revision = Convert.ToInt32(matchVersionInfo.Groups[3].Value);
+                with2.Build = Convert.ToInt32(matchVersionInfo.Groups[4].Value);
             }
             else
             {
@@ -64,11 +64,11 @@ namespace Dnn.PersonaBar.Prompt
                 if (matchVersionInfo.Success)
                 {
                     vsnInfo = new VersionInfo();
-                    var _with3 = vsnInfo;
-                    _with3.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
-                    _with3.Minor = Convert.ToInt32(matchVersionInfo.Groups[2].Value);
-                    _with3.Revision = Convert.ToInt32(matchVersionInfo.Groups[3].Value);
-                    _with3.Build = 0;
+                    var with3 = vsnInfo;
+                    with3.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
+                    with3.Minor = Convert.ToInt32(matchVersionInfo.Groups[2].Value);
+                    with3.Revision = Convert.ToInt32(matchVersionInfo.Groups[3].Value);
+                    with3.Build = 0;
                 }
                 else
                 {
@@ -76,11 +76,11 @@ namespace Dnn.PersonaBar.Prompt
                     if (matchVersionInfo.Success)
                     {
                         vsnInfo = new VersionInfo();
-                        var _with4 = vsnInfo;
-                        _with4.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
-                        _with4.Minor = Convert.ToInt32(matchVersionInfo.Groups[2].Value);
-                        _with4.Revision = 0;
-                        _with4.Build = 0;
+                        var with4 = vsnInfo;
+                        with4.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
+                        with4.Minor = Convert.ToInt32(matchVersionInfo.Groups[2].Value);
+                        with4.Revision = 0;
+                        with4.Build = 0;
                     }
                     else
                     {
@@ -88,11 +88,11 @@ namespace Dnn.PersonaBar.Prompt
                         if (matchVersionInfo.Success)
                         {
                             vsnInfo = new VersionInfo();
-                            var _with5 = vsnInfo;
-                            _with5.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
-                            _with5.Minor = 0;
-                            _with5.Revision = 0;
-                            _with5.Build = 0;
+                            var with5 = vsnInfo;
+                            with5.Major = Convert.ToInt32(matchVersionInfo.Groups[1].Value);
+                            with5.Minor = 0;
+                            with5.Revision = 0;
+                            with5.Build = 0;
                         }
                     }
                 }

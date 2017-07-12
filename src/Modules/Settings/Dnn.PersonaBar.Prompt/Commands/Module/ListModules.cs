@@ -5,13 +5,12 @@ using DotNetNuke.Entities.Tabs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections;
 using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
-    [ConsoleCommand("list-modules", "Lists modules on current page", new string[]{
+    [ConsoleCommand("list-modules", "Lists modules on current page", new[]{
 
         "name",
         "title",
@@ -21,11 +20,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
     public class ListModules : ConsoleCommandBase
     {
 
-        private const string FLAG_NAME = "name";
-        private const string FLAG_TITLE = "title";
-        private const string FLAG_ALL = "all";
-        private const string FLAG_PAGEID = "pageid";
-        private const string FLAG_DELETED = "deleted";
+        private const string FlagName = "name";
+        private const string FlagTitle = "title";
+        private const string FlagAll = "all";
+        private const string FlagPageid = "pageid";
+        private const string FlagDeleted = "deleted";
         //private const string FLAG_MODULENAME = "modulename"
         //private const string FLAG_PAGE = "page"
         //private const string FLAG_PAGENAME = "pagename"
@@ -43,18 +42,18 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         public void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_PAGEID))
+            if (HasFlag(FlagPageid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PAGEID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagPageid), out tmpId))
                 {
                     PageId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When used, the --{0} flag must be an integer; ", FLAG_PAGEID);
+                    sbErrors.AppendFormat("When used, the --{0} flag must be an integer; ", FlagPageid);
                 }
             }
             else
@@ -62,34 +61,34 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 if (args.Length >= 2 && !IsFlag(args[1]))
                 {
                     // attempt to parse first arg as the page ID
-                    int tmpId = 0;
+                    var tmpId = 0;
                     if (int.TryParse(args[1], out tmpId))
                     {
                         PageId = tmpId;
                     }
                     else
                     {
-                        sbErrors.AppendFormat("No valid Page ID found. Pass it using the --{0} flag or by sending it as the first argument after the command name", FLAG_PAGEID);
+                        sbErrors.AppendFormat("No valid Page ID found. Pass it using the --{0} flag or by sending it as the first argument after the command name", FlagPageid);
                     }
                 }
             }
 
-            if (!PageId.HasValue) PageId = base.TabId;
+            if (!PageId.HasValue) PageId = TabId;
 
 
-            ModuleName = Flag(FLAG_NAME);
-            ModuleTitle = Flag(FLAG_TITLE);
-            All = HasFlag(FLAG_ALL);
-            if (HasFlag(FLAG_DELETED))
+            ModuleName = Flag(FlagName);
+            ModuleTitle = Flag(FlagTitle);
+            All = HasFlag(FlagAll);
+            if (HasFlag(FlagDeleted))
             {
-                bool tmp = false;
-                if (bool.TryParse(Flag(FLAG_DELETED), out tmp))
+                var tmp = false;
+                if (bool.TryParse(Flag(FlagDeleted), out tmp))
                 {
                     Deleted = tmp;
                 }
                 else
                 {
-                    if (Flag(FLAG_DELETED, null) == null)
+                    if (Flag(FlagDeleted, null) == null)
                     {
                         // user specified deleted flag with no value. Default to True
                         Deleted = true;
@@ -152,8 +151,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
 
         private List<ModuleInfoModel> ListFromDictionary(Dictionary<int, ModuleInfo> dict)
         {
-            List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
-            foreach (KeyValuePair<int, ModuleInfo> kvp in dict)
+            var lst = new List<ModuleInfoModel>();
+            foreach (var kvp in dict)
             {
                 lst.Add(ModuleInfoModel.FromDnnModuleInfo(kvp.Value));
             }
@@ -179,8 +178,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             var lstQuery = from o in lst
                            where o.ModuleName.ToLowerInvariant() == nameFilter.Trim().ToLowerInvariant()
                            select o;
-            List<ModuleInfoModel> lstOut = new List<ModuleInfoModel>();
-            foreach (ModuleInfoModel mim in lstQuery)
+            var lstOut = new List<ModuleInfoModel>();
+            foreach (var mim in lstQuery)
             {
                 lstOut.Add(mim);
             }
@@ -190,8 +189,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
 
         private List<ModuleInfoModel> GetModulesInPortal(string nameFilter = null)
         {
-            ArrayList lst = ModuleController.Instance.GetModules(PortalId);
-            List<ModuleInfoModel> lstOut = new List<ModuleInfoModel>();
+            var lst = ModuleController.Instance.GetModules(PortalId);
+            var lstOut = new List<ModuleInfoModel>();
 
             if (string.IsNullOrEmpty(nameFilter))
             {
@@ -205,7 +204,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 var lstQuery = from ModuleInfo o in lst
                                where o.DesktopModule.ModuleName.ToLowerInvariant().Contains(nameFilter.Trim().ToLowerInvariant())
                                select o;
-                foreach (ModuleInfo mi in lstQuery)
+                foreach (var mi in lstQuery)
                 {
                     lstOut.Add(ModuleInfoModel.FromDnnModuleInfo(mi));
                 }
@@ -221,7 +220,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                       where m.IsDeleted == isDeleted && m.PortalID == portalId
                       select m;
 
-            List<ModuleInstanceModel> lstMim = new List<ModuleInstanceModel>();
+            var lstMim = new List<ModuleInstanceModel>();
 
             string searchName = null;
             if (!string.IsNullOrEmpty(nameFilter))
@@ -230,9 +229,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             if (!string.IsNullOrEmpty(titleFilter))
                 searchTitle = titleFilter.Replace("*", ".*");
 
-            foreach (ModuleInfo modInfo in qry)
+            foreach (var modInfo in qry)
             {
-                bool bMatches = true;
+                var bMatches = true;
                 if (!string.IsNullOrEmpty(searchName))
                 {
                     bMatches = bMatches & Regex.IsMatch(modInfo.DesktopModule.ModuleName, searchName);

@@ -3,8 +3,6 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
@@ -14,13 +12,13 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
     {
         public override ConsoleResultModel Run()
         {
-            RoleController rc = new RoleController();
-            List<RoleModelBase> lst = new List<RoleModelBase>();
+            var rc = new RoleController();
+            var lst = new List<RoleModelBase>();
 
             var results = rc.GetRoles(PortalId);
             if (results != null)
             {
-                foreach (RoleInfo role in results)
+                foreach (var role in results)
                 {
                     lst.Add(new RoleModelBase(role));
                 }

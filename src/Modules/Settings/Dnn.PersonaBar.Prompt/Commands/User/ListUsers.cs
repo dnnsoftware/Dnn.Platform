@@ -11,7 +11,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
-    [ConsoleCommand("list-users", "Returns users that match the given expression", new string[]{
+    [ConsoleCommand("list-users", "Returns users that match the given expression", new[]{
         "email",
         "username",
         "role"
@@ -19,9 +19,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
     public class ListUsers : ConsoleCommandBase
     {
 
-        private const string FLAG_EMAIL = "email";
-        private const string FLAG_USERNME = "username";
-        private const string FLAG_ROLE = "role";
+        private const string FlagEmail = "email";
+        private const string FlagUsernme = "username";
+        private const string FlagRole = "role";
 
 
         public string Email { get; private set; }
@@ -32,14 +32,14 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_EMAIL))
-                Email = Flag(FLAG_EMAIL);
-            if (HasFlag(FLAG_USERNME))
-                Username = Flag(FLAG_USERNME);
-            if (HasFlag(FLAG_ROLE))
-                Role = Flag(FLAG_ROLE);
+            if (HasFlag(FlagEmail))
+                Email = Flag(FlagEmail);
+            if (HasFlag(FlagUsernme))
+                Username = Flag(FlagUsernme);
+            if (HasFlag(FlagRole))
+                Role = Flag(FlagRole);
 
             if (args.Length != 1)
             {
@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 else
                 {
                     // ensure only one filter is used
-                    int numFilters = 0;
+                    var numFilters = 0;
                     if (!string.IsNullOrEmpty(Email))
                         numFilters += 1;
                     if (!string.IsNullOrEmpty(Username))
@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
                     if (numFilters != 1)
                     {
-                        sbErrors.AppendFormat("You must specify one and only one flag: --{0}, --{1}, or --{2}; ", FLAG_EMAIL, FLAG_USERNME, FLAG_ROLE);
+                        sbErrors.AppendFormat("You must specify one and only one flag: --{0}, --{1}, or --{2}; ", FlagEmail, FlagUsernme, FlagRole);
                     }
                 }
 
@@ -80,11 +80,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public override ConsoleResultModel Run()
         {
-            List<UserModelBase> lst = new List<UserModelBase>();
-            ArrayList results = new ArrayList();
-            int recCount = 0;
+            var lst = new List<UserModelBase>();
+            var results = new ArrayList();
+            var recCount = 0;
 
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
             // if no argument, default to listing all users in current portal
             if (Args.Length == 1)
             {
@@ -132,7 +132,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         private List<UserModelBase> ConvertList(IEnumerable lst)
         {
-            List<UserModelBase> lstUsers = new List<UserModelBase>();
+            var lstUsers = new List<UserModelBase>();
             foreach (UserInfo ui in lst)
             {
                 lstUsers.Add(new UserModelBase(ui));

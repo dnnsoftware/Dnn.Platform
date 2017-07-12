@@ -10,15 +10,15 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
 {
-    [ConsoleCommand("set-task", "Updates a specific scheduled task with new information", new string[]{
+    [ConsoleCommand("set-task", "Updates a specific scheduled task with new information", new[]{
         "id",
         "enabled"
     })]
     public class SetTask : ConsoleCommandBase
     {
 
-        private const string FLAG_ID = "id";
-        private const string FLAG_ENABLED = "enabled";
+        private const string FlagId = "id";
+        private const string FlagEnabled = "enabled";
 
 
         public int? TaskId { get; private set; }
@@ -27,48 +27,48 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_ID))
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                 {
                     TaskId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When specified, the --{0} flag must be a number; ", FLAG_ID);
+                    sbErrors.AppendFormat("When specified, the --{0} flag must be a number; ", FlagId);
                 }
             }
             else if (args.Length >= 2 && !IsFlag(args[1]))
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (int.TryParse(args[1], out tmpId))
                 {
                     TaskId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("You must specify the scheduled item's ID using the --{0} flag or by passing the number as the first argument; ", FLAG_ID);
+                    sbErrors.AppendFormat("You must specify the scheduled item's ID using the --{0} flag or by passing the number as the first argument; ", FlagId);
                 }
             }
 
-            if (HasFlag(FLAG_ENABLED))
+            if (HasFlag(FlagEnabled))
             {
-                bool tmpEnabled = false;
-                if (bool.TryParse(Flag(FLAG_ENABLED), out tmpEnabled))
+                var tmpEnabled = false;
+                if (bool.TryParse(Flag(FlagEnabled), out tmpEnabled))
                 {
                     Enabled = tmpEnabled;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When specified, the --{0} flag must be set to True or False", FLAG_ENABLED);
+                    sbErrors.AppendFormat("When specified, the --{0} flag must be set to True or False", FlagEnabled);
                 }
             }
             else
             {
-                sbErrors.AppendFormat("The --{0} flag is required", FLAG_ENABLED);
+                sbErrors.AppendFormat("The --{0} flag is required", FlagEnabled);
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -78,15 +78,15 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
         {
 
             var taskToUpdate = SchedulingController.GetSchedule(Convert.ToInt32(TaskId));
-            List<TaskModel> lst = new List<TaskModel>();
+            var lst = new List<TaskModel>();
 
             if (taskToUpdate != null)
             {
                 taskToUpdate.Enabled = (bool)Enabled;
-                var _with1 = taskToUpdate;
+                var with1 = taskToUpdate;
 
-                SchedulingController.UpdateSchedule(_with1.ScheduleID, _with1.TypeFullName, _with1.TimeLapse, _with1.TimeLapseMeasurement, _with1.RetryTimeLapse, _with1.RetryTimeLapseMeasurement, _with1.RetainHistoryNum, _with1.AttachToEvent, _with1.CatchUpEnabled, _with1.Enabled,
-                _with1.ObjectDependencies, _with1.Servers, _with1.FriendlyName);
+                SchedulingController.UpdateSchedule(with1.ScheduleID, with1.TypeFullName, with1.TimeLapse, with1.TimeLapseMeasurement, with1.RetryTimeLapse, with1.RetryTimeLapseMeasurement, with1.RetainHistoryNum, with1.AttachToEvent, with1.CatchUpEnabled, with1.Enabled,
+                with1.ObjectDependencies, with1.Servers, with1.FriendlyName);
                 var updatedTask = SchedulingController.GetSchedule(Convert.ToInt32(TaskId));
                 if (updatedTask != null)
                 {

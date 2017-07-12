@@ -10,16 +10,16 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
-    [ConsoleCommand("get-user", "Returns users that match the given expression", new string[]{
+    [ConsoleCommand("get-user", "Returns users that match the given expression", new[]{
         "id",
         "email",
         "username"
     })]
     public class GetUser : ConsoleCommandBase
     {
-        private const string FLAG_ID = "id";
-        private const string FLAG_EMAIL = "email";
-        private const string FLAG_USERNAME = "username";
+        private const string FlagId = "id";
+        private const string FlagEmail = "email";
+        private const string FlagUsername = "username";
 
 
         public int? UserId { get; private set; }
@@ -29,21 +29,21 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
             // If no 'find flags (email, id, etc.) are specied, return current user. this is handled in Run so we don't have 
             // to do another datbase lookup
 
-            if (HasFlag(FLAG_ID))
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
-            if (HasFlag(FLAG_EMAIL))
-                Email = Flag(FLAG_EMAIL);
-            if (HasFlag(FLAG_USERNAME))
-                Username = Flag(FLAG_USERNAME);
+            if (HasFlag(FlagEmail))
+                Email = Flag(FlagEmail);
+            if (HasFlag(FlagUsername))
+                Username = Flag(FlagUsername);
 
             if (args.Length != 1)
             {
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                     }
                     else
                     {
-                        int tmpId = 0;
+                        var tmpId = 0;
                         if (int.TryParse(args[1], out tmpId))
                         {
                             UserId = tmpId;
@@ -78,10 +78,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public override ConsoleResultModel Run()
         {
-            ArrayList results = new ArrayList();
-            int recCount = 0;
+            var results = new ArrayList();
+            var recCount = 0;
 
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
             // if no argument, default to current user
             if (Args.Length == 1)
             {
@@ -113,11 +113,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             }
 
 
-            List<UserModel> lst = new List<UserModel>();
+            var lst = new List<UserModel>();
             // this is a singular command. Only return the first result
             if (results.Count > 0)
             {
-                UserInfo foundUser = (UserInfo)results[0];
+                var foundUser = (UserInfo)results[0];
                 // ensure users cannot get info on super user accounts
                 if (User.IsSuperUser || !foundUser.IsSuperUser)
                 {
@@ -130,7 +130,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 return new ConsoleResultModel(string.Empty)
                 {
                     Data = lst,
-                    FieldOrder = new string[]
+                    FieldOrder = new[]
                     {
                         "UserId",
                         "Username",

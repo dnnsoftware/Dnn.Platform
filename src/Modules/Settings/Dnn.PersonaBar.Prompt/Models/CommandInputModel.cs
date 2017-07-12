@@ -5,14 +5,14 @@ namespace Dnn.PersonaBar.Prompt.Models
 {
     public class CommandInputModel
     {
-        public string cmdLine;
+        public string CmdLine;
 
-        public int currentPage;
+        public int CurrentPage;
         public string[] GetArgs()
         {
             var tokenEx = new Regex("[^\\s\"]+|\"[^\"]*\"");
             // Matches (1 or more chars that are NOT space or ") or (" any # of chars not a " followed by a ")
-            return tokenEx.Matches(cmdLine).Cast<Match>().Select(m => m.Value.Replace("\"", "")).ToArray();
+            return tokenEx.Matches(CmdLine).Cast<Match>().Select(m => m.Value.Replace("\"", "")).ToArray();
         }
 
         public static string Flag(string[] args, string flagName)
@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Prompt.Models
             flagName = "--" + flagName;
 
             // loop through arguments, skipping the first one (the command)
-            for (int i = 1; i <= args.Length - 1; i++)
+            for (var i = 1; i <= args.Length - 1; i++)
             {
                 if (string.Compare(args[i], flagName, true, System.Globalization.CultureInfo.InvariantCulture) == 0)
                 {

@@ -7,14 +7,14 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
-    [ConsoleCommand("reset-password", "Resets the user's password", new string[]{
+    [ConsoleCommand("reset-password", "Resets the user's password", new[]{
         "id",
         "notify"
     })]
     public class ResetPassword : ConsoleCommandBase
     {
-        private const string FLAG_ID = "id";
-        private const string FLAG_NOTIFY = "notify";
+        private const string FlagId = "id";
+        private const string FlagNotify = "notify";
 
 
         public bool? Notify { get; private set; }
@@ -23,12 +23,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            int tmpId = 0;
-            if (HasFlag(FLAG_ID))
+            var tmpId = 0;
+            if (HasFlag(FlagId))
             {
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
             else
@@ -37,12 +37,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                     UserId = tmpId;
             }
 
-            bool tmpNotify = false;
-            if (HasFlag(FLAG_NOTIFY))
+            var tmpNotify = false;
+            if (HasFlag(FlagNotify))
             {
-                if (!bool.TryParse(Flag(FLAG_NOTIFY), out tmpNotify))
+                if (!bool.TryParse(Flag(FlagNotify), out tmpNotify))
                 {
-                    sbErrors.AppendFormat("The --{0} flag takes True or False as its value (case-insensitive)", FLAG_NOTIFY);
+                    sbErrors.AppendFormat("The --{0} flag takes True or False as its value (case-insensitive)", FlagNotify);
                 }
                 else
                 {
@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public override ConsoleResultModel Run()
         {
-            bool sendEmail = false;
+            var sendEmail = false;
             if (Notify.HasValue)
                 sendEmail = (bool)Notify;
 

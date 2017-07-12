@@ -9,10 +9,10 @@ using System.Text;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
-    [ConsoleCommand("get-portal", "Retrieves information about the current portal", new string[] { "id" })]
+    [ConsoleCommand("get-portal", "Retrieves information about the current portal", new[] { "id" })]
     public class GetPortal : ConsoleCommandBase
     {
-        private const string FLAG_ID = "id";
+        private const string FlagId = "id";
 
 
         public int? PortalIdFlagValue { get; private set; }
@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
             // default usage: return current portal if nothing else specified
             if (args.Length == 1)
@@ -33,9 +33,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
                 if (User.IsSuperUser && args.Length >= 2)
                 {
                     string argId = null;
-                    if (HasFlag(FLAG_ID))
+                    if (HasFlag(FlagId))
                     {
-                        argId = Flag(FLAG_ID);
+                        argId = Flag(FlagId);
                     }
                     else
                     {
@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
                     }
                     if (!string.IsNullOrEmpty(argId))
                     {
-                        int tmpId = 0;
+                        var tmpId = 0;
                         if (int.TryParse(argId, out tmpId))
                         {
                             PortalIdFlagValue = tmpId;
@@ -70,12 +70,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
 
         public override ConsoleResultModel Run()
         {
-            PortalController pc = new PortalController();
-            List<PortalModel> lst = new List<PortalModel>();
+            var pc = new PortalController();
+            var lst = new List<PortalModel>();
 
             if (PortalIdFlagValue.HasValue)
             {
-                PortalInfo portal = pc.GetPortal((int)PortalIdFlagValue);
+                var portal = pc.GetPortal((int)PortalIdFlagValue);
                 if (portal == null)
                 {
                     return new ConsoleErrorResultModel($"Could not find a portal with ID of '{PortalIdFlagValue}'");

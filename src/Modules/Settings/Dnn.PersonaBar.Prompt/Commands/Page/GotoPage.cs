@@ -9,7 +9,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Page
 {
-    [ConsoleCommand("goto", "Navigates to a specified page within the DNN site", new string[]{
+    [ConsoleCommand("goto", "Navigates to a specified page within the DNN site", new[]{
         "id",
         "name"
     })]
@@ -24,16 +24,16 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
             // default usage: return current page if nothing else specified
             if (args.Length == 1)
             {
-                PageId = base.TabId;
+                PageId = TabId;
             }
             else if (args.Length == 2)
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (!int.TryParse(args[1], out tmpId))
                 {
                     sbErrors.Append("No valid Page ID specified; ");
@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
             else
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (HasFlag("id"))
                 {
                     if (!int.TryParse(Flag("id"), out tmpId))
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
             if (HasFlag("parentid"))
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (int.TryParse(Flag("parentid"), out tmpId))
                     ParentId = tmpId;
             }
@@ -77,8 +77,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
         public override ConsoleResultModel Run()
         {
-            TabController tc = new TabController();
-            List<PageModel> lst = new List<PageModel>();
+            var tc = new TabController();
+            var lst = new List<PageModel>();
 
             if (PageId.HasValue)
             {

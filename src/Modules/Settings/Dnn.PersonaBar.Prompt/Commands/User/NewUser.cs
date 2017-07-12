@@ -12,7 +12,7 @@ using static DotNetNuke.Common.Globals;
 
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
-    [ConsoleCommand("new-user", "Creates a new user record", new string[]{
+    [ConsoleCommand("new-user", "Creates a new user record", new[]{
         "email",
         "username",
         "displayname",
@@ -24,14 +24,14 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
     })]
     public class NewUser : ConsoleCommandBase
     {
-        private const string FLAG_EMAIL = "email";
-        private const string FLAG_USERNAME = "username";
-        private const string FLAG_DISPLAYNAME = "displayname";
-        private const string FLAG_FIRSTNAME = "firstname";
-        private const string FLAG_LASTNAME = "lastname";
-        private const string FLAG_PASSWORD = "password";
-        private const string FLAG_APPROVED = "approved";
-        private const string FLAG_NOTIFY = "notify";
+        private const string FlagEmail = "email";
+        private const string FlagUsername = "username";
+        private const string FlagDisplayname = "displayname";
+        private const string FlagFirstname = "firstname";
+        private const string FlagLastname = "lastname";
+        private const string FlagPassword = "password";
+        private const string FlagApproved = "approved";
+        private const string FlagNotify = "notify";
 
 
         public string Email { get; private set; }
@@ -47,51 +47,51 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
 
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_EMAIL))
-                Email = Flag(FLAG_EMAIL);
-            if (HasFlag(FLAG_USERNAME))
-                Username = Flag(FLAG_USERNAME);
-            if (HasFlag(FLAG_DISPLAYNAME))
-                DisplayName = Flag(FLAG_DISPLAYNAME);
-            if (HasFlag(FLAG_FIRSTNAME))
-                FirstName = Flag(FLAG_FIRSTNAME);
-            if (HasFlag(FLAG_LASTNAME))
-                LastName = Flag(FLAG_LASTNAME);
-            if (HasFlag(FLAG_PASSWORD))
-                Password = Flag(FLAG_PASSWORD);
-            if (HasFlag(FLAG_APPROVED))
+            if (HasFlag(FlagEmail))
+                Email = Flag(FlagEmail);
+            if (HasFlag(FlagUsername))
+                Username = Flag(FlagUsername);
+            if (HasFlag(FlagDisplayname))
+                DisplayName = Flag(FlagDisplayname);
+            if (HasFlag(FlagFirstname))
+                FirstName = Flag(FlagFirstname);
+            if (HasFlag(FlagLastname))
+                LastName = Flag(FlagLastname);
+            if (HasFlag(FlagPassword))
+                Password = Flag(FlagPassword);
+            if (HasFlag(FlagApproved))
             {
-                bool tmpApproved = false;
-                if (bool.TryParse(Flag(FLAG_APPROVED), out tmpApproved))
+                var tmpApproved = false;
+                if (bool.TryParse(Flag(FlagApproved), out tmpApproved))
                 {
                     Approved = tmpApproved;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("If specified, --{0} must be True or False; ", FLAG_APPROVED);
+                    sbErrors.AppendFormat("If specified, --{0} must be True or False; ", FlagApproved);
                 }
             }
-            if (HasFlag(FLAG_NOTIFY))
+            if (HasFlag(FlagNotify))
             {
-                bool tempNotify = false;
-                if (bool.TryParse(Flag(FLAG_NOTIFY), out tempNotify))
+                var tempNotify = false;
+                if (bool.TryParse(Flag(FlagNotify), out tempNotify))
                 {
                     Notify = tempNotify;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("If specified, --{0} must be True or False; ", FLAG_NOTIFY);
+                    sbErrors.AppendFormat("If specified, --{0} must be True or False; ", FlagNotify);
                 }
             }
 
             // required fields
-            if (string.IsNullOrEmpty(Flag(FLAG_EMAIL)))
+            if (string.IsNullOrEmpty(Flag(FlagEmail)))
                 sbErrors.Append("email is required; ");
-            if (string.IsNullOrEmpty(Flag(FLAG_USERNAME)))
+            if (string.IsNullOrEmpty(Flag(FlagUsername)))
                 sbErrors.Append("username is required; ");
-            if (string.IsNullOrEmpty(Flag(FLAG_FIRSTNAME)) || string.IsNullOrEmpty(Flag(FLAG_LASTNAME)))
+            if (string.IsNullOrEmpty(Flag(FlagFirstname)) || string.IsNullOrEmpty(Flag(FlagLastname)))
             {
                 sbErrors.Append("firstname and lastname are required; ");
             }
@@ -100,15 +100,15 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             {
                 // validate email 
                 var emailVal = new EmailValidator();
-                if (!emailVal.IsValid(Flag(FLAG_EMAIL)))
+                if (!emailVal.IsValid(Flag(FlagEmail)))
                 {
-                    sbErrors.AppendFormat("Supplied email '{0}' is invalid; ", Flag(FLAG_EMAIL));
+                    sbErrors.AppendFormat("Supplied email '{0}' is invalid; ", Flag(FlagEmail));
                 }
 
                 // There will be a problem if the caller is generating a password but the site is 
                 // 1) Set for private/none registration
                 // 2) Or the command is set to not send a notification.
-                if (string.IsNullOrEmpty(Flag(FLAG_PASSWORD)))
+                if (string.IsNullOrEmpty(Flag(FlagPassword)))
                 {
                     var newPassword = UserController.GeneratePassword();
                     if (!Notify.HasValue || Notify == false)
@@ -127,20 +127,20 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                         }
                     }
                 }
-                Password = (string.IsNullOrEmpty(Flag(FLAG_PASSWORD)) ? UserController.GeneratePassword() : Flag(FLAG_PASSWORD));
-                bool bApproved = true;
+                Password = (string.IsNullOrEmpty(Flag(FlagPassword)) ? UserController.GeneratePassword() : Flag(FlagPassword));
+                var bApproved = true;
 
                 // approved is True by default since admin/host would be using Prompt
-                if (HasFlag(FLAG_APPROVED))
+                if (HasFlag(FlagApproved))
                 {
                     // something specified for approved, go with what we're given
-                    if (bool.TryParse(Flag(FLAG_APPROVED), out bApproved))
+                    if (bool.TryParse(Flag(FlagApproved), out bApproved))
                     {
                         Approved = bApproved;
                     }
                     else
                     {
-                        sbErrors.AppendFormat("--{0} must either be True or False, you specified '{1}'; ", FLAG_APPROVED, Flag(FLAG_APPROVED));
+                        sbErrors.AppendFormat("--{0} must either be True or False, you specified '{1}'; ", FlagApproved, Flag(FlagApproved));
                     }
                 }
                 else
@@ -152,7 +152,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 {
                     // If Notify is true, a user will be sent an verification email but they are already verified
 
-                    sbErrors.AppendFormat("The user is set to Approved{0}, but Site Registration is 'Verified'. Executing this command would send a redundant and confusing email to the user; " + "Either set --{1} to false, --{2} to false, or set the site's registration to something other than 'Verified'; ", (HasFlag(FLAG_APPROVED) ? string.Empty : " (the default value)"), FLAG_APPROVED, FLAG_NOTIFY);
+                    sbErrors.AppendFormat("The user is set to Approved{0}, but Site Registration is 'Verified'. Executing this command would send a redundant and confusing email to the user; " + "Either set --{1} to false, --{2} to false, or set the site's registration to something other than 'Verified'; ", (HasFlag(FlagApproved) ? string.Empty : " (the default value)"), FlagApproved, FlagNotify);
                 }
             }
             ValidationMessage = sbErrors.ToString();
@@ -160,10 +160,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public override ConsoleResultModel Run()
         {
-            StringBuilder sbError = new StringBuilder();
-            List<UserModel> lstResult = new List<UserModel>();
+            var sbError = new StringBuilder();
+            var lstResult = new List<UserModel>();
 
-            UserInfo ui = new UserInfo();
+            var ui = new UserInfo();
             ui.FirstName = FirstName;
             ui.LastName = LastName;
             ui.DisplayName = (string.IsNullOrEmpty(DisplayName) ? string.Format("{0} {1}", ui.FirstName.Trim(), ui.LastName.Trim()) : DisplayName);

@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public PortalModel(PortalInfo portal): base(portal)
         {
             // get portal settings for specified portal
-            PortalSettings ps = new PortalSettings(portal);
+            var ps = new PortalSettings(portal);
             CdfVersion = ps.CdfVersion;
             SiteTheme = Utilities.FormatSkinName(ps.DefaultPortalSkin);
             AdminTheme = Utilities.FormatSkinName(ps.DefaultAdminSkin);

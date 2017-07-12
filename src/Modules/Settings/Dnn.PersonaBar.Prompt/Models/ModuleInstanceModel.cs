@@ -22,7 +22,7 @@
         public int TabId;
         public static ModuleInstanceModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule)
         {
-            ModuleInstanceModel mim = new ModuleInstanceModel
+            var mim = new ModuleInstanceModel
             {
                 ModuleId = dnnModule.ModuleID,
                 Title = dnnModule.ModuleTitle,

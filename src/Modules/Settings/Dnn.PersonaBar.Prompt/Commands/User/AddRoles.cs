@@ -8,7 +8,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
-    [ConsoleCommand("add-roles", "Adds one or more DNN security roles to a user.", new string[]{
+    [ConsoleCommand("add-roles", "Adds one or more DNN security roles to a user.", new[]{
         "id",
         "roles",
         "start",
@@ -16,10 +16,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
     })]
     public class AddRoles : ConsoleCommandBase
     {
-        private const string FLAG_ID = "id";
-        private const string FLAG_ROLES = "roles";
-        private const string FLAG_START = "start";
-        private const string FLAG_END = "end";
+        private const string FlagId = "id";
+        private const string FlagRoles = "roles";
+        private const string FlagStart = "start";
+        private const string FlagEnd = "end";
 
 
         public int? UserId { get; private set; }
@@ -30,17 +30,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
-            if (HasFlag(FLAG_ID))
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
             else
             {
-                int tmpId = 0;
+                var tmpId = 0;
                 if (int.TryParse(args[1], out tmpId))
                     UserId = tmpId;
             }
@@ -50,16 +50,16 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 sbErrors.Append("You must specify a valid User ID as either the first argument or using the --id flag; ");
             }
 
-            if (HasFlag(FLAG_ROLES))
+            if (HasFlag(FlagRoles))
             {
-                if (string.IsNullOrEmpty(Flag(FLAG_ROLES)))
+                if (string.IsNullOrEmpty(Flag(FlagRoles)))
                 {
                     sbErrors.Append("--roles cannot be empty; ");
                 }
                 else
                 {
                     // non-empty roles flag.
-                    Roles = Flag(FLAG_ROLES);
+                    Roles = Flag(FlagRoles);
                 }
             }
             else if (HasFlag("role"))
@@ -67,29 +67,29 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 sbErrors.Append("Invalid flag '--role'. Did you mean --roles ?");
             }
 
-            if (HasFlag(FLAG_START))
+            if (HasFlag(FlagStart))
             {
-                System.DateTime tmpDate = default(System.DateTime);
-                if (System.DateTime.TryParse(Flag(FLAG_START), out tmpDate))
+                var tmpDate = default(DateTime);
+                if (DateTime.TryParse(Flag(FlagStart), out tmpDate))
                 {
                     StartDate = tmpDate;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the Start Date '{0}'. Try using YYYY-MM-DD format; ", Flag(FLAG_START));
+                    sbErrors.AppendFormat("Unable to parse the Start Date '{0}'. Try using YYYY-MM-DD format; ", Flag(FlagStart));
                 }
             }
 
-            if (HasFlag(FLAG_END))
+            if (HasFlag(FlagEnd))
             {
-                System.DateTime tmpDate = default(System.DateTime);
-                if (System.DateTime.TryParse(Flag(FLAG_END), out tmpDate))
+                var tmpDate = default(DateTime);
+                if (DateTime.TryParse(Flag(FlagEnd), out tmpDate))
                 {
                     EndDate = tmpDate;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the End Date '{0}'. Try using YYYY-MM-DD format; ", Flag(FLAG_END));
+                    sbErrors.AppendFormat("Unable to parse the End Date '{0}'. Try using YYYY-MM-DD format; ", Flag(FlagEnd));
                 }
             }
 
@@ -108,7 +108,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public override ConsoleResultModel Run()
         {
 
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
             if (UserId.HasValue)
             {
                 // do lookup by user id

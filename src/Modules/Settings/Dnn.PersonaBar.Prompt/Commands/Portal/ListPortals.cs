@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
+            var sbErrors = new StringBuilder();
 
             if (args.Length == 1)
             {
@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
         public override ConsoleResultModel Run()
         {
             var pc = PortalController.Instance;
-            List<PortalModelBase> lst = new List<PortalModelBase>();
+            var lst = new List<PortalModelBase>();
 
             var alPortals = pc.GetPortals();
             foreach (PortalInfo portal in alPortals)

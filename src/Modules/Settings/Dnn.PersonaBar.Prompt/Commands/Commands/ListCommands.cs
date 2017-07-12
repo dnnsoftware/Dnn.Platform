@@ -1,7 +1,5 @@
 ﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Repositories;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using System;
 using System.Linq;
 using Dnn.PersonaBar.Library.Prompt;
@@ -20,7 +18,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Commands
                 return new ConsoleResultModel(string.Format("Found {0} commands", lstOut.Count()))
                 {
                     Data = lstOut,
-                    FieldOrder = new string[] {
+                    FieldOrder = new[] {
                     "Name", "Description", "Version", "NameSpace" }
                 };
             }

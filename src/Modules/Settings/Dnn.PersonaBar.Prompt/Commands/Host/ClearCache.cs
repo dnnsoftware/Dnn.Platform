@@ -1,7 +1,5 @@
 ﻿using Dnn.PersonaBar.Library.Prompt.Attributes;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using System;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;

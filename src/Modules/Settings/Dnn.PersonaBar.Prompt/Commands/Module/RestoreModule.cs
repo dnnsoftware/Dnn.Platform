@@ -10,15 +10,15 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
-    [ConsoleCommand("restore-module", "Restores a module from the DNN recycle bin", new string[]{
+    [ConsoleCommand("restore-module", "Restores a module from the DNN recycle bin", new[]{
         "id",
         "pageid"
 })]
     public class RestoreModule : ConsoleCommandBase
     {
 
-        private const string FLAG_ID = "id";
-        private const string FLAG_PAGEID = "pageid";
+        private const string FlagId = "id";
+        private const string FlagPageid = "pageid";
 
 
         public int? ModuleId { get; private set; }
@@ -27,17 +27,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            StringBuilder sbErrors = new StringBuilder();
-            if (HasFlag(FLAG_ID))
+            var sbErrors = new StringBuilder();
+            if (HasFlag(FlagId))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_ID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagId), out tmpId))
                 {
                     ModuleId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer", FLAG_ID);
+                    sbErrors.AppendFormat("The --{0} flag must be an integer", FlagId);
                 }
             }
             else
@@ -45,22 +45,22 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 // attempt to get it as the first argument
                 if (args.Length >= 2 && !IsFlag(args[1]))
                 {
-                    int tmpId = 0;
+                    var tmpId = 0;
                     if (int.TryParse(args[1], out tmpId))
                     {
                         ModuleId = tmpId;
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name", FLAG_ID);
+                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name", FlagId);
                     }
                 }
             }
 
-            if (HasFlag(FLAG_PAGEID))
+            if (HasFlag(FlagPageid))
             {
-                int tmpId = 0;
-                if (int.TryParse(Flag(FLAG_PAGEID), out tmpId))
+                var tmpId = 0;
+                if (int.TryParse(Flag(FlagPageid), out tmpId))
                 {
                     if (tmpId > 0)
                     {
@@ -68,12 +68,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0", FLAG_PAGEID);
+                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0", FlagPageid);
                     }
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag value must be an integer", FLAG_PAGEID);
+                    sbErrors.AppendFormat("The --{0} flag value must be an integer", FlagPageid);
                 }
             }
 
@@ -87,7 +87,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
 
         public override ConsoleResultModel Run()
         {
-            List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
+            var lst = new List<ModuleInfoModel>();
 
             var moduleToRestore = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
 
