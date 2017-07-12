@@ -1,5 +1,6 @@
 ﻿using System;
 using Dnn.PersonaBar.Library.Model;
+using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
@@ -42,7 +43,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         public virtual bool IsVisible(MenuItem menuItem)
         {
-            return IsPageAdminUser() || IsPageAdmin();
+            return IsPageAdminUser() || CanViewPageList(menuItem.MenuId);
         }
 
         private bool IsPageAdmin()
@@ -102,6 +103,12 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         public virtual bool CanExportPage(int tabId)
         {
             return CanAdminPage(tabId) || TabPermissionController.CanExportPage(GetTabById(tabId));
+        }
+
+        public virtual bool CanViewPageList(int menuId)
+        {
+            var permissions = MenuPermissionController.GetMenuPermissions(PortalSettings.Current.PortalId, menuId);
+            return MenuPermissionController.HasMenuPermission(new MenuPermissionCollection(permissions), "VIEW_PAGE_LIST") || IsPageAdmin();
         }
 
         public virtual bool CanSavePageDetails(PageSettings pageSettings)

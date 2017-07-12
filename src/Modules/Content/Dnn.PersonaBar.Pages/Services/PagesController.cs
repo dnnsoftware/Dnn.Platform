@@ -200,6 +200,7 @@ namespace Dnn.PersonaBar.Pages.Services
         /// <param name="searchKey"></param>
         /// <returns></returns>
         [HttpGet]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "VIEW_PAGE_LIST,VIEW")]
         public HttpResponseMessage GetPageList(int parentId = -1, string searchKey = "")
         {
             var adminTabId = PortalSettings.AdminTabId;

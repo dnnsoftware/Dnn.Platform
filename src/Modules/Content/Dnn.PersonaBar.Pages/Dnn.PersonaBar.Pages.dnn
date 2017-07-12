@@ -46,6 +46,10 @@
                         <order>20</order>
                         <defaultPermissions>Registered Users, Administrators</defaultPermissions>
                     </menu>
+                    <permission>
+                      <key>VIEW_PAGE_LIST</key>
+                      <name>View Page List</name>
+                    </permission>
                 </component>
             </components>
         </package>
