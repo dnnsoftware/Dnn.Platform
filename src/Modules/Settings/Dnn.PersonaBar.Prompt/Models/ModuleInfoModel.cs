@@ -4,16 +4,15 @@ namespace Dnn.PersonaBar.Prompt.Models
 {
     public class ModuleInfoModel
     {
-        public string __ModuleId;   // command link
-        public int ModuleId;
-        public string Title;
-        public string __ModuleName; // command link
-        public string ModuleName;
-        public string FriendlyName;
-        public int ModuleDefId;
-        public int TabModuleId;
-
-        public string AddedToPages;
+        public string __ModuleId { get; set; }   // command link
+        public int ModuleId { get; set; }
+        public string Title { get; set; }
+        public string __ModuleName { get; set; } // command link
+        public string ModuleName { get; set; }
+        public string FriendlyName { get; set; }
+        public int ModuleDefId { get; set; }
+        public int TabModuleId { get; set; }
+        public string AddedToPages { get; set; }
         public static ModuleInfoModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule)
         {
             var mim = new ModuleInfoModel

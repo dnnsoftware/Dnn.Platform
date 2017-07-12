@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 }
                 else
                 {
-                    return new ConsoleErrorResultModel(string.Format("No user found with the ID of '{0}'", UserId));
+                    return new ConsoleErrorResultModel($"No user found with the ID of '{UserId}'");
                 }
             }
 

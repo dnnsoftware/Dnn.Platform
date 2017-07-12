@@ -90,7 +90,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalId);
                 if (desktopModule == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format("Unable to find a desktop module with the name '{0}' for this portal", ModuleName));
+                    return new ConsoleErrorResultModel(
+                        $"Unable to find a desktop module with the name '{ModuleName}' for this portal");
                 }
                 try
                 {
@@ -104,7 +105,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                     {
                         lst.Add(ModuleInstanceModel.FromDnnModuleInfo(ModuleController.Instance.GetTabModule(newModule.TabModuleID)));
                     }
-                    return new ConsoleResultModel(string.Format("Successfully added {0} new module{1}", lst.Count, (lst.Count == 1 ? string.Empty : "s"))) { Data = lst };
+                    return new ConsoleResultModel(
+                        $"Successfully added {lst.Count} new module{(lst.Count == 1 ? string.Empty : "s")}") { Data = lst };
                 }
                 catch (Exception ex)
                 {
@@ -132,7 +134,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 mi.PortalID = PortalId;
                 mi.TabID = TabId;
                 mi.ModuleOrder = position;
-                mi.ModuleTitle = (string.IsNullOrEmpty(title) ? modDef.FriendlyName : title);
+                mi.ModuleTitle = string.IsNullOrEmpty(title) ? modDef.FriendlyName : title;
                 mi.PaneName = pane;
                 mi.ModuleDefID = modDef.ModuleDefID;
                 if (modDef.DefaultCacheTime > 0)
@@ -157,7 +159,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 {
                     var defaultLocale = DotNetNuke.Services.Localization.LocaleController.Instance.GetDefaultLocale(PortalId);
                     var tabInfo = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(mi.TabID, PortalId, false);
-                    mi.CultureCode = (tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code);
+                    mi.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }
                 else
                 {

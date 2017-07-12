@@ -111,9 +111,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 // Since we're dealing with module instance models rather than module info models,
                 // don't follwo the normal output flow.
                 var newList = GetDeletedModules(PortalId, (bool)Deleted, ModuleName, ModuleTitle);
-                return new ConsoleResultModel(string.Format("{0} module{1} found", 
-                    newList.Count, 
-                    (newList.Count != 1 ? "s" : string.Empty))) { Data = newList };
+                return new ConsoleResultModel($"{newList.Count} module{(newList.Count != 1 ? "s" : string.Empty)} found") { Data = newList };
 
             }
             else if (All)
@@ -144,7 +142,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             if (lst == null)
                 lst = new List<ModuleInfoModel>();
 
-            return new ConsoleResultModel(string.Format("{0} module{1} found", lst.Count, (lst.Count != 1 ? "s" : string.Empty))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} module{(lst.Count != 1 ? "s" : string.Empty)} found") { Data = lst };
         }
 
 

@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                 }
             }
 
-            if (RoleName == null && Description == null && (!IsPublic.HasValue) && (!AutoAssign.HasValue))
+            if (RoleName == null && Description == null && !IsPublic.HasValue && !AutoAssign.HasValue)
             {
                 sbErrors.AppendFormat("Nothing to Update! Tell me what to update with flags like --{0} --{1} --{2} --{3}, etc.", FlagRoleName, FlagDescription, FlagIsPublic, FlagAutoAssign);
             }
@@ -109,7 +109,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                 var role = Prompt.Utilities.GetRoleById((int)RoleId, PortalId);
                 if (role == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format("Unable to find a role with the ID of '{0}'", RoleId));
+                    return new ConsoleErrorResultModel($"Unable to find a role with the ID of '{RoleId}'");
                 }
 
                 // Do not modify any system roles

@@ -142,7 +142,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                 // only act if role doesn't yet exist
                 if (Prompt.Utilities.RoleExists(RoleName, PortalId))
                 {
-                    return new ConsoleErrorResultModel(string.Format("Cannot create role: A role with the name '{0}' already exists.", RoleName));
+                    return new ConsoleErrorResultModel(
+                        $"Cannot create role: A role with the name '{RoleName}' already exists.");
                 }
 
                 var newRole = Prompt.Utilities.CreateRole(RoleName, PortalId, Status, Description, (bool)IsPublic, (bool)AutoAssign);

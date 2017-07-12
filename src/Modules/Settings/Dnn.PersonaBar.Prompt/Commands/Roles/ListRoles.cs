@@ -7,7 +7,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
-    [ConsoleCommand("list-roles", "Retrieves a list of DNN security roles for this portal", new string[] { })]
+    [ConsoleCommand("list-roles", "Retrieves a list of DNN security roles for this portal")]
     public class ListRoles : ConsoleCommandBase
     {
         public override ConsoleResultModel Run()
@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                     lst.Add(new RoleModelBase(role));
                 }
             }
-            return new ConsoleResultModel(string.Format("{0} role{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} role{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
         }
     }
 }

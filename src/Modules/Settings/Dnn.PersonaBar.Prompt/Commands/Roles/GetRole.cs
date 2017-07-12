@@ -10,7 +10,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
-    [ConsoleCommand("get-role", "Retrieves a DNN security role for this portal", new string[] { })]
+    [ConsoleCommand("get-role", "Retrieves a DNN security role for this portal")]
     public class GetRole : ConsoleCommandBase
     {
         private const string FlagId = "id";
@@ -74,10 +74,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
             }
             else
             {
-                return new ConsoleResultModel(string.Format("No role found with the ID of '{0}'", RoleId));
+                return new ConsoleResultModel($"No role found with the ID of '{RoleId}'");
             }
 
-            return new ConsoleResultModel(string.Format("{0} role{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} role{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
         }
 
 

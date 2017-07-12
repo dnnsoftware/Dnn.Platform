@@ -7,7 +7,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Application
 {
-    [ConsoleCommand("restart-application", "Restarts the application and reloads the page", new string[] { })]
+    [ConsoleCommand("restart-application", "Restarts the application and reloads the page")]
     public class RestartApplication : ConsoleCommandBase
     {
         public override ConsoleResultModel Run()

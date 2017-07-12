@@ -143,7 +143,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
 
             if (targetTab == null)
             {
-                return new ConsoleErrorResultModel(string.Format("Could not load Target Page. No page found in the portal with ID '{0}'", TargetPageId));
+                return new ConsoleErrorResultModel(
+                    $"Could not load Target Page. No page found in the portal with ID '{TargetPageId}'");
             }
 
 
@@ -164,7 +165,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             }
             else
             {
-                return new ConsoleResultModel(string.Format("No module found with ID '{0}'", ModuleId));
+                return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
             }
 
             return new ConsoleResultModel("Successfully copied the module") { Data = lst };

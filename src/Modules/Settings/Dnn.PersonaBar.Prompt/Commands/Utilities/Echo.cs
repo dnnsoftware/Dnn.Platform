@@ -3,7 +3,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Utilities
 {
-    [ConsoleCommand("echo", "Echos back the first argument received", new string[] { })]
+    [ConsoleCommand("echo", "Echos back the first argument received")]
     public class Echo : ConsoleCommandBase
     {
         public override ConsoleResultModel Run()

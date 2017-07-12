@@ -31,21 +31,22 @@ namespace Dnn.PersonaBar.Prompt.Services
 
             try
             {
-                var args = command.GetArgs();
+                var args = command.Args;
                 var cmdName = args.First().ToUpper();
-                var commands = CommandRepository.Instance.GetCommands();
-                if (!commands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
+                var allCommands = CommandRepository.Instance.GetCommands();
+                //If command not found and command contain namespace.
+                if (!allCommands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
                 {
-                    var seek = commands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
+                    var seek = allCommands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
                     // if there is a command which matches then we assume the user meant that namespace
                     if (seek != null)
                     {
-                        cmdName = string.Format("{0}.{1}", seek.NameSpace.ToUpper(), cmdName);
+                        cmdName = $"{seek.NameSpace.ToUpper()}.{cmdName}";
                     }
                 }
 
                 // if no command found notify
-                if (!commands.ContainsKey(cmdName))
+                if (!allCommands.ContainsKey(cmdName))
                 {
                     var sbError = new StringBuilder();
                     var suggestion = GetSuggestedCommand(cmdName);
@@ -57,7 +58,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
                     return BadRequestResponse(sbError.ToString());
                 }
-                var cmdTypeToRun = commands[cmdName].CommandType;
+                var cmdTypeToRun = allCommands[cmdName].CommandType;
 
                 // Instantiate and run the command
                 try
@@ -65,14 +66,9 @@ namespace Dnn.PersonaBar.Prompt.Services
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
                     // set env. data for command use
                     cmdObj.Init(args, PortalSettings, UserInfo, command.CurrentPage);
-                    if (cmdObj.IsValid())
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, cmdObj.Run());
-                    }
-                    else
-                    {
-                        return BadRequestResponse(cmdObj.ValidationMessage);
-                    }
+                    return cmdObj.IsValid()
+                        ? Request.CreateResponse(HttpStatusCode.OK, cmdObj.Run())
+                        : BadRequestResponse(cmdObj.ValidationMessage);
                 }
                 catch (Exception ex)
                 {

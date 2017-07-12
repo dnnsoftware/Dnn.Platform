@@ -192,7 +192,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                     return new ConsoleErrorResultModel(msg);
                 }
                 // retrieve updated user info.
-                userToUpdate = UserController.Instance.GetUserById(PortalId, (userToUpdate.UserID));
+                userToUpdate = UserController.Instance.GetUserById(PortalId, userToUpdate.UserID);
                 sbResults.Append("The Username has been changed. ");
             }
 

@@ -211,7 +211,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 lstOut = lst;
             }
 
-            var msg = string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""));
+            var msg = $"{lstOut.Count} page{(lstOut.Count != 1 ? "s" : "")} found";
             return new ConsoleResultModel(msg)
             {
                 Data = lstOut,

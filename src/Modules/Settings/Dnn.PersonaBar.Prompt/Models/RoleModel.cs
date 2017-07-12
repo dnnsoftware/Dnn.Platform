@@ -5,15 +5,15 @@ namespace Dnn.PersonaBar.Prompt.Models
 {
     public class RoleModel : RoleModelBase
     {
-        public string Description;
-        public string CreatedDate;
-        public int CreatedBy;
+        public string Description { get; set; }
+        public string CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
 
         #region Constructors
         public RoleModel()
         {
         }
-        public RoleModel(RoleInfo role): base(role)
+        public RoleModel(RoleInfo role) : base(role)
         {
             ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
             CreatedDate = role.CreatedOnDate.ToPromptLongDateString();
@@ -23,13 +23,8 @@ namespace Dnn.PersonaBar.Prompt.Models
         #endregion
 
         #region Command Links
-        public string __CreatedBy
-        {
-            get
-            {
-                return $"get-user {CreatedBy}";
-            }
-        }
+        public string __CreatedBy => $"get-user {CreatedBy}";
+
         #endregion
     }
 }

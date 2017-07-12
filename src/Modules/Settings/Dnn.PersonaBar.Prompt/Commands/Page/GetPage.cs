@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     lst.Add(new PageModel(tab));
             }
 
-            return new ConsoleResultModel(string.Format("{0} page{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} page{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
         }
 
 

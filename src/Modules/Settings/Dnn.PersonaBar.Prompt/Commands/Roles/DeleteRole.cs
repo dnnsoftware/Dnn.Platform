@@ -11,7 +11,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
-    [ConsoleCommand("delete-role", "Deletes the specified DNN security role for this portal", new string[] { })]
+    [ConsoleCommand("delete-role", "Deletes the specified DNN security role for this portal")]
     public class DeleteRole : ConsoleCommandBase
     {
 
@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                 {
                     rc.DeleteRole(role);
                     lst.Add(new RoleModel(role));
-                    return new ConsoleResultModel(string.Format("Successfully deleted role '{0}' ({1})", role.RoleName, role.RoleID));
+                    return new ConsoleResultModel($"Successfully deleted role '{role.RoleName}' ({role.RoleID})");
                 }
                 catch (Exception ex)
                 {
@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
             }
             else
             {
-                return new ConsoleResultModel(string.Format("No role found with the ID of '{0}'", RoleId));
+                return new ConsoleResultModel($"No role found with the ID of '{RoleId}'");
             }
 
         }

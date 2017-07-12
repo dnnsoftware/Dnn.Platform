@@ -12,34 +12,14 @@
         public bool IsDeleted { get; set; }
 
         #region Command Links
-        public string __TabId
-        {
-            get
-            {
-                return $"get-page {TabId}";
-            }
-        }
-        public string __ParentId
-        {
-            get
-            {
-                return $"list-pages --parentid {ParentId}";
-            }
-        }
-        public string __IncludeInMenu
-        {
-            get
-            {
-                return $"list-pages --visible{((IncludeInMenu ? "" : " false"))}";
-            }
-        }
-        public string __IsDeleted
-        {
-            get
-            {
-                return $"list-pages --deleted{((IsDeleted ? "" : " false"))}";
-            }
-        }
+        public string __TabId => $"get-page {TabId}";
+
+        public string __ParentId => $"list-pages --parentid {ParentId}";
+
+        public string __IncludeInMenu => $"list-pages --visible{(IncludeInMenu ? "" : " false")}";
+
+        public string __IsDeleted => $"list-pages --deleted{(IsDeleted ? "" : " false")}";
+
         #endregion
 
         #region constructors

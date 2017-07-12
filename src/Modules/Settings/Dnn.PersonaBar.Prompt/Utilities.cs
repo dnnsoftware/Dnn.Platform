@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Prompt
             {
                 curRole = lstRoles[i].Trim();
                 role = rc.GetRoleByName(portalId, curRole);
-                if ((role != null))
+                if (role != null)
                 {
                     rc.AddUserRole(portalId, userId, role.RoleID, effDate, expDate);
                 }
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Prompt
             var match = Regex.Match(skin, "skins\\/(\\w*)\\/(.*)\\.ascx", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                return string.Format("{0} ({1})", match.Groups[1].Value, match.Groups[2].Value);
+                return $"{match.Groups[1].Value} ({match.Groups[2].Value})";
             }
             else
             {
@@ -134,36 +134,13 @@ namespace Dnn.PersonaBar.Prompt
             var match = r.Match(container);
             if (match.Success)
             {
-                return string.Format("{0} ({1})", match.Groups[1].Value, match.Groups[2].Value);
+                return $"{match.Groups[1].Value} ({match.Groups[2].Value})";
             }
             else
             {
                 return container;
                 // unable to find a match
             }
-        }
-
-        public static VersionInfo GetDnnVersion()
-        {
-            var ver = System.Reflection.Assembly.GetAssembly(typeof(DotNetNuke.Common.Globals)).GetName().Version;
-            var retVer = new VersionInfo();
-            if (ver != null)
-            {
-                var with1 = retVer;
-                with1.Major = ver.Major;
-                with1.Minor = ver.Minor;
-                with1.Build = ver.Build;
-                with1.Revision = ver.Revision;
-            }
-            else
-            {
-                var with2 = retVer;
-                with2.Major = 0;
-                with2.Minor = 0;
-                with2.Build = 0;
-                with2.Revision = 0;
-            }
-            return retVer;
         }
     }
 }

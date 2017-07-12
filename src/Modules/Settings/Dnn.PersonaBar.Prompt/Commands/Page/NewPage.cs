@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
 
-            CurrentTab = (new TabController()).GetTab(activeTabId, portalSettings.PortalId);
+            CurrentTab = new TabController().GetTab(activeTabId, portalSettings.PortalId);
 
             var sbErrors = new StringBuilder();
             if (HasFlag(FlagParentid))
@@ -147,7 +147,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 {
                     tab.ParentId = CurrentTab.ParentId;
                 }
-                ParentTab = (new TabController()).GetTab(tab.ParentId, PortalId);
+                ParentTab = new TabController().GetTab(tab.ParentId, PortalId);
                 if (ParentTab != null)
                 {
                     tab.TabPermissions.AddRange(ParentTab.TabPermissions);
@@ -164,7 +164,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     var addedTab = TabController.Instance.GetTab(newTabId, PortalId);
                     if (addedTab == null)
                     {
-                        return new ConsoleErrorResultModel(string.Format("Unable to retrieve newly created page with ID of '{0}'", newTabId));
+                        return new ConsoleErrorResultModel(
+                            $"Unable to retrieve newly created page with ID of '{newTabId}'");
                     }
                     lstResults.Add(new PageModel(addedTab));
                 }

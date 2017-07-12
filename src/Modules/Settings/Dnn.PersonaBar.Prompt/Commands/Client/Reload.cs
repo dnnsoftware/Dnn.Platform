@@ -6,7 +6,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Client
 {
-    [ConsoleCommand("reload", "Reloads the current page", new string[] { })]
+    [ConsoleCommand("reload", "Reloads the current page")]
     public class Reload : IConsoleCommand
     {
 

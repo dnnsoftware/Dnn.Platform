@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Extensions
                         installer.Install();
                         if (installer.IsValid)
                         {
-                            res = string.Format("<strong>Successfully added {0}</strong>", _path);
+                            res = $"<strong>Successfully added {_path}</strong>";
                             // Return installer.InstallerInfo.PackageID
                         }
                         else

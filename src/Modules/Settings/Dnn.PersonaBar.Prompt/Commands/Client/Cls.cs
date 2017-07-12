@@ -7,7 +7,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Client
 {
-    [ConsoleCommand("cls", "Clears the console screen", new string[] { })]
+    [ConsoleCommand("cls", "Clears the console screen")]
     public class Cls : IConsoleCommand
     {
 

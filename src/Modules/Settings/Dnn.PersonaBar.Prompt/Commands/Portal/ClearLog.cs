@@ -6,7 +6,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
-    [ConsoleCommand("clear-log", "Clears the Event Logo for the current portal", new string[] { })]
+    [ConsoleCommand("clear-log", "Clears the Event Logo for the current portal")]
     public class ClearLog : ConsoleCommandBase
     {
         public override ConsoleResultModel Run()

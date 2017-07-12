@@ -8,7 +8,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
-    [ConsoleCommand("list-portals", "Retrieves a list of portals for the current DNN Installation", new string[] { })]
+    [ConsoleCommand("list-portals", "Retrieves a list of portals for the current DNN Installation")]
     public class ListPortals : ConsoleCommandBase
     {
 

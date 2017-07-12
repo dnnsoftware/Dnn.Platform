@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             }
 
 
-            return new ConsoleResultModel(string.Format("{0} task{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
+            return new ConsoleResultModel($"{lst.Count} task{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
         }
 
 

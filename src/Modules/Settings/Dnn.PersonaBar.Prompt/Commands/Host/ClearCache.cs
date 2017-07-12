@@ -5,7 +5,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Host
 {
-    [ConsoleCommand("clear-cache", "Clears the cache and reloads the page", new string[] { })]
+    [ConsoleCommand("clear-cache", "Clears the cache and reloads the page")]
     public class ClearCache : ConsoleCommandBase
     {
         public override ConsoleResultModel Run()

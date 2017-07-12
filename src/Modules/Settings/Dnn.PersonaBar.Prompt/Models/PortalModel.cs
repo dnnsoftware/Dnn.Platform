@@ -11,20 +11,9 @@ namespace Dnn.PersonaBar.Prompt.Models
         public string AdminContainer { get; set; }
 
         #region Command Links
-        public string __PageCount
-        {
-            get
-            {
-                return "list-pages";
-            }
-        }
-        public string __UserCount
-        {
-            get
-            {
-                return "list-users";
-            }
-        }
+        public string __PageCount => "list-pages";
+
+        public string __UserCount => "list-users";
 
         #endregion
 

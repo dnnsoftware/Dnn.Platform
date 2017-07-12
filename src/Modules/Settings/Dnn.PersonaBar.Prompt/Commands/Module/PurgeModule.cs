@@ -111,7 +111,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             }
             else
             {
-                return new ConsoleResultModel(string.Format("No module found with ID '{0}'", ModuleId));
+                return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
             }
 
 

@@ -7,7 +7,7 @@ using Dnn.PersonaBar.Library.Prompt.Attributes;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Client
 {
-    [ConsoleCommand("clear-history", "Clears history of commands used in current session", new string[] { })]
+    [ConsoleCommand("clear-history", "Clears history of commands used in current session")]
     public class ClearHistory : IConsoleCommand
     {
 

@@ -7,17 +7,17 @@
     public class ModuleInstanceModel
     {
         // command link
-        public string __ModuleId;
-        public int ModuleId;
-        public string Title;
-        public string Pane;
-        public string ModuleName;
+        public string __ModuleId { get; set; }
+        public int ModuleId { get; set; }
+        public string Title { get; set; }
+        public string Pane { get; set; }
+        public string ModuleName { get; set; }
         // command link
-        public string __ModuleName;
-        public string FriendlyName;
-        public int ModuleDefId;
-        public int TabModuleId;
-        public bool IsDeleted;
+        public string __ModuleName { get; set; }
+        public string FriendlyName { get; set; }
+        public int ModuleDefId { get; set; }
+        public int TabModuleId { get; set; }
+        public bool IsDeleted { get; set; }
 
         public int TabId;
         public static ModuleInstanceModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule)
@@ -32,10 +32,10 @@
                 TabModuleId = dnnModule.TabModuleID,
                 ModuleDefId = dnnModule.ModuleDefID,
                 IsDeleted = dnnModule.IsDeleted,
-                TabId = dnnModule.TabID
+                TabId = dnnModule.TabID,
+                __ModuleId = $"get-module {dnnModule.ModuleID}",
+                __ModuleName = $"list-modules '{dnnModule.ModuleID}'"
             };
-            mim.__ModuleId = $"get-module {dnnModule.ModuleID}";
-            mim.__ModuleName = $"list-modules '{dnnModule.ModuleID}'";
 
             return mim;
         }

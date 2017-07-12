@@ -5,10 +5,10 @@ namespace Dnn.PersonaBar.Prompt.Models
 {
     public class TaskModelBase
     {
-        public int ScheduleId;
-        public string FriendlyName;
-        public string NextStart;
-        public bool Enabled;
+        public int ScheduleId { get; set; }
+        public string FriendlyName { get; set; }
+        public string NextStart { get; set; }
+        public bool Enabled { get; set; }
 
         #region Constructors
         public TaskModelBase()

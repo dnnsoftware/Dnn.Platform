@@ -94,18 +94,18 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 {
                     // we can do a soft Delete
                     ModuleController.Instance.DeleteTabModule((int)PageId, (int)ModuleId, true);
-                    return new ConsoleResultModel(string.Format("Module {0} sent to Recycle Bin", ModuleId));
+                    return new ConsoleResultModel($"Module {ModuleId} sent to Recycle Bin");
                 }
                 else
                 {
                     ModuleController.Instance.DeleteModule((int)ModuleId);
                     DataCache.ClearModuleCache(module.TabID);
-                    return new ConsoleResultModel(string.Format("Module {0} permanently deleted", ModuleId));
+                    return new ConsoleResultModel($"Module {ModuleId} permanently deleted");
                 }
             }
             else
             {
-                return new ConsoleResultModel(string.Format("No module found with ID '{0}'", ModuleId));
+                return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
             }
 
 

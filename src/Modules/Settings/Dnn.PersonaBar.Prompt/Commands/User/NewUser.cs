@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                         }
                     }
                 }
-                Password = (string.IsNullOrEmpty(Flag(FlagPassword)) ? UserController.GeneratePassword() : Flag(FlagPassword));
+                Password = string.IsNullOrEmpty(Flag(FlagPassword)) ? UserController.GeneratePassword() : Flag(FlagPassword);
                 var bApproved = true;
 
                 // approved is True by default since admin/host would be using Prompt
@@ -152,7 +152,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 {
                     // If Notify is true, a user will be sent an verification email but they are already verified
 
-                    sbErrors.AppendFormat("The user is set to Approved{0}, but Site Registration is 'Verified'. Executing this command would send a redundant and confusing email to the user; " + "Either set --{1} to false, --{2} to false, or set the site's registration to something other than 'Verified'; ", (HasFlag(FlagApproved) ? string.Empty : " (the default value)"), FlagApproved, FlagNotify);
+                    sbErrors.AppendFormat("The user is set to Approved{0}, but Site Registration is 'Verified'. Executing this command would send a redundant and confusing email to the user; " + "Either set --{1} to false, --{2} to false, or set the site's registration to something other than 'Verified'; ", HasFlag(FlagApproved) ? string.Empty : " (the default value)", FlagApproved, FlagNotify);
                 }
             }
             ValidationMessage = sbErrors.ToString();
@@ -166,7 +166,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             var ui = new UserInfo();
             ui.FirstName = FirstName;
             ui.LastName = LastName;
-            ui.DisplayName = (string.IsNullOrEmpty(DisplayName) ? string.Format("{0} {1}", ui.FirstName.Trim(), ui.LastName.Trim()) : DisplayName);
+            ui.DisplayName = string.IsNullOrEmpty(DisplayName) ? $"{ui.FirstName.Trim()} {ui.LastName.Trim()}"
+                : DisplayName;
             ui.Email = Email;
             ui.Username = Username;
             ui.PortalID = PortalId;

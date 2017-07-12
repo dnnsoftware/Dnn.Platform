@@ -6,7 +6,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Commands
 {
-    [ConsoleCommand("list-commands", "Lists all available commands", new string[] { })]
+    [ConsoleCommand("list-commands", "Lists all available commands")]
     public class ListCommands : ConsoleCommandBase
     {
         public override ConsoleResultModel Run()
@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Commands
             try
             {
                 var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name);
-                return new ConsoleResultModel(string.Format("Found {0} commands", lstOut.Count()))
+                return new ConsoleResultModel($"Found {lstOut.Count()} commands")
                 {
                     Data = lstOut,
                     FieldOrder = new[] {

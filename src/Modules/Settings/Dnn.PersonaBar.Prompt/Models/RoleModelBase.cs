@@ -33,28 +33,11 @@ namespace Dnn.PersonaBar.Prompt.Models
         #endregion
 
         #region Command Links
-        public string __ModifiedBy
-        {
-            get
-            {
-                return $"get-user {ModifiedBy}";
-            }
+        public string __ModifiedBy => $"get-user {ModifiedBy}";
 
-        }
-        public string __RoleId
-        {
-            get
-            {
-                return $"get-role {RoleId}";
-            }
-        }
-        public string __UserCount
-        {
-            get
-            {
-                return $"list-users --role '{RoleName}'";
-            }
-        }
+        public string __RoleId => $"get-role {RoleId}";
+        public string __UserCount => $"list-users --role '{RoleName}'";
+
         #endregion
     }
 }

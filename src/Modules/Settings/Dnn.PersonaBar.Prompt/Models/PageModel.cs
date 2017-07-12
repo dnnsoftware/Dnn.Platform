@@ -2,10 +2,10 @@
 {
     public class PageModel : PageModelBase
     {
-        public string Container;
-        public string Url;
-        public string Keywords;
-        public string Description;
+        public string Container { get; set; }
+        public string Url { get; set; }
+        public string Keywords { get; set; }
+        public string Description { get; set; }
 
         public PageModel()
         {

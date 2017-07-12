@@ -113,7 +113,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 }
             }
 
-            if (Title == null && Name == null && Description == null && Keywords == null && Url == null && (!ParentId.HasValue) && (!Visible.HasValue))
+            if (Title == null && Name == null && Description == null && Keywords == null && Url == null && !ParentId.HasValue && !Visible.HasValue)
             {
                 sbErrors.AppendFormat("Nothing to Update! Tell me what to update with flags like --{0} --{1} --{2} --{3}, etc.", FlagTitle, FlagDescription, FlagName, FlagVisible);
             }
