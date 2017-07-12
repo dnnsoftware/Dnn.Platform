@@ -19,8 +19,10 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
+using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Pages.Components.Security;
 using DotNetNuke.Entities.Portals;
 
@@ -41,14 +43,14 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            return true;
+            return _securityService.IsVisible(menuItem);
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>
             {
-                {"canSeePagesList", _securityService.IsPageAdminUser()},
+                {"canSeePagesList", _securityService.CanViewPageList(menuItem.MenuId)},
                 {"portalName", PortalSettings.Current.PortalName},
                 {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
                 {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName}

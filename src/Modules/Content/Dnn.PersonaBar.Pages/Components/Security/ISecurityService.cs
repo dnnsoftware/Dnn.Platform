@@ -24,6 +24,8 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         bool CanExportPage(int tabId);
 
+        bool CanViewPageList(int menuId);
+
         bool CanSavePageDetails(PageSettings pageSettings);
     }
 }
