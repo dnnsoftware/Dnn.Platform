@@ -1,0 +1,64 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Providers.FolderProviders" type="Provider" version="09.02.00" isSystem="true">
+      <friendlyName>DotNetNuke Folder Providers</friendlyName>
+      <description>Azure Folder Providers for DotNetNuke.</description>
+      <dependencies />
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" /> 
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="Provider" />
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin\Providers</path>
+              <name>DotNetNuke.Providers.FolderProviders.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin\Providers</path>
+              <name>Microsoft.WindowsAzure.StorageClient.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>Providers\FolderProviders</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/folder/providers" action="update" key="name" collision="save">
+                    <add name="AzureFolderProvider"
+                         type="DotNetNuke.Providers.FolderProviders.AzureFolderProvider.AzureFolderProvider, DotNetNuke.Providers.FolderProviders"
+                         providerPath="~/Providers/FolderProviders/AzureFolderProvider/" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/folder/providers/add[@name='AzureFolderProvider']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
