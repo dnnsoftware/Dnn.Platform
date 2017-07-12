@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetNuke.Common;
+using System;
 using System.IO;
 
 namespace Cantarus.Modules.PolyDeploy.Components
@@ -10,7 +11,27 @@ namespace Cantarus.Modules.PolyDeploy.Components
             // Need to set sensible base?
             if (basePath == null)
             {
-                basePath = Path.GetTempPath();
+                // We'll create a temporary folder in the module folder.
+                basePath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", "Cantarus", "PolyDeploy");
+
+                // Check we found the module directory.
+                if (Directory.Exists(basePath))
+                {
+                    // Prepare a temporary directory.
+                    basePath = Path.Combine(basePath, "Temp");
+
+                    // Does it exist?
+                    if (!Directory.Exists(basePath))
+                    {
+                        // No, create it.
+                        Directory.CreateDirectory(basePath);
+                    }
+                }
+                else
+                {
+                    // No module directory, use windows temp.
+                    basePath = Path.GetTempPath();
+                }
             }
 
             // Generate a random folder in the desired path.
