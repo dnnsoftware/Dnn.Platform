@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "approved",
         "notify"
     })]
-    public class NewUser : ConsoleCommandBase, IConsoleCommand
+    public class NewUser : ConsoleCommandBase
     {
         private const string FLAG_EMAIL = "email";
         private const string FLAG_USERNAME = "username";
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         private const string FLAG_APPROVED = "approved";
         private const string FLAG_NOTIFY = "notify";
 
-        public string ValidationMessage { get; private set; }
+
         public string Email { get; private set; }
         public string Username { get; private set; }
         public string DisplayName { get; private set; }
@@ -43,9 +43,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public bool Approved { get; private set; }
         public bool? Notify { get; private set; } // if not specified, it will use the site settings
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
 
             StringBuilder sbErrors = new StringBuilder();
 
@@ -158,17 +158,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             StringBuilder sbError = new StringBuilder();
             List<UserModel> lstResult = new List<UserModel>();
-            
-            UserInfo ui = new UserInfo(); 
+
+            UserInfo ui = new UserInfo();
             ui.FirstName = FirstName;
             ui.LastName = LastName;
             ui.DisplayName = (string.IsNullOrEmpty(DisplayName) ? string.Format("{0} {1}", ui.FirstName.Trim(), ui.LastName.Trim()) : DisplayName);

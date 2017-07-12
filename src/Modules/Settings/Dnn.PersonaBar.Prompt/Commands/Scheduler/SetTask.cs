@@ -14,19 +14,19 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
         "id",
         "enabled"
     })]
-    public class SetTask : ConsoleCommandBase, IConsoleCommand
+    public class SetTask : ConsoleCommandBase
     {
 
         private const string FLAG_ID = "id";
         private const string FLAG_ENABLED = "enabled";
 
-        public string ValidationMessage { get; private set; }
+
         public int? TaskId { get; private set; }
         public bool? Enabled { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_ID))
@@ -74,12 +74,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
             var taskToUpdate = SchedulingController.GetSchedule(Convert.ToInt32(TaskId));

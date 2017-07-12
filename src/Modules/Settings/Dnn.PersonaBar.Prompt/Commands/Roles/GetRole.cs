@@ -11,16 +11,16 @@ using DotNetNuke.Security.Roles;
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
     [ConsoleCommand("get-role", "Retrieves a DNN security role for this portal", new string[] { })]
-    public class GetRole : ConsoleCommandBase, IConsoleCommand
+    public class GetRole : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
 
-        public string ValidationMessage { get; private set; }
+
         public int? RoleId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
 
             StringBuilder sbErrors = new StringBuilder();
 
@@ -62,12 +62,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             RoleController rc = new RoleController();
             List<RoleModel> lst = new List<RoleModel>();

@@ -12,7 +12,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("move-module", "Copies the module specified", new string[] { "id" })]
-    public class MoveModule : ConsoleCommandBase, IConsoleCommand
+    public class MoveModule : ConsoleCommandBase
     {
 
         private const string FLAG_ID = "id";
@@ -21,16 +21,16 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         private const string FLAG_PANE = "pane";
         private const string FLAG_INCLUDESETTINGS = "includesettings";
 
-        public string ValidationMessage { get; private set; }
+
         public int? ModuleId { get; private set; }
         public int? PageId { get; private set; }
         public int? TargetPageId { get; private set; }
         public string Pane { get; private set; }
         public bool? IncludeSettings { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_ID))
@@ -134,12 +134,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
 

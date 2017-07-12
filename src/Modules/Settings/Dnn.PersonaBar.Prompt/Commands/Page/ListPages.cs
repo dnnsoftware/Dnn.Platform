@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "path",
         "skin"
     })]
-    public class ListPages : ConsoleCommandBase, IConsoleCommand
+    public class ListPages : ConsoleCommandBase
     {
         private const string FLAG_PARENTID = "parentid";
         private const string FLAG_DELETED = "deleted";
@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         private const string FLAG_SKIN = "skin";
         private const string FLAG_VISIBLE = "visible";
 
-        public string ValidationMessage { get; private set; }
+
         public int? ParentId { get; private set; }
         public bool? Deleted { get; private set; }
         public string PageName { get; private set; }
@@ -38,9 +38,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public string PageSkin { get; private set; }
         public bool? PageVisible { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_PARENTID))
@@ -115,12 +115,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             TabController tc = new TabController();
             List<PageModelBase> lst = new List<PageModelBase>();
@@ -217,7 +212,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
 
             var msg = string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""));
-            return new ConsoleResultModel(msg) {
+            return new ConsoleResultModel(msg)
+            {
                 Data = lstOut,
                 FieldOrder = new string[] {
                     "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted" }

@@ -13,18 +13,18 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "id",
         "notify"
     })]
-    public class DeleteUser : ConsoleCommandBase, IConsoleCommand
+    public class DeleteUser : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
         private const string FLAG_NOTIFY = "notify";
 
-        public string ValidationMessage { get; private set; }
+
         public int? UserId { get; private set; }
         public bool? Notify { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_ID))
@@ -65,12 +65,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             List<UserModel> lst = new List<UserModel>();
 

@@ -11,19 +11,19 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("get-module", "Gets module information for module specified", new string[] { "id" })]
-    public class GetModule : ConsoleCommandBase, IConsoleCommand
+    public class GetModule : ConsoleCommandBase
     {
 
         private const string FLAG_ID = "id";
 
         private const string FLAG_PAGEID = "pageid";
-        public string ValidationMessage { get; private set; }
+
         protected int? ModuleId { get; private set; }
         protected int? PageId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_ID))
@@ -75,12 +75,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
             if (PageId.HasValue)

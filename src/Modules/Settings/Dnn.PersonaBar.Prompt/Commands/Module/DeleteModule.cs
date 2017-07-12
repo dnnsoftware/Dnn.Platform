@@ -11,18 +11,18 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("delete-module", "Delete a module instance", new string[] { "id", "pageid" })]
-    public class DeleteModule : ConsoleCommandBase, IConsoleCommand
+    public class DeleteModule : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
         private const string FLAG_PAGEID = "pageid";
 
-        public string ValidationMessage { get; private set; }
+
         public int? ModuleId { get; private set; }
         public int? PageId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_ID))
@@ -81,12 +81,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
 

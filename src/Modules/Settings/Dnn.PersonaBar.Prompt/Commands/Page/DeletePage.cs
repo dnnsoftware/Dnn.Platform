@@ -16,20 +16,20 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "id",
         "name"
     })]
-    public class DeletePage : ConsoleCommandBase, IConsoleCommand
+    public class DeletePage : ConsoleCommandBase
     {
         private const string FLAG_NAME = "name";
         private const string FLAG_PARENTID = "parentid";
         private const string FLAG_ID = "id";
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public string PageName { get; private set; }
         public int? ParentId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (args.Length == 2)
@@ -90,12 +90,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             TabController tc = new TabController();
             List<PageModel> lst = new List<PageModel>();

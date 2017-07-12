@@ -15,18 +15,18 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
         "enabled",
         "name"
     })]
-    public class ListTasks : ConsoleCommandBase, IConsoleCommand
+    public class ListTasks : ConsoleCommandBase
     {
         private const string FLAG_ENABLED = "enabled";
         private const string FLAG_NAME = "name";
 
-        public string ValidationMessage { get; private set; }
+
         public bool? Enabled { get; private set; }
         public string TaskName { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
             bool bFirstArgProcessed = false;
 
@@ -75,12 +75,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             var lstSchedule = SchedulingController.GetSchedule();
             List<TaskModelBase> lst = new List<TaskModelBase>();

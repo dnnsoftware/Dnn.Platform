@@ -9,14 +9,14 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
     [ConsoleCommand("list-portals", "Retrieves a list of portals for the current DNN Installation", new string[] { })]
-    public class ListPortals : ConsoleCommandBase, IConsoleCommand
+    public class ListPortals : ConsoleCommandBase
     {
-        public string ValidationMessage { get; private set; }
+
         public int? PortalIdFlagValue { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (args.Length == 1)
@@ -32,12 +32,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             var pc = PortalController.Instance;
             List<PortalModelBase> lst = new List<PortalModelBase>();

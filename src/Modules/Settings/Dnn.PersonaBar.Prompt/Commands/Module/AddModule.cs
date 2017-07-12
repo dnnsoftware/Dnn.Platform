@@ -15,7 +15,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("add-module", "Adds a new module instance to a page", new string[] { "id" })]
-    public class AddModule : ConsoleCommandBase, IConsoleCommand
+    public class AddModule : ConsoleCommandBase
     {
 
         private const string FLAG_NAME = "name";
@@ -23,15 +23,14 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         private const string FLAG_PANE = "pane";
         private const string FLAG_TITLE = "title";
 
-        public string ValidationMessage { get; private set; }
         public string ModuleName { get; private set; }
         public int? PageId { get; private set; }    // the page on which to add the module
         public string Pane { get; private set; }
         public string Title { get; private set; }   // title for the new module. defaults to friendly name
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_NAME))
@@ -82,12 +81,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
             // get the desktop module id from the module name

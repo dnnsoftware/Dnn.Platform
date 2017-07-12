@@ -10,14 +10,11 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Host
 {
     [ConsoleCommand("get-host", "Retrieves information about the current DNN Installation", new string[] { "id" })]
-    public class GetHost : ConsoleCommandBase, IConsoleCommand
+    public class GetHost : ConsoleCommandBase
     {
-
-        public string ValidationMessage { get; private set; }
-
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             // HOST-ONLY ACCESS
@@ -33,18 +30,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.Host
                     sbErrors.Append("The get-host command does not take any arguments or flags; ");
                 }
             }
-
-
-
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             List<HostModel> lst = new List<HostModel>();
             // double-check host access:

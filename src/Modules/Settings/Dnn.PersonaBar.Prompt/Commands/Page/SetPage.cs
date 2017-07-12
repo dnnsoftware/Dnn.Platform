@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "keywords",
         "visible"
     })]
-    public class SetPage : ConsoleCommandBase, IConsoleCommand
+    public class SetPage : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
         private const string FLAG_TITLE = "title";
@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         private const string FLAG_URL = "url";
         private const string FLAG_PARENTID = "parentid";
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public int? ParentId { get; private set; }
         public string Title { get; private set; }
@@ -42,9 +42,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public bool? Visible { get; private set; }
 
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
 
             StringBuilder sbErrors = new StringBuilder();
             if (HasFlag(FLAG_ID))
@@ -120,12 +120,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             StringBuilder sbMessage = new StringBuilder();
             try

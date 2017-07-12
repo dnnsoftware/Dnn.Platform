@@ -14,17 +14,17 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "parentid",
         "name"
     })]
-    public class GetPage : ConsoleCommandBase, IConsoleCommand
+    public class GetPage : ConsoleCommandBase
     {
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public string PageName { get; private set; }
         public int? ParentId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             // default usage: return current page if nothing else specified
@@ -76,12 +76,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             TabController tc = new TabController();
             List<PageModel> lst = new List<PageModel>();

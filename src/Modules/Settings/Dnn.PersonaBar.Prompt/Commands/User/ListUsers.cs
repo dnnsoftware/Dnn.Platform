@@ -16,22 +16,22 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "username",
         "role"
     })]
-    public class ListUsers : ConsoleCommandBase, IConsoleCommand
+    public class ListUsers : ConsoleCommandBase
     {
 
         private const string FLAG_EMAIL = "email";
         private const string FLAG_USERNME = "username";
         private const string FLAG_ROLE = "role";
 
-        public string ValidationMessage { get; private set; }
+
         public string Email { get; private set; }
         public string Username { get; private set; }
         public string Role { get; private set; }
 
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_EMAIL))
@@ -78,12 +78,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             List<UserModelBase> lst = new List<UserModelBase>();
             ArrayList results = new ArrayList();

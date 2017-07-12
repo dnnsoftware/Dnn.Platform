@@ -43,7 +43,6 @@ namespace Dnn.PersonaBar.Prompt.Repositories
                     res.Add(key, new Command()
                     {
                         AssemblyName = assyName,
-                        CommandAttribute = cmdAttr,
                         CommandType = cmd,
                         Description = cmdAttr.Description,
                         Key = key,

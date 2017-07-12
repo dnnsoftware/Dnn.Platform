@@ -15,20 +15,20 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "email",
         "username"
     })]
-    public class GetUser : ConsoleCommandBase, IConsoleCommand
+    public class GetUser : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
         private const string FLAG_EMAIL = "email";
         private const string FLAG_USERNAME = "username";
 
-        public string ValidationMessage { get; private set; }
+
         public int? UserId { get; private set; }
         public string Email { get; private set; }
         public string Username { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             // If no 'find flags (email, id, etc.) are specied, return current user. this is handled in Run so we don't have 
@@ -76,12 +76,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             ArrayList results = new ArrayList();
             int recCount = 0;
@@ -132,7 +127,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
             if (lst.Count > 0)
             {
-                return new ConsoleResultModel(string.Empty) {
+                return new ConsoleResultModel(string.Empty)
+                {
                     Data = lst,
                     FieldOrder = new string[]
                     {

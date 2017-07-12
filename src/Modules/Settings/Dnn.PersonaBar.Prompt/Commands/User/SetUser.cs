@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "password"
 
     })]
-    public class SetUser : ConsoleCommandBase, IConsoleCommand
+    public class SetUser : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
         private const string FLAG_EMAIL = "email";
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         private const string FLAG_APPROVED = "approved";
         private const string FLAG_PASSWORD = "password";
 
-        public string ValidationMessage { get; private set; }
+
         public int? UserId { get; private set; }
         public string Email { get; private set; }
         public string Username { get; private set; }
@@ -43,9 +43,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public bool? Approved { get; private set; }
         public string Password { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
 
@@ -119,12 +119,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             StringBuilder sbResults = new StringBuilder();
 
@@ -168,7 +163,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                         return new ConsoleResultModel("Unable to change user password. No changes have been made to the user.");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                     return new ConsoleErrorResultModel("An unexpected error occurred while trying to update the password. See the DNN Event Viewer for details. No changes to the user have been made.");
@@ -202,7 +197,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             }
 
             // Update other properties
-            if (!string.IsNullOrEmpty(DisplayName)) 
+            if (!string.IsNullOrEmpty(DisplayName))
                 userToUpdate.DisplayName = DisplayName;
             if (!string.IsNullOrEmpty(FirstName))
                 userToUpdate.FirstName = FirstName;
@@ -238,7 +233,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
             if (lst.Count > 0)
             {
-                return new ConsoleResultModel(string.Empty) {
+                return new ConsoleResultModel(string.Empty)
+                {
                     Data = lst,
                     FieldOrder = UserModel.FieldOrder
                 };

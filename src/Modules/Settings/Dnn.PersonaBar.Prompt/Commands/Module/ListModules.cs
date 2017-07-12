@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         "all",
         "pageid"
     })]
-    public class ListModules : ConsoleCommandBase, IConsoleCommand
+    public class ListModules : ConsoleCommandBase
     {
 
         private const string FLAG_NAME = "name";
@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         //private const string FLAG_PAGE = "page"
         //private const string FLAG_PAGENAME = "pagename"
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public int? ModuleId { get; private set; }
         public string ModuleName { get; private set; }
@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
 
         public void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_PAGEID))
@@ -100,12 +100,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
             var tab = PortalSettings.ActiveTab;

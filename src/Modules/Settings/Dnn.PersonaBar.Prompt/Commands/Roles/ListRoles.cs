@@ -10,22 +10,9 @@ using DotNetNuke.Security.Roles;
 namespace Dnn.PersonaBar.Prompt.Commands.Roles
 {
     [ConsoleCommand("list-roles", "Retrieves a list of DNN security roles for this portal", new string[] { })]
-    public class ListRoles : ConsoleCommandBase, IConsoleCommand
+    public class ListRoles : ConsoleCommandBase
     {
-
-        public string ValidationMessage { get; }
-
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
-        }
-
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             RoleController rc = new RoleController();
             List<RoleModelBase> lst = new List<RoleModelBase>();
@@ -38,10 +25,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
                     lst.Add(new RoleModelBase(role));
                 }
             }
-
             return new ConsoleResultModel(string.Format("{0} role{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { Data = lst };
         }
-
-
     }
 }

@@ -14,19 +14,19 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "id",
         "parentid"
     })]
-    public class PurgePage : ConsoleCommandBase, IConsoleCommand
+    public class PurgePage : ConsoleCommandBase
     {
 
         private const string FLAG_ID = "id";
         private const string FLAG_PARENTID = "parentid";
 
-        public string ValidationMessage { get; private set; }
+
         public int? PageId { get; private set; }
         public int? ParentId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (args.Length == 2)
@@ -80,12 +80,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             TabController tc = new TabController();
             List<PageModel> lst = new List<PageModel>();

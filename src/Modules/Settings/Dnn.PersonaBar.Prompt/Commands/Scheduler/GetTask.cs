@@ -10,16 +10,16 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
 {
     [ConsoleCommand("get-task", "Retrieves details for a specified scheduled task", new string[] { "id" })]
-    public class GetTask : ConsoleCommandBase, IConsoleCommand
+    public class GetTask : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
 
-        public string ValidationMessage { get; private set; }
+
         public int? TaskId { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_ID))
@@ -50,12 +50,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             var lstSchedule = SchedulingController.GetSchedule();
             List<TaskModel> lst = new List<TaskModel>();
@@ -65,7 +60,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
                 if (TaskId == task.ScheduleID)
                 {
                     lst.Add(new TaskModel(task));
-                    break; 
+                    break;
                 }
             }
 

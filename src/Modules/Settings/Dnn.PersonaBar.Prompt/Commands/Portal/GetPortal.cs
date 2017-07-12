@@ -10,16 +10,16 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
     [ConsoleCommand("get-portal", "Retrieves information about the current portal", new string[] { "id" })]
-    public class GetPortal : ConsoleCommandBase, IConsoleCommand
+    public class GetPortal : ConsoleCommandBase
     {
         private const string FLAG_ID = "id";
 
-        public string ValidationMessage { get; private set; }
+
         public int? PortalIdFlagValue { get; private set; }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             // default usage: return current portal if nothing else specified
@@ -68,12 +68,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
             PortalController pc = new PortalController();
             List<PortalModel> lst = new List<PortalModel>();

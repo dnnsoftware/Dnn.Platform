@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
         "public",
         "autoassign"
     })]
-    public class NewRole : ConsoleCommandBase, IConsoleCommand
+    public class NewRole : ConsoleCommandBase
     {
 
         private const string FLAG_IS_PUBLIC = "public";
@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
         private const string FLAG_DESCRIPTION = "description";
         private const string FLAG_STATUS = "status";
 
-        public string ValidationMessage { get; private set; }
+
         public string RoleName { get; private set; }
         public string Description { get; private set; }
         public bool? IsPublic { get; private set; }
@@ -34,9 +34,9 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
         public RoleStatus Status { get; private set; }
 
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Initialize(args, portalSettings, userInfo, activeTabId);
+            base.Init(args, portalSettings, userInfo, activeTabId);
             StringBuilder sbErrors = new StringBuilder();
 
             if (HasFlag(FLAG_ROLE_NAME))
@@ -130,12 +130,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Roles
             ValidationMessage = sbErrors.ToString();
         }
 
-        public bool IsValid()
-        {
-            return string.IsNullOrEmpty(ValidationMessage);
-        }
-
-        public ConsoleResultModel Run()
+        public override ConsoleResultModel Run()
         {
 
             StringBuilder sbErrors = new StringBuilder();
