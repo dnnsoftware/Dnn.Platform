@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         public virtual bool IsVisible(MenuItem menuItem)
         {
-            return IsPageAdminUser() || IsPageAdmin() || CanViewPageList(menuItem.MenuId);
+            return IsPageAdminUser() || CanViewPageList(menuItem.MenuId);
         }
 
         private bool IsPageAdmin()
