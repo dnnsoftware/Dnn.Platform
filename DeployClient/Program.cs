@@ -9,6 +9,8 @@ namespace DeployClient
 {
     class Program
     {
+        private static bool IsSilent = false;
+
         enum ExitCode : int
         {
             Success = 0,
@@ -22,6 +24,14 @@ namespace DeployClient
         {
             try
             {
+                foreach (string arg in args)
+                {
+                    if (arg.ToLower().Contains("--silent"))
+                    {
+                        IsSilent = true;
+                    }
+                }
+
                 // Output start.
                 WriteLine("*** Polly Deployment Client ***");
                 WriteLine();
@@ -134,16 +144,31 @@ namespace DeployClient
 
         private static void WriteLine(string message = "")
         {
+            if(IsSilent)
+            {
+                return;
+            }
+
             Console.WriteLine(message);
         }
 
         private static string ReadLine()
         {
+            if (IsSilent)
+            {
+                return null;
+            }
+
             return Console.ReadLine();
         }
 
         private static bool Confirm()
         {
+            if (IsSilent)
+            {
+                return true;
+            }
+
             char ch = Console.ReadKey(true).KeyChar;
 
             if (ch.Equals('y') || ch.Equals('Y'))
