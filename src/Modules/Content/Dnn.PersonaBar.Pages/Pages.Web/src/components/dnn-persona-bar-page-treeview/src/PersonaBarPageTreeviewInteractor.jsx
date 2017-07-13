@@ -3,6 +3,8 @@ import { PersonaBarPageTreeview } from "./PersonaBarPageTreeview";
 import { PropTypes } from "prop-types";
 import Promise from "promise";
 import GridCell from "dnn-grid-cell";
+import "./styles.less";
+
 
 export class PersonaBarPageTreeviewInteractor extends Component {
 
@@ -59,13 +61,17 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     toggleParentCollapsedState(id){
-        const pageList = this.state.pageList.concat();
-
         this._traverse((item, listItem)=>{
             (item.id===id)  ? item.isOpen = !item.isOpen : null;
-            this.setState({pageList:listItem}, ()=>{
-                console.log(this.state);
-            });
+            this.setState({pageList:listItem});
+        });
+    }
+
+    onSelection(id){
+        console.log('in selection');
+        this._traverse((item, listItem) => {
+           (item.id===id) ? item.selected=true : item.selected=false;
+           this.setState({pageList: listItem });
         });
     }
 
@@ -73,7 +79,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
         const left = () => {
             const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?parentId=${id}`;
-            console.log('in left');
+
             this.GET(url)
                 .then((childListItems)=> {
                     this._traverse((item, listItems) => {
@@ -85,8 +91,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 });
         };
 
-        const right = () => console.log('in right');
-        
+        const right = () => null;
+
         this._traverse((item) => (item.id === id && !item.hasOwnProperty('childListItems')) ? left() : right());
         this.toggleParentCollapsedState(id);
     }
@@ -98,17 +104,20 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
     toggleTreeview() {
-        this.setState({isTreeviewExpanded: !this.state.isTreeviewExpanded});
-        console.log(this.state);
+        this.setState({
+            isTreeviewExpanded: !this.state.isTreeviewExpanded
+        });
     }
 
     render_treeview() {
         return (
-            <span>
+            <span className="dnn-persona-bar-treeview-ul">
                 { this.state.isTreeviewExpanded ?
                     <PersonaBarPageTreeview
                         listItems={this.state.pageList}
-                        getChildListItems={this.getChildListItems.bind(this)} />
+                        getChildListItems={this.getChildListItems.bind(this)}
+                        onSelection={this.onSelection.bind(this)}
+                        />
                 : null}
             </span>
         );
@@ -116,15 +125,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_collapseExpand() {
         return (
-            <span onClick={this.toggleTreeview.bind(this)}>
-                [COLLAPSE EXPAND]
-            </span>
+            <div onClick={this.toggleTreeview.bind(this)} className="collapse-expand">
+              [{this.state.isTreeviewExpanded ? "COLLAPSE" : "EXPAND" }]
+            </div>
         );
     }
 
     render() {
         return (
-            <GridCell columnSize={30} style={{ marginTop: "120px", backgroundColor: "#aaa" }} >
+            <GridCell columnSize={30} className="dnn-persona-bar-treeview">
                 {this.render_collapseExpand()}
                 {this.render_treeview()}
             </GridCell>
