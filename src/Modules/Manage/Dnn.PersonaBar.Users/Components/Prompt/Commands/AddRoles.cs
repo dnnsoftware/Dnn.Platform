@@ -114,12 +114,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
-            if (!UserId.HasValue) return new ConsoleErrorResultModel("No User ID passed. Nothing to do.");
-            // do lookup by user id
-
-            KeyValuePair<HttpStatusCode, string> response;
-            var userInfo = UsersController.GetUser((int)UserId, PortalSettings, User, out response);
-            if (userInfo == null) return new ConsoleErrorResultModel(response.Value);
+            ConsoleErrorResultModel errorResultModel;
+            UserInfo userInfo;
+            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
             try
             {
                 UsersController.Instance.AddUserToRoles(User, userInfo.UserID, PortalId, Roles, ",", StartDate, EndDate);
