@@ -42,7 +42,7 @@ export class PersonaBarPageTreeview extends Component {
         const {listItems, getChildListItems, onSelection} = this.props;
         return listItems.map((item)=>{
             return (
-                <li>
+                <li draggable="true">
                     <span>
                         {this.render_parentExpandButton(item)}
                         <PersonaBarPageIcon iconType={1}/>
