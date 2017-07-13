@@ -5,6 +5,7 @@ using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.User
 {
@@ -16,6 +17,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
     })]
     public class AddRoles : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddRoles));
+
         private const string FlagId = "id";
         private const string FlagRoles = "roles";
         private const string FlagStart = "start";
@@ -123,7 +126,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                     }
                     catch (Exception ex)
                     {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        Logger.Error(ex);
                         return new ConsoleErrorResultModel("An unexpected error occurred while processing your request. Please see the Event Viewer for details.");
                     }
                 }

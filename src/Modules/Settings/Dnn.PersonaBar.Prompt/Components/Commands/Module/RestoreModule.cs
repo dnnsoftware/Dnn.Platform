@@ -8,6 +8,7 @@ using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
@@ -17,6 +18,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 })]
     public class RestoreModule : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestoreModule));
 
         private const string FlagId = "id";
         private const string FlagPageid = "pageid";
@@ -106,7 +108,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     }
                     catch (Exception ex)
                     {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        Logger.Error(ex);
                         return new ConsoleErrorResultModel("An error occurred while attempting to restore the module. See the DNN Event Viewer for Details");
                     }
                 }

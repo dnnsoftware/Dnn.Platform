@@ -12,6 +12,7 @@ using Dnn.PersonaBar.Prompt.Common;
 using Dnn.PersonaBar.Prompt.Components;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
@@ -19,6 +20,8 @@ namespace Dnn.PersonaBar.Prompt.Services
     [RequireHost]
     public class CommandController : ControllerBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
+
         [HttpGet]
         public HttpResponseMessage List()
         {
@@ -73,7 +76,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
                 catch (Exception ex)
                 {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    Logger.Error(ex);
                     return BadRequestResponse();
                 }
             }

@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
         {
             return DotNetNuke.Common.Utilities.DataCache.GetCachedData<SortedDictionary<string, Command>>(new DotNetNuke.Common.Utilities.CacheItemArgs("DnnPromptCommands", CacheItemPriority.Default), c => GetCommandsInternal());
         }
-        private SortedDictionary<string, Command> GetCommandsInternal()
+        private static SortedDictionary<string, Command> GetCommandsInternal()
         {
             var commands = new SortedDictionary<string, Command>();
             var typeLocator = new TypeLocator();

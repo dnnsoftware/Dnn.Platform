@@ -2,6 +2,7 @@
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -10,6 +11,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
     [ConsoleCommand("restart-application", "Restarts the application and reloads the page")]
     public class RestartApplication : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestartApplication));
+
         public override ConsoleResultModel Run()
         {
             try
@@ -25,7 +28,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
             }
             catch (Exception ex)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                Logger.Error(ex);
                 return new ConsoleErrorResultModel("An error occurred while attempting to restart the application.");
             }
             return new ConsoleResultModel("Application Restarted") { MustReload = true };

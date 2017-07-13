@@ -7,6 +7,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 {
@@ -18,7 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
     })]
     public class SetRole : ConsoleCommandBase
     {
-
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
         private const string FlagId = "id";
         private const string FlagIsPublic = "public";
         private const string FlagAutoAssign = "autoassign";
@@ -136,7 +137,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
             }
             catch (Exception ex)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                Logger.Error(ex);
             }
 
             return new ConsoleErrorResultModel("An unexpected error has occurred, please see the Event Viewer for more details");

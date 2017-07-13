@@ -8,6 +8,7 @@ using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
 {
@@ -23,6 +24,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
     })]
     public class SetPage : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetPage));
+
         private const string FlagId = "id";
         private const string FlagTitle = "title";
         private const string FlagName = "name";
@@ -159,7 +162,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
             }
             catch (Exception ex)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                Logger.Error(ex);
             }
 
             return new ConsoleErrorResultModel("An unexpected error has occurred, please see the Event Viewer for more details");

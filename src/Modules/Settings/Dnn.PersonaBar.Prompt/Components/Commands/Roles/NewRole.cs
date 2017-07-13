@@ -7,6 +7,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
@@ -19,6 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
     })]
     public class NewRole : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
 
         private const string FlagIsPublic = "public";
         private const string FlagAutoAssign = "autoassign";
@@ -156,7 +158,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
             }
             catch (Exception ex)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                Logger.Error(ex);
                 return new ConsoleErrorResultModel("An error occurred while trying to create the role. Please see the event viewer for details.");
             }
 

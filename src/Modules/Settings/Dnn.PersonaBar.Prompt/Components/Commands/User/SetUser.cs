@@ -8,6 +8,7 @@ using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.User
 {
@@ -24,6 +25,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
     })]
     public class SetUser : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetUser));
+
         private const string FlagId = "id";
         private const string FlagEmail = "email";
         private const string FlagUsername = "username";
@@ -165,7 +168,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                 }
                 catch (Exception ex)
                 {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    Logger.Error(ex);
                     return new ConsoleErrorResultModel("An unexpected error occurred while trying to update the password. See the DNN Event Viewer for details. No changes to the user have been made.");
                 }
             }
@@ -179,7 +182,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                 }
                 catch (Exception ex)
                 {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    Logger.Error(ex);
                     var msg = "An error occurred while changing the user's Username. See the DNN Event Viewer. ";
                     if (sbResults.Length > 0)
                     {
@@ -221,7 +224,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
             }
             catch (Exception ex)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                Logger.Error(ex);
                 return new ConsoleErrorResultModel("An error occurred while updating the user. See the DNN Event Viewer. " + sbResults.ToString());
             }
 

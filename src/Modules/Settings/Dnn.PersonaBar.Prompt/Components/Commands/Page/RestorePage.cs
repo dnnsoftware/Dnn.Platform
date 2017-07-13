@@ -8,6 +8,7 @@ using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
 {
@@ -18,6 +19,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
     })]
     public class RestorePage : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestorePage));
+
         private const string FlagName = "name";
         private const string FlagParentid = "parentid";
         private const string FlagId = "id";
@@ -126,7 +129,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
                         }
                         catch (Exception ex)
                         {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                            Logger.Error(ex);
                             sbResults.AppendFormat("An error occurred while restoring page ({0}). See the DNN Event Viewer for details. ", tab.TabID);
                         }
                     }

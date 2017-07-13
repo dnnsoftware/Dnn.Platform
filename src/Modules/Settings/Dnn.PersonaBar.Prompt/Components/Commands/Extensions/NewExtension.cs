@@ -9,13 +9,15 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
 {
     [ConsoleCommand("new-extension", "Creates a new extension from a manifest or package", new[] { "path" })]
     public class NewExtension : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewExtension));
+
         private const string FlagPath = "path";
         private string _path = "";
         private bool _isPackage;
@@ -102,7 +104,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
             }
             catch (Exception ex)
             {
-                Exceptions.LogException(ex);
+                Logger.Error(ex);
                 return new ConsoleErrorResultModel("An error occurred while attempting to add the extension. Please see the DNN Event Viewer for details.");
             }
             return new ConsoleResultModel(res) { IsHtml = true };
@@ -112,7 +114,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
         {
             //Dim installResult = New InstallResultDto()
             var fileName = Path.GetFileName(_path);
-            string res;
+            string result;
             try
             {
                 using (var stream = File.OpenRead(_path))
@@ -136,20 +138,20 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
                             installer.Install();
                             if (!installer.IsValid)
                             {
-                                res = "Install Error";
+                                result = "Install Error";
                             }
                             else
                             {
                                 using (var sw = new StringWriter())
                                 {
                                     installer.InstallerInfo.Log.GetLogsTable().RenderControl(new HtmlTextWriter(sw));
-                                    res = sw.ToString();
+                                    result = sw.ToString();
                                 }
                             }
                         }
                         else
                         {
-                            res = "Install Error";
+                            result = "Install Error";
                         }
                     }
                     finally
@@ -160,9 +162,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
             }
             catch (Exception ex)
             {
-                res = "ZipCriticalError";
+                Logger.Error(ex);
+                result = "ZipCriticalError";
             }
-            return res;
+            return result;
         }
 
         private static DotNetNuke.Services.Installer.Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null)
@@ -191,7 +194,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
             }
             catch (Exception ex)
             {
-                //
+                Logger.Error(ex);
             }
         }
     }

@@ -7,6 +7,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
@@ -14,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
     [ConsoleCommand("delete-role", "Deletes the specified DNN security role for this portal")]
     public class DeleteRole : ConsoleCommandBase
     {
-
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DeleteRole));
         private const string FlagId = "id";
 
 
@@ -89,7 +90,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
                 }
                 catch (Exception ex)
                 {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    Logger.Error(ex);
                     return new ConsoleErrorResultModel("An error occurred while deleting the role. See the DNN Event Viewer for details.");
                 }
             }

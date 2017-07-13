@@ -4,12 +4,15 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
 {
     [ConsoleCommand("list-commands", "Lists all available commands")]
     public class ListCommands : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));
+
         public override ConsoleResultModel Run()
         {
 
@@ -25,7 +28,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
             }
             catch (Exception ex)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                Logger.Error(ex);
                 return new ConsoleErrorResultModel("An error occurred while attempting to restart the application.");
             }
         }
