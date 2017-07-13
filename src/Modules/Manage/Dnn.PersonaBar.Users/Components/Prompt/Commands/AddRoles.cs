@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -72,7 +76,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (HasFlag(FlagStart))
             {
-                var tmpDate = default(DateTime);
+                DateTime tmpDate;
                 if (DateTime.TryParse(Flag(FlagStart), out tmpDate))
                 {
                     StartDate = tmpDate;
@@ -85,7 +89,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (HasFlag(FlagEnd))
             {
-                var tmpDate = default(DateTime);
+                DateTime tmpDate;
                 if (DateTime.TryParse(Flag(FlagEnd), out tmpDate))
                 {
                     EndDate = tmpDate;
@@ -110,36 +114,24 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
+            if (!UserId.HasValue) return new ConsoleErrorResultModel("No User ID passed. Nothing to do.");
+            // do lookup by user id
 
-            var sbErrors = new StringBuilder();
-            if (UserId.HasValue)
+            KeyValuePair<HttpStatusCode, string> response;
+            var userInfo = UsersController.GetUser((int)UserId, PortalSettings, User, out response);
+            if (userInfo == null) return new ConsoleErrorResultModel(response.Value);
+            try
             {
-                // do lookup by user id
-                var ui = UserController.GetUserById(PortalId, (int)UserId);
-                if (ui != null)
-                {
-                    try
-                    {
-                        Utilities.AddToRoles((int)UserId, PortalId, Roles, ",", StartDate, EndDate);
-                        var lst = Utilities.GetUserRoles(ui);
-                        return new ConsoleResultModel(string.Empty) { Data = lst };
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        return new ConsoleErrorResultModel("An unexpected error occurred while processing your request. Please see the Event Viewer for details.");
-                    }
-                }
-                else
-                {
-                    return new ConsoleErrorResultModel($"No user found with the ID of '{UserId}'");
-                }
+                UsersController.Instance.AddUserToRoles(User, userInfo.UserID, PortalId, Roles, ",", StartDate, EndDate);
+                int totalRoles;
+                var userRoles = UsersController.Instance.GetUserRoles(userInfo, "", out totalRoles).Select(UserRoleModel.FromDnnUserRoleInfo).ToList();
+                return new ConsoleResultModel(string.Empty) { Data = userRoles, Output = "Total Roles: " + totalRoles };
             }
-            else
+            catch (Exception ex)
             {
-                return new ConsoleErrorResultModel("No User ID passed. Nothing to do.");
+                Logger.Error(ex);
+                return new ConsoleErrorResultModel("An unexpected error occurred while processing your request. Please see the Event Viewer for details.");
             }
-
         }
     }
 }
