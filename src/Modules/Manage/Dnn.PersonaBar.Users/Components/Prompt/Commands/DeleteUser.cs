@@ -3,11 +3,11 @@ using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("delete-user", "Deletes the specifed user from the portal.", new[]{
         "id",

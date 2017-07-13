@@ -4,13 +4,13 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Common;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("new-user", "Creates a new user record", new[]{
         "email",
@@ -197,13 +197,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                     switch (PortalSettings.UserRegistration)
                     {
                         case (int)Globals.PortalRegistrationType.PrivateRegistration:
-                            Components.Utilities.SendSystemEmail(ui, DotNetNuke.Services.Mail.MessageType.UserRegistrationPrivate, PortalSettings);
+                            Utilities.SendSystemEmail(ui, DotNetNuke.Services.Mail.MessageType.UserRegistrationPrivate, PortalSettings);
                             break;
                         case (int)Globals.PortalRegistrationType.PublicRegistration:
-                            Components.Utilities.SendSystemEmail(ui, DotNetNuke.Services.Mail.MessageType.UserRegistrationPublic, PortalSettings);
+                            Utilities.SendSystemEmail(ui, DotNetNuke.Services.Mail.MessageType.UserRegistrationPublic, PortalSettings);
                             break;
                         case (int)Globals.PortalRegistrationType.VerifiedRegistration:
-                            Components.Utilities.SendSystemEmail(ui, DotNetNuke.Services.Mail.MessageType.UserRegistrationVerified, PortalSettings);
+                            Utilities.SendSystemEmail(ui, DotNetNuke.Services.Mail.MessageType.UserRegistrationVerified, PortalSettings);
                             break;
                     }
                 }

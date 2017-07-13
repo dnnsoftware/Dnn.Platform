@@ -5,7 +5,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("reset-password", "Resets the user's password", new[]{
         "id",

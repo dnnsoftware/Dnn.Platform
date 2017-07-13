@@ -3,14 +3,14 @@ using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("restore-user", "Recovers a user that has previously been deleted or 'unregistered'", new[] { "id" })]
-    public class RestoreUser : ConsoleCommandBase
+    [ConsoleCommand("purge-user", "Completely removes a previously deleted user from the portal.", new[] { "id" })]
+    public class PurgeUser : ConsoleCommandBase
     {
 
         private const string FlagId = "id";
@@ -60,20 +60,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                 {
                     if (ui.IsDeleted)
                     {
-                        if (UserController.RestoreUser(ref ui))
+                        if (UserController.RemoveUser(ui))
                         {
-                            var restoredUser = UserController.GetUserById(PortalId, (int)UserId);
-                            lst.Add(new UserModel(restoredUser));
-                            return new ConsoleResultModel("Successfully recovered the user.") { Data = lst };
-                        }
-                        else
-                        {
-                            return new ConsoleErrorResultModel("The system was unable to restore the user");
+                            lst.Add(new UserModel(ui));
+                            return new ConsoleResultModel("The User has been permanently removed from the site.") { Data = lst };
                         }
                     }
                     else
                     {
-                        return new ConsoleResultModel("This user has not been deleted. Nothing to restore.");
+                        return new ConsoleErrorResultModel("Cannot purge user that has not been deleted first. Try delete-user.");
                     }
                 }
                 else
@@ -83,7 +78,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
             }
 
             // shouldn't get here.
-            return new ConsoleResultModel("No user found to restore");
+            return new ConsoleResultModel("No user found to purge");
         }
     }
 }

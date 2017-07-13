@@ -7,7 +7,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("add-roles", "Adds one or more DNN security roles to a user.", new[]{
         "id",
@@ -120,8 +120,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                 {
                     try
                     {
-                        Components.Utilities.AddToRoles((int)UserId, PortalId, Roles, ",", StartDate, EndDate);
-                        var lst = Components.Utilities.GetUserRoles(ui);
+                        Utilities.AddToRoles((int)UserId, PortalId, Roles, ",", StartDate, EndDate);
+                        var lst = Utilities.GetUserRoles(ui);
                         return new ConsoleResultModel(string.Empty) { Data = lst };
                     }
                     catch (Exception ex)

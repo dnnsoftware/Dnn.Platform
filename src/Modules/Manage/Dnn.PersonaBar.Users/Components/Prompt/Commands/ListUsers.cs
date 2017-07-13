@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("list-users", "Returns users that match the given expression", new[]{
         "email",
@@ -132,13 +133,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
 
         private List<UserModelBase> ConvertList(IEnumerable lst)
         {
-            var lstUsers = new List<UserModelBase>();
-            foreach (UserInfo ui in lst)
-            {
-                lstUsers.Add(new UserModelBase(ui));
-            }
-            return lstUsers;
+            return (from UserInfo ui in lst select new UserModelBase(ui)).ToList();
         }
-
     }
 }

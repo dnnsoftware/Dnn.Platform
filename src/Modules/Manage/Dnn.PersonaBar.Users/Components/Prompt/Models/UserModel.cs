@@ -1,7 +1,7 @@
 ﻿using Dnn.PersonaBar.Library.Prompt.Common;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Prompt.Components.Models
+namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 {
     public class UserModel : UserModelBase
     {
