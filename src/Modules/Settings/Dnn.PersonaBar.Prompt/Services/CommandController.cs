@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.Http;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Library.Prompt;
@@ -13,6 +12,7 @@ using Dnn.PersonaBar.Prompt.Components;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
@@ -54,10 +54,10 @@ namespace Dnn.PersonaBar.Prompt.Services
                 {
                     var sbError = new StringBuilder();
                     var suggestion = Utilities.GetSuggestedCommand(cmdName);
-                    sbError.AppendFormat("Command '{0}' not found.", cmdName.ToLower());
+                    sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLower());
                     if (!string.IsNullOrEmpty(suggestion))
                     {
-                        sbError.AppendFormat(" Did you mean '{0}'?", suggestion);
+                        sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
                     }
 
                     return BadRequestResponse(sbError.ToString());
@@ -82,6 +82,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 return BadRequestResponse();
             }
         }

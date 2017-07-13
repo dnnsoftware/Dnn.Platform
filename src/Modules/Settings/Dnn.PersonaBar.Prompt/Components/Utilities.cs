@@ -4,13 +4,17 @@ using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components
 {
     public class Utilities
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Utilities));
+
         public static void AddToRoles(int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null)
         {
             var effDate = effectiveDate.GetValueOrDefault(Null.NullDate);
@@ -93,6 +97,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 // On some systems, if DNN has sent an email and the SMTP connection is still open, 
                 // no other email can be sent until that connection times out. When that happens a transport error is thrown
                 // but it seems to close the connection at that point. So, retrying after the exception always (in my tests) 
@@ -171,13 +176,13 @@ namespace Dnn.PersonaBar.Prompt.Components
                         {
                             case "USER":
                             case "USERS":
-                                return "get-user or list-users";
+                                return TranslateToCommandOptionText("get-user", "list-users");
                             case "PAGE":
                             case "PAGES":
-                                return "get-page or list-pages";
+                                return TranslateToCommandOptionText("get-page", "list-pages");
                             case "ROLE":
                             case "ROLES":
-                                return "get-role or list-roles";
+                                return TranslateToCommandOptionText("get-role", "list-roles");
                         }
                         break;
                     case "UPDATE":
@@ -203,13 +208,13 @@ namespace Dnn.PersonaBar.Prompt.Components
                         switch (component)
                         {
                             case "ROLES":
-                                return "get-role or list-roles";
+                                return TranslateToCommandOptionText("get-role", "list-roles");
                             case "USERS":
-                                return "get-user or list-users";
+                                return TranslateToCommandOptionText("get-user", "list-users");
                             case "PAGES":
-                                return "get-page list-pages";
+                                return TranslateToCommandOptionText("get-page", "list-pages");
                             case "MODULES":
-                                return "get-module list-modules";
+                                return TranslateToCommandOptionText("get-module", "list-modules");
                         }
                         break;
                     case "LIST":
@@ -236,13 +241,18 @@ namespace Dnn.PersonaBar.Prompt.Components
                         switch (component)
                         {
                             case "USER":
-                                return "delete-user or purge-user";
+                                return TranslateToCommandOptionText("delete-user", "purge-user");
                         }
                         break;
                 }
             }
 
             return string.Empty;
+        }
+
+        private static string TranslateToCommandOptionText(string string1, string string2)
+        {
+            return string.Format(Localization.GetString("CommandOptionText", Constants.LocalResourcesFile), string1, string2);
         }
     }
 }
