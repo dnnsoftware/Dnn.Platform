@@ -100,18 +100,24 @@ namespace DeployClient
                     }
                     WriteLine(string.Format("\tEncrypting {0}", Path.GetFileName(zipFile)));
                 }
+                WriteLine();
 
                 Dictionary<string, dynamic> results = API.CIInstall(encryptedStreams).Result;
 
                 ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
                 ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
 
+                // Any failures?
                 if (failed.Count > 0)
                 {
-                    WriteLine(string.Format("{0} module archives failed to install.", failed.Count));
+                    WriteLine(string.Format("{0}/{1} module archives failed to install.", failed.Count, encryptedStreams.Count));
                     ReadLine();
                     Environment.Exit((int)ExitCode.InstallFailure);
                 }
+
+                // Output result
+                WriteLine(string.Format("{0}/{1} module archives installed successfully.", installed.Count, encryptedStreams.Count));
+                ReadLine();
 
                 foreach (KeyValuePair<string, Stream> keyValuePair in encryptedStreams)
                 {
