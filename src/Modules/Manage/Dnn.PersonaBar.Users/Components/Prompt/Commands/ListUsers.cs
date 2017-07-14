@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
-            var roleUsers = new List<UserModelBase>();
+            var usersList = new List<UserModelBase>();
             var recCount = 0;
             var getUsersContract = new GetUsersContract
             {
@@ -136,7 +136,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 KeyValuePair<HttpStatusCode, string> response;
                 var users = UsersController.Instance.GetUsersInRole(PortalSettings, Role, out recCount, out response, Page, Max);
                 if (users != null)
-                    roleUsers = ConvertList(users);
+                    usersList = ConvertList(users);
                 else
                 {
                     return new ConsoleErrorResultModel(response.Value);
@@ -145,13 +145,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (getUsersContract != null)
             {
-                roleUsers = ConvertList(UsersController.Instance.GetUsers(getUsersContract, User.IsSuperUser, out recCount), PortalId);
+                usersList = ConvertList(UsersController.Instance.GetUsers(getUsersContract, User.IsSuperUser, out recCount), PortalId);
             }
-            if ((roleUsers == null || roleUsers.Count == 0) && recCount == 0)
+            if ((usersList == null || usersList.Count == 0) && recCount == 0)
             {
                 return new ConsoleResultModel(Localization.GetString("noUsers", Constants.LocalResourcesFile));
             }
-            return new ConsoleResultModel(string.Empty) { Data = roleUsers, Output = $"Total Users: {recCount}. Total Pages: {recCount / Max + (recCount % Max == 0 ? 0 : 1)}. Current Page: {(Page > 0 ? Page : 1)}. Page Size: {Max}." };
+            return new ConsoleResultModel(string.Empty) { Data = usersList, Output = $"Total Users: {recCount}. Total Pages: {recCount / Max + (recCount % Max == 0 ? 0 : 1)}. Current Page: {(Page > 0 ? Page : 1)}. Page Size: {Max}." };
         }
 
         private static List<UserModelBase> ConvertList(IEnumerable<UserInfo> lstUserInfos)
