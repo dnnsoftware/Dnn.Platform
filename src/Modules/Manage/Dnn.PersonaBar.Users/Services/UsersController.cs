@@ -227,7 +227,7 @@ namespace Dnn.PersonaBar.Users.Services
                     return httpResponseMessage;
 
                 return Components.UsersController.Instance.ForceChangePassword(user, PortalId, true)
-                    ? Request.CreateResponse(HttpStatusCode.OK, new {Success = true})
+                    ? Request.CreateResponse(HttpStatusCode.OK, new { Success = true })
                     : Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                         Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile));
             }
@@ -401,9 +401,11 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
                     return Request.CreateErrorResponse(response.Key, response.Value);
-
-                var restored = UserController.RestoreUser(ref user);
-
+                var restored = !user.IsDeleted;
+                if (user.IsDeleted)
+                {
+                    restored = UserController.RestoreUser(ref user);
+                }
                 return !restored
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRestoreError", Components.Constants.LocalResourcesFile))
