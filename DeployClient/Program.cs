@@ -10,6 +10,7 @@ namespace DeployClient
     class Program
     {
         private static bool IsSilent = false;
+        private static bool NoPrompt = false;
 
         enum ExitCode : int
         {
@@ -29,6 +30,11 @@ namespace DeployClient
                     if (arg.ToLower().Contains("--silent"))
                     {
                         IsSilent = true;
+                    }
+
+                    if (arg.ToLower().Contains("--no-prompt"))
+                    {
+                        NoPrompt = true;
                     }
                 }
 
@@ -85,17 +91,20 @@ namespace DeployClient
                 }
                 WriteLine();
 
-                // Prompt to continue.
-                WriteLine("Would you like to continue? (y/n)");
-
-                // Continue?
-                if (!Confirm())
+                if (!NoPrompt)
                 {
-                    // No, exit.
-                    WriteLine("Exiting.");
-                    Environment.Exit((int)ExitCode.UserExit);
+                    // Prompt to continue.
+                    WriteLine("Would you like to continue? (y/n)");
+
+                    // Continue?
+                    if (!Confirm())
+                    {
+                        // No, exit.
+                        WriteLine("Exiting.");
+                        Environment.Exit((int)ExitCode.UserExit);
+                    }
+                    WriteLine();
                 }
-                WriteLine();
 
                 // Inform user of encryption.
                 WriteLine("Starting encryption...");
@@ -154,7 +163,7 @@ namespace DeployClient
 
         private static string ReadLine()
         {
-            if (IsSilent)
+            if (IsSilent || NoPrompt)
             {
                 return null;
             }
@@ -164,7 +173,7 @@ namespace DeployClient
 
         private static bool Confirm()
         {
-            if (IsSilent)
+            if (IsSilent || NoPrompt)
             {
                 return true;
             }
