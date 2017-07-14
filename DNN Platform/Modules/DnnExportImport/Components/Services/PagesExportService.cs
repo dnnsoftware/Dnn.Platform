@@ -196,7 +196,8 @@ namespace Dnn.ExportImport.Components.Services
                             return;
                         }
                         var urlTabId = -1;
-                        if (!string.IsNullOrEmpty(otherTab.Url))
+                        var tabType = Globals.GetURLType(otherTab.Url);
+                        if (tabType == TabType.Tab)
                         {
                             urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
                             if (urlTabId == -1)
@@ -214,9 +215,13 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             localTab.TabPermissions.Clear(); // without this the UpdateTab() could fail
                             localTab.ParentId = parentId;
-                            if (urlTabId > -1)
+                            if (tabType == TabType.Tab && urlTabId > -1)
                             {
                                 localTab.Url = urlTabId.ToString();
+                            }
+                            else if (tabType == TabType.Url)
+                            {
+                                localTab.Url = otherTab.Url;
                             }
                             _tabController.UpdateTab(localTab);
                         }
@@ -248,7 +253,8 @@ namespace Dnn.ExportImport.Components.Services
                     return;
                 }
                 var urlTabId = -1;
-                if (!string.IsNullOrEmpty(otherTab.Url))
+                var tabType = Globals.GetURLType(otherTab.Url);
+                if (tabType == TabType.Tab)
                 {
                     urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
                     if (urlTabId == -1)
@@ -261,9 +267,13 @@ namespace Dnn.ExportImport.Components.Services
                 try
                 {
                     localTab.ParentId = parentId;
-                    if (urlTabId > -1)
+                    if (tabType == TabType.Tab && urlTabId > -1)
                     {
                         localTab.Url = urlTabId.ToString();
+                    }
+                    else if (tabType == TabType.Url)
+                    {
+                        localTab.Url = otherTab.Url;
                     }
                     localTab.UniqueId = Guid.NewGuid();
                     otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab);
