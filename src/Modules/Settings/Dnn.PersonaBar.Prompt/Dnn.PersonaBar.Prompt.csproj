@@ -161,6 +161,7 @@
     <Compile Include="Components\Commands\User\AddRoles.cs" />
     <Compile Include="Components\Commands\Utilities\Echo.cs" />
     <Compile Include="Common\ControllerBase.cs" />
+    <Compile Include="Components\Constants.cs" />
     <Compile Include="MenuControllers\PromptMenuController.cs" />
     <Compile Include="Components\Models\CommandInputModel.cs" />
     <Compile Include="Components\Models\HostModel.cs" />
