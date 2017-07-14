@@ -34,9 +34,11 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -261,7 +263,8 @@ namespace Dnn.PersonaBar.Pages.Components
             return false;
         }
 
-        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "")
+        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", string pageType = "", bool isPublished = true, 
+            string tags = "", string publishedOnStartDate = "", string publishedOnEndDate = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var adminTabId = portalSettings.AdminTabId;
@@ -273,10 +276,33 @@ namespace Dnn.PersonaBar.Pages.Components
                                     ((string.IsNullOrEmpty(searchKey) && (t.ParentId == parentId))
                                         || (!string.IsNullOrEmpty(searchKey) &&
                                                 (t.TabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
-                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)))
+                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger))) && t.HasBeenPublished == isPublished
+
                         select t;
 
-            return pages;
+            if (!string.IsNullOrEmpty(pageType))
+            {
+                pages = pages.Where(p => string.Compare(Globals.GetURLType(p.Url).ToString(), pageType, StringComparison.CurrentCultureIgnoreCase) == 0);
+            }
+            if (!string.IsNullOrEmpty(tags))
+            {
+                pages = pages.Where(p => HasTags(tags, p.Terms));
+            }
+            DateTime startDate;
+            if (!string.IsNullOrEmpty(publishedOnStartDate) && DateTime.TryParse(publishedOnStartDate, out startDate))
+            {
+                pages = pages.Where(p => (p.HasBeenPublished ? GetTabLastPublishedOn(p) : DateTime.MinValue) >= startDate);
+            }
+            DateTime endDate;
+            if (!string.IsNullOrEmpty(publishedOnEndDate) && DateTime.TryParse(publishedOnEndDate, out endDate))
+            {
+                pages = pages.Where(p => (p.HasBeenPublished ? GetTabLastPublishedOn(p) : DateTime.MaxValue) <= endDate);
+            }
+            if (workflowId > -1)
+            {
+                pages = pages.Where(p => GetTabWorkflowId(p) == workflowId);
+            }
+            return pageIndex == -1 || pageSize == -1 ? pages : pages.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
         private TabInfo GetPageDetails(int pageId)
@@ -1142,6 +1168,32 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
+        }
+
+        private static bool HasTags(string tags, IEnumerable<Term> terms)
+        {
+            return tags.Split(',').All(tag => terms.Any(t => string.Compare(t.Name, tag, StringComparison.CurrentCultureIgnoreCase) == 0));
+        }
+
+        private DateTime GetTabLastPublishedOn(TabInfo tab)
+        {
+            var versions = TabVersionController.Instance.GetTabVersions(tab.TabID);
+            if (versions != null)
+            {
+                var lastPublishedVersion = versions.Where(v => v.IsPublished).OrderByDescending(v => v.Version).FirstOrDefault();
+                return lastPublishedVersion?.LastModifiedOnDate ?? tab.LastModifiedOnDate;
+            }
+            else
+            {
+                return tab.LastModifiedOnDate;
+            }
+        }
+
+        private int GetTabWorkflowId(TabInfo tab)
+        {
+            return tab.StateID == Null.NullInteger
+                ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(PortalSettings.Current.PortalId)
+                : WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).WorkflowID;
         }
     }
 }

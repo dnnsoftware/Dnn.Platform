@@ -198,14 +198,24 @@ namespace Dnn.PersonaBar.Pages.Services
         /// </summary>
         /// <param name="parentId"></param>
         /// <param name="searchKey"></param>
+        /// <param name="pageType"></param>
+        /// <param name="isPublished"></param>
+        /// <param name="tags"></param>
+        /// <param name="publishedOnStartDate"></param>
+        /// <param name="publishedOnEndDate"></param>
+        /// <param name="workflowId"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "VIEW_PAGE_LIST,VIEW")]
-        public HttpResponseMessage GetPageList(int parentId = -1, string searchKey = "")
+        public HttpResponseMessage GetPageList(int parentId = -1, string searchKey = "", string pageType = "", bool isPublished = true, string tags = "", 
+            string publishedOnStartDate = "", string publishedOnEndDate = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
+
         {
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
-            var pages = from p in _pagesController.GetPageList(parentId, searchKey)
+            var pages = from p in _pagesController.GetPageList(parentId, searchKey, pageType, isPublished, tags, publishedOnStartDate, publishedOnEndDate, pageIndex, pageSize)
                         select Converters.ConvertToPageItem<PageItem>(p, tabs);
             return Request.CreateResponse(HttpStatusCode.OK, pages);
         }
