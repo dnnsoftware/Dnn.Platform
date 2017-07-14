@@ -1271,7 +1271,7 @@ namespace DotNetNuke.Entities.Urls
                 if (authCookie != null)
                 {
                     var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                    if (authTicket != null)
+                    if (authTicket != null && !authTicket.Expired)
                     {
                         var roles = authTicket.UserData.Split('|');
                         var id = new FormsIdentity(authTicket);
