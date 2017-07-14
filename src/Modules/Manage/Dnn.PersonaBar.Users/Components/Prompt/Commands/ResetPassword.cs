@@ -41,19 +41,19 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             if (HasFlag(FlagNotify))
             {
                 bool tmpNotify;
-                if (!bool.TryParse(Flag(FlagNotify), out tmpNotify))
+                if (bool.TryParse(Flag(FlagNotify), out tmpNotify))
                 {
-                    sbErrors.AppendFormat("The --{0} flag takes True or False as its value (case-insensitive)", FlagNotify);
+                    Notify = tmpNotify;
                 }
                 else
                 {
-                    Notify = tmpNotify;
+                    sbErrors.Append(string.Format(Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourcesFile), FlagNotify) + " ");
                 }
             }
 
             if (!UserId.HasValue)
             {
-                sbErrors.Append("You must specify a number for the User's ID");
+                sbErrors.Append(Localization.GetString("Prompt_UserIdIsRequired", Constants.LocalResourcesFile));
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
             var success = UsersController.Instance.ForceChangePassword(userInfo, PortalId, Notify);
             return success
-                ? new ConsoleResultModel("User password has been reset." + (Notify ? " An email has been sent to the user" : ""))
+                ? new ConsoleResultModel(Localization.GetString("Prompt_PasswordReset", Constants.LocalResourcesFile) + (Notify ? Localization.GetString("Prompt_EmailSent", Constants.LocalResourcesFile) : ""))
                 : new ConsoleErrorResultModel(Localization.GetString("OptionUnavailable", Constants.LocalResourcesFile));
         }
     }

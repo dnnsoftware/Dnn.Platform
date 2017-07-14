@@ -10,6 +10,7 @@ using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -72,7 +73,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 }
                 else
                 {
-                    sbErrors.AppendFormat("If specified, --{0} must be True or False; ", FlagApproved);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourcesFile), FlagApproved);
                 }
             }
             if (HasFlag(FlagNotify))
@@ -84,18 +85,22 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 }
                 else
                 {
-                    sbErrors.AppendFormat("If specified, --{0} must be True or False; ", FlagNotify);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourcesFile), FlagNotify);
                 }
             }
 
             // required fields
             if (string.IsNullOrEmpty(Flag(FlagEmail)))
-                sbErrors.Append("email is required; ");
+                sbErrors.Append(Localization.GetString("Email.Required", Constants.LocalResourcesFile));
             if (string.IsNullOrEmpty(Flag(FlagUsername)))
-                sbErrors.Append("username is required; ");
-            if (string.IsNullOrEmpty(Flag(FlagFirstname)) || string.IsNullOrEmpty(Flag(FlagLastname)))
+                sbErrors.Append(Localization.GetString("Username.Required", Constants.LocalResourcesFile));
+            if (string.IsNullOrEmpty(Flag(FlagFirstname)))
             {
-                sbErrors.Append("firstname and lastname are required; ");
+                sbErrors.Append(Localization.GetString("FirstName.Required", Constants.LocalResourcesFile));
+            }
+            if (string.IsNullOrEmpty(Flag(FlagLastname)))
+            {
+                sbErrors.Append(Localization.GetString("LastName.Required", Constants.LocalResourcesFile));
             }
 
             if (sbErrors.Length == 0)
@@ -104,7 +109,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 var emailVal = new EmailValidator();
                 if (!emailVal.IsValid(Flag(FlagEmail)))
                 {
-                    sbErrors.AppendFormat("Supplied email '{0}' is invalid; ", Flag(FlagEmail));
+                    sbErrors.AppendFormat(Localization.GetString("Email.RegExError", Constants.LocalResourcesFile));
                 }
             }
             ValidationMessage = sbErrors.ToString();
@@ -132,7 +137,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     new UserModel(UserController.Instance.GetUser(PortalId, userInfo.UserId))
                 };
-                return new ConsoleResultModel("User successfully created") { Data = lstResult };
+                return new ConsoleResultModel(Localization.GetString("UserCreated", Constants.LocalResourcesFile)) { Data = lstResult };
             }
             catch (Exception ex)
             {

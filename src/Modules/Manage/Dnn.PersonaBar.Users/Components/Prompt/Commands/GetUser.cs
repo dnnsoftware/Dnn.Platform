@@ -8,6 +8,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -71,7 +72,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 }
                 if (!UserId.HasValue && Email == null && Username == null)
                 {
-                    sbErrors.Append("To search for a user, you must specify either --id (UserId), --email (User Email), or --name (Username)");
+                    sbErrors.Append(Localization.GetString("Prompt_SearchUserParameterRequired", Constants.LocalResourcesFile));
                 }
             }
             ValidationMessage = sbErrors.ToString();

@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
                     if (numFilters != 1)
                     {
-                        sbErrors.AppendFormat("You must specify one and only one flag: --{0}, --{1}, or --{2}; ", FlagEmail, FlagUsernme, FlagRole);
+                        sbErrors.AppendFormat(Localization.GetString("Prompt_OnlyOneFlagRequired", Constants.LocalResourcesFile), FlagEmail, FlagUsernme, FlagRole);
                     }
                 }
 
@@ -151,7 +151,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 return new ConsoleResultModel(Localization.GetString("noUsers", Constants.LocalResourcesFile));
             }
-            return new ConsoleResultModel(string.Empty) { Data = usersList, Output = $"Total Users: {recCount}. Total Pages: {recCount / Max + (recCount % Max == 0 ? 0 : 1)}. Current Page: {(Page > 0 ? Page : 1)}. Page Size: {Max}." };
+            return new ConsoleResultModel(string.Empty) { Data = usersList, Output = string.Format(Localization.GetString("Prompt_ListUsersOutput", Constants.LocalResourcesFile), recCount, recCount / Max + (recCount % Max == 0 ? 0 : 1), (Page > 0 ? Page : 1), Max) };
         }
 
         private static List<UserModelBase> ConvertList(IEnumerable<UserInfo> lstUserInfos)

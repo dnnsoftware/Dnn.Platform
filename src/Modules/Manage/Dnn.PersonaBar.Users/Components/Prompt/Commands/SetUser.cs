@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             if (!UserId.HasValue)
             {
                 // error. no valid user ID passed
-                sbErrors.AppendFormat("No valid User ID found. Please pass the ID as the first argument after the command or explicitly using the --{0} flag; ", FlagId);
+                sbErrors.Append(Localization.GetString("Prompt_UserIdIsRequired", Constants.LocalResourcesFile));
             }
             else
             {
@@ -89,14 +89,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     LastName = Flag(FlagLastname);
                 if (HasFlag(FlagPassword))
                 {
-                    if (UserController.ValidatePassword(Flag(FlagPassword)))
-                    {
-                        Password = Flag(FlagPassword);
-                    }
-                    else
-                    {
-                        sbErrors.Append("Supplied password is invalid. Please supply a password that meets the minimum requirements of ths site; ");
-                    }
+                    Password = Flag(FlagPassword);
                 }
                 Approved = null;
                 if (HasFlag(FlagApproved))
@@ -115,7 +108,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     string.IsNullOrEmpty(Password) &&
                     !Approved.HasValue)
                 {
-                    sbErrors.Append("Nothing to update. Please pass-in one or more flags with values to update on the user or type 'help set-user' for more help; ");
+                    sbErrors.Append(Localization.GetString("Prompt_NothingToSetUser", Constants.LocalResourcesFile));
                 }
             }
 
@@ -137,7 +130,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 try
                 {
                     UsersController.Instance.ChangePassword(PortalId, userInfo.UserID, Password);
-                    sbResults.Append("Password Updated Successfully.");
+                    sbResults.Append(Localization.GetString("ChangeSuccessful", Constants.LocalResourcesFile));
                 }
                 catch (Exception ex)
                 {
@@ -147,7 +140,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             if (Approved.HasValue && userInfo.Membership.Approved != Approved.Value)
             {
                 UsersController.Instance.UpdateAuthorizeStatus(userInfo, PortalId, Approved.Value);
-                sbResults.Append($"User {(Approved.Value ? "Approved" : "Un-Approved")} Successfully.");
+                sbResults.Append(Localization.GetString(Approved.Value ? "UserAuthorized" : "UserUnAuthorized", Constants.LocalResourcesFile));
 
             }
             var basicUpdated = !string.IsNullOrEmpty(Username) || !string.IsNullOrEmpty(DisplayName) || !string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName) || !string.IsNullOrEmpty(Email);
@@ -197,7 +190,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 Data = lst,
                 FieldOrder = UserModel.FieldOrder,
-                Output = "User updated successfully."
+                Output = Localization.GetString("UserUpdated", Constants.LocalResourcesFile)
             };
         }
 

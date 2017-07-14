@@ -6,6 +6,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -38,7 +39,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (!UserId.HasValue)
             {
-                sbErrors.AppendFormat("You must specify a valid numeric User ID using the --{0} flag or by passing it as the first argument; ", FlagId);
+                sbErrors.Append(Localization.GetString("Prompt_UserIdIsRequired", Constants.LocalResourcesFile) + " ");
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -52,13 +53,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
 
             if (!userInfo.IsDeleted)
-                return new ConsoleErrorResultModel("Cannot purge user that has not been deleted first. Try delete-user.");
+                return new ConsoleErrorResultModel(Localization.GetString("Prompt_CannotPurgeUser", Constants.LocalResourcesFile));
 
             if (!UserController.RemoveUser(userInfo))
-                return new ConsoleResultModel("No user found to purge");
+                return new ConsoleErrorResultModel(Localization.GetString("UserRemoveError", Constants.LocalResourcesFile));
 
             lst.Add(new UserModel(userInfo));
-            return new ConsoleResultModel("The User has been permanently removed from the site.") { Data = lst };
+            return new ConsoleResultModel(Localization.GetString("Prompt_UserPurged", Constants.LocalResourcesFile)) { Data = lst };
         }
     }
 }

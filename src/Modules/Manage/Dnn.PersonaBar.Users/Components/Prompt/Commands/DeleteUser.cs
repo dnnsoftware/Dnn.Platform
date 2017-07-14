@@ -6,6 +6,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -29,37 +30,33 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (HasFlag(FlagId))
             {
-                var tmpId = 0;
+                int tmpId;
                 if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
             else
             {
-                var tmpId = 0;
+                int tmpId;
                 if (int.TryParse(args[1], out tmpId))
                     UserId = tmpId;
             }
 
             if (!UserId.HasValue)
             {
-                sbErrors.Append("You must specify a valid User ID");
+                sbErrors.Append(Localization.GetString("Prompt_UserIdIsRequired", Constants.LocalResourcesFile));
             }
 
             if (HasFlag(FlagNotify))
             {
-                var tmpNotify = false;
+                bool tmpNotify;
                 if (bool.TryParse(Flag(FlagNotify), out tmpNotify))
                 {
                     Notify = tmpNotify;
                 }
                 else
                 {
-                    sbErrors.Append("If you specify the --notify flag, it must be set to True or False; ");
+                    sbErrors.Append(string.Format(Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourcesFile), FlagNotify) + " ");
                 }
-            }
-            else
-            {
-                Notify = false;
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -72,11 +69,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
             var userModels = new List<UserModel> { new UserModel(userInfo) };
             if (userInfo.IsDeleted)
-                return new ConsoleErrorResultModel("The user already deleted. Want to delete permanently? Use \"purge-user\"");
+                return new ConsoleErrorResultModel(Localization.GetString("Prompt_UserAlreadyDeleted", Constants.LocalResourcesFile));
 
             if (!UserController.DeleteUser(ref userInfo, Notify, false))
             {
-                return new ConsoleErrorResultModel("The user was found but the system is unable to delete it")
+                return new ConsoleErrorResultModel(Localization.GetString("Prompt_UserDeletionFailed", Constants.LocalResourcesFile))
                 {
                     Data = userModels
                 };
@@ -88,7 +85,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             // attempt to retrieve the user from the dB
             userInfo = UserController.GetUserById(PortalId, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
-            return new ConsoleResultModel("User was successfully deleted") { Data = userModels };
+            return new ConsoleResultModel(Localization.GetString("UserDeleted", Constants.LocalResourcesFile)) { Data = userModels };
         }
     }
 }
