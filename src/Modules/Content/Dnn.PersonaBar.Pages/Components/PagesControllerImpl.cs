@@ -263,8 +263,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return false;
         }
 
-        public virtual IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", string pageType = "", string tags = "", 
-            string lastModifiedOnStartDate = "", string lastModifiedOnEndDate = "", int pageIndex = -1, int pageSize = -1)
+        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "")
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var adminTabId = portalSettings.AdminTabId;
@@ -274,6 +273,25 @@ namespace Dnn.PersonaBar.Pages.Components
                         where (t.ParentId != adminTabId || t.ParentId == Null.NullInteger) &&
                                 !t.IsSystem &&
                                     ((string.IsNullOrEmpty(searchKey) && (t.ParentId == parentId))
+                                        || (!string.IsNullOrEmpty(searchKey) &&
+                                                (t.TabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
+                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)))
+                        select t;
+
+            return pages;
+        }
+
+        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", 
+            string lastModifiedOnStartDate = "", string lastModifiedOnEndDate = "", int pageIndex = -1, int pageSize = -1)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var adminTabId = portalSettings.AdminTabId;
+
+            var tabs = TabController.GetPortalTabs(portalSettings.PortalId, adminTabId, false, true, false, true);
+            var pages = from t in tabs
+                        where (t.ParentId != adminTabId || t.ParentId == Null.NullInteger) &&
+                                !t.IsSystem &&
+                                    (string.IsNullOrEmpty(searchKey)
                                         || (!string.IsNullOrEmpty(searchKey) &&
                                                 (t.TabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
                                                     || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)))
@@ -297,7 +315,7 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 pages = pages.Where(p => p.LastModifiedOnDate <= endDate);
             }
-
+            totalRecords = pages.Count();
             return pageIndex == -1 || pageSize == -1 ? pages : pages.Skip(pageIndex * pageSize).Take(pageSize);
         }
 

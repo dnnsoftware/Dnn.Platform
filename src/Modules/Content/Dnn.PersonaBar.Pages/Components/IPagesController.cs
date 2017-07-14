@@ -10,7 +10,9 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage);
 
-        IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", string pageType = "", string tags = "", 
+        IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "");
+
+        IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "",
             string lastModifiedOnStartDate = "", string lastModifiedOnEndDate = "", int pageIndex = -1, int pageSize = -1);
 
         List<int> GetPageHierarchy(int pageId);
