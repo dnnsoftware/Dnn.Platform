@@ -14,10 +14,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     {
 
         private const string FlagId = "id";
-
-
         public int? UserId { get; private set; }
-        public bool? Notify { get; private set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -26,13 +23,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (HasFlag(FlagId))
             {
-                var tmpId = 0;
+                int tmpId;
                 if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
             else
             {
-                var tmpId = 0;
+                int tmpId;
                 if (args.Length == 2 && int.TryParse(args[1], out tmpId))
                 {
                     UserId = tmpId;
@@ -50,35 +47,18 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override ConsoleResultModel Run()
         {
             var lst = new List<UserModel>();
+            ConsoleErrorResultModel errorResultModel;
+            UserInfo userInfo;
+            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
 
-            var sbErrors = new StringBuilder();
-            if (UserId.HasValue)
-            {
-                // do lookup by user id
-                var ui = UserController.GetUserById(PortalId, (int)UserId);
-                if (ui != null)
-                {
-                    if (ui.IsDeleted)
-                    {
-                        if (UserController.RemoveUser(ui))
-                        {
-                            lst.Add(new UserModel(ui));
-                            return new ConsoleResultModel("The User has been permanently removed from the site.") { Data = lst };
-                        }
-                    }
-                    else
-                    {
-                        return new ConsoleErrorResultModel("Cannot purge user that has not been deleted first. Try delete-user.");
-                    }
-                }
-                else
-                {
-                    return new ConsoleErrorResultModel($"No user found with the ID of '{UserId}'");
-                }
-            }
+            if (!userInfo.IsDeleted)
+                return new ConsoleErrorResultModel("Cannot purge user that has not been deleted first. Try delete-user.");
 
-            // shouldn't get here.
-            return new ConsoleResultModel("No user found to purge");
+            if (!UserController.RemoveUser(userInfo))
+                return new ConsoleResultModel("No user found to purge");
+
+            lst.Add(new UserModel(userInfo));
+            return new ConsoleResultModel("The User has been permanently removed from the site.") { Data = lst };
         }
     }
 }
