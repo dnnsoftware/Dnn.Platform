@@ -94,13 +94,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     // do username lookup
                     var searchTerm = Username.Replace("%", "").Replace("*", "%");
-                    userId = (UserController.GetUsersByUserName(PortalId, searchTerm, -1, int.MaxValue, ref recCount).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? 0;
+                    userId = (UserController.GetUsersByUserName(PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? 0;
                 }
                 else if (!userId.HasValue && !string.IsNullOrEmpty(Email))
                 {
                     // must be email
                     var searchTerm = Email.Replace("%", "").Replace("*", "%");
-                    userId = (UserController.GetUsersByEmail(PortalId, searchTerm, -1, int.MaxValue, ref recCount).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? 0;
+                    userId = (UserController.GetUsersByEmail(PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? 0;
                 }
 
                 ConsoleErrorResultModel errorResultModel;
