@@ -350,8 +350,8 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
                     return Request.CreateErrorResponse(response.Key, response.Value);
+                var deleted = !user.IsDeleted && UserController.DeleteUser(ref user, true, false);
 
-                var deleted = UserController.DeleteUser(ref user, true, false);
                 return !deleted
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserDeleteError", Components.Constants.LocalResourcesFile))
@@ -375,9 +375,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
                     return Request.CreateErrorResponse(response.Key, response.Value);
-
-                var deleted = UserController.RemoveUser(user);
-
+                var deleted = user.IsDeleted && UserController.RemoveUser(user);
                 return !deleted
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRemoveError", Components.Constants.LocalResourcesFile))
@@ -401,11 +399,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
                     return Request.CreateErrorResponse(response.Key, response.Value);
-                var restored = !user.IsDeleted;
-                if (user.IsDeleted)
-                {
-                    restored = UserController.RestoreUser(ref user);
-                }
+                var restored = user.IsDeleted && UserController.RestoreUser(ref user);
                 return !restored
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRestoreError", Components.Constants.LocalResourcesFile))
@@ -490,7 +484,7 @@ namespace Dnn.PersonaBar.Users.Services
                 if (IsCurrentUser(userId, out httpResponseMessage))
                     return httpResponseMessage;
 
-                var unlocked = !user.Membership.LockedOut || UserController.UnLockUser(user);
+                var unlocked = user.Membership.LockedOut && UserController.UnLockUser(user);
                 return !unlocked
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserUnlockError", Components.Constants.LocalResourcesFile))

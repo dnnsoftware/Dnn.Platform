@@ -71,6 +71,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             UserInfo userInfo;
             if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
             var userModels = new List<UserModel> { new UserModel(userInfo) };
+            if (userInfo.IsDeleted)
+                return new ConsoleErrorResultModel("The user already deleted. Want to delete permanently? Use \"purge-user\"");
+
             if (!UserController.DeleteUser(ref userInfo, Notify, false))
             {
                 return new ConsoleErrorResultModel("The user was found but the system is unable to delete it")
