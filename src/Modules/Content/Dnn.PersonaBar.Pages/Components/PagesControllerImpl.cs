@@ -34,9 +34,11 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -277,6 +279,44 @@ namespace Dnn.PersonaBar.Pages.Components
                         select t;
 
             return pages;
+        }
+
+        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", 
+            string lastModifiedOnStartDate = "", string lastModifiedOnEndDate = "", int pageIndex = -1, int pageSize = -1)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var adminTabId = portalSettings.AdminTabId;
+
+            var tabs = TabController.GetPortalTabs(portalSettings.PortalId, adminTabId, false, true, false, true);
+            var pages = from t in tabs
+                        where (t.ParentId != adminTabId || t.ParentId == Null.NullInteger) &&
+                                !t.IsSystem &&
+                                    (string.IsNullOrEmpty(searchKey)
+                                        || (!string.IsNullOrEmpty(searchKey) &&
+                                                (t.TabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
+                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)))
+                        select t;
+
+            if (!string.IsNullOrEmpty(pageType))
+            {
+                pages = pages.Where(p => string.Compare(Globals.GetURLType(p.Url).ToString(), pageType, StringComparison.CurrentCultureIgnoreCase) == 0);
+            }
+            if (!string.IsNullOrEmpty(tags))
+            {
+                pages = pages.Where(p => HasTags(tags, p.Terms));
+            }
+            DateTime startDate;
+            if (!string.IsNullOrEmpty(lastModifiedOnStartDate) && DateTime.TryParse(lastModifiedOnStartDate, out startDate))
+            {
+                pages = pages.Where(p => p.LastModifiedOnDate >= startDate);
+            }
+            DateTime endDate;
+            if (!string.IsNullOrEmpty(lastModifiedOnEndDate) && DateTime.TryParse(lastModifiedOnEndDate, out endDate))
+            {
+                pages = pages.Where(p => p.LastModifiedOnDate <= endDate);
+            }
+            totalRecords = pages.Count();
+            return pageIndex == -1 || pageSize == -1 ? pages : pages.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
         private TabInfo GetPageDetails(int pageId)
@@ -1142,6 +1182,11 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
+        }
+
+        private static bool HasTags(string tags, IEnumerable<Term> terms)
+        {
+            return tags.Split(',').All(tag => terms.Any(t => string.Compare(t.Name, tag, StringComparison.CurrentCultureIgnoreCase) == 0));
         }
     }
 }

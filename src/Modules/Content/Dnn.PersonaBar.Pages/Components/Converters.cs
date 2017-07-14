@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
@@ -31,7 +32,10 @@ namespace Dnn.PersonaBar.Pages.Components
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 TabPath = tab.TabPath.Replace("//", "/"),
                 PageType = GetPageType(tab.Url),
-                CanViewPage = TabPermissionController.CanViewPage(tab)
+                CanViewPage = TabPermissionController.CanViewPage(tab),
+                LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
+                FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
+                Tags = tab.Terms.Select(t => t.Name).ToArray()
         };
         }
         
