@@ -30,11 +30,12 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Web.Configuration;
-
+using System.Web.Security;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
@@ -1116,7 +1117,7 @@ namespace DotNetNuke.Entities.Urls
                                     //767 : object not set error on extensionless 404 errors
                                     if (context.User == null)
                                     {
-                                        context.User = Thread.CurrentPrincipal;
+                                        context.User = GetCurrentPrincipal(context);
                                     }
                                     response.TrySkipIisCustomErrors = true;
                                     //881 : spoof the basePage object so that the client dependency framework
@@ -1257,6 +1258,33 @@ namespace DotNetNuke.Entities.Urls
                     UrlRewriterUtils.LogExceptionInRequest(ex, status, result);
                 }
             }
+        }
+
+        private static IPrincipal GetCurrentPrincipal(HttpContext context)
+        {
+            // Extract the forms authentication cookie
+            var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
+            var currentPrincipal = new GenericPrincipal(new GenericIdentity(string.Empty), new string[0]);
+
+            try
+            {
+                if (authCookie != null)
+                {
+                    var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null && !authTicket.Expired)
+                    {
+                        var roles = authTicket.UserData.Split('|');
+                        var id = new FormsIdentity(authTicket);
+                        currentPrincipal = new GenericPrincipal(id, roles);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                 //do nothing here.
+            }
+
+            return currentPrincipal;
         }
 
         private static bool CheckForDebug(HttpRequest request, NameValueCollection queryStringCol, bool debugEnabled)
