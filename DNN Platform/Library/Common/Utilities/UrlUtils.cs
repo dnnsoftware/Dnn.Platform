@@ -306,24 +306,24 @@ namespace DotNetNuke.Common.Utilities
 
         public static string ValidReturnUrl(string url)
         {
-            do
+            try
             {
                 if (string.IsNullOrEmpty(url))
                 {
-                    break;
+                    return "";
                 }
 
                 url = url.Replace("\\", "/");
                 if (url.ToLowerInvariant().Contains("data:"))
                 {
-                    break;
+                    return "";
                 }
 
                 //clean the return url to avoid possible XSS attack.
                 var cleanUrl = new PortalSecurity().InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
                 if (url != cleanUrl)
                 {
-                    break;
+                    return "";
                 }
 
                 //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
@@ -333,53 +333,48 @@ namespace DotNetNuke.Common.Utilities
                     urlWithNoQuery = urlWithNoQuery.Substring(0, urlWithNoQuery.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
                 }
 
-                try
+                if (urlWithNoQuery.Contains("://"))
                 {
-                    if (urlWithNoQuery.Contains("://"))
+                    var portalSettings = PortalSettings.Current;
+                    var aliasWithHttp = Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias);
+                    var uri1 = new Uri(url);
+                    var uri2 = new Uri(aliasWithHttp);
+
+                    // protocol switching (HTTP <=> HTTPS) is allowed by not being checked here
+                    if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        var portalSettings = PortalSettings.Current;
-                        var aliasWithHttp = Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias);
-                        var uri1 = new Uri(url);
-                        var uri2 = new Uri(aliasWithHttp);
-
-                        // protocol switching (HTTP <=> HTTPS) is allowed by not being checked here
-                        if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            break;
-                        }
-
-                        // this check is mainly for child portals
-                        if (!uri1.AbsolutePath.StartsWith(uri2.AbsolutePath, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            break;
-                        }
+                        return "";
                     }
 
-                    while (url.StartsWith("///"))
+                    // this check is mainly for child portals
+                    if (!uri1.AbsolutePath.StartsWith(uri2.AbsolutePath, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        url = url.Substring(1);
+                        return "";
                     }
-
-                    if (url.StartsWith("//"))
-                    {
-                        var urlWithNoProtocol = url.Substring(2);
-                        var portalSettings = PortalSettings.Current;
-                        // note: this can redirict from parent to childe and vice versa
-                        if (!urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            break;
-                        }
-                    }
-
-                    return url;
                 }
-                catch (UriFormatException)
+
+                while (url.StartsWith("///"))
                 {
-                    break;
+                    url = url.Substring(1);
                 }
-            } while (false);
 
-            return "";
+                if (url.StartsWith("//"))
+                {
+                    var urlWithNoProtocol = url.Substring(2);
+                    var portalSettings = PortalSettings.Current;
+                    // note: this can redirict from parent to childe and vice versa
+                    if (!urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return "";
+                    }
+                }
+
+                return url;
+            }
+            catch (UriFormatException)
+            {
+                return "";
+            }
         }
 
         //Whether current page is show in popup.
