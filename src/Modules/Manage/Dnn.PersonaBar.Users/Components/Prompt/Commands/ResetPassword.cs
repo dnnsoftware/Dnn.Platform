@@ -4,6 +4,7 @@ using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -17,7 +18,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagNotify = "notify";
 
 
-        public bool? Notify { get; private set; }
+        public bool Notify { get; private set; } = true;
         public int? UserId { get; private set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -25,7 +26,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             base.Init(args, portalSettings, userInfo, activeTabId);
             var sbErrors = new StringBuilder();
 
-            var tmpId = 0;
+            int tmpId;
             if (HasFlag(FlagId))
             {
                 if (int.TryParse(Flag(FlagId), out tmpId))
@@ -37,9 +38,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     UserId = tmpId;
             }
 
-            var tmpNotify = false;
             if (HasFlag(FlagNotify))
             {
+                bool tmpNotify;
                 if (!bool.TryParse(Flag(FlagNotify), out tmpNotify))
                 {
                     sbErrors.AppendFormat("The --{0} flag takes True or False as its value (case-insensitive)", FlagNotify);
@@ -49,11 +50,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     Notify = tmpNotify;
                 }
             }
-            else
-            {
-                Notify = true; // reset password triggers sending the email to reset password. It's kind of useless if _Notify is False;
-            }
-
 
             if (!UserId.HasValue)
             {
@@ -65,22 +61,18 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
-            var sendEmail = false;
-            if (Notify.HasValue)
-                sendEmail = (bool)Notify;
-
-            var user = UserController.GetUserById(PortalId, (int)UserId);
-            if (user == null)
+            ConsoleErrorResultModel errorResultModel;
+            UserInfo userInfo;
+            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
+            //Don't allow self password change.
+            if (userInfo.UserID == User.UserID)
             {
-                return new ConsoleErrorResultModel($"No user found with the ID of '{UserId}'");
+                return new ConsoleErrorResultModel(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
             }
-            else
-            {
-                UserController.ResetPasswordToken(user, sendEmail);
-            }
-
-            return new ConsoleResultModel("User password has been reset." + ((bool)Notify ? " An email has been sent to the user" : ""));
+            var success = UsersController.Instance.ForceChangePassword(userInfo, PortalId, Notify);
+            return success
+                ? new ConsoleResultModel("User password has been reset." + (Notify ? " An email has been sent to the user" : ""))
+                : new ConsoleErrorResultModel(Localization.GetString("OptionUnavailable", Constants.LocalResourcesFile));
         }
-
     }
 }

@@ -264,6 +264,23 @@ namespace Dnn.PersonaBar.Users.Components
             throw new Exception(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
         }
 
+        public bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify)
+        {
+            if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
+            {
+                var canSend = UserController.ResetPasswordToken(userInfo, notify);
+                if (canSend || !notify)
+                {
+                    userInfo.Membership.UpdatePassword = true;
+
+                    //Update User
+                    UserController.UpdateUser(portalId, userInfo);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void AddUserToRoles(UserInfo currentUserInfo, int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null)
         {
             var effDate = effectiveDate.GetValueOrDefault(Null.NullDate);

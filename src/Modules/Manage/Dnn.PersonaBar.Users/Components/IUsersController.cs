@@ -26,5 +26,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total,
             out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1);
+
+        bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify);
     }
 }

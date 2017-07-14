@@ -226,22 +226,10 @@ namespace Dnn.PersonaBar.Users.Services
                 if (IsCurrentUser(userId, out httpResponseMessage))
                     return httpResponseMessage;
 
-                if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
-                {
-                    UserController.ResetPasswordToken(user);
-                }
-                var canSend = Mail.SendMail(user, MessageType.PasswordReminder, PortalSettings) == string.Empty;
-                if (canSend)
-                {
-                    user.Membership.UpdatePassword = true;
-
-                    //Update User
-                    UserController.UpdateUser(PortalId, user);
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-                }
-
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile));
+                return Components.UsersController.Instance.ForceChangePassword(user, PortalId, true)
+                    ? Request.CreateResponse(HttpStatusCode.OK, new {Success = true})
+                    : Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile));
             }
             catch (Exception ex)
             {
