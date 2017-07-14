@@ -138,4 +138,13 @@
   <data name="Prompt_SessionTimedOut.Text" xml:space="preserve">
     <value>Your session may have timed-out. If so login again.</value>
   </data>
+  <data name="CommandNotFound.Text" xml:space="preserve">
+    <value>Command '{0}' not found.</value>
+  </data>
+  <data name="CommandOptionText.Text" xml:space="preserve">
+    <value>{0} or {1}</value>
+  </data>
+  <data name="DidYouMean.Text" xml:space="preserve">
+    <value>Did you mean '{0}'?</value>
+  </data>
 </root>
