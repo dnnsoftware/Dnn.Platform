@@ -37,5 +37,14 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "canViewPage")]
         public bool CanViewPage { get; set; }
+
+        [DataMember(Name = "lastModifiedOnDate")]
+        public string LastModifiedOnDate { get; set; }
+
+        [DataMember(Name = "friendlyLastModifiedOnDate")]
+        public string FriendlyLastModifiedOnDate { get; set; }
+
+        [DataMember(Name = "tags")]
+        public string[] Tags { get; set; }
     }
 }
