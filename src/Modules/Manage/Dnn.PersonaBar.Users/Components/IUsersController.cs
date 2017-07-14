@@ -28,5 +28,7 @@ namespace Dnn.PersonaBar.Users.Components
             out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1);
 
         bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify);
+
+        void UpdateAuthorizeStatus(UserInfo userInfo, int portalId, bool authorized);
     }
 }

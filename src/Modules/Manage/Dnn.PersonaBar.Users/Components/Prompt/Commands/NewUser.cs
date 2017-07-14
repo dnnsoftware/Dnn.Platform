@@ -136,7 +136,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
                 return new ConsoleErrorResultModel(ex.Message);
             }
         }

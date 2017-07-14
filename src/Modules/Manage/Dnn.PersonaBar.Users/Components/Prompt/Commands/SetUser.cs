@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Users.Components.Dto;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -25,8 +26,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class SetUser : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetUser));
-
         private const string FlagId = "id";
         private const string FlagEmail = "email";
         private const string FlagUsername = "username";
@@ -99,11 +98,12 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                         sbErrors.Append("Supplied password is invalid. Please supply a password that meets the minimum requirements of ths site; ");
                     }
                 }
+                Approved = null;
                 if (HasFlag(FlagApproved))
                 {
-                    // there is no DNN API for setting Approval status to false. 
-                    // So we do not allow setting approved to false;
-                    Approved = true;
+                    bool approved;
+                    if (bool.TryParse(Flag(FlagApproved), out approved))
+                        Approved = approved;
                 }
 
                 // ensure there's something to update
@@ -126,123 +126,79 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
             var sbResults = new StringBuilder();
 
-            // get the current user
-            var userToUpdate = UserController.Instance.GetUserById(PortalId, (int)UserId);
-
-            // Does User Exist?
-            if (userToUpdate == null)
-                return new ConsoleErrorResultModel($"No user found with the ID '{(int)UserId}'");
-            // Only allow a SuperUser to update another SuperUser
-            if (userToUpdate.IsSuperUser && !User.IsSuperUser)
-                return new ConsoleErrorResultModel("You do not have permission to update this user.");
+            ConsoleErrorResultModel errorResultModel;
+            UserInfo userInfo;
+            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
 
             // Update the User
             // process the password first. If invalid, we can abort other changes to the user
             if (!string.IsNullOrEmpty(Password))
             {
-                // This call is only valid for those in administrator roles
-                // If password reset is not enabled in membership config, this will throw ex.
-                // UserController.ResetAndChangePassword(userToUpdate, Password);
-
-                // verify password isn't a recently used password
-                var m = new MembershipPasswordController();
-                if (m.IsPasswordInHistory(userToUpdate.UserID, PortalId, Password))
-                {
-                    return new ConsoleErrorResultModel("The supplied password has been used recently and cannot be used again. No changes to the user have been made.");
-                }
-                UserController.ResetPasswordToken(userToUpdate, 1);
-                userToUpdate = UserController.Instance.GetUserById(PortalId, userToUpdate.UserID);
-                var newToken = userToUpdate.PasswordResetToken.ToString();
                 try
                 {
-                    if (UserController.ChangePasswordByToken(PortalId, userToUpdate.Username, Password, newToken))
-                    {
-                        // success
-                        sbResults.Append("The password was successfully changed. ");
-                    }
-                    else
-                    {
-                        // typically we shouldn't get here b/c password has been validated and checked against the password history.
-                        return new ConsoleResultModel("Unable to change user password. No changes have been made to the user.");
-                    }
+                    UsersController.Instance.ChangePassword(PortalId, userInfo.UserID, Password);
+                    sbResults.Append("Password Updated Successfully.");
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
-                    return new ConsoleErrorResultModel("An unexpected error occurred while trying to update the password. See the DNN Event Viewer for details. No changes to the user have been made.");
+                    return new ConsoleErrorResultModel(ex.Message);
                 }
             }
+            if (Approved.HasValue && userInfo.Membership.Approved != Approved.Value)
+            {
+                UsersController.Instance.UpdateAuthorizeStatus(userInfo, PortalId, Approved.Value);
+                sbResults.Append($"User {(Approved.Value ? "Approved" : "Un-Approved")} Successfully.");
 
+            }
+            var basicUpdated = !string.IsNullOrEmpty(Username) || !string.IsNullOrEmpty(DisplayName) || !string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName) || !string.IsNullOrEmpty(Email);
+            var userBasicDto = new UserBasicDto
+            {
+                Displayname = userInfo.DisplayName,
+                UserId = userInfo.UserID,
+                Email = userInfo.Email,
+                IsDeleted = userInfo.IsDeleted,
+                Username = userInfo.Username,
+                Firstname = userInfo.FirstName,
+                Lastname = userInfo.LastName
+            };
             // Update Username
             if (!string.IsNullOrEmpty(Username))
+                userBasicDto.Username = Username;
+            // Update other properties
+            if (!string.IsNullOrEmpty(DisplayName))
+                userBasicDto.Displayname = DisplayName;
+            if (!string.IsNullOrEmpty(FirstName))
+                userBasicDto.Firstname = FirstName;
+            if (!string.IsNullOrEmpty(LastName))
+                userBasicDto.Lastname = LastName;
+            if (!string.IsNullOrEmpty(Email))
+                userBasicDto.Email = Email;
+            if (basicUpdated)
             {
                 try
                 {
-                    UserController.ChangeUsername((int)UserId, Username);
+                    UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
+                }
+                catch (SqlException)
+                {
+                    return new ConsoleErrorResultModel(Localization.GetString("UsernameNotUnique", Constants.LocalResourcesFile) + "\n" + sbResults);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
-                    var msg = "An error occurred while changing the user's Username. See the DNN Event Viewer. ";
-                    if (sbResults.Length > 0)
-                    {
-                        msg += sbResults.ToString() + "No other changes have been made. ";
-                    }
-                    else
-                    {
-                        msg += "No changes have been made to the user. ";
-                    }
-                    return new ConsoleErrorResultModel(msg);
-                }
-                // retrieve updated user info.
-                userToUpdate = UserController.Instance.GetUserById(PortalId, userToUpdate.UserID);
-                sbResults.Append("The Username has been changed. ");
-            }
-
-            // Update other properties
-            if (!string.IsNullOrEmpty(DisplayName))
-                userToUpdate.DisplayName = DisplayName;
-            if (!string.IsNullOrEmpty(FirstName))
-                userToUpdate.FirstName = FirstName;
-            if (!string.IsNullOrEmpty(LastName))
-                userToUpdate.LastName = LastName;
-            if (!string.IsNullOrEmpty(Email))
-                userToUpdate.Email = Email;
-            if (Approved.HasValue)
-            {
-                userToUpdate.Membership.Approved = true;
-            }
-
-            try
-            {
-                UserController.UpdateUser(PortalId, userToUpdate);
-                if (Approved.HasValue)
-                {
-                    // If user was approved, remove from unverified user, auto-assign roles
-                    UserController.ApproveUser(userToUpdate);
+                    return new ConsoleErrorResultModel(ex.Message + sbResults);
                 }
             }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return new ConsoleErrorResultModel("An error occurred while updating the user. See the DNN Event Viewer. " + sbResults.ToString());
-            }
-
             // retrieve the updated user
-            var updatedUser = UserController.GetUserById(PortalId, userToUpdate.UserID);
+            var updatedUser = UserController.GetUserById(PortalId, userInfo.UserID);
 
-            var lst = new List<UserModel>();
-            lst.Add(new UserModel(updatedUser));
+            var lst = new List<UserModel> { new UserModel(updatedUser) };
 
-            if (lst.Count > 0)
+            return new ConsoleResultModel(string.Empty)
             {
-                return new ConsoleResultModel(string.Empty)
-                {
-                    Data = lst,
-                    FieldOrder = UserModel.FieldOrder
-                };
-            }
-            return new ConsoleResultModel("No user found");
+                Data = lst,
+                FieldOrder = UserModel.FieldOrder,
+                Output = "User updated successfully."
+            };
         }
 
 

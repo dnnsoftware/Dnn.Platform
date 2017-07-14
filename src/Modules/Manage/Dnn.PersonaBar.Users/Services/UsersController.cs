@@ -312,24 +312,7 @@ namespace Dnn.PersonaBar.Users.Services
 
                 user.Membership.Approved = authorized;
 
-                //Update User
-                UserController.UpdateUser(PortalId, user);
-                if (authorized)
-                {
-                    //Update User Roles if needed
-                    if (!user.IsSuperUser && user.IsInRole("Unverified Users") &&
-                        PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
-                    {
-                        UserController.ApproveUser(user);
-                    }
-
-                    Mail.SendMail(user, MessageType.UserAuthorized, PortalSettings);
-                }
-                else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", PortalId,
-                    false))
-                {
-                    Mail.SendMail(user, MessageType.UserUnAuthorized, PortalSettings);
-                }
+                Components.UsersController.Instance.UpdateAuthorizeStatus(user, PortalId, authorized);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)

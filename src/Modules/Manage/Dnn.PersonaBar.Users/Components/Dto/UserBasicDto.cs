@@ -42,6 +42,12 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "displayName")]
         public string Displayname { get; set; }
 
+        [DataMember(Name = "firstName")]
+        public string Firstname { get; set; }
+
+        [DataMember(Name = "lastName")]
+        public string Lastname { get; set; }
+
         [DataMember(Name = "email")]
         public string Email { get; set; }
 
@@ -95,7 +101,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 IsDeleted = user.IsDeleted,
                 Authorized = user.Membership.Approved,
                 IsSuperUser = user.IsSuperUser
-        };
+            };
         }
         public static UserBasicDto FromUserDetails(UserDetailDto user)
         {
@@ -110,7 +116,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 IsDeleted = user.IsDeleted,
                 Authorized = user.Authorized,
                 IsSuperUser = user.IsSuperUser
-        };
+            };
         }
     }
 }

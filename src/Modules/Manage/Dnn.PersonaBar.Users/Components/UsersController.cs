@@ -56,6 +56,7 @@ using DotNetNuke.Security.Roles;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 using System.Net.Http;
 using System.Net;
+using DotNetNuke.Services.Mail;
 
 namespace Dnn.PersonaBar.Users.Components
 {
@@ -189,7 +190,8 @@ namespace Dnn.PersonaBar.Users.Components
             }
             user.DisplayName = userBasicDto.Displayname;
             user.Email = userBasicDto.Email;
-
+            user.FirstName = !string.IsNullOrEmpty(userBasicDto.Firstname) ? userBasicDto.Firstname : user.FirstName;
+            user.LastName = !string.IsNullOrEmpty(userBasicDto.Lastname) ? userBasicDto.Lastname : user.LastName;
             //Update DisplayName to conform to Format
             if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
@@ -359,6 +361,29 @@ namespace Dnn.PersonaBar.Users.Components
             return users.Skip(startIndex).Take(pageSize);
         }
 
+        public void UpdateAuthorizeStatus(UserInfo userInfo, int portalId, bool authorized)
+        {
+            userInfo.Membership.Approved = authorized;
+
+            //Update User
+            UserController.UpdateUser(portalId, userInfo);
+            if (authorized)
+            {
+                //Update User Roles if needed
+                if (!userInfo.IsSuperUser && userInfo.IsInRole("Unverified Users") &&
+                    PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+                {
+                    UserController.ApproveUser(userInfo);
+                }
+
+                Mail.SendMail(userInfo, MessageType.UserAuthorized, PortalSettings);
+            }
+            else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", portalId,
+                    false))
+            {
+                Mail.SendMail(userInfo, MessageType.UserUnAuthorized, PortalSettings);
+            }
+        }
         public static bool IsAdmin(PortalSettings portalSettings)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
