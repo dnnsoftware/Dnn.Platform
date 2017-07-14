@@ -1,21 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Users.Components.Contracts;
+using Dnn.PersonaBar.Users.Components.Dto;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("list-users", "Returns users that match the given expression", new[]{
         "email",
         "username",
-        "role"
+        "role",
+        "page",
+        "max"
     })]
     public class ListUsers : ConsoleCommandBase
     {
@@ -23,11 +27,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagEmail = "email";
         private const string FlagUsernme = "username";
         private const string FlagRole = "role";
+        private const string FlagPage = "page";
+        private const string FlagMax = "Max";
 
 
         public string Email { get; private set; }
         public string Username { get; private set; }
         public string Role { get; private set; }
+        public int Page { get; private set; }
+        public int Max { get; private set; } = 500;
 
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -41,11 +49,23 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Username = Flag(FlagUsernme);
             if (HasFlag(FlagRole))
                 Role = Flag(FlagRole);
+            if (HasFlag(FlagPage))
+            {
+                int tmpId;
+                if (int.TryParse(Flag(FlagPage), out tmpId))
+                    Page = tmpId;
+            }
+            if (HasFlag(FlagMax))
+            {
+                int tmpId;
+                if (int.TryParse(Flag(FlagMax), out tmpId))
+                    Max = tmpId > 0 && tmpId < 500 ? tmpId : Max;
+            }
 
-            if (args.Length != 1)
+            if (args.Length != 1 && !(args.Length == 3 && (HasFlag(FlagPage) || HasFlag(FlagMax))) && !(args.Length == 5 && HasFlag(FlagPage) && HasFlag(FlagMax)))
             {
                 // if only one value passed and it's not a flag, try to interpret as username or email
-                if (args.Length == 2 && !IsFlag(args[1]))
+                if (args.Length >= 2 && !IsFlag(args[1]))
                 {
                     if (args[1].Contains("@"))
                     {
@@ -81,59 +101,66 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
-            var lst = new List<UserModelBase>();
-            var results = new ArrayList();
+            var roleUsers = new List<UserModelBase>();
             var recCount = 0;
-
-            var sbErrors = new StringBuilder();
-            // if no argument, default to listing all users in current portal
-            if (Args.Length == 1)
+            var getUsersContract = new GetUsersContract
             {
-                results = UserController.GetUsers(PortalId);
-                lst = ConvertList(results);
+                SearchText = null,
+                PageIndex = Page > 0 ? Page - 1 : 0,
+                PageSize = Max,
+                SortColumn = "displayname",
+                SortAscending = true,
+                PortalId = PortalId,
+                Filter = UserFilters.Authorized
+            };
+            if (!string.IsNullOrEmpty(Username))
+            {
+                // do username lookup
+                var searchTerm = Username.Replace("%", "").Replace("*", "%");
+                getUsersContract.SearchText = searchTerm;
             }
-            else
+            else if (!string.IsNullOrEmpty(Email))
             {
-                if (!string.IsNullOrEmpty(Username))
-                {
-                    // do username lookup
-                    var searchTerm = Username.Replace("%", "").Replace("*", "%");
-                    results = UserController.GetUsersByUserName(PortalId, searchTerm, -1, int.MaxValue, ref recCount);
-                    lst = ConvertList(results);
-                }
-                else if (!string.IsNullOrEmpty(Role))
-                {
-                    //exact match only allowed at this time. Listing users in multiple roles would require
-                    // 1) getting all ID's of roles matching search phrase;
-                    // 2) getting all users in each of those roles;
-                    // 3) de-duplicating the users list;
-                    // for large user bases this could take a really long time.
-                    var lstUsers = RoleController.Instance.GetUsersByRole(PortalId, Role);
-                    lst = ConvertList(lstUsers);
-                }
+                // must be email
+                var searchTerm = Email.Replace("%", "").Replace("*", "%");
+                getUsersContract.SearchText = searchTerm;
+            }
+            else if (!string.IsNullOrEmpty(Role))
+            {
+                //exact match only allowed at this time. Listing users in multiple roles would require
+                // 1) getting all ID's of roles matching search phrase;
+                // 2) getting all users in each of those roles;
+                // 3) de-duplicating the users list;
+                // for large user bases this could take a really long time.
+                getUsersContract = null;
+                KeyValuePair<HttpStatusCode, string> response;
+                var users = UsersController.Instance.GetUsersInRole(PortalSettings, Role, out recCount, out response, Page, Max);
+                if (users != null)
+                    roleUsers = ConvertList(users);
                 else
                 {
-                    // must be email
-                    var searchTerm = Email.Replace("%", "").Replace("*", "%");
-                    results = UserController.GetUsersByEmail(PortalId, searchTerm, -1, int.MaxValue, ref recCount);
-                    lst = ConvertList(results);
+                    return new ConsoleErrorResultModel(response.Value);
                 }
             }
 
-            if (lst == null || lst.Count == 0)
+            if (getUsersContract != null)
             {
-                return new ConsoleResultModel("No users found");
+                roleUsers = ConvertList(UsersController.Instance.GetUsers(getUsersContract, User.IsSuperUser, out recCount), PortalId);
             }
-            else
+            if ((roleUsers == null || roleUsers.Count == 0) && recCount == 0)
             {
-                return new ConsoleResultModel(string.Empty) { Data = lst };
+                return new ConsoleResultModel(Localization.GetString("noUsers", Constants.LocalResourcesFile));
             }
-
+            return new ConsoleResultModel(string.Empty) { Data = roleUsers, Output = $"Total Users: {recCount}. Total Pages: {recCount / Max + (recCount % Max == 0 ? 0 : 1)}. Current Page: {(Page > 0 ? Page : 1)}. Page Size: {Max}." };
         }
 
-        private List<UserModelBase> ConvertList(IEnumerable lst)
+        private static List<UserModelBase> ConvertList(IEnumerable<UserInfo> lstUserInfos)
         {
-            return (from UserInfo ui in lst select new UserModelBase(ui)).ToList();
+            return (from UserInfo ui in lstUserInfos select new UserModelBase(ui)).ToList();
+        }
+        private static List<UserModelBase> ConvertList(IEnumerable<UserBasicDto> lstBasicDtos, int portalId)
+        {
+            return (from UserBasicDto ui in lstBasicDtos select new UserModelBase(UserController.Instance.GetUser(portalId, ui.UserId))).ToList();
         }
     }
 }

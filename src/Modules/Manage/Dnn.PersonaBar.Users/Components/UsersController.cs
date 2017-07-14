@@ -321,6 +321,27 @@ namespace Dnn.PersonaBar.Users.Components
             return pageIndex == -1 ? roles : roles.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
+        public IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total, out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1)
+        {
+            message = new KeyValuePair<HttpStatusCode, string>();
+            total = 0;
+            var role = RoleController.Instance.GetRoleByName(portalSettings.PortalId, roleName);
+            if (role == null)
+            {
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, Localization.GetString("RoleNotFound", Constants.LocalResourcesFile));
+                return null;
+            }
+            if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
+            {
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.BadRequest, Localization.GetString("InvalidRequest", Constants.LocalResourcesFile));
+                return null;
+            }
+            var users = RoleController.Instance.GetUsersByRole(portalSettings.PortalId, role.RoleName);
+            total = users.Count;
+            var startIndex = pageIndex * pageSize;
+            return users.Skip(startIndex).Take(pageSize);
+        }
+
         public static bool IsAdmin(PortalSettings portalSettings)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -426,13 +447,17 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 var enumerable = userInfos as UserInfo[] ?? userInfos.ToArray();
                 totalRecords = paged ? totalRecords : enumerable.Length;
-                var sorted = GetSortedUsers(enumerable, usersContract.SortColumn, usersContract.SortAscending);
-                users = paged ? sorted.Select(UserBasicDto.FromUserInfo).ToList() : GetPagedUsers(sorted, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo).ToList();
+                users =
+                    GetSortedUsers(
+                        paged
+                            ? enumerable.Select(UserBasicDto.FromUserInfo)
+                            : GetPagedUsers(enumerable, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo),
+                        usersContract.SortColumn, usersContract.SortAscending).ToList();
             }
             return users;
         }
 
-        private static IEnumerable<UserInfo> GetSortedUsers(IEnumerable<UserInfo> users, string sortColumn,
+        private static IEnumerable<UserBasicDto> GetSortedUsers(IEnumerable<UserBasicDto> users, string sortColumn,
             bool sortAscending = false)
         {
             switch (sortColumn?.ToLowerInvariant())
@@ -440,16 +465,16 @@ namespace Dnn.PersonaBar.Users.Components
 
                 case "displayname":
                     return sortAscending
-                        ? users.OrderBy(x => x.DisplayName)
-                        : users.OrderByDescending(x => x.DisplayName);
+                        ? users.OrderBy(x => x.Displayname)
+                        : users.OrderByDescending(x => x.Displayname);
                 case "email":
                     return sortAscending
                         ? users.OrderBy(x => x.Email)
                         : users.OrderByDescending(x => x.Email);
                 default:
                     return sortAscending
-                        ? users.OrderBy(x => x.CreatedOnDate).ThenBy(x => x.LastModifiedOnDate)
-                        : users.OrderByDescending(x => x.CreatedOnDate).ThenByDescending(x => x.LastModifiedOnDate);
+                        ? users.OrderBy(x => x.CreatedOnDate)
+                        : users.OrderByDescending(x => x.CreatedOnDate);
             }
         }
 
@@ -481,10 +506,10 @@ namespace Dnn.PersonaBar.Users.Components
                 return userId;
             }).Where(u => u > 0).ToList();
 
-            var currentIds = string.Join(",", userIds.Skip(usersContract.PageIndex * usersContract.PageSize).Take(usersContract.PageSize));
+            var currentIds = string.Join(",", userIds);//.Skip(usersContract.PageIndex * usersContract.PageSize).Take(usersContract.PageSize));
             var users = UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds).Where(u => UserController.GetUserById(usersContract.PortalId, u.UserId).Membership.Approved).ToList();
             totalRecords = users.Count;
-            return users;
+            return GetSortedUsers(users.Skip(usersContract.PageIndex * usersContract.PageSize).Take(usersContract.PageSize), usersContract.SortColumn, usersContract.SortAscending).ToList();
         }
 
         private static bool TryConvertToInt32(string paramValue, out int intValue)

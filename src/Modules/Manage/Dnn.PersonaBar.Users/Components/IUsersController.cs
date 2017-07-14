@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Dnn.PersonaBar.Users.Components.Contracts;
 using Dnn.PersonaBar.Users.Components.Dto;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components
@@ -21,5 +23,8 @@ namespace Dnn.PersonaBar.Users.Components
             DateTime? effectiveDate = null, DateTime? expiryDate = null);
 
         IList<UserRoleInfo> GetUserRoles(UserInfo user, string keyword, out int total, int pageIndex = -1, int pageSize = -1);
+
+        IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total,
+            out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1);
     }
 }
