@@ -26,6 +26,12 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         [JsonProperty(PropertyName = "fieldOrder")]
         public string[] FieldOrder;
 
+        [JsonProperty(PropertyName = "pagingInfo")]
+        public PagingInfo PagingInfo;
+
+        [JsonProperty(PropertyName = "records")]
+        public int Records { get; set; }
+
         public ConsoleResultModel()
         {
         }

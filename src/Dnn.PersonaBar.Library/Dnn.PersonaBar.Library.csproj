@@ -132,6 +132,7 @@
     <Compile Include="Prompt\IConsoleCommand.cs" />
     <Compile Include="Prompt\Models\ConsoleErrorResultModel.cs" />
     <Compile Include="Prompt\Models\ConsoleResultModel.cs" />
+    <Compile Include="Prompt\Models\PagingInfo.cs" />
     <Compile Include="Prompt\Models\ResponseModel.cs" />
     <Compile Include="Repository\IPersonaBarExtensionRepository.cs" />
     <Compile Include="Repository\IPersonaBarRepository.cs" />
