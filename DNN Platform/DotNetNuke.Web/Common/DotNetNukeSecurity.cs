@@ -21,34 +21,29 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
-using System.Web;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 
+// ReSharper disable once CheckNamespace
 namespace DotNetNuke.Web.Common.Internal
 {
     internal static class DotNetNukeSecurity
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeSecurity));
-        private static object _threadLocker = new object();
-        private static bool _initialized;
-
+        private static FileSystemWatcher _fileWatcher;
         private static DateTime _lastRead;
-        private static int _cacheTime = 5; //obtain the setting and do calculations once every 5 minutes at most, plus no need for locking
         private static IEnumerable<string> _settingsRestrictExtensions = new string[] { };
+
+        private const int CacheTimeOut = 5; //obtain the setting and do calculations once every 5 minutes at most, plus no need for locking
 
         // Source: Configuring Blocked File Extensions
         // https://msdn.microsoft.com/en-us/library/cc767397.aspx
@@ -66,24 +61,22 @@ namespace DotNetNuke.Web.Common.Internal
 
         internal static void Initialize()
         {
-            // any error/message logged below should be informational only
-            try
+            if (_fileWatcher == null)
             {
-                if (!_initialized)
+                lock (typeof(DotNetNukeSecurity))
                 {
-                    lock (_threadLocker)
+                    if (_fileWatcher == null)
                     {
-                        if (!_initialized)
+                        try
                         {
                             InitializeFileWatcher();
-                            _initialized = true;
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error(e);
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                Logger.Info(e);
             }
         }
 
@@ -91,7 +84,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void InitializeFileWatcher()
         {
-            var fileWatcher = new FileSystemWatcher
+            _fileWatcher = new FileSystemWatcher
             {
                 Filter = "*.*",
                 Path = Globals.ApplicationMapPath,
@@ -99,15 +92,15 @@ namespace DotNetNuke.Web.Common.Internal
                 IncludeSubdirectories = true,
             };
 
-            fileWatcher.Created += WatcherOnCreated;
-            fileWatcher.Renamed += WatcherOnRenamed;
-            fileWatcher.Error += WatcherOnError;
+            _fileWatcher.Created += WatcherOnCreated;
+            _fileWatcher.Renamed += WatcherOnRenamed;
+            _fileWatcher.Error += WatcherOnError;
 
-            fileWatcher.EnableRaisingEvents = true;
+            _fileWatcher.EnableRaisingEvents = true;
 
             AppDomain.CurrentDomain.DomainUnload += (sender, args) =>
             {
-                fileWatcher.Dispose();
+                _fileWatcher.Dispose();
             };
         }
 
@@ -128,7 +121,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void LogException(Exception ex)
         {
-            Trace.WriteLine("Watcher Activity: N/A. Error: " + ex?.Message);
+            Logger.Error("Watcher Activity: N/A. Error: " + ex?.Message);
         }
 
         private static void CheckFile(string path)
@@ -156,7 +149,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static IEnumerable<string> GetRestrictExtensions()
         {
-            if ((DateTime.Now - _lastRead).TotalMinutes >= _cacheTime)
+            if ((DateTime.Now - _lastRead).TotalMinutes > CacheTimeOut)
             {
                 _lastRead = DateTime.Now;
                 var settings = HostController.Instance.GetString("SA_RestrictExtensions", string.Empty);
@@ -181,7 +174,7 @@ namespace DotNetNuke.Web.Common.Internal
                 {
                     LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
                 };
-                log.AddProperty("Summary", "A dangerous file has been added to your website");
+                log.AddProperty("Summary", Localization.GetString("PotentialDangerousFile.Text"));
                 log.AddProperty("File Name", path);
 
                 new LogController().AddLog(log);
