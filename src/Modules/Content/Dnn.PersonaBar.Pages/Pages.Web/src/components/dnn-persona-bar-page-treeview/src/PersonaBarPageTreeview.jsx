@@ -17,7 +17,7 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_tree(childListItems){
-        const {getChildListItems, onSelection, onDrop, onDrag, onDragStart} = this.props;
+        const {getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragEnd} = this.props;
         return (
              <PersonaBarPageTreeview
                 getChildListItems={getChildListItems}
@@ -26,6 +26,7 @@ export class PersonaBarPageTreeview extends Component {
                 onDrop={onDrop}
                 onDrag={onDrag}
                 onDragStart={onDragStart}
+                onDragEnd={onDragEnd}
              />
         );
     }
@@ -49,7 +50,7 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_li() {
-        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart} = this.props;
+        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragEnd} = this.props;
         return listItems.map((item)=>{
             return (
                 <li id={`list-item-${item.name}`}>
@@ -57,8 +58,9 @@ export class PersonaBarPageTreeview extends Component {
                         draggable="true"
                         onDragOver={(e)=>{ e.preventDefault(); }}
                         onDrop={(e)=>{ onDrop(item); }}
-                        onDrag={(e)=> {onDrag()}}
+                        onDrag={(e)=> {onDrag(e); }}
                         onDragStart={(e)=>{ onDragStart(e, item); }}
+                        onDragEnd={()=>{onDragEnd(); }}
                      >
                         {this.render_parentExpandButton(item)}
                         <PersonaBarPageIcon iconType={1}/>
@@ -86,6 +88,7 @@ PersonaBarPageTreeview.propTypes = {
     onDrop: PropTypes.func.isRequired,
     onDrag: PropTypes.func.isRequired,
     onDragStart: PropTypes.func.isRequired,
+    onDragEnd: PropTypes.func.isRequired,
     listItems: PropTypes.array.isRequired,
     getChildListItems: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,

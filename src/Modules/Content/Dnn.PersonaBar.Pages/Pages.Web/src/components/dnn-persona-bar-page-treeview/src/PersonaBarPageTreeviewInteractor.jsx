@@ -15,23 +15,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         };
         this.origin = window.origin;
 
-
         this.getRootListItems();
     }
 
     componentDidMount(){
-        const dragArea = document.getElementsByClassName('dnn-persona-bar-treeview')[0];
-
-        dragArea.onmousedown = () => {
-            dragArea.onmousemove = (data) => {
-                console.log(data);
-            };
-        };
-
-        dragArea.onmouseup = () => {
-            dragArea.onmousemove = null;
-        };
-
+        this.getPageInfo(20);
     }
 
 
@@ -72,7 +60,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return;
     }
     getPageInfo(id){
-        const url = `${window.origin}m/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
+        const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
         this.GET(url)
             .then((data) => console.log(data));
     }
@@ -99,9 +87,13 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragStart(e, item) {
+        const img = new Image();
+        e.dataTransfer.setDragImage(img,0,0);
+
         const element = document.getElementById(`list-item-${item.name}`);
         this.clonedElement = element.cloneNode(true);
         this.clonedElement.id="cloned";
+        this.clonedElement.style.transition= "all";
         this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
 
         document.body.appendChild(this.clonedElement);
@@ -109,17 +101,26 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this.setState({ draggedItem: item });
     }
 
-    onDrag(){
+    onDrag(e){
         const elm = this.clonedElement;
-        elm.style.position="absolute";
-        elm.style.top="200px";
-        elm.style.left="200px";
+        elm.style.top= `${e.clientY}px`;
+        elm.style.left=`${e.clientX-30}px`;
 
     }
 
+    onDragEnd() {
+        this.removeClone();
+    }
+
+
     onDrop(item) {
-        document.body.removeChild(this.clonedElement);
+        this.removeClone();
         this.setState({ droppedItem: item }, () => this.updateTree());
+    }
+
+    removeClone(){
+        this.clonedElement ? document.body.removeChild(this.clonedElement) : null;
+        this.clonedElement = null;
     }
 
     updateTree() {
@@ -231,7 +232,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onSelection={this.onSelection.bind(this)}
                         onDrag={this.onDrag.bind(this)}
                         onDragStart={this.onDragStart.bind(this)}
+                        onDragEnd={this.onDragEnd.bind(this)}
                         onDrop={this.onDrop.bind(this)}
+
                     />
                     : null}
             </span>
