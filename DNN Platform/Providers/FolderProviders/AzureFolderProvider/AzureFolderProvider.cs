@@ -164,14 +164,14 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                                             var blobList = container.ListBlobsSegmented(5000, null, options);
                                             var list = blobList.Results.Select(blobItem => new AzureRemoteStorageItem
                                             {
-                                                Blob = blobItem as CloudBlob
+                                                Blob = new AzureBlob(blobItem as CloudBlob)
                                             }).Cast<IRemoteStorageItem>().ToList();
                                             while (blobList.ContinuationToken != null)
                                             {
                                                 blobList = container.ListBlobsSegmented(5000, blobList.ContinuationToken, options);
                                                 list.AddRange(blobList.Results.Select(blobItem => new AzureRemoteStorageItem
                                                 {
-                                                    Blob = blobItem as CloudBlob
+                                                    Blob = new AzureBlob(blobItem as CloudBlob)
                                                 }).Cast<IRemoteStorageItem>());
                                             }
                                             
