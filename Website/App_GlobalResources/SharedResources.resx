@@ -1951,4 +1951,15 @@ the modified URL.</value>
   <data name="Search.Text" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="PotentialDangerousFile.Text" xml:space="preserve">
+    <value>A potentially dangerous file has been added to your website</value>
+  </data>
+  <data name="RestrictFileMail_Body.Text" xml:space="preserve">
+    <value>&lt;p&gt;Dear Site Host,&lt;/p&gt;&lt;p&gt;The security watcher has detected that a &lt;b&gt;potentially dangerous file&lt;/b&gt; has been added to your website.
+If you expect this addition, then just ignore this email; otherwise, an immediate action is recommended.&lt;/p&gt;
+&lt;p&gt;Added file: &lt;b&gt;[Path]&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Thanks,&lt;/p&gt;&lt;p&gt;[AppName] [AppVersion]&lt;/p&gt;</value>
+  </data>
+  <data name="RestrictFileMail_Subject.Text" xml:space="preserve">
+    <value>Potentially dangerous file added to your website</value>
+  </data>
 </root>

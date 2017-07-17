@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Common.Internal
         private static Timer _shutDownDelayTimer;
         private static bool _handleShutdowns;
         private static bool _shutdownInprogress;
-        private static FileSystemWatcher _binFolderWatcher;
+        private static FileSystemWatcher _binOrRootWatcher;
         private static string _binFolder = "";
 
         internal static void InitializeFcnSettings()
@@ -83,11 +83,11 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void AddSiteFilesMonitoring(bool handleShutdowns)
         {
-            if (_binFolderWatcher == null)
+            if (_binOrRootWatcher == null)
             {
                 lock (typeof(Initialize))
                 {
-                    if (_binFolderWatcher == null)
+                    if (_binOrRootWatcher == null)
                     {
                         try
                         {
@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.Common.Internal
                                 _shutDownDelayTimer = new Timer(InitiateShutdown);
 
                             _binFolder = Path.Combine(Globals.ApplicationMapPath, "bin").ToLower();
-                            _binFolderWatcher = new FileSystemWatcher
+                            _binOrRootWatcher = new FileSystemWatcher
                             {
                                 Filter = "*.*",
                                 Path = handleShutdowns ? _binFolder : Globals.ApplicationMapPath,
@@ -104,15 +104,15 @@ namespace DotNetNuke.Web.Common.Internal
                                 IncludeSubdirectories = true,
                             };
 
-                            _binFolderWatcher.Created += WatcherOnCreated;
-                            _binFolderWatcher.Deleted += WatcherOnDeleted;
-                            _binFolderWatcher.Renamed += WatcherOnRenamed;
-                            _binFolderWatcher.Changed += WatcherOnChanged;
-                            _binFolderWatcher.Error += WatcherOnError;
+                            _binOrRootWatcher.Created += WatcherOnCreated;
+                            _binOrRootWatcher.Deleted += WatcherOnDeleted;
+                            _binOrRootWatcher.Renamed += WatcherOnRenamed;
+                            _binOrRootWatcher.Changed += WatcherOnChanged;
+                            _binOrRootWatcher.Error += WatcherOnError;
 
                             // begin watching;
-                            _binFolderWatcher.EnableRaisingEvents = true;
-                            Logger.Trace("Added watcher for: " + _binFolderWatcher.Path + "\\" + _binFolderWatcher.Filter);
+                            _binOrRootWatcher.EnableRaisingEvents = true;
+                            Logger.Trace("Added watcher for: " + _binOrRootWatcher.Path + "\\" + _binOrRootWatcher.Filter);
                         }
                         catch (Exception ex)
                         {
