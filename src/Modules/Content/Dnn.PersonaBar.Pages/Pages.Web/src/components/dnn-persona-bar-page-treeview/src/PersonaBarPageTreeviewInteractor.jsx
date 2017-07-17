@@ -14,8 +14,26 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             isTreeviewExpanded: false
         };
         this.origin = window.origin;
+
+
         this.getRootListItems();
     }
+
+    componentDidMount(){
+        const dragArea = document.getElementsByClassName('dnn-persona-bar-treeview')[0];
+
+        dragArea.onmousedown = () => {
+            dragArea.onmousemove = (data) => {
+                console.log(data);
+            };
+        };
+
+        dragArea.onmouseup = () => {
+            dragArea.onmousemove = null;
+        };
+
+    }
+
 
     GET(url, setState) {
         return new Promise((resolve, reject) => {
@@ -53,6 +71,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         loop();
         return;
     }
+    getPageInfo(id){
+        const url = `${window.origin}m/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
+        this.GET(url)
+            .then((data) => console.log(data));
+    }
 
     getRootListItems() {
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?searchKey=`;
@@ -75,18 +98,31 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    onDragStart(item) {
-        this.setState({ draggedItem: item }, () => {
-            console.log(this.state);
-        });
+    onDragStart(e, item) {
+        const element = document.getElementById(`list-item-${item.name}`);
+        this.clonedElement = element.cloneNode(true);
+        this.clonedElement.id="cloned";
+        this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
+
+        document.body.appendChild(this.clonedElement);
+
+        this.setState({ draggedItem: item });
+    }
+
+    onDrag(){
+        const elm = this.clonedElement;
+        elm.style.position="absolute";
+        elm.style.top="200px";
+        elm.style.left="200px";
+
     }
 
     onDrop(item) {
+        document.body.removeChild(this.clonedElement);
         this.setState({ droppedItem: item }, () => this.updateTree());
     }
 
     updateTree() {
-
         const newParent = this.state.droppedItem;
         const moveChild = this.state.draggedItem;
         const condition = (newParent.id != moveChild.parentId);
@@ -95,7 +131,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             this._traverse((item, list) => {
                 let cachedItemIndex;
                 if (item.id === moveChild.parentId) {
-                    console.log(item);
                     item.childListItems.filter((data, index)=>{
                         if (data.id === moveChild.id){
                             cachedItemIndex = index;
@@ -105,22 +140,51 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     const arr2 = item.childListItems.slice(cachedItemIndex+1);
                     item.childListItems = [...arr1, ...arr2];
                     item.childCount--;
-                    this.setState({pageList: list}, ()=>{
-                        console.log(this.state);
-                    });
+                    this.setState({pageList: list});
                 }
             });
         };
 
+        const insertMoveChild = () => {
+            this._traverse((item, list) => {
+                const left = () => {
+                    console.log("in left");
+                    moveChild.parentId = item.id;
+                    item.childCount++;
+                    item.childListItems = (Array.isArray(item.childListItems)) ? item.childListItems : [];
+                    item.childListItems.push(moveChild);
+                    this.setState({pageList: list});
+                };
+                const right = () => {
+                    console.log("In right");
+                    this.getChildListItems(item.id)
+                    .then(()=>{
+                        this._traverse((item, list) => {
+                            if (item.id === newParent.id) {
+                                moveChild.parentId = item.id;
+                                item.isOpen=true;
+                                item.childCount++;
+                                item.childListItems.push(moveChild);
+                                this.setState({pageList: list});
+                            }
+                        });
+                    });
+                };
 
-        
+                if (item.id === newParent.id) {
+                    (item.childCount === 0) ? left() : right();
+                }
+
+            });
+        };
 
         popMoveChildItem();
+        insertMoveChild();
     }
 
     getChildListItems(id) {
-
-        const left = () => {
+        return new Promise((resolve, reject) => {
+            const left = () => {
             const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?parentId=${id}`;
 
             this.GET(url)
@@ -129,15 +193,20 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         const left = () => item.childListItems = childListItems;
                         const right = () => null;
                         (item.id === id) ? left() : right();
-                        this.setState({ pageList: listItems });
+                        this.setState({ pageList: listItems }, ()=>{
+                            resolve();
+                        });
                     });
                 });
         };
 
-        const right = () => null;
+        const right = () => resolve();
 
         this._traverse((item) => (item.id === id && !item.hasOwnProperty('childListItems')) ? left() : right());
         this.toggleParentCollapsedState(id);
+
+        });
+
     }
 
     addNewPageData(pageData) {
@@ -160,6 +229,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         listItems={this.state.pageList}
                         getChildListItems={this.getChildListItems.bind(this)}
                         onSelection={this.onSelection.bind(this)}
+                        onDrag={this.onDrag.bind(this)}
                         onDragStart={this.onDragStart.bind(this)}
                         onDrop={this.onDrop.bind(this)}
                     />

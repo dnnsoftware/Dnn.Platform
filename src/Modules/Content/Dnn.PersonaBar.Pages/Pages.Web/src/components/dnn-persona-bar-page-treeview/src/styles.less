@@ -2,7 +2,6 @@
 
 .dnn-persona-bar-treeview {
     cursor: pointer;
-    margin-top:120px;
     padding: 15px;
 
     .collapse-expand {
@@ -43,6 +42,7 @@
         color: @curiousBlue;
         float:right;
     }
+
 }
 
 .dnn-persona-bar-treeview-ul {
@@ -64,4 +64,24 @@
 .dnn-persona-bar-treeview-icon {
     width:20px;
     display:inline-block;
+}
+
+.dnn-persona-bar-treeview-dragged {
+    -webkit-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+
+    z-index:1000;
+    position:absolute;
+    top:200px;
+    background-color:#fff;
+    list-style:none;
+    width:200px;
+
+    .item-name {
+        position:relative;
+        top: -5px;
+        left: 5px;
+    }
+
 }

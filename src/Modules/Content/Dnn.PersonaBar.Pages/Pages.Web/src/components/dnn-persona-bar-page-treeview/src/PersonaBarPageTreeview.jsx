@@ -3,6 +3,7 @@ import GridCell from "dnn-grid-cell";
 import { PropTypes } from "prop-types";
 import {DragSource} from 'react-dnd';
 
+
 import "./styles.less";
 
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
@@ -16,13 +17,14 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_tree(childListItems){
-        const {getChildListItems, onSelection, onDrop, onDragStart} = this.props;
+        const {getChildListItems, onSelection, onDrop, onDrag, onDragStart} = this.props;
         return (
              <PersonaBarPageTreeview
                 getChildListItems={getChildListItems}
                 listItems={childListItems}
                 onSelection={onSelection}
                 onDrop={onDrop}
+                onDrag={onDrag}
                 onDragStart={onDragStart}
              />
         );
@@ -47,15 +49,16 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_li() {
-        const {listItems, getChildListItems, onSelection, onDrop, onDragStart} = this.props;
+        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart} = this.props;
         return listItems.map((item)=>{
             return (
-                <li>
+                <li id={`list-item-${item.name}`}>
                     <span
                         draggable="true"
                         onDragOver={(e)=>{ e.preventDefault(); }}
                         onDrop={(e)=>{ onDrop(item); }}
-                        onDragStart={(e)=>{ onDragStart(item); }}
+                        onDrag={(e)=> {onDrag()}}
+                        onDragStart={(e)=>{ onDragStart(e, item); }}
                      >
                         {this.render_parentExpandButton(item)}
                         <PersonaBarPageIcon iconType={1}/>
@@ -81,6 +84,7 @@ export class PersonaBarPageTreeview extends Component {
 
 PersonaBarPageTreeview.propTypes = {
     onDrop: PropTypes.func.isRequired,
+    onDrag: PropTypes.func.isRequired,
     onDragStart: PropTypes.func.isRequired,
     listItems: PropTypes.array.isRequired,
     getChildListItems: PropTypes.func.isRequired,

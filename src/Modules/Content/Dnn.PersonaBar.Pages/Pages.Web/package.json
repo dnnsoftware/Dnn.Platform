@@ -46,6 +46,7 @@
     "webpack-dev-server": "1.14.1"
   },
   "dependencies": {
+    "dnn-draggable": "0.0.1",
     "promise": "^8.0.0",
     "prop-types": "^15.5.10",
     "react-dnd": "^2.4.0",

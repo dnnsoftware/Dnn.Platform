@@ -27,6 +27,9 @@ import BreadCrumbs from "./BreadCrumbs";
 
 import GridCell from "dnn-grid-cell";
 
+import "./style.less";
+
+
 import {PersonaBarPageTreeviewInteractor} from "./dnn-persona-bar-page-treeview";
 
 function getSelectedTabBeingViewed(viewTab) {
@@ -345,8 +348,13 @@ class App extends Component {
 
     render_PagesDetailEditor(){
         return (
-            <GridCell columnSize={70}  style={{marginTop:"120px", backgroundColor:"#ddd"}} >
-                <p>Pages Details Editor</p>
+            <GridCell columnSize={70}  style={{ padding:"20px" }} >
+                <div className="empty-page-state">
+                    <div className="empty-page-state-message">
+                        <h1>No page is currently selected</h1>
+                        <p>Select a page in the tree to manage its settings here.</p>
+                    </div>
+                </div>
             </GridCell>
         );
     }
@@ -371,9 +379,13 @@ class App extends Component {
                             <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage}/>
                         </PersonaBarPageHeader>
-                        <GridCell columnSize={100} style={{backgroundColor: "#fff"}}>
-                            <PersonaBarPageTreeviewInteractor />
+                        <GridCell columnSize={100} style={{padding:"20px"}} >
+                            <GridCell columnSize={100} className="page-container">
+                            <PersonaBarPageTreeviewInteractor
+                               onLoadPage={ this.props.onLoadPage.bind(this) }
+                            />
                             {this.render_PagesDetailEditor()}
+                            </GridCell>
                         </GridCell>
                     </PersonaBarPage>
                 }
