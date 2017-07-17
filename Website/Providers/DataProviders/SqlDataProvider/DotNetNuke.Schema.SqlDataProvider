@@ -19387,6 +19387,37 @@ BEGIN
     SELECT SCOPE_IDENTITY()
 END
 GO
+PRINT N'Creating {databaseOwner}[{objectQualifier}fn_ParseVersion]'
+GO
+CREATE FUNCTION {databaseOwner}[{objectQualifier}fn_ParseVersion]
+(
+	@Version	nvarchar(20)
+)
+RETURNS @VersionParts TABLE (Major int, Minor int, Build int)
+WITH SCHEMABINDING
+AS
+	BEGIN
+		DECLARE @Pos int;
+		DECLARE @String nvarchar(20);
+		DECLARE @Major int;
+		DECLARE @Minor int;
+		DECLARE @Build int;
+
+		SET @String = @Version;
+		SET @Pos = CHARINDEX('.' , @String);
+		SET @Major = CONVERT(int, LEFT(@String, @Pos - 1));
+		SET @String = STUFF(@String, 1, @Pos, '');
+		SET @Pos = CHARINDEX('.' , @String);
+		SET @Minor = CONVERT(int, LEFT(@String, @Pos - 1));
+		SET @String = STUFF(@String, 1, @Pos, '');
+		SET @Build = CONVERT(int, @String);
+
+		INSERT INTO @VersionParts(Major, Minor, Build)
+		VALUES (@Major, @Minor, @Build);
+
+		RETURN;
+	END
+GO
 PRINT N'Creating {databaseOwner}[{objectQualifier}fn_CompareVersion]'
 GO
 CREATE FUNCTION {databaseOwner}[{objectQualifier}fn_CompareVersion]
@@ -19398,9 +19429,7 @@ RETURNS int
 
 AS
 	BEGIN
-	
-		DECLARE @Pos int
-		DECLARE @String nvarchar(20)
+
 		DECLARE @MajorVersion int
 		DECLARE @MajorCurrentVersion int
 		DECLARE @MinorVersion int
@@ -19408,24 +19437,11 @@ AS
 		DECLARE @BuildVersion int
 		DECLARE @BuildCurrentVersion int
 
-		SET @String = @Version
-		SET @Pos = CHARINDEX('.' , @String)
-		SET @MajorVersion = CONVERT(int, LEFT(@String, @Pos - 1))
-		SET @String = STUFF(@String, 1, @Pos, '')
-		SET @Pos = CHARINDEX('.' , @String)
-		SET @MinorVersion = CONVERT(int, LEFT(@String, @Pos - 1))
-		SET @String = STUFF(@String, 1, @Pos, '')
-		SET @BuildVersion = CONVERT(int, @String)
-		
-		SET @String = @CurrentVersion
-		SET @Pos = CHARINDEX('.' , @String)
-		SET @MajorCurrentVersion = CONVERT(int, LEFT(@String, @Pos - 1))
-		SET @String = STUFF(@String, 1, @Pos, '')
-		SET @Pos = CHARINDEX('.' , @String)
-		SET @MinorCurrentVersion = CONVERT(int, LEFT(@String, @Pos - 1))
-		SET @String = STUFF(@String, 1, @Pos, '')
-		SET @BuildCurrentVersion = CONVERT(int, @String)
-		
+		SELECT @MajorVersion = Major, @MinorVersion = Minor, @BuildVersion = Build
+		FROM {databaseOwner}[{objectQualifier}fn_ParseVersion](@Version)
+		SELECT @MajorCurrentVersion = Major, @MinorCurrentVersion = Minor, @BuildCurrentVersion = Build
+		FROM {databaseOwner}[{objectQualifier}fn_ParseVersion](@CurrentVersion)
+
 		IF @CurrentVersion IS NULL
 			-- Assembly Not Registered -  Set ReturnCode = 0, so assembly is copied
 			RETURN 0
@@ -19466,21 +19482,23 @@ As
 	DECLARE @CompareVersion int
 
 	-- First check if this assembly is registered to this package
-	SET @AssemblyID = (SELECT AssemblyID 
+	SET @AssemblyID = (SELECT AssemblyID
 							FROM {databaseOwner}{objectQualifier}Assemblies
-							WHERE PackageID = @PAckageID
+							WHERE PackageID = @PackageID
 								AND AssemblyName = @AssemblyName)
 
 	IF @AssemblyID IS NULL
 		BEGIN
-			-- AssemblyID is null (not registered) 
+			-- AssemblyID is null (not registered)
 			-- but assembly may be registerd by other packages so check for Max unstalled version
-			SET @CurrentVersion  = (SELECT Max(Version )
-										FROM {databaseOwner}{objectQualifier}Assemblies
-										WHERE AssemblyName = @AssemblyName)
+			SET @CurrentVersion  = (SELECT TOP 1 a.Version
+									FROM {databaseOwner}{objectQualifier}Assemblies a
+									CROSS APPLY {databaseOwner}[{objectQualifier}fn_ParseVersion](a.Version) AS v
+									WHERE a.AssemblyName = @AssemblyName
+									ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC)
 
 			SET @CompareVersion = {databaseOwner}{objectQualifier}fn_CompareVersion(@Version, @CurrentVersion)
-			
+
 			-- Add an assembly regsitration for this package
 			INSERT INTO {databaseOwner}{objectQualifier}Assemblies (
 				PackageID,
@@ -19496,12 +19514,14 @@ As
 	ELSE
 		BEGIN
 			-- AssemblyID is not null - Assembly is registered - test for version
-			SET @CurrentVersion  = (SELECT Version 
-										FROM {databaseOwner}{objectQualifier}Assemblies
-										WHERE AssemblyID = @AssemblyID)
-			
+			SET @CurrentVersion  = (SELECT TOP 1 a.Version
+									FROM {databaseOwner}{objectQualifier}Assemblies a
+									CROSS APPLY {databaseOwner}[{objectQualifier}fn_ParseVersion](a.Version) AS v
+									WHERE a.AssemblyID = @AssemblyID
+									ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC)
+
 			SET @CompareVersion = {databaseOwner}{objectQualifier}fn_CompareVersion(@Version, @CurrentVersion)
-			
+
 			IF @CompareVersion = 1
 				BEGIN
 					-- Newer version - Update Assembly registration
