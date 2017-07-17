@@ -19,14 +19,25 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers (
 	@SortAscending BIT,
     @PageIndex int = 0,
     @PageSize int = 10,
-	@Keyword NVARCHAR(128)
+	@Keyword NVARCHAR(128),
+	@IncludeUnauthorized bit,
+	@IncludeDeleted bit
 ) AS
 BEGIN
 	SELECT COUNT(*) AS TotalRecords
 	FROM {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
 	INNER JOIN {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK) ON UP.UserId = U.UserID AND U.PortalId = @PortalId
 	WHERE UP.PortalId = @PortalId
-	AND IsSuperUser = 0 AND U.Authorised=1 AND U.IsDeleted=0
+	AND IsSuperUser = 0
+	AND (
+			(
+				IsNull(@Keyword, N'') != N'' 
+				AND (u.DisplayName LIKE @Keyword OR u.FirstName LIKE @Keyword OR u.LastName LIKE @Keyword OR u.Username LIKE @Keyword OR u.Email LIKE @Keyword)
+			) 
+			OR IsNull(@Keyword, N'') = N''
+		)
+	AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND U.Authorised = 1))
+	AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
 		
 	;WITH UsersCTE
 	AS
@@ -43,15 +54,16 @@ BEGIN
 			ON U.UserID = UP.UserId
 			AND U.PortalId = @PortalId
 		WHERE UP.PortalId = @PortalId
-		AND IsSuperUser = 0 AND U.Authorised=1 AND U.IsDeleted=0
-		AND 
-		(
-			(
-				IsNull(@Keyword, N'') != N'' 
-				AND (u.DisplayName LIKE @Keyword OR u.FirstName LIKE @Keyword OR u.LastName LIKE @Keyword OR u.Username LIKE @Keyword OR u.Email LIKE @Keyword)
-			) 
-			OR IsNull(@Keyword, N'') = N''
-		)
+		AND IsSuperUser = 0
+		AND (
+				(
+					IsNull(@Keyword, N'') != N'' 
+					AND (u.DisplayName LIKE @Keyword OR u.FirstName LIKE @Keyword OR u.LastName LIKE @Keyword OR u.Username LIKE @Keyword OR u.Email LIKE @Keyword)
+				) 
+				OR IsNull(@Keyword, N'') = N''
+			)
+		AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND U.Authorised = 1))
+		AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
 	)
 	SELECT * FROM UsersCTE
 	WHERE	RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize);
