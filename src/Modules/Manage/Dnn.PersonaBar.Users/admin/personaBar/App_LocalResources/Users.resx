@@ -577,7 +577,7 @@
     <value>Invalid flag '--{0}'. Did you mean --{1} ?</value>
   </data>
   <data name="Prompt_ListUsersOutput.Text" xml:space="preserve">
-    <value>Total Users: {0}. Total Pages: {1}. Current Page: {2}. Page Size: {3}.</value>
+    <value>Press CTRL +X to end.\nPress any key to load more....</value>
   </data>
   <data name="Prompt_NothingToSetUser.Text" xml:space="preserve">
     <value>Nothing to update. Please pass-in one or more flags with values to update on the user or type 'help set-user' for more help</value>

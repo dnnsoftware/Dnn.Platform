@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public string Username { get; private set; }
         public string Role { get; private set; }
         public int Page { get; private set; }
-        public int Max { get; private set; } = 500;
+        public int Max { get; private set; } = 10;
 
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -151,7 +151,20 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 return new ConsoleResultModel(Localization.GetString("noUsers", Constants.LocalResourcesFile));
             }
-            return new ConsoleResultModel(string.Empty) { Data = usersList, Output = string.Format(Localization.GetString("Prompt_ListUsersOutput", Constants.LocalResourcesFile), recCount, recCount / Max + (recCount % Max == 0 ? 0 : 1), (Page > 0 ? Page : 1), Max) };
+            var totalPages = recCount / Max + (recCount % Max == 0 ? 0 : 1);
+            var pageNo = Page > 0 ? Page : 1;
+            return new ConsoleResultModel
+            {
+                Data = usersList,
+                PagingInfo = new PagingInfo
+                {
+                    PageNo = pageNo,
+                    TotalPages = totalPages,
+                    PageSize = Max
+                },
+                Records = usersList?.Count ?? 0,
+                Output = pageNo < totalPages ? Localization.GetString("Prompt_ListUsersOutput", Constants.LocalResourcesFile) : Localization.GetString("noUsers", Constants.LocalResourcesFile)
+            };
         }
 
         private static List<UserModelBase> ConvertList(IEnumerable<UserInfo> lstUserInfos)
