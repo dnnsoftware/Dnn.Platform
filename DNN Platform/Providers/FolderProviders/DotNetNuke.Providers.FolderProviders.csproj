@@ -79,6 +79,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="AzureFolderProvider\AzureFolderProvider.cs" />
+    <Compile Include="AzureFolderProvider\AzureBlob.cs" />
     <Compile Include="AzureFolderProvider\AzureRemoteStorageItem.cs" />
     <Compile Include="AzureFolderProvider\BlobItemExtensions.cs" />
     <Compile Include="AzureFolderProvider\Settings.ascx.cs">

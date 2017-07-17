@@ -15,30 +15,21 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     [Serializable]
     public class AzureRemoteStorageItem : IRemoteStorageItem
     {
-        public CloudBlob Blob { get; set; }
+        public AzureBlob Blob { get; set; }
 
         public string Key
         {
             get
             {
-                var path = Blob.RelativePath().Replace("+", "%2b");
+                var path = Blob.RelativePath.Replace("+", "%2b");
                 return HttpUtility.UrlDecode(path);
             }
         }
 
-        public DateTime LastModified
-        {
-            get { return (Blob != null) ? Blob.Properties.LastModifiedUtc : DateTime.MinValue; } 
-        }
-        
-        public long Size
-        {
-            get { return (Blob != null) ? Blob.Properties.Length : -1; }
-        }
+        public DateTime LastModified => Blob.LastModifiedUtc;
 
-        public string HashCode
-        {
-            get { return (Blob != null) ? Blob.Properties.ETag : String.Empty; }
-        }
+        public long Size => Blob.Length;
+
+        public string HashCode => Blob.ETag;
     }
 }
