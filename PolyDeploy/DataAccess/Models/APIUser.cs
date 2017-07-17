@@ -16,7 +16,7 @@ namespace Cantarus.Modules.PolyDeploy.DataAccess.Models
 
         public APIUser(string name)
         {
-            if(name == null || name.Length < 1)
+            if(string.IsNullOrEmpty(name))
             {
                 throw new Exception("Unable to create new APIUser without a name.");
             }
