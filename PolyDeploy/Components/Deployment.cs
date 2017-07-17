@@ -31,12 +31,15 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
+        protected string IPAddress { get; set; }
         protected string WorkingPath { get; set; }
-
         protected List<string> PackageZips { get; set; }
 
-        public Deployment()
+        public Deployment(string ipAddress)
         {
+            // Store ip address for logging later.
+            IPAddress = ipAddress;
+
             // Generate a temporary directory.
             WorkingPath = Utilities.AvailableDirectory();
 
@@ -95,12 +98,21 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 }
             }
 
+            // Log failures.
+            LogAnyFailures(successJobs);
+            LogAnyFailures(failedJobs);
+
             Dictionary<string, List<InstallJob>> results = new Dictionary<string, List<InstallJob>>();
 
             results.Add("Installed", successJobs);
             results.Add("Failed", failedJobs);
 
             return results;
+        }
+
+        protected virtual void LogAnyFailures(List<InstallJob> jobs)
+        {
+            // Nothing in here yet.
         }
 
         private SortedList<int, InstallJob> OrderInstallJobs (List<InstallJob> installJobs)

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace Cantarus.Modules.PolyDeploy.WebAPI
@@ -31,11 +32,14 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                     throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
                 }
 
+                // Get the users ip address.
+                string ipAddress = HttpContext.Current.Request.UserHostAddress;
+
                 // Get the api key from the header.
                 string apiKey = Request.Headers.GetValues("x-api-key").FirstOrDefault();
 
                 // Create a deploy operation.
-                CIDeploy deployOperation = new CIDeploy(apiKey);
+                CIDeploy deployOperation = new CIDeploy(ipAddress, apiKey);
 
                 // Receive files.
                 MultipartMemoryStreamProvider provider = await Request.Content.ReadAsMultipartAsync();

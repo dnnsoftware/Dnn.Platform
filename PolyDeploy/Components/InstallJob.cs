@@ -2,6 +2,7 @@
 using DotNetNuke.Modules.Dashboard.Components.Server;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Installers;
+using DotNetNuke.Services.Installer.Log;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
     internal class InstallJob
     {
         public List<PackageJob> Packages { get; set; }
+        public List<string> Failures { get; set; }
 
         public bool CanInstall
         {
@@ -34,6 +36,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         public InstallJob(string path)
         {
             Packages = new List<PackageJob>();
+            Failures = new List<string>();
             Installer = new Installer(new FileStream(path, FileMode.Open, FileAccess.Read), Globals.ApplicationMapPath, true, false);
 
             foreach (KeyValuePair<int, PackageInstaller> orderedPackage in Installer.Packages)
@@ -61,6 +64,8 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public bool Install()
         {
+            bool installSuccess = false;
+
             // Can this be installed at this point?
             if (CanInstall)
             {
@@ -81,11 +86,22 @@ namespace Cantarus.Modules.PolyDeploy.Components
                     Installer.Install();
 
                     // Did the package install successfully?
-                    return Installer.IsValid;
+                    installSuccess = Installer.IsValid;
+                }
+
+                // Record failures.
+                foreach (LogEntry log in Installer.InstallerInfo.Log.Logs)
+                {
+                    if (log.Type.Equals(LogType.Failure))
+                    {
+                        string failure = log.ToString();
+
+                        Failures.Add(failure);
+                    }
                 }
             }
 
-            return false;
+            return installSuccess;
         }
 
         private bool FindDependency(string name, List<PackageJob> packageJobs)

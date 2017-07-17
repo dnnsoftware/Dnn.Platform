@@ -9,7 +9,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
     internal class PackageJob
     {
         public string Name { get; set; }
-        private Version Version { get; set; }
         public List<PackageDependency> Dependencies { get; set; }
         
         public string VersionStr
@@ -35,6 +34,8 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 return true;
             }
         }
+
+        private Version Version { get; set; }
 
         public PackageJob(PackageInstaller packageInstaller)
         {
