@@ -111,6 +111,7 @@ namespace DotNetNuke.Web.Common.Internal
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
+            DotNetNukeSecurity.Initialize();
         }
         
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
