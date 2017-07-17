@@ -19,7 +19,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentDidMount(){
-        this.getPageInfo(20);
+
     }
 
 
@@ -84,6 +84,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             (item.id === id) ? item.selected = true : item.selected = false;
             this.setState({ pageList: listItem });
         });
+
+        this.getPageInfo(id);
+
     }
 
     onDragStart(e, item) {
@@ -126,12 +129,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     updateTree() {
         const newParent = this.state.droppedItem;
         const moveChild = this.state.draggedItem;
+        console.log(moveChild);
         const condition = (newParent.id != moveChild.parentId);
 
         const popMoveChildItem = () => {
             this._traverse((item, list) => {
                 let cachedItemIndex;
-                if (item.id === moveChild.parentId) {
+                let cachedItemIndexParent;
+
+                const left = () => {
                     item.childListItems.filter((data, index)=>{
                         if (data.id === moveChild.id){
                             cachedItemIndex = index;
@@ -142,7 +148,34 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     item.childListItems = [...arr1, ...arr2];
                     item.childCount--;
                     this.setState({pageList: list});
-                }
+                };
+
+                const right = () => {
+
+                    let rootList = this.state.pageList.concat();
+                    rootList.filter((item, index) => {
+                        if (item.id === moveChild.id) {
+                            cachedItemIndex = index;
+                        }
+                    });
+
+                    rootList.filter((item, index) => {
+                        if (item.id === newParent.id) {
+                            cachedItemIndexParent = index;
+                        }
+                    });
+
+                    const arr1 = rootList.slice(0 , cachedItemIndex);
+                    const arr2 = rootList.slice(cachedItemIndex+1);
+
+                    rootList = [...arr1, ...arr2];
+                    console.log(rootList);
+                    this.setState({pageList: rootList});
+
+                };
+
+                (item.id === moveChild.parentId) ? left() : right();
+
             });
         };
 
@@ -234,7 +267,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDragStart={this.onDragStart.bind(this)}
                         onDragEnd={this.onDragEnd.bind(this)}
                         onDrop={this.onDrop.bind(this)}
-
+                        getPageInfo={this.getPageInfo.bind(this)}
                     />
                     : null}
             </span>
