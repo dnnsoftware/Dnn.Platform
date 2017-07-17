@@ -404,24 +404,17 @@ namespace Dnn.PersonaBar.Users.Components
             var portalId = usersContract.PortalId;
             var pageIndex = usersContract.PageIndex;
             var pageSize = usersContract.PageSize;
-            var searchText = usersContract.SearchText;
             var paged = false;
 
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-
-                    if (string.IsNullOrEmpty(searchText))
-                    {
-                        dbUsers = UserController.GetUsers(portalId, pageIndex, pageSize, ref totalRecords, true, false);
-                    }
-                    else
-                    {
-                        dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
-                            ref totalRecords, true, false);
-                    }
+                    users = GetUsers(usersContract, true, true, out totalRecords);
                     paged = true;
-                    userInfos = dbUsers?.OfType<UserInfo>().ToList();
+                    break;
+                case UserFilters.Authorized:
+                    users = GetUsers(usersContract, false, false, out totalRecords);
+                    paged = true;
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
@@ -457,30 +450,6 @@ namespace Dnn.PersonaBar.Users.Components
                     {
                         userInfos = userInfos?.Where(x => !x.IsSuperUser);
                     }
-                    break;
-                case UserFilters.Authorized:
-                    if (string.IsNullOrEmpty(searchText))
-                    {
-                        var reader = DataProvider.Instance()
-                            .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
-                                string.IsNullOrEmpty(usersContract.SortColumn) ? "Joined" : usersContract.SortColumn,
-                                usersContract.SortAscending,
-                                usersContract.PageIndex,
-                                usersContract.PageSize);
-                        if (reader.Read())
-                        {
-                            totalRecords = reader.GetInt32(0);
-                            reader.NextResult();
-                        }
-                        users = CBO.FillCollection<UserBasicDto>(reader);
-                    }
-                    else
-                    {
-                        dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
-                            ref totalRecords, false, false);
-                        users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
-                    }
-                    paged = true;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -596,6 +565,27 @@ namespace Dnn.PersonaBar.Users.Components
         {
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
+
+        private static List<UserBasicDto> GetUsers(GetUsersContract usersContract, bool includeUnauthorized, bool includeDeleted, out int totalRecords)
+        {
+            totalRecords = 0;
+            var reader = DataProvider.Instance()
+                            .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
+                                string.IsNullOrEmpty(usersContract.SortColumn) ? "Joined" : usersContract.SortColumn,
+                                usersContract.SortAscending,
+                                usersContract.PageIndex,
+                                usersContract.PageSize,
+                                usersContract.SearchText + "%",
+                                includeUnauthorized,
+                                includeDeleted);
+            if (reader.Read())
+            {
+                totalRecords = reader.GetInt32(0);
+                reader.NextResult();
+            }
+            return CBO.FillCollection<UserBasicDto>(reader);
+        }
+
         #endregion
     }
 }
