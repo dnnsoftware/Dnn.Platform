@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("add-roles", "Adds one or more DNN security roles to a user.", new[]{
         "id",
@@ -50,14 +53,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
 
             if (!UserId.HasValue)
             {
-                sbErrors.Append("You must specify a valid User ID as either the first argument or using the --id flag; ");
+                sbErrors.Append(Localization.GetString("Prompt_UserIdIsRequired", Constants.LocalResourcesFile) + " ");
             }
 
             if (HasFlag(FlagRoles))
             {
                 if (string.IsNullOrEmpty(Flag(FlagRoles)))
                 {
-                    sbErrors.Append("--roles cannot be empty; ");
+                    sbErrors.Append(Localization.GetString("Prompt_RolesEmpty", Constants.LocalResourcesFile) + " ");
                 }
                 else
                 {
@@ -67,32 +70,32 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
             }
             else if (HasFlag("role"))
             {
-                sbErrors.Append("Invalid flag '--role'. Did you mean --roles ?");
+                sbErrors.Append(string.Format(Localization.GetString("Prompt_InvalidFlag", Constants.LocalResourcesFile), "role", "roles") + " ");
             }
 
             if (HasFlag(FlagStart))
             {
-                var tmpDate = default(DateTime);
+                DateTime tmpDate;
                 if (DateTime.TryParse(Flag(FlagStart), out tmpDate))
                 {
                     StartDate = tmpDate;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the Start Date '{0}'. Try using YYYY-MM-DD format; ", Flag(FlagStart));
+                    sbErrors.Append(string.Format(Localization.GetString("Prompt_DateParseError", Constants.LocalResourcesFile), "Start", Flag(FlagStart)) + " ");
                 }
             }
 
             if (HasFlag(FlagEnd))
             {
-                var tmpDate = default(DateTime);
+                DateTime tmpDate;
                 if (DateTime.TryParse(Flag(FlagEnd), out tmpDate))
                 {
                     EndDate = tmpDate;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the End Date '{0}'. Try using YYYY-MM-DD format; ", Flag(FlagEnd));
+                    sbErrors.Append(string.Format(Localization.GetString("Prompt_DateParseError", Constants.LocalResourcesFile), "End", Flag(FlagEnd)) + " ");
                 }
             }
 
@@ -101,7 +104,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
             {
                 if (EndDate < StartDate)
                 {
-                    sbErrors.Append("Start Date cannot be less than End Date; ");
+                    sbErrors.Append(Localization.GetString("Prompt_StartDateGreaterThanEnd", Constants.LocalResourcesFile) + " ");
                 }
             }
 
@@ -110,36 +113,20 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
 
         public override ConsoleResultModel Run()
         {
-
-            var sbErrors = new StringBuilder();
-            if (UserId.HasValue)
+            ConsoleErrorResultModel errorResultModel;
+            UserInfo userInfo;
+            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
+            try
             {
-                // do lookup by user id
-                var ui = UserController.GetUserById(PortalId, (int)UserId);
-                if (ui != null)
-                {
-                    try
-                    {
-                        Components.Utilities.AddToRoles((int)UserId, PortalId, Roles, ",", StartDate, EndDate);
-                        var lst = Components.Utilities.GetUserRoles(ui);
-                        return new ConsoleResultModel(string.Empty) { Data = lst };
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        return new ConsoleErrorResultModel("An unexpected error occurred while processing your request. Please see the Event Viewer for details.");
-                    }
-                }
-                else
-                {
-                    return new ConsoleErrorResultModel($"No user found with the ID of '{UserId}'");
-                }
+                UsersController.Instance.AddUserToRoles(User, userInfo.UserID, PortalId, Roles, ",", StartDate, EndDate);
+                int totalRoles;
+                var userRoles = UsersController.Instance.GetUserRoles(userInfo, "", out totalRoles).Select(UserRoleModel.FromDnnUserRoleInfo).ToList();
+                return new ConsoleResultModel(string.Empty) { Data = userRoles, Output = "Total Roles: " + totalRoles };
             }
-            else
+            catch (Exception ex)
             {
-                return new ConsoleErrorResultModel("No User ID passed. Nothing to do.");
+                return new ConsoleErrorResultModel(ex.Message);
             }
-
         }
     }
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components
@@ -14,38 +10,6 @@ namespace Dnn.PersonaBar.Prompt.Components
     public class Utilities
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Utilities));
-
-        public static void AddToRoles(int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null)
-        {
-            var effDate = effectiveDate.GetValueOrDefault(Null.NullDate);
-            var expDate = expiryDate.GetValueOrDefault(Null.NullDate);
-
-            // get the specified RoleName
-            var rc = new RoleController();
-            var lstRoles = roleNames.Split(roleDelimiter.ToCharArray());
-            var role = default(RoleInfo);
-            string curRole = null;
-            for (var i = 0; i <= lstRoles.Length - 1; i++)
-            {
-                curRole = lstRoles[i].Trim();
-                role = rc.GetRoleByName(portalId, curRole);
-                if (role != null)
-                {
-                    rc.AddUserRole(portalId, userId, role.RoleID, effDate, expDate);
-                }
-            }
-        }
-
-        public static List<UserRoleModel> GetUserRoles(UserInfo user)
-        {
-            var roles = RoleController.Instance.GetUserRoles(user, true);
-            var lst = new List<UserRoleModel>();
-            foreach (var userRole in roles)
-            {
-                lst.Add(UserRoleModel.FromDnnUserRoleInfo(userRole));
-            }
-            return lst;
-        }
 
         public static RoleInfo CreateRole(string roleName, int portalId, RoleStatus status, string description = "", bool isPublic = false, bool autoAssign = false, int roleGroupId = -1)
         {
@@ -86,33 +50,6 @@ namespace Dnn.PersonaBar.Prompt.Components
         public static IList<UserInfo> GetUsersInRole(string roleName, int portalId)
         {
             return RoleController.Instance.GetUsersByRole(portalId, roleName);
-        }
-
-        public static string SendSystemEmail(UserInfo user, DotNetNuke.Services.Mail.MessageType msgType, DotNetNuke.Entities.Portals.PortalSettings ps)
-        {
-            var msg = string.Empty;
-            try
-            {
-                msg = DotNetNuke.Services.Mail.Mail.SendMail(user, msgType, ps);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                // On some systems, if DNN has sent an email and the SMTP connection is still open, 
-                // no other email can be sent until that connection times out. When that happens a transport error is thrown
-                // but it seems to close the connection at that point. So, retrying after the exception always (in my tests) 
-                // results in the email being sent on the 2nd go-round.
-                // try again.
-                try
-                {
-                    msg = DotNetNuke.Services.Mail.Mail.SendMail(user, msgType, ps);
-                }
-                catch (Exception ex2)
-                {
-                    Exceptions.LogException(ex2);
-                }
-            }
-            return msg;
         }
 
         public static string FormatSkinName(string skin)

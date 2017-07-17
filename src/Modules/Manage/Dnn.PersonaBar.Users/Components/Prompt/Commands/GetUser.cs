@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.User
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     [ConsoleCommand("get-user", "Returns users that match the given expression", new[]{
         "id",
@@ -36,7 +38,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
 
             if (HasFlag(FlagId))
             {
-                var tmpId = 0;
+                int tmpId;
                 if (int.TryParse(Flag(FlagId), out tmpId))
                     UserId = tmpId;
             }
@@ -56,7 +58,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                     }
                     else
                     {
-                        var tmpId = 0;
+                        int tmpId;
                         if (int.TryParse(args[1], out tmpId))
                         {
                             UserId = tmpId;
@@ -70,7 +72,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
                 }
                 if (!UserId.HasValue && Email == null && Username == null)
                 {
-                    sbErrors.Append("To search for a user, you must specify either --id (UserId), --email (User Email), or --name (Username)");
+                    sbErrors.Append(Localization.GetString("Prompt_SearchUserParameterRequired", Constants.LocalResourcesFile));
                 }
             }
             ValidationMessage = sbErrors.ToString();
@@ -78,80 +80,57 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.User
 
         public override ConsoleResultModel Run()
         {
-            var results = new ArrayList();
-            var recCount = 0;
+            var lst = new List<UserModel>();
 
-            var sbErrors = new StringBuilder();
             // if no argument, default to current user
             if (Args.Length == 1)
             {
-                results.Add(User);
+                lst.Add(new UserModel(User));
             }
             else
             {
-                if (UserId.HasValue)
-                {
-                    // do lookup by user id
-                    var ui = UserController.GetUserById(PortalId, (int)UserId);
-                    if (ui != null)
-                    {
-                        results.Add(ui);
-                    }
-                }
-                else if (!string.IsNullOrEmpty(Username))
+                var recCount = 0;
+                var userId = UserId;
+                if (!userId.HasValue && !string.IsNullOrEmpty(Username))
                 {
                     // do username lookup
                     var searchTerm = Username.Replace("%", "").Replace("*", "%");
-                    results = UserController.GetUsersByUserName(PortalId, searchTerm, -1, int.MaxValue, ref recCount);
+                    userId = (UserController.GetUsersByUserName(PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? 0;
                 }
-                else
+                else if (!userId.HasValue && !string.IsNullOrEmpty(Email))
                 {
                     // must be email
                     var searchTerm = Email.Replace("%", "").Replace("*", "%");
-                    results = UserController.GetUsersByEmail(PortalId, searchTerm, -1, int.MaxValue, ref recCount);
+                    userId = (UserController.GetUsersByEmail(PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? 0;
                 }
+
+                ConsoleErrorResultModel errorResultModel;
+                UserInfo userInfo;
+                if ((errorResultModel = Utilities.ValidateUser(userId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
+                lst.Add(new UserModel(userInfo));
             }
 
-
-            var lst = new List<UserModel>();
-            // this is a singular command. Only return the first result
-            if (results.Count > 0)
+            return new ConsoleResultModel(string.Empty)
             {
-                var foundUser = (UserInfo)results[0];
-                // ensure users cannot get info on super user accounts
-                if (User.IsSuperUser || !foundUser.IsSuperUser)
+                Data = lst,
+                FieldOrder = new[]
                 {
-                    lst.Add(new UserModel((UserInfo)results[0]));
+                    "UserId",
+                    "Username",
+                    "DisplayName",
+                    "FirstName",
+                    "LastName",
+                    "Email",
+                    "LastActivity",
+                    "LastLogin",
+                    "LastLockout",
+                    "LastPasswordChange",
+                    "IsDeleted",
+                    "IsAuthorized",
+                    "IsLockedOut",
+                    "Created"
                 }
-            }
-
-            if (lst.Count > 0)
-            {
-                return new ConsoleResultModel(string.Empty)
-                {
-                    Data = lst,
-                    FieldOrder = new[]
-                    {
-                        "UserId",
-                        "Username",
-                        "DisplayName",
-                        "FirstName",
-                        "LastName",
-                        "Email",
-                        "LastActivity",
-                        "LastLogin",
-                        "LastLockout",
-                        "LastPasswordChange",
-                        "IsDeleted",
-                        "IsAuthorized",
-                        "IsLockedOut",
-                        "Created"
-                    }
-                };
-            }
-            return new ConsoleResultModel("No user found");
+            };
         }
-
-
     }
 }

@@ -1,209 +1,223 @@
 <!-- list-users -->
 <section class="dnn-prompt-inline-help">
-  <a name="list-users"></a>
-  <h3 class="mono">list-users</h3>
-  <p class="lead">Find users based on email or username. Supports partial matching on Email or Username. You can only search by on flag at a time. Flags may not be combined.</p>
+    <a name="list-users"></a>
+    <h3 class="mono">list-users</h3>
+    <p class="lead">Find users based on email or username. Supports partial matching on Email or Username. You can only search by on flag at a time. Flags may not be combined.</p>
 
-  <h4>Options</h4>
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Flag</th>
-      <th>Value</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td class="mono">--email</td>
-      <td>string</td>
-      <td>No</td>
-      <td></td>
-      <td>A search pattern to search for in the user's email address. You can use the asterisk (<span class="mono"> * </span>) as a wildcard to signify 0 or more characters</td>
-    </tr>
-    <tr>
-      <td class="mono">--role</td>
-      <td>string</td>
-      <td>No</td>
-      <td></td>
-      <td>The name of the DNN Security Role whose members you'd like to list. IMPORTANT: wildcard searching is NOT enabled for this flag at this time. Role names are case-insensitive but spacing must match.</td>
-    </tr>
-    <tr>
-      <td class="mono">--username</td>
-      <td>string</td>
-      <td>No</td>
-      <td></td>
-      <td>A search pattern to search for in the username. You can use the asterisk (<span class="mono"> * </span>) as a wildcard to signify 0 or more characters</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <div>
-    <h4>List All Users in Current Portal</h4>
-    <code class="block">
-      list-users
-    </code>
-
-    <h4>Search for Users by Email</h4>
-    <h5>Implicit Use of <span class="mono">--email</span> flag</h5>
-    <p>When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email</p>
-    <code class="block">list-users jsmith@sample.com</code>
-    <h5>Explicit use of <span class="mono">--email</span> flag</h5>
-    <code class="block">list-users --email jsmith@sample.com</code>
-    <table class="command-result-tbl">
-      <tr><td>UserId</td><td>:</td><td>345</td></tr>
-      <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
-      <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
-      <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
-      <tr><td>FirstName</td><td>:</td><td>John</td></tr>
-      <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
-      <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+    <h4>Options</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Flag</th>
+                <th>Value</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="mono">--email</td>
+                <td>string</td>
+                <td>No</td>
+                <td></td>
+                <td>A search pattern to search for in the user's email address. You can use the asterisk (<span class="mono"> * </span>) as a wildcard to signify 0 or more characters</td>
+            </tr>
+            <tr>
+                <td class="mono">--role</td>
+                <td>string</td>
+                <td>No</td>
+                <td></td>
+                <td>The name of the DNN Security Role whose members you'd like to list. IMPORTANT: wildcard searching is NOT enabled for this flag at this time. Role names are case-insensitive but spacing must match.</td>
+            </tr>
+            <tr>
+                <td class="mono">--username</td>
+                <td>string</td>
+                <td>No</td>
+                <td></td>
+                <td>A search pattern to search for in the username. You can use the asterisk (<span class="mono"> * </span>) as a wildcard to signify 0 or more characters</td>
+            </tr>
+            <tr>
+                <td class="mono">--page</td>
+                <td>int</td>
+                <td>No</td>
+                <td>1</td>
+                <td>Page number to show records.</td>
+            </tr>
+            <tr>
+                <td class="mono">--max</td>
+                <td>int</td>
+                <td>No</td>
+                <td>500</td>
+                <td>Page Size for the page. Max is 500.</td>
+            </tr>
+        </tbody>
     </table>
 
-    <h4>Search for Users by Email Using Wildcards</h4>
-    <h5>Implicit Use of <span class="mono">--email</span> flag</h5>
-    <p>When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email</p>
-    <code class="block">list-users jsmith*@sample.com</code>
-    <h5>Explicit use of <span class="mono">--email</span> flag</h5>
-    <code class="block">list-users --email jsmith*@sample.com</code>
+    <div>
+        <h4>List All Users in Current Portal</h4>
+        <code class="block">
+            list-users
+        </code>
 
-    <table class="command-result-tbl">
-      <thead>
-      <tr>
-        <th>UserId</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>DisplayName</th>
-        <th>FirstName</th>
-        <th>LastName</th>
-        <th>LastLogin</th>
-        <th>IsAuthorized</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>345</td>
-        <td>jsmith</td>
-        <td>jsmith@sample.com</td>
-        <td>John Smith</td>
-        <td>John</td>
-        <td>Smith</td>
-        <td>2016-12-06T09:31:38.413-07:00</td>
-        <td>true</td>
-      </tr>
-      <tr>
-        <td>1095</td>
-        <td>jsmithson</td>
-        <td>jsmithson@sample.com</td>
-        <td>Jerry Smithson</td>
-        <td>Jerry</td>
-        <td>Smithson</td>
-        <td>2016-12-063T08:15:28.123-07:00</td>
-        <td>true</td>
-      </tr>
-      </tbody>
-    </table>
+        <h4>Search for Users by Email</h4>
+        <h5>Implicit Use of <span class="mono">--email</span> flag</h5>
+        <p>When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email</p>
+        <code class="block">list-users jsmith@sample.com</code>
+        <h5>Explicit use of <span class="mono">--email</span> flag</h5>
+        <code class="block">list-users --email jsmith@sample.com</code>
+        <table class="command-result-tbl">
+            <tr><td>UserId</td><td>:</td><td>345</td></tr>
+            <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
+            <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
+            <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
+            <tr><td>FirstName</td><td>:</td><td>John</td></tr>
+            <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
+            <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+        </table>
 
-    <h4>Search for Users by Username</h4>
-    <h5>Implicit Use of <span class="mono">--username</span> flag</h5>
-    <p>When specifying a single value after the command name, if it is not a number and does not contain the at symbol (<span class="mono"> @ </span>), Prompt will assume it is a Username</p>
-    <code class="block">list-users jsmith</code>
-    <h5>Explicit Use of <span class="mono">--username</span> flag</h5>
-    <code class="block">list-users --username jsmith</code>
-    <table class="command-result-tbl">
-      <tr><td>UserId</td><td>:</td><td>345</td></tr>
-      <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
-      <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
-      <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
-      <tr><td>FirstName</td><td>:</td><td>John</td></tr>
-      <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
-      <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
-      <tr><td>IsAuthorized</td><td>:</td><td>true</td></tr>
-      <tr><td>Created</td><td>:</td><td>2016-12-06T09:31:38</td></tr>
-      <tr><td>IsDeleted</td><td>:</td><td>false</td></tr>
-    </table>
+        <h4>Search for Users by Email Using Wildcards</h4>
+        <h5>Implicit Use of <span class="mono">--email</span> flag</h5>
+        <p>When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email</p>
+        <code class="block">list-users jsmith*@sample.com</code>
+        <h5>Explicit use of <span class="mono">--email</span> flag</h5>
+        <code class="block">list-users --email jsmith*@sample.com</code>
 
-    <h4>Search for User by Username Using Wildcards</h4>
-    <h5>Implicit Use of <span class="mono">--username</span> flag</h5>
-    <p>When specifying a single value after the command name, if it is not a number and does not contain the at symbol (<span class="mono"> @ </span>), Prompt will assume it is a Username</p>
-    <code class="block">list-users jsmith*</code>
-    <h5>Explicit Use of <span class="mono">--username</span> flag</h5>
-    <code class="block">list-users --username jsmith*</code>
+        <table class="command-result-tbl">
+            <thead>
+                <tr>
+                    <th>UserId</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>DisplayName</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>LastLogin</th>
+                    <th>IsAuthorized</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>345</td>
+                    <td>jsmith</td>
+                    <td>jsmith@sample.com</td>
+                    <td>John Smith</td>
+                    <td>John</td>
+                    <td>Smith</td>
+                    <td>2016-12-06T09:31:38.413-07:00</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td>1095</td>
+                    <td>jsmithson</td>
+                    <td>jsmithson@sample.com</td>
+                    <td>Jerry Smithson</td>
+                    <td>Jerry</td>
+                    <td>Smithson</td>
+                    <td>2016-12-063T08:15:28.123-07:00</td>
+                    <td>true</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <table class="command-result-tbl">
-      <thead>
-      <tr>
-        <th>UserId</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>LastLogin</th>
-        <th>IsDeleted</th>
-        <th>IsAuthorized</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>345</td>
-        <td>jsmith</td>
-        <td>jsmith@sample.com</td>
-        <td>2016-12-06T09:31:38.413-07:00</td>
-        <td>false</td>
-        <td>true</td>
-      </tr>
-      <tr>
-        <td>1095</td>
-        <td>jsmithson</td>
-        <td>jsmithson@sample.com</td>
-        <td>2016-12-063T08:15:28.123-07:00</td>
-        <td>false</td>
-        <td>true</td>
-      </tr>
-      </tbody>
-    </table>
+        <h4>Search for Users by Username</h4>
+        <h5>Implicit Use of <span class="mono">--username</span> flag</h5>
+        <p>When specifying a single value after the command name, if it is not a number and does not contain the at symbol (<span class="mono"> @ </span>), Prompt will assume it is a Username</p>
+        <code class="block">list-users jsmith</code>
+        <h5>Explicit Use of <span class="mono">--username</span> flag</h5>
+        <code class="block">list-users --username jsmith</code>
+        <table class="command-result-tbl">
+            <tr><td>UserId</td><td>:</td><td>345</td></tr>
+            <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
+            <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
+            <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
+            <tr><td>FirstName</td><td>:</td><td>John</td></tr>
+            <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
+            <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+            <tr><td>IsAuthorized</td><td>:</td><td>true</td></tr>
+            <tr><td>Created</td><td>:</td><td>2016-12-06T09:31:38</td></tr>
+            <tr><td>IsDeleted</td><td>:</td><td>false</td></tr>
+        </table>
 
-    <h4>List Users In a DNN Security Role</h4>
-    <code class="block">list-users --role "Registered Users"</code>
-    <table class="command-result-tbl">
-      <thead>
-      <tr>
-        <th>UserId</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>LastLogin</th>
-        <th>IsDeleted</th>
-        <th>IsAuthorized</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>2</td>
-        <td>admin</td>
-        <td>admin@mysite.com</td>
-        <td>2016-12-01T06:03:10-07:00</td>
-        <td>false</td>
-        <td>true</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>tuser1</td>
-        <td>tuser1@mysite.com</td>
-        <td>2016-12-01T09:31:38.413-07:00</td>
-        <td>false</td>
-        <td>true</td>
-      </tr>
-      <tr>
-        <td>31</td>
-        <td>jsmith</td>
-        <td>jsmith@mysite.com</td>
-        <td>2016-12-19T12:23:39-07:00</td>
-        <td>false</td>
-        <td>true</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+        <h4>Search for User by Username Using Wildcards</h4>
+        <h5>Implicit Use of <span class="mono">--username</span> flag</h5>
+        <p>When specifying a single value after the command name, if it is not a number and does not contain the at symbol (<span class="mono"> @ </span>), Prompt will assume it is a Username</p>
+        <code class="block">list-users jsmith*</code>
+        <h5>Explicit Use of <span class="mono">--username</span> flag</h5>
+        <code class="block">list-users --username jsmith*</code>
+
+        <table class="command-result-tbl">
+            <thead>
+                <tr>
+                    <th>UserId</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>LastLogin</th>
+                    <th>IsDeleted</th>
+                    <th>IsAuthorized</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>345</td>
+                    <td>jsmith</td>
+                    <td>jsmith@sample.com</td>
+                    <td>2016-12-06T09:31:38.413-07:00</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td>1095</td>
+                    <td>jsmithson</td>
+                    <td>jsmithson@sample.com</td>
+                    <td>2016-12-063T08:15:28.123-07:00</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>List Users In a DNN Security Role</h4>
+        <code class="block">list-users --role "Registered Users"</code>
+        <table class="command-result-tbl">
+            <thead>
+                <tr>
+                    <th>UserId</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>LastLogin</th>
+                    <th>IsDeleted</th>
+                    <th>IsAuthorized</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2</td>
+                    <td>admin</td>
+                    <td>admin@mysite.com</td>
+                    <td>2016-12-01T06:03:10-07:00</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>tuser1</td>
+                    <td>tuser1@mysite.com</td>
+                    <td>2016-12-01T09:31:38.413-07:00</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+                <tr>
+                    <td>31</td>
+                    <td>jsmith</td>
+                    <td>jsmith@mysite.com</td>
+                    <td>2016-12-19T12:23:39-07:00</td>
+                    <td>false</td>
+                    <td>true</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 </section>
 
