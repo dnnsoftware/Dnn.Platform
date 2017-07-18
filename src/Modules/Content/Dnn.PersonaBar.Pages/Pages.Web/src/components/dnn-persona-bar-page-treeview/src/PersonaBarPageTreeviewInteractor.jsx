@@ -139,7 +139,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
                 const left = () => {
                     item.childListItems.filter((data, index)=>{
-                        if (data.id === moveChild.id){
+                        if (data.id === moveChild.id) {
                             cachedItemIndex = index;
                         }
                     });
@@ -159,19 +159,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         }
                     });
 
-                    rootList.filter((item, index) => {
-                        if (item.id === newParent.id) {
-                            cachedItemIndexParent = index;
-                        }
-                    });
-
                     const arr1 = rootList.slice(0 , cachedItemIndex);
                     const arr2 = rootList.slice(cachedItemIndex+1);
 
                     rootList = [...arr1, ...arr2];
                     console.log(rootList);
-                    this.setState({pageList: rootList});
 
+                    this.setState({pageList: rootList}, ()=>{
+                        console.log(this.state.pageList);
+                    });
                 };
 
                 (item.id === moveChild.parentId) ? left() : right();
