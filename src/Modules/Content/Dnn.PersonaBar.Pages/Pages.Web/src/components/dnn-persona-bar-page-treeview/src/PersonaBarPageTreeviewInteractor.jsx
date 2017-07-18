@@ -129,48 +129,62 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     updateTree() {
         const newParent = this.state.droppedItem;
         const moveChild = this.state.draggedItem;
-        console.log(moveChild);
         const condition = (newParent.id != moveChild.parentId);
 
         const popMoveChildItem = () => {
-            this._traverse((item, list) => {
-                let cachedItemIndex;
-                let cachedItemIndexParent;
+            return new Promise((resolve, reject)=>{
+                let update = null;
+                this._traverse((item, list) => {
+                    let cachedItemIndex;
+                    let cachedItemIndexParent;
 
-                const left = () => {
-                    item.childListItems.filter((data, index)=>{
-                        if (data.id === moveChild.id) {
-                            cachedItemIndex = index;
+                    const left = () => {
+                        console.log('in pop left')
+                        item.childListItems.filter((data, index)=>{
+                            if (data.id === moveChild.id) {
+                                cachedItemIndex = index;
+                            }
+                        });
+                        const arr1 = item.childListItems.slice(0,cachedItemIndex);
+                        const arr2 = item.childListItems.slice(cachedItemIndex+1);
+                        item.childListItems = [...arr1, ...arr2];
+                        item.childCount--;
+                        update = list;
+                    };
+
+                    const right = () => {
+                        console.log('in pop right')
+                        let rootList = this.state.pageList.concat();
+                        rootList.filter((item, index) => {
+                            if (item.id === moveChild.id) {
+                                cachedItemIndex = index;
+                            }
+                        });
+
+                        if (cachedItemIndex){
+                            const arr1 = rootList.slice(0 , cachedItemIndex);
+                            const arr2 = rootList.slice(cachedItemIndex+1);
+                            rootList = [...arr1, ...arr2];
+                            update = rootList;
                         }
-                    });
-                    const arr1 = item.childListItems.slice(0,cachedItemIndex);
-                    const arr2 = item.childListItems.slice(cachedItemIndex+1);
-                    item.childListItems = [...arr1, ...arr2];
-                    item.childCount--;
-                    this.setState({pageList: list});
-                };
+                    };
 
-                const right = () => {
+                   //(item.id === moveChild.parentId) ? left() : right();
 
-                    let rootList = this.state.pageList.concat();
-                    rootList.filter((item, index) => {
-                        if (item.id === moveChild.id) {
-                            cachedItemIndex = index;
-                        }
-                    });
+                    switch(true) {
+                        case item.id === moveChild.parentId:
+                            left();
+                            return;
+                        case moveChild.parentId === -1:
+                            right();
+                            return;
+                    }
 
-                    const arr1 = rootList.slice(0 , cachedItemIndex);
-                    const arr2 = rootList.slice(cachedItemIndex+1);
+                });
 
-                    rootList = [...arr1, ...arr2];
-                    console.log(rootList);
-
-                    this.setState({pageList: rootList}, ()=>{
-                        console.log(this.state.pageList);
-                    });
-                };
-
-                (item.id === moveChild.parentId) ? left() : right();
+                this.setState({pageList: update}, ()=>{
+                    resolve();
+                });
 
             });
         };
@@ -189,15 +203,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     console.log("In right");
                     this.getChildListItems(item.id)
                     .then(()=>{
-                        this._traverse((item, list) => {
-                            if (item.id === newParent.id) {
-                                moveChild.parentId = item.id;
-                                item.isOpen=true;
-                                item.childCount++;
-                                item.childListItems.push(moveChild);
-                                this.setState({pageList: list});
-                            }
-                        });
+
+                        if (item.id === newParent.id) {
+                            moveChild.parentId = item.id;
+                            item.isOpen=true;
+                            item.childCount++;
+                            item.childListItems.push(moveChild);
+                            this.setState({pageList: list});
+                        }
+
                     });
                 };
 
@@ -208,8 +222,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             });
         };
 
-        popMoveChildItem();
-        insertMoveChild();
+        popMoveChildItem().then(() => insertMoveChild() );
+
     }
 
     getChildListItems(id) {
