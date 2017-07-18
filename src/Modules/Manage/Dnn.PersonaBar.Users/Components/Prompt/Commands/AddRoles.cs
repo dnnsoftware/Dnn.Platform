@@ -20,8 +20,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class AddRoles : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddRoles));
-
         private const string FlagId = "id";
         private const string FlagRoles = "roles";
         private const string FlagStart = "start";

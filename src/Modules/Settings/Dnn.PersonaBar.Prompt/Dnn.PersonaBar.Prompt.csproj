@@ -142,11 +142,6 @@
     <Compile Include="Components\Commands\Portal\GetPortal.cs" />
     <Compile Include="Components\Commands\Portal\ListSites.cs" />
     <Compile Include="Components\Commands\Portal\ListPortals.cs" />
-    <Compile Include="Components\Commands\Roles\GetRole.cs" />
-    <Compile Include="Components\Commands\Roles\ListRoles.cs" />
-    <Compile Include="Components\Commands\Roles\NewRole.cs" />
-    <Compile Include="Components\Commands\Roles\SetRole.cs" />
-    <Compile Include="Components\Commands\Roles\DeleteRole.cs" />
     <Compile Include="Components\Commands\Scheduler\ListTask.cs" />
     <Compile Include="Components\Commands\Scheduler\SetTask.cs" />
     <Compile Include="Components\Commands\Scheduler\GetTask.cs" />
@@ -162,8 +157,6 @@
     <Compile Include="Components\Models\PageModelBase.cs" />
     <Compile Include="Components\Models\PortalModel.cs" />
     <Compile Include="Components\Models\PortalModelBase.cs" />
-    <Compile Include="Components\Models\RoleModel.cs" />
-    <Compile Include="Components\Models\RoleModelBase.cs" />
     <Compile Include="Components\Models\TaskModel.cs" />
     <Compile Include="Components\Models\TaskModelBase.cs" />
     <Compile Include="Components\Repositories\CommandRepository.cs" />

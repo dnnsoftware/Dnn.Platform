@@ -1,7 +1,7 @@
 ﻿using Dnn.PersonaBar.Library.Prompt.Common;
 using DotNetNuke.Security.Roles;
 
-namespace Dnn.PersonaBar.Prompt.Components.Models
+namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 {
     public class RoleModelBase
     {

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
+namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     [ConsoleCommand("delete-role", "Deletes the specified DNN security role for this portal")]
     public class DeleteRole : ConsoleCommandBase
@@ -19,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
         private const string FlagId = "id";
 
 
-        public int? RoleId { get; private set; }
+        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -36,7 +37,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer", FlagId);
+                    sbErrors.Append(Localization.GetString("Prompt_RoleIdNotInt", Constants.LocalResourcesFile));
                 }
             }
             else
@@ -52,14 +53,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
                 }
             }
 
-            if (!RoleId.HasValue)
+            if (RoleId == Convert.ToInt32(Globals.glbRoleNothing))
             {
-                sbErrors.AppendFormat("You must specify a Role ID using either the --{0} flag or by passing the Role ID as the first argument after the command name; ", FlagId);
+                sbErrors.Append(Localization.GetString("Prompt_RoleIdIsRequired", Constants.LocalResourcesFile));
             }
             else if (RoleId <= 0)
             {
                 // validate it's > 0
-                sbErrors.AppendFormat("The --{0} flag value must be greater than zero (0)", FlagId);
+                sbErrors.AppendFormat(Localization.GetString("Prompt_RoleIdNegative", Constants.LocalResourcesFile));
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -67,40 +68,19 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
         public override ConsoleResultModel Run()
         {
-            var rc = new RoleController();
-            var lst = new List<RoleModel>();
-
-            var role = RoleController.Instance.GetRoleById(PortalId, (int)RoleId);
-
-            if (role != null)
+            try
             {
-                switch (role.RoleType)
-                {
-                    case RoleType.Administrator:
-                    case RoleType.RegisteredUser:
-                    case RoleType.Subscriber:
-                    case RoleType.UnverifiedUser:
-                        return new ConsoleErrorResultModel("You cannot delete built-in DNN roles.");
-                }
-                try
-                {
-                    rc.DeleteRole(role);
-                    lst.Add(new RoleModel(role));
-                    return new ConsoleResultModel($"Successfully deleted role '{role.RoleName}' ({role.RoleID})");
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                    return new ConsoleErrorResultModel("An error occurred while deleting the role. See the DNN Event Viewer for details.");
-                }
+                KeyValuePair<HttpStatusCode, string> message;
+                var roleName = RolesController.Instance.DeleteRole(PortalSettings, RoleId, out message);
+                return !string.IsNullOrEmpty(roleName)
+                    ? new ConsoleResultModel($"{Localization.GetString("DeleteRole.Message", Constants.LocalResourcesFile)} '{roleName}' ({RoleId})")
+                    : new ConsoleErrorResultModel(message.Value);
             }
-            else
+            catch (Exception ex)
             {
-                return new ConsoleResultModel($"No role found with the ID of '{RoleId}'");
+                Logger.Error(ex);
+                return new ConsoleErrorResultModel(Localization.GetString("DeleteRole.Error", Constants.LocalResourcesFile));
             }
-
         }
-
-
     }
 }

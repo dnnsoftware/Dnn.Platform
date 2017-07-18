@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Roles.Components.Prompt.Models;
+using Dnn.PersonaBar.Roles.Services.DTO;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
+namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     [ConsoleCommand("new-role", "Creates a new DNN security roles in the portal.", new[]{
         "name",
@@ -31,8 +35,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
         public string RoleName { get; private set; }
         public string Description { get; private set; }
-        public bool? IsPublic { get; private set; }
-        public bool? AutoAssign { get; private set; }
+        public bool IsPublic { get; private set; }
+        public bool AutoAssign { get; private set; }
         public RoleStatus Status { get; private set; }
 
 
@@ -45,7 +49,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
             {
                 if (string.IsNullOrEmpty(Flag(FlagRoleName)))
                 {
-                    sbErrors.AppendFormat("--{0} cannot be empty; ", FlagRoleName);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagEmpty", Constants.LocalResourcesFile), FlagRoleName);
                 }
                 else
                 {
@@ -64,7 +68,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
             if (string.IsNullOrEmpty(RoleName))
             {
-                sbErrors.AppendFormat("You must specify a name for the role as the first argument or by using the --{0} flag. " + "Names with spaces And special characters should be enclosed in double quotes.", FlagRoleName);
+                sbErrors.AppendFormat(Localization.GetString("Prompt_RoleNameRequired", Constants.LocalResourcesFile), FlagRoleName);
             }
 
             if (HasFlag(FlagDescription))
@@ -76,33 +80,29 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
             if (HasFlag(FlagIsPublic))
             {
-                var tmpPublic = false;
+                bool tmpPublic;
                 if (bool.TryParse(Flag(FlagIsPublic), out tmpPublic))
                 {
                     IsPublic = tmpPublic;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the --{0} flag value '{1}'. Value should be True or False; ", FlagIsPublic, Flag(FlagIsPublic));
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagIsPublic, Flag(FlagIsPublic));
                 }
             }
-            if (!IsPublic.HasValue)
-                IsPublic = false;
 
             if (HasFlag(FlagAutoAssign))
             {
-                var tmpAutoAssign = false;
+                bool tmpAutoAssign;
                 if (bool.TryParse(Flag(FlagAutoAssign), out tmpAutoAssign))
                 {
                     AutoAssign = tmpAutoAssign;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("Unable to parse the --{0} flag value '{1}'. Value should be True or False; ", FlagAutoAssign, Flag(FlagAutoAssign));
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagAutoAssign, Flag(FlagAutoAssign));
                 }
             }
-            if (!AutoAssign.HasValue)
-                AutoAssign = false;
 
             if (HasFlag(FlagStatus))
             {
@@ -119,10 +119,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
                         Status = RoleStatus.Disabled;
                         break;
                     default:
-                        sbErrors.AppendFormat("Invalid value '{0}' passed for --{1}. Expecting 'pending', 'approved', or 'disabled'", Flag(FlagStatus), FlagStatus);
+                        sbErrors.AppendFormat(Localization.GetString("Prompt_InvalidRoleStatus", Constants.LocalResourcesFile), Flag(FlagStatus), FlagStatus);
                         break;
                 }
-
             }
             else
             {
@@ -134,32 +133,32 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
         public override ConsoleResultModel Run()
         {
-
-            var sbErrors = new StringBuilder();
-
             try
             {
                 var lstResults = new List<RoleModel>();
-
-                // only act if role doesn't yet exist
-                if (Components.Utilities.RoleExists(RoleName, PortalId))
+                var roleDto = new RoleDto
                 {
-                    return new ConsoleErrorResultModel(
-                        $"Cannot create role: A role with the name '{RoleName}' already exists.");
-                }
+                    Id = Null.NullInteger,
+                    Description = Description,
+                    Status = Status,
+                    Name = RoleName,
+                    AutoAssign = AutoAssign,
+                    IsPublic = IsPublic,
+                    GroupId = -1,
+                    IsSystem = false,
+                    SecurityMode = SecurityMode.SecurityRole
+                };
+                KeyValuePair<HttpStatusCode, string> message;
+                var success = RolesController.Instance.SaveRole(PortalSettings, roleDto, false, out message);
+                if (!success) return new ConsoleErrorResultModel(message.Value);
 
-                var newRole = Components.Utilities.CreateRole(RoleName, PortalId, Status, Description, (bool)IsPublic, (bool)AutoAssign);
-                if (newRole != null)
-                {
-                    lstResults.Add(new RoleModel(newRole));
-                }
-
-                return new ConsoleResultModel("Role successfully created.") { Data = lstResults };
+                lstResults.Add(new RoleModel(RoleController.Instance.GetRoleById(PortalId, roleDto.Id)));
+                return new ConsoleResultModel(Localization.GetString("RoleAdded.Message", Constants.LocalResourcesFile)) { Data = lstResults };
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel("An error occurred while trying to create the role. Please see the event viewer for details.");
+                return new ConsoleErrorResultModel(Localization.GetString("RoleAdded.Error", Constants.LocalResourcesFile));
             }
 
         }

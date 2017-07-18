@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagUsernme = "username";
         private const string FlagRole = "role";
         private const string FlagPage = "page";
-        private const string FlagMax = "Max";
+        private const string FlagMax = "max";
 
 
         public string Email { get; private set; }
@@ -163,7 +163,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     PageSize = Max
                 },
                 Records = usersList?.Count ?? 0,
-                Output = pageNo < totalPages ? Localization.GetString("Prompt_ListUsersOutput", Constants.LocalResourcesFile) : Localization.GetString("noUsers", Constants.LocalResourcesFile)
+                Output = pageNo <= totalPages ? Localization.GetString("Prompt_ListUsersOutput", Constants.LocalResourcesFile) : Localization.GetString("noUsers", Constants.LocalResourcesFile)
             };
         }
 

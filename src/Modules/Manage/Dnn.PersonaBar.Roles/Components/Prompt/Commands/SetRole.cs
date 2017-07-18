@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Roles.Components.Prompt.Models;
+using Dnn.PersonaBar.Roles.Services.DTO;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
+namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     [ConsoleCommand("set-role", "Update a DNN security role with new data", new[]{
         "id",
@@ -41,10 +45,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
             var sbErrors = new StringBuilder();
             if (HasFlag(FlagId))
             {
-                var tmpId = 0;
+                int tmpId;
                 if (!int.TryParse(Flag(FlagId), out tmpId))
                 {
-                    sbErrors.AppendFormat("The --{0} flag's value must be a valid numeric Role ID; ", FlagId);
+                    sbErrors.Append(Localization.GetString("Prompt_RoleIdNotInt", Constants.LocalResourcesFile));
                 }
                 else
                 {
@@ -53,10 +57,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
             }
             else
             {
-                var tempId = 0;
+                int tempId;
                 if (!int.TryParse(args[1], out tempId))
                 {
-                    sbErrors.AppendFormat("No valid Role ID was passed. Pass it using the --{0} flag or as the first argument; ", FlagId);
+                    sbErrors.Append(Localization.GetString("Prompt_RoleIdIsRequired", Constants.LocalResourcesFile));
                 }
                 else
                 {
@@ -71,10 +75,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
             if (HasFlag(FlagIsPublic))
             {
-                var tmpPublic = false;
+                bool tmpPublic;
                 if (!bool.TryParse(Flag(FlagIsPublic), out tmpPublic))
                 {
-                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FlagIsPublic);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagIsPublic, Flag(FlagIsPublic));
                 }
                 else
                 {
@@ -84,10 +88,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
             if (HasFlag(FlagAutoAssign))
             {
-                var tmpAuto = false;
+                bool tmpAuto;
                 if (!bool.TryParse(Flag(FlagAutoAssign), out tmpAuto))
                 {
-                    sbErrors.AppendFormat("You must pass True or False for the --{0} flag; ", FlagAutoAssign);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagAutoAssign, Flag(FlagAutoAssign));
                 }
                 else
                 {
@@ -97,52 +101,42 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
             if (RoleName == null && Description == null && !IsPublic.HasValue && !AutoAssign.HasValue)
             {
-                sbErrors.AppendFormat("Nothing to Update! Tell me what to update with flags like --{0} --{1} --{2} --{3}, etc.", FlagRoleName, FlagDescription, FlagIsPublic, FlagAutoAssign);
+                sbErrors.AppendFormat(Localization.GetString("Prompt_NothingToUpdate", Constants.LocalResourcesFile));
             }
             ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
         {
-            var sbMessage = new StringBuilder();
             try
             {
-                var role = Components.Utilities.GetRoleById((int)RoleId, PortalId);
-                if (role == null)
+                var existingRole = RoleController.Instance.GetRoleById(PortalId, (int)RoleId);
+                var roleDto = new RoleDto
                 {
-                    return new ConsoleErrorResultModel($"Unable to find a role with the ID of '{RoleId}'");
-                }
+                    Id = (int)RoleId,
+                    Name = !string.IsNullOrEmpty(RoleName) ? RoleName : existingRole?.RoleName,
+                    Description = !string.IsNullOrEmpty(Description) ? Description : existingRole?.Description,
+                    AutoAssign = AutoAssign ?? existingRole?.AutoAssignment ?? false,
+                    IsPublic = IsPublic ?? existingRole?.IsPublic ?? false,
+                    GroupId = existingRole?.RoleGroupID ?? -1,
+                    IsSystem = existingRole?.IsSystemRole ?? false,
+                    SecurityMode = existingRole?.SecurityMode ?? SecurityMode.SecurityRole
+                };
+                KeyValuePair<HttpStatusCode, string> message;
+                var success = RolesController.Instance.SaveRole(PortalSettings, roleDto, false, out message);
+                if (!success) return new ConsoleErrorResultModel(message.Value);
 
-                // Do not modify any system roles
-                if (role.IsSystemRole)
+                var lstResults = new List<RoleModel>
                 {
-                    return new ConsoleErrorResultModel("System roles cannot be modified through Prompt.");
-                }
-
-                if (RoleName != null)
-                    role.RoleName = RoleName;
-                if (Description != null)
-                    role.Description = Description;
-                if (IsPublic.HasValue)
-                    role.IsPublic = (bool)IsPublic;
-                if (AutoAssign.HasValue)
-                    role.AutoAssignment = (bool)AutoAssign;
-
-                // update the role
-                var updatedRole = Components.Utilities.UpdateRole(role);
-
-                var lstResults = new List<RoleModel>();
-                lstResults.Add(new RoleModel(updatedRole));
-                return new ConsoleResultModel("Role has been updated") { Data = lstResults };
+                    new RoleModel(RoleController.Instance.GetRoleById(PortalId, roleDto.Id))
+                };
+                return new ConsoleResultModel(Localization.GetString("RoleUpdated.Message", Constants.LocalResourcesFile)) { Data = lstResults };
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
+                return new ConsoleErrorResultModel(Localization.GetString("RoleUpdated.Error", Constants.LocalResourcesFile));
             }
-
-            return new ConsoleErrorResultModel("An unexpected error has occurred, please see the Event Viewer for more details");
         }
-
-
     }
 }

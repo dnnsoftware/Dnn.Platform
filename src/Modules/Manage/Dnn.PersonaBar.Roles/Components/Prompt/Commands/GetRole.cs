@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Roles.Components.Prompt.Models;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
+namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     [ConsoleCommand("get-role", "Retrieves a DNN security role for this portal")]
     public class GetRole : ConsoleCommandBase
     {
         private const string FlagId = "id";
 
-
-        public int? RoleId { get; private set; }
+        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -26,14 +27,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
             if (HasFlag(FlagId))
             {
-                var tmp = 0;
+                int tmp;
                 if (int.TryParse(Flag(FlagId), out tmp))
                 {
                     RoleId = tmp;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer", FlagId);
+                    sbErrors.Append(Localization.GetString("Prompt_RoleIdNotInt", Constants.LocalResourcesFile));
                 }
             }
             else
@@ -41,7 +42,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
                 // assume it's the first argument
                 if (args.Length >= 2 && !IsFlag(args[1]))
                 {
-                    var tmp = 0;
+                    int tmp;
                     if (int.TryParse(args[1], out tmp))
                     {
                         RoleId = tmp;
@@ -49,14 +50,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
                 }
             }
 
-            if (!RoleId.HasValue)
+            if (RoleId == Convert.ToInt32(Globals.glbRoleNothing))
             {
-                sbErrors.AppendFormat("You must specify a Role ID using either the --{0} flag or by passing the Role ID as the first argument after the command name; ", FlagId);
+                sbErrors.Append(Localization.GetString("Prompt_RoleIdIsRequired", Constants.LocalResourcesFile));
             }
             else if (RoleId <= 0)
             {
                 // validate it's > 0
-                sbErrors.AppendFormat("The --{0} flag value must be greater than zero (0)", FlagId);
+                sbErrors.AppendFormat(Localization.GetString("Prompt_RoleIdNegative", Constants.LocalResourcesFile));
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -64,22 +65,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Roles
 
         public override ConsoleResultModel Run()
         {
-            var rc = new RoleController();
             var lst = new List<RoleModel>();
-
-            var role = RoleController.Instance.GetRoleById(PortalId, (int)RoleId);
-            if (role != null)
-            {
-                lst.Add(new RoleModel(role));
-            }
-            else
-            {
-                return new ConsoleResultModel($"No role found with the ID of '{RoleId}'");
-            }
-
-            return new ConsoleResultModel($"{lst.Count} role{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
+            var role = RolesController.Instance.GetRole(PortalSettings, RoleId);
+            if (role == null)
+                return new ConsoleErrorResultModel(string.Format(Localization.GetString("Prompt_NoRoleWithId", Constants.LocalResourcesFile), RoleId));
+            lst.Add(new RoleModel(role));
+            return new ConsoleResultModel { Data = lst };
         }
-
-
     }
 }
