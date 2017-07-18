@@ -121,7 +121,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void LogException(Exception ex)
         {
-            Logger.Error("Watcher Activity: N/A. Error: " + ex?.Message);
+            Logger.Error("Watcher Activity Error: " + ex?.Message);
         }
 
         private static void CheckFile(string path)
@@ -130,8 +130,12 @@ namespace DotNetNuke.Web.Common.Internal
             {
                 if (IsRestrictdExtension(path))
                 {
-                    ThreadPool.QueueUserWorkItem(_ => AddEventLog(path));
-                    ThreadPool.QueueUserWorkItem(_ => NotifyManager(path));
+                    var appStatus = Globals.Status;
+                    if (appStatus != Globals.UpgradeStatus.Install && appStatus != Globals.UpgradeStatus.Upgrade)
+                    {
+                        ThreadPool.QueueUserWorkItem(_ => AddEventLog(path));
+                        ThreadPool.QueueUserWorkItem(_ => NotifyManager(path));
+                    }
                 }
             }
             catch (Exception ex)
