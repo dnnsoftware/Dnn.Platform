@@ -98,10 +98,10 @@
                 // we only need to initialize this plugin once, doing so more than once will lead to multiple dialogs.
                 // this is because the #userFileManager element is never destroyed when the compose message dialog is closed.
 	        	composeMessageDialog.find('#userFileManager').userFileManager(opts.userFileManagerOptions);
-		        
+
                 $wrap.data('fileManagerInitialized', true);
             }
-	        
+
 	        if ($.fn.dnnUserFileUpload && typeof $.fn.dnnUserFileUpload === "function") {
 				composeMessageDialog.find('.fileUploadArea').dnnUserFileUpload({
 					maxFileSize: opts.maxFileSize,
@@ -114,7 +114,7 @@
 					}
 				});
 	        }
-	        
+
 	        composeMessageDialog.find('#to').tokenInput(opts.serviceurlbase + "Search", {
 				// We can set the tokenLimit here
 				theme: "facebook",
@@ -211,7 +211,7 @@
                     if (prePopulatedRecipients != null) {
                         composeMessageDialog.find('#subject').focus();
                     }
-	                
+
 					composeMessageDialog.find('.fileUploadArea input').dnnFileInput();
                 },
                 close: function(event, ui) {
@@ -224,16 +224,16 @@
                             var params = {
                                 subject: encodeURIComponent(composeMessageDialog.find('#subject').val()),
                                 body: encodeURIComponent(composeMessageDialog.find('#bodytext').val()),
-                                roleIds: (roles.length > 0 ? JSON.stringify(roles) : {}),
-                                userIds: (users.length > 0 ? JSON.stringify(users) : {}),
-                                fileIds: (attachments.length > 0 ? JSON.stringify(attachments) : {})
+                                roleIds: JSON.stringify(roles),
+                                userIds: JSON.stringify(users),
+                                fileIds: JSON.stringify(attachments)
                             };
                             $.ajax(
-                                {   
+                                {
                                     url: opts.serviceurlbase + "Create",
-                                    type: "POST", 
+                                    type: "POST",
                                     data: JSON.stringify(params),
-                                    contentType: "application/json", 
+                                    contentType: "application/json",
                                     dataType: "json",
                                     beforeSend: opts.servicesFramework.setModuleHeaders
                                 }).done(function (data) {
