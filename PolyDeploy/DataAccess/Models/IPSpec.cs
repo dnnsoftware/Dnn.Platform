@@ -8,5 +8,12 @@ namespace Cantarus.Modules.PolyDeploy.DataAccess.Models
     {
         public int IPSpecId { get; set; }
         public string Address { get; set; }
+
+        public IPSpec () { }
+
+        public IPSpec (string address)
+        {
+            Address = address;
+        }
     }
 }

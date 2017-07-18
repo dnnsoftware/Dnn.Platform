@@ -18,6 +18,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
     public class CIController : DnnApiController
     {
         [AllowAnonymous]
+        [InWhitelist]
         [APIAuthentication]
         [HttpPost]
         public async Task<HttpResponseMessage> Install()

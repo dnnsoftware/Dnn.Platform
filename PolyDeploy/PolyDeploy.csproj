@@ -153,7 +153,9 @@
     <Compile Include="WebAPI\APIAuthentication.cs" />
     <Compile Include="WebAPI\APIUsersController.cs" />
     <Compile Include="WebAPI\CIController.cs" />
+    <Compile Include="WebAPI\InWhitelist.cs" />
     <Compile Include="WebAPI\Routes.cs" />
+    <Compile Include="WebAPI\WhitelistController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_LocalResources\Settings.ascx.resx">

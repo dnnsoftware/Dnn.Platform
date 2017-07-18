@@ -15,5 +15,15 @@ namespace Cantarus.Modules.PolyDeploy.DataAccess.DataControllers
                 return repo.Find("WHERE Address = @0", address).FirstOrDefault<IPSpec>();
             }
         }
+
+        public void Create(IPSpec ipSpec)
+        {
+            using (IDataContext context = DataContext.Instance())
+            {
+                var repo = context.GetRepository<IPSpec>();
+
+                repo.Insert(ipSpec);
+            }
+        }
     }
 }

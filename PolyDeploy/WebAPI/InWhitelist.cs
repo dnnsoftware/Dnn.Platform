@@ -12,7 +12,7 @@ using System.Web.Http.Filters;
 
 namespace Cantarus.Modules.PolyDeploy.WebAPI
 {
-    public class APIAuthentication : ActionFilterAttribute
+    public class InWhitelist : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
@@ -23,24 +23,15 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
 
             try
             {
-                // Is there an api key header present?
-                if (actionContext.Request.Headers.Contains("x-api-key"))
+                string clientIpAddress = HttpContext.Current.Request.UserHostAddress;
+
+                // Got the ip address?
+                if (!string.IsNullOrEmpty(clientIpAddress))
                 {
-                    // Get the api key from the header.
-                    string apiKey = actionContext.Request.Headers.GetValues("x-api-key").FirstOrDefault();
-
-                    // Make sure it's not null and it's 32 characters or we're wasting our time.
-                    if (apiKey != null && apiKey.Length == 32)
+                    // Is it whitelisted or localhost?
+                    if (IPSpecController.IsWhitelisted(clientIpAddress) || clientIpAddress.Equals("127.0.0.1"))
                     {
-                        // Attempt to look up the api user.
-                        APIUser apiUser = APIUserController.GetByAPIKey(apiKey);
-
-                        // Did we find one and double check the api key.
-                        if (apiUser != null && apiUser.APIKey == apiKey)
-                        {
-                            // Genuine API user.
-                            authenticated = true;
-                        }
+                        authenticated = true;
                     }
                 }
             }
