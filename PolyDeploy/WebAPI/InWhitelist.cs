@@ -1,9 +1,6 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components;
-using Cantarus.Modules.PolyDeploy.DataAccess.Models;
+using DotNetNuke.Services.Log.EventLog;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -21,9 +18,11 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
             bool authenticated = false;
             string message = "Access denied.";
 
+            string clientIpAddress = null;
+
             try
             {
-                string clientIpAddress = HttpContext.Current.Request.UserHostAddress;
+                clientIpAddress = HttpContext.Current.Request.UserHostAddress;
 
                 // Got the ip address?
                 if (!string.IsNullOrEmpty(clientIpAddress))
@@ -46,6 +45,12 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
             // If authentication failure occurs, return a response without carrying on executing actions.
             if (!authenticated)
             {
+                EventLogController elc = new EventLogController();
+
+                string log = string.Format("(IP: {1}) {2}", clientIpAddress, message);
+
+                elc.AddLog("PolyDeploy", log, EventLogController.EventLogType.HOST_ALERT);
+
                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, message);
             }
         }
