@@ -41,6 +41,7 @@ namespace DotNetNuke.Web.Common.Internal
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeSecurity));
         private static FileSystemWatcher _fileWatcher;
         private static DateTime _lastRead;
+        private static Globals.UpgradeStatus _appStatus = Globals.UpgradeStatus.None;
         private static IEnumerable<string> _settingsRestrictExtensions = new string[] { };
 
         private const int CacheTimeOut = 5; //obtain the setting and do calculations once every 5 minutes at most, plus no need for locking
@@ -130,11 +131,17 @@ namespace DotNetNuke.Web.Common.Internal
             {
                 if (IsRestrictdExtension(path))
                 {
-                    var appStatus = Globals.Status;
-                    if (appStatus != Globals.UpgradeStatus.Install && appStatus != Globals.UpgradeStatus.Upgrade)
+                    if (_appStatus != Globals.UpgradeStatus.Install && _appStatus != Globals.UpgradeStatus.Upgrade)
                     {
                         ThreadPool.QueueUserWorkItem(_ => AddEventLog(path));
                         ThreadPool.QueueUserWorkItem(_ => NotifyManager(path));
+
+                        // make status sticky; once set to install/upgrade, it stays so until finishing & appl restarts
+                        var appStatus = Globals.Status;
+                        if (appStatus == Globals.UpgradeStatus.Install || appStatus == Globals.UpgradeStatus.Upgrade)
+                        {
+                            _appStatus = appStatus;
+                        }
                     }
                 }
             }
