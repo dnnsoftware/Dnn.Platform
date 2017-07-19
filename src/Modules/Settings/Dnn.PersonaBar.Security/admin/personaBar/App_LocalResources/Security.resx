@@ -196,13 +196,13 @@
     <value>The Primary Administrator who will receive email notification of member activities.</value>
   </data>
   <data name="Redirect_AfterLogin.Help" xml:space="preserve">
-    <value>Optional select the page that users will be redirected to upon successful login.</value>
+    <value>Optionally select the page that users will be redirected to upon successful login.</value>
   </data>
   <data name="Redirect_AfterLogin.Text" xml:space="preserve">
     <value>Redirect After Login</value>
   </data>
   <data name="Redirect_AfterLogout.Help" xml:space="preserve">
-    <value>Optional select the page that users will be redirected to upon logout.</value>
+    <value>Optionally select the page that users will be redirected to upon logout.</value>
   </data>
   <data name="Redirect_AfterLogout.Text" xml:space="preserve">
     <value>Redirect After Logout</value>
@@ -379,7 +379,7 @@
     <value>Could not update the member settings. Please try later.</value>
   </data>
   <data name="SslSettingsUpdateSuccess.Text" xml:space="preserve">
-    <value>The SSl settings has been updated.</value>
+    <value>The SSL settings has been updated.</value>
   </data>
   <data name="SslSettingsError.Text" xml:space="preserve">
     <value>Could not update the SSL settings. Please try later.</value>
@@ -454,7 +454,7 @@
     <value>Display Name Format</value>
   </data>
   <data name="Security_UserNameValidation.Help" xml:space="preserve">
-    <value>Add your own Validation Expression, which is used to check the validity of the user name provided.  If you change this from the default you should update the message that a user would see when they enter an invalid user name using the localization editor. (SharedResources.resx - Username.RegExError)</value>
+    <value>Add your own Validation Expression, which is used to check the validity of the user name provided.  If you change this from the default you should update the message that a user would see when they enter an invalid user name using the localization editor in Settings - Site Settings - Languages.</value>
   </data>
   <data name="Security_UserNameValidation.Text" xml:space="preserve">
     <value>User Name Validation</value>
@@ -472,7 +472,7 @@
     <value>Excluded Terms</value>
   </data>
   <data name="Redirect_AfterRegistration.Help" xml:space="preserve">
-    <value>Optional select the page that users will be redirected to upon successful registration.</value>
+    <value>Optionally select the page that users will be redirected to upon successful registration.</value>
   </data>
   <data name="Redirect_AfterRegistration.Text" xml:space="preserve">
     <value>Redirect After Registration</value>
@@ -550,13 +550,13 @@
     <value>Password Retrieval Enabled</value>
   </data>
   <data name="PasswordResetEnabledTitle.Help" xml:space="preserve">
-    <value>Specifies whether or not a user can request their password to be reset.  This can only be changed in web.config file.</value>
+    <value>Indicates whether or not a user can request their password to be reset.  This can only be changed in web.config file.</value>
   </data>
   <data name="PasswordResetEnabledTitle.Text" xml:space="preserve">
     <value>Password Reset Enabled</value>
   </data>
   <data name="MinNonAlphanumericCharactersTitle.Help" xml:space="preserve">
-    <value>Specifies the minimum number of special characters in the password.  This can only be changed in web.config file.</value>
+    <value>Indicates the minimum number of special characters in the password.  This can only be changed in web.config file.</value>
   </data>
   <data name="MinNonAlphanumericCharactersTitle.Text" xml:space="preserve">
     <value>Min Non Alphanumeric Characters</value>
@@ -574,13 +574,13 @@
     <value>Password Strength Regular Expression</value>
   </data>
   <data name="MaxInvalidPasswordAttemptsTitle.Help" xml:space="preserve">
-    <value>Specifies the number of times the wrong password can be entered before account is locked.  This can only be changed in web.config file.</value>
+    <value>Indicates the number of times the wrong password can be entered before account is locked.  This can only be changed in web.config file.</value>
   </data>
   <data name="MaxInvalidPasswordAttemptsTitle.Text" xml:space="preserve">
     <value>Max Invalid Password Attempts</value>
   </data>
   <data name="PasswordAttemptWindowTitle.Help" xml:space="preserve">
-    <value>Specifies the length of time an account is locked after failed login attempts.  Can only be changed in web.config file.</value>
+    <value>Indicates the length of time an account is locked after failed login attempts.  Can only be changed in web.config file.</value>
   </data>
   <data name="PasswordAttemptWindowTitle.Text" xml:space="preserve">
     <value>Password Attempt Window</value>
@@ -661,7 +661,7 @@
     <value>Time Before Timeout (Seconds)</value>
   </data>
   <data name="plMaxUploadSize.Help" xml:space="preserve">
-    <value>Maximum size of file that can be uploaded to the site.  The minimum is 12 MB.</value>
+    <value>Maximum size of files that can be uploaded to the site.  The minimum is 12 MB.</value>
   </data>
   <data name="plMaxUploadSize.Text" xml:space="preserve">
     <value>Max Upload Size (MB)</value>
@@ -986,13 +986,13 @@
     <value>The passwordFormat is set as Hashed in web.config</value>
   </data>
   <data name="CheckAllowableFileExtensionsFailure.Text" xml:space="preserve">
-    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Host &gt; Host Settings &gt; Other Settings &gt; Allowable File Extensions</value>
+    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Settings &amp;gt; More &amp;gt; More security settings &amp;gt; Allowable File Extensions</value>
   </data>
   <data name="CheckAllowableFileExtensionsName.Text" xml:space="preserve">
     <value>Check if there are any harmful extensions allowed by the file uploader</value>
   </data>
   <data name="CheckAllowableFileExtensionsReason.Text" xml:space="preserve">
-    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Host &gt; Host Settings &gt; Other Settings &gt; Allowable File Extensions</value>
+    <value>Either aspx, asp or php files were found in allowable file extensions setting. This will allow hackers to upload code. Remove these extensions at Settings &amp;gt; More &amp;gt; More security settings &amp;gt; Allowable File Extensions</value>
   </data>
   <data name="CheckAllowableFileExtensionsSuccess.Text" xml:space="preserve">
     <value>The allowable file extensions is setup correctly.</value>
@@ -1094,7 +1094,7 @@
     <value>None Specified</value>
   </data>
   <data name="MinPasswordLengthTitle.Help" xml:space="preserve">
-    <value>Specifies the minimum number of characters in the password.  This can only be changed in web.config file.</value>
+    <value>Indicates the minimum number of characters in the password.  This can only be changed in web.config file.</value>
   </data>
   <data name="MinPasswordLengthTitle.Text" xml:space="preserve">
     <value>Min Password Length</value>
