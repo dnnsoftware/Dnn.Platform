@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using Dnn.PersonaBar.Extensions.Components.Prompt.Models;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
+namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
 {
-    [ConsoleCommand("restore-module", "Restores a module from the DNN recycle bin", new[]{
+    [ConsoleCommand("purge-module", "Permanently deletes a module instance that has previously been sent to the DNN Recycle Bin", new[]{
         "id",
         "pageid"
-})]
-    public class RestoreModule : ConsoleCommandBase
+    })]
+    public class PurgeModule : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestoreModule));
-
         private const string FlagId = "id";
         private const string FlagPageid = "pageid";
 
@@ -31,6 +27,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             var sbErrors = new StringBuilder();
+
             if (HasFlag(FlagId))
             {
                 var tmpId = 0;
@@ -40,7 +37,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer", FlagId);
+                    sbErrors.AppendFormat("The --{0} flag must be an integer; ", FlagId);
                 }
             }
             else
@@ -55,7 +52,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name", FlagId);
+                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name; ", FlagId);
                     }
                 }
             }
@@ -71,19 +68,26 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0", FlagPageid);
+                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0; ", FlagPageid);
                     }
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag value must be an integer", FlagPageid);
+                    sbErrors.AppendFormat("The --{0} flag value must be an integer; ", FlagPageid);
                 }
             }
-
+            else
+            {
+                sbErrors.AppendFormat("The --{0} flag is required; ", FlagPageid);
+            }
 
             if (ModuleId.HasValue && ModuleId <= 0)
             {
-                sbErrors.Append("The Module's ID must be greater than 0");
+                sbErrors.Append("The Module's ID must be greater than 0; ");
+            }
+            if (PageId.HasValue && PageId <= 0)
+            {
+                sbErrors.Append("The Page ID must be greater than 0; ");
             }
             ValidationMessage = sbErrors.ToString();
         }
@@ -92,29 +96,18 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         {
             var lst = new List<ModuleInfoModel>();
 
-            var moduleToRestore = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
 
-            if (moduleToRestore != null)
+            var moduleToPurge = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
+            if (moduleToPurge != null)
             {
-
-                if (moduleToRestore.IsDeleted)
+                if (moduleToPurge.IsDeleted)
                 {
-                    try
-                    {
-                        ModuleController.Instance.RestoreModule(moduleToRestore);
-                        // get the new module info object
-                        var restoredModule = ModuleController.Instance.GetModule(moduleToRestore.ModuleID, moduleToRestore.TabID, true);
-                        lst.Add(ModuleInfoModel.FromDnnModuleInfo(restoredModule));
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        return new ConsoleErrorResultModel("An error occurred while attempting to restore the module. See the DNN Event Viewer for Details");
-                    }
+                    ModuleController.Instance.DeleteTabModule((int)PageId, (int)ModuleId, false);
+                    return new ConsoleResultModel("Successfully purged module");
                 }
                 else
                 {
-                    return new ConsoleResultModel("Cannot restore module. It is not deleted.");
+                    return new ConsoleErrorResultModel("Cannot purge module that hasn't been deleted.");
                 }
             }
             else
@@ -122,7 +115,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
             }
 
-            return new ConsoleResultModel("Successfully restored the module.") { Data = lst };
+
         }
 
     }

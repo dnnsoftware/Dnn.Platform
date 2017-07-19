@@ -1,4 +1,4 @@
-﻿namespace Dnn.PersonaBar.Prompt.Components.Models
+﻿namespace Dnn.PersonaBar.Extensions.Components.Prompt.Models
 {
     /// <summary>
     /// Similar to ModuleInfoModel, however this one has information more specific to a module's 

@@ -2,14 +2,14 @@
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Dnn.PersonaBar.Extensions.Components.Prompt.Models;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
+namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
 {
     [ConsoleCommand("list-modules", "Lists modules on current page", new[]{
 

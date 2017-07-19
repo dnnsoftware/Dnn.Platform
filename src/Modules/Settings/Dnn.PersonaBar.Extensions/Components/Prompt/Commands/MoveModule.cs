@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dnn.PersonaBar.Extensions.Components.Prompt.Models;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
+namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
 {
     [ConsoleCommand("move-module", "Copies the module specified", new[] { "id" })]
     public class MoveModule : ConsoleCommandBase
