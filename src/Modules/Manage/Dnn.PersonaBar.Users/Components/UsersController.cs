@@ -575,7 +575,7 @@ namespace Dnn.PersonaBar.Users.Components
                                 usersContract.SortAscending,
                                 usersContract.PageIndex,
                                 usersContract.PageSize,
-                                usersContract.SearchText + "%",
+                                string.IsNullOrEmpty(usersContract.SearchText) ? "" : usersContract.SearchText.TrimEnd('%') + "%",
                                 includeUnauthorized,
                                 includeDeleted);
             if (reader.Read())

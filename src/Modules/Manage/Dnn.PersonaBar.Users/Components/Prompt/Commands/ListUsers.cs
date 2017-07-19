@@ -111,18 +111,18 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 SortColumn = "displayname",
                 SortAscending = true,
                 PortalId = PortalId,
-                Filter = UserFilters.Authorized
+                Filter = UserFilters.All
             };
             if (!string.IsNullOrEmpty(Username))
             {
                 // do username lookup
-                var searchTerm = Username.Replace("%", "").Replace("*", "%");
+                var searchTerm = Username.Replace("%", "").Replace("*", "");
                 getUsersContract.SearchText = searchTerm;
             }
             else if (!string.IsNullOrEmpty(Email))
             {
                 // must be email
-                var searchTerm = Email.Replace("%", "").Replace("*", "%");
+                var searchTerm = Email.Replace("%", "").Replace("*", "");
                 getUsersContract.SearchText = searchTerm;
             }
             else if (!string.IsNullOrEmpty(Role))
