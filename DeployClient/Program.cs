@@ -145,7 +145,9 @@ namespace DeployClient
             }
             catch (Exception ex)
             {
+                // Output exception message and stack trace.
                 WriteLine(ex.Message);
+                WriteLine(ex.StackTrace);
                 ReadLine();
                 Environment.Exit((int)ExitCode.Error);
             }
