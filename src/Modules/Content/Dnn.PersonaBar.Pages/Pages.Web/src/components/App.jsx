@@ -27,6 +27,8 @@ import BreadCrumbs from "./BreadCrumbs";
 
 import GridCell from "dnn-grid-cell";
 
+import PageDetails from "./PageDetails/PageDetails";
+
 import "./style.less";
 
 
@@ -338,6 +340,14 @@ class App extends Component {
         return additionalPanels;
     }
 
+    setActivePage(pageInfo) {
+        console.log('in setActivePage', pageInfo);
+        this.setState({activePage: pageInfo}, ()=>{
+            console.log(this.state);
+        });
+
+    }
+
     render_PagesTreeViewEditor(){
         return (
             <GridCell columnSize={30}  style={{marginTop:"120px", backgroundColor:"#aaa"}} >
@@ -347,14 +357,33 @@ class App extends Component {
     }
 
     render_PagesDetailEditor(){
-        return (
-            <GridCell columnSize={70}  style={{ padding:"20px" }} >
+
+        const render_emptyState = () => {
+            return (
                 <div className="empty-page-state">
                     <div className="empty-page-state-message">
                         <h1>No page is currently selected</h1>
                         <p>Select a page in the tree to manage its settings here.</p>
                     </div>
                 </div>
+            );
+        };
+
+
+        const render_pageDetails = () => {
+
+            return (
+                <PageDetails
+                    page={this.state.activePage}
+                    onChangeField={(d)=>console.log(d)}
+                    errors={{}}
+                    />
+            );
+        };
+
+        return (
+            <GridCell columnSize={70}  style={{ padding:"20px" }} >
+                {(this.state.activePage) ? render_pageDetails() : render_emptyState() }
             </GridCell>
         );
     }
@@ -382,7 +411,7 @@ class App extends Component {
                         <GridCell columnSize={100} style={{padding:"20px"}} >
                             <GridCell columnSize={100} className="page-container">
                             <PersonaBarPageTreeviewInteractor
-                               onLoadPage={ this.props.onLoadPage.bind(this) }
+                               setActivePage={ this.setActivePage.bind(this) }
                             />
                             {this.render_PagesDetailEditor()}
                             </GridCell>

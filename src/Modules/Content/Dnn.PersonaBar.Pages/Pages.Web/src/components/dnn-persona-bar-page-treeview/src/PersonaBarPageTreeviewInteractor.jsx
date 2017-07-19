@@ -19,7 +19,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentDidMount(){
-
+        this.getPageInfo(20);
     }
 
 
@@ -60,9 +60,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return;
     }
     getPageInfo(id){
+        const {setActivePage} = this.props;
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
         this.GET(url)
-            .then((data) => console.log(data));
+            .then((data) => {
+                setActivePage(data);
+            });
     }
 
     getRootListItems() {
@@ -303,5 +306,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 }
 
 PersonaBarPageTreeviewInteractor.propTypes = {
-    OnSelect: PropTypes.func.isRequired
+    OnSelect: PropTypes.func.isRequired,
+    setActivePage: PropTypes.func.isRequired
 };
