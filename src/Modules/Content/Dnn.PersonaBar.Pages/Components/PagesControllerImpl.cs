@@ -325,8 +325,8 @@ namespace Dnn.PersonaBar.Pages.Components
             return finalList.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "",
-            string lastModifiedOnStartDate = "", string lastModifiedOnEndDate = "", int pageIndex = -1, int pageSize = -1)
+        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", string publishStatus = "",
+            string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var adminTabId = portalSettings.AdminTabId;
@@ -350,12 +350,12 @@ namespace Dnn.PersonaBar.Pages.Components
                 pages = pages.Where(p => HasTags(tags, p.Terms));
             }
             DateTime startDate;
-            if (!string.IsNullOrEmpty(lastModifiedOnStartDate) && DateTime.TryParse(lastModifiedOnStartDate, out startDate))
+            if (!string.IsNullOrEmpty(publishDateStart) && DateTime.TryParse(publishDateStart, out startDate))
             {
                 pages = pages.Where(p => p.LastModifiedOnDate >= startDate);
             }
             DateTime endDate;
-            if (!string.IsNullOrEmpty(lastModifiedOnEndDate) && DateTime.TryParse(lastModifiedOnEndDate, out endDate))
+            if (!string.IsNullOrEmpty(publishDateEnd) && DateTime.TryParse(publishDateEnd, out endDate))
             {
                 pages = pages.Where(p => p.LastModifiedOnDate <= endDate);
             }

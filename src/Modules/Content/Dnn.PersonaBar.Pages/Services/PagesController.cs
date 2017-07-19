@@ -218,21 +218,22 @@ namespace Dnn.PersonaBar.Pages.Services
         /// <param name="searchKey"></param>
         /// <param name="pageType"></param>
         /// <param name="tags"></param>
-        /// <param name="lastModifiedOnStartDate"></param>
-        /// <param name="lastModifiedOnEndDate"></param>
+        /// <param name="publishStatus"></param>
+        /// <param name="publishDateStart"></param>
+        /// <param name="publishDateEnd"></param>
+        /// <param name="workflowId"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "VIEW_PAGE_LIST,VIEW")]
-        public HttpResponseMessage SearchPages(string searchKey = "", string pageType = "", string tags = "",
-            string lastModifiedOnStartDate = "", string lastModifiedOnEndDate = "", int pageIndex = -1, int pageSize = -1)
-
+        public HttpResponseMessage SearchPages(string searchKey = "", string pageType = "", string tags = "", string publishStatus = "All",
+            string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
         {
             var totalRecords = 0;
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
-            var pages = from p in _pagesController.SearchPages(out totalRecords, searchKey, pageType, tags, lastModifiedOnStartDate, lastModifiedOnEndDate, pageIndex, pageSize)
+            var pages = from p in _pagesController.SearchPages(out totalRecords, searchKey, pageType, tags, publishStatus, publishDateStart, publishDateEnd, workflowId, pageIndex, pageSize)
                         select Converters.ConvertToPageItem<PageItem>(p, tabs);
             var response = new
             {
