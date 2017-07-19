@@ -59,21 +59,6 @@ namespace DotNetNuke.Web.Common.Internal
             .Select(e => e.Trim())
             .ToList();
 
-        private static readonly IEnumerable<string> ProtectedPaths = new List<string>
-        {
-            "Default.aspx",
-            "ErrorPage.aspx",
-            "KeepAlive.aspx",
-            "admin\\Sales\\paypalipn.aspx",
-            "admin\\Sales\\paypalsubscription.aspx",
-            "Install\\Install.aspx",
-            "Install\\InstallWizard.aspx",
-            "Install\\UpgradeWizard.aspx",
-            "Portals\\_default\\subhost.aspx",
-            "bin\\",
-            "App_Data\\"
-        }; 
-
         internal static void Initialize()
         {
             if (_fileWatcher == null)
@@ -162,20 +147,8 @@ namespace DotNetNuke.Web.Common.Internal
         private static bool IsRestrictdExtension(string path)
         {
             var extension = Path.GetExtension(path)?.ToLowerInvariant();
-            var invalidFile = !string.IsNullOrEmpty(extension) &&
+            return !string.IsNullOrEmpty(extension) &&
                 GetRestrictExtensions().Contains(extension);
-
-            return invalidFile && !ProtectedPaths.Any(p =>
-            {
-                var protectedPath = Path.Combine(Globals.ApplicationMapPath, p);
-                var comparePath = path.Replace("/", "\\");
-                if (protectedPath.EndsWith("\\"))
-                {
-                    comparePath = Path.GetDirectoryName(path) + "\\";
-                }
-
-                return protectedPath.Equals(comparePath, StringComparison.InvariantCultureIgnoreCase);
-            });
         }
 
         private static IEnumerable<string> GetRestrictExtensions()
