@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Dnn.PersonaBar.Extensions.Components.Prompt.Models;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Common.Utilities;
+using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
+namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("delete-module", "Delete a module instance", new[] { "id", "pageid" })]
-    public class DeleteModule : ConsoleCommandBase
+    [ConsoleCommand("purge-module", "Permanently deletes a module instance that has previously been sent to the DNN Recycle Bin", new[]{
+        "id",
+        "pageid"
+    })]
+    public class PurgeModule : ConsoleCommandBase
     {
         private const string FlagId = "id";
         private const string FlagPageid = "pageid";
@@ -35,7 +37,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer", FlagId);
+                    sbErrors.AppendFormat("The --{0} flag must be an integer; ", FlagId);
                 }
             }
             else
@@ -50,7 +52,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name", FlagId);
+                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name; ", FlagId);
                     }
                 }
             }
@@ -66,18 +68,26 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
                     }
                     else
                     {
-                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0", FlagPageid);
+                        sbErrors.AppendFormat("The --{0} flag value must be greater than 0; ", FlagPageid);
                     }
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag value must be an integer", FlagPageid);
+                    sbErrors.AppendFormat("The --{0} flag value must be an integer; ", FlagPageid);
                 }
+            }
+            else
+            {
+                sbErrors.AppendFormat("The --{0} flag is required; ", FlagPageid);
             }
 
             if (ModuleId.HasValue && ModuleId <= 0)
             {
-                sbErrors.Append("The Module's ID must be greater than 0");
+                sbErrors.Append("The Module's ID must be greater than 0; ");
+            }
+            if (PageId.HasValue && PageId <= 0)
+            {
+                sbErrors.Append("The Page ID must be greater than 0; ");
             }
             ValidationMessage = sbErrors.ToString();
         }
@@ -87,21 +97,17 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
             var lst = new List<ModuleInfoModel>();
 
 
-            var results = ModuleController.Instance.GetAllTabsModulesByModuleID((int)ModuleId);
-            if (results != null)
+            var moduleToPurge = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
+            if (moduleToPurge != null)
             {
-                var module = (ModuleInfo)results[0];
-                if (PageId.HasValue)
+                if (moduleToPurge.IsDeleted)
                 {
-                    // we can do a soft Delete
-                    ModuleController.Instance.DeleteTabModule((int)PageId, (int)ModuleId, true);
-                    return new ConsoleResultModel($"Module {ModuleId} sent to Recycle Bin");
+                    ModuleController.Instance.DeleteTabModule((int)PageId, (int)ModuleId, false);
+                    return new ConsoleResultModel("Successfully purged module");
                 }
                 else
                 {
-                    ModuleController.Instance.DeleteModule((int)ModuleId);
-                    DataCache.ClearModuleCache(module.TabID);
-                    return new ConsoleResultModel($"Module {ModuleId} permanently deleted");
+                    return new ConsoleErrorResultModel("Cannot purge module that hasn't been deleted.");
                 }
             }
             else

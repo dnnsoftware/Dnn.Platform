@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using Dnn.PersonaBar.Extensions.Components.Prompt.Models;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Prompt.Components.Models;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 
-namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
+namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("restore-module", "Restores a module from the DNN recycle bin", new[]{
-        "id",
-        "pageid"
-})]
-    public class RestoreModule : ConsoleCommandBase
+    [ConsoleCommand("delete-module", "Delete a module instance", new[] { "id", "pageid" })]
+    public class DeleteModule : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestoreModule));
-
         private const string FlagId = "id";
         private const string FlagPageid = "pageid";
 
@@ -31,6 +25,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             var sbErrors = new StringBuilder();
+
             if (HasFlag(FlagId))
             {
                 var tmpId = 0;
@@ -80,7 +75,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
                 }
             }
 
-
             if (ModuleId.HasValue && ModuleId <= 0)
             {
                 sbErrors.Append("The Module's ID must be greater than 0");
@@ -92,29 +86,22 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
         {
             var lst = new List<ModuleInfoModel>();
 
-            var moduleToRestore = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
 
-            if (moduleToRestore != null)
+            var results = ModuleController.Instance.GetAllTabsModulesByModuleID((int)ModuleId);
+            if (results != null)
             {
-
-                if (moduleToRestore.IsDeleted)
+                var module = (ModuleInfo)results[0];
+                if (PageId.HasValue)
                 {
-                    try
-                    {
-                        ModuleController.Instance.RestoreModule(moduleToRestore);
-                        // get the new module info object
-                        var restoredModule = ModuleController.Instance.GetModule(moduleToRestore.ModuleID, moduleToRestore.TabID, true);
-                        lst.Add(ModuleInfoModel.FromDnnModuleInfo(restoredModule));
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        return new ConsoleErrorResultModel("An error occurred while attempting to restore the module. See the DNN Event Viewer for Details");
-                    }
+                    // we can do a soft Delete
+                    ModuleController.Instance.DeleteTabModule((int)PageId, (int)ModuleId, true);
+                    return new ConsoleResultModel($"Module {ModuleId} sent to Recycle Bin");
                 }
                 else
                 {
-                    return new ConsoleResultModel("Cannot restore module. It is not deleted.");
+                    ModuleController.Instance.DeleteModule((int)ModuleId);
+                    DataCache.ClearModuleCache(module.TabID);
+                    return new ConsoleResultModel($"Module {ModuleId} permanently deleted");
                 }
             }
             else
@@ -122,7 +109,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
                 return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
             }
 
-            return new ConsoleResultModel("Successfully restored the module.") { Data = lst };
+
         }
 
     }

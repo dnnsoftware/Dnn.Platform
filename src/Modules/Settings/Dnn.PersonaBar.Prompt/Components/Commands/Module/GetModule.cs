@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Dnn.PersonaBar.Extensions.Components.Prompt.Models;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
+namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
     [ConsoleCommand("get-module", "Gets module information for module specified", new[] { "id" })]
     public class GetModule : ConsoleCommandBase

@@ -142,17 +142,6 @@
     <Compile Include="Components\Editors\AuthSystemPackageEditor.cs" />
     <Compile Include="Components\Editors\ModulePackageEditor.cs" />
     <Compile Include="Components\Editors\PackageEditorFactory.cs" />
-    <Compile Include="Components\Prompt\Commands\AddModule.cs" />
-    <Compile Include="Components\Prompt\Commands\CopyModule.cs" />
-    <Compile Include="Components\Prompt\Commands\DeleteModule.cs" />
-    <Compile Include="Components\Prompt\Commands\GetModule.cs" />
-    <Compile Include="Components\Prompt\Commands\ListModules.cs" />
-    <Compile Include="Components\Prompt\Commands\MoveModule.cs" />
-    <Compile Include="Components\Prompt\Commands\NewExtension.cs" />
-    <Compile Include="Components\Prompt\Commands\PurgeModule.cs" />
-    <Compile Include="Components\Prompt\Commands\RestoreModule.cs" />
-    <Compile Include="Components\Prompt\Models\ModuleInfoModel.cs" />
-    <Compile Include="Components\Prompt\Models\ModuleInstanceModel.cs" />
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="Components\ExtensionsController.cs" />
     <Compile Include="Components\ICreateModuleController.cs" />
@@ -185,7 +174,6 @@
   <ItemGroup>
     <Content Include="app.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

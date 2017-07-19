@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Dnn.PersonaBar.Extensions.Components.Prompt.Models
+namespace Dnn.PersonaBar.Prompt.Components.Models
 {
     public class ModuleInfoModel
     {

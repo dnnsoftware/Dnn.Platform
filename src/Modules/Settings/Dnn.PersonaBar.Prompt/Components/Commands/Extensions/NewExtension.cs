@@ -11,7 +11,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 
-namespace Dnn.PersonaBar.Extensions.Components.Prompt.Commands
+namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
 {
     [ConsoleCommand("new-extension", "Creates a new extension from a manifest or package", new[] { "path" })]
     public class NewExtension : ConsoleCommandBase
