@@ -35,6 +35,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 CanViewPage = TabPermissionController.CanViewPage(tab),
                 LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
+                PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : "",
                 Tags = tab.Terms.Select(t => t.Name).ToArray()
         };
         }

@@ -133,6 +133,8 @@
     <Compile Include="Components\Prompt\Commands\SetPage.cs" />
     <Compile Include="Components\Prompt\Models\PageModel.cs" />
     <Compile Include="Components\Prompt\Models\PageModelBase.cs" />
+    <Compile Include="Components\PublishStatus.cs" />
+    <Compile Include="Components\WorkflowHelper.cs" />
     <Compile Include="Components\XssCleaner.cs" />
     <Compile Include="Components\PageUrlsController.cs" />
     <Compile Include="Components\Security\ISecurityService.cs" />
