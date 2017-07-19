@@ -36,14 +36,14 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagPassword = "password";
 
 
-        public int? UserId { get; private set; }
-        public string Email { get; private set; }
-        public string Username { get; private set; }
-        public string DisplayName { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public bool? Approved { get; private set; }
-        public string Password { get; private set; }
+        public int? UserId { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string DisplayName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool? Approved { get; set; }
+        public string Password { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

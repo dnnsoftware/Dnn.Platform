@@ -4,28 +4,30 @@ using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
+namespace Dnn.PersonaBar.Prompt.Components.Commands.RecycleBin
 {
-    [ConsoleCommand("purge-page", "Permanently deletes a page from the DNN Recycle Bin", new[]{
+    [ConsoleCommand("restore-page", "Restores a previously deleted page", new[]{
         "id",
+        "name",
         "parentid"
     })]
-    public class PurgePage : ConsoleCommandBase
+    public class RestorePage : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgePage));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestorePage));
 
-        private const string FlagId = "id";
+        private const string FlagName = "name";
         private const string FlagParentid = "parentid";
+        private const string FlagId = "id";
 
 
-        public int? PageId { get; private set; }
-        public int? ParentId { get; private set; }
+        int? PageId { get; set; }
+        string PageName { get; set; }
+        int? ParentId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -64,29 +66,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
             {
                 var tmpId = 0;
                 if (int.TryParse(Flag(FlagParentid), out tmpId))
-                {
-                    if (tmpId == -1 || tmpId > 0)
-                    {
-                        ParentId = tmpId;
-                    }
-                    else
-                    {
-                        sbErrors.AppendFormat("--{0} must be greater than zero (0) or -1", FlagParentid);
-                    }
-                }
+                    ParentId = tmpId;
             }
 
-            if (!PageId.HasValue && !ParentId.HasValue)
+            PageName = Flag(FlagName);
+
+            if (!PageId.HasValue && string.IsNullOrEmpty(PageName) && !ParentId.HasValue)
             {
-                sbErrors.Append("You must specify a Page ID or a Parent ID");
+                sbErrors.Append("You must specify either a Page ID, Page Name, or Parent ID");
             }
             ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
         {
-            var tc = new TabController();
-            var lst = new List<PageModel>();
+            var tc = TabController.Instance;
             var tabs = new List<TabInfo>();
 
             if (PageId.HasValue)
@@ -96,14 +90,29 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
                 {
                     tabs.Add(tab);
                 }
+
+            }
+            else if (!string.IsNullOrEmpty(PageName))
+            {
+                TabInfo tab = null;
+                if (ParentId.HasValue)
+                {
+                    tab = tc.GetTabByName(PageName, PortalId, (int)ParentId);
+                }
+                else
+                {
+                    tab = tc.GetTabByName(PageName, PortalId);
+                }
+
+                if (tab != null)
+                    tabs.Add(tab);
             }
             else
             {
-                // must be parent ID
+                // must be parent ID only
                 tabs = TabController.GetTabsByParent((int)ParentId, PortalId);
             }
 
-            // hard-delete deleted tabs only
             var sbResults = new StringBuilder();
             if (tabs.Count > 0)
             {
@@ -113,24 +122,20 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
                     {
                         try
                         {
-                            tc.DeleteTab(tab.TabID, PortalId);
-                            sbResults.AppendFormat("Successfully purged '{0}' ({1}).\n", tab.TabName, tab.TabID);
+                            tc.RestoreTab(tab, PortalSettings);
+                            sbResults.AppendFormat("Successfully restored '{0}' ({1}).\n", tab.TabName, tab.TabID);
                         }
                         catch (Exception ex)
                         {
                             Logger.Error(ex);
-                            sbResults.AppendFormat("An unexpected error occurred while purging page '{0}' ({1}).\n", tab.TabName, tab.TabID);
+                            sbResults.AppendFormat("An error occurred while restoring page ({0}). See the DNN Event Viewer for details. ", tab.TabID);
                         }
-                    }
-                    else
-                    {
-                        sbResults.AppendFormat("Cannot purge page '{0}' ({1}) because it has not been deleted. Try delete-page first.\n", tab.TabName, tab.TabID);
                     }
                 }
             }
             else
             {
-                sbResults.Append("No pages were found to purge.");
+                return new ConsoleErrorResultModel("No page found to restorePage.");
             }
 
             return new ConsoleResultModel(sbResults.ToString());

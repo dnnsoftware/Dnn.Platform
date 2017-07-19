@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using Dnn.PersonaBar.Library.DTO;
 using Dnn.PersonaBar.Library.Helper;
@@ -69,7 +70,7 @@ namespace Dnn.PersonaBar.Pages.Components
             _templateController = TemplateController.Instance;
             _defaultPortalThemeController = DefaultPortalThemeController.Instance;
         }
-        
+
         public bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -109,7 +110,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return valid;
         }
-        
+
         public List<int> GetPageHierarchy(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -138,7 +139,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tab = TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);
             if (tab == null)
-            {                
+            {
                 throw new PageNotFoundException();
             }
 
@@ -172,7 +173,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             //as tab's parent may changed, url need refresh.
-            return TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);            
+            return TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);
         }
 
         public void DeletePage(PageItem page)
@@ -263,12 +264,12 @@ namespace Dnn.PersonaBar.Pages.Components
             return false;
         }
 
-        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "")
+        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var adminTabId = portalSettings.AdminTabId;
 
-            var tabs = TabController.GetPortalTabs(portalSettings.PortalId, adminTabId, false, true, false, true);
+            var tabs = TabController.GetPortalTabs(portalSettings.PortalId, adminTabId, false, includeHidden, includeDeleted, true);
             var pages = from t in tabs
                         where (t.ParentId != adminTabId || t.ParentId == Null.NullInteger) &&
                                 !t.IsSystem &&
@@ -281,7 +282,50 @@ namespace Dnn.PersonaBar.Pages.Components
             return pages;
         }
 
-        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", 
+        public IEnumerable<TabInfo> GetPageList(bool? deleted, string tabName, string tabTitle, string tabPath,
+            string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10)
+        {
+            pageIndex = pageIndex <= 0 ? 0 : pageIndex;
+            pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
+            var tabs = GetPageList(parentId, searchKey, true, deleted ?? false);
+            var finalList = new List<TabInfo>();
+            if (deleted.HasValue)
+                tabs = tabs.Where(tab => tab.IsDeleted == deleted);
+            if (visible.HasValue)
+                tabs = tabs.Where(tab => tab.IsVisible == visible);
+
+            if (!string.IsNullOrEmpty(tabTitle) || !string.IsNullOrEmpty(tabName) || !string.IsNullOrEmpty(tabPath) ||
+                !string.IsNullOrEmpty(tabSkin))
+            {
+                foreach (var tab in tabs)
+                {
+                    var bIsMatch = true;
+                    if (!string.IsNullOrEmpty(tabTitle))
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.Title, tabTitle.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    if (!string.IsNullOrEmpty(tabName))
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.TabName, tabName.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    if (!string.IsNullOrEmpty(tabPath))
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.TabPath, tabPath.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    if (!string.IsNullOrEmpty(tabSkin))
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.SkinSrc, tabSkin.Replace("*", ".*"), RegexOptions.IgnoreCase);
+
+                    if (bIsMatch)
+                        finalList.Add(tab);
+                }
+            }
+            else
+            {
+                finalList.AddRange(tabs);
+            }
+            total = finalList.Count;
+            return finalList.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
+        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "",
             string lastModifiedOnStartDate = "", string lastModifiedOnEndDate = "", int pageIndex = -1, int pageSize = -1)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -432,7 +476,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             var tabId = _tabController.AddTab(tab);
             tab = _tabController.GetTab(tabId, portalId);
-                        
+
             CreateOrUpdateContentItem(tab);
 
             if (pageSettings.TemplateTabId > 0)
@@ -497,7 +541,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             tab.PermanentRedirect = pageSettings.PermanentRedirect;
             tab.Url = GetInternalUrl(pageSettings);
-            
+
             tab.TabSettings["CacheProvider"] = pageSettings.CacheProvider;
             if (pageSettings.CacheProvider != null)
             {
@@ -516,8 +560,8 @@ namespace Dnn.PersonaBar.Pages.Components
                         tab.TabSettings["IncludeVaryBy"] = pageSettings.CacheIncludeVaryBy;
                         tab.TabSettings["ExcludeVaryBy"] = null;
                     }
-                    tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;               
-                }                
+                    tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;
+                }
             }
 
             else
@@ -604,7 +648,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private string GetContainerSrc(PageSettings pageSettings)
         {
             var defaultContainer = _defaultPortalThemeController.GetDefaultPortalContainer();
-            if (pageSettings.ContainerSrc != null && 
+            if (pageSettings.ContainerSrc != null &&
                 pageSettings.ContainerSrc.Equals(defaultContainer,
                 StringComparison.InvariantCultureIgnoreCase))
             {
@@ -616,7 +660,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private string GetSkinSrc(PageSettings pageSettings)
         {
             var defaultSkin = _defaultPortalThemeController.GetDefaultPortalLayout();
-            if (pageSettings.SkinSrc != null && 
+            if (pageSettings.SkinSrc != null &&
                 pageSettings.SkinSrc.Equals(defaultSkin,
                 StringComparison.InvariantCultureIgnoreCase))
             {
@@ -882,7 +926,7 @@ namespace Dnn.PersonaBar.Pages.Components
                             .FirstOrDefault();
             return primary == null ? (int?)null : primary.KeyID;
         }
-        
+
         public void CreateOrUpdateContentItem(TabInfo tab)
         {
             var contentController = Util.GetContentController();
@@ -908,7 +952,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
             contentController.AddContentItem(tab);
         }
-        
+
         public int UpdateTab(TabInfo tab, PageSettings pageSettings)
         {
             UpdateTabInfoFromPageSettings(tab, pageSettings);
@@ -999,9 +1043,9 @@ namespace Dnn.PersonaBar.Pages.Components
         private static bool HasAdminPermissions(PagePermissions permissions)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return permissions.RolePermissions != null && (bool) permissions.RolePermissions?.Any(permission =>
-                permission.RoleId == portalSettings.AdministratorRoleId &&
-                permission.Permissions.Count != 0);
+            return permissions.RolePermissions != null && (bool)permissions.RolePermissions?.Any(permission =>
+               permission.RoleId == portalSettings.AdministratorRoleId &&
+               permission.Permissions.Count != 0);
         }
 
         public virtual PageSettings GetDefaultSettings()
@@ -1053,7 +1097,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     permissions.UserPermissions = permissions.UserPermissions.OrderBy(p => p.DisplayName).ToList();
                 }
             }
-            
+
             return permissions;
         }
 

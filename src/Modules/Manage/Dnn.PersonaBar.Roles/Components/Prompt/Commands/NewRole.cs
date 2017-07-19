@@ -33,11 +33,11 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         private const string FlagStatus = "status";
 
 
-        public string RoleName { get; private set; }
-        public string Description { get; private set; }
-        public bool IsPublic { get; private set; }
-        public bool AutoAssign { get; private set; }
-        public RoleStatus Status { get; private set; }
+        public string RoleName { get; set; }
+        public string Description { get; set; }
+        public bool IsPublic { get; set; }
+        public bool AutoAssign { get; set; }
+        public RoleStatus Status { get; set; }
 
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

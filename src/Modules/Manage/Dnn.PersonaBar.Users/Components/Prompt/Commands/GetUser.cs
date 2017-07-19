@@ -24,9 +24,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagUsername = "username";
 
 
-        public int? UserId { get; private set; }
-        public string Email { get; private set; }
-        public string Username { get; private set; }
+        public int? UserId { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

@@ -21,8 +21,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         private const string FlagPage = "page";
         private const string FlagMax = "Max";
 
-        public int Page { get; private set; }
-        public int Max { get; private set; } = 10;
+        public int Page { get; set; }
+        public int Max { get; set; } = 10;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

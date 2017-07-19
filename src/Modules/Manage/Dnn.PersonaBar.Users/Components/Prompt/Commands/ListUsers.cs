@@ -31,11 +31,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagMax = "max";
 
 
-        public string Email { get; private set; }
-        public string Username { get; private set; }
-        public string Role { get; private set; }
-        public int Page { get; private set; }
-        public int Max { get; private set; } = 10;
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Role { get; set; }
+        public int Page { get; set; }
+        public int Max { get; set; } = 10;
 
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

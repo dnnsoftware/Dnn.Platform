@@ -1,27 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.Pages.Components.Security;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
+namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-page", "Retrieves information about the specified or current page", new[]{
+    [ConsoleCommand("goto", "Navigates to a specified page within the DNN site", new[]{
         "id",
         "parentid",
         "name"
     })]
-    public class GetPage : ConsoleCommandBase
+    public class Goto : ConsoleCommandBase
     {
-
-
-        public int? PageId { get; private set; }
-        public string PageName { get; private set; }
-        public int? ParentId { get; private set; }
+        int PageId { get; set; } = -1;
+        string PageName { get; set; }
+        int ParentId { get; set; } = -1;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -35,10 +32,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
             }
             else if (args.Length == 2)
             {
-                var tmpId = 0;
+                int tmpId;
                 if (!int.TryParse(args[1], out tmpId))
                 {
-                    sbErrors.Append("No valid Page ID specified; ");
+                    sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_NoPageId", Constants.LocalResourceFile));
                 }
                 else
                 {
@@ -47,12 +44,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
             }
             else
             {
-                var tmpId = 0;
                 if (HasFlag("id"))
                 {
+                    int tmpId;
                     if (!int.TryParse(Flag("id"), out tmpId))
                     {
-                        sbErrors.Append("You must specify a valid number for Page ID; ");
+                        sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_InvalidPageId", Constants.LocalResourceFile));
                     }
                     else
                     {
@@ -70,46 +67,30 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Page
 
             PageName = Flag("name");
 
-            if (!PageId.HasValue && string.IsNullOrEmpty(PageName))
+            if (PageId == -1 && string.IsNullOrEmpty(PageName))
             {
-                sbErrors.Append("You must specify either a Page ID (number) or a Page Name (string)");
+                sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParameterRequired", Constants.LocalResourceFile), "Page ID, Page Name");
             }
             ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
         {
-            var tc = new TabController();
-            var lst = new List<PageModel>();
+            var tab = PageId != -1
+                ? TabController.Instance.GetTab(PageId, PortalId)
+                : (ParentId > 0
+                    ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId)
+                    : TabController.Instance.GetTabByName(PageName, PortalId));
 
-            if (PageId.HasValue)
+            if (tab == null)
             {
-                var tab = tc.GetTab((int)PageId, PortalId);
-                if (tab != null)
-                {
-                    lst.Add(new PageModel(tab));
-                }
-
+                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageNotFound", Constants.LocalResourceFile));
             }
-            else
+            if (!SecurityService.Instance.CanManagePage(PageId))
             {
-                TabInfo tab = null;
-                if (ParentId.HasValue)
-                {
-                    tab = tc.GetTabByName(PageName, PortalId, (int)ParentId);
-                }
-                else
-                {
-                    tab = tc.GetTabByName(PageName, PortalId);
-                }
-
-                if (tab != null)
-                    lst.Add(new PageModel(tab));
+                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("MethodPermissionDenied", Constants.LocalResourceFile));
             }
-
-            return new ConsoleResultModel($"{lst.Count} page{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
+            return new ConsoleResultModel(tab.FullUrl);
         }
-
-
     }
 }
