@@ -54,12 +54,15 @@ class App extends Component {
             referral: "",
             referralText: ""
         };
+
     }
 
     componentDidMount() {
         const {props} = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
+        window.dnn.utility.closeSocialTasks();
+        window.dnn.utility.expandPersonaBarPage();
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
@@ -371,18 +374,35 @@ class App extends Component {
 
 
         const render_pageDetails = () => {
-
+            const {props, state} = this;
             return (
-                <PageDetails
-                    page={this.state.activePage}
-                    onChangeField={(d)=>console.log(d)}
-                    errors={{}}
-                    />
+                <PageSettings selectedPage={state.activePage}
+                    AllowContentLocalization={(d)=>console.log(d)  }
+                    selectedPageErrors={{}}
+                    selectedPageDirty={props.selectedPageDirty}
+                    onCancel={ (d)=>console.log(d)  }
+                    onDelete={(d)=>console.log(d)  }
+                    onSave={this.onSavePage.bind(this)}
+                    selectedPageSettingTab={props.selectedPageSettingTab}
+                    selectPageSettingTab={this.selectPageSettingTab.bind(this)}
+                    onChangeField={props.onChangePageField}
+                    onPermissionsChanged={props.onPermissionsChanged}
+                    onChangePageType={props.onChangePageType}
+                    onDeletePageModule={props.onDeletePageModule}
+                    onEditingPageModule={props.onEditingPageModule}
+                    onCancelEditingPageModule={props.onCancelEditingPageModule}
+                    editingSettingModuleId={props.editingSettingModuleId}
+                    onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
+                    onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
+                    pageDetailsFooterComponents={props.pageDetailsFooterComponents}
+                    pageTypeSelectorComponents={props.pageTypeSelectorComponents}
+                    onGetCachedPageCount={props.onGetCachedPageCount}
+                    onClearCache={props.onClearCache} />
             );
         };
 
         return (
-            <GridCell columnSize={70}  style={{ padding:"20px" }} >
+            <GridCell columnSize={70}  className="treeview-page-details" >
                 {(this.state.activePage) ? render_pageDetails() : render_emptyState() }
             </GridCell>
         );

@@ -19,7 +19,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentDidMount(){
-        this.getPageInfo(20);
+       
     }
 
 
