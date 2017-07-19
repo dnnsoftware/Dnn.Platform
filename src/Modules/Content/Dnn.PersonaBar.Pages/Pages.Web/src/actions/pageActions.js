@@ -26,9 +26,9 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId) {
-    dispatch({
-        type: ActionTypes.LOAD_PAGE
-    });
+    // dispatch({
+    //     type: ActionTypes.LOAD_PAGE
+    // });
 
     if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
         dispatch({
@@ -44,6 +44,7 @@ const loadPage = function (dispatch, pageId) {
     }
 
     PagesService.getPage(pageId).then(response => {
+        console.og
         dispatch({
             type: ActionTypes.LOADED_PAGE,
             data: {
@@ -199,11 +200,11 @@ const pageActions = {
         };
     },
 
-    changePageField(key, value) {
-        
+    changePageField(key, value, selectedPage) {
+
         return (dispatch, getState) => {
             const { pages } = getState();
-
+            console.log(pages);
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,
@@ -213,7 +214,7 @@ const pageActions = {
             if (key === "name" &&
                 pages.selectedPage.tabId === 0 &&
                 !pages.urlChanged &&
-                pages.selectedPage.pageType === "normal") {
+                selectedPage.pageType === "normal") {
                 debouncedUpdateUrlPreview(value, dispatch);
             }
         };

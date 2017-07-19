@@ -345,6 +345,9 @@ class App extends Component {
 
     setActivePage(pageInfo) {
         console.log('in setActivePage', pageInfo);
+
+        this.props.onLoadPage(pageInfo.tabId);
+
         this.setState({activePage: pageInfo}, ()=>{
             console.log(this.state);
         });
@@ -375,6 +378,7 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const {props, state} = this;
+            console.log(state.activePage)
             return (
                 <PageSettings selectedPage={state.activePage}
                     AllowContentLocalization={(d)=>console.log(d)  }
@@ -385,7 +389,7 @@ class App extends Component {
                     onSave={this.onSavePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={props.onChangePageField}
+                    onChangeField={props.onChangePageField.bind(this)}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType}
                     onDeletePageModule={props.onDeletePageModule}
