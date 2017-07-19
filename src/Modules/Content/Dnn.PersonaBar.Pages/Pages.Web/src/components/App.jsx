@@ -380,8 +380,8 @@ class App extends Component {
                     AllowContentLocalization={(d)=>console.log(d)  }
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
-                    onCancel={ (d)=>console.log(d)  }
-                    onDelete={(d)=>console.log(d)  }
+                    onCancel={ props.onCancelPage.bind(this) }
+                    onDelete={ props.onDeletePage.bind(this) }
                     onSave={this.onSavePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
@@ -397,7 +397,8 @@ class App extends Component {
                     pageDetailsFooterComponents={props.pageDetailsFooterComponents}
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents}
                     onGetCachedPageCount={props.onGetCachedPageCount}
-                    onClearCache={props.onClearCache} />
+                    onClearCache={props.onClearCache}
+                />
             );
         };
 

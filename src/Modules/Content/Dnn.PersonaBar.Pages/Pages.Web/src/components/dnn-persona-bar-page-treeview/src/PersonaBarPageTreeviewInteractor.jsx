@@ -19,7 +19,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentDidMount(){
-       
+
     }
 
 
@@ -62,16 +62,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     getPageInfo(id){
         const {setActivePage} = this.props;
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
-        this.GET(url)
-            .then((data) => {
-                setActivePage(data);
-            });
+        this.GET(url).then((data) => setActivePage(data));
     }
 
     getRootListItems() {
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?searchKey=`;
-        this.GET(url)
-            .then((data) => this.setState({ pageList: data }));
+        this.GET(url).then((data) => this.setState({ pageList: data }));
     }
 
     toggleParentCollapsedState(id) {
@@ -89,7 +85,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
 
         this.getPageInfo(id);
-
     }
 
     onDragStart(e, item) {
@@ -142,7 +137,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     let cachedItemIndexParent;
 
                     const left = () => {
-                        console.log('in pop left')
                         item.childListItems.filter((data, index)=>{
                             if (data.id === moveChild.id) {
                                 cachedItemIndex = index;
@@ -156,7 +150,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     };
 
                     const right = () => {
-                        console.log('in pop right')
                         let rootList = this.state.pageList.concat();
                         rootList.filter((item, index) => {
                             if (item.id === moveChild.id) {

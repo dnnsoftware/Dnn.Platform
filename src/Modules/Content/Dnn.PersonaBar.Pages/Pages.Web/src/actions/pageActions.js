@@ -200,8 +200,10 @@ const pageActions = {
     },
 
     changePageField(key, value) {
+        
         return (dispatch, getState) => {
             const { pages } = getState();
+
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,

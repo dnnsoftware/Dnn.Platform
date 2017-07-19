@@ -28,7 +28,8 @@ class PageSettings extends Component {
 
     getButtons() {
         const {selectedPage, onCancel, onSave, onDelete} = this.props;
-        const saveButtonText = selectedPage.tabId === 0 ? 
+        
+        const saveButtonText = selectedPage.tabId === 0 ?
             Localization.get("AddPage") : Localization.get("Save");
         const pageErrors = this.hasPageErrors();
 
@@ -39,17 +40,16 @@ class PageSettings extends Component {
                 </Button>,
                 <Button
                     type="primary"
-                    onClick={onSave}
+                    onClick={onSave.bind(this, selectedPage)}
                     disabled={pageErrors}>
                     {saveButtonText}
                 </Button>];
                 
-        if (selectedPage.tabId !== 0 
-            && !securityService.isSuperUser()
+        if (selectedPage.tabId !== 0
             && securityService.userHasPermission(permissionTypes.DELETE_PAGE)) {
             buttons.unshift(<Button
                     type="secondary"
-                    onClick={onDelete}>
+                    onClick={onDelete.bind(this,selectedPage)} >
                     {Localization.get("Delete")}
                 </Button>);
         }
