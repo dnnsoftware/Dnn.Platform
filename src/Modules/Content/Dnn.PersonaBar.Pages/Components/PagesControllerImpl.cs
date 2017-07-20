@@ -349,6 +349,23 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 pages = pages.Where(p => HasTags(tags, p.Terms));
             }
+            PublishStatus status;
+            if (Enum.TryParse(publishStatus, true, out status))
+            {
+                switch (status)
+                {
+                    case PublishStatus.Published:
+                        pages = pages.Where(WorkflowHelper.IsWorkflowCompleted);
+                        break;
+                    case PublishStatus.Draft:
+                        pages = pages.Where(p => !WorkflowHelper.IsWorkflowCompleted(p));
+                        break;
+                    case PublishStatus.All:
+                        break;
+                    default:
+                        break;
+                }
+            }
             DateTime startDate;
             if (!string.IsNullOrEmpty(publishDateStart) && DateTime.TryParse(publishDateStart, out startDate))
             {

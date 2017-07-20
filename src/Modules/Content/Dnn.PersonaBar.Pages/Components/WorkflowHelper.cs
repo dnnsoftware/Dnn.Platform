@@ -38,5 +38,17 @@ namespace Dnn.PersonaBar.Pages.Components
                 ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(PortalSettings.Current.PortalId)
                 : WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).WorkflowID;
         }
+
+        public static bool IsWorkflowCompleted(TabInfo tab)
+        {
+            //If tab exists but ContentItem not, then we create it
+            if (tab.ContentItemId == Null.NullInteger && tab.TabID != Null.NullInteger)
+            {
+                TabController.Instance.CreateContentItem(tab);
+                TabController.Instance.UpdateTab(tab);
+            }
+
+            return WorkflowEngine.Instance.IsWorkflowCompleted(tab);
+        }
     }
 }
