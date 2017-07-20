@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dnnsoftware.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
@@ -43,8 +43,14 @@ namespace DotNetNuke.Web.Common.Internal
         private static DateTime _lastRead;
         private static Globals.UpgradeStatus _appStatus = Globals.UpgradeStatus.None;
         private static IEnumerable<string> _settingsRestrictExtensions = new string[] { };
+        private static Queue<string> _filesQ;
+        private static Timer _qTimer;
+
+        // used to indicate already send first real-time email within last SlidingDelay period
+        private static int _notificationSent;
 
         private const int CacheTimeOut = 5; //obtain the setting and do calculations once every 5 minutes at most, plus no need for locking
+        private const int SlidingDelay = 30 * 1000; // milliseconds
 
         // Source: Configuring Blocked File Extensions
         // https://msdn.microsoft.com/en-us/library/cc767397.aspx
@@ -97,12 +103,38 @@ namespace DotNetNuke.Web.Common.Internal
             _fileWatcher.Renamed += WatcherOnRenamed;
             _fileWatcher.Error += WatcherOnError;
 
-            _fileWatcher.EnableRaisingEvents = true;
+            _filesQ = new Queue<string>();
+            _qTimer = new Timer(QTimerCallBack);
 
             AppDomain.CurrentDomain.DomainUnload += (sender, args) =>
             {
                 _fileWatcher.Dispose();
+                QTimerCallBack(null);
             };
+
+            _fileWatcher.EnableRaisingEvents = true;
+        }
+
+        private static void QTimerCallBack(object obj)
+        {
+            try
+            {
+                string[] items;
+                lock (_filesQ)
+                {
+                    while (!_qTimer.Change(Timeout.Infinite, Timeout.Infinite)) { }
+                    Interlocked.Exchange(ref _notificationSent, 0);
+                    items = _filesQ.ToArray();
+                    while (_filesQ.Count > 0) _filesQ.Dequeue();
+                }
+
+                if (items.Length > 0)
+                    NotifyManager(items);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
         }
 
         private static void WatcherOnRenamed(object sender, RenamedEventArgs e)
@@ -133,14 +165,39 @@ namespace DotNetNuke.Web.Common.Internal
                 {
                     if (_appStatus != Globals.UpgradeStatus.Install && _appStatus != Globals.UpgradeStatus.Upgrade)
                     {
-                        ThreadPool.QueueUserWorkItem(_ => AddEventLog(path));
-                        ThreadPool.QueueUserWorkItem(_ => NotifyManager(path));
+                        Globals.UpgradeStatus appStatus;
+
+                        try
+                        {
+                            appStatus = Globals.Status;
+                        }
+                        catch (NullReferenceException)
+                        {
+                            appStatus = Globals.UpgradeStatus.None;
+                        }
 
                         // make status sticky; once set to install/upgrade, it stays so until finishing & appl restarts
-                        var appStatus = Globals.Status;
                         if (appStatus == Globals.UpgradeStatus.Install || appStatus == Globals.UpgradeStatus.Upgrade)
                         {
                             _appStatus = appStatus;
+                        }
+                        else
+                        {
+                            ThreadPool.QueueUserWorkItem(_ => AddEventLog(path));
+                            var val = Interlocked.Increment(ref _notificationSent);
+                            if (val <= 1)
+                            {
+                                // first notification goes immediately
+                                ThreadPool.QueueUserWorkItem(_ => NotifyManager(new[] { path }));
+                            }
+                            else
+                            {
+                                lock (_filesQ)
+                                {
+                                    while (!_qTimer.Change(val >= 100 ? 1 : SlidingDelay, Timeout.Infinite)) { }
+                                    _filesQ.Enqueue(path);
+                                }
+                            }
                         }
                     }
                 }
@@ -160,6 +217,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static IEnumerable<string> GetRestrictExtensions()
         {
+            // obtain the setting and do calculations once every 5 minutes at most, plus no need for locking
             if ((DateTime.Now - _lastRead).TotalMinutes > CacheTimeOut)
             {
                 _lastRead = DateTime.Now;
@@ -196,13 +254,14 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-        private static void NotifyManager(string path)
+        private static void NotifyManager(string[] paths)
         {
             try
             {
+                var pathNames = string.Join("<br/>", paths);
                 var subject = Localization.GetString("RestrictFileMail_Subject.Text");
                 var body = Localization.GetString("RestrictFileMail_Body.Text")
-                    .Replace("[Path]", path)
+                    .Replace("[Path]", pathNames)
                     .Replace("[AppName]", Host.HostTitle)
                     .Replace("[AppVersion]", DotNetNukeContext.Current.Application.CurrentVersion.ToString());
 
