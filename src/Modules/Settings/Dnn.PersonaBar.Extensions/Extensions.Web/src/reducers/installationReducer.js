@@ -52,6 +52,10 @@ export default function installation(state = {
             return { ...state,
                 viewingLog: action.payload
             };
+        case ActionTypes.SET_IS_PORTAL_PACKAGE:
+            return { ...state,
+                isPortalPackage: action.payload
+            };
         default:
             return state;
     }

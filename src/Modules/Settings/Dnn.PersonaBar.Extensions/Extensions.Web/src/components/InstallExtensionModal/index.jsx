@@ -15,13 +15,14 @@ import FileUpload from "./FileUpload";
 import Checkbox from "dnn-checkbox";
 import styles from "./style.less";
 class InstallExtensionModal extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             package: null,
             wizardStep: 0,
             repairInstallChecked: false,
-            selectedLegacyType: null
+            selectedLegacyType: null,
+            isPortalPackage: props.isPortalPackage
         };
     }
 
@@ -45,7 +46,7 @@ class InstallExtensionModal extends Component {
             utilities.utilities.notifyError(Localization.get("InstallExtension_EmptyPackage.Error"));
             return;
         }
-        const {props} = this;
+        const { props } = this;
         this.setState({
             package: file
         }, () => {
@@ -84,12 +85,12 @@ class InstallExtensionModal extends Component {
     }
 
     installPackage() {
-        const {props} = this;
+        const { props } = this;
         this.setState({
             installingPackage: true
         });
         if (!props.installingAvailablePackage) {
-            props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, this.state.selectedLegacyType, () => {
+            props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, this.state.selectedLegacyType, this.state.isPortalPackage, () => {
                 this.goToStep(4);
                 this.setState({
                     installingPackage: false
@@ -112,12 +113,16 @@ class InstallExtensionModal extends Component {
     }
 
     cancelInstall() {
-        const {props} = this;
+        const { props } = this;
         props.dispatch(InstallationActions.clearParsedInstallationPackage());
         props.dispatch(InstallationActions.notInstallingAvailablePackage());
-        props.dispatch(InstallationActions.toggleAcceptLicense(false));       
+        props.dispatch(InstallationActions.toggleAcceptLicense(false));
         this.goToStep(0);
         props.onCancel();
+
+        if (props.backToReferrerFunc) {
+            props.backToReferrerFunc();
+        }
     }
 
     getResxFromLegacyType() {
@@ -129,7 +134,7 @@ class InstallExtensionModal extends Component {
     }
 
     getPackageInformationStep() {
-        const {props} = this;
+        const { props } = this;
         const parsedInstallationPackageCopy = utilities.utilities.getObjectCopy(props.parsedInstallationPackage);
         let parsedInstallationPackage = this.state.selectedLegacyType ?
             Object.assign(parsedInstallationPackageCopy, {
@@ -173,7 +178,7 @@ class InstallExtensionModal extends Component {
                 props.dispatch(ExtensionActions.getInstalledPackages(props.selectedInstalledPackageType));
             }
         }
-        props.onCancel();
+
         this.cancelInstall();
     }
     onToggleLicenseAccept() {
@@ -190,6 +195,10 @@ class InstallExtensionModal extends Component {
         this.clearParsedInstallationPackage();
         this.props.onCancel();
         this.props.dispatch(InstallationActions.toggleAcceptLicense(false));
+
+        if (this.props.backToReferrerFunc) {
+            this.props.backToReferrerFunc();
+        }
     }
     onSelectLegacyType(value) {
         this.setState({
@@ -213,15 +222,15 @@ class InstallExtensionModal extends Component {
         }
     }
     render() {
-        const {props} = this;
-        const {wizardStep} = props,
+        const { props } = this;
+        const { wizardStep } = props,
             legacyInstalled = (props.parsedInstallationPackage && (props.parsedInstallationPackage.legacySkinInstalled || props.parsedInstallationPackage.legacyContainerInstalled)),
             legacyTypeIsInstalled = this.getSelectedLegacyTypeIsInstalled();
         return (
             <GridCell className={styles.installExtensionModal}>
                 <PersonaBarPageHeader title={Localization.get("ExtensionInstall.Action")} />
                 <PersonaBarPageBody backToLinkProps={{
-                    text: Localization.get("BackToExtensions"),
+                    text: props.backToReferrer && props.backToReferrerText ? props.backToReferrerText : Localization.get("BackToExtensions"),
                     onClick: this.cancelInstall.bind(this)
                 }}>
                     <GridCell className="install-extension-box extension-form">
@@ -241,7 +250,7 @@ class InstallExtensionModal extends Component {
                                         viewingLog={props.viewingLog}
                                         onSelectLegacyType={this.onSelectLegacyType.bind(this)}
                                         selectedLegacyType={this.state.selectedLegacyType}
-                                        />
+                                    />
                                 </GridCell>
                                 <GridCell className="modal-footer">
                                     <Button onClick={!props.viewingLog ? this.cancelInstallationOnUpload.bind(this) : this.toggleViewLog.bind(this, false)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
@@ -278,7 +287,7 @@ class InstallExtensionModal extends Component {
                                         value={props.licenseAccepted}
                                         onCancel={this.cancelInstall.bind(this)}
                                         onChange={this.onToggleLicenseAccept.bind(this)} />}
-                                />}
+                            />}
                         {wizardStep === 4 &&
                             <InstallLog
                                 logs={props.installationLogs}
@@ -303,7 +312,11 @@ InstallExtensionModal.propTypes = {
     installingAvailablePackage: PropTypes.bool,
     availablePackage: PropTypes.object,
     licenseAccepted: PropTypes.bool,
-    viewingLog: PropTypes.bool
+    viewingLog: PropTypes.bool,
+    isPortalPackage: PropTypes.bool,
+    backToReferrer: PropTypes.string,
+    backToReferrerText: PropTypes.string,
+    backToReferrerFunc: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -315,7 +328,8 @@ function mapStateToProps(state) {
         installingAvailablePackage: state.installation.installingAvailablePackage,
         availablePackage: state.installation.availablePackage,
         licenseAccepted: state.installation.licenseAccepted,
-        viewingLog: state.installation.viewingLog
+        viewingLog: state.installation.viewingLog,
+        isPortalPackage: state.installation.isPortalPackage
     };
 }
 
