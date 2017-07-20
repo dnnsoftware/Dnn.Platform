@@ -41,7 +41,7 @@ class Body extends Component {
     }
 
     backToThemes() {
-        window.dnn.utility.loadPanel("Dnn.Themes", {});
+        utils.utilities.loadPanel("Dnn.Themes", {});
         this.getThemesData(true);
     }
 
@@ -60,7 +60,7 @@ class Body extends Component {
 
         event = Object.assign(event, settings);
 
-        window.dnn.utility.loadPanel("Dnn.Extensions", {
+        utils.utilities.loadPanel("Dnn.Extensions", {
             settings
         });
 
@@ -81,8 +81,7 @@ class Body extends Component {
                     <SiteTheme />
                     <MiddleActions onSearch={this.onSearch.bind(this)} />
                     <ThemeList dataSource={this.getThemesData()} />
-                </PersonaBarPageBody >
-
+                </PersonaBarPageBody>
             </GridCell>
         );
     }

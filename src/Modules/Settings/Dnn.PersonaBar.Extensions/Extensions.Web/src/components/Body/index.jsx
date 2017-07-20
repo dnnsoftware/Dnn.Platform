@@ -104,7 +104,7 @@ class Body extends Component {
                         isHost={this.isHost}
                         onEdit={this.onEditExtension.bind(this)}
                         onCancel={this.selectPanel.bind(this, 0)} />}
-                </PersonaBarPageBody >
+                </PersonaBarPageBody>
 
             </GridCell>
         );
