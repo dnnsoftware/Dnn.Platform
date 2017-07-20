@@ -359,6 +359,10 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) <= endDate);
             }
+            if (workflowId != -1)
+            {
+                pages = pages.Where(p => WorkflowHelper.GetTabWorkflowId(p) == workflowId);
+            }
             totalRecords = pages.Count();
             return pageIndex == -1 || pageSize == -1 ? pages : pages.Skip(pageIndex * pageSize).Take(pageSize);
         }
