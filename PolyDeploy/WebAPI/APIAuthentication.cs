@@ -57,7 +57,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
             {
                 EventLogController elc = new EventLogController();
 
-                string log = string.Format("(APIKey: {1}) {2}", apiKey, message);
+                string log = string.Format("(APIKey: {0}) {1}", apiKey, message);
 
                 elc.AddLog("PolyDeploy", log, EventLogController.EventLogType.HOST_ALERT);
 
