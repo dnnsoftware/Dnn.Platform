@@ -160,7 +160,7 @@ class App extends Component {
             this.props.onCancelPage();
         }
     }
-    
+
     onDeleteSettings() {
         const {props} = this;
         const onDelete = () => this.props.onDeletePage(props.selectedPage);
@@ -351,6 +351,7 @@ class App extends Component {
     setActivePage(pageInfo) {
         return new Promise((resolve)=>{
             this.setState({activePage: pageInfo}, ()=>{
+                console.log('the active page:', this.state);
                 resolve();
             });
         });

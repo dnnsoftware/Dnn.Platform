@@ -60,7 +60,7 @@ export class PersonaBarPageTreeview extends Component {
                         onDrop={(e)=>{ onDrop(item); }}
                         onDrag={(e)=> {onDrag(e); }}
                         onDragStart={(e)=>{ onDragStart(e, item); }}
-                        onDragEnd={()=>{onDragEnd(); }}
+                        onDragEnd={()=>{onDragEnd(item); }}
                      >
                         {this.render_parentExpandButton(item)}
                         <PersonaBarPageIcon iconType={1}/>
