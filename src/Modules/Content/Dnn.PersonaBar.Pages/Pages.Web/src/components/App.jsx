@@ -138,9 +138,9 @@ class App extends Component {
         props.onLoadPage(pageId);
     }
 
-    onSavePage() {
+    onSavePage(input) {
         return new Promise((resolve) => {
-            const {activePage} = this.state;
+            const activePage = input || this.state.activePage;
             console.log('in save:', activePage);
             this.props.onSavePage(activePage);
             resolve();

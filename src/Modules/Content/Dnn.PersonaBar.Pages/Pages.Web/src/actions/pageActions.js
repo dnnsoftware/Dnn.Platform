@@ -169,9 +169,9 @@ const pageActions = {
     savePage(page) {
 
         return (dispatch, getState) => {
-            dispatch({
-                type: ActionTypes.SAVE_PAGE
-            });
+            // dispatch({
+            //     type: ActionTypes.SAVE_PAGE
+            // });
             const { pages } = getState();
 
             PagesService.savePage(page, pages.urlChanged).then(response => {
@@ -190,7 +190,7 @@ const pageActions = {
                     return;
                 }
 
-                PagesService.openPageInEditMode(response.Page.id, response.Page.url);
+               // PagesService.openPageInEditMode(response.Page.id, response.Page.url);
 
             }).catch((error) => {
                 dispatch({
@@ -205,7 +205,7 @@ const pageActions = {
 
         return (dispatch, getState) => {
             const { pages } = getState();
-    
+
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,

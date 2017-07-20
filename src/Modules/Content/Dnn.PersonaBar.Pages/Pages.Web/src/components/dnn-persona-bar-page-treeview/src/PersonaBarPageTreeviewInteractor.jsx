@@ -111,7 +111,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             }
         });
 
-        this.getPageInfo(item.id);
+        this.getPageInfo(item.id).then(data => this.setState({activePage:data}));
     }
 
     onDrag(e) {
@@ -127,14 +127,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDrop(item) {
         this.removeClone();
-        let draggedItem = Object.assign({}, this.state.draggedItem);
-        draggedItem.parentId = item.id;
+        let activePage = Object.assign({}, this.state.activePage);
+        activePage.parentId = item.id;
 
-        this.setState({ droppedItem: item }, () => {
-            console.log('in update');
-            this.updateTree();
+        this.props.saveDropState(activePage).then((data) => {
+            this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree());
         });
-
     }
 
     removeClone() {
@@ -315,5 +313,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 PersonaBarPageTreeviewInteractor.propTypes = {
     OnSelect: PropTypes.func.isRequired,
-    setActivePage: PropTypes.func.isRequired
+    setActivePage: PropTypes.func.isRequired,
+    saveDropState: PropTypes.func.isRequired
 };
