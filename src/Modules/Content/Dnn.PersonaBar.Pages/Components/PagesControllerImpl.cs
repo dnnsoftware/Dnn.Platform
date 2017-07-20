@@ -352,12 +352,12 @@ namespace Dnn.PersonaBar.Pages.Components
             DateTime startDate;
             if (!string.IsNullOrEmpty(publishDateStart) && DateTime.TryParse(publishDateStart, out startDate))
             {
-                pages = pages.Where(p => p.LastModifiedOnDate >= startDate);
+                pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) >= startDate);
             }
             DateTime endDate;
             if (!string.IsNullOrEmpty(publishDateEnd) && DateTime.TryParse(publishDateEnd, out endDate))
             {
-                pages = pages.Where(p => p.LastModifiedOnDate <= endDate);
+                pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) <= endDate);
             }
             totalRecords = pages.Count();
             return pageIndex == -1 || pageSize == -1 ? pages : pages.Skip(pageIndex * pageSize).Take(pageSize);
