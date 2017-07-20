@@ -28,7 +28,7 @@ class PageSettings extends Component {
 
     getButtons() {
         const {selectedPage, onCancel, onSave, onDelete} = this.props;
-        
+
         const saveButtonText = selectedPage.tabId === 0 ?
             Localization.get("AddPage") : Localization.get("Save");
         const pageErrors = this.hasPageErrors();
@@ -40,7 +40,7 @@ class PageSettings extends Component {
                 </Button>,
                 <Button
                     type="primary"
-                    onClick={onSave.bind(this, selectedPage)}
+                    onClick={onSave.bind(this)}
                     disabled={pageErrors}>
                     {saveButtonText}
                 </Button>];

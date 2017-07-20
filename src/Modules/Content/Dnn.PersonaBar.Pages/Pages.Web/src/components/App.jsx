@@ -28,6 +28,7 @@ import BreadCrumbs from "./BreadCrumbs";
 import GridCell from "dnn-grid-cell";
 
 import PageDetails from "./PageDetails/PageDetails";
+import Promise from "promise";
 
 import "./style.less";
 
@@ -138,8 +139,12 @@ class App extends Component {
     }
 
     onSavePage() {
-        const {props} = this;
-        props.onSavePage(props.selectedPage);
+        return new Promise((resolve) => {
+            const {activePage} = this.state;
+            console.log('in save:', activePage);
+            this.props.onSavePage(activePage);
+            resolve();
+        });
     }
 
     onAddPage() {
@@ -344,14 +349,17 @@ class App extends Component {
     }
 
     setActivePage(pageInfo) {
-        console.log('in setActivePage', pageInfo);
-
-        this.props.onLoadPage(pageInfo.tabId);
-
-        this.setState({activePage: pageInfo}, ()=>{
-            console.log(this.state);
+        return new Promise((resolve)=>{
+            this.setState({activePage: pageInfo}, ()=>{
+                resolve();
+            });
         });
+    }
 
+    onChangePageField(key, value) {
+        let activePage = Object.assign({},this.state.activePage);
+        activePage[key] = value;
+        this.setState({activePage});
     }
 
     render_PagesTreeViewEditor(){
@@ -378,9 +386,9 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const {props, state} = this;
-            console.log(state.activePage)
             return (
-                <PageSettings selectedPage={state.activePage}
+                <PageSettings
+                    selectedPage={state.activePage}
                     AllowContentLocalization={(d)=>console.log(d)  }
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
@@ -389,7 +397,7 @@ class App extends Component {
                     onSave={this.onSavePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={props.onChangePageField.bind(this)}
+                    onChangeField={ this.onChangePageField.bind(this) }
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType}
                     onDeletePageModule={props.onDeletePageModule}
@@ -437,6 +445,7 @@ class App extends Component {
                             <GridCell columnSize={100} className="page-container">
                             <PersonaBarPageTreeviewInteractor
                                setActivePage={ this.setActivePage.bind(this) }
+                               saveDropState={this.onSavePage.bind(this)}
                             />
                             {this.render_PagesDetailEditor()}
                             </GridCell>

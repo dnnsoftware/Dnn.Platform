@@ -78,7 +78,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onSelection(id) {
-        console.log('in selection');
         this._traverse((item, listItem) => {
             (item.id === id) ? item.selected = true : item.selected = false;
             this.setState({ pageList: listItem });
@@ -188,7 +187,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const insertMoveChild = () => {
             this._traverse((item, list) => {
                 const left = () => {
-                    console.log("in left");
                     moveChild.parentId = item.id;
                     item.childCount++;
                     item.childListItems = (Array.isArray(item.childListItems)) ? item.childListItems : [];
@@ -196,7 +194,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     this.setState({pageList: list});
                 };
                 const right = () => {
-                    console.log("In right");
                     this.getChildListItems(item.id)
                     .then(()=>{
 

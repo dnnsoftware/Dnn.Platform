@@ -114,7 +114,6 @@ class PageDetailsFooter extends Component {
     }
 
     render() {
-        console.log('In Pages Footer');
         const {page} = this.props;
         const normalPage = page.pageType === "normal";
         const componentsInNewSection= this.getNewSections(normalPage, page.pageType);

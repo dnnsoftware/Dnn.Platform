@@ -18,9 +18,10 @@ const PageService = function () {
     };
 
     const savePage = function (page, hasChangeUrl) {
+
         const api = getOverridablePagesApi();
         let request = page;
-        
+
         if (page.tabId === 0 && !securityService.isSuperUser()) {
             request = {
                 ...page,

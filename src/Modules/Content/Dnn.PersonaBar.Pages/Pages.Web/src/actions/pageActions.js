@@ -44,7 +44,7 @@ const loadPage = function (dispatch, pageId) {
     }
 
     PagesService.getPage(pageId).then(response => {
-        console.og
+
         dispatch({
             type: ActionTypes.LOADED_PAGE,
             data: {
@@ -167,6 +167,7 @@ const pageActions = {
         };
     },
     savePage(page) {
+
         return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.SAVE_PAGE
@@ -204,7 +205,7 @@ const pageActions = {
 
         return (dispatch, getState) => {
             const { pages } = getState();
-            console.log(pages);
+    
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,
