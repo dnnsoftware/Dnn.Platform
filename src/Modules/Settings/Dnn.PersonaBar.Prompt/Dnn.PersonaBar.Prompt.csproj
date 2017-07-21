@@ -140,6 +140,7 @@
     <Compile Include="Common\ControllerBase.cs" />
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\IModulesController.cs" />
+    <Compile Include="Components\Models\Command.cs" />
     <Compile Include="Components\ModulesController.cs" />
     <Compile Include="MenuControllers\PromptMenuController.cs" />
     <Compile Include="Components\Models\CommandInputModel.cs" />

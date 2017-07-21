@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Caching;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Common;
+using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 

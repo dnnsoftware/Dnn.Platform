@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt.Common;
+using Dnn.PersonaBar.Prompt.Components.Models;
 
 namespace Dnn.PersonaBar.Prompt.Components.Repositories
 {
