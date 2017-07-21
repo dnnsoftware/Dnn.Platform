@@ -25,7 +25,7 @@
             margin-bottom: 10px;
             .left {
                 float: left;
-                width: 50%;
+                width: 70%;
                 .dnn-label {
                     float: left;
                     label {
@@ -35,11 +35,14 @@
             }
             .right {
                 float: right;
-                width: 50%;
+                width: 30%;
                 text-align: right;
                 .checkbox {
                     float: right;
                 }
+            }
+            .dnn-switch-container {
+                float: right;
             }
         }
         .editor-row {
@@ -68,15 +71,28 @@
             }
             .dnn-single-line-input-with-error, input {
                 width: 100%;
+                .dnn-label {
+                    label {
+                        font-weight: 500;
+                        cursor: default;
+                    }
+                }
+                &.disabled {
+                    input {
+                        cursor: default;
+                    }
+                }
             }
             &.divider {
-                padding-bottom: 15px;
+                padding-bottom: 20px;
                 .dnn-uicommon-select, .dnn-ui-common-single-line-input {
                     border-radius: 0px;
                 }
                 .dnn-ui-common-multi-line-input {
                     padding: 8px 16px 62px;
                     border-radius: 0px;
+                    min-height: 106px;
+                    margin-bottom: 5px;
                 }
                 .new-group-container {
                     position: absolute;

@@ -25,6 +25,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security;
+using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -55,7 +56,8 @@ namespace Dnn.PersonaBar.Roles.Services
                 int total;
                 var roles = Components.RolesController.Instance.GetRoles(PortalSettings, groupId, keyword, out total, startIndex, pageSize).Select(RoleDto.FromRoleInfo);
                 var loadMore = total > startIndex + pageSize;
-                return Request.CreateResponse(HttpStatusCode.OK, new { roles, loadMore });
+                var rsvpLink = Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)) + "/" + Globals.glbDefaultPage + "?portalid=" + PortalId;
+                return Request.CreateResponse(HttpStatusCode.OK, new { roles, loadMore, rsvpLink });
             }
             catch (Exception ex)
             {
