@@ -16,8 +16,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private const string FlagId = "id";
         private const string FlagPageid = "pageid";
 
-        private int ModuleId { get; set; }
-        private int PageId { get; set; }
+        private int? ModuleId { get; set; }
+        private int? PageId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
