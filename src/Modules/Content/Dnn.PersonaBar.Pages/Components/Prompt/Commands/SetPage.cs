@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         private const string FlagParentid = "parentid";
 
 
-        int? PageId { get; set; }
+        int PageId { get; set; }
         int? ParentId { get; set; }
         string Title { get; set; }
         string Name { get; set; }
@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         {
             try
             {
-                var pageSettings = PagesController.Instance.GetPageSettings((int)PageId);
+                var pageSettings = PagesController.Instance.GetPageSettings(PageId);
                 if (pageSettings == null)
                 {
                     return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("PageNotFound", Constants.LocalResourceFile));

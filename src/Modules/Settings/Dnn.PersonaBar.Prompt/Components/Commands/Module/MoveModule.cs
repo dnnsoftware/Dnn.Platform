@@ -7,6 +7,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
@@ -18,9 +19,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private const string FlagTopageid = "topageid";
         private const string FlagPane = "pane";
 
-        private int? ModuleId { get; set; }
-        private int? PageId { get; set; }
-        private int? TargetPageId { get; set; }
+        private int ModuleId { get; set; }
+        private int PageId { get; set; }
+        private int TargetPageId { get; set; }
         private string Pane { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -30,57 +31,68 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
             if (HasFlag(FlagId))
             {
-                var tmpId = 0;
+                int tmpId;
                 if (int.TryParse(Flag(FlagId), out tmpId))
                 {
                     ModuleId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("The --{0} flag must be an integer; ", FlagId);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagId);
+                }
+            }
+            else if (args.Length >= 2 && !IsFlag(args[1]))
+            {
+                int tmpId;
+                if (int.TryParse(args[1], out tmpId))
+                {
+                    ModuleId = tmpId;
+                }
+                else
+                {
+                    sbErrors.AppendFormat(
+                        Localization.GetString("Prompt_MainParamRequired", Constants.LocalResourcesFile), "Module Id",
+                        FlagId);
                 }
             }
             else
             {
-                // attempt to get it as the first argument
-                if (args.Length >= 2 && !IsFlag(args[1]))
-                {
-                    var tmpId = 0;
-                    if (int.TryParse(args[1], out tmpId))
-                    {
-                        ModuleId = tmpId;
-                    }
-                    else
-                    {
-                        sbErrors.AppendFormat("The Module ID is required. Please use the --{0} flag or pass it as the first argument after the command name; ", FlagId);
-                    }
-                }
+                sbErrors.AppendFormat(Localization.GetString("Prompt_MainParamRequired", Constants.LocalResourcesFile), "Module Id", FlagId);
             }
 
             if (HasFlag(FlagPageid))
             {
-                var tmpId = 0;
+                int tmpId;
                 if (int.TryParse(Flag(FlagPageid), out tmpId))
                 {
                     PageId = tmpId;
                 }
+                else
+                {
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile),
+                        FlagPageid);
+                }
+            }
+            else
+            {
+                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagPageid);
             }
 
             if (HasFlag(FlagTopageid))
             {
-                var tmpId = 0;
+                int tmpId;
                 if (int.TryParse(Flag(FlagTopageid), out tmpId))
                 {
                     TargetPageId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("--{0} must be an integer; ", FlagTopageid);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagTopageid);
                 }
             }
             else
             {
-                sbErrors.AppendFormat("--{0} is required; ", FlagTopageid);
+                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagTopageid);
             }
 
             if (HasFlag(FlagPane))
@@ -88,36 +100,34 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             if (string.IsNullOrEmpty(Pane))
                 Pane = "ContentPane";
 
-            if (ModuleId.HasValue && ModuleId <= 0)
+            if (ModuleId <= 0)
             {
-                sbErrors.Append("The Module's ID must be greater than 0; ");
+                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagId);
             }
-            if (PageId.HasValue && PageId <= 0)
+            if (PageId <= 0)
             {
-                sbErrors.Append("The source Page ID must be greater than 0; ");
+                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagPageid);
             }
-            if (TargetPageId.HasValue && TargetPageId <= 0)
+            if (TargetPageId <= 0)
             {
-                sbErrors.Append("The target Page ID must be greater than 0; ");
+                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagTopageid);
             }
             if (PageId == TargetPageId)
             {
-                sbErrors.Append("The source Page ID and target Page ID cannot be the same; ");
+                sbErrors.Append(Localization.GetString("Prompt_SourceAndTargetPagesAreSame", Constants.LocalResourcesFile));
             }
             ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
         {
-            var lst = new List<ModuleInfoModel>();
-            if (!ModuleId.HasValue || !PageId.HasValue || !TargetPageId.HasValue)
-                return new ConsoleErrorResultModel("Insufficient parameters");
+            var modules = new List<ModuleInfoModel>();
             KeyValuePair<HttpStatusCode, string> message;
-            var movedModule = ModulesController.Instance.CopyModule(PortalSettings, ModuleId.Value, PageId.Value, TargetPageId.Value, Pane, true, out message, true);
+            var movedModule = ModulesController.Instance.CopyModule(PortalSettings, ModuleId, PageId, TargetPageId, Pane, true, out message, true);
             if (movedModule == null && !string.IsNullOrEmpty(message.Value))
                 return new ConsoleErrorResultModel(message.Value);
-            lst.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
-            return new ConsoleResultModel("Successfully moved the module") { Data = lst };
+            modules.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
+            return new ConsoleResultModel(Localization.GetString("Prompt_ModuleMoved", Constants.LocalResourcesFile)) { Data = modules };
         }
     }
 }

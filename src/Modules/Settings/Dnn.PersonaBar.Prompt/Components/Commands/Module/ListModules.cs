@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private const string FlagMax = "max";
 
         private int? PageId { get; set; }
-        private int Page { get; set; } = 0;
+        private int Page { get; set; }
         private int Max { get; set; } = 10;
         private string ModuleName { get; set; }
         private string ModuleTitle { get; set; }
@@ -48,7 +48,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When used, the --{0} flag must be an integer; ", FlagPageid);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagPageid);
                 }
             }
             else
@@ -63,7 +63,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     }
                     else
                     {
-                        sbErrors.AppendFormat("No valid Page ID found. Pass it using the --{0} flag or by sending it as the first argument after the command name", FlagPageid);
+                        sbErrors.AppendFormat(Localization.GetString("Prompt_InvalidFlagValue", Constants.LocalResourcesFile), FlagPageid);
                     }
                 }
             }
