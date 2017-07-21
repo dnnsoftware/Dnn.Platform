@@ -528,7 +528,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private void MovePageIfNeeded(PageSettings pageSettings, TabInfo tab)
         {
-            if (pageSettings.ParentId.HasValue)
+            if (pageSettings.ParentId.HasValue && pageSettings.ParentId.Value != tab.ParentId)
             {
                 var request = new PageMoveRequest
                 {
