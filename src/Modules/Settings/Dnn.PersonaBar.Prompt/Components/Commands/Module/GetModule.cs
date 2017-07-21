@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
@@ -18,8 +18,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         private const string FlagPageid = "pageid";
 
-        protected int? ModuleId { get; private set; }
-        protected int? PageId { get; private set; }
+        private int? ModuleId { get; set; }
+        private int? PageId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -77,35 +77,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         public override ConsoleResultModel Run()
         {
-
-            if (PageId.HasValue)
+            if (!ModuleId.HasValue) return new ConsoleErrorResultModel("Insufficient parameters");
+            var lst = new List<ModuleInfoModel>();
+            KeyValuePair<HttpStatusCode, string> message;
+            var moduleInfo = ModulesController.Instance.GetModule(ModuleId.Value, PageId, out message);
+            if (moduleInfo == null && !string.IsNullOrEmpty(message.Value))
             {
-                // getting a specific module instance
-                var lst = new List<ModuleInstanceModel>();
-
-                var mi = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
-                if (mi != null)
-                {
-                    lst.Add(ModuleInstanceModel.FromDnnModuleInfo(mi));
-                }
-                return new ConsoleResultModel(string.Empty) { Data = lst };
+                return new ConsoleErrorResultModel(message.Value);
             }
-            else
-            {
-                var lst = new List<ModuleInfoModel>();
-                var results = ModuleController.Instance.GetAllTabsModulesByModuleID((int)ModuleId);
-                if (results != null && results.Count > 0)
-                {
-                    lst.Add(ModuleInfoModel.FromDnnModuleInfo((ModuleInfo)results[0]));
-                }
-                else
-                {
-                    return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
-                }
-                return new ConsoleResultModel(string.Empty) { Data = lst };
-            }
-
+            lst.Add(ModuleInfoModel.FromDnnModuleInfo(moduleInfo));
+            return new ConsoleResultModel { Data = lst };
         }
-
     }
 }

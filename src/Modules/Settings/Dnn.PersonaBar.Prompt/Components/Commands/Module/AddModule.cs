@@ -1,41 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("add-module", "Adds a new module instance to a page", new[] { "id" })]
+    [ConsoleCommand("add-module", "Adds a new module instance to a page", new[] { "name", "pageid", "pane", "title" })]
     public class AddModule : ConsoleCommandBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
-        private const string FlagName = "name";
-        private const string FlagPageid = "pageid";
+        private const string FlagModuleName = "name";
+        private const string FlagPageId = "pageid";
         private const string FlagPane = "pane";
-        private const string FlagTitle = "title";
+        private const string FlagModuleTitle = "title";
 
-        public string ModuleName { get; private set; }
-        public int? PageId { get; private set; }    // the page on which to add the module
-        public string Pane { get; private set; }
-        public string Title { get; private set; }   // title for the new module. defaults to friendly name
+        private string ModuleName { get; set; }
+        private int PageId { get; set; }    // the page on which to add the module
+        private string Pane { get; set; }
+        private string ModuleTitle { get; set; }   // title for the new module. defaults to friendly name
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             var sbErrors = new StringBuilder();
 
-            if (HasFlag(FlagName))
+            if (HasFlag(FlagModuleName))
             {
-                ModuleName = Flag(FlagName);
+                ModuleName = Flag(FlagModuleName);
             }
             else if (args.Length >= 2 && !IsFlag(args[1]))
             {
@@ -44,38 +46,38 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             }
             if (string.IsNullOrEmpty(ModuleName))
             {
-                sbErrors.AppendFormat("You must supply the ModuleName for the module you wish to add. This can be passed using the --{0} flag or as the first argument after the command name; ", FlagName);
+                sbErrors.AppendFormat(Localization.GetString("Prompt_MainParamRequired", Constants.LocalResourcesFile), "Module Name", FlagModuleName);
             }
 
-            if (HasFlag(FlagPageid))
+            if (HasFlag(FlagPageId))
             {
-                var tmpId = 0;
-                if (int.TryParse(Flag(FlagPageid), out tmpId))
+                int tmpId;
+                if (int.TryParse(Flag(FlagPageId), out tmpId))
                 {
                     PageId = tmpId;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("--{0} must be an integer; ", FlagPageid);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagPageId);
                 }
             }
             else
             {
                 // Page ID is required
-                sbErrors.AppendFormat("--{0} is required; ", FlagPageid);
+                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagPageId);
             }
 
-            if (HasFlag(FlagTitle))
-                Title = Flag(FlagTitle);
+            if (HasFlag(FlagModuleTitle))
+                ModuleTitle = Flag(FlagModuleTitle);
 
             if (HasFlag(FlagPane))
                 Pane = Flag(FlagPane);
             if (string.IsNullOrEmpty(Pane))
                 Pane = "ContentPane";
 
-            if (PageId.HasValue && PageId <= 0)
+            if (PageId <= 0)
             {
-                sbErrors.Append("The target Page ID must be greater than 0; ");
+                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagPageId);
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -90,98 +92,26 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalId);
                 if (desktopModule == null)
                 {
-                    return new ConsoleErrorResultModel(
-                        $"Unable to find a desktop module with the name '{ModuleName}' for this portal");
+                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("Prompt_DesktopModuleNotFound", Constants.LocalResourcesFile), ModuleName));
                 }
-                try
+
+                KeyValuePair<HttpStatusCode, string> message;
+                var addedModules = ModulesController.Instance.AddNewModule(PortalSettings, ModuleTitle, desktopModule.DesktopModuleID, PageId, Pane, 0, 0, null, out message);
+                if (addedModules == null)
                 {
-                    var addedModules = AddNewModule(Title, desktopModule.DesktopModuleID, Pane, 0, 0, null);
-                    if (addedModules.Count == 0)
-                    {
-                        return new ConsoleResultModel("No modules were added");
-                    }
-                    var lst = new List<ModuleInstanceModel>();
-                    foreach (var newModule in addedModules)
-                    {
-                        lst.Add(ModuleInstanceModel.FromDnnModuleInfo(ModuleController.Instance.GetTabModule(newModule.TabModuleID)));
-                    }
-                    return new ConsoleResultModel(
-                        $"Successfully added {lst.Count} new module{(lst.Count == 1 ? string.Empty : "s")}") { Data = lst };
+                    return new ConsoleErrorResultModel(message.Value);
                 }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                    return new ConsoleErrorResultModel("An error occurred while attempting to add the module. Please see the DNN Event Viewer for details.");
-                }
+                if (addedModules.Count == 0)
+                    return new ConsoleResultModel(Localization.GetString("Prompt_NoModulesAdded", Constants.LocalResourcesFile));
+                var modules = addedModules.Select(newModule => ModuleInstanceModel.FromDnnModuleInfo(ModuleController.Instance.GetTabModule(newModule.TabModuleID))).ToList();
+
+                return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_ModuleAdded", Constants.LocalResourcesFile), modules.Count, modules.Count == 1 ? string.Empty : "s")) { Data = modules };
             }
             catch (Exception ex)
             {
-                Exceptions.LogException(ex);
-                return new ConsoleErrorResultModel("An error occurred while attempting to add the module. Please see the DNN Event Viewer for details.");
+                Logger.Error(ex);
+                return new ConsoleErrorResultModel(Localization.GetString("Prompt_AddModuleError", Constants.LocalResourcesFile));
             }
-
         }
-
-        private List<ModuleInfo> AddNewModule(string title, int desktopModuleId, string pane, int position, int permissionType, string align)
-        {
-
-            var lstOut = new List<ModuleInfo>();
-
-            foreach (var modDef in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
-            {
-                var mi = new ModuleInfo();
-                mi.Initialize(PortalId);
-                mi.PortalID = PortalId;
-                mi.TabID = TabId;
-                mi.ModuleOrder = position;
-                mi.ModuleTitle = string.IsNullOrEmpty(title) ? modDef.FriendlyName : title;
-                mi.PaneName = pane;
-                mi.ModuleDefID = modDef.ModuleDefID;
-                if (modDef.DefaultCacheTime > 0)
-                {
-                    mi.CacheTime = modDef.DefaultCacheTime;
-                    if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
-                    {
-                        // get the default module so we can access its cachetime
-                        var defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
-                        if (defaultModule != null)
-                        {
-                            mi.CacheTime = defaultModule.CacheTime;
-                        }
-                    }
-                }
-
-                // Set initial permissions on Module
-                ModuleController.Instance.InitialModulePermission(mi, mi.TabID, permissionType);
-
-                // Set initial localization of module if needed
-                if (PortalSettings.Current.ContentLocalizationEnabled)
-                {
-                    var defaultLocale = DotNetNuke.Services.Localization.LocaleController.Instance.GetDefaultLocale(PortalId);
-                    var tabInfo = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(mi.TabID, PortalId, false);
-                    mi.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
-                }
-                else
-                {
-                    mi.CultureCode = Null.NullString;
-                }
-
-                mi.AllTabs = false;
-                mi.Alignment = align;
-
-
-                // Add the new module to the Page
-                ModuleController.Instance.AddModule(mi);
-
-                lstOut.Add(mi);
-
-                // Set position so future additions to page can operate correctly
-                position = ModuleController.Instance.GetTabModule(mi.TabModuleID).ModuleOrder + 1;
-            }
-
-            return lstOut;
-        }
-
-
     }
 }

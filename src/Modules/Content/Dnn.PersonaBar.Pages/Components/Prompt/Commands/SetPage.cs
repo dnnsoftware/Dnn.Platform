@@ -62,7 +62,14 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             else
             {
                 int tempId;
-                PageId = !int.TryParse(args[1], out tempId) ? TabId : tempId;
+                if (int.TryParse(args[1], out tempId))
+                {
+                    PageId = tempId;
+                }
+                else
+                {
+                    sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_NoPageId", Constants.LocalResourceFile));
+                }
             }
             if (HasFlag(FlagParentid))
             {

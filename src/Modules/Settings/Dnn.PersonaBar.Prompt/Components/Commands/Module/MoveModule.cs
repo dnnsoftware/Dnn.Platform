@@ -1,35 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
     [ConsoleCommand("move-module", "Copies the module specified", new[] { "id" })]
     public class MoveModule : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MoveModule));
-
         private const string FlagId = "id";
         private const string FlagPageid = "pageid";
         private const string FlagTopageid = "topageid";
         private const string FlagPane = "pane";
-        private const string FlagIncludesettings = "includesettings";
 
-
-        public int? ModuleId { get; private set; }
-        public int? PageId { get; private set; }
-        public int? TargetPageId { get; private set; }
-        public string Pane { get; private set; }
-        public bool? IncludeSettings { get; private set; }
+        private int? ModuleId { get; set; }
+        private int? PageId { get; set; }
+        private int? TargetPageId { get; set; }
+        private string Pane { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -73,11 +65,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     PageId = tmpId;
                 }
             }
-            else
-            {
-                // Assume it's on the current Page
-                PageId = TabId;
-            }
 
             if (HasFlag(FlagTopageid))
             {
@@ -101,23 +88,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             if (string.IsNullOrEmpty(Pane))
                 Pane = "ContentPane";
 
-            if (HasFlag(FlagIncludesettings))
-            {
-                var tmpBool = false;
-                if (bool.TryParse(Flag(FlagIncludesettings), out tmpBool))
-                {
-                    IncludeSettings = tmpBool;
-                }
-                else
-                {
-                    sbErrors.AppendFormat("--{0} must be a valid boolean (true/false) value; ", FlagIncludesettings);
-                }
-            }
-            if (!IncludeSettings.HasValue)
-            {
-                IncludeSettings = true;
-            }
-
             if (ModuleId.HasValue && ModuleId <= 0)
             {
                 sbErrors.Append("The Module's ID must be greater than 0; ");
@@ -140,39 +110,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override ConsoleResultModel Run()
         {
             var lst = new List<ModuleInfoModel>();
-
-            var moduleIToBeMoved = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
-            var targetTab = TabController.Instance.GetTab((int)TargetPageId, PortalId);
-
-            if (targetTab == null)
-            {
-                return new ConsoleErrorResultModel(
-                    $"Could not load Target Page. No page found in the portal with ID '{TargetPageId}'");
-            }
-
-
-            if (moduleIToBeMoved != null)
-            {
-                try
-                {
-                    ModuleController.Instance.MoveModule((int)ModuleId, (int)PageId, (int)TargetPageId, Pane);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                    return new ConsoleErrorResultModel("An error occurred while moving the module. See the DNN Event Viewer for Details.");
-                }
-                // get the new module
-                var movedModule = ModuleController.Instance.GetModule(moduleIToBeMoved.ModuleID, (int)TargetPageId, true);
-                lst.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
-            }
-            else
-            {
-                return new ConsoleResultModel($"No module found with ID '{ModuleId}'");
-            }
-
-            return new ConsoleResultModel("Successfully copied the module") { Data = lst };
+            if (!ModuleId.HasValue || !PageId.HasValue || !TargetPageId.HasValue)
+                return new ConsoleErrorResultModel("Insufficient parameters");
+            KeyValuePair<HttpStatusCode, string> message;
+            var movedModule = ModulesController.Instance.CopyModule(PortalSettings, ModuleId.Value, PageId.Value, TargetPageId.Value, Pane, true, out message, true);
+            if (movedModule == null && !string.IsNullOrEmpty(message.Value))
+                return new ConsoleErrorResultModel(message.Value);
+            lst.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
+            return new ConsoleResultModel("Successfully moved the module") { Data = lst };
         }
-
     }
 }

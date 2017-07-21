@@ -126,8 +126,8 @@
     <Compile Include="Components\Commands\Module\GetModule.cs" />
     <Compile Include="Components\Commands\Module\ListModules.cs" />
     <Compile Include="Components\Commands\Module\MoveModule.cs" />
-    <Compile Include="Components\Commands\Module\PurgeModule.cs" />
-    <Compile Include="Components\Commands\Module\RestoreModule.cs" />
+    <Compile Include="Components\Commands\RecycleBin\PurgeModule.cs" />
+    <Compile Include="Components\Commands\RecycleBin\RestoreModule.cs" />
     <Compile Include="Components\Commands\Module\AddModule.cs" />
     <Compile Include="Components\Commands\Portal\ClearLog.cs" />
     <Compile Include="Components\Commands\Portal\GetSite.cs" />
@@ -142,13 +142,13 @@
     <Compile Include="Components\Commands\Utilities\Echo.cs" />
     <Compile Include="Common\ControllerBase.cs" />
     <Compile Include="Components\Constants.cs" />
+    <Compile Include="Components\IModulesController.cs" />
+    <Compile Include="Components\ModulesController.cs" />
     <Compile Include="MenuControllers\PromptMenuController.cs" />
     <Compile Include="Components\Models\CommandInputModel.cs" />
     <Compile Include="Components\Models\HostModel.cs" />
     <Compile Include="Components\Models\ModuleInfoModel.cs" />
     <Compile Include="Components\Models\ModuleInstanceModel.cs" />
-    <Compile Include="Components\Models\PageModel.cs" />
-    <Compile Include="Components\Models\PageModelBase.cs" />
     <Compile Include="Components\Models\PortalModel.cs" />
     <Compile Include="Components\Models\PortalModelBase.cs" />
     <Compile Include="Components\Models\TaskModel.cs" />
