@@ -136,9 +136,6 @@
     <Compile Include="Components\Commands\Portal\ListPortals.cs" />
     <Compile Include="Components\Commands\RecycleBin\PurgePage.cs" />
     <Compile Include="Components\Commands\RecycleBin\RestorePage.cs" />
-    <Compile Include="Components\Commands\Scheduler\ListTask.cs" />
-    <Compile Include="Components\Commands\Scheduler\SetTask.cs" />
-    <Compile Include="Components\Commands\Scheduler\GetTask.cs" />
     <Compile Include="Components\Commands\Utilities\Echo.cs" />
     <Compile Include="Common\ControllerBase.cs" />
     <Compile Include="Components\Constants.cs" />
@@ -151,8 +148,6 @@
     <Compile Include="Components\Models\ModuleInstanceModel.cs" />
     <Compile Include="Components\Models\PortalModel.cs" />
     <Compile Include="Components\Models\PortalModelBase.cs" />
-    <Compile Include="Components\Models\TaskModel.cs" />
-    <Compile Include="Components\Models\TaskModelBase.cs" />
     <Compile Include="Components\Repositories\CommandRepository.cs" />
     <Compile Include="Components\Repositories\ICommandRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

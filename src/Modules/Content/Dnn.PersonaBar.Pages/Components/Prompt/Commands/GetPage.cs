@@ -22,9 +22,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         private const string FlagId = "id";
         private const string FlagParentId = "parentid";
 
-        int PageId { get; set; } = -1;
-        string PageName { get; set; }
-        int ParentId { get; set; } = -1;
+        private int PageId { get; set; } = -1;
+        private string PageName { get; set; }
+        private int ParentId { get; set; } = -1;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             if (PageId == -1 && string.IsNullOrEmpty(PageName))
             {
-                sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParameterRequired", Constants.LocalResourceFile), "Page ID, Page Name");
+                sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParameterRequired", Constants.LocalResourceFile));
             }
             ValidationMessage = sbErrors.ToString();
         }

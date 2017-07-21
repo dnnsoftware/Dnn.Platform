@@ -16,9 +16,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     })]
     public class Goto : ConsoleCommandBase
     {
-        int PageId { get; set; } = -1;
-        string PageName { get; set; }
-        int ParentId { get; set; } = -1;
+        private int PageId { get; set; } = -1;
+        private string PageName { get; set; }
+        private int ParentId { get; set; } = -1;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -26,11 +26,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             var sbErrors = new StringBuilder();
 
             // default usage: return current page if nothing else specified
-            if (args.Length == 1)
-            {
-                PageId = TabId;
-            }
-            else if (args.Length == 2)
+            if (args.Length == 2)
             {
                 int tmpId;
                 if (!int.TryParse(args[1], out tmpId))
@@ -42,19 +38,17 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                     PageId = tmpId;
                 }
             }
-            else
+            else if (HasFlag("id"))
             {
-                if (HasFlag("id"))
+                int tmpId;
+                if (!int.TryParse(Flag("id"), out tmpId))
                 {
-                    int tmpId;
-                    if (!int.TryParse(Flag("id"), out tmpId))
-                    {
-                        sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_InvalidPageId", Constants.LocalResourceFile));
-                    }
-                    else
-                    {
-                        PageId = tmpId;
-                    }
+                    sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_InvalidPageId",
+                        Constants.LocalResourceFile));
+                }
+                else
+                {
+                    PageId = tmpId;
                 }
             }
 
@@ -69,14 +63,14 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             if (PageId == -1 && string.IsNullOrEmpty(PageName))
             {
-                sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParameterRequired", Constants.LocalResourceFile), "Page ID, Page Name");
+                sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParameterRequired", Constants.LocalResourceFile));
             }
             ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
         {
-            var tab = PageId != -1
+            var tab = PageId > 0
                 ? TabController.Instance.GetTab(PageId, PortalId)
                 : (ParentId > 0
                     ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId)

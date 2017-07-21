@@ -23,21 +23,21 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     })]
     public class NewPage : ConsoleCommandBase
     {
-        const string FlagParentid = "parentid";
-        const string FlagTitle = "title";
-        const string FlagName = "name";
-        const string FlagUrl = "url";
-        const string FlagDescription = "description";
-        const string FlagKeywords = "keywords";
-        const string FlagVisible = "visible";
+        private const string FlagParentid = "parentid";
+        private const string FlagTitle = "title";
+        private const string FlagName = "name";
+        private const string FlagUrl = "url";
+        private const string FlagDescription = "description";
+        private const string FlagKeywords = "keywords";
+        private const string FlagVisible = "visible";
 
-        string Title { get; set; }
-        string Name { get; set; }
-        string Url { get; set; }
-        int? ParentId { get; set; }
-        string Description { get; set; }
-        string Keywords { get; set; }
-        bool? Visible { get; set; }
+        private string Title { get; set; }
+        private string Name { get; set; }
+        private string Url { get; set; }
+        private int? ParentId { get; set; }
+        private string Description { get; set; }
+        private string Keywords { get; set; }
+        private bool? Visible { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

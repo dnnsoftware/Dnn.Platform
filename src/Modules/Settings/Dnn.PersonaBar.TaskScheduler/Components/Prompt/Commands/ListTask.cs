@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
+using Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Scheduling;
+using DotNetNuke.Services.Localization;
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Scheduler
+namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
     [ConsoleCommand("list-tasks", "Retrieves a list of scheduled tasks", new[]{
         "enabled",
@@ -22,8 +21,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Scheduler
         private const string FlagName = "name";
 
 
-        public bool? Enabled { get; private set; }
-        public string TaskName { get; private set; }
+        private bool? Enabled { get; set; }
+        private string TaskName { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -33,21 +32,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Scheduler
 
             if (HasFlag(FlagEnabled))
             {
-                var tmpEnabled = false;
+                bool tmpEnabled;
                 if (bool.TryParse(Flag(FlagEnabled), out tmpEnabled))
                 {
                     Enabled = tmpEnabled;
                 }
                 else
                 {
-                    sbErrors.AppendFormat("When specified, the --{0} flag must be True or False; ", FlagEnabled);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagMustBeTrueFalse", Constants.LocalResourcesFile), FlagEnabled);
                 }
             }
             else if (args.Length >= 2 && !IsFlag(args[1]))
             {
                 // if the Enabled flag isn't used but the first argument is a boolean, assume then
                 // user is passing Enabled as the first argument
-                var tmpEnabled = false;
+                bool tmpEnabled;
                 if (bool.TryParse(args[1], out tmpEnabled))
                 {
                     Enabled = tmpEnabled;
@@ -61,7 +60,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Scheduler
                 TaskName = Flag(FlagName);
                 if (string.IsNullOrEmpty(TaskName))
                 {
-                    sbErrors.AppendFormat("When specified, the --{0} flag cannot be empty; ", FlagName);
+                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagCantBeEmpty", Constants.LocalResourcesFile), FlagName);
                     TaskName = null;
                 }
             }
@@ -70,7 +69,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Scheduler
                 // only interpret first argument as the --name flag if the first arg is a value and 
                 // has not already been interpreted as a boolean (for the Enabled flag)
                 TaskName = args[1];
-                bFirstArgProcessed = true;
             }
 
             ValidationMessage = sbErrors.ToString();
@@ -78,39 +76,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Scheduler
 
         public override ConsoleResultModel Run()
         {
-            var lstSchedule = SchedulingController.GetSchedule();
-            var lst = new List<TaskModelBase>();
-
-            if (!string.IsNullOrEmpty(TaskName))
+            var controller = new TaskSchedulerController();
+            var tasks = new List<TaskModelBase>();
+            var schedulerItems = controller.GetScheduleItems(Enabled, "", TaskName?.Replace("*", ""));
+            tasks.AddRange(schedulerItems.Select(x => new TaskModelBase(x)));
+            return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_TasksFound", Constants.LocalResourcesFile), tasks.Count))
             {
-                var search = TaskName.Replace("*", ".*");
-                var query = from task in lstSchedule
-                            where Regex.Match(task.FriendlyName, search, RegexOptions.IgnoreCase).Success
-                            select task;
-                foreach (var task in query)
-                {
-                    if (!Enabled.HasValue || Enabled == task.Enabled)
-                    {
-                        lst.Add(new TaskModelBase(task));
-                    }
-                }
-            }
-            else
-            {
-                foreach (var task in lstSchedule)
-                {
-                    // By default, if Enabled is not specified, return all scheduled tasks.
-                    if (!Enabled.HasValue || (Enabled == task.Enabled))
-                    {
-                        lst.Add(new TaskModelBase(task));
-                    }
-                }
-            }
-
-
-            return new ConsoleResultModel($"{lst.Count} task{(lst.Count != 1 ? "s" : "")} found") { Data = lst };
+                Data = tasks
+            };
         }
-
-
     }
 }

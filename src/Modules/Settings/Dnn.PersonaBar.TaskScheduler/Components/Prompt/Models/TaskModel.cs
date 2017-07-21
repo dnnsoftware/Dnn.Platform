@@ -1,7 +1,7 @@
 ﻿using Dnn.PersonaBar.Library.Prompt.Common;
 using DotNetNuke.Services.Scheduling;
 
-namespace Dnn.PersonaBar.Prompt.Components.Models
+namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
 {
     /// <summary>
     /// Represents a DNN ScheduleItem

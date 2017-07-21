@@ -29,12 +29,12 @@ namespace Dnn.PersonaBar.Prompt.Components
             var page = TabController.Instance.GetTab(tabId, portalSettings.PortalId);
             if (page == null)
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, $"Could not load Target Page. No page found in the portal with ID '{tabId}'");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), tabId));
                 return null;
             }
             if (!TabPermissionController.CanManagePage(page))
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, "You do not have enough permissions to perform this operation.");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, Localization.GetString("Prompt_InsufficientPermissions", Constants.LocalResourcesFile));
                 return null;
             }
 
@@ -101,13 +101,13 @@ namespace Dnn.PersonaBar.Prompt.Components
             var sourceModule = ModuleController.Instance.GetModule(moduleId, sourcePageId, true);
             if (sourceModule == null)
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, $"Could not find module with id {moduleId} to copy.");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, sourcePageId));
                 return null;
             }
             var targetPage = TabController.Instance.GetTab(targetPageId, portalSettings.PortalId);
             if (targetPage == null)
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, $"Could not load Target Page. No page found in the portal with ID '{targetPageId}'");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
                 return null;
             }
             try
@@ -120,7 +120,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, $"An error occurred while copying the {(moveBahaviour ? "moving" : "copying")}. See the DNN Event Viewer for Details.");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, Localization.GetString(moveBahaviour ? "Prompt_ErrorWhileMoving" : "Prompt_ErrorWhileCopying"));
             }
             // get the new module
             return ModuleController.Instance.GetModule(sourceModule.ModuleID, targetPageId, true);
@@ -132,12 +132,12 @@ namespace Dnn.PersonaBar.Prompt.Components
             var modules = ModuleController.Instance.GetAllTabsModulesByModuleID(moduleId).Cast<ModuleInfo>().ToList();
             if (modules.Count == 0)
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, $"No modules found with id {moduleId}");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
                 return;
             }
             if (modules.All(x => x.TabID != pageId))
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, $"No module with id {moduleId} found on page with id {pageId}");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
                 return;
             }
             try
@@ -149,30 +149,20 @@ namespace Dnn.PersonaBar.Prompt.Components
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, $"Failed to delete the module with id {moduleId}. Please see log viewer for more details.");
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
             }
         }
 
         public ModuleInfo GetModule(int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = new KeyValuePair<HttpStatusCode, string>();
-            try
-            {
-                if (pageId.HasValue)
-                    return ModuleController.Instance.GetModule(moduleId, pageId.Value, true);
+            if (pageId.HasValue)
+                return ModuleController.Instance.GetModule(moduleId, pageId.Value, true);
 
-                var modules = ModuleController.Instance.GetAllTabsModulesByModuleID(moduleId);
-                if (modules != null && modules.Count != 0) return modules[0] as ModuleInfo;
+            var modules = ModuleController.Instance.GetAllTabsModulesByModuleID(moduleId);
+            if (modules != null && modules.Count != 0) return modules[0] as ModuleInfo;
 
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, $"No modules found with id {moduleId}");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError,
-                    $"Failed to delete the module with id {moduleId}. Please see log viewer for more details.");
-            }
+            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
             return null;
         }
 

@@ -195,4 +195,25 @@
   <data name="Prompt_ModuleMoved.Text" xml:space="preserve">
     <value>Successfully moved the module.</value>
   </data>
+  <data name="Prompt_ErrorWhileCopying.Text" xml:space="preserve">
+    <value>An error occurred while copying the copying the module. See the DNN Event Viewer for Details.</value>
+  </data>
+  <data name="Prompt_ErrorWhileMoving.Text" xml:space="preserve">
+    <value>An error occurred while copying the moving the module. See the DNN Event Viewer for Details.</value>
+  </data>
+  <data name="Prompt_FailedtoDeleteModule.Text" xml:space="preserve">
+    <value>Failed to delete the module with id {0}. Please see log viewer for more details.</value>
+  </data>
+  <data name="Prompt_InsufficientPermissions.Text" xml:space="preserve">
+    <value>You do not have enough permissions to perform this operation.</value>
+  </data>
+  <data name="Prompt_ModuleNotFound.Text" xml:space="preserve">
+    <value>Could not find module with id {0} on page with id {1}</value>
+  </data>
+  <data name="Prompt_NoModule.Text" xml:space="preserve">
+    <value>No module found with id {0}.</value>
+  </data>
+  <data name="Prompt_PageNotFound.Text" xml:space="preserve">
+    <value>Could not load Target Page. No page found in the portal with ID '{0}'</value>
+  </data>
 </root>

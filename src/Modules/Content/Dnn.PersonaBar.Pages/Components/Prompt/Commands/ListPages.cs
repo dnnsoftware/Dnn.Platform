@@ -33,15 +33,15 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         private const string FlagMax = "Max";
 
 
-        int ParentId { get; set; } = -1;
-        bool? Deleted { get; set; }
-        string PageName { get; set; }
-        string PageTitle { get; set; }
-        string PagePath { get; set; }
-        string PageSkin { get; set; }
-        bool? PageVisible { get; set; }
-        int Page { get; set; }
-        int Max { get; set; } = 10;
+        private int ParentId { get; set; } = -1;
+        private bool? Deleted { get; set; }
+        private string PageName { get; set; }
+        private string PageTitle { get; set; }
+        private string PagePath { get; set; }
+        private string PageSkin { get; set; }
+        private bool? PageVisible { get; set; }
+        private int Page { get; set; }
+        private int Max { get; set; } = 10;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

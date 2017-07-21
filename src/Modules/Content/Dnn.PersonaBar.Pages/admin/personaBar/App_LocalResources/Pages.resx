@@ -811,7 +811,7 @@
     <value>No valid Page ID specified</value>
   </data>
   <data name="Prompt_ParameterRequired.Text" xml:space="preserve">
-    <value>You must specify at least one input from {0}</value>
+    <value>Either Page Id or Page Name with flag --name should be specified.</value>
   </data>
   <data name="Prompt_IfSpecifiedMustHaveValue.Text" xml:space="preserve">
     <value>If you specify the --{0} flag, it must be set to True or False.</value>
