@@ -141,7 +141,7 @@ class App extends Component {
     onSavePage(input) {
         return new Promise((resolve) => {
             const activePage = (input.hasOwnProperty("name")) ? input : this.state.activePage;
-            console.log('in save:', activePage);
+
             this.setState({activePage: activePage}, ()=>{
                 this.props.onSavePage(activePage, () =>  resolve());
             });
@@ -355,7 +355,6 @@ class App extends Component {
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
 
             this.setState({activePage: pageInfo}, ()=>{
-                console.log('the active page:', this.state);
                 resolve();
             });
         });

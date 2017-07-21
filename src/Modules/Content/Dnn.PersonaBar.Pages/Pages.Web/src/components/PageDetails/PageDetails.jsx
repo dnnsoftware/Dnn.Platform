@@ -19,9 +19,8 @@ class PageDetail extends Component {
     }
 
     render() {
-
         const DetailComponent = this.getDetail(this.props.page.pageType);
-        
+
         return (
             <div>
                 <DetailComponent {...this.props} />

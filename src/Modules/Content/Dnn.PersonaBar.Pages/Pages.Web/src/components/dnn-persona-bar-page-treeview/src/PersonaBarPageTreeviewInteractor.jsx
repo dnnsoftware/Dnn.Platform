@@ -66,15 +66,10 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
             this.GET(url)
             .then((data) => {
-                console.log(data);
                 this.setState({activePage: data});
                 return setActivePage(data);
             })
-            .then(() => {
-                console.log('the final resolve');
-                console.log(this.state.activePage);
-                resolve();
-            });
+            .then(() => resolve());
         });
     }
 
@@ -140,7 +135,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         .then((data)=> {
             let activePage = Object.assign({}, this.state.activePage);
             activePage.parentId = item.id;
-            console.log('IN DROP:', activePage);
             return this.props.saveDropState(activePage);
         })
         .then(this.getPageInfo.bind(this, activePage.id))
