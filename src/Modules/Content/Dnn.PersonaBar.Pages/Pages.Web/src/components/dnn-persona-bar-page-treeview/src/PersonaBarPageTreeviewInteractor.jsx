@@ -64,9 +64,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return new Promise((resolve) => {
             const { setActivePage } = this.props;
             const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
-            this.GET(url).then((data) => {
-                setActivePage(data);
-                resolve(data);
+            this.GET(url)
+            .then((data) => {
+                console.log(data);
+                this.setState({activePage: data});
+                return setActivePage(data);
+            })
+            .then(() => {
+                console.log('the final resolve');
+                console.log(this.state.activePage);
+                resolve();
             });
         });
     }
@@ -93,6 +100,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragStart(e, item) {
+
         const img = new Image();
         e.dataTransfer.setDragImage(img, 0, 0);
 
@@ -107,11 +115,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this._traverse((li, list) => {
             if (li.id === item.id) {
                 li.selected = true;
-                this.setState({draggedItem:li,  pageList: list });
+                this.setState({draggedItem:li,  pageList: list, activePage:item });
             }
         });
 
-        this.getPageInfo(item.id).then(data => this.setState({activePage:data}));
+        //this.getPageInfo(item.id).then(data => this.setState({activePage:data}));
     }
 
     onDrag(e) {
@@ -126,14 +134,28 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
     onDrop(item) {
+
         this.removeClone();
         let activePage = Object.assign({}, this.state.activePage);
-        activePage.parentId = item.id;
 
-        this.props.saveDropState(activePage).then((data) => {
-            this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree());
-        });
+        this.getPageInfo(activePage.id)
+        .then((data)=> {
+            let activePage = Object.assign({}, this.state.activePage);
+            activePage.parentId = item.id;
+            console.log('IN DROP:', activePage);
+            return this.props.saveDropState(activePage);
+        })
+        .then(() => this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree()) );
+
+
+        //;
+        // .then(this.getPageInfo.bind(this, activePage.id))
+        //
+        //this.getPageInfo(activePage.id).then((data)=> console.log(this.state.activePage));
+
     }
+
+
 
     removeClone() {
         this.clonedElement ? document.body.removeChild(this.clonedElement) : null;
@@ -141,7 +163,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     updateTree() {
-        console.log('in updatetree');
         const newParent = this.state.droppedItem;
         const moveChild = this.state.draggedItem;
         const condition = (newParent.id != moveChild.parentId);

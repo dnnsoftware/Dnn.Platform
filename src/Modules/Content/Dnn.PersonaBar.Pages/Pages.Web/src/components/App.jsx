@@ -141,9 +141,10 @@ class App extends Component {
     onSavePage(input) {
         return new Promise((resolve) => {
             const activePage = input || this.state.activePage;
-            console.log('in save:', activePage);
-            this.props.onSavePage(activePage);
-            resolve();
+            this.setState({activePage: activePage}, ()=>{
+                console.log('in save:', activePage);
+                this.props.onSavePage(activePage, () =>  resolve());
+            });
         });
     }
 
@@ -350,11 +351,18 @@ class App extends Component {
 
     setActivePage(pageInfo) {
         return new Promise((resolve)=>{
+            pageInfo.id = pageInfo.id || pageInfo.tabId;
+            pageInfo.tabId = pageInfo.tabId || pageInfo.id;
+
             this.setState({activePage: pageInfo}, ()=>{
                 console.log('the active page:', this.state);
                 resolve();
             });
         });
+    }
+
+    getActivePage(){
+        return Object.assign({}, this.state.activePage);
     }
 
     onChangePageField(key, value) {
@@ -446,6 +454,7 @@ class App extends Component {
                             <GridCell columnSize={100} className="page-container">
                             <PersonaBarPageTreeviewInteractor
                                setActivePage={ this.setActivePage.bind(this) }
+                               getActivePage={ this.getActivePage.bind(this) }
                                saveDropState={this.onSavePage.bind(this)}
                             />
                             {this.render_PagesDetailEditor()}

@@ -166,7 +166,7 @@ const pageActions = {
             });
         };
     },
-    savePage(page) {
+    savePage(page, callback) {
 
         return (dispatch, getState) => {
             // dispatch({
@@ -191,7 +191,8 @@ const pageActions = {
                 }
 
                // PagesService.openPageInEditMode(response.Page.id, response.Page.url);
-
+               callback();
+               
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PAGE,
