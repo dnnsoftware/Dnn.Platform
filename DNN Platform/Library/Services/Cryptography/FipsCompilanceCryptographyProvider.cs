@@ -116,8 +116,9 @@ namespace DotNetNuke.Services.Cryptography
                 }
                 catch //invalid length
                 {
-                    strValue = message;
+                    return string.Empty;
                 }
+
                 if (String.IsNullOrEmpty(strValue))
                 {
                     try

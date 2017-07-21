@@ -67,6 +67,16 @@ namespace DotNetNuke.Services.Personalization
                 if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
                 {
                     profileData = DecryptData(context.Request.Cookies["DNNPersonalization"].Value);
+
+                    if (string.IsNullOrEmpty(profileData))
+                    {
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", string.Empty)
+                        {
+                            Expires = DateTime.Now.AddDays(-1),
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
+                        context.Response.Cookies.Add(personalizationCookie);
+                    }
                 }
             }
             personalization.Profile = string.IsNullOrEmpty(profileData)
