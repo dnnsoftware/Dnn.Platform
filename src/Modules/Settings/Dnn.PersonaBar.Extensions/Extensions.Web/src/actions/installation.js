@@ -57,10 +57,10 @@ const installationActions = {
             }
         };
     },
-    installExtension(file, newExtension, legacyType, callback, addToList) {
+    installExtension(file, newExtension, legacyType, isPortalPackage, callback, addToList) {
         let _newExtension = JSON.parse(JSON.stringify(newExtension));
         return (dispatch) => {
-            InstallationService.installPackage(file, legacyType, (data) => {
+            InstallationService.installPackage(file, legacyType, isPortalPackage, (data) => {
                 dispatch({
                     type: ActionTypes.INSTALLED_EXTENSION_LOGS,
                     payload: JSON.parse(data)
@@ -107,6 +107,17 @@ const installationActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.TOGGLE_VIEWING_LOG,
+                payload: value
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
+    setIsPortalPackage(value, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SET_IS_PORTAL_PACKAGE,
                 payload: value
             });
             if (callback) {

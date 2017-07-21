@@ -237,4 +237,10 @@
   <data name="PreviewTheme.Text" xml:space="preserve">
     <value>Preview</value>
   </data>
+  <data name="InstallTheme.Text" xml:space="preserve">
+    <value>Install New Theme</value>
+  </data>
+  <data name="BackToThemes.Text" xml:space="preserve">
+    <value>Back to Themes</value>
+  </data>
 </root>
