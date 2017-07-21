@@ -140,9 +140,9 @@ class App extends Component {
 
     onSavePage(input) {
         return new Promise((resolve) => {
-            const activePage = input || this.state.activePage;
+            const activePage = (input.hasOwnProperty("name")) ? input : this.state.activePage;
+            console.log('in save:', activePage);
             this.setState({activePage: activePage}, ()=>{
-                console.log('in save:', activePage);
                 this.props.onSavePage(activePage, () =>  resolve());
             });
         });

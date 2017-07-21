@@ -100,7 +100,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragStart(e, item) {
-
         const img = new Image();
         e.dataTransfer.setDragImage(img, 0, 0);
 
@@ -113,13 +112,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         document.body.appendChild(this.clonedElement);
 
         this._traverse((li, list) => {
+            li.selected=false;
             if (li.id === item.id) {
                 li.selected = true;
                 this.setState({draggedItem:li,  pageList: list, activePage:item });
             }
         });
-
-        //this.getPageInfo(item.id).then(data => this.setState({activePage:data}));
     }
 
     onDrag(e) {
@@ -145,13 +143,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             console.log('IN DROP:', activePage);
             return this.props.saveDropState(activePage);
         })
+        .then(this.getPageInfo.bind(this, activePage.id))
         .then(() => this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree()) );
-
-
-        //;
-        // .then(this.getPageInfo.bind(this, activePage.id))
-        //
-        //this.getPageInfo(activePage.id).then((data)=> console.log(this.state.activePage));
 
     }
 
