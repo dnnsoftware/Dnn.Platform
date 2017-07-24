@@ -60,22 +60,26 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return;
     }
 
+
     getPageInfo(id) {
         return new Promise((resolve) => {
             const { setActivePage } = this.props;
             const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
             this.GET(url)
-            .then((data) => {
-                this.setState({activePage: data});
-                return setActivePage(data);
-            })
-            .then(() => resolve());
+                .then((data) => {
+                    this.setState({ activePage: data });
+                    return setActivePage(data);
+                })
+                .then(() => resolve());
         });
     }
 
     getRootListItems() {
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?searchKey=`;
-        this.GET(url).then((data) => this.setState({ pageList: data }));
+        this.GET(url).then((data) => {
+            console.log(data);
+            this.setState({ pageList: data });
+        });
     }
 
     toggleParentCollapsedState(id) {
@@ -90,15 +94,22 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             (item.id === id) ? item.selected = true : item.selected = false;
             this.setState({ pageList: listItem });
         });
-
         this.getPageInfo(id);
+    }
+
+    getListItemLI(item){
+        return document.getElementById(`list-item-${item.name}-${item.id}`);
+    }
+
+    getListItemTitle(item){
+        return document.getElementById(`list-item-title-${item.name}-${item.id}`)
     }
 
     onDragStart(e, item) {
         const img = new Image();
         e.dataTransfer.setDragImage(img, 0, 0);
 
-        const element = document.getElementById(`list-item-${item.name}`);
+        const element = this.getListItemLI(item);
         this.clonedElement = element.cloneNode(true);
         this.clonedElement.id = "cloned";
         this.clonedElement.style.transition = "all";
@@ -107,10 +118,10 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         document.body.appendChild(this.clonedElement);
 
         this._traverse((li, list) => {
-            li.selected=false;
+            li.selected = false;
             if (li.id === item.id) {
                 li.selected = true;
-                this.setState({draggedItem:li,  pageList: list, activePage:item });
+                this.setState({ draggedItem: li, pageList: list, activePage: item });
             }
         });
     }
@@ -125,6 +136,42 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this.removeClone();
     }
 
+    onDragLeave(item) {
+        const el = this.getListItemTitle(item);
+        const children = el.childNodes;
+
+        console.log('hmm');
+        let dropTargets = el.getElementsByClassName("dropBeforeAfter");
+
+        for(let i=0; i< dropTargets.length; i++){
+            el.removeChild(dropTargets[i]);
+        }
+
+    }
+
+    onDragOver(e, item) {
+        e.preventDefault();
+        const el = this.getListItemTitle(item);
+        console.log(el.childNodes);
+
+        let hasDropTargets = false;
+
+        const children = el.childNodes || [];
+        console.log(children);
+
+        children.forEach((child)=>{
+            if(child && child.classList.contains("dropBeforeAfter")){
+                hasDropTargets=true;
+            }
+        });
+
+        if(!hasDropTargets){
+            const li = document.createElement("li");
+            li.classList.add("dropBeforeAfter");
+            li.innerText = "drop target 1";
+            el.appendChild(li);
+        }
+    }
 
     onDrop(item) {
 
@@ -132,17 +179,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         let activePage = Object.assign({}, this.state.activePage);
 
         this.getPageInfo(activePage.id)
-        .then((data)=> {
-            let activePage = Object.assign({}, this.state.activePage);
-            activePage.parentId = item.id;
-            return this.props.saveDropState(activePage);
-        })
-        .then(this.getPageInfo.bind(this, activePage.id))
-        .then(() => this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree()) );
+            .then((data) => {
+                let activePage = Object.assign({}, this.state.activePage);
+                activePage.parentId = item.id;
+                return this.props.saveDropState(activePage);
+            })
+            .then(this.getPageInfo.bind(this, activePage.id))
+            .then(() => this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree()));
 
     }
-
-
 
     removeClone() {
         this.clonedElement ? document.body.removeChild(this.clonedElement) : null;
@@ -292,6 +337,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onSelection={this.onSelection.bind(this)}
                         onDrag={this.onDrag.bind(this)}
                         onDragStart={this.onDragStart.bind(this)}
+                        onDragOver={this.onDragOver.bind(this)}
+                        onDragLeave={this.onDragLeave.bind(this)}
                         onDragEnd={this.onDragEnd.bind(this)}
                         onDrop={this.onDrop.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
@@ -314,6 +361,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             <GridCell columnSize={30} className="dnn-persona-bar-treeview">
                 {this.render_collapseExpand()}
                 {this.render_treeview()}
+
             </GridCell>
         );
     }

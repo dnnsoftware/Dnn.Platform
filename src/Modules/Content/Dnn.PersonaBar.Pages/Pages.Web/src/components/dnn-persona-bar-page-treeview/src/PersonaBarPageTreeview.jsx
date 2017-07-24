@@ -17,7 +17,7 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_tree(childListItems){
-        const {getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragEnd} = this.props;
+        const {getChildListItems, onSelection, onDrop, onDrag, onDragStart,onDragOver, onDragLeave, onDragEnd} = this.props;
         return (
              <PersonaBarPageTreeview
                 getChildListItems={getChildListItems}
@@ -26,6 +26,8 @@ export class PersonaBarPageTreeview extends Component {
                 onDrop={onDrop}
                 onDrag={onDrag}
                 onDragStart={onDragStart}
+                onDragOver={onDragOver}
+                onDragLeave={onDragLeave}
                 onDragEnd={onDragEnd}
              />
         );
@@ -50,21 +52,29 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_li() {
-        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragEnd} = this.props;
+        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd} = this.props;
         return listItems.map((item)=>{
             return (
-                <li id={`list-item-${item.name}`}>
+                <li id={`list-item-${item.name}-${item.id}`}>
                     <span
                         draggable="true"
-                        onDragOver={(e)=>{ e.preventDefault(); }}
                         onDrop={(e)=>{ onDrop(item); }}
-                        onDrag={(e)=> {onDrag(e); }}
+
+                        onDragOver={(e)=>{ onDragOver(e, item); }}
+                        onDragLeave={(e)=>{ onDragLeave(item); }}
                         onDragStart={(e)=>{ onDragStart(e, item); }}
                         onDragEnd={()=>{onDragEnd(item); }}
                      >
                         {this.render_parentExpandButton(item)}
                         <PersonaBarPageIcon iconType={1}/>
-                        <span className="item-name"  onClick={()=>{ onSelection(item.id); }}>{item.name}</span>
+                        <span
+                            id={`list-item-title-${item.name}-${item.id}`}
+                            className={`item-name`}
+                            onClick={()=>{ onSelection(item.id); }}
+                            onDrag={(e)=> {onDrag(e); }}
+                            >
+                            <p>{item.name}</p>
+                        </span>
                         <PersonaBarSelectionArrow item={item} />
                     </span>
                     { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }
@@ -87,6 +97,8 @@ export class PersonaBarPageTreeview extends Component {
 PersonaBarPageTreeview.propTypes = {
     onDrop: PropTypes.func.isRequired,
     onDrag: PropTypes.func.isRequired,
+    onDragOver: PropTypes.func.isRequired,
+    onDragLeave: PropTypes.func.isRequired,
     onDragStart: PropTypes.func.isRequired,
     onDragEnd: PropTypes.func.isRequired,
     listItems: PropTypes.array.isRequired,
