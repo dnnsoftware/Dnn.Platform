@@ -380,7 +380,7 @@ namespace DotNetNuke.Common.Utilities
         //Whether current page is show in popup.
         public static bool InPopUp()
         {
-            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
+            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>
