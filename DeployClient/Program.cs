@@ -121,7 +121,7 @@ namespace DeployClient
                 }
                 WriteLine();
 
-                Dictionary<string, dynamic> results = API.CIInstall(encryptedStreams).Result;
+                Dictionary<string, dynamic> results = API.CIInstall(encryptedStreams);
 
                 ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
                 ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
@@ -146,10 +146,22 @@ namespace DeployClient
             catch (Exception ex)
             {
                 // Output exception message and stack trace.
-                WriteLine(ex.Message);
-                WriteLine(ex.StackTrace);
+                WriteException(ex);
+
                 ReadLine();
                 Environment.Exit((int)ExitCode.Error);
+            }
+        }
+
+        private static void WriteException(Exception ex, int maxDepth = 10, int depth = 0)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+
+            if (depth < maxDepth && ex.InnerException != null)
+            {
+                depth++;
+                WriteException(ex.InnerException, maxDepth, depth);
             }
         }
 
