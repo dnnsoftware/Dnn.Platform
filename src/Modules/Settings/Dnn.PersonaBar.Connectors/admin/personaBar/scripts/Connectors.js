@@ -101,7 +101,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
                     $.each(item.configurations, function (i, v) {
                         var name = v.name.toLowerCase();
                         v.value.reset();
-                        if (typeof item[name] === "function" && typeof item[name].reset === "function") {
+                        if (typeof item[name] === "object" && typeof item[name].reset === "function") {
                             item[name].reset();
                         }
                     });
