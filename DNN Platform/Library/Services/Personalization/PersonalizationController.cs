@@ -23,10 +23,12 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Text;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Security;
 
 #endregion
@@ -161,12 +163,35 @@ namespace DotNetNuke.Services.Personalization
 
         private string EncryptData(string profileData)
         {
-            return new PortalSecurity().Encrypt(Config.GetDecryptionkey(), profileData);
+            return new PortalSecurity().Encrypt(GetDecryptionkey(), profileData);
         }
 
         private string DecryptData(string profileData)
         {
-            return new PortalSecurity().Decrypt(Config.GetDecryptionkey(), profileData);
+            return new PortalSecurity().Decrypt(GetDecryptionkey(), profileData);
+        }
+
+        private string GetDecryptionkey()
+        {
+            var machineKey = Config.GetDecryptionkey();
+            var hostGuid = Host.GUID.Replace("-", string.Empty);
+
+            if (string.IsNullOrEmpty(machineKey))
+            {
+                return hostGuid;
+            }
+
+            var stringBuilder = new StringBuilder();
+            for (var i = 0;  i < machineKey.Length; i++)
+            {
+                stringBuilder.Append(machineKey[i]);
+                if (i < hostGuid.Length)
+                {
+                    stringBuilder.Append(hostGuid[i]);
+                }
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }
