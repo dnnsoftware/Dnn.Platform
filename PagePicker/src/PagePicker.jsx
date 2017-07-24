@@ -58,7 +58,6 @@ class PagePicker extends Component {
                 selectedTabId: newProps.selectedTabId
             });
             this.loaded=false;
-            this.props.selectedTabId = newProps.selectedTabId;
         }
 
     }
