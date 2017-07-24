@@ -1036,6 +1036,14 @@ create-react-class@^15.5.1:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
+create-react-class@^15.6.0:
+  version "15.6.0"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/create-react-class/-/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 cryptiles@2.x.x:
   version "2.0.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/cryptiles/-/cryptiles-2.0.5.tgz#3bdfecdc608147c1c67202fa291e7dca59eaa3b8"
@@ -1268,17 +1276,17 @@ dnn-dropdown@1.0.14:
   version "1.0.14"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-dropdown/-/dnn-dropdown-1.0.14.tgz#9d72e6bb7432c1275af19783072848c05def2218"
 
-dnn-editable-field@0.0.10:
-  version "0.0.10"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-editable-field/-/dnn-editable-field-0.0.10.tgz#88f54cc90812cd40f782ee72848fbe06bc956f3b"
+dnn-editable-field@0.0.14:
+  version "0.0.14"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-editable-field/-/dnn-editable-field-0.0.14.tgz#1dc6fc0ac1717c4fb7fdb4f888e660d21d1ab0c6"
 
-dnn-file-upload@0.1.9:
-  version "0.1.9"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-file-upload/-/dnn-file-upload-0.1.9.tgz#47df6cf37d12d2a19ff219010676f64bab556a14"
+dnn-file-upload@0.1.11:
+  version "0.1.11"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-file-upload/-/dnn-file-upload-0.1.11.tgz#6e837e2e2dd0a249eadc5e5bf669bf593519b72c"
 
-dnn-folder-picker@0.0.2:
-  version "0.0.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-folder-picker/-/dnn-folder-picker-0.0.2.tgz#82f3c841c8e1853618c49356512fd0eb6b723027"
+dnn-folder-picker@0.0.3:
+  version "0.0.3"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-folder-picker/-/dnn-folder-picker-0.0.3.tgz#4ac733614c74004691464c27c853d6f0364d3f71"
 
 dnn-global-styles@0.0.5:
   version "0.0.5"
@@ -1312,9 +1320,9 @@ dnn-multi-line-input@1.0.5:
   version "1.0.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-multi-line-input/-/dnn-multi-line-input-1.0.5.tgz#953e4b78bc03a46b20f70654d13633aa09220352"
 
-dnn-page-picker@0.0.9:
-  version "0.0.9"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-page-picker/-/dnn-page-picker-0.0.9.tgz#227362b839071377f4ebc4e4648fb3e0a9dc43d2"
+dnn-page-picker@0.0.12:
+  version "0.0.12"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-page-picker/-/dnn-page-picker-0.0.12.tgz#8ecffcd885dfa7584017004b19a2165779a2bcc0"
 
 dnn-pager@0.0.14:
   version "0.0.14"
@@ -1328,9 +1336,11 @@ dnn-persona-bar-page-body@0.0.3:
   version "0.0.3"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-persona-bar-page-body/-/dnn-persona-bar-page-body-0.0.3.tgz#2e7a6a8fbf57d68f1b7aeb039ea5119ace825961"
 
-dnn-persona-bar-page-header@0.0.4:
-  version "0.0.4"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-persona-bar-page-header/-/dnn-persona-bar-page-header-0.0.4.tgz#0a3c77cf1fd4512f87771ef48e9d18bc0406ca0d"
+dnn-persona-bar-page-header@0.0.20:
+  version "0.0.20"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-persona-bar-page-header/-/dnn-persona-bar-page-header-0.0.20.tgz#d3f40500b8dbbf6596febfded8f282b9ec845cb8"
+  dependencies:
+    dnn-text-overflow-wrapper-new "0.0.5"
 
 dnn-persona-bar-page@0.0.2:
   version "0.0.2"
@@ -1352,9 +1362,9 @@ dnn-select@0.0.5:
   version "0.0.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-select/-/dnn-select-0.0.5.tgz#9f71e6efe2cca2f3f15521d094d7f7700b01b96b"
 
-dnn-single-line-input-with-error@0.0.7:
-  version "0.0.7"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-single-line-input-with-error/-/dnn-single-line-input-with-error-0.0.7.tgz#7607177412fa5c0465e1eb47d229706ec38e3890"
+dnn-single-line-input-with-error@0.0.15:
+  version "0.0.15"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-single-line-input-with-error/-/dnn-single-line-input-with-error-0.0.15.tgz#53a5427877a1d67c2e573862767ca874fd19d9c4"
 
 dnn-single-line-input@1.0.4:
   version "1.0.4"
@@ -1368,9 +1378,9 @@ dnn-sortable@0.0.4:
   version "0.0.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-sortable/-/dnn-sortable-0.0.4.tgz#3b11e02308aca78a2256dd9168b54179874d36bd"
 
-dnn-svg-icons@0.1.12:
-  version "0.1.12"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-svg-icons/-/dnn-svg-icons-0.1.12.tgz#d1204ec71707f93da8431e95b5485b54869f1fa8"
+dnn-svg-icons@0.1.13:
+  version "0.1.13"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-svg-icons/-/dnn-svg-icons-0.1.13.tgz#9673c5129d35c7e8a7eb9268bc585d1aaf9bf0b0"
 
 dnn-switch@0.1.3:
   version "0.1.3"
@@ -1384,6 +1394,22 @@ dnn-tags@0.0.26:
   version "0.0.26"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-tags/-/dnn-tags-0.0.26.tgz#8d4e9727f4cc96bb68d885f4ec120ef9ba8983df"
 
+dnn-text-overflow-wrapper-new@0.0.4:
+  version "0.0.4"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-text-overflow-wrapper-new/-/dnn-text-overflow-wrapper-new-0.0.4.tgz#a6a9f9912b2229001bca72f40c29d8b51de080de"
+  dependencies:
+    react "^15.5.4"
+    react-dom "^15.5.4"
+    react-tooltip "^3.3.0"
+
+dnn-text-overflow-wrapper-new@0.0.5:
+  version "0.0.5"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-text-overflow-wrapper-new/-/dnn-text-overflow-wrapper-new-0.0.5.tgz#fd7e814fc3009a3814fc1b091d2716bd89006723"
+  dependencies:
+    react "^15.5.4"
+    react-dom "^15.5.4"
+    react-tooltip "^3.3.0"
+
 dnn-text-overflow-wrapper@0.0.4:
   version "0.0.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-text-overflow-wrapper/-/dnn-text-overflow-wrapper-0.0.4.tgz#a02e349973ebe8abaf58ca12f4e89e3589214082"
@@ -1394,10 +1420,11 @@ dnn-tooltip@0.1.6:
   dependencies:
     react-portal-tooltip "^1.1.5"
 
-dnn-tree-control-interactor@0.0.6:
-  version "0.0.6"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-tree-control-interactor/-/dnn-tree-control-interactor-0.0.6.tgz#af7b79fb0da7efa00910c5e18ac7f1278abb4293"
+dnn-tree-control-interactor@0.1.4:
+  version "0.1.4"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/dnn-tree-control-interactor/-/dnn-tree-control-interactor-0.1.4.tgz#f3ed906a99251ae71896add55f3b5c8f78e840d1"
   dependencies:
+    dnn-text-overflow-wrapper-new "0.0.4"
     shortid "^2.2.8"
 
 doctrine@^1.2.1:
@@ -3276,7 +3303,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4, prop-types@^15.5.8:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://www.myget.org/F/dnn-software-public/npm/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -3385,6 +3412,15 @@ react-dom@15.3.1:
   version "15.3.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-dom/-/react-dom-15.3.1.tgz#6d42cd2b64c8c5e0b693f3ffaec301e6e627e24e"
 
+react-dom@^15.5.4:
+  version "15.6.1"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.10"
+
 react-height@2.1.1:
   version "2.1.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-height/-/react-height-2.1.1.tgz#14c27a8e3a7e43a17dd128c8f3ee00f03b0001c2"
@@ -3463,6 +3499,13 @@ react-tooltip@3.1.7:
   dependencies:
     classnames "^2.2.0"
 
+react-tooltip@^3.3.0:
+  version "3.3.0"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/react-tooltip/-/react-tooltip-3.3.0.tgz#51c08ae0221075e2c43d83cd47fc78466612df7d"
+  dependencies:
+    classnames "^2.2.0"
+    prop-types "^15.5.8"
+
 react-widgets@3.4.4:
   version "3.4.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-widgets/-/react-widgets-3.4.4.tgz#610930781d6a1911e033c3011fdf3a242e077a12"
@@ -3485,6 +3528,16 @@ react@15.3.1:
     fbjs "^0.8.4"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
+
+react@^15.5.4:
+  version "15.6.1"
+  resolved "https://www.myget.org/F/dnn-software-private/npm/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
+  dependencies:
+    create-react-class "^15.6.0"
+    fbjs "^0.8.9"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.10"
 
 readable-stream@^1.0.27-1, readable-stream@^1.1.13:
   version "1.1.14"
