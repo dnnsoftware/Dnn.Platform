@@ -2,6 +2,7 @@
 
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
+    [Serializable]
     public class Command
     {
         public string Key { get; set; }
