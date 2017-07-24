@@ -124,6 +124,7 @@ namespace Dnn.PersonaBar.Roles.Components
                     existingRole.Status = role.Status;
                     existingRole.IsPublic = role.IsPublic;
                     existingRole.AutoAssignment = role.AutoAssignment;
+                    existingRole.RSVPCode = role.RSVPCode;
                     RoleController.Instance.UpdateRole(existingRole, assignExistUsers);
                 }
                 else

@@ -402,4 +402,16 @@
   <data name="Prompt_UnableToParseBool.Text" xml:space="preserve">
     <value>Unable to parse the --{0} flag value '{1}'. Value should be True or False</value>
   </data>
+  <data name="plRSVPCode.Text" xml:space="preserve">
+    <value>RSVP Code</value>
+  </data>
+  <data name="plRSVPCode.Help" xml:space="preserve">
+    <value>Enter an RSVP Code for the role.  Users can easily subscribe to this role by entering this code on the Manage Services page of their user account.</value>
+  </data>
+  <data name="plRSVPLink.Text" xml:space="preserve">
+    <value>RSVP Link</value>
+  </data>
+  <data name="plRSVPLink.Help" xml:space="preserve">
+    <value>A link that allows users to subscribe to this role will be displayed when an RSVP Code is saved for this role.</value>
+  </data>
 </root>
