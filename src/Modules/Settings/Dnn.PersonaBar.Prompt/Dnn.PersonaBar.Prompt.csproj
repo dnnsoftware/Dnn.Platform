@@ -118,7 +118,6 @@
     <Compile Include="Components\Commands\Client\Exit.cs" />
     <Compile Include="Components\Commands\Client\Reload.cs" />
     <Compile Include="Components\Commands\Commands\ListCommands.cs" />
-    <Compile Include="Components\Commands\Extensions\NewExtension.cs" />
     <Compile Include="Components\Commands\Host\ClearCache.cs" />
     <Compile Include="Components\Commands\Host\GetHost.cs" />
     <Compile Include="Components\Commands\Module\CopyModule.cs" />
