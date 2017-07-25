@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Prompt.Components
 
         ModuleInfo GetModule(int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message);
 
-        IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null,
-            bool deleted = false, int pageIndex = 0, int max = 10);
+        IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null,
+            int pageIndex = 0, int max = 10);
     }
 }

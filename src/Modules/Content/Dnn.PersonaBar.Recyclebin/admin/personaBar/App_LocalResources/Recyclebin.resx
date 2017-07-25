@@ -232,10 +232,10 @@
     <value>Yes</value>
   </data>
   <data name="Service_RemoveTabError.Text" xml:space="preserve">
-    <value>Page {0} cannot be deleted until its children have been deleted first.&lt;br/&gt;</value>
+    <value>Error removing page has occurred:&lt;br/&gt;{0}</value>
   </data>
   <data name="Service_RemoveTabModuleError.Text" xml:space="preserve">
-    <value>Error removing page has occurred:&lt;br/&gt;{0}</value>
+    <value>Error removing page modules has occurred:&lt;br/&gt;{0}</value>
   </data>
   <data name="Service_RemoveUserError.Text" xml:space="preserve">
     <value>Error removing user has occurred:&lt;br/&gt;{0}</value>
@@ -254,5 +254,56 @@
   </data>
   <data name="Service_RestoreUserError.Text" xml:space="preserve">
     <value>Error restoring user.</value>
+  </data>
+  <data name="CanNotDeleteModule.Text" xml:space="preserve">
+    <value>You do not have permissions to delete module with id "{0}".&lt;br/&gt;</value>
+  </data>
+  <data name="ModuleNotSoftDeleted.Text" xml:space="preserve">
+    <value>Module with id "{0}" is not soft deleted.&lt;br/&gt;</value>
+  </data>
+  <data name="Prompt_FlagNotInt.Text" xml:space="preserve">
+    <value>--{0} must be an integer\n</value>
+  </data>
+  <data name="Prompt_FlagNotPositiveInt.Text" xml:space="preserve">
+    <value>--{0} must be greater than 0\n</value>
+  </data>
+  <data name="Prompt_MainParamRequired.Text" xml:space="preserve">
+    <value>The {0} is required. Please use the --{1} flag or pass it as the first argument after the command name\n</value>
+  </data>
+  <data name="ModuleNotFound.Text" xml:space="preserve">
+    <value>Module with id "{0}" not found.&lt;br/&gt;</value>
+  </data>
+  <data name="Prompt_ModulePurgedSuccessfully.Text" xml:space="preserve">
+    <value>Module with id "{0}" purged successfully.</value>
+  </data>
+  <data name="Service_RemoveTabWithChildError.Text" xml:space="preserve">
+    <value>Page {0} cannot be deleted until its children have been deleted first.&lt;br/&gt;</value>
+  </data>
+  <data name="Prompt_FlagRequired.Text" xml:space="preserve">
+    <value>--{0} is required\n</value>
+  </data>
+  <data name="Prompt_ModuleRestoredSuccessfully.Text" xml:space="preserve">
+    <value>Module with id "{0}" restored successfully.</value>
+  </data>
+  <data name="CanNotDeleteTab.Text" xml:space="preserve">
+    <value>You do not have permissions to delete page with id "{0}".&lt;br/&gt;</value>
+  </data>
+  <data name="PageNotFound.Text" xml:space="preserve">
+    <value>Page with id "{0}" not found.&gt;br/&gt;</value>
+  </data>
+  <data name="Prompt_PagePurgedSuccessfully.Text" xml:space="preserve">
+    <value>Page with id "{0}" purged successfully.</value>
+  </data>
+  <data name="Prompt_PageRestoredSuccessfully.Text" xml:space="preserve">
+    <value>Page with id "{0}" and name "{1}" restored successfully.</value>
+  </data>
+  <data name="TabNotSoftDeleted.Text" xml:space="preserve">
+    <value>Page with id "{0}" is not soft deleted.&lt;br/&gt;</value>
+  </data>
+  <data name="PageNotFoundWithName.Text" xml:space="preserve">
+    <value>Page with name "{0}" not found.&gt;br/&gt;</value>
+  </data>
+  <data name="Prompt_RestorePageNoParams.Text" xml:space="preserve">
+    <value>You must specify either a Page ID or Page Name.</value>
   </data>
 </root>

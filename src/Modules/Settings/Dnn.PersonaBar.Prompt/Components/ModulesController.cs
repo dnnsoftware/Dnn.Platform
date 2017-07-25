@@ -166,8 +166,8 @@ namespace Dnn.PersonaBar.Prompt.Components
             return null;
         }
 
-        public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, out int total, string moduleName = null, string moduleTitle = null,
-            int? pageId = null, bool deleted = false, int pageIndex = 0, int pageSize = 10)
+        public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null,
+            int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
@@ -185,7 +185,11 @@ namespace Dnn.PersonaBar.Prompt.Components
             {
                 modules = modules.Where(x => x.TabID == pageId.Value);
             }
-            modules = modules.Where(module => module.IsDeleted == deleted);
+            if (deleted.HasValue)
+            {
+                modules = modules.Where(module => module.IsDeleted == deleted);
+            }
+
             //Get distincts.
             modules = modules.GroupBy(x => x.ModuleID).Select(group => group.First()).OrderBy(x => x.ModuleID);
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();

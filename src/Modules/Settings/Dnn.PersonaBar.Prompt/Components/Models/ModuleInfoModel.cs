@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
@@ -13,7 +14,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int ModuleDefId { get; set; }
         public int TabModuleId { get; set; }
         public string AddedToPages { get; set; }
-        public static ModuleInfoModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule)
+        public static ModuleInfoModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule, bool? deleted = null)
         {
             var mim = new ModuleInfoModel
             {
@@ -30,6 +31,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 
             // get a list of all pages this module is added to
             var addedTo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(mim.ModuleId);
+            if (deleted.HasValue)
+                addedTo = addedTo.Where(x => x.IsDeleted == deleted.Value).ToList();
+
             var sbAddedTo = new StringBuilder();
             foreach (var modInfo in addedTo)
             {

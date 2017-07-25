@@ -106,8 +106,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         {
             int total;
             var modules =
-                ModulesController.Instance.GetModules(PortalSettings, out total, ModuleName, ModuleTitle,
-                    PageId, Deleted ?? false, (Page > 0 ? Page - 1 : 0), Max).Select(ModuleInfoModel.FromDnnModuleInfo).ToList();
+                ModulesController.Instance.GetModules(PortalSettings, Deleted, out total, ModuleName, ModuleTitle,
+                    PageId, (Page > 0 ? Page - 1 : 0), Max).Select(x => ModuleInfoModel.FromDnnModuleInfo(x, Deleted)).ToList();
             var totalPages = total / Max + (total % Max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             return new ConsoleResultModel

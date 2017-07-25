@@ -1,65 +1,65 @@
 <!-- restore-page -->
 <section class="dnn-prompt-inline-help">
-  <a name="restore-page"></a>
-  <h3 class="mono">restore-page</h3>
-  <p class="lead">Restores a page from the DNN Recycle Bin. </p>
+    <a name="restore-page"></a>
+    <h3 class="mono">restore-page</h3>
+    <p class="lead">Restores a page from the DNN Recycle Bin. </p>
 
-  <h4>Options</h4>
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Flag</th>
-      <th>Value</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td class="mono">--id</td>
-      <td>integer</td>
-      <td>See Notes</td>
-      <td></td>
-      <td>Explicitly specifies the Page ID to delete. Use of the flag name is not required. You can simply provide the ID value as the first argument. Required if <span class="mono">--parentid</span> and <span class="mono">--name</span> are not specified.</td>
-    </tr>
-    <tr>
-      <td class="mono">--name</td>
-      <td>string</td>
-      <td>See Notes</td>
-      <td></td>
-      <td>Specifies the name (not title) of the page that should be restored. This can be combined with <span class="mono">--parentid</span> to target a page name with a specific Parent page. Required if <span class="mono">--parentid</span> and <span class="mono">--name</span> are not specified.</td>
-    </tr>
-    <tr>
-      <td class="mono">--parentid</td>
-      <td>integer</td>
-      <td>See Notes</td>
-      <td></td>
-      <td>When you want to restore all child pages of a certain page, use this flag and specify the parent's Page ID. Required if <span class="mono">--id</span> and <span class="mono">--name</span> are not specified.</td>
-    </tr>
-    </tbody>
-  </table>
+    <h4>Options</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Flag</th>
+                <th>Value</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="mono">--id</td>
+                <td>integer</td>
+                <td>See Notes</td>
+                <td></td>
+                <td>Explicitly specifies the Page ID to delete. Use of the flag name is not required. You can simply provide the ID value as the first argument. Required if <span class="mono">--parentid</span> and <span class="mono">--name</span> are not specified.</td>
+            </tr>
+            <tr>
+                <td class="mono">--name</td>
+                <td>string</td>
+                <td>See Notes</td>
+                <td></td>
+                <td>Specifies the name (not title) of the page that should be restored. This can be combined with <span class="mono">--parentid</span> to target a page name with a specific Parent page. Required if <span class="mono">--parentid</span> and <span class="mono">--name</span> are not specified.</td>
+            </tr>
+            <tr>
+                <td class="mono">--parentid</td>
+                <td>integer</td>
+                <td>No</td>
+                <td></td>
+                <td>Required if you want to delete a page by name and page is child of some other page. In that case provide the id of the parent page.</td>
+            </tr>
+        </tbody>
+    </table>
 
-  <div>
-    <h4>Restore a Deleted Page By Page ID</h4>
-    <code class="block">
-      restore-page 999
-    </code>
-    OR
-    <code class="block">
-      restore-page --id 999
-    </code>
+    <div>
+        <h4>Restore a Deleted Page By Page ID</h4>
+        <code class="block">
+            restore-page 999
+        </code>
+        OR
+        <code class="block">
+            restore-page --id 999
+        </code>
 
-    <h4>Restore a Page With A Specific Page Name</h4>
-    <code class="block">
-      restore-page --name "Page1"
-    </code>
+        <h4>Restore a Page With A Specific Page Name</h4>
+        <code class="block">
+            restore-page --name "Page1"
+        </code>
 
-    <h4>Restore All Pages With A Common Parent Page</h4>
-    <code class="block">
-      restore-page --parentid 999
-    </code>
-  </div>
+        <h4>Restore a Page With A Specific Page Name and Parent</h4>
+        <code class="block">
+            restore-page --name "Page1" --parentid 30
+        </code>
+    </div>
 
 </section>
 
