@@ -137,46 +137,40 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragLeave(item) {
-        const el = this.getListItemTitle(item);
-        const children = el.childNodes;
-
-        console.log('hmm');
-        let dropTargets = el.getElementsByClassName("dropBeforeAfter");
-
-        for(let i=0; i< dropTargets.length; i++){
-            el.removeChild(dropTargets[i]);
-        }
-
+        let pageList = null;
+        this._traverse((pageListItem, list)=>{
+            if (pageListItem.id === item.id){
+                pageListItem.onDragOverState=false;
+                pageList = list;
+             }
+        });
+        this.setState({pageList:pageList});
     }
 
     onDragOver(e, item) {
         e.preventDefault();
-        const el = this.getListItemTitle(item);
-        console.log(el.childNodes);
+        let pageList = null;
+        this._traverse((pageListItem, list) => {
+            pageListItem.onDragOverState=false;
 
-        let hasDropTargets = false;
-
-        const children = el.childNodes || [];
-        console.log(children);
-
-        children.forEach((child)=>{
-            if(child && child.classList.contains("dropBeforeAfter")){
-                hasDropTargets=true;
+            if (pageListItem.id === item.id) {
+                pageListItem.onDragOverState = true;
+                pageList = list;
             }
         });
-
-        if(!hasDropTargets){
-            const li = document.createElement("li");
-            li.classList.add("dropBeforeAfter");
-            li.innerText = "drop target 1";
-            el.appendChild(li);
-        }
+        this.setState({pageList:pageList});
     }
 
     onDrop(item) {
-
         this.removeClone();
         let activePage = Object.assign({}, this.state.activePage);
+        let pageList = null;
+
+        this._traverse((pageListItem, list) => {
+            pageListItem.onDragOverState=false;
+            pageList=list;
+        });
+        this.setState({pageList});
 
         this.getPageInfo(activePage.id)
             .then((data) => {

@@ -66,12 +66,22 @@
         display:none;
     }
 
-    .dropBeforeAfter{
-        margin-top:10px;
-        padding:5px;
-        border: 2px dashed @alto;
-        width:60%;
-        margin-left:20px;
+    .dropZoneActive{
+        margin: 5px 0;
+        height: 70px;
+        background-color: @alto;
+    }
+
+    .dropZoneInactive {
+        transition: all 1.2s;
+        margin: 0;
+        height:inherit;
+    }
+
+    .dropZoneArea {
+        padding: 10px 0;
+        border: 1px dashed @alto;
+
     }
 
 }

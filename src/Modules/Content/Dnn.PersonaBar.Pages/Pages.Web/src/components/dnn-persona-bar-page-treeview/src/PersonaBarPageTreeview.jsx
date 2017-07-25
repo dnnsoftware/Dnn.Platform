@@ -51,32 +51,45 @@ export class PersonaBarPageTreeview extends Component {
         );
     }
 
+    render_dropZone(direction, item) {
+        if(item.onDragOverState) {
+            return (
+                <div className="dropZoneArea">
+                    {direction}
+                </div>
+            );
+        }
+        return;
+    }
+
     render_li() {
         const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd} = this.props;
         return listItems.map((item)=>{
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
-                    <span
-                        draggable="true"
-                        onDrop={(e)=>{ onDrop(item); }}
-
-                        onDragOver={(e)=>{ onDragOver(e, item); }}
-                        onDragLeave={(e)=>{ onDragLeave(item); }}
-                        onDragStart={(e)=>{ onDragStart(e, item); }}
-                        onDragEnd={()=>{onDragEnd(item); }}
-                     >
-                        {this.render_parentExpandButton(item)}
-                        <PersonaBarPageIcon iconType={1}/>
+                    <div className={item.onDropOverState ? "dropZoneActive" : "dropZoneInactive"} >
+                        {this.render_dropZone("before", item)}
                         <span
                             id={`list-item-title-${item.name}-${item.id}`}
-                            className={`item-name`}
-                            onClick={()=>{ onSelection(item.id); }}
+                            draggable="true"
+                            onDrop={(e)=>{ onDrop(item); }}
                             onDrag={(e)=> {onDrag(e); }}
-                            >
-                            <p>{item.name}</p>
+                            onDragOver={(e)=>{ onDragOver(e, item); }}
+                            onDragStart={(e)=>{ onDragStart(e, item); }}
+                            onDragEnd={()=>{onDragEnd(item); }}
+                         >
+                            {this.render_parentExpandButton(item)}
+                            <PersonaBarPageIcon iconType={1}/>
+                            <span
+                                className={`item-name`}
+                                onClick={()=>{ onSelection(item.id); }}
+                                >
+                                <p>{item.name}</p>
+                            </span>
+                            <PersonaBarSelectionArrow item={item} />
+                             {this.render_dropZone("after", item)}
                         </span>
-                        <PersonaBarSelectionArrow item={item} />
-                    </span>
+                    </div>
                     { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }
                 </li>
             );
