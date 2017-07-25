@@ -183,7 +183,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     }
 
+    onMovePage({Action, PageId, ParentId, RelatedPageId}){
+        const {onMovePage} = this.props;
+        onMovePage({Action, PageId, ParentId, RelatedPageId})
+        .then(()=>{
+            console.log("DONE");
+        });
 
+    }
+    
     removeClone() {
         this.clonedElement ? document.body.removeChild(this.clonedElement) : null;
         this.clonedElement = null;
@@ -342,7 +350,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDragLeave={this.onDragLeave.bind(this)}
                         onDragEnd={this.onDragEnd.bind(this)}
                         onDrop={this.onDrop.bind(this)}
-                        onMovePage={this.props.onMovePage.bind(this)}
+                        onMovePage={this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
                     />
                     : null}

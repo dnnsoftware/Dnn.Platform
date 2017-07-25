@@ -7,6 +7,7 @@ import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
+import Promise from "promise";
 
 function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
@@ -383,7 +384,17 @@ const pageActions = {
         };
     },
     movePage({Action, PageId, ParentId, RelatedPageId}){
-        console.log(Action, PageId, ParentId, RelatedPageId);
+        const url =
+        return new Promise((resolve, reject)=>{
+            const reqListener = (responseText) => {
+                const res = JSON.parse(responseText);
+                resolve(res);
+            };
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", reqListener);
+            xhr.open("POST", url);
+            xhr.send( JSON.stringify({Action, PageId, ParentId, RelatedPageId}) );
+        });
     }
 };
 

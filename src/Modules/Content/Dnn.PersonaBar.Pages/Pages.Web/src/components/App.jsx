@@ -371,7 +371,7 @@ class App extends Component {
     }
 
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
-        PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
+        return PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
     }
     render_PagesTreeViewEditor(){
         return (
