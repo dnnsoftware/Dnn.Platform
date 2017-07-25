@@ -130,9 +130,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             catch (Exception ex)
             {
                 logInfo.Exception = new ExceptionInfo(ex);
-                logInfo.LogProperties.Add(new LogDetailInfo("ExecutionMilliseconds", DateTime.Now.Subtract(startTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture)));
-                logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ttt")));
-                throw;
+                message = BadRequestResponse(ex.Message);
             }
             logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
             LogController.Instance.AddLog(logInfo);
