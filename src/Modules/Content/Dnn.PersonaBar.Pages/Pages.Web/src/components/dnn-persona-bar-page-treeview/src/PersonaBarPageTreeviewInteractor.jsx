@@ -185,18 +185,34 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
         const {onMovePage} = this.props;
-        onMovePage({Action, PageId, ParentId, RelatedPageId})
-        .then(()=>{
-            console.log("DONE");
-        });
 
+        onMovePage({Action, PageId, ParentId, RelatedPageId})
+        .then(()=> this.removeDropZones())
+        .then(()=>console.log("more to do"));
     }
-    
+
     removeClone() {
         this.clonedElement ? document.body.removeChild(this.clonedElement) : null;
         this.clonedElement = null;
     }
 
+    removeDropZones() {
+        return new Promise((resolve, reject) => {
+            let pageList = null;
+            this._traverse((item, list) => {
+                item.onDragOverState = false;
+                pageList = list;
+            });
+
+            this.setState({pageList}, ()=>{
+                resolve();
+            });
+        });
+    }
+
+    reOrderPage(){
+
+    }
 
     updateTree() {
         const newParent = this.state.droppedItem;

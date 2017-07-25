@@ -67,21 +67,27 @@
     }
 
     .dropZoneActive{
+        -webkit-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+        box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
         margin: 5px 0;
-        height: 70px;
-        background-color: @alto;
+        height: 100px;
+        opacity:.5;
+        background-color:#eee;
+        border:1px solid @alto;
     }
 
     .dropZoneInactive {
         transition: all 1.2s;
         margin: 0;
         height:inherit;
+
     }
 
     .dropZoneArea {
         padding: 10px 0;
-        border: 1px dashed @alto;
-
+        text-align:center;
+        opacity:.5;
     }
 
 }

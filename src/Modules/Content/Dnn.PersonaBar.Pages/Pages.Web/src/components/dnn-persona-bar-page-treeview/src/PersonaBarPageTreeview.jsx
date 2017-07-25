@@ -79,9 +79,10 @@ export class PersonaBarPageTreeview extends Component {
                     className="dropZoneArea"
                     draggable="false"
                     onDragOver={(e)=>{e.preventDefault();}}
-                    onDrop={()=>onMovePage({Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})}
-                    >
-                    {direction}
+                    onDrop={()=>onMovePage({Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})} >
+
+                    +
+
                 </div>
             );
         }
@@ -93,7 +94,7 @@ export class PersonaBarPageTreeview extends Component {
         return listItems.map((item)=>{
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
-                    <div className={item.onDropOverState ? "dropZoneActive" : "dropZoneInactive"} >
+                    <div className={item.onDragOverState ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
                         <span
                             id={`list-item-title-${item.name}-${item.id}`}
