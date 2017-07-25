@@ -24,11 +24,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
@@ -42,14 +46,19 @@ namespace DotNetNuke.Web.Common.Internal
         private static FileSystemWatcher _fileWatcher;
         private static DateTime _lastRead;
         private static IEnumerable<string> _settingsRestrictExtensions = new string[] { };
+        private static Task _pendingTask;
+        private static IDictionary<int, bool> _taskStatus = new Dictionary<int, bool>();
 
         private const int CacheTimeOut = 5; //obtain the setting and do calculations once every 5 minutes at most, plus no need for locking
+        private const int InstallProcessingTime = 300; // do not start the watcher process in 5 minutes after database install complete.
+        private const int WaitingTime = 60; //let thread wait for 60s to check again.
+        private const int UpgradeIndicateWaitingTime = 180; //seconds to wait for indicate whether current changing is in upgrade process.
 
         // Source: Configuring Blocked File Extensions
         // https://msdn.microsoft.com/en-us/library/cc767397.aspx
         private static readonly IEnumerable<string> DefaultRestrictExtensions =
             (
-                ".ade,.adp,.app,.ashx,.asmx,.asp,.aspx,.bas,.bat,.chm,.class,.cmd,.com,.cpl,.crt,.dll,.exe," +
+                ".ade,.adp,.app,.ashx,.asmx,.asp,.aspx,.bas,.bat,.chm,.class,.cmd,.com,.cpl,.crt,.exe," +
                 ".fxp,.hlp,.hta,.ins,.isp,.jse,.lnk,.mda,.mdb,.mde,.mdt,.mdw,.mdz,.msc,.msi,.msp,.mst,.ops,.pcd,.php," +
                 ".pif,.prf,.prg,.py,.reg,.scf,.scr,.sct,.shb,.shs,.url,.vb,.vbe,.vbs,.wsc,.wsf,.wsh"
             )
@@ -58,6 +67,26 @@ namespace DotNetNuke.Web.Common.Internal
             .Where(e => !string.IsNullOrEmpty(e))
             .Select(e => e.Trim())
             .ToList();
+
+        private static readonly IEnumerable<string> ProtectedPaths = new List<string>
+        {
+            "Default.aspx",
+            "ErrorPage.aspx",
+            "KeepAlive.aspx",
+            "admin\\Sales\\paypalipn.aspx",
+            "admin\\Sales\\paypalsubscription.aspx",
+            "Install\\Install.aspx",
+            "Install\\InstallWizard.aspx",
+            "Install\\UpgradeWizard.aspx",
+            "Portals\\_default\\subhost.aspx"
+        };
+
+        private static readonly IEnumerable<string> UpgradeIndicateFiles = new List<string>
+        {
+            "bin\\DotNetNuke.dll"
+        };
+
+        private static IList<string> _pendingNotifyPaths = new List<string>(); 
 
         internal static void Initialize()
         {
@@ -69,7 +98,10 @@ namespace DotNetNuke.Web.Common.Internal
                     {
                         try
                         {
-                            InitializeFileWatcher();
+                            Task.Run(() =>
+                            {
+                                InitializeFileWatcher();
+                            });
                         }
                         catch (Exception e)
                         {
@@ -84,6 +116,14 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void InitializeFileWatcher()
         {
+            if (InInstallOrUpgradeProcess())
+            {
+                Thread.Sleep(WaitingTime * 1000);
+                InitializeFileWatcher();
+
+                return;
+            }
+
             _fileWatcher = new FileSystemWatcher
             {
                 Filter = "*.*",
@@ -93,15 +133,21 @@ namespace DotNetNuke.Web.Common.Internal
             };
 
             _fileWatcher.Created += WatcherOnCreated;
+            _fileWatcher.Changed += _fileWatcher_Changed;
             _fileWatcher.Renamed += WatcherOnRenamed;
             _fileWatcher.Error += WatcherOnError;
-
-            _fileWatcher.EnableRaisingEvents = true;
 
             AppDomain.CurrentDomain.DomainUnload += (sender, args) =>
             {
                 _fileWatcher.Dispose();
             };
+
+            _fileWatcher.EnableRaisingEvents = true;
+        }
+
+        private static void _fileWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            CheckFile(e.FullPath);
         }
 
         private static void WatcherOnRenamed(object sender, RenamedEventArgs e)
@@ -128,16 +174,94 @@ namespace DotNetNuke.Web.Common.Internal
         {
             try
             {
+                //if the path is upgrade indicate file, then stop the watcher, because app will restart to run upgrade process.
+                if (IsUpgradeIndicateFile(path))
+                {
+                    _fileWatcher?.Dispose();
+                    _pendingNotifyPaths.Clear();
+                    CancelCurrentPendingTask();
+
+                    return;
+                }
+
                 if (IsRestrictdExtension(path))
                 {
-                    ThreadPool.QueueUserWorkItem(_ => AddEventLog(path));
-                    ThreadPool.QueueUserWorkItem(_ => NotifyManager(path));
+                    if (IsProtectedFile(path))
+                    {
+                        if (!_pendingNotifyPaths.Contains(path))
+                        {
+                            _pendingNotifyPaths.Add(path);
+                            StartPendingFileTask();
+                        }
+                    }
+                    else
+                    {
+                        ThreadPool.QueueUserWorkItem(_ => AddEventLog(new List<string> { path }));
+                        ThreadPool.QueueUserWorkItem(_ => NotifyManager(new List<string> { path }));
+                    }
                 }
             }
             catch (Exception ex)
             {
                 LogException(ex);
             }
+        }
+
+        private static void StartPendingFileTask()
+        {
+            CancelCurrentPendingTask();
+
+            _pendingTask = Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(UpgradeIndicateWaitingTime * 1000);
+
+                var taskId = Task.CurrentId.GetValueOrDefault(Null.NullInteger);
+                if (_taskStatus.ContainsKey(taskId) && !_taskStatus[taskId])
+                {
+                    var files = _pendingNotifyPaths.ToArray();
+                    ThreadPool.QueueUserWorkItem(_ => AddEventLog(files));
+                    ThreadPool.QueueUserWorkItem(_ => NotifyManager(files));
+
+                    _pendingNotifyPaths.Clear();
+                }
+            });
+
+            if (_taskStatus.ContainsKey(_pendingTask.Id))
+            {
+                _taskStatus.Remove(_pendingTask.Id);
+            }
+
+            _taskStatus.Add(_pendingTask.Id, false);
+        }
+
+        private static void CancelCurrentPendingTask()
+        {
+            if (_pendingTask != null && _taskStatus.ContainsKey(_pendingTask.Id))
+            {
+                _taskStatus[_pendingTask.Id] = true;
+            }
+        }
+
+        private static bool IsProtectedFile(string path)
+        {
+            return ProtectedPaths.Any(p =>
+            {
+                var protectedPath = Path.Combine(Globals.ApplicationMapPath, p);
+                var comparePath = path.Replace("/", "\\");
+
+                return protectedPath.Equals(comparePath, StringComparison.InvariantCultureIgnoreCase);
+            });
+        }
+
+        private static bool IsUpgradeIndicateFile(string path)
+        {
+            return UpgradeIndicateFiles.Any(p =>
+            {
+                var protectedPath = Path.Combine(Globals.ApplicationMapPath, p);
+                var comparePath = path.Replace("/", "\\");
+
+                return protectedPath.Equals(comparePath, StringComparison.InvariantCultureIgnoreCase);
+            });
         }
 
         private static bool IsRestrictdExtension(string path)
@@ -166,7 +290,7 @@ namespace DotNetNuke.Web.Common.Internal
             return _settingsRestrictExtensions ?? DefaultRestrictExtensions;
         }
 
-        private static void AddEventLog(string path)
+        private static void AddEventLog(IEnumerable<string> paths)
         {
             try
             {
@@ -175,7 +299,10 @@ namespace DotNetNuke.Web.Common.Internal
                     LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
                 };
                 log.AddProperty("Summary", Localization.GetString("PotentialDangerousFile.Text"));
-                log.AddProperty("File Name", path);
+                foreach (var path in paths)
+                {
+                    log.AddProperty("File Name", path);
+                }
 
                 new LogController().AddLog(log);
             }
@@ -185,10 +312,11 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-        private static void NotifyManager(string path)
+        private static void NotifyManager(IEnumerable<string> paths)
         {
             try
             {
+                var path = string.Join("", paths.Select(p => "<div>" + p + "</div>"));
                 var subject = Localization.GetString("RestrictFileMail_Subject.Text");
                 var body = Localization.GetString("RestrictFileMail_Body.Text")
                     .Replace("[Path]", path)
@@ -201,6 +329,40 @@ namespace DotNetNuke.Web.Common.Internal
             {
                 LogException(ex);
             }
+        }
+
+        private static bool InInstallOrUpgradeProcess()
+        {
+            var status = Globals.Status;
+
+            if (status != Globals.UpgradeStatus.None || InstallBlocker.Instance.IsInstallInProgress())
+            {
+                return true;
+            }
+
+            return (DateTime.Now - GetCheckTime()).TotalSeconds < InstallProcessingTime;
+        }
+
+        private static DateTime GetCheckTime()
+        {
+            var checkTime = DateTime.Now;
+            try
+            {
+                using (var reader = DataProvider.Instance().ExecuteSQL("SELECT MAX([CreatedDate]) AS CreatedDate FROM {databaseOwner}[{objectQualifier}Version]"))
+                {
+                    if (reader.Read())
+                    {
+                        checkTime = Null.SetNullDateTime(reader["CreatedDate"]); ;
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception)
+            {
+                //do nothing
+            }
+
+            return checkTime;
         }
 
         #endregion
