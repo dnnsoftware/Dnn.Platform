@@ -17,9 +17,28 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_tree(childListItems){
-        const {getChildListItems, onSelection, onDrop, onDrag, onDragStart,onDragOver, onDragLeave, onDragEnd} = this.props;
+        const {
+                draggedItem,
+                droppedItem,
+                dragOverItem,
+                getChildListItems,
+                onSelection,
+                onDrop,
+                onDrag,
+                onDragStart,
+                onDragOver,
+                onDragLeave,
+                onDragEnd,
+                onMovePage
+
+        } = this.props;
+
         return (
              <PersonaBarPageTreeview
+                draggedItem={draggedItem}
+                droppedItem={droppedItem}
+                dragOverItem={dragOverItem}
+
                 getChildListItems={getChildListItems}
                 listItems={childListItems}
                 onSelection={onSelection}
@@ -29,6 +48,7 @@ export class PersonaBarPageTreeview extends Component {
                 onDragOver={onDragOver}
                 onDragLeave={onDragLeave}
                 onDragEnd={onDragEnd}
+                onMovePage={onMovePage}
              />
         );
     }
@@ -52,9 +72,15 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_dropZone(direction, item) {
+        const {onMovePage, dragOverItem} = this.props;
         if(item.onDragOverState) {
             return (
-                <div className="dropZoneArea">
+                <div
+                    className="dropZoneArea"
+                    draggable="false"
+                    onDragOver={(e)=>{e.preventDefault();}}
+                    onDrop={()=>onMovePage({Action:direction, PageId:item.id, ParentId:item.parentId, RelatedPageId: dragOverItem.id})}
+                    >
                     {direction}
                 </div>
             );
@@ -108,12 +134,16 @@ export class PersonaBarPageTreeview extends Component {
 }
 
 PersonaBarPageTreeview.propTypes = {
+    draggedItem: PropTypes.object.isRequired,
+    droppedItem: PropTypes.object.isRequired,
+    dragOverItem: PropTypes.object.isRequired,
     onDrop: PropTypes.func.isRequired,
     onDrag: PropTypes.func.isRequired,
     onDragOver: PropTypes.func.isRequired,
     onDragLeave: PropTypes.func.isRequired,
     onDragStart: PropTypes.func.isRequired,
     onDragEnd: PropTypes.func.isRequired,
+    onMovePage: PropTypes.func.isRequired,
     listItems: PropTypes.array.isRequired,
     getChildListItems: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,

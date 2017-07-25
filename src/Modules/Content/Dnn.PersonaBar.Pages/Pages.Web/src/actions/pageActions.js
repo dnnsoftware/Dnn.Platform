@@ -381,6 +381,9 @@ const pageActions = {
                 });
             });
         };
+    },
+    movePage({Action, PageId, ParentId, RelatedPageId}){
+        console.log(Action, PageId, ParentId, RelatedPageId);
     }
 };
 

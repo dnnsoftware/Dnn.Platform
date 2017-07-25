@@ -370,6 +370,9 @@ class App extends Component {
         this.setState({activePage});
     }
 
+    onMovePage({Action, PageId, ParentId, RelatedPageId}){
+        PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
+    }
     render_PagesTreeViewEditor(){
         return (
             <GridCell columnSize={30}  style={{marginTop:"120px", backgroundColor:"#aaa"}} >
@@ -455,6 +458,7 @@ class App extends Component {
                                setActivePage={ this.setActivePage.bind(this) }
                                getActivePage={ this.getActivePage.bind(this) }
                                saveDropState={this.onSavePage.bind(this)}
+                               onMovePage={this.onMovePage.bind(this)}
                             />
                             {this.render_PagesDetailEditor()}
                             </GridCell>

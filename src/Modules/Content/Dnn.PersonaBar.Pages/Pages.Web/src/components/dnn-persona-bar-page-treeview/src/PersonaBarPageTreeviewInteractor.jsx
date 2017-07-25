@@ -158,7 +158,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 pageList = list;
             }
         });
-        this.setState({pageList:pageList});
+        this.setState({pageList:pageList, dragOverItem:item});
     }
 
     onDrop(item) {
@@ -183,10 +183,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     }
 
+
     removeClone() {
         this.clonedElement ? document.body.removeChild(this.clonedElement) : null;
         this.clonedElement = null;
     }
+
 
     updateTree() {
         const newParent = this.state.droppedItem;
@@ -321,11 +323,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
+
     render_treeview() {
         return (
             <span className="dnn-persona-bar-treeview-ul">
                 {this.state.isTreeviewExpanded ?
                     <PersonaBarPageTreeview
+                        draggedItem={this.state.draggedItem}
+                        droppedItem={this.state.droppedItem}
+                        dragOverItem={this.state.dragOverItem}
+
                         listItems={this.state.pageList}
                         getChildListItems={this.getChildListItems.bind(this)}
                         onSelection={this.onSelection.bind(this)}
@@ -335,6 +342,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDragLeave={this.onDragLeave.bind(this)}
                         onDragEnd={this.onDragEnd.bind(this)}
                         onDrop={this.onDrop.bind(this)}
+                        onMovePage={this.props.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
                     />
                     : null}
@@ -363,6 +371,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 PersonaBarPageTreeviewInteractor.propTypes = {
     OnSelect: PropTypes.func.isRequired,
+    onMovePage: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired
+
 };
