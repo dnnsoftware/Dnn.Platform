@@ -87,10 +87,6 @@ namespace DotNetNuke.Services.Cryptography
         /// <returns></returns>
         public override string DecryptParameter(string message, string passphrase)
         {
-            if (String.IsNullOrEmpty(message))
-            {
-                return "";
-            }
             string strValue = "";
             if (!String.IsNullOrEmpty(passphrase))
             {
@@ -116,35 +112,29 @@ namespace DotNetNuke.Services.Cryptography
                 }
                 catch //invalid length
                 {
-                    strValue = message;
+                    return string.Empty;
                 }
-                if (String.IsNullOrEmpty(strValue))
-                {
-                    try
-                    {
-                        //decrypt
-                        using (var objDes = new DESCryptoServiceProvider())
-                        using (var objMemoryStream = new MemoryStream())
-                        using (var objCryptoStream = new CryptoStream(objMemoryStream,
-                            objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
-                        {
-                            objCryptoStream.Write(byteData, 0, byteData.Length);
-                            objCryptoStream.FlushFinalBlock();
 
-                            //convert to string
-                            Encoding objEncoding = Encoding.UTF8;
-                            strValue = objEncoding.GetString(objMemoryStream.ToArray());
-                        }
-                    }
-                    catch //decryption error
+                try
+                {
+                    //decrypt
+                    using (var objDes = new DESCryptoServiceProvider())
+                    using (var objMemoryStream = new MemoryStream())
+                    using (var objCryptoStream = new CryptoStream(objMemoryStream,
+                        objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
                     {
-                        strValue = "";
+                        objCryptoStream.Write(byteData, 0, byteData.Length);
+                        objCryptoStream.FlushFinalBlock();
+
+                        //convert to string
+                        Encoding objEncoding = Encoding.UTF8;
+                        strValue = objEncoding.GetString(objMemoryStream.ToArray());
                     }
                 }
-            }
-            else
-            {
-                strValue = message;
+                catch //decryption error
+                {
+                    strValue = "";
+                }
             }
             return strValue;
         }
