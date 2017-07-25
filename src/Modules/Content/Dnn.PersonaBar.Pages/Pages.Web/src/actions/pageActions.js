@@ -395,6 +395,9 @@ const pageActions = {
                 console.log(xhr);
             });
             xhr.open("POST", url);
+            xhr.setRequestHeader("Content-Type", "application/json; charset-UTF-8");
+            xhr.setRequestHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             xhr.send( JSON.stringify({Action, PageId, ParentId, RelatedPageId}) );
         });
     }
