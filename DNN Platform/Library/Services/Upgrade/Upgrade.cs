@@ -3205,7 +3205,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true)
         {
-            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName && p.PackageType == packageType);
+            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase) && p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase));
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
@@ -4917,7 +4917,7 @@ namespace DotNetNuke.Services.Upgrade
                 foreach (var package in dependentPackages)
                 {
                     if ( package.Value.Dependencies.All(
-                            d => sortedPackages.Any(p => p.Value.Name == d.PackageName && p.Value.Version >= d.Version) ) )
+                            d => sortedPackages.Any(p => p.Value.Name.Equals(d.PackageName, StringComparison.OrdinalIgnoreCase) && p.Value.Version >= d.Version) ) )
                     {
                         sortedPackages.Add(package.Key, package.Value);
                         addedPackages.Add(package.Key);
@@ -4965,18 +4965,18 @@ namespace DotNetNuke.Services.Upgrade
 		                var package = packages[file];
 
                         var installedPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, 
-                            p => p.Name.Equals(package.Name, StringComparison.InvariantCultureIgnoreCase) 
-                                    && p.PackageType.Equals(package.PackageType, StringComparison.InvariantCultureIgnoreCase));
+                            p => p.Name.Equals(package.Name, StringComparison.OrdinalIgnoreCase) 
+                                    && p.PackageType.Equals(package.PackageType, StringComparison.OrdinalIgnoreCase));
 
-                        if (packages.Values.Count(p => p.FriendlyName.Equals(package.FriendlyName, StringComparison.InvariantCultureIgnoreCase)) > 1 
+                        if (packages.Values.Count(p => p.FriendlyName.Equals(package.FriendlyName, StringComparison.OrdinalIgnoreCase)) > 1 
                                 || installedPackage != null)
 		                {
-			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName.Equals(package.FriendlyName, StringComparison.InvariantCultureIgnoreCase)
+			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName.Equals(package.FriendlyName, StringComparison.OrdinalIgnoreCase)
                                                                         && kvp.Value.Version < package.Version).ToList();
 
                             //if there already have higher version installed, remove current one from list.
 		                    if (installedPackage != null && package.Version <= installedPackage.Version)
-		                    {
+		                {
 		                        oldPackages.Add(new KeyValuePair<string, PackageInfo>(file, package));
 		                    }
 

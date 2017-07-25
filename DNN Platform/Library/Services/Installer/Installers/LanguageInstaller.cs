@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 string packageName = Util.ReadElement(nav, "package");
-                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName);
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
                 if (package != null)
                 {
                     LanguagePack.DependentPackageID = package.PackageID;
