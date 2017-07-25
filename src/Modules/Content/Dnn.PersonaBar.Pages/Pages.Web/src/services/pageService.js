@@ -48,6 +48,11 @@ const PageService = function () {
         return api.post("SaveBulkPages", bulkPage);
     };
 
+    const movePage = function (payload) {
+        const api = getOverridablePagesApi();
+        return api.post("MovePage", payload);
+    };
+
     const deletePageModule = function (module) {
         const api = getPagesApi();
         return api.post("DeletePageModule", module);
@@ -168,7 +173,8 @@ const PageService = function () {
         copyPermissionsToDescendantPages,
         openPageInEditMode,
         getCachedPageCount,
-        clearCache
+        clearCache,
+        movePage
     };
 };
 

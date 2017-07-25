@@ -72,14 +72,14 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_dropZone(direction, item) {
-        const {onMovePage, dragOverItem} = this.props;
+        const {onMovePage, draggedItem, dragOverItem} = this.props;
         if(item.onDragOverState) {
             return (
                 <div
                     className="dropZoneArea"
                     draggable="false"
                     onDragOver={(e)=>{e.preventDefault();}}
-                    onDrop={()=>onMovePage({Action:direction, PageId:item.id, ParentId:item.parentId, RelatedPageId: dragOverItem.id})}
+                    onDrop={()=>onMovePage({Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})}
                     >
                     {direction}
                 </div>
