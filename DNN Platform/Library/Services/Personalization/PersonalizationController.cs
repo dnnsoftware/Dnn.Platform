@@ -161,37 +161,21 @@ namespace DotNetNuke.Services.Personalization
             }
         }
 
-        private string EncryptData(string profileData)
+        private static string EncryptData(string profileData)
         {
             return new PortalSecurity().Encrypt(GetDecryptionkey(), profileData);
         }
 
-        private string DecryptData(string profileData)
+        private static string DecryptData(string profileData)
         {
             return new PortalSecurity().Decrypt(GetDecryptionkey(), profileData);
         }
 
-        private string GetDecryptionkey()
+        private static string GetDecryptionkey()
         {
             var machineKey = Config.GetDecryptionkey();
             var hostGuid = Host.GUID.Replace("-", string.Empty);
-
-            if (string.IsNullOrEmpty(machineKey))
-            {
-                return hostGuid;
-            }
-
-            var stringBuilder = new StringBuilder();
-            for (var i = 0;  i < machineKey.Length; i++)
-            {
-                stringBuilder.Append(machineKey[i]);
-                if (i < hostGuid.Length)
-                {
-                    stringBuilder.Append(hostGuid[i]);
-                }
-            }
-
-            return stringBuilder.ToString();
+            return (machineKey ?? "") + hostGuid;
         }
     }
 }

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DotNetNuke.Common.Utilities;
+﻿using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
-using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Services.Cryptography;
 using NUnit.Framework;
 
@@ -27,7 +21,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         [Test]
         public void EncryptData_Should_Return_Encrypted_String()
         {
-            var message = "hell world";
+            var message = "Hello world!";
             var encryptionKey = Config.GetDecryptionkey();
             //Arrange
 
@@ -41,7 +35,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         [Test]
         public void DecryptData_Should_Return_Empty_String_If_Data_Is_Not_Encypted()
         {
-            var message = "hell world";
+            var message = "Hello world!";
             var encryptionKey = Config.GetDecryptionkey();
             //Arrange
 
