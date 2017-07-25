@@ -49,5 +49,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "tags")]
         public string[] Tags { get; set; }
+
+        [DataMember(Name = "tabOrder")]
+        public int TabOrder { get; set; }
     }
 }
