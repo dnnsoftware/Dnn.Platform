@@ -384,14 +384,16 @@ const pageActions = {
         };
     },
     movePage({Action, PageId, ParentId, RelatedPageId}){
-        const url =
+        const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/MovePage`;
         return new Promise((resolve, reject)=>{
-            const reqListener = (responseText) => {
-                const res = JSON.parse(responseText);
-                resolve(res);
+            const reqListener = (data) => {
+                console.log(this);
+                console.log(this.responseText);
             };
             const xhr = new XMLHttpRequest();
-            xhr.addEventListener("load", reqListener);
+            xhr.addEventListener("load", ()=>{
+                console.log(xhr);
+            });
             xhr.open("POST", url);
             xhr.send( JSON.stringify({Action, PageId, ParentId, RelatedPageId}) );
         });
