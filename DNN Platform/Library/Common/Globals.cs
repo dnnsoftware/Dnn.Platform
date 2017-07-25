@@ -2849,7 +2849,7 @@ namespace DotNetNuke.Common
                 returnUrl = string.Format("returnurl={0}", returnUrl);
             }
             var popUpParameter = "";
-            if (HttpUtility.UrlDecode(returnUrl).Contains("popUp=true"))
+            if (HttpUtility.UrlDecode(returnUrl).IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 popUpParameter = "popUp=true";
             }
