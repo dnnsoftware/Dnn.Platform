@@ -183,7 +183,6 @@
     <Content Include="admin\personaBar\help\list-tasks.html" />
     <Content Include="admin\personaBar\help\list-users.html" />
     <Content Include="admin\personaBar\help\move-module.html" />
-    <Content Include="admin\personaBar\help\new-extension.html" />
     <Content Include="admin\personaBar\help\new-page.html" />
     <Content Include="admin\personaBar\help\new-role.html" />
     <Content Include="admin\personaBar\help\new-user.html" />
