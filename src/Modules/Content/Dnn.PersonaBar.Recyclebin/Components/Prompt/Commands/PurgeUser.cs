@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(Localization.GetString("Prompt_CannotPurgeUser", Constants.LocalResourcesFile));
 
             RecyclebinController.Instance.DeleteUsers(new List<UserInfo> { userInfo });
-            return new ConsoleResultModel(Localization.GetString("Prompt_UserPurged", Constants.LocalResourcesFile));
+            return new ConsoleResultModel(Localization.GetString("Prompt_UserPurged", Constants.LocalResourcesFile)) { Records = 1 };
         }
     }
 }

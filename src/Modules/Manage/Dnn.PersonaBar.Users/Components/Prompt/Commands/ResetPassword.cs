@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
             var success = UsersController.Instance.ForceChangePassword(userInfo, PortalId, Notify);
             return success
-                ? new ConsoleResultModel(Localization.GetString("Prompt_PasswordReset", Constants.LocalResourcesFile) + (Notify ? Localization.GetString("Prompt_EmailSent", Constants.LocalResourcesFile) : ""))
+                ? new ConsoleResultModel(Localization.GetString("Prompt_PasswordReset", Constants.LocalResourcesFile) + (Notify ? Localization.GetString("Prompt_EmailSent", Constants.LocalResourcesFile) : "")) { Records = 1 }
                 : new ConsoleErrorResultModel(Localization.GetString("OptionUnavailable", Constants.LocalResourcesFile));
         }
     }

@@ -137,7 +137,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     new UserModel(UserController.Instance.GetUser(PortalId, userInfo.UserId))
                 };
-                return new ConsoleResultModel(Localization.GetString("UserCreated", Constants.LocalResourcesFile)) { Data = lstResult };
+                return new ConsoleResultModel(Localization.GetString("UserCreated", Constants.LocalResourcesFile)) { Data = lstResult, Records = lstResult.Count };
             }
             catch (Exception ex)
             {

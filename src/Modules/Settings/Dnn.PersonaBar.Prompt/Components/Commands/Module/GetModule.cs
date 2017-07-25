@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 return new ConsoleErrorResultModel(message.Value);
             }
             lst.Add(ModuleInfoModel.FromDnnModuleInfo(moduleInfo));
-            return new ConsoleResultModel { Data = lst };
+            return new ConsoleResultModel { Data = lst, Records = lst.Count };
         }
     }
 }

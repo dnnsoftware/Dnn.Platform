@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             string message;
             var restoredUser = RecyclebinController.Instance.RestoreUser(userInfo, out message);
             return restoredUser
-                ? new ConsoleResultModel(Localization.GetString("UserRestored", Constants.LocalResourcesFile))
+                ? new ConsoleResultModel(Localization.GetString("UserRestored", Constants.LocalResourcesFile)) { Records = 1 }
                 : new ConsoleErrorResultModel(message);
         }
     }

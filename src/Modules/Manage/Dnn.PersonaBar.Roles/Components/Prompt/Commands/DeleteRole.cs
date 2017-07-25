@@ -73,7 +73,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                 KeyValuePair<HttpStatusCode, string> message;
                 var roleName = RolesController.Instance.DeleteRole(PortalSettings, RoleId, out message);
                 return !string.IsNullOrEmpty(roleName)
-                    ? new ConsoleResultModel($"{Localization.GetString("DeleteRole.Message", Constants.LocalResourcesFile)} '{roleName}' ({RoleId})")
+                    ? new ConsoleResultModel($"{Localization.GetString("DeleteRole.Message", Constants.LocalResourcesFile)} '{roleName}' ({RoleId})") { Records = 1 }
                     : new ConsoleErrorResultModel(message.Value);
             }
             catch (Exception ex)

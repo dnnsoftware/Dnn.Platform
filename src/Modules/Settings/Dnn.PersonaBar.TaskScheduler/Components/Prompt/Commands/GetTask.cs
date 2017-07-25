@@ -65,9 +65,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             {
                 var task = SchedulingProvider.Instance().GetSchedule(TaskId);
                 if (task == null)
-                    return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_TaskNotFound", Constants.LocalResourcesFile), TaskId));
+                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("Prompt_TaskNotFound", Constants.LocalResourcesFile), TaskId));
                 var tasks = new List<TaskModel> { new TaskModel(task) };
-                return new ConsoleResultModel { Data = tasks };
+                return new ConsoleResultModel { Data = tasks, Records = tasks.Count };
             }
             catch (Exception exc)
             {

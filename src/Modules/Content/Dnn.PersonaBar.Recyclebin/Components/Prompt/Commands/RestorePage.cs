@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             }
             string message;
             RecyclebinController.Instance.RestoreTab(tab, out message);
-            return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(Localization.GetString("Prompt_PageRestoredSuccessfully"), tab.TabID, tab.TabName)) : new ConsoleErrorResultModel(message);
+            return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(Localization.GetString("Prompt_PageRestoredSuccessfully"), tab.TabID, tab.TabName)) { Records = 1 } : new ConsoleErrorResultModel(message);
         }
 
 

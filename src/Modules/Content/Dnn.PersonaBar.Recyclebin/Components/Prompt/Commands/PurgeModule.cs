@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             RecyclebinController.Instance.DeleteModules(modulesToPurge, errors);
             return errors.Length > 0
                 ? new ConsoleErrorResultModel(string.Format(Localization.GetString("Service_RemoveTabModuleError", Constants.LocalResourcesFile), errors))
-                : new ConsoleResultModel(string.Format(Localization.GetString("Prompt_ModulePurgedSuccessfully", Constants.LocalResourcesFile), ModuleId));
+                : new ConsoleResultModel(string.Format(Localization.GetString("Prompt_ModulePurgedSuccessfully", Constants.LocalResourcesFile), ModuleId)) { Records = 1 };
         }
     }
 }

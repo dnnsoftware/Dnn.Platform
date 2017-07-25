@@ -147,7 +147,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             if (copiedModule == null && !string.IsNullOrEmpty(message.Value))
                 return new ConsoleErrorResultModel(message.Value);
             lst.Add(ModuleInfoModel.FromDnnModuleInfo(copiedModule));
-            return new ConsoleResultModel(Localization.GetString("Prompt_ModuleCopied", Constants.LocalResourcesFile)) { Data = lst };
+            return new ConsoleResultModel(Localization.GetString("Prompt_ModuleCopied", Constants.LocalResourcesFile)) { Data = lst, Records = lst.Count };
         }
     }
 }

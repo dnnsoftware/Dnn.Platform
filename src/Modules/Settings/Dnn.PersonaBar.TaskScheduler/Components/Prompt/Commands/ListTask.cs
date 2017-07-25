@@ -82,7 +82,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             tasks.AddRange(schedulerItems.Select(x => new TaskModelBase(x)));
             return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_TasksFound", Constants.LocalResourcesFile), tasks.Count))
             {
-                Data = tasks
+                Data = tasks,
+                Records = tasks.Count
             };
         }
     }

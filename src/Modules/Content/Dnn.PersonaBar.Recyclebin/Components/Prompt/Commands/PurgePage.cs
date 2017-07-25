@@ -77,8 +77,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             var errors = new StringBuilder();
             RecyclebinController.Instance.DeleteTabs(new List<TabInfo> { tabInfo }, errors, DeleteChildren);
             return errors.Length > 0
-                ? new ConsoleResultModel(string.Format(Localization.GetString("Service_RemoveTabError", Constants.LocalResourcesFile), errors))
-                : new ConsoleResultModel(string.Format(Localization.GetString("Prompt_PagePurgedSuccessfully", Constants.LocalResourcesFile), PageId));
+                ? new ConsoleErrorResultModel(string.Format(Localization.GetString("Service_RemoveTabError", Constants.LocalResourcesFile), errors))
+                : new ConsoleResultModel(string.Format(Localization.GetString("Prompt_PagePurgedSuccessfully", Constants.LocalResourcesFile), PageId)) { Records = 1 };
         }
     }
 }

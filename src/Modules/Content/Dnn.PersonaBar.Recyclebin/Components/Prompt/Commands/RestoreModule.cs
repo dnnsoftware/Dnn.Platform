@@ -101,10 +101,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             var restored = RecyclebinController.Instance.RestoreModule(ModuleId, PageId, out message);
             return !restored
                 ? new ConsoleErrorResultModel(message)
-                : new ConsoleResultModel(
-                    string.Format(
-                        Localization.GetString("Prompt_ModuleRestoredSuccessfully", Constants.LocalResourcesFile),
-                        ModuleId));
+                : new ConsoleResultModel(string.Format(Localization.GetString("Prompt_ModuleRestoredSuccessfully", Constants.LocalResourcesFile), ModuleId)) { Records = 1 };
         }
     }
 }

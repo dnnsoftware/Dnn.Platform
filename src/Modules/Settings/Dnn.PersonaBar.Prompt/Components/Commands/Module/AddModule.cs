@@ -102,10 +102,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     return new ConsoleErrorResultModel(message.Value);
                 }
                 if (addedModules.Count == 0)
-                    return new ConsoleResultModel(Localization.GetString("Prompt_NoModulesAdded", Constants.LocalResourcesFile));
+                    return new ConsoleErrorResultModel(Localization.GetString("Prompt_NoModulesAdded", Constants.LocalResourcesFile));
                 var modules = addedModules.Select(newModule => ModuleInstanceModel.FromDnnModuleInfo(ModuleController.Instance.GetTabModule(newModule.TabModuleID))).ToList();
 
-                return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_ModuleAdded", Constants.LocalResourcesFile), modules.Count, modules.Count == 1 ? string.Empty : "s")) { Data = modules };
+                return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_ModuleAdded", Constants.LocalResourcesFile), modules.Count, modules.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
             }
             catch (Exception ex)
             {

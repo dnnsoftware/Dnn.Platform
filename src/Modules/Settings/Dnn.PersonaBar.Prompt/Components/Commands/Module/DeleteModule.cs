@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             ModulesController.Instance.DeleteModule(ModuleId, PageId, out message);
             return string.IsNullOrEmpty(message.Value)
                 ? new ConsoleResultModel(Localization.GetString("Prompt_ModuleDeleted", Constants.LocalResourcesFile))
-                : new ConsoleErrorResultModel(message.Value);
+                : new ConsoleErrorResultModel(message.Value) { Records = 1 };
         }
     }
 }

@@ -90,15 +90,16 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
                 var tasks = new List<TaskModel>();
 
                 if (taskToUpdate == null)
-                    return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_TaskNotFound", Constants.LocalResourcesFile), TaskId));
+                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("Prompt_TaskNotFound", Constants.LocalResourcesFile), TaskId));
                 if (taskToUpdate.Enabled == Enabled)
-                    return new ConsoleResultModel(Localization.GetString(Enabled ? "Prompt_TaskAlreadyEnabled" : "Prompt_TaskAlreadyDisabled", Constants.LocalResourcesFile));
+                    return new ConsoleErrorResultModel(Localization.GetString(Enabled ? "Prompt_TaskAlreadyEnabled" : "Prompt_TaskAlreadyDisabled", Constants.LocalResourcesFile));
 
                 taskToUpdate.Enabled = Enabled;
                 SchedulingProvider.Instance().UpdateSchedule(taskToUpdate);
                 tasks.Add(new TaskModel(taskToUpdate));
                 return new ConsoleResultModel(Localization.GetString("Prompt_TaskUpdated", Constants.LocalResourcesFile))
                 {
+                    Records = tasks.Count,
                     Data = tasks
                 };
             }

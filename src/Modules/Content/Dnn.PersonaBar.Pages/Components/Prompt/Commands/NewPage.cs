@@ -158,7 +158,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                     return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageCreateFailed", Constants.LocalResourceFile));
                 }
 
-                return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageCreated", Constants.LocalResourceFile)) { Data = lstResults };
+                return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageCreated", Constants.LocalResourceFile)) { Data = lstResults, Records = lstResults.Count };
             }
             catch (PageNotFoundException)
             {

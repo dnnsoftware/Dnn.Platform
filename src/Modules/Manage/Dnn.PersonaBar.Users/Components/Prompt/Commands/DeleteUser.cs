@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             // attempt to retrieve the user from the dB
             userInfo = UserController.GetUserById(PortalId, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
-            return new ConsoleResultModel(Localization.GetString("UserDeleted", Constants.LocalResourcesFile)) { Data = userModels };
+            return new ConsoleResultModel(Localization.GetString("UserDeleted", Constants.LocalResourcesFile)) { Data = userModels, Records = userModels.Count };
         }
     }
 }

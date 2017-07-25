@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
                 Logger.Error(ex);
                 return new ConsoleErrorResultModel("An error occurred while attempting to clear the Event Log.");
             }
-            return new ConsoleResultModel("Event Log Cleared") { };
+            return new ConsoleResultModel("Event Log Cleared");
 
         }
     }

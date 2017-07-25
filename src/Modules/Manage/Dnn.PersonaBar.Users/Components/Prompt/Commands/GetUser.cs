@@ -113,6 +113,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             return new ConsoleResultModel(string.Empty)
             {
                 Data = lst,
+                Records = lst.Count,
                 FieldOrder = new[]
                 {
                     "UserId",

@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         private const string FlagDescription = "description";
 
 
-        public int? RoleId { get; set; }
+        public int RoleId { get; set; }
         public string RoleName { get; set; }
         public string Description { get; set; }
         public bool? IsPublic { get; set; }
@@ -43,29 +43,25 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             base.Init(args, portalSettings, userInfo, activeTabId);
 
             var sbErrors = new StringBuilder();
+            int tempId;
             if (HasFlag(FlagId))
             {
-                int tmpId;
-                if (!int.TryParse(Flag(FlagId), out tmpId))
+                if (!int.TryParse(Flag(FlagId), out tempId))
                 {
                     sbErrors.Append(Localization.GetString("Prompt_RoleIdNotInt", Constants.LocalResourcesFile));
                 }
                 else
                 {
-                    RoleId = tmpId;
+                    RoleId = tempId;
                 }
+            }
+            else if (!int.TryParse(args[1], out tempId))
+            {
+                sbErrors.Append(Localization.GetString("Prompt_RoleIdIsRequired", Constants.LocalResourcesFile));
             }
             else
             {
-                int tempId;
-                if (!int.TryParse(args[1], out tempId))
-                {
-                    sbErrors.Append(Localization.GetString("Prompt_RoleIdIsRequired", Constants.LocalResourcesFile));
-                }
-                else
-                {
-                    RoleId = tempId;
-                }
+                RoleId = tempId;
             }
 
             if (HasFlag(FlagRoleName))
@@ -110,10 +106,10 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         {
             try
             {
-                var existingRole = RoleController.Instance.GetRoleById(PortalId, (int)RoleId);
+                var existingRole = RoleController.Instance.GetRoleById(PortalId, RoleId);
                 var roleDto = new RoleDto
                 {
-                    Id = (int)RoleId,
+                    Id = RoleId,
                     Name = !string.IsNullOrEmpty(RoleName) ? RoleName : existingRole?.RoleName,
                     Description = !string.IsNullOrEmpty(Description) ? Description : existingRole?.Description,
                     AutoAssign = AutoAssign ?? existingRole?.AutoAssignment ?? false,
@@ -130,7 +126,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                 {
                     new RoleModel(RoleController.Instance.GetRoleById(PortalId, roleDto.Id))
                 };
-                return new ConsoleResultModel(Localization.GetString("RoleUpdated.Message", Constants.LocalResourcesFile)) { Data = lstResults };
+                return new ConsoleResultModel(Localization.GetString("RoleUpdated.Message", Constants.LocalResourcesFile)) { Data = lstResults, Records = lstResults.Count };
             }
             catch (Exception ex)
             {

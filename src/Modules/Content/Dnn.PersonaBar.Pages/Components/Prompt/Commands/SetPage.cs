@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 var updatedTab = PagesController.Instance.SavePageDetails(pageSettings);
 
                 var lstResults = new List<PageModel> { new PageModel(updatedTab) };
-                return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("PageUpdatedMessage", Constants.LocalResourceFile)) { Data = lstResults };
+                return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("PageUpdatedMessage", Constants.LocalResourceFile)) { Data = lstResults, Records = lstResults.Count };
             }
             catch (PageNotFoundException)
             {

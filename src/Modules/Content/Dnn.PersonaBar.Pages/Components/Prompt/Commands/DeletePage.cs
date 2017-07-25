@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageNotFound", Constants.LocalResourceFile));
             }
-            return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("PageDeletedMessage", Constants.LocalResourceFile));
+            return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("PageDeletedMessage", Constants.LocalResourceFile)) { Records = 1 };
         }
     }
 }

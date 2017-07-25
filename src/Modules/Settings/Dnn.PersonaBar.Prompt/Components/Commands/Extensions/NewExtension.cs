@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Extensions
                 Logger.Error(ex);
                 return new ConsoleErrorResultModel("An error occurred while attempting to add the extension. Please see the DNN Event Viewer for details.");
             }
-            return new ConsoleResultModel(res) { IsHtml = true };
+            return new ConsoleResultModel(res) { IsHtml = true, Records = 1 };
         }
 
         public string InstallPackage(PortalSettings portalSettings, UserInfo user, string filePath)

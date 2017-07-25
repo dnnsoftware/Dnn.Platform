@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             if (movedModule == null && !string.IsNullOrEmpty(message.Value))
                 return new ConsoleErrorResultModel(message.Value);
             modules.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
-            return new ConsoleResultModel(Localization.GetString("Prompt_ModuleMoved", Constants.LocalResourcesFile)) { Data = modules };
+            return new ConsoleResultModel(Localization.GetString("Prompt_ModuleMoved", Constants.LocalResourcesFile)) { Data = modules, Records = modules.Count };
         }
     }
 }

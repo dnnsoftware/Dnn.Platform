@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
                 lst.Add(new PortalModelBase(portal));
             }
 
-            return new ConsoleResultModel(string.Empty) { Data = lst };
+            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count };
         }
 
 

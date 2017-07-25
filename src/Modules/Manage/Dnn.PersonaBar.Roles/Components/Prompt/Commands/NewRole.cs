@@ -153,7 +153,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                 if (!success) return new ConsoleErrorResultModel(message.Value);
 
                 lstResults.Add(new RoleModel(RoleController.Instance.GetRoleById(PortalId, roleDto.Id)));
-                return new ConsoleResultModel(Localization.GetString("RoleAdded.Message", Constants.LocalResourcesFile)) { Data = lstResults };
+                return new ConsoleResultModel(Localization.GetString("RoleAdded.Message", Constants.LocalResourcesFile)) { Data = lstResults, Records = lstResults.Count };
             }
             catch (Exception ex)
             {

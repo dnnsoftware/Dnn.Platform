@@ -18,9 +18,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
 
             try
             {
-                var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name);
+                var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name).ToList();
                 return new ConsoleResultModel($"Found {lstOut.Count()} commands")
                 {
+                    Records = lstOut.Count,
                     Data = lstOut,
                     FieldOrder = new[] {
                     "Name", "Description", "Version", "NameSpace" }

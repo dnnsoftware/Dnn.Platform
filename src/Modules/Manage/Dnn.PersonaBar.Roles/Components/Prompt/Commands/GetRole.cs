@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             if (role == null)
                 return new ConsoleErrorResultModel(string.Format(Localization.GetString("Prompt_NoRoleWithId", Constants.LocalResourcesFile), RoleId));
             lst.Add(new RoleModel(role));
-            return new ConsoleResultModel { Data = lst };
+            return new ConsoleResultModel { Data = lst, Records = lst.Count };
         }
     }
 }
