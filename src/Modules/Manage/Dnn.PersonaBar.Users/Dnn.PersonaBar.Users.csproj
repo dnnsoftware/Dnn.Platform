@@ -119,9 +119,7 @@
     <Compile Include="Components\Prompt\Commands\GetUser.cs" />
     <Compile Include="Components\Prompt\Commands\ListUsers.cs" />
     <Compile Include="Components\Prompt\Commands\NewUser.cs" />
-    <Compile Include="Components\Prompt\Commands\PurgeUser.cs" />
     <Compile Include="Components\Prompt\Commands\ResetPassword.cs" />
-    <Compile Include="Components\Prompt\Commands\RestoreUser.cs" />
     <Compile Include="Components\Prompt\Commands\SetUser.cs" />
     <Compile Include="Components\Prompt\Models\UserModel.cs" />
     <Compile Include="Components\Prompt\Models\UserModelBase.cs" />

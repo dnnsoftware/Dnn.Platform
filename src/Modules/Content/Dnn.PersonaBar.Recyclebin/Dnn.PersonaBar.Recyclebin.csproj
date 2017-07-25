@@ -109,6 +109,8 @@
     <Compile Include="Components\Prompt\Commands\PurgePage.cs" />
     <Compile Include="Components\Prompt\Commands\RestoreModule.cs" />
     <Compile Include="Components\Prompt\Commands\RestorePage.cs" />
+    <Compile Include="Components\Prompt\Commands\PurgeUser.cs" />
+    <Compile Include="Components\Prompt\Commands\RestoreUser.cs" />
     <Compile Include="Services\RecyclebinController.cs" />
     <Compile Include="Components\IRecyclebinController.cs" />
     <Compile Include="Components\RecyclebinController.cs" />
