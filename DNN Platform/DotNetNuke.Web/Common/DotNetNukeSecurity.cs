@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+#if false
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -87,7 +88,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-        #region File Watcher Functions
+#region File Watcher Functions
 
         private static void InitializeFileWatcher()
         {
@@ -273,6 +274,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-        #endregion
+#endregion
     }
 }
+#endif
