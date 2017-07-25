@@ -306,4 +306,7 @@
   <data name="Prompt_RestorePageNoParams.Text" xml:space="preserve">
     <value>You must specify either a Page ID or Page Name.</value>
   </data>
+  <data name="UserNotFound.Text" xml:space="preserve">
+    <value>User with id "{0}" not found.&lt;br/&gt;</value>
+  </data>
 </root>
