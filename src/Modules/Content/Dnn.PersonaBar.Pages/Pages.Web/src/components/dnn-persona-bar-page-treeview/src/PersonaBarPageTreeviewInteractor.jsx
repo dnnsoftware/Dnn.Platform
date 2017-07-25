@@ -188,7 +188,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
         onMovePage({Action, PageId, ParentId, RelatedPageId})
         .then(()=> this.removeDropZones())
-        .then(()=>console.log("more to do"));
+        .then(()=> this.reOrderPage({Action, PageId, ParentId, RelatedPageId}));
     }
 
     removeClone() {
@@ -210,8 +210,70 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    reOrderPage(){
+    reOrderPage({Action, PageId, ParentId, RelatedPageId}){
+        return new Promise((resolve, reject)=>{
+            console.log('inside reOrder');
+            let cachedItem = null;
+            let itemIndex = null;
+            let pageList = null;
+            let newParentId = null;
+            let newSiblingIndex = null;
 
+            const removeFromPageList = new Promise((resolve) => {
+                this._traverse((item, list)=>{ // remove item from pagelist and cache
+                    if(item.id ===ParentId){
+                        item.childListItems.forEach((child, index) => {
+                            if(child.id === PageId){
+                                child.selected = true;
+                                cachedItem = child;
+                                itemIndex = index;
+                            }
+                        });
+                        const arr1 = item.childListItems.slice(0,itemIndex);
+                        const arr2 = item.childListItems.slice(itemIndex+1);
+                        item.childCount--;
+                        item.childListItems = [...arr1, ...arr2];
+                        pageList=list;
+                    }
+
+                    if(item.id === RelatedPageId){
+                        newParentId = item.parentId;
+                    }
+                });
+                this.setState({pageList: pageList}, () => {
+                    this.getPageInfo(cachedItem.id).then(()=>resolve());
+                });
+            });
+
+
+            const updateNewParent = new Promise((resolve) => {
+                console.log('in upateNewParent');
+
+                this._traverse((item, list)=> {
+                    if (item.id === newParentId){
+                        item.childListItems.forEach((child, index) => {
+                            if(child.id === RelatedPageId){
+                                newSiblingIndex = index;
+                                item.childCount++;
+                                const arr1 = item.childListItems.slice(0,newSiblingIndex);
+                                const arr2 = item.childListItems.slice(newSiblingIndex);
+                                item.childListItems = [...arr1, cachedItem, ...arr2];
+                                pageList = list;
+                            }
+                        });
+                    }
+                });
+                this.setState({pageList}, ()=>{
+                    resolve();
+                });
+
+            });
+
+            removeFromPageList()
+            .then(()=>updateNewParent())
+            .then(()=> resolve());
+
+        });
     }
 
     updateTree() {

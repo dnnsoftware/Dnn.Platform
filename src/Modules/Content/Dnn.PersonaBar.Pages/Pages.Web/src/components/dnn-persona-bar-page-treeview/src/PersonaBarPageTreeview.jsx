@@ -114,8 +114,8 @@ export class PersonaBarPageTreeview extends Component {
                                 <p>{item.name}</p>
                             </span>
                             <PersonaBarSelectionArrow item={item} />
-                             {this.render_dropZone("after", item)}
                         </span>
+                        {this.render_dropZone("after", item)}
                     </div>
                     { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }
                 </li>
