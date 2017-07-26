@@ -1,6 +1,7 @@
 @import "~dnn-global-styles/index";
 
 .dnn-persona-bar-treeview {
+    font-family: inherit;
     cursor: pointer;
     padding: 15px;
 
@@ -22,6 +23,10 @@
         }
     }
 
+    .list-item-highlight {
+        color: @curiousBlue;
+    }
+
     .parent-expand-button {
         display:inline-block;
         position: relative;
@@ -38,12 +43,17 @@
     .selection-arrow {
         display:inline-block;
         position:relative;
+        top:2px;
         left:30px;
         font-size:18px;
         width:20px;
         font-weight:bold;
         color: @curiousBlue;
         float:right;
+
+        svg{
+            fill:@curiousBlue;
+        }
     }
 
 }
@@ -78,7 +88,7 @@
     }
 
     .dropZoneInactive {
-        transition: all 1.2s;
+        transition: all .75s;
         margin: 0;
         height:inherit;
 

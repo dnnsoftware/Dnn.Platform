@@ -76,7 +76,8 @@ export class PersonaBarPageTreeview extends Component {
         if(item.onDragOverState) {
             return (
                 <div
-                    className="dropZoneArea"
+                    className={(item.id !== draggedItem.id ) ? "dropZoneArea" : "" }
+                    style={(item.id === draggedItem.id) ? {display:"none"} : {}}
                     draggable="false"
                     onDragOver={(e)=>{e.preventDefault();}}
                     onDrop={()=>onMovePage({Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})} >
@@ -90,11 +91,11 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_li() {
-        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd} = this.props;
+        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd, draggedItem} = this.props;
         return listItems.map((item)=>{
             return (
-                <li id={`list-item-${item.name}-${item.id}`}>
-                    <div className={item.onDragOverState ? "dropZoneActive" : "dropZoneInactive"} >
+                <li id={`list-item-${item.name}-${item.id}`} className={(item.selected) ? "list-item-highlight" : null}>
+                    <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
                         <span
                             id={`list-item-title-${item.name}-${item.id}`}

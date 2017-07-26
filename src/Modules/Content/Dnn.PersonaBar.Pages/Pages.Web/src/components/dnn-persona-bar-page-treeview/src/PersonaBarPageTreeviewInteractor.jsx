@@ -357,7 +357,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         item.childListItems.filter((data, index) => {
                             if (data.id === moveChild.id) {
                                 cachedItemIndex = index;
-                                console.log('in left', data.id, moveChild.id);
                             }
                         });
                         const arr1 = item.childListItems.slice(0, cachedItemIndex);
@@ -385,11 +384,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
                     switch (true) {
                         case item.id === moveChild.parentId:
-                            console.log('moveChild.parentId === item.id')
                             left();
                             return;
                         case moveChild.parentId === -1:
-                            console.log('moveChild parent -1');
                             right();
                             return;
                         default:
