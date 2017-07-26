@@ -147,4 +147,7 @@
   <data name="ErrorMappingNameExists.Text" xml:space="preserve">
     <value>Connection name already exists.</value>
   </data>
+  <data name="InvalidAccountKey.ErrorMessage" xml:space="preserve">
+    <value>Input is not a valid Account Key.</value>
+  </data>
 </root>

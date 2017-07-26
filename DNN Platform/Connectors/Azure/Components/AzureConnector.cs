@@ -286,6 +286,10 @@ namespace Dnn.AzureConnector.Components
                     throw new Exception(Localization.GetString("AccessDenied.ErrorMessage", Constants.LocalResourceFile));
                 }
             }
+            catch (FormatException)
+            {
+                throw new Exception(Localization.GetString("InvalidAccountKey.ErrorMessage", Constants.LocalResourceFile));
+            }
             return false;
         }
 
