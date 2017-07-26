@@ -646,7 +646,7 @@
     <value>Minimum length of index word is required. Integer must be greater than 0.</value>
   </data>
   <data name="lblCustomAnalyzer.Help" xml:space="preserve">
-    <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
+    <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit Settings -&gt; Site Settings -&gt; Search in the Persona Bar for each site and click the "Re-index Content" button.</value>
   </data>
   <data name="lblCustomAnalyzer.Text" xml:space="preserve">
     <value>Custom Analyzer Type</value>
@@ -1042,7 +1042,7 @@
     <value>MicroServices</value>
   </data>
   <data name="MicroServicesDescription.Text" xml:space="preserve">
-    <value>Warning: once you enable a microservice, you will need contact support yo disable it.</value>
+    <value>Warning: once you enable a microservice, you will need contact support to disable it.</value>
   </data>
   <data name="SaveConfirm.Text" xml:space="preserve">
     <value>Are you sure you want to save the changes?</value>
@@ -1183,7 +1183,7 @@
     <value>You are about to permanently remove all translations for the '{0}' language. Are you sure you want to continue?</value>
   </data>
   <data name="Mode.HelpText" xml:space="preserve">
-    <value>Select System to edit the base file for a given language; Host will create a custom version of the localized file for this installation.</value>
+    <value>Select Global to edit the base file for a given language; the other option will only affect the selected site.</value>
   </data>
   <data name="Mode.Label" xml:space="preserve">
     <value>Mode</value>
@@ -1207,7 +1207,7 @@
     <value>Are you sure you want to disable the language {0}</value>
   </data>
   <data name="MakeNeutralWarning.Text" xml:space="preserve">
-    <value>This will delete all translated version of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
+    <value>This will delete all translated versions of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
   </data>
   <data name="SiteSelectionLabel.Text" xml:space="preserve">
     <value>EDITING SITE</value>

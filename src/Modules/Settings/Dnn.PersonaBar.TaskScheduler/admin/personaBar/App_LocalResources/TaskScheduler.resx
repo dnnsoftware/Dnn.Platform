@@ -597,4 +597,40 @@
   <data name="DayPlural.Text" xml:space="preserve">
     <value>days</value>
   </data>
+  <data name="Prompt_FetchTaskFailed.Text" xml:space="preserve">
+    <value>Failed to fetch the task details. Please see event log for more details.</value>
+  </data>
+  <data name="Prompt_FlagCantBeEmpty.Text" xml:space="preserve">
+    <value>When specified, the --{0} flag cannot be empty.\n</value>
+  </data>
+  <data name="Prompt_FlagMustBeNumber.Text" xml:space="preserve">
+    <value>When specified, the --{0} flag must be a number.\n</value>
+  </data>
+  <data name="Prompt_FlagMustBeTrueFalse.Text" xml:space="preserve">
+    <value>When specified, the --{0} flag must be True or False.\n</value>
+  </data>
+  <data name="Prompt_FlagRequired.Text" xml:space="preserve">
+    <value>The --{0} flag is required.\n</value>
+  </data>
+  <data name="Prompt_ScheduleFlagRequired.Text" xml:space="preserve">
+    <value>You must specify the scheduled item's ID using the --{0} flag or by passing the number as the first argument.\n</value>
+  </data>
+  <data name="Prompt_TaskAlreadyDisabled.Text" xml:space="preserve">
+    <value>Task is already disabled.</value>
+  </data>
+  <data name="Prompt_TaskAlreadyEnabled.Text" xml:space="preserve">
+    <value>Task is already enabled.</value>
+  </data>
+  <data name="Prompt_TaskNotFound.Text" xml:space="preserve">
+    <value>No task not found with id {0}.</value>
+  </data>
+  <data name="Prompt_TasksFound.Text" xml:space="preserve">
+    <value>{0} tasks found.</value>
+  </data>
+  <data name="Prompt_TaskUpdated.Text" xml:space="preserve">
+    <value>Task updated successfully.</value>
+  </data>
+  <data name="Prompt_TaskUpdateFailed.Text" xml:space="preserve">
+    <value>Failed to update the task.</value>
+  </data>
 </root>

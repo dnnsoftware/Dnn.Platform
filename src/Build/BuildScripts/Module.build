@@ -4,13 +4,14 @@
   <Target Name="GetFiles">
     <ItemGroup>
       <PersonaBar-views Include="admin/personaBar/*.html" />
+      <PersonaBar-help Include="admin/personaBar/help/*.html" />
       <PersonaBar-images Include="admin/personaBar/images/**/*" />
       <PersonaBar-data Include="admin/personaBar/data/*.resources" />
       <PersonaBar-css Include="admin/personaBar/css/**/*" />
       <PersonaBar-resources Include="admin/personaBar/App_LocalResources/*.resx" />
       <PersonaBar-controls Include="admin/personaBar/UserControls/*.ascx" />
       <PersonaBar-scripts Include="admin/personaBar/scripts/*;admin/personaBar/scripts/**/*" />
-      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)" />
+      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls);@(PersonaBar-help)" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">

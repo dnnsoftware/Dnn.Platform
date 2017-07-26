@@ -101,6 +101,14 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\Constants.cs" />
+    <Compile Include="Components\IRolesController.cs" />
+    <Compile Include="Components\Prompt\Commands\DeleteRole.cs" />
+    <Compile Include="Components\Prompt\Commands\GetRole.cs" />
+    <Compile Include="Components\Prompt\Commands\ListRoles.cs" />
+    <Compile Include="Components\Prompt\Commands\NewRole.cs" />
+    <Compile Include="Components\Prompt\Commands\SetRole.cs" />
+    <Compile Include="Components\Prompt\Models\RoleModel.cs" />
+    <Compile Include="Components\Prompt\Models\RoleModelBase.cs" />
     <Compile Include="Components\RolesController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DTO\UserRoleDto.cs" />

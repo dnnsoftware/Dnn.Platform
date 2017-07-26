@@ -10,8 +10,9 @@ import GridCell from "dnn-grid-cell";
 import SiteTheme from "./SiteTheme";
 import MiddleActions from "./MiddleActions";
 import ThemeList from "./ThemeList";
-
+import Button from "dnn-button";
 import "./style.less";
+import utils from "utils";
 
 class Body extends Component {
     constructor() {
@@ -22,10 +23,10 @@ class Body extends Component {
         };
     }
 
-    getThemesData() {
-        const {props, state} = this;
+    getThemesData(reload) {
+        const { props, state } = this;
 
-        if (props.themes.layouts.length === 0) {
+        if (reload || props.themes.layouts.length === 0) {
             props.dispatch(ThemeActions.getThemes(state.level));
         }
 
@@ -39,17 +40,48 @@ class Body extends Component {
         this.setState({ searchText: value });
     }
 
+    backToThemes() {
+        utils.utilities.loadPanel("Dnn.Themes", {});
+        this.getThemesData(true);
+    }
+
+    installTheme() {
+        let event = document.createEvent("Event");
+
+        event.initEvent("installPortalTheme", true, true);
+
+        let settings = {
+            isHost: utils.params.settings.isHost,
+            installPortalTheme: {},
+            referrer: "Dnn.Themes",
+            referrerText: Localization.get("BackToThemes"),
+            backToReferrerFunc: this.backToThemes.bind(this)            
+        };
+
+        event = Object.assign(event, settings);
+
+        utils.utilities.loadPanel("Dnn.Extensions", {
+            settings
+        });
+
+        document.dispatchEvent(event);
+    }
+
     render() {
         return (
             <GridCell className="themes-body">
                 <PersonaBarPageHeader title={Localization.get("Themes")}>
+                {utils.params.settings.isHost &&
+                    <Button type="primary" size="large" onClick={this.installTheme.bind(this)}>
+                        {Localization.get("InstallTheme")}
+                    </Button>
+                }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
                     <SiteTheme />
                     <MiddleActions onSearch={this.onSearch.bind(this)} />
                     <ThemeList dataSource={this.getThemesData()} />
-                </PersonaBarPageBody >
-
+                </PersonaBarPageBody>
             </GridCell>
         );
     }

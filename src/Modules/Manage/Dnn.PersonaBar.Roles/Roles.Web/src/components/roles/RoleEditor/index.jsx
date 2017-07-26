@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import "./style.less";
 import Switch from "dnn-switch";
@@ -43,7 +43,7 @@ class RolesEditor extends Component {
     }
 
     getValue(selectKey) {
-        const {state} = this;
+        const { state } = this;
         switch (selectKey) {
             case "RoleGroup":
                 return state.roleDetails.groupId !== undefined ? state.roleDetails.groupId : -1;
@@ -62,7 +62,7 @@ class RolesEditor extends Component {
 
     onDropDownChange(key, option) {
         if (key === "groupId" && option.value === -3) {
-            let {createGroupVisible} = this.state;
+            let { createGroupVisible } = this.state;
             createGroupVisible = true;
             this.setState({
                 createGroupVisible
@@ -75,19 +75,19 @@ class RolesEditor extends Component {
     }
     performChange(key, value) {
         if (key !== "assignToUsers") {
-            let {roleDetails} = this.state;
+            let { roleDetails } = this.state;
             roleDetails[key] = value;
             this.setState({
                 roleDetails
             });
         } else {
-            let {assignToUsers} = this.state;
+            let { assignToUsers } = this.state;
             assignToUsers = value;
             this.setState({
                 assignToUsers
             });
         }
-        let {state} = this;
+        let { state } = this;
         state.formModified = true;
         this.setState({
             state
@@ -101,14 +101,14 @@ class RolesEditor extends Component {
     }
     addUpdateRoleDetails(event) {
         event.preventDefault();
-        const {props, state} = this;
+        const { props, state } = this;
         this.submitted = true;
         if (!this.validateForm()) {
             return;
         }
 
         if (state.formModified) {
-            let {roleDetails} = this.state;
+            let { roleDetails } = this.state;
             if (roleDetails.groupId === -3) {
                 return;//Avoid saving while in create group window
             }
@@ -134,8 +134,8 @@ class RolesEditor extends Component {
     validateForm() {
         let valid = true;
         if (this.submitted) {
-            let {roleDetails} = this.state;
-            let {errors} = this.state;
+            let { roleDetails } = this.state;
+            let { errors } = this.state;
             errors.roleName = false;
             if (roleDetails.name === "") {
                 errors.roleName = true;
@@ -146,15 +146,15 @@ class RolesEditor extends Component {
         return valid;
     }
     refreshRolesListIfRequired() {
-        const {props, state} = this;
+        const { props, state } = this;
         let group = props.roleGroups.find(group => group.id === state.groupId);
         if (group !== undefined && group.rolesCount <= 1) {
             props.refreshRolesList();
         }
     }
     deleteRole(event) {
-        let {roleDetails} = this.state;
-        const {props} = this;
+        let { roleDetails } = this.state;
+        const { props } = this;
         if (props.roleId > 0) {
             util.utilities.confirm(resx.get("DeleteRole.Confirm"), resx.get("Delete"), resx.get("Cancel"), () => {
                 props.dispatch(RolesActions.deleteRole(roleDetails, () => {
@@ -173,12 +173,12 @@ class RolesEditor extends Component {
             return group.value !== -2;
         });
         groupOptions = [{
-            label: <span className="do-not-close">{resx.get("lblNewGroup") }</span>, value: -3
+            label: <span className="do-not-close">{resx.get("lblNewGroup")}</span>, value: -3
         }].concat(groupOptions);
         return groupOptions;
     }
     CloseCreateGroup() {
-        let {createGroupVisible} = this.state;
+        let { createGroupVisible } = this.state;
         createGroupVisible = false;
         this.setState({
             createGroupVisible
@@ -197,90 +197,153 @@ class RolesEditor extends Component {
     }
     /* eslint-disable react/no-danger */
     render() {
-        let {state} = this;
+        let { state, props } = this;
         const columnOne = <div className="editor-container">
             <div className="editor-row divider">
                 <SingleLineInputWithError
-                    value={state.roleDetails.name }
+                    value={state.roleDetails.name}
                     enabled={!state.roleDetails.isSystem}
-                    onChange={this.onTextChange.bind(this, "name") }
+                    onChange={this.onTextChange.bind(this, "name")}
                     maxLength={50}
                     error={state.errors.roleName}
-                    label={resx.get("RoleName") }
-                    tooltipMessage={resx.get("RoleName.Help") }
-                    errorMessage={resx.get("RoleName.Required") }
+                    label={resx.get("RoleName")}
+                    tooltipMessage={resx.get("RoleName.Help")}
+                    errorMessage={resx.get("RoleName.Required")}
                     autoComplete="off"
-                    inputStyle={{ marginBottom: 15 }}
-                    tabIndex={1}/>
+                    inputStyle={{ marginBottom: 0 }}
+                    tabIndex={1} />
             </div>
             <div className="editor-row divider">
-                <Label label={resx.get("Description") } tooltipMessage={resx.get("Description.Help") } tooltipPlace={"top"} />
-                <MultiLineInput value={state.roleDetails.description } onChange={this.onTextChange.bind(this, "description") }
+                <Label
+                    label={resx.get("Description")}
+                    tooltipMessage={resx.get("Description.Help")}
+                    tooltipPlace={"top"} />
+                <MultiLineInput
+                    value={state.roleDetails.description}
+                    onChange={this.onTextChange.bind(this, "description")}
                     maxLength={500} />
+            </div>
+            <div className="editor-row divider">
+                <Label
+                    label={resx.get("statusListLabel")}
+                    tooltipMessage={resx.get("statusListLabel.Help")}
+                    tooltipPlace={"top"} />
+                <Select
+                    value={this.getValue("Status")}
+                    enabled={!state.roleDetails.isSystem}
+                    options={this.props.statusOptions}
+                    style={{ width: 100 + "%", float: "left" }}
+                    onSelect={this.onDropDownChange.bind(this, "status")}
+                />
             </div>
             <div className="status-row">
                 <div className="left">
-                    <Label label={resx.get("Public") } tooltipMessage={resx.get("PublicRole.Help") } tooltipPlace={"top"} />
+                    <Label
+                        labelType="inline"
+                        label={resx.get("Public")}
+                        tooltipMessage={resx.get("PublicRole.Help")}
+                        tooltipPlace={"top"} />
                 </div>
                 <div className="right">
-                    <Switch labelHidden={true} readOnly={state.roleDetails.isSystem}
-                        value={this.getValue("Public") }
-                        onChange={this.onSwitchToggle.bind(this, "isPublic") }/>
+                    <Switch
+                        labelHidden={true}
+                        readOnly={state.roleDetails.isSystem}
+                        value={this.getValue("Public")}
+                        onChange={this.onSwitchToggle.bind(this, "isPublic")} />
                 </div>
             </div>
         </div>;
 
         const columnTwo = <div className="editor-container right-column">
             <div className="editor-row divider">
-                <Label label={resx.get("plRoleGroups") } tooltipMessage={resx.get("plRoleGroups.Help") } tooltipPlace={"top"} />
-
-                <Select  value={this.getValue("RoleGroup") } enabled={!state.roleDetails.isSystem  } options={this.getRoleGroupOptions() }
+                <Label
+                    label={resx.get("plRoleGroups")}
+                    tooltipMessage={resx.get("plRoleGroups.Help")}
+                    tooltipPlace={"top"} />
+                <Select
+                    value={this.getValue("RoleGroup")}
+                    enabled={!state.roleDetails.isSystem}
+                    options={this.getRoleGroupOptions()}
                     style={{ width: 100 + "%", float: "left" }}
-                    onSelect={this.onDropDownChange.bind(this, "groupId") }
-                    />
+                    onSelect={this.onDropDownChange.bind(this, "groupId")} />
                 <div className="new-group-container">
-                    <RoleGroupEditor visible={this.state.createGroupVisible}
-                        onSave={this.onCreateGroup.bind(this) }
-                        onCancel={this.onCancelCreateGroup.bind(this) }
-                        onClick={this.doNothing.bind(this) }
+                    <RoleGroupEditor
+                        visible={this.state.createGroupVisible}
+                        onSave={this.onCreateGroup.bind(this)}
+                        onCancel={this.onCancelCreateGroup.bind(this)}
+                        onClick={this.doNothing.bind(this)}
                         showPopup={this.state.createGroupVisible}
                         group={{ id: -2, name: "", description: "" }}
                         title="New Group" />
                 </div>
             </div>
             <div className="editor-row divider">
-                <Label label={resx.get("securityModeListLabel") } tooltipMessage={resx.get("securityModeListLabel.Help") } tooltipPlace={"top"} />
-                <Select   value={this.getValue("SecurityMode") } enabled={!state.roleDetails.isSystem } options={this.props.securityModeOptions}
+                <Label
+                    label={resx.get("securityModeListLabel")}
+                    tooltipMessage={resx.get("securityModeListLabel.Help")}
+                    tooltipPlace={"top"} />
+                <Select
+                    value={this.getValue("SecurityMode")}
+                    enabled={!state.roleDetails.isSystem}
+                    options={this.props.securityModeOptions}
                     style={{ width: 100 + "%", float: "left" }}
-                    onSelect={this.onDropDownChange.bind(this, "securityMode") }
-                    />
+                    onSelect={this.onDropDownChange.bind(this, "securityMode")}
+                />
             </div>
             <div className="editor-row divider">
-                <Label label={resx.get("statusListLabel") } tooltipMessage={resx.get("statusListLabel.Help") } tooltipPlace={"top"} />
-                <Select value={this.getValue("Status") } enabled={!state.roleDetails.isSystem } options={this.props.statusOptions}
-                    style={{ width: 100 + "%", float: "left" }}
-                    onSelect={this.onDropDownChange.bind(this, "status") }
-                    />
+                <SingleLineInputWithError
+                    value={state.roleDetails.rsvpCode}
+                    enabled={!state.roleDetails.isSystem}
+                    maxLength={50}
+                    onChange={this.onTextChange.bind(this, "rsvpCode")}
+                    label={resx.get("plRSVPCode")}
+                    tooltipMessage={resx.get("plRSVPCode.Help")}
+                    inputStyle={{ marginBottom: 5 }}
+                    tabIndex={1} />
             </div>
-            <div className="status-row"  style={{ marginTop: "14px" }}>
+            <div className="editor-row divider">
+                <SingleLineInputWithError
+                    value={state.roleDetails.rsvpCode &&
+                        state.roleDetails.rsvpCode !== "" ?
+                        props.rsvpLink + "&rsvp=" + state.roleDetails.rsvpCode : ""}
+                    enabled={false}
+                    onChange={this.onTextChange.bind(this, "rsvpLink")}
+                    label={resx.get("plRSVPLink")}
+                    tooltipMessage={resx.get("plRSVPLink.Help")}
+                    inputStyle={{ marginBottom: 0 }}
+                    tabIndex={1} />
+            </div>
+            <div className="status-row">
                 <div className="left">
-                    <Label label={resx.get("AutoAssignment") } tooltipMessage={resx.get("AutoAssignment.Help") } tooltipPlace={"top"} />
+                    <Label
+                        labelType="inline"
+                        label={resx.get("AutoAssignment")}
+                        tooltipMessage={resx.get("AutoAssignment.Help")}
+                        tooltipPlace={"top"} />
                 </div>
                 <div className="right">
-                    <Switch labelHidden={true} readOnly={state.roleDetails.isSystem}
-                        value={state.roleDetails.autoAssign }
-                        onChange={this.onSwitchToggle.bind(this, "autoAssign") }/>
+                    <Switch
+                        labelHidden={true}
+                        readOnly={state.roleDetails.isSystem}
+                        value={state.roleDetails.autoAssign}
+                        onChange={this.onSwitchToggle.bind(this, "autoAssign")} />
                 </div>
             </div>
             {state.roleDetails.autoAssign &&
-                <div className="status-row"  style={{ marginTop: "14px" }} >
+                <div className="status-row">
                     <div className="left">
-                        <Label label={resx.get("AssignToExistUsers") } tooltipMessage={resx.get("AssignToExistUsers.Help") } tooltipPlace={"top"} />
+                        <Label
+                            labelType="inline"
+                            label={resx.get("AssignToExistUsers")}
+                            tooltipMessage={resx.get("AssignToExistUsers.Help")}
+                            tooltipPlace={"top"} />
                     </div>
                     <div className="right">
-                        <Switch labelHidden={true} readOnly={state.roleDetails.isSystem}
-                            value={state.assignToUsers }
-                            onChange={this.onSwitchToggle.bind(this, "assignToUsers") }/>
+                        <Switch
+                            labelHidden={true}
+                            readOnly={state.roleDetails.isSystem}
+                            value={state.assignToUsers}
+                            onChange={this.onSwitchToggle.bind(this, "assignToUsers")} />
                     </div>
                 </div>
             }
@@ -295,15 +358,25 @@ class RolesEditor extends Component {
                 <div className="buttons-box">
                     {
                         this.props.roleId > 0 && (!state.roleDetails.isSystem && state.roleDetails.id > -1) ?
-                            <Button type="secondary" onClick={this.deleteRole.bind(this) }>
-                                {resx.get("Delete") }
+                            <Button
+                                type="secondary"
+                                onClick={this.deleteRole.bind(this)}>
+                                {resx.get("Delete")}
                             </Button>
                             : null
                     }
-                    <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{resx.get("Cancel") }</Button>
-                    <Button type="primary" onClick={this.addUpdateRoleDetails.bind(this) }>{resx.get("Save") }</Button>
+                    <Button
+                        type="secondary"
+                        onClick={this.props.Collapse.bind(this)}>
+                        {resx.get("Cancel")}
+                    </Button>
+                    <Button
+                        type="primary"
+                        onClick={this.addUpdateRoleDetails.bind(this)}>
+                        {resx.get("Save")}
+                    </Button>
                 </div>
-            </div >
+            </div>
         );
     }
 }
@@ -317,11 +390,13 @@ RolesEditor.propTypes = {
     Collapse: PropTypes.func,
     refreshRolesList: PropTypes.func,
     roleGroups: PropTypes.array,
-    currentGroupId: PropTypes.number
+    currentGroupId: PropTypes.number,
+    rsvpLink: PropTypes.string
 };
 function mapStateToProps(state) {
     return {
-        roleGroups: state.roles.roleGroups
+        roleGroups: state.roles.roleGroups,
+        rsvpLink: state.roles.rsvpLink
     };
 }
 

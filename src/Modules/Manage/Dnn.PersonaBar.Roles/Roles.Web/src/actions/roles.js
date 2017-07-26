@@ -54,7 +54,8 @@ const rolesActions = {
                     type: ActionTypes.RETRIEVED_ROLES_LIST,
                     data: { rolesList: data.roles },
                     loadMore: data.loadMore,
-                    reload: parameters.reload
+                    reload: parameters.reload,
+                    rsvpLink: data.rsvpLink
                 });
                 if (callback) {
                     callback(data);

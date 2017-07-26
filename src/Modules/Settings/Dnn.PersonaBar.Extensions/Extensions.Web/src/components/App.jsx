@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import { InstallationActions } from "actions";
 import Body from "./Body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import NewExtensionModal from "./NewExtensionModal";
@@ -9,7 +10,7 @@ import EditExtension from "./EditExtension";
 import CreatePackageModal from "./CreatePackageModal";
 import DeleteExtension from "./DeleteExtension";
 import { VisiblePanelActions } from "actions";
-
+import util from "../utils";
 
 class App extends Component {
     constructor() {
@@ -23,14 +24,59 @@ class App extends Component {
         if (event) {
             event.preventDefault();
         }
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(panel));
+        const { props } = this;
+        this.setState({
+            referrer: "",
+            referrerText: "",
+            backToReferrerFunc: null
+        }, () => {
+            props.dispatch(VisiblePanelActions.selectPanel(panel));
+        });        
+    }
+
+    backToReferrer(callback) {
+        if (typeof callback === "function") {
+            callback();
+        }
+        setTimeout(() => {
+            this.setState({
+                referrer: "",
+                referrerText: "",
+                backToReferrerFunc: null
+            });
+        }, 750);
+    }
+
+    updateReferrerInfo(event) {
+        this.setState({
+            referrer: event.referrer,
+            referrerText: event.referrerText,
+            backToReferrerFunc: this.backToReferrer.bind(this, event.backToReferrerFunc)
+        });
+    }
+
+    componentWillMount() {
+        const { props } = this;
+
+        document.addEventListener("installPortalTheme", (e) => {
+            props.dispatch(InstallationActions.setIsPortalPackage(true, () => {
+                this.selectPanel(3);
+            }));
+            this.updateReferrerInfo(e);
+        }, false);
+
+        if (util.settings.installPortalTheme) {
+            props.dispatch(InstallationActions.setIsPortalPackage(true, () => {
+                this.selectPanel(3);
+            }));
+            this.updateReferrerInfo(util.settings);
+        }
     }
 
     /* End Extension CRUD methods */
 
     render() {
-        const {props} = this;
+        const { props, state } = this;
         return (
             <div className="extensions-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0} className={(props.selectedPage !== 0 ? "hidden" : "")}>
@@ -43,7 +89,11 @@ class App extends Component {
                     {props.selectedPage === 2 && <NewExtensionModal onCancel={this.selectPanel.bind(this, 0)} />}
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 3}>
-                    {props.selectedPage === 3 && <InstallExtensionModal onCancel={this.selectPanel.bind(this, 0)} />}
+                    {props.selectedPage === 3 && <InstallExtensionModal
+                        backToReferrer={state.referrer}
+                        backToReferrerText={state.referrerText}
+                        backToReferrerFunc={state.backToReferrerFunc}
+                        onCancel={this.selectPanel.bind(this, 0)} />}
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 4}>
                     {props.selectedPage === 4 &&

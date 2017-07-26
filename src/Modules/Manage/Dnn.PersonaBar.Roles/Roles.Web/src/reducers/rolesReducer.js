@@ -27,7 +27,8 @@ export default function rolesReducer(state = {
         case ActionTypes.RETRIEVED_ROLES_LIST:
             return { ...state,
                 rolesList: action.reload ? action.data.rolesList : state.rolesList.concat(action.data.rolesList),
-                loadMore: action.loadMore
+                loadMore: action.loadMore,
+                rsvpLink: action.rsvpLink
             };
         case ActionTypes.UPDATE_ROLEGROUP:
             {

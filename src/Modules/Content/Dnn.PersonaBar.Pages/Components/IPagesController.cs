@@ -9,9 +9,15 @@ namespace Dnn.PersonaBar.Pages.Components
     public interface IPagesController
     {
         bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage);
-        
-        IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "");
-        
+
+        IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false);
+
+        IEnumerable<TabInfo> GetPageList(bool? deleted, string tabName, string tabTitle, string tabPath,
+            string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10);
+
+        IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", string publishStatus = "",
+            string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1);
+
         List<int> GetPageHierarchy(int pageId);
 
         TabInfo MovePage(PageMoveRequest request);

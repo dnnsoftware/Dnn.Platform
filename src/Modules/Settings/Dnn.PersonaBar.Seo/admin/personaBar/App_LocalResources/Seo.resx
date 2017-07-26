@@ -127,7 +127,7 @@
     <value>GENERAL SETTINGS</value>
   </data>
   <data name="ExtensionUrlProvidersTab.Text" xml:space="preserve">
-	<value>EXTENSION URL PROVIDERS</value>
+    <value>EXTENSION URL PROVIDERS</value>
   </data>
   <data name="ExpressionsTab.Text" xml:space="preserve">
     <value>EXPRESSIONS</value>
@@ -508,7 +508,7 @@
     <value>SITE SUBMISSION</value>
   </data>
   <data name="sitemapUrlLabel.Help" xml:space="preserve">
-    <value>Submit the Site Map to Google for better search optimization. Click Submit to get a Google Webmaster Tools account and verify your site ownership ( using the Verification option below ). Once verified, you can select the Add General Web Sitemap option on the Google Sitemaps tab and paste in the Site Map URL displayed.</value>
+    <value>Submit the Site Map to Google for better search optimization. Click Submit to get a Google Search Console account and verify your site ownership ( using the Verification option below ). Once verified, you can select the Add General Web Sitemap option on the Google Sitemaps tab and paste in the Site Map URL displayed.</value>
   </data>
   <data name="sitemapUrlLabel.Text" xml:space="preserve">
     <value>Sitemap URL</value>
@@ -598,7 +598,7 @@
     <value>Search Engine</value>
   </data>
   <data name="lblVerification.Help" xml:space="preserve">
-    <value>When signing up with Google Webmaster Tools you will need to Verify your site ownership. Choose the "Upload an HTML File" method from the Google Verification screen. Enter the file name displayed (ie. google53c0cef435b2b81e.html) into the Verification text box and click Create. Return to Google and select the Verify button.</value>
+    <value>When signing up with Google Search Console you will need to verify your site ownership. Choose the "Upload an HTML File" method from the Google Verification screen. Enter the file name displayed (ie. google53c0cef435b2b81e.html) into the Verification text box and click Create. Return to Google and select the Verify button.</value>
   </data>
   <data name="lblVerification.Text" xml:space="preserve">
     <value>Verification</value>

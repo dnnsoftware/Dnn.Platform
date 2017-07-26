@@ -194,10 +194,10 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 var userId = changePasswordDto.UserId;
                 var password = changePasswordDto.Password;
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
 
                 var controller = Components.UsersController.Instance;
                 controller.ChangePassword(PortalId, userId, password);
@@ -218,29 +218,18 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
-                if (IsCurrentUser(userId, out response))
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
+                HttpResponseMessage httpResponseMessage;
+                if (IsCurrentUser(userId, out httpResponseMessage))
+                    return httpResponseMessage;
 
-                if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
-                {
-                    UserController.ResetPasswordToken(user);
-                }
-                var canSend = Mail.SendMail(user, MessageType.PasswordReminder, PortalSettings) == string.Empty;
-                if (canSend)
-                {
-                    user.Membership.UpdatePassword = true;
-
-                    //Update User
-                    UserController.UpdateUser(PortalId, user);
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-                }
-
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile));
+                return Components.UsersController.Instance.ForceChangePassword(user, PortalId, true)
+                    ? Request.CreateResponse(HttpStatusCode.OK, new { Success = true })
+                    : Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile));
             }
             catch (Exception ex)
             {
@@ -256,10 +245,10 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
 
                 var errorMessage = string.Empty;
                 if (MembershipProviderConfig.RequiresQuestionAndAnswer)
@@ -311,35 +300,19 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
-                if (IsCurrentUser(userId, out response))
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
+                HttpResponseMessage httpResponseMessage;
+                if (IsCurrentUser(userId, out httpResponseMessage))
+                    return httpResponseMessage;
                 if (user.Membership.Approved == authorized)//Do nothing if the new status is same as current status.
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
                 user.Membership.Approved = authorized;
 
-                //Update User
-                UserController.UpdateUser(PortalId, user);
-                if (authorized)
-                {
-                    //Update User Roles if needed
-                    if (!user.IsSuperUser && user.IsInRole("Unverified Users") &&
-                        PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
-                    {
-                        UserController.ApproveUser(user);
-                    }
-
-                    Mail.SendMail(user, MessageType.UserAuthorized, PortalSettings);
-                }
-                else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", PortalId,
-                    false))
-                {
-                    Mail.SendMail(user, MessageType.UserUnAuthorized, PortalSettings);
-                }
+                Components.UsersController.Instance.UpdateAuthorizeStatus(user, PortalId, authorized);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
@@ -356,12 +329,12 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
+                var deleted = !user.IsDeleted && UserController.DeleteUser(ref user, true, false);
 
-                var deleted = UserController.DeleteUser(ref user, true, false);
                 return !deleted
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserDeleteError", Components.Constants.LocalResourcesFile))
@@ -381,13 +354,11 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
-
-                var deleted = UserController.RemoveUser(user);
-
+                    return Request.CreateErrorResponse(response.Key, response.Value);
+                var deleted = user.IsDeleted && UserController.RemoveUser(user);
                 return !deleted
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRemoveError", Components.Constants.LocalResourcesFile))
@@ -407,13 +378,11 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
-
-                var restored = UserController.RestoreUser(ref user);
-
+                    return Request.CreateErrorResponse(response.Key, response.Value);
+                var restored = user.IsDeleted && UserController.RestoreUser(ref user);
                 return !restored
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRestoreError", Components.Constants.LocalResourcesFile))
@@ -433,10 +402,10 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
 
                 user.IsSuperUser = setSuperUser;
 
@@ -461,10 +430,10 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 Validate(userBasicDto);
-                HttpResponseMessage response;
-                var user = GetUser(userBasicDto.UserId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userBasicDto.UserId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
 
                 var upadtedUser = Components.UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
 
@@ -490,14 +459,15 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
-                if (IsCurrentUser(userId, out response))
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
+                HttpResponseMessage httpResponseMessage;
+                if (IsCurrentUser(userId, out httpResponseMessage))
+                    return httpResponseMessage;
 
-                var unlocked = !user.Membership.LockedOut || UserController.UnLockUser(user);
+                var unlocked = user.Membership.LockedOut && UserController.UnLockUser(user);
                 return !unlocked
                     ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                         Localization.GetString("UserUnlockError", Components.Constants.LocalResourcesFile))
@@ -524,7 +494,7 @@ namespace Dnn.PersonaBar.Users.Services
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, new List<UserRoleInfo>());
                 }
-                var isAdmin = IsAdmin();
+                var isAdmin = Components.UsersController.IsAdmin(PortalSettings);
 
                 var roles = RoleController.Instance.GetRoles(PortalId,
                     x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
@@ -556,27 +526,15 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                HttpResponseMessage response;
-                var user = GetUser(userId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
+                int totalRoles;
+                var userRoles = Components.UsersController.Instance.GetUserRoles(user, keyword, out totalRoles, pageIndex, pageSize)
+                        .Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r));
 
-                var allUserRoles = RoleController.Instance.GetUserRoles(user, true);
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    allUserRoles =
-                        allUserRoles.Where(
-                            u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase))
-                            .ToList();
-                }
-
-                var userRoles = allUserRoles
-                    .Skip(pageIndex * pageSize)
-                    .Take(pageSize)
-                    .Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r));
-
-                return Request.CreateResponse(HttpStatusCode.OK,
-                    new { UserRoles = userRoles, TotalRecords = allUserRoles.Count });
+                return Request.CreateResponse(HttpStatusCode.OK, new { UserRoles = userRoles, TotalRecords = totalRoles });
             }
             catch (Exception ex)
             {
@@ -594,10 +552,10 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 Validate(userRoleDto);
-                HttpResponseMessage response;
-                var user = GetUser(userRoleDto.UserId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userRoleDto.UserId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
 
                 var result = Components.UsersController.Instance.SaveUserRole(PortalId, UserInfo, userRoleDto,
                     notifyUser, isOwner);
@@ -619,10 +577,10 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 Validate(userRoleDto);
-                HttpResponseMessage response;
-                var user = GetUser(userRoleDto.UserId, out response);
+                KeyValuePair<HttpStatusCode, string> response;
+                var user = Components.UsersController.GetUser(userRoleDto.UserId, PortalSettings, UserInfo, out response);
                 if (user == null)
-                    return response;
+                    return Request.CreateErrorResponse(response.Key, response.Value);
 
                 RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
                     RoleStatus.Approved, false, true);
@@ -666,39 +624,6 @@ namespace Dnn.PersonaBar.Users.Services
         private void Validate(UserBasicDto userBasicDto)
         {
             Requires.NotNegative("UserId", userBasicDto.UserId);
-        }
-
-        private bool IsAdmin()
-        {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return user.IsSuperUser || user.IsInRole(PortalSettings.AdministratorRoleName);
-        }
-        private bool IsAdmin(UserInfo user)
-        {
-            return user.IsSuperUser || user.IsInRole(PortalSettings.AdministratorRoleName);
-        }
-
-        private UserInfo GetUser(int userId, out HttpResponseMessage response)
-        {
-            response = null;
-            var user = UserController.Instance.GetUserById(PortalId, userId);
-            if (user == null)
-            {
-                response = Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    Localization.GetString("UserNotFound", Components.Constants.LocalResourcesFile));
-                return null;
-            }
-            if (!IsAdmin(user)) return user;
-
-            if ((user.IsSuperUser && !UserInfo.IsSuperUser) || !IsAdmin())
-            {
-                response = Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                    Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
-                return null;
-            }
-            if (user.IsSuperUser)
-                user = UserController.Instance.GetUserById(Null.NullInteger, userId);
-            return user;
         }
 
         private bool IsCurrentUser(int userId, out HttpResponseMessage response)

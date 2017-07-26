@@ -1,0 +1,38 @@
+<!-- restore-user -->
+<section class="dnn-prompt-inline-help">
+    <a name="restore-user"></a>
+    <h3 class="mono">restore-user</h3>
+    <p class="lead">Recovers a user that has been deleted but not purged.</p>
+
+    <div>
+        <h4>Options</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Flag</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="mono">--id</td>
+                    <td>integer</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td>The user's User ID. If the flag is not used, then the user's ID must be the first argument.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Recover a Deleted User</h4>
+        <p>Restores the user with a User ID of 345. If the user hasn't been deleted, you will receive a message indicating there is nothing to restore. If the user has already been purged (or 'removed' via DNN's user interface, you will receive a 'user not found' message. </p>
+        <code class="block">restore-user 345</code>
+        <p>This is the more explicit form of the above code.</p>
+        <code class="block">restore-user --id 345</code>
+    </div>
+
+</section>
+

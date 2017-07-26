@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
@@ -10,6 +11,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
 
 namespace Dnn.PersonaBar.Pages.Components
@@ -29,7 +31,13 @@ namespace Dnn.PersonaBar.Pages.Components
                 Level = tab.Level,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 TabPath = tab.TabPath.Replace("//", "/"),
-                PageType = GetPageType(tab.Url)
+                PageType = GetPageType(tab.Url),
+                CanViewPage = TabPermissionController.CanViewPage(tab),
+                LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
+                FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
+                PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : "",
+                Tags = tab.Terms.Select(t => t.Name).ToArray(),
+                TabOrder = tab.TabOrder
         };
         }
         

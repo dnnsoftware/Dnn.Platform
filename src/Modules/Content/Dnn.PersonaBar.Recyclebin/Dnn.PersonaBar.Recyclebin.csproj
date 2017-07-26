@@ -105,6 +105,12 @@
     <Compile Include="Components\Dto\UserItem.cs" />
     <Compile Include="Components\Dto\ModuleItem.cs" />
     <Compile Include="Components\Dto\PageItem.cs" />
+    <Compile Include="Components\Prompt\Commands\PurgeModule.cs" />
+    <Compile Include="Components\Prompt\Commands\PurgePage.cs" />
+    <Compile Include="Components\Prompt\Commands\RestoreModule.cs" />
+    <Compile Include="Components\Prompt\Commands\RestorePage.cs" />
+    <Compile Include="Components\Prompt\Commands\PurgeUser.cs" />
+    <Compile Include="Components\Prompt\Commands\RestoreUser.cs" />
     <Compile Include="Services\RecyclebinController.cs" />
     <Compile Include="Components\IRecyclebinController.cs" />
     <Compile Include="Components\RecyclebinController.cs" />
@@ -131,7 +137,9 @@
     <Content Include="Dnn.PersonaBar.Recyclebin.dnn" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\Recyclebin.resx" />
+    <Content Include="admin\personaBar\App_LocalResources\Recyclebin.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dnn.PersonaBar.Recyclebin.nuspec" />

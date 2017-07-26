@@ -366,4 +366,52 @@
   <data name="UsersInRole.Text" xml:space="preserve">
     <value>Users in Role</value>
   </data>
+  <data name="Prompt_ListRolesFailed.Text" xml:space="preserve">
+    <value>Failed to list the roles.</value>
+  </data>
+  <data name="Prompt_ListRolesOutput.Text" xml:space="preserve">
+    <value>Press CTRL+X to end.\nPress any key to load more....</value>
+  </data>
+  <data name="Prompt_NoRoles.Text" xml:space="preserve">
+    <value>No roles found.</value>
+  </data>
+  <data name="Prompt_FlagEmpty.Text" xml:space="preserve">
+    <value>--{0} cannot be empty.</value>
+  </data>
+  <data name="Prompt_InvalidRoleStatus.Text" xml:space="preserve">
+    <value>Invalid value '{0}' passed for --{1}. Expecting 'pending', 'approved', or 'disabled'</value>
+  </data>
+  <data name="Prompt_NoRoleWithId.Text" xml:space="preserve">
+    <value>No role found with the ID {0}</value>
+  </data>
+  <data name="Prompt_NothingToUpdate.Text" xml:space="preserve">
+    <value>Nothing to Update!</value>
+  </data>
+  <data name="Prompt_RoleIdIsRequired.Text" xml:space="preserve">
+    <value>You must specify a valid Role ID as either the first argument or using the --id flag.</value>
+  </data>
+  <data name="Prompt_RoleIdNegative.Text" xml:space="preserve">
+    <value>The RoleId value must be greater than zero (0)</value>
+  </data>
+  <data name="Prompt_RoleIdNotInt.Text" xml:space="preserve">
+    <value>The RoleId must be integer.</value>
+  </data>
+  <data name="Prompt_RoleNameRequired.Text" xml:space="preserve">
+    <value>You must specify a name for the role as the first argument or by using the --{0} flag. Names with spaces And special characters should be enclosed in double quotes.</value>
+  </data>
+  <data name="Prompt_UnableToParseBool.Text" xml:space="preserve">
+    <value>Unable to parse the --{0} flag value '{1}'. Value should be True or False</value>
+  </data>
+  <data name="plRSVPCode.Text" xml:space="preserve">
+    <value>RSVP Code</value>
+  </data>
+  <data name="plRSVPCode.Help" xml:space="preserve">
+    <value>Enter an RSVP Code for the role.  Users can easily subscribe to this role by entering this code on the Manage Services page of their user account.</value>
+  </data>
+  <data name="plRSVPLink.Text" xml:space="preserve">
+    <value>RSVP Link</value>
+  </data>
+  <data name="plRSVPLink.Help" xml:space="preserve">
+    <value>A link that allows users to subscribe to this role will be displayed when an RSVP Code is saved for this role.</value>
+  </data>
 </root>
