@@ -18,21 +18,21 @@
             
         },
         map: {
-			'*': {
-			    'dnn.jquery': ['../../../../../Resources/Shared/Scripts/dnn.jquery'],
-			    'dnn.jquery.extensions': ['../../../../../Resources/Shared/Scripts/dnn.jquery.extensions'],
-			    'dnn.extensions': ['../../../../../Resources/Shared/scripts/dnn.extensions'],
-			    'jquery.tokeninput': ['../../../../../Resources/Shared/components/Tokeninput/jquery.tokeninput'],
-			    'dnn.jScrollBar': ['../../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar'],
-			    'dnn.servicesframework': ['../../../../../js/dnn.servicesframework'],
-			    'dnn.DataStructures': ['../../../../../Resources/Shared/scripts/dnn.DataStructures'],
-			    'jquery.mousewheel': ['../../../../../Resources/Shared/scripts/jquery/jquery.mousewheel'],
-			    'dnn.TreeView': ['../../../../../Resources/Shared/scripts/TreeView/dnn.TreeView'],
-			    'dnn.DynamicTreeView': ['../../../../../Resources/Shared/scripts/TreeView/dnn.DynamicTreeView'],
-			    'dnn.DropDownList': ['../../../../../Resources/Shared/Components/DropDownList/dnn.DropDownList'],
-			    'css.DropDownList': ['css!../../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'],
-			    'css.jScrollBar': ['css!../../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar.css']
-	        }
+            '*': {
+                'dnn.jquery': ['../../../../../Resources/Shared/Scripts/dnn.jquery'],
+                'dnn.jquery.extensions': ['../../../../../Resources/Shared/Scripts/dnn.jquery.extensions'],
+                'dnn.extensions': ['../../../../../Resources/Shared/scripts/dnn.extensions'],
+                'jquery.tokeninput': ['../../../../../Resources/Shared/components/Tokeninput/jquery.tokeninput'],
+                'dnn.jScrollBar': ['../../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar'],
+                'dnn.servicesframework': ['../../../../../js/dnn.servicesframework'],
+                'dnn.DataStructures': ['../../../../../Resources/Shared/scripts/dnn.DataStructures'],
+                'jquery.mousewheel': ['../../../../../Resources/Shared/scripts/jquery/jquery.mousewheel'],
+                'dnn.TreeView': ['../../../../../Resources/Shared/scripts/TreeView/dnn.TreeView'],
+                'dnn.DynamicTreeView': ['../../../../../Resources/Shared/scripts/TreeView/dnn.DynamicTreeView'],
+                'dnn.DropDownList': ['../../../../../Resources/Shared/Components/DropDownList/dnn.DropDownList'],
+                'css.DropDownList': ['css!../../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'],
+                'css.jScrollBar': ['css!../../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar.css']
+            }
         },
         packages: [{
             name: "codemirror",
@@ -106,6 +106,16 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             moment: moment,
             persistent: persistent.init(config, sf),
             inAnimation: inAnimation,
+            closeSocialTasks: function closeTaskWindow() {
+                 var taskWindow = $('.socialtasks')
+                 taskWindow.hide();
+            },
+
+            expandPersonaBarPage: function expandPersonaBar(){
+                var personaBarPage = $(".dnn-persona-bar-page")
+                personaBarPage.css({width:"1000px"});
+            },
+
             closePersonaBar: function handleClosePersonarBar(callback, keepSelection) {
                 var self = this;
 
