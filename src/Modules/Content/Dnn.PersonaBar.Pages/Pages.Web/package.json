@@ -44,5 +44,12 @@
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "dnn-draggable": "0.0.1",
+    "promise": "^8.0.0",
+    "prop-types": "^15.5.10",
+    "react-dnd": "^2.4.0",
+    "react-dnd-html5-backend": "^2.4.1"
   }
 }

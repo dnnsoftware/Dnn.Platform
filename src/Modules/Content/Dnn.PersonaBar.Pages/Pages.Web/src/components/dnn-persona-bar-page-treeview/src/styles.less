@@ -1,0 +1,148 @@
+@import "~dnn-global-styles/index";
+
+.dnn-persona-bar-treeview {
+    font-family: inherit;
+    cursor: pointer;
+    padding: 15px;
+
+    .collapse-expand {
+        font-size: 12px;
+        font-weight:bold;
+        color:@curiousBlue;
+        padding-bottom: 20px;
+        padding-left:20px;
+    }
+
+    .item-name {
+        position:relative;
+        top:-5px;
+        font-weight:bold;
+        margin-left:5px;
+             p{
+            display:inline;
+        }
+    }
+
+    .list-item-highlight {
+        color: @curiousBlue;
+    }
+
+    .parent-expand-button {
+        display:inline-block;
+        position: relative;
+        top:-8px;
+    }
+
+    .parent-expand-icon {
+        display:inline-block;
+        width:10px;
+        margin-right:10px;
+        font-size:14px;
+    }
+
+    .selection-arrow {
+        display:inline-block;
+        position:relative;
+        top:2px;
+        left:30px;
+        font-size:18px;
+        width:20px;
+        font-weight:bold;
+        color: @curiousBlue;
+        float:right;
+
+        svg{
+            fill:@curiousBlue;
+        }
+    }
+
+}
+
+.dnn-persona-bar-treeview-ul {
+
+    ul{
+        margin-left:20px;
+        padding:0;
+    }
+    li {
+        width:100%;
+        padding: 2px;
+        list-style:none;
+        padding:0;
+
+    }
+
+    .collapse-expand {
+        display:none;
+    }
+
+    .dropZoneActive{
+        -webkit-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+        box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+        margin: 5px 0;
+        padding:0;
+        height: 90px;
+        background-color:#fff;
+
+    }
+
+    .dropZoneInactive {
+        transition: all .75s;
+        margin: 0;
+        height:inherit;
+
+    }
+
+    .dropZoneArea {
+        padding: 10px 0;
+        text-align:center;
+        background-color:@curiousBlue;
+        color:#fff;
+    }
+
+}
+
+.dnn-persona-bar-treeview-icon {
+    width:20px;
+    display:inline-block;
+}
+
+.dnn-persona-bar-treeview-dragged {
+    -webkit-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
+
+    z-index:1000;
+    position:absolute;
+    top:200px;
+    background-color:#fff;
+    list-style:none;
+    width:200px;
+    pointer-events: none;
+    padding:5px;
+    cursor:move;
+
+    .item-name {
+        display:inline;
+        p{
+            display:inline;
+        }
+        position:relative;
+        top: -5px;
+        left: 5px;
+    }
+
+    ul{
+        display:none;
+    }
+
+    .parent-expand-button {
+        display:none;
+    }
+
+    .selection-arrow {
+        display:none;
+    }
+
+}

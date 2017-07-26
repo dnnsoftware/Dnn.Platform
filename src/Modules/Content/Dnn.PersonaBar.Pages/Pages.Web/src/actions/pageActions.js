@@ -7,6 +7,7 @@ import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
+import Promise from "promise";
 
 function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
@@ -26,9 +27,9 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId) {
-    dispatch({
-        type: ActionTypes.LOAD_PAGE
-    });
+    // dispatch({
+    //     type: ActionTypes.LOAD_PAGE
+    // });
 
     if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
         dispatch({
@@ -44,6 +45,7 @@ const loadPage = function (dispatch, pageId) {
     }
 
     PagesService.getPage(pageId).then(response => {
+
         dispatch({
             type: ActionTypes.LOADED_PAGE,
             data: {
@@ -165,11 +167,12 @@ const pageActions = {
             });
         };
     },
-    savePage(page) {
+    savePage(page, callback) {
+
         return (dispatch, getState) => {
-            dispatch({
-                type: ActionTypes.SAVE_PAGE
-            });
+            // dispatch({
+            //     type: ActionTypes.SAVE_PAGE
+            // });
             const { pages } = getState();
 
             PagesService.savePage(page, pages.urlChanged).then(response => {
@@ -188,8 +191,9 @@ const pageActions = {
                     return;
                 }
 
-                PagesService.openPageInEditMode(response.Page.id, response.Page.url);
-
+               // PagesService.openPageInEditMode(response.Page.id, response.Page.url);
+               callback();
+               
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PAGE,
@@ -199,9 +203,11 @@ const pageActions = {
         };
     },
 
-    changePageField(key, value) {
+    changePageField(key, value, selectedPage) {
+
         return (dispatch, getState) => {
             const { pages } = getState();
+
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,
@@ -211,7 +217,7 @@ const pageActions = {
             if (key === "name" &&
                 pages.selectedPage.tabId === 0 &&
                 !pages.urlChanged &&
-                pages.selectedPage.pageType === "normal") {
+                selectedPage.pageType === "normal") {
                 debouncedUpdateUrlPreview(value, dispatch);
             }
         };
@@ -376,6 +382,9 @@ const pageActions = {
                 });
             });
         };
+    },
+    movePage({Action, PageId, ParentId, RelatedPageId}){
+        return PagesService.movePage({Action, PageId, ParentId, RelatedPageId});
     }
 };
 

@@ -18,9 +18,10 @@ const PageService = function () {
     };
 
     const savePage = function (page, hasChangeUrl) {
+
         const api = getOverridablePagesApi();
         let request = page;
-        
+
         if (page.tabId === 0 && !securityService.isSuperUser()) {
             request = {
                 ...page,
@@ -45,6 +46,11 @@ const PageService = function () {
     const addPages = function (bulkPage) {
         const api = getOverridablePagesApi();
         return api.post("SaveBulkPages", bulkPage);
+    };
+
+    const movePage = function (payload) {
+        const api = getOverridablePagesApi();
+        return api.post("MovePage", payload);
     };
 
     const deletePageModule = function (module) {
@@ -167,7 +173,8 @@ const PageService = function () {
         copyPermissionsToDescendantPages,
         openPageInEditMode,
         getCachedPageCount,
-        clearCache
+        clearCache,
+        movePage
     };
 };
 

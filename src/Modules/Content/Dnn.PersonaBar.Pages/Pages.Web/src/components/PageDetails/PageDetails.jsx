@@ -14,12 +14,13 @@ class PageDetail extends Component {
             case "file":
                 return PageUrl;
             default: 
-                throw "invalid page type";                                                                  
+                throw "invalid page type";
         }        
     }
 
     render() {
         const DetailComponent = this.getDetail(this.props.page.pageType);
+
         return (
             <div>
                 <DetailComponent {...this.props} />

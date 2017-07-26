@@ -10,6 +10,7 @@ import styles from "./style.less";
 import Tags from "dnn-tags";
 import Label from "dnn-label";
 import PagePicker from "dnn-page-picker";
+// import PagePicker from "./PagePicker/src/PagePicker";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {
@@ -39,9 +40,10 @@ class PageDetails extends Component {
         this.onChangeParentId(parentPageId);
     }
 
+
     render() {
         const {page, errors} = this.props;
-        
+
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
             portalId:  -2,
@@ -54,6 +56,11 @@ class PageDetails extends Component {
 
          let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
          const sf = Utils.getServiceFramework();
+
+
+         const defaultLabel = this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified");
+         const selectedTabId = this.props.selectedParentPageId  || page.parentId|| -1;
+
 
         return (
             <div className={styles.pageStandard}>
@@ -114,9 +121,11 @@ class PageDetails extends Component {
                             <PagePicker
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
                                 IsMultiSelect={false}
-                                defaultLabel={ this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified")}
-                                selectedTabId={this.props.selectedParentPageId || page.parentId|| -1}
-                                PortalTabsParameters={TabParameters_1}
+
+                                defaultLabel={defaultLabel}
+                                selectedTabId={selectedTabId}
+                                portalTabsParameters={TabParameters_1}
+
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
                                 serviceFramework={sf} />

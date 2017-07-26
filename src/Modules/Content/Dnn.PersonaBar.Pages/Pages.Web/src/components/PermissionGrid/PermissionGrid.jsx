@@ -8,11 +8,13 @@ import Localization from "localization";
 class PermissionGrid extends Component {
         
     onPermissionsChanged(permissions) {
+        
         const p = { 
             ...this.props.permissions,
             ...permissions
         };
         this.props.onPermissionsChanged(p);
+
     }
 
     render() {
