@@ -235,7 +235,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             newParentId = item.parentId;
 
                         case ParentId === -1 && item.parentId === -1:
-                            console.log('in remove -1');
                             list.forEach((child, index) => {
                                 if (child.id === PageId) {
                                     cachedItem = child;
@@ -249,7 +248,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             return;
 
                         case item.id === ParentId:
-                            console.log('in remove item.id === ParentId');
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === PageId) {
                                     child.selected = true;
@@ -265,7 +263,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             return;
 
                         default:
-                            console.log('in remove default');
                             list.forEach((item) => {
                                 if(item.id === ParentId){
                                     console.log('passed round 1', PageId);
@@ -299,7 +296,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 this._traverse((item, list) => {
                     switch (true) {
                         case item.id === newParentId:
-                            console.log('in updateNewParent item.id === newParentId');
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === RelatedPageId) {
                                     newSiblingIndex = index;
@@ -315,8 +311,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             });
                             return;
                         case ParentId === -1:
-
-                            console.log('in UpdateNewParent ParentId===-1');
                             list.forEach((child, index) => {
                                 if (child.id === RelatedPageId) {
                                     newSiblingIndex = index;
@@ -331,7 +325,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             });
                             return;
                         default:
-                            console.log('in UpdateNewParent default');
                             list.forEach((child, index)=>{
                                 if(child.id === RelatedPageId && child.parentId===-1){
                                     newSiblingIndex = index;
@@ -358,6 +351,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     updateTree() {
         const newParent = this.state.droppedItem;
         const moveChild = this.state.draggedItem;
+        console.log(newParent, moveChild);
+
         const condition = (newParent.id != moveChild.parentId);
 
         const popMoveChildItem = () => {
@@ -381,19 +376,17 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     };
 
                     const right = () => {
-                        let rootList = this.state.pageList.concat();
+                        let rootList = list.concat();
                         rootList.filter((item, index) => {
                             if (item.id === moveChild.id) {
                                 cachedItemIndex = index;
+                                const arr1 = rootList.slice(0, cachedItemIndex);
+                                const arr2 = rootList.slice(cachedItemIndex + 1);
+                                rootList = [...arr1, ...arr2];
+                                update = rootList;
+                                console.log(update);
                             }
                         });
-
-                        if (cachedItemIndex) {
-                            const arr1 = rootList.slice(0, cachedItemIndex);
-                            const arr2 = rootList.slice(cachedItemIndex + 1);
-                            rootList = [...arr1, ...arr2];
-                            update = rootList;
-                        }
                     };
 
                     switch (true) {
