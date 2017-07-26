@@ -60,7 +60,7 @@ class PageDetails extends Component {
 
          const defaultLabel = this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified");
          const selectedTabId = this.props.selectedParentPageId  || page.parentId|| -1;
-         console.log(selectedTabId);
+
 
         return (
             <div className={styles.pageStandard}>

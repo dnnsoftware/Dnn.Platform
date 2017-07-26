@@ -77,7 +77,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     getRootListItems() {
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?searchKey=`;
         this.GET(url).then((data) => {
-            console.log(data);
+           
             this.setState({ pageList: data, isTreeviewExpanded:true });
         });
     }
@@ -168,7 +168,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDrop(item) {
-        console.log('in drop', item);
+
         this.removeClone();
         let activePage = Object.assign({}, this.state.activePage);
         let pageList = null;
@@ -219,7 +219,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     reOrderPage({ Action, PageId, ParentId, RelatedPageId }) {
         return new Promise((resolve, reject) => {
-            console.log(Action, PageId, ParentId, RelatedPageId);
+
 
             let cachedItem = null;
             let itemIndex = null;
@@ -235,7 +235,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             newParentId = item.parentId;
 
                         case ParentId === -1 && item.parentId === -1:
-                            console.log('remove in -1');
+
 
                             list.forEach((child, index) => {
                                 if (child.id === PageId) {
@@ -250,7 +250,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             return;
 
                         case item.id === ParentId:
-                            console.log('remove in child');
+
 
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === PageId) {
@@ -267,7 +267,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             return;
                             
                         default:
-                            console.log('hullshit kdjfksdjfd');
+
 
                     }
                 });
@@ -279,12 +279,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
             const updateNewParent = () => new Promise((rez) => {
-                console.log('in upateNewParent', newParentId);
+
 
                 this._traverse((item, list) => {
                     switch (true) {
                         case item.id === newParentId:
-                            console.log('new parent in not parent id');
+
 
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === RelatedPageId) {
@@ -300,7 +300,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             });
                             return;
                         case ParentId === -1:
-                            console.log("new parent -1");
+
 
                             list.forEach((child, index) => {
                                 if (child.id === RelatedPageId) {
@@ -316,10 +316,10 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             });
                             return;
                         default:
-                            console.log('in default');
+
                             list.forEach((child, index)=>{
                                 if(child.id === RelatedPageId && child.parentId===-1){
-                                    console.log('condition met');
+
                                     newSiblingIndex = index;
                                     (Action === "after") ? newSiblingIndex++ : null;
 
