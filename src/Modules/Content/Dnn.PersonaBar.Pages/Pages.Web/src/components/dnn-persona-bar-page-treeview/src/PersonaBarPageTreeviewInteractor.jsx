@@ -231,6 +231,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     switch (true) {
                         case item.id === RelatedPageId:
                             newParentId = item.parentId;
+                            break;
 
                         case ParentId === -1 && item.parentId === -1:
                             list.forEach((child, index) => {
