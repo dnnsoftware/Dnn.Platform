@@ -78,7 +78,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?searchKey=`;
         this.GET(url).then((data) => {
             console.log(data);
-            this.setState({ pageList: data });
+            this.setState({ pageList: data, isTreeviewExpanded:true });
         });
     }
 
@@ -291,7 +291,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                                     newSiblingIndex = index;
                                     item.childCount++;
                                     (Action === "after") ? newSiblingIndex++ : null;
-
+                                   
                                     const arr1 = item.childListItems.slice(0, newSiblingIndex);
                                     const arr2 = item.childListItems.slice(newSiblingIndex);
                                     item.childListItems = [...arr1, cachedItem, ...arr2];
