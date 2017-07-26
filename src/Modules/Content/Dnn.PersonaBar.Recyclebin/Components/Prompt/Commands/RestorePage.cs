@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 tab = TabController.Instance.GetTab(PageId, PortalId);
                 if (tab == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("PageNotFound.Text", Constants.LocalResourcesFile), PageId));
+                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("PageNotFound", Constants.LocalResourcesFile), PageId));
                 }
             }
             else if (!string.IsNullOrEmpty(PageName))
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                     return
                         new ConsoleErrorResultModel(
                             string.Format(
-                                Localization.GetString("PageNotFoundWithName.Text", Constants.LocalResourcesFile),
+                                Localization.GetString("PageNotFoundWithName", Constants.LocalResourcesFile),
                                 PageName));
             }
             else
@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             }
             string message;
             RecyclebinController.Instance.RestoreTab(tab, out message);
-            return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(Localization.GetString("Prompt_PageRestoredSuccessfully"), tab.TabID, tab.TabName)) { Records = 1 } : new ConsoleErrorResultModel(message);
+            return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(Localization.GetString("Prompt_PageRestoredSuccessfully", Constants.LocalResourcesFile), tab.TabID, tab.TabName)) { Records = 1 } : new ConsoleErrorResultModel(message);
         }
 
 
