@@ -123,7 +123,7 @@ class PageDetails extends Component {
                                 IsMultiSelect={false}
                                 defaultLabel={defaultLabel}
                                 selectedTabId={selectedTabId}
-                                portalTabsParamters={TabParameters_1}
+                                portalTabsParameters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
                                 serviceFramework={sf} />
