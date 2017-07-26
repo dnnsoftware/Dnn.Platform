@@ -97,12 +97,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this.getPageInfo(id);
     }
 
-    getListItemLI(item){
+    getListItemLI(item) {
         return document.getElementById(`list-item-${item.name}-${item.id}`);
     }
 
-    getListItemTitle(item){
-        return document.getElementById(`list-item-title-${item.name}-${item.id}`)
+    getListItemTitle(item) {
+        return document.getElementById(`list-item-title-${item.name}-${item.id}`);
     }
 
     onDragStart(e, item) {
@@ -133,44 +133,51 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragEnd(item) {
+        let pageList = null;
         this.removeClone();
+        this._traverse((item, list) => {
+            item.onDragOverState = false;
+            pageList = list;
+        });
+        this.setState({ pageList });
     }
 
     onDragLeave(item) {
         let pageList = null;
-        this._traverse((pageListItem, list)=>{
-            if (pageListItem.id === item.id){
-                pageListItem.onDragOverState=false;
+        this._traverse((pageListItem, list) => {
+            if (pageListItem.id === item.id) {
+                pageListItem.onDragOverState = false;
                 pageList = list;
-             }
+            }
         });
-        this.setState({pageList:pageList});
+        this.setState({ pageList: pageList });
     }
 
     onDragOver(e, item) {
         e.preventDefault();
         let pageList = null;
         this._traverse((pageListItem, list) => {
-            pageListItem.onDragOverState=false;
+            pageListItem.onDragOverState = false;
 
             if (pageListItem.id === item.id) {
                 pageListItem.onDragOverState = true;
                 pageList = list;
             }
         });
-        this.setState({pageList:pageList, dragOverItem:item});
+        this.setState({ pageList: pageList, dragOverItem: item });
     }
 
     onDrop(item) {
+        console.log('in drop', item);
         this.removeClone();
         let activePage = Object.assign({}, this.state.activePage);
         let pageList = null;
 
         this._traverse((pageListItem, list) => {
-            pageListItem.onDragOverState=false;
-            pageList=list;
+            pageListItem.onDragOverState = false;
+            pageList = list;
         });
-        this.setState({pageList});
+        this.setState({ pageList });
 
         this.getPageInfo(activePage.id)
             .then((data) => {
@@ -183,12 +190,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     }
 
-    onMovePage({Action, PageId, ParentId, RelatedPageId}){
-        const {onMovePage} = this.props;
+    onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
+        const { onMovePage } = this.props;
 
-        onMovePage({Action, PageId, ParentId, RelatedPageId})
-        .then(()=> this.removeDropZones())
-        .then(()=> this.reOrderPage({Action, PageId, ParentId, RelatedPageId}));
+        onMovePage({ Action, PageId, ParentId, RelatedPageId })
+            .then(() => this.removeDropZones())
+            .then(() => this.reOrderPage({ Action, PageId, ParentId, RelatedPageId }));
     }
 
     removeClone() {
@@ -204,75 +211,133 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 pageList = list;
             });
 
-            this.setState({pageList}, ()=>{
+            this.setState({ pageList }, () => {
                 resolve();
             });
         });
     }
 
-    reOrderPage({Action, PageId, ParentId, RelatedPageId}){
-        return new Promise((resolve, reject)=>{
-            console.log('inside reOrder');
+    reOrderPage({ Action, PageId, ParentId, RelatedPageId }) {
+        return new Promise((resolve, reject) => {
+            console.log(Action, PageId, ParentId, RelatedPageId);
+
             let cachedItem = null;
             let itemIndex = null;
             let pageList = null;
             let newParentId = null;
             let newSiblingIndex = null;
 
-            const removeFromPageList = new Promise((resolve) => {
-                this._traverse((item, list)=>{ // remove item from pagelist and cache
-                    if(item.id ===ParentId){
-                        item.childListItems.forEach((child, index) => {
-                            if(child.id === PageId){
-                                child.selected = true;
-                                cachedItem = child;
-                                itemIndex = index;
-                            }
-                        });
-                        const arr1 = item.childListItems.slice(0,itemIndex);
-                        const arr2 = item.childListItems.slice(itemIndex+1);
-                        item.childCount--;
-                        item.childListItems = [...arr1, ...arr2];
-                        pageList=list;
-                    }
+            const removeFromPageList = () => new Promise((rez) => {
+                this._traverse((item, list) => { // remove item from pagelist and cache
 
-                    if(item.id === RelatedPageId){
-                        newParentId = item.parentId;
+                    switch (true) {
+                        case item.id === RelatedPageId:
+                            newParentId = item.parentId;
+
+                        case ParentId === -1 && item.parentId === -1:
+                            console.log('remove in -1');
+
+                            list.forEach((child, index) => {
+                                if (child.id === PageId) {
+                                    cachedItem = child;
+                                    itemIndex = index;
+                                    const arr1 = list.slice(0, index);
+                                    const arr2 = list.slice(index + 1);
+                                    const copy = [...arr1, ...arr2];
+                                    pageList = copy;
+                                }
+                            });
+                            return;
+
+                        case item.id === ParentId:
+                            console.log('remove in child');
+
+                            item.childListItems.forEach((child, index) => {
+                                if (child.id === PageId) {
+                                    child.selected = true;
+                                    cachedItem = child;
+                                    itemIndex = index;
+                                    const arr1 = item.childListItems.slice(0, itemIndex);
+                                    const arr2 = item.childListItems.slice(itemIndex + 1);
+                                    item.childCount--;
+                                    item.childListItems = [...arr1, ...arr2];
+                                    pageList = list;
+                                }
+                            });
+                            return;
+                            
+                        default:
+                            console.log('hullshit kdjfksdjfd');
+
                     }
                 });
-                this.setState({pageList: pageList}, () => {
-                    this.getPageInfo(cachedItem.id).then(()=>resolve());
+
+                this.setState({ pageList: pageList }, () => {
+                    this.getPageInfo(cachedItem.id).then(() => rez());
                 });
             });
 
 
-            const updateNewParent = new Promise((resolve) => {
-                console.log('in upateNewParent');
+            const updateNewParent = () => new Promise((rez) => {
+                console.log('in upateNewParent', newParentId);
 
-                this._traverse((item, list)=> {
-                    if (item.id === newParentId){
-                        item.childListItems.forEach((child, index) => {
-                            if(child.id === RelatedPageId){
-                                newSiblingIndex = index;
-                                item.childCount++;
-                                const arr1 = item.childListItems.slice(0,newSiblingIndex);
-                                const arr2 = item.childListItems.slice(newSiblingIndex);
-                                item.childListItems = [...arr1, cachedItem, ...arr2];
-                                pageList = list;
-                            }
-                        });
+                this._traverse((item, list) => {
+                    switch (true) {
+                        case item.id === newParentId:
+                            console.log('new parent in not parent id');
+
+                            item.childListItems.forEach((child, index) => {
+                                if (child.id === RelatedPageId) {
+                                    newSiblingIndex = index;
+                                    item.childCount++;
+                                    (Action === "after") ? newSiblingIndex++ : null;
+
+                                    const arr1 = item.childListItems.slice(0, newSiblingIndex);
+                                    const arr2 = item.childListItems.slice(newSiblingIndex);
+                                    item.childListItems = [...arr1, cachedItem, ...arr2];
+                                    pageList = list;
+                                }
+                            });
+                            return;
+                        case ParentId === -1:
+                            console.log("new parent -1");
+
+                            list.forEach((child, index) => {
+                                if (child.id === RelatedPageId) {
+                                    newSiblingIndex = index;
+                                    (Action === "after") ? newSiblingIndex++ : null;
+
+                                    const arr1 = list.slice(0, newSiblingIndex);
+                                    const arr2 = list.slice(newSiblingIndex);
+                                    cachedItem.parentId = -1;
+                                    const listCopy = [...arr1, cachedItem, ...arr2];
+                                    pageList = listCopy;
+                                }
+                            });
+                            return;
+                        default:
+                            console.log('in default');
+                            list.forEach((child, index)=>{
+                                if(child.id === RelatedPageId && child.parentId===-1){
+                                    console.log('condition met');
+                                    newSiblingIndex = index;
+                                    (Action === "after") ? newSiblingIndex++ : null;
+
+                                    const arr1 = list.slice(0,index);
+                                    const arr2 = list.slice(index);
+                                    cachedItem.parentId = -1;
+                                    const listCopy = [...arr1, cachedItem, ...arr2];
+                                    pageList = listCopy;
+                                }
+                            });
                     }
                 });
-                this.setState({pageList}, ()=>{
-                    resolve();
-                });
-
+                this.setState({ pageList }, () => rez());
             });
 
             removeFromPageList()
-            .then(()=>updateNewParent())
-            .then(()=> resolve());
-
+                .then(() => updateNewParent())
+                .then(() => resolve());
         });
     }
 
@@ -292,6 +357,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         item.childListItems.filter((data, index) => {
                             if (data.id === moveChild.id) {
                                 cachedItemIndex = index;
+                                console.log('in left', data.id, moveChild.id);
                             }
                         });
                         const arr1 = item.childListItems.slice(0, cachedItemIndex);
@@ -319,11 +385,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
                     switch (true) {
                         case item.id === moveChild.parentId:
+                            console.log('moveChild.parentId === item.id')
                             left();
                             return;
                         case moveChild.parentId === -1:
+                            console.log('moveChild parent -1');
                             right();
                             return;
+                        default:
+
                     }
 
                 });
