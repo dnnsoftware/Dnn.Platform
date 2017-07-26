@@ -24,9 +24,63 @@ namespace DeployClient
             return client;
         }
 
-        public static Dictionary<string, dynamic> CIInstall(List<KeyValuePair<string, Stream>> streams)
+        public static string CreateSession()
         {
-            string endpoint = "CI/Install";
+            string endpoint = "CI/CreateSession";
+
+            using (HttpClient client = BuildClient())
+            {
+                string json = client.GetStringAsync(endpoint).Result;
+
+                JavaScriptSerializer jsonSer = new JavaScriptSerializer();
+
+                Dictionary<string, dynamic> session = jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+
+                string sessionGuid = null;
+
+                if (session.ContainsKey("Guid"))
+                {
+                    sessionGuid = session["Guid"];
+                }
+
+                return sessionGuid;
+            }
+        }
+
+        public static void AddPackages(string session, List<KeyValuePair<string, Stream>> streams)
+        {
+            string endpoint = string.Format("CI/AddPackages?session={0}", session);
+
+            using (HttpClient client = BuildClient())
+            {
+                MultipartFormDataContent form = new MultipartFormDataContent();
+
+                foreach (KeyValuePair<string, Stream> keyValuePair in streams)
+                {
+                    form.Add(new StreamContent(keyValuePair.Value), "none", keyValuePair.Key);
+                }
+
+                HttpResponseMessage response = client.PostAsync(endpoint, form).Result;
+            }
+        }
+
+        public static void AddPackageAsync(string session, Stream stream, string filename)
+        {
+            string endpoint = string.Format("CI/AddPackages?session={0}", session);
+
+            using (HttpClient client = BuildClient())
+            {
+                MultipartFormDataContent form = new MultipartFormDataContent();
+
+                form.Add(new StreamContent(stream), "none", filename);
+
+                HttpResponseMessage response = client.PostAsync(endpoint, form).Result;
+            }
+        }
+
+        public static Dictionary<string, dynamic> Install(string session)
+        {
+            string endpoint = string.Format("CI/Install?session={0}", session);
 
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
@@ -36,14 +90,7 @@ namespace DeployClient
             {
                 try
                 {
-                    MultipartFormDataContent form = new MultipartFormDataContent();
-
-                    foreach (KeyValuePair<string, Stream> keyValuePair in streams)
-                    {
-                        form.Add(new StreamContent(keyValuePair.Value), "none", keyValuePair.Key);
-                    }
-
-                    HttpResponseMessage response = client.PostAsync(endpoint, form).Result;
+                    HttpResponseMessage response = client.GetAsync(endpoint).Result;
 
                     Console.WriteLine(response.RequestMessage.RequestUri);
 

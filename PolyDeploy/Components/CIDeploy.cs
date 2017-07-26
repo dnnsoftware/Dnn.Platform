@@ -15,7 +15,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
     {
         private APIUser APIUser { get; set; }
 
-        public CIDeploy(string ipAddress, string apiKey) : base(ipAddress)
+        public CIDeploy(string sessionPath, string ipAddress, string apiKey) : base(sessionPath, ipAddress)
         {
             // Retrieve our API user.
             APIUser = APIUserController.GetByAPIKey(apiKey);
@@ -27,16 +27,16 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
-        public void DecryptAndAddZip(Stream encryptedStream, string filename)
-        {
-            using (Stream ds = Crypto.Decrypt(encryptedStream, APIUser.EncryptionKey))
-            {
-                using (FileStream fs = File.Create(Path.Combine(IntakePath, filename)))
-                {
-                    ds.CopyTo(fs);
-                }
-            }
-        }
+        //public void DecryptAndAddZip(Stream encryptedStream, string filename)
+        //{
+        //    using (Stream ds = Crypto.Decrypt(encryptedStream, APIUser.EncryptionKey))
+        //    {
+        //        using (FileStream fs = File.Create(Path.Combine(IntakePath, filename)))
+        //        {
+        //            ds.CopyTo(fs);
+        //        }
+        //    }
+        //}
 
         protected override void LogAnyFailures(List<InstallJob> jobs)
         {

@@ -124,11 +124,14 @@
     <Compile Include="Components\IPSpecController.cs" />
     <Compile Include="Components\PackageDependency.cs" />
     <Compile Include="Components\PackageJob.cs" />
+    <Compile Include="Components\SessionController.cs" />
     <Compile Include="Components\Utilities.cs" />
     <Compile Include="DataAccess\DataControllers\IPSpecDataController.cs" />
+    <Compile Include="DataAccess\DataControllers\SessionDataController.cs" />
     <Compile Include="DataAccess\Models\APIUser.cs" />
     <Compile Include="DataAccess\DataControllers\APIUserDataController.cs" />
     <Compile Include="DataAccess\Models\IPSpec.cs" />
+    <Compile Include="DataAccess\Models\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -175,6 +178,7 @@
     <Content Include="SqlDataProviders\00.01.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.02.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\Uninstall.SqlDataProvider" />
+    <Content Include="SqlDataProviders\00.03.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\cantarus.png" />

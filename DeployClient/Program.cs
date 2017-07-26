@@ -107,21 +107,41 @@ namespace DeployClient
                 }
 
                 // Inform user of encryption.
-                WriteLine("Starting encryption...");
+                WriteLine("Starting encryption and upload...");
 
-                List<KeyValuePair<string, Stream>> encryptedStreams = new List<KeyValuePair<string, Stream>>();
+                // Get a session.
+                string session = API.CreateSession();
+
+                WriteLine(string.Format("Got session: {0}", session));
+
+                DateTime startTime = DateTime.Now;
 
                 foreach (string zipFile in zipFiles)
                 {
+
                     using (FileStream fs = new FileStream(zipFile, FileMode.Open))
                     {
-                        encryptedStreams.Add(new KeyValuePair<string, Stream>(Path.GetFileName(zipFile), Crypto.Encrypt(fs, Properties.Settings.Default.EncryptionKey)));
+                        Write(string.Format("\t{0} encrypting...", Path.GetFileName(zipFile)));
+
+                        using (Stream es = Crypto.Encrypt(fs, Properties.Settings.Default.EncryptionKey))
+                        {
+                            Write("uploading...");
+
+                            API.AddPackageAsync(session, es, Path.GetFileName(zipFile));
+                        }
+
+                        WriteLine("done.");
                     }
-                    WriteLine(string.Format("\tEncrypting {0}", Path.GetFileName(zipFile)));
                 }
+
+                WriteLine(string.Format("Finished encryption and upload in {0} ms.", (DateTime.Now - startTime).TotalMilliseconds));
                 WriteLine();
 
-                Dictionary<string, dynamic> results = API.CIInstall(encryptedStreams);
+                WriteLine("Starting installation...");
+
+                DateTime installStartTime = DateTime.Now;
+
+                Dictionary<string, dynamic> results = API.Install(session);
 
                 ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
                 ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
@@ -129,23 +149,20 @@ namespace DeployClient
                 // Any failures?
                 if (failed.Count > 0)
                 {
-                    WriteLine(string.Format("{0}/{1} module archives failed to install.", failed.Count, encryptedStreams.Count));
+                    WriteLine(string.Format("{0} module archives failed to install.", failed.Count));
                     ReadLine();
                     Environment.Exit((int)ExitCode.InstallFailure);
                 }
 
                 // Output result
-                WriteLine(string.Format("{0}/{1} module archives installed successfully.", installed.Count, encryptedStreams.Count));
+                WriteLine(string.Format("{0} module archives installed successfully.", installed.Count));
                 ReadLine();
-
-                foreach (KeyValuePair<string, Stream> keyValuePair in encryptedStreams)
-                {
-                    keyValuePair.Value.Dispose();
-                }
+                WriteLine(string.Format("Finished installation in {0} ms.", (DateTime.Now - installStartTime).TotalMilliseconds));
             }
             catch (Exception ex)
             {
                 // Output exception message and stack trace.
+                WriteLine(string.Format("Exception caught at: {0}.", DateTime.Now.ToString()));
                 WriteException(ex);
 
                 ReadLine();
@@ -163,6 +180,16 @@ namespace DeployClient
                 depth++;
                 WriteException(ex.InnerException, maxDepth, depth);
             }
+        }
+
+        private static void Write(string message)
+        {
+            if(IsSilent)
+            {
+                return;
+            }
+
+            Console.Write(message);
         }
 
         private static void WriteLine(string message = "")

@@ -7,50 +7,50 @@ namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal class Deployment
     {
-        protected string IntakePath
-        {
-            get
-            {
-                return Path.Combine(WorkingPath, "intake");
-            }
-        }
+        //protected string IntakePath
+        //{
+        //    get
+        //    {
+        //        return Path.Combine(WorkingPath, "intake");
+        //    }
+        //}
 
-        protected string ModulesPath
-        {
-            get
-            {
-                return Path.Combine(WorkingPath, "modules");
-            }
-        }
+        //protected string ModulesPath
+        //{
+        //    get
+        //    {
+        //        return Path.Combine(WorkingPath, "modules");
+        //    }
+        //}
 
         protected string TempPath
         {
             get
             {
-                return Path.Combine(WorkingPath, "temp");
+                return Path.Combine(SessionPath, "temp");
             }
         }
 
         protected string IPAddress { get; set; }
-        protected string WorkingPath { get; set; }
+        protected string SessionPath { get; set; }
         protected List<string> PackageZips { get; set; }
 
-        public Deployment(string ipAddress)
+        public Deployment(string sessionPath, string ipAddress)
         {
             // Store ip address for logging later.
             IPAddress = ipAddress;
 
-            // Generate a temporary directory.
-            WorkingPath = Utilities.AvailableDirectory();
+            // store the session path.
+            SessionPath = sessionPath;
 
-            // Create working directory if it doesn't exist.
-            CreateDirectoryIfNotExist(WorkingPath);
+            //// Create working directory if it doesn't exist.
+            //CreateDirectoryIfNotExist(WorkingPath);
 
-            // Create the intake directory if it doesn't exist.
-            CreateDirectoryIfNotExist(IntakePath);
+            //// Create the intake directory if it doesn't exist.
+            //CreateDirectoryIfNotExist(IntakePath);
 
-            // Create the modules directory if it doesn't exist.
-            CreateDirectoryIfNotExist(ModulesPath);
+            //// Create the modules directory if it doesn't exist.
+            //CreateDirectoryIfNotExist(ModulesPath);
 
             // Create the temporary directory if it doesn't exist.
             CreateDirectoryIfNotExist(TempPath);
@@ -201,7 +201,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         protected List<string> IdentifyPackages()
         {
-            return IdentifyPackagesInDirectory(IntakePath);
+            return IdentifyPackagesInDirectory(SessionPath);
         }
 
         protected List<string> IdentifyPackagesInDirectory(string directoryPath)
@@ -225,7 +225,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
                         // Does it have other zips?
                         if (ZipHasOtherZip(testPath))
                         {
-                            string tempPath = Utilities.AvailableDirectory(TempPath);
+                            string tempPath = Utilities.AvailableTempDirectory(TempPath);
 
                             CreateDirectoryIfNotExist(tempPath);
 
