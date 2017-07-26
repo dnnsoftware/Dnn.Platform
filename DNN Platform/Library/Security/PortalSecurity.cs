@@ -650,10 +650,18 @@ namespace DotNetNuke.Security
 
             //Identity the Login is processed by system.
             HttpContext.Current.Items["DNN_UserSignIn"] = true;
+
+            UpdateMembershipUserStatus(user.Username, string.Empty);
         }
 
         public void SignOut()
         {
+            var context = HttpContext.Current;
+            if (context != null && context.Request.IsAuthenticated && context.User.Identity is FormsIdentity)
+            {
+                UpdateMembershipUserStatus(context.User.Identity.Name, DateTime.UtcNow.Ticks.ToString());
+            }
+
             //Log User Off from Cookie Authentication System
             var domainCookie = HttpContext.Current.Request.Cookies["SiteGroup"];
             if (domainCookie == null)
@@ -745,6 +753,16 @@ namespace DotNetNuke.Security
                 }
             }
            
+        }
+
+        private void UpdateMembershipUserStatus(string username, string status)
+        {
+            var membershipUser = System.Web.Security.Membership.GetUser(username);
+            if (membershipUser != null)
+            {
+                membershipUser.Comment = status;
+                System.Web.Security.Membership.UpdateUser(membershipUser);
+            }
         }
 
         ///-----------------------------------------------------------------------------
