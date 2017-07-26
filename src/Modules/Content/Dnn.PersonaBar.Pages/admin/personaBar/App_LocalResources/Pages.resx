@@ -5,8 +5,8 @@
     
     Version 2.0
     
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
     various data types are done through the TypeConverter classes 
     associated with the data types.
     
@@ -37,7 +37,7 @@
     mimetype set.
     
     The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
     
     Note - application/x-microsoft.net.object.binary.base64 is the format 
@@ -562,7 +562,7 @@
     <value>Are you sure you want to remove this URL?</value>
   </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
-    <value>&#60; None Specified &#62; </value>
+    <value>&lt; None Specified &gt; </value>
   </data>
   <data name="CannotCopyPermissionsToDescendantPages.Text" xml:space="preserve">
     <value>You do not have permission to copy permissions to descendant pages</value>
@@ -780,10 +780,10 @@
   <data name="lblCachedItemCount.Text" xml:space="preserve">
     <value>Current Cache Count: {0} variations for this page</value>
   </data>
-  <data name="cacheDuration.ErrorMessage">
+  <data name="cacheDuration.ErrorMessage" xml:space="preserve">
     <value>Cache Duration must be an integer.</value>
   </data>
-  <data name="cacheMaxVaryByCount.ErrorMessage">
+  <data name="cacheMaxVaryByCount.ErrorMessage" xml:space="preserve">
     <value>Vary By Limit must be an integer.</value>
   </data>
   <data name="addTagsPlaceholder.Text" xml:space="preserve">
@@ -797,5 +797,59 @@
   </data>
   <data name="ParentPage.Text" xml:space="preserve">
     <value>Parent Page</value>
+  </data>
+  <data name="MethodPermissionDenied.Text" xml:space="preserve">
+    <value>The user is not allowed to access this method.</value>
+  </data>
+  <data name="Prompt_PageNotFound.Text" xml:space="preserve">
+    <value>Page not found.</value>
+  </data>
+  <data name="Prompt_InvalidPageId.Text" xml:space="preserve">
+    <value>You must specify a valid number for Page ID</value>
+  </data>
+  <data name="Prompt_NoPageId.Text" xml:space="preserve">
+    <value>No valid Page ID specified</value>
+  </data>
+  <data name="Prompt_ParameterRequired.Text" xml:space="preserve">
+    <value>Either Page Id or Page Name with flag --name should be specified.</value>
+  </data>
+  <data name="Prompt_IfSpecifiedMustHaveValue.Text" xml:space="preserve">
+    <value>If you specify the --{0} flag, it must be set to True or False.</value>
+  </data>
+  <data name="Prompt_ParentIdNotNumeric.Text" xml:space="preserve">
+    <value>When specifying --{0}, you must supply a valid numeric Page (Tab) ID</value>
+  </data>
+  <data name="Prompt_ListPagesOutput.Text" xml:space="preserve">
+    <value>Press CTRL+X to end.\nPress any key to load more....</value>
+  </data>
+  <data name="Prompt_NoPages.Text" xml:space="preserve">
+    <value>No pages found.</value>
+  </data>
+  <data name="Prompt_InvalidParentId.Text" xml:space="preserve">
+    <value>The --{0} flag's value must be a valid Page (Tab) ID;.</value>
+  </data>
+  <data name="PageNotFound.Text" xml:space="preserve">
+    <value>Page doesn't exists.</value>
+  </data>
+  <data name="Prompt_PageCreated.Text" xml:space="preserve">
+    <value>The page has been created</value>
+  </data>
+  <data name="Prompt_PageCreateFailed.Text" xml:space="preserve">
+    <value>Unable to create the new page</value>
+  </data>
+  <data name="Prompt_FlagRequired.Text" xml:space="preserve">
+    <value>--{0} is required.</value>
+  </data>
+  <data name="Prompt_TrueFalseRequired.Text" xml:space="preserve">
+    <value>You must pass True or False for the --{0} flag.</value>
+  </data>
+  <data name="Prompt_UnableToFindSpecified.Text" xml:space="preserve">
+    <value>Unable to find page specified for --{0} '{1}'.</value>
+  </data>
+  <data name="Prompt_FlagMatch.Text" xml:space="preserve">
+    <value>The --{0} flag value cannot be the same as the page you are trying to update</value>
+  </data>
+  <data name="Prompt_NothingToUpdate.Text" xml:space="preserve">
+    <value>Nothing to Update! Tell what to update with flags like --{0} --{1} --{2} --{3}, etc.</value>
   </data>
 </root>

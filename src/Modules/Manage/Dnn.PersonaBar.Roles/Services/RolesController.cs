@@ -25,6 +25,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security;
+using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -40,10 +41,10 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Roles.Services
 {
-    [MenuPermission(MenuName  = Components.Constants.MenuName)]
+    [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class RolesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RolesController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RolesController));
 
         #region Role API
 
@@ -52,26 +53,11 @@ namespace Dnn.PersonaBar.Roles.Services
         {
             try
             {
-                var isAdmin = IsAdmin();
-
-                var roles = (groupId < Null.NullInteger
-                    ? RoleController.Instance.GetRoles(PortalId)
-                    : RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == groupId))
-                    .Where(r => isAdmin || r.RoleID != PortalSettings.AdministratorRoleId)
-                    .Select(RoleDto.FromRoleInfo);
-
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    roles =
-                        roles.Where(
-                            r => r.Name.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger);
-                }
-
-                var roleDtos = roles as RoleDto[] ?? roles.ToArray();
-                var loadMore = roleDtos.Count() > startIndex + pageSize;
-                roles = roleDtos.Skip(startIndex).Take(pageSize);
-
-                return Request.CreateResponse(HttpStatusCode.OK, new {roles, loadMore});
+                int total;
+                var roles = Components.RolesController.Instance.GetRoles(PortalSettings, groupId, keyword, out total, startIndex, pageSize).Select(RoleDto.FromRoleInfo);
+                var loadMore = total > startIndex + pageSize;
+                var rsvpLink = Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)) + "/" + Globals.glbDefaultPage + "?portalid=" + PortalId;
+                return Request.CreateResponse(HttpStatusCode.OK, new { roles, loadMore, rsvpLink });
             }
             catch (Exception ex)
             {
@@ -88,58 +74,10 @@ namespace Dnn.PersonaBar.Roles.Services
             try
             {
                 Validate(roleDto);
-
-                var role = roleDto.ToRoleInfo();
-                role.PortalID = PortalId;
-                var rolename = role.RoleName.ToUpperInvariant();
-
-                if (roleDto.Id == Null.NullInteger)
-                {
-
-                    if (RoleController.Instance.GetRole(PortalId,
-                        r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase)) == null)
-                    {
-                        RoleController.Instance.AddRole(role, assignExistUsers);
-                        roleDto.Id = role.RoleID;
-                    }
-                    else
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                            Localization.GetString("DuplicateRole", Components.Constants.LocalResourcesFile));
-                    }
-                }
-                else
-                {
-                    var existingRole = RoleController.Instance.GetRoleById(PortalId, roleDto.Id);
-                    if (existingRole == null)
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                            Localization.GetString("RoleNotFound", Components.Constants.LocalResourcesFile));
-                    }
-
-                    if (existingRole.IsSystemRole)
-                    {
-                        if (role.Description != existingRole.Description)//In System roles only description can be updated.
-                        {
-                            existingRole.Description = role.Description;
-                            RoleController.Instance.UpdateRole(existingRole, assignExistUsers);
-                        }
-                    }
-                    else if (RoleController.Instance.GetRole(PortalId,
-                        r =>
-                            rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase) &&
-                            r.RoleID != roleDto.Id) == null)
-                    {
-                        RoleController.Instance.UpdateRole(role, assignExistUsers);
-                    }
-                    else
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                            Localization.GetString("DuplicateRole", Components.Constants.LocalResourcesFile));
-                    }
-                }
-
-                return Request.CreateResponse(HttpStatusCode.OK, GetRole(roleDto.Id));
+                KeyValuePair<HttpStatusCode, string> message;
+                return Components.RolesController.Instance.SaveRole(PortalSettings, roleDto, assignExistUsers, out message)
+                    ? Request.CreateResponse(HttpStatusCode.OK, GetRole(roleDto.Id))
+                    : Request.CreateErrorResponse(message.Key, message.Value);
             }
             catch (ArgumentException ex)
             {
@@ -161,29 +99,10 @@ namespace Dnn.PersonaBar.Roles.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage DeleteRole(RoleDto roleDto)
         {
-            var role = RoleController.Instance.GetRoleById(PortalId, roleDto.Id);
-            if (role == null)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound,
-                    Localization.GetString("RoleNotFound", Components.Constants.LocalResourcesFile));
-            }
-            if (role.IsSystemRole)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                   Localization.GetString("SecurityRoleDeleteNotAllowed", Components.Constants.LocalResourcesFile));
-
-            }
-
-            if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin())
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                    Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
-            }
-
-            RoleController.Instance.DeleteRole(role);
-            DataCache.RemoveCache("GetRoles");
-
-            return Request.CreateResponse(HttpStatusCode.OK, new {roleId = roleDto.Id});
+            KeyValuePair<HttpStatusCode, string> message;
+            var roleName = Components.RolesController.Instance.DeleteRole(PortalSettings, roleDto.Id, out message);
+            return !string.IsNullOrEmpty(roleName) ? Request.CreateResponse(HttpStatusCode.OK, new { roleId = roleDto.Id })
+                : Request.CreateErrorResponse(message.Key, message.Value);
         }
 
         #endregion
@@ -279,7 +198,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
             RoleController.DeleteRoleGroup(roleGroup);
 
-            return Request.CreateResponse(HttpStatusCode.OK, new {groupId = roleGroupDto.Id});
+            return Request.CreateResponse(HttpStatusCode.OK, new { groupId = roleGroupDto.Id });
         }
 
         #endregion
@@ -350,7 +269,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 }
 
                 var totalRecords = users.Count;
-                var startIndex = pageIndex*pageSize;
+                var startIndex = pageIndex * pageSize;
                 var portal = PortalController.Instance.GetPortal(PortalId);
                 var pagedData = users.Skip(startIndex).Take(pageSize).Select(u => new UserRoleDto()
                 {
@@ -363,7 +282,7 @@ namespace Dnn.PersonaBar.Roles.Services
                     AllowDelete = RoleController.CanRemoveUserFromRole(portal, u.UserID, u.RoleID)
                 });
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {users = pagedData, totalRecords});
+                return Request.CreateResponse(HttpStatusCode.OK, new { users = pagedData, totalRecords });
             }
             catch (Exception ex)
             {
@@ -449,7 +368,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
                     RoleStatus.Approved, false, true);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {userRoleDto.UserId, userRoleDto.RoleId});
+                return Request.CreateResponse(HttpStatusCode.OK, new { userRoleDto.UserId, userRoleDto.RoleId });
             }
             catch (ArgumentException ex)
             {

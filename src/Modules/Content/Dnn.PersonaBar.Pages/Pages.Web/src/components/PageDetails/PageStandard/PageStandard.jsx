@@ -121,9 +121,11 @@ class PageDetails extends Component {
                             <PagePicker
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
                                 IsMultiSelect={false}
+
                                 defaultLabel={defaultLabel}
                                 selectedTabId={selectedTabId}
                                 portalTabsParameters={TabParameters_1}
+
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
                                 serviceFramework={sf} />

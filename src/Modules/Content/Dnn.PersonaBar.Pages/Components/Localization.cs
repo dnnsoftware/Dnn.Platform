@@ -1,11 +1,10 @@
 ﻿using System.IO;
-using Dnn.PersonaBar.Library;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
     public class Localization
     {
-        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "Modules/Dnn.Pages/App_LocalResources/Pages.resx");
+        private static string LocalResourcesFile => Path.Combine(Library.Constants.PersonaBarRelativePath, "Modules/Dnn.Pages/App_LocalResources/Pages.resx");
 
         public static string GetString(string key)
         {

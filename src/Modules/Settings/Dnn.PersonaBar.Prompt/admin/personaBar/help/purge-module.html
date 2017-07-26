@@ -1,0 +1,46 @@
+<!-- purge-module -->
+<section class="dnn-prompt-inline-help">
+    <a name="purge-module"></a>
+    <h3 class="mono">purge-module</h3>
+    <p class="lead">Permanently deletes a module. The module should be soft deleted first.</p>
+
+    <div>
+        <h4>Options</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Flag</th>
+                    <th>Value</th>
+                    <th>Required</th>
+                    <th>Default Value</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>--id</td>
+                    <td>integer</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td>Explicitly specifies the Module ID of the module to delete permanently. Use of the flag is not required. You can simply provide the ID value as the first argument.</td>
+                </tr>
+                <tr>
+                    <td>--pageid</td>
+                    <td>integer</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td>Explicitly specifies the Page Id on which the module was added originally.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Purge a Specific Module</h4>
+        <p>The code below purges the module whose Module ID is 359</p>
+        <code class="block">purge-module 359 --pageid 20</code>
+
+        <h4>Results</h4>
+        Module with id "359" purged successfully.
+    </div>
+
+</section>
+

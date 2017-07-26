@@ -109,7 +109,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Status = 1,
                     Message =
                         string.Format(
-                            Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabModuleError"),
+                            Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabError"),
                             errors)
                 });
             }

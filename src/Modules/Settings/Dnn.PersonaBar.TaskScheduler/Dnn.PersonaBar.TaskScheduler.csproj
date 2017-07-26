@@ -101,6 +101,12 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Constants.cs" />
+    <Compile Include="Components\Prompt\Commands\GetTask.cs" />
+    <Compile Include="Components\Prompt\Commands\ListTask.cs" />
+    <Compile Include="Components\Prompt\Commands\SetTask.cs" />
+    <Compile Include="Components\Prompt\Models\TaskModel.cs" />
+    <Compile Include="Components\Prompt\Models\TaskModelBase.cs" />
     <Compile Include="Components\TaskSchedulerController.cs" />
     <Compile Include="MenuControllers\HostMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

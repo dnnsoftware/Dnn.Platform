@@ -501,13 +501,13 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         [RequireHost]
-        public Task<HttpResponseMessage> InstallPackage([FromUri] string legacySkin = null)
+        public Task<HttpResponseMessage> InstallPackage([FromUri] string legacySkin = null, [FromUri] bool isPortalPackage = false)
         {
             try
             {
                 return
                     UploadFileAction((portalSettings, userInfo, filePath, stream) =>
-                        InstallController.Instance.InstallPackage(portalSettings, userInfo, legacySkin, filePath, stream));
+                        InstallController.Instance.InstallPackage(portalSettings, userInfo, legacySkin, filePath, stream, isPortalPackage));
             }
             catch (Exception ex)
             {

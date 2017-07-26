@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return parseResult;
         }
 
-        public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream)
+        public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)
         {
             var installResult = new InstallResultDto();
             var fileName = Path.GetFileName(filePath);
@@ -102,7 +102,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 try
                 {
-                    var installer = GetInstaller(stream, fileName, portalSettings.PortalId, legacySkin);
+                    var installer = GetInstaller(stream, fileName, portalSettings.PortalId, legacySkin, isPortalPackage);
 
                     try
                     {
@@ -153,7 +153,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
-        private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null)
+        private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null, bool isPortalPackage = false)
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, false, false);
             if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             // We always assume we are installing from //Host/Extensions (in the previous releases)
             // This will not work when we try to install a skin/container under a specific portal.
-            installer.InstallerInfo.PortalID = Null.NullInteger;
+            installer.InstallerInfo.PortalID = isPortalPackage ? portalId: Null.NullInteger;
 
             //Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)

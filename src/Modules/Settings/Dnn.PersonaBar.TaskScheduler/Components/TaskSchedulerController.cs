@@ -26,9 +26,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Net;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 
@@ -36,6 +40,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
 {
     public class TaskSchedulerController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
+
         private string LocalResourcesFile
         {
             get
@@ -98,8 +104,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", LocalResourcesFile));
         }
 
-        public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement, 
-            int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, 
+        public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement,
+            int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled,
             bool enabled, string objectDependencies, string scheduleStartDate, string servers)
         {
             var scheduleItem = new ScheduleItem();
@@ -129,6 +135,37 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             }
             scheduleItem.Servers = string.IsNullOrEmpty(servers) ? Null.NullString : servers;
             return scheduleItem;
+        }
+        public IEnumerable<ScheduleItem> GetScheduleItems(bool? enabled, string serverName = "", string taskName = "")
+        {
+            try
+            {
+                IEnumerable<ScheduleItem> scheduleviews;
+                if (string.IsNullOrEmpty(serverName) || serverName == Localization.GetString("All"))
+                {
+                    scheduleviews = SchedulingController.GetSchedule();
+                }
+                else
+                {
+                    scheduleviews = SchedulingController.GetSchedule(serverName);
+                }
+                if (!string.IsNullOrEmpty(taskName))
+                    scheduleviews = scheduleviews.Where(item => item.FriendlyName.IndexOf(taskName, StringComparison.InvariantCultureIgnoreCase) >= 0);
+                if (enabled.HasValue)
+                    scheduleviews = scheduleviews.Where(item => item.Enabled == enabled.Value);
+
+                var scheduleItems = scheduleviews as IList<ScheduleItem> ?? scheduleviews.ToList();
+                foreach (var item in scheduleItems.Where(x => x.NextStart == Null.NullDate)
+                            .Where(item => item.ScheduleStartDate != Null.NullDate))
+                    item.NextStart = item.ScheduleStartDate;
+
+                return scheduleItems;
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return null;
+            }
         }
     }
 }

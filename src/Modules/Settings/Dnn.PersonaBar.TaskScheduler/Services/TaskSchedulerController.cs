@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     ServerID = v.ServerID.ToString(),
                     v.ServerName
                 }).ToList();
-                availableServers.Insert(0, new 
+                availableServers.Insert(0, new
                 {
                     ServerID = "*",
                     ServerName = Localization.GetString("All")
@@ -101,19 +101,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                List<ScheduleItem> scheduleviews;
-                if (string.IsNullOrEmpty(serverName) || serverName == Localization.GetString("All"))
-                {
-                    scheduleviews = SchedulingController.GetSchedule();
-                }
-                else
-                {
-                    scheduleviews = SchedulingController.GetSchedule(serverName);
-                }
-
-                foreach (var item in scheduleviews.Where(x => x.NextStart == Null.NullDate))
-                    if (item.ScheduleStartDate != Null.NullDate)
-                        item.NextStart = item.ScheduleStartDate;
+                var scheduleviews = _controller.GetScheduleItems(null, serverName);
                 var arrSchedule = scheduleviews.ToArray();
                 var response = new
                 {

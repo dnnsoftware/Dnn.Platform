@@ -18,15 +18,22 @@ class InstallationService {
 
         sf.postfile("ParsePackage", formData, callback, errorCallback);
     }
-    installPackage(file, legacyType, callback) {
+    installPackage(file, legacyType, isPortalPackage, callback) {
         const sf = this.getServiceFramework("Extensions");
 
         let formData = new FormData();
         formData.append("POSTFILE", file);
 
-        if (legacyType) {
+        if (legacyType && isPortalPackage) {
+            sf.postfile("InstallPackage?legacySkin=" + legacyType + "&isPortalPackage=" + isPortalPackage, formData, callback, util.utilities.notifyError);
+        }
+        else if (legacyType) {
             sf.postfile("InstallPackage?legacySkin=" + legacyType, formData, callback, util.utilities.notifyError);
-        } else {
+        } 
+        else if (isPortalPackage) {
+            sf.postfile("InstallPackage?isPortalPackage=" + isPortalPackage, formData, callback, util.utilities.notifyError);
+        }
+        else {
             sf.postfile("InstallPackage", formData, callback, util.utilities.notifyError);
         }
     }
