@@ -3,7 +3,6 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
@@ -22,7 +21,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
                     BypassBuffering = true,
                     LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()
                 };
-                log.AddProperty("Message", Localization.GetString("UserRestart", "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx"));
+                log.AddProperty("Message", LocalizeString("Prompt_UserRestart"));
                 LogController.Instance.AddLog(log);
                 DotNetNuke.Common.Utilities.Config.Touch();
             }
@@ -33,5 +32,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
             }
             return new ConsoleResultModel("Application Restarted") { MustReload = true };
         }
+
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
     }
 }

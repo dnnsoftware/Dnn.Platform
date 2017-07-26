@@ -159,21 +159,6 @@
   <data name="Prompt_DesktopModuleNotFound.Text" xml:space="preserve">
     <value>Unable to find a desktop module with the name '{0}' for this portal</value>
   </data>
-  <data name="Prompt_FlagNotInt.Text" xml:space="preserve">
-    <value>--{0} must be an integer\n</value>
-  </data>
-  <data name="Prompt_FlagNotPositiveInt.Text" xml:space="preserve">
-    <value>--{0} must be greater than 0\n</value>
-  </data>
-  <data name="Prompt_FlagNotValidBool.Text" xml:space="preserve">
-    <value>--{0} must be a valid boolean (true/false) value\n</value>
-  </data>
-  <data name="Prompt_FlagRequired.Text" xml:space="preserve">
-    <value>--{0} is required\n</value>
-  </data>
-  <data name="Prompt_MainParamRequired.Text" xml:space="preserve">
-    <value>The {0} is required. Please use the --{1} flag or pass it as the first argument after the command name\n</value>
-  </data>
   <data name="Prompt_ModuleAdded.Text" xml:space="preserve">
     <value>Successfully added {0} new module{(1}</value>
   </data>
@@ -188,9 +173,6 @@
   </data>
   <data name="Prompt_SourceAndTargetPagesAreSame.Text" xml:space="preserve">
     <value>The source Page ID and target Page ID cannot be the same.\n</value>
-  </data>
-  <data name="Prompt_InvalidFlagValue.Text" xml:space="preserve">
-    <value>The value for --{0} you entered is invalid.</value>
   </data>
   <data name="Prompt_ModuleMoved.Text" xml:space="preserve">
     <value>Successfully moved the module.</value>
@@ -215,5 +197,8 @@
   </data>
   <data name="Prompt_PageNotFound.Text" xml:space="preserve">
     <value>Could not load Target Page. No page found in the portal with ID '{0}'</value>
+  </data>
+  <data name="Prompt_UserRestart.Text" xml:space="preserve">
+    <value>User triggered an Application Restart</value>
   </data>
 </root>

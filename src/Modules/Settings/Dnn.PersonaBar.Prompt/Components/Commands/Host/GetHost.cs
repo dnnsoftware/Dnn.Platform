@@ -12,6 +12,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     [ConsoleCommand("get-host", "Retrieves information about the current DNN Installation", new[] { "id" })]
     public class GetHost : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
@@ -30,7 +32,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
                     sbErrors.Append("The get-host command does not take any arguments or flags; ");
                 }
             }
-            ValidationMessage = sbErrors.ToString();
+            AddMessage(sbErrors.ToString());
         }
 
         public override ConsoleResultModel Run()

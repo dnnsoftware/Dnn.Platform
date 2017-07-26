@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     [ConsoleCommand("list-portals", "Retrieves a list of portals for the current DNN Installation")]
     public class ListPortals : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int? PortalIdFlagValue { get; private set; }
 
@@ -28,9 +29,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             {
                 sbErrors.Append("The get-portal command does not take any arguments or flags; ");
             }
-
-
-            ValidationMessage = sbErrors.ToString();
+            AddMessage(sbErrors.ToString());
         }
 
         public override ConsoleResultModel Run()

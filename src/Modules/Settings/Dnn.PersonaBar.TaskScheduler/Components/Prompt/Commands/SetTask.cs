@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -9,7 +7,6 @@ using Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
@@ -31,55 +28,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            if (HasFlag(FlagId))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagId), out tmpId))
-                {
-                    TaskId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagMustBeNumber", Constants.LocalResourcesFile), FlagId);
-                }
-            }
-            else if (args.Length >= 2 && !IsFlag(args[1]))
-            {
-                int tmpId;
-                if (int.TryParse(args[1], out tmpId))
-                {
-                    TaskId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_ScheduleFlagRequired", Constants.LocalResourcesFile), FlagId);
-                }
-            }
-            else
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagId);
-            }
-
-            if (HasFlag(FlagEnabled))
-            {
-                bool tmpEnabled;
-                if (bool.TryParse(Flag(FlagEnabled), out tmpEnabled))
-                {
-                    Enabled = tmpEnabled;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagMustBeTrueFalse", Constants.LocalResourcesFile), FlagEnabled);
-                }
-            }
-            else
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagEnabled);
-            }
-
-            ValidationMessage = sbErrors.ToString();
+            TaskId = GetFlagValue(FlagId, "Task Id", -1, true, true, true);
+            Enabled = GetFlagValue(FlagEnabled, "Enabled", true,true);
         }
 
         public override ConsoleResultModel Run()
@@ -90,14 +40,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
                 var tasks = new List<TaskModel>();
 
                 if (taskToUpdate == null)
-                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("Prompt_TaskNotFound", Constants.LocalResourcesFile), TaskId));
+                    return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_TaskNotFound"), TaskId));
                 if (taskToUpdate.Enabled == Enabled)
-                    return new ConsoleErrorResultModel(Localization.GetString(Enabled ? "Prompt_TaskAlreadyEnabled" : "Prompt_TaskAlreadyDisabled", Constants.LocalResourcesFile));
+                    return new ConsoleErrorResultModel(LocalizeString(Enabled ? "Prompt_TaskAlreadyEnabled" : "Prompt_TaskAlreadyDisabled"));
 
                 taskToUpdate.Enabled = Enabled;
                 SchedulingProvider.Instance().UpdateSchedule(taskToUpdate);
                 tasks.Add(new TaskModel(taskToUpdate));
-                return new ConsoleResultModel(Localization.GetString("Prompt_TaskUpdated", Constants.LocalResourcesFile))
+                return new ConsoleResultModel(LocalizeString("Prompt_TaskUpdated"))
                 {
                     Records = tasks.Count,
                     Data = tasks
@@ -106,8 +56,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return new ConsoleErrorResultModel(Localization.GetString("Prompt_TaskUpdateFailed", Constants.LocalResourcesFile));
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_TaskUpdateFailed"));
             }
         }
+
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
     }
 }
