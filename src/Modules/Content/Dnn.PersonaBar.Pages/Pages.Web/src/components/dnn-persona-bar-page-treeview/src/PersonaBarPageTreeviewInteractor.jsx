@@ -77,8 +77,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     getRootListItems() {
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?searchKey=`;
         this.GET(url).then((data) => {
-           
-            this.setState({ pageList: data, isTreeviewExpanded:true });
+
+            this.setState({ pageList: data, isTreeviewExpanded: true });
         });
     }
 
@@ -168,7 +168,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDrop(item) {
-
         this.removeClone();
         let activePage = Object.assign({}, this.state.activePage);
         let pageList = null;
@@ -220,7 +219,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     reOrderPage({ Action, PageId, ParentId, RelatedPageId }) {
         return new Promise((resolve, reject) => {
 
-
             let cachedItem = null;
             let itemIndex = null;
             let pageList = null;
@@ -233,10 +231,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     switch (true) {
                         case item.id === RelatedPageId:
                             newParentId = item.parentId;
+                            break;
 
                         case ParentId === -1 && item.parentId === -1:
-
-
                             list.forEach((child, index) => {
                                 if (child.id === PageId) {
                                     cachedItem = child;
@@ -250,8 +247,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             return;
 
                         case item.id === ParentId:
-
-
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === PageId) {
                                     child.selected = true;
@@ -265,10 +260,23 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                                 }
                             });
                             return;
-                            
+
                         default:
-
-
+                            list.forEach((item) => {
+                                if (item.id === ParentId) {
+                                    item.childListItems.forEach((child, index) => {
+                                        if (child.id === PageId) {
+                                            cachedItem = child;
+                                            itemIndex = index;
+                                            item.childCount--;
+                                            const arr1 = item.childListItems.slice(0, itemIndex);
+                                            const arr2 = item.childListItems.slice(itemIndex + 1);
+                                            item.childListItems = [...arr1, ...arr2];
+                                            pageList = list;
+                                        }
+                                    });
+                                }
+                            });
                     }
                 });
 
@@ -280,28 +288,24 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
             const updateNewParent = () => new Promise((rez) => {
 
-
                 this._traverse((item, list) => {
                     switch (true) {
                         case item.id === newParentId:
-
-
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === RelatedPageId) {
                                     newSiblingIndex = index;
                                     item.childCount++;
                                     (Action === "after") ? newSiblingIndex++ : null;
-                                   
+
                                     const arr1 = item.childListItems.slice(0, newSiblingIndex);
                                     const arr2 = item.childListItems.slice(newSiblingIndex);
+                                    cachedItem.parentId = item.id;
                                     item.childListItems = [...arr1, cachedItem, ...arr2];
                                     pageList = list;
                                 }
                             });
                             return;
                         case ParentId === -1:
-
-
                             list.forEach((child, index) => {
                                 if (child.id === RelatedPageId) {
                                     newSiblingIndex = index;
@@ -316,14 +320,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             });
                             return;
                         default:
-
-                            list.forEach((child, index)=>{
-                                if(child.id === RelatedPageId && child.parentId===-1){
-
+                            list.forEach((child, index) => {
+                                if (child.id === RelatedPageId && child.parentId === -1) {
                                     newSiblingIndex = index;
                                     (Action === "after") ? newSiblingIndex++ : null;
 
-                                    const arr1 = list.slice(0,index);
+                                    const arr1 = list.slice(0, index);
                                     const arr2 = list.slice(index);
                                     cachedItem.parentId = -1;
                                     const listCopy = [...arr1, cachedItem, ...arr2];
@@ -344,6 +346,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     updateTree() {
         const newParent = this.state.droppedItem;
         const moveChild = this.state.draggedItem;
+        console.log(newParent, moveChild);
+
         const condition = (newParent.id != moveChild.parentId);
 
         const popMoveChildItem = () => {
@@ -367,19 +371,17 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     };
 
                     const right = () => {
-                        let rootList = this.state.pageList.concat();
+                        let rootList = list.concat();
                         rootList.filter((item, index) => {
                             if (item.id === moveChild.id) {
                                 cachedItemIndex = index;
+                                const arr1 = rootList.slice(0, cachedItemIndex);
+                                const arr2 = rootList.slice(cachedItemIndex + 1);
+                                rootList = [...arr1, ...arr2];
+                                update = rootList;
+                                console.log(update);
                             }
                         });
-
-                        if (cachedItemIndex) {
-                            const arr1 = rootList.slice(0, cachedItemIndex);
-                            const arr2 = rootList.slice(cachedItemIndex + 1);
-                            rootList = [...arr1, ...arr2];
-                            update = rootList;
-                        }
                     };
 
                     switch (true) {
