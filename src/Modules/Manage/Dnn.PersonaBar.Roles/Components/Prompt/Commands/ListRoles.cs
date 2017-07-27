@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -9,13 +8,14 @@ using Dnn.PersonaBar.Roles.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     [ConsoleCommand("list-roles", "Retrieves a list of DNN security roles for this portal", new[] { "page", "max" })]
     public class ListRoles : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));
 
         private const string FlagPage = "page";
@@ -27,21 +27,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            if (HasFlag(FlagPage))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagPage), out tmpId))
-                    Page = tmpId;
-            }
-            if (HasFlag(FlagMax))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagMax), out tmpId))
-                    Max = tmpId > 0 && tmpId < 500 ? tmpId : Max;
-            }
-            ValidationMessage = sbErrors.ToString();
+            Page = GetFlagValue(FlagPage, "Page", 1);
+            Max = GetFlagValue(FlagMax, "Max", 10);
         }
 
         public override ConsoleResultModel Run()
@@ -65,14 +52,14 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                         PageSize = Max
                     },
                     Records = roles.Count,
-                    Output = pageNo <= totalPages ? Localization.GetString("Prompt_ListRolesOutput", Constants.LocalResourcesFile) : Localization.GetString("Prompt_NoRoles", Constants.LocalResourcesFile)
+                    Output = pageNo <= totalPages ? LocalizeString("Prompt_ListRolesOutput") : LocalizeString("Prompt_NoRoles")
                 };
 
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(Localization.GetString("Prompt_ListRolesFailed", Constants.LocalResourcesFile));
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_ListRolesFailed"));
             }
         }
     }

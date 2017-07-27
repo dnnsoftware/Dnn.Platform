@@ -1,10 +1,8 @@
-﻿using System.Text;
-using Dnn.PersonaBar.Library.Prompt;
+﻿using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -14,49 +12,20 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class ResetPassword : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private const string FlagId = "id";
         private const string FlagNotify = "notify";
 
 
-        public bool Notify { get; private set; } = true;
+        public bool Notify { get; private set; }
         public int? UserId { get; private set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            int tmpId;
-            if (HasFlag(FlagId))
-            {
-                if (int.TryParse(Flag(FlagId), out tmpId))
-                    UserId = tmpId;
-            }
-            else
-            {
-                if (int.TryParse(args[1], out tmpId))
-                    UserId = tmpId;
-            }
-
-            if (HasFlag(FlagNotify))
-            {
-                bool tmpNotify;
-                if (bool.TryParse(Flag(FlagNotify), out tmpNotify))
-                {
-                    Notify = tmpNotify;
-                }
-                else
-                {
-                    sbErrors.Append(string.Format(Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourcesFile), FlagNotify) + " ");
-                }
-            }
-
-            if (!UserId.HasValue)
-            {
-                sbErrors.Append(Localization.GetString("Prompt_UserIdIsRequired", Constants.LocalResourcesFile));
-            }
-
-            ValidationMessage = sbErrors.ToString();
+            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            Notify = GetFlagValue(FlagNotify, "Notify", PortalSettings.EnableRegisterNotification);
         }
 
         public override ConsoleResultModel Run()
@@ -67,12 +36,12 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             //Don't allow self password change.
             if (userInfo.UserID == User.UserID)
             {
-                return new ConsoleErrorResultModel(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
+                return new ConsoleErrorResultModel(LocalizeString("InSufficientPermissions"));
             }
             var success = UsersController.Instance.ForceChangePassword(userInfo, PortalId, Notify);
             return success
-                ? new ConsoleResultModel(Localization.GetString("Prompt_PasswordReset", Constants.LocalResourcesFile) + (Notify ? Localization.GetString("Prompt_EmailSent", Constants.LocalResourcesFile) : "")) { Records = 1 }
-                : new ConsoleErrorResultModel(Localization.GetString("OptionUnavailable", Constants.LocalResourcesFile));
+                ? new ConsoleResultModel(LocalizeString("Prompt_PasswordReset") + (Notify ? LocalizeString("Prompt_EmailSent") : "")) { Records = 1 }
+                : new ConsoleErrorResultModel(LocalizeString("OptionUnavailable"));
         }
     }
 }

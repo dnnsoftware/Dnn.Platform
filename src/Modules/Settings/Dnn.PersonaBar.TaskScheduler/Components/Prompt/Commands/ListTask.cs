@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
@@ -17,9 +15,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     })]
     public class ListTasks : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private const string FlagEnabled = "enabled";
         private const string FlagName = "name";
-
 
         private bool? Enabled { get; set; }
         private string TaskName { get; set; }
@@ -27,51 +26,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-            var bFirstArgProcessed = false;
-
-            if (HasFlag(FlagEnabled))
-            {
-                bool tmpEnabled;
-                if (bool.TryParse(Flag(FlagEnabled), out tmpEnabled))
-                {
-                    Enabled = tmpEnabled;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagMustBeTrueFalse", Constants.LocalResourcesFile), FlagEnabled);
-                }
-            }
-            else if (args.Length >= 2 && !IsFlag(args[1]))
-            {
-                // if the Enabled flag isn't used but the first argument is a boolean, assume then
-                // user is passing Enabled as the first argument
-                bool tmpEnabled;
-                if (bool.TryParse(args[1], out tmpEnabled))
-                {
-                    Enabled = tmpEnabled;
-                    bFirstArgProcessed = true;
-                    // don't let other code process first arugument
-                }
-            }
-
-            if (HasFlag(FlagName))
-            {
-                TaskName = Flag(FlagName);
-                if (string.IsNullOrEmpty(TaskName))
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagCantBeEmpty", Constants.LocalResourcesFile), FlagName);
-                    TaskName = null;
-                }
-            }
-            else if (!bFirstArgProcessed && args.Length >= 2 && !IsFlag(args[1]))
-            {
-                // only interpret first argument as the --name flag if the first arg is a value and 
-                // has not already been interpreted as a boolean (for the Enabled flag)
-                TaskName = args[1];
-            }
-
-            ValidationMessage = sbErrors.ToString();
+            Enabled = GetFlagValue<bool?>(FlagEnabled, "Enabled", null, false, true);
+            TaskName = GetFlagValue(FlagName, "Task Name", string.Empty, false, !Enabled.HasValue);
         }
 
         public override ConsoleResultModel Run()
@@ -80,7 +36,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             var tasks = new List<TaskModelBase>();
             var schedulerItems = controller.GetScheduleItems(Enabled, "", TaskName?.Replace("*", ""));
             tasks.AddRange(schedulerItems.Select(x => new TaskModelBase(x)));
-            return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_TasksFound", Constants.LocalResourcesFile), tasks.Count))
+            return new ConsoleResultModel(string.Format(LocalizeString("Prompt_TasksFound"), tasks.Count))
             {
                 Data = tasks,
                 Records = tasks.Count

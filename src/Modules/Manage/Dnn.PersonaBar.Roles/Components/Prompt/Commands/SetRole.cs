@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -11,7 +10,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
@@ -23,6 +21,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     })]
     public class SetRole : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
         private const string FlagId = "id";
         private const string FlagIsPublic = "public";
@@ -41,65 +41,16 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
+            RoleId = GetFlagValue(FlagId, "Role Id", -1, true, true, true);
+            RoleName = GetFlagValue(FlagRoleName, "Role Name", string.Empty);
+            Description = GetFlagValue(FlagDescription, "Description", string.Empty);
+            IsPublic = GetFlagValue<bool?>(FlagIsPublic, "Is Public", null);
+            AutoAssign = GetFlagValue<bool?>(FlagAutoAssign, "Auto Assign", null);
 
-            var sbErrors = new StringBuilder();
-            int tempId;
-            if (HasFlag(FlagId))
+            if (string.IsNullOrEmpty(RoleName) && string.IsNullOrEmpty(Description) && !IsPublic.HasValue && !AutoAssign.HasValue)
             {
-                if (!int.TryParse(Flag(FlagId), out tempId))
-                {
-                    sbErrors.Append(Localization.GetString("Prompt_RoleIdNotInt", Constants.LocalResourcesFile));
-                }
-                else
-                {
-                    RoleId = tempId;
-                }
+                AddMessage(LocalizeString("Prompt_NothingToUpdate"));
             }
-            else if (!int.TryParse(args[1], out tempId))
-            {
-                sbErrors.Append(Localization.GetString("Prompt_RoleIdIsRequired", Constants.LocalResourcesFile));
-            }
-            else
-            {
-                RoleId = tempId;
-            }
-
-            if (HasFlag(FlagRoleName))
-                RoleName = Flag(FlagRoleName);
-            if (HasFlag(FlagDescription))
-                Description = Flag(FlagDescription);
-
-            if (HasFlag(FlagIsPublic))
-            {
-                bool tmpPublic;
-                if (!bool.TryParse(Flag(FlagIsPublic), out tmpPublic))
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagIsPublic, Flag(FlagIsPublic));
-                }
-                else
-                {
-                    IsPublic = tmpPublic;
-                }
-            }
-
-            if (HasFlag(FlagAutoAssign))
-            {
-                bool tmpAuto;
-                if (!bool.TryParse(Flag(FlagAutoAssign), out tmpAuto))
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagAutoAssign, Flag(FlagAutoAssign));
-                }
-                else
-                {
-                    AutoAssign = tmpAuto;
-                }
-            }
-
-            if (RoleName == null && Description == null && !IsPublic.HasValue && !AutoAssign.HasValue)
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_NothingToUpdate", Constants.LocalResourcesFile));
-            }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -126,12 +77,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                 {
                     new RoleModel(RoleController.Instance.GetRoleById(PortalId, roleDto.Id))
                 };
-                return new ConsoleResultModel(Localization.GetString("RoleUpdated.Message", Constants.LocalResourcesFile)) { Data = lstResults, Records = lstResults.Count };
+                return new ConsoleResultModel(LocalizeString("RoleUpdated.Message")) { Data = lstResults, Records = lstResults.Count };
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(Localization.GetString("RoleUpdated.Error", Constants.LocalResourcesFile));
+                return new ConsoleErrorResultModel(LocalizeString("RoleUpdated.Error"));
             }
         }
     }

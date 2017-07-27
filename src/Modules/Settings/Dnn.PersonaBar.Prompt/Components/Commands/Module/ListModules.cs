@@ -1,10 +1,8 @@
 ﻿using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
@@ -17,10 +15,11 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     })]
     public class ListModules : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private const string FlagModuleName = "name";
         private const string FlagModuleTitle = "title";
-        private const string FlagPageid = "pageid";
+        private const string FlagPageId = "pageid";
         private const string FlagDeleted = "deleted";
         private const string FlagPage = "page";
         private const string FlagMax = "max";
@@ -37,69 +36,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            if (HasFlag(FlagPageid))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagPageid), out tmpId))
-                {
-                    PageId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagPageid);
-                }
-            }
-            else
-            {
-                if (args.Length >= 2 && !IsFlag(args[1]))
-                {
-                    // attempt to parse first arg as the page ID
-                    int tmpId;
-                    if (int.TryParse(args[1], out tmpId))
-                    {
-                        PageId = tmpId;
-                    }
-                    else
-                    {
-                        sbErrors.AppendFormat(Localization.GetString("Prompt_InvalidFlagValue", Constants.LocalResourcesFile), FlagPageid);
-                    }
-                }
-            }
-
-            ModuleName = Flag(FlagModuleName);
-            ModuleTitle = Flag(FlagModuleTitle);
-            if (HasFlag(FlagDeleted))
-            {
-                bool tmp;
-                if (bool.TryParse(Flag(FlagDeleted), out tmp))
-                {
-                    Deleted = tmp;
-                }
-                else
-                {
-                    if (Flag(FlagDeleted, null) == null)
-                    {
-                        // user specified deleted flag with no value. Default to True
-                        Deleted = true;
-                    }
-                }
-            }
-            if (HasFlag(FlagPage))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagPage), out tmpId))
-                    Page = tmpId;
-            }
-            if (HasFlag(FlagMax))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagMax), out tmpId))
-                    Max = tmpId > 0 && tmpId < 500 ? tmpId : Max;
-            }
-
-            ValidationMessage = sbErrors.ToString();
+            PageId = GetFlagValue(FlagPageId, "Page Id", -1, false, true);
+            ModuleName = GetFlagValue(FlagModuleName, "Module Name", string.Empty);
+            ModuleTitle = GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
+            Deleted = GetFlagValue<bool?>(FlagDeleted, "Deleted", null);
+            Page = GetFlagValue(FlagPage, "Page No", 1);
+            Max = GetFlagValue(FlagMax, "Page Size", 10);
         }
 
         public override ConsoleResultModel Run()
@@ -122,8 +64,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 Records = modules.Count,
                 Output =
                     pageNo <= totalPages
-                        ? Localization.GetString("Prompt_ListModulesOutput", Constants.LocalResourcesFile)
-                        : Localization.GetString("Prompt_NoModules", Constants.LocalResourcesFile)
+                        ? LocalizeString("Prompt_ListModulesOutput")
+                        : LocalizeString("Prompt_NoModules")
             };
         }
     }

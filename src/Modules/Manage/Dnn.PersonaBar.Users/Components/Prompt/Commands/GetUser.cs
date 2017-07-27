@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -19,6 +16,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class GetUser : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private const string FlagId = "id";
         private const string FlagEmail = "email";
         private const string FlagUsername = "username";
@@ -31,21 +30,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            // If no 'find flags (email, id, etc.) are specied, return current user. this is handled in Run so we don't have 
-            // to do another datbase lookup
-
-            if (HasFlag(FlagId))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagId), out tmpId))
-                    UserId = tmpId;
-            }
-            if (HasFlag(FlagEmail))
-                Email = Flag(FlagEmail);
-            if (HasFlag(FlagUsername))
-                Username = Flag(FlagUsername);
+            UserId = GetFlagValue<int?>(FlagId, "User Id", null);
+            Email = GetFlagValue(FlagEmail, "Email", string.Empty);
+            Username = GetFlagValue(FlagUsername, "Username", string.Empty);
 
             if (args.Length != 1)
             {
@@ -70,12 +57,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                         }
                     }
                 }
-                if (!UserId.HasValue && Email == null && Username == null)
+                if (!UserId.HasValue && string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Username))
                 {
-                    sbErrors.Append(Localization.GetString("Prompt_SearchUserParameterRequired", Constants.LocalResourcesFile));
+                    AddMessage(LocalizeString("Prompt_SearchUserParameterRequired"));
                 }
             }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()

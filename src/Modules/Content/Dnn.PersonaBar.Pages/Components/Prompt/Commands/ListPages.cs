@@ -22,7 +22,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     })]
     public class ListPages : ConsoleCommandBase
     {
-        private const string FlagParentid = "parentid";
+        protected override string LocalResourceFile => Constants.LocalResourceFile;
+
+        private const string FlagParentId = "parentid";
         private const string FlagDeleted = "deleted";
         private const string FlagName = "name";
         private const string FlagTitle = "title";
@@ -32,8 +34,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         private const string FlagPage = "page";
         private const string FlagMax = "Max";
 
-
-        private int ParentId { get; set; } = -1;
+        private int? ParentId { get; set; } = -1;
         private bool? Deleted { get; set; }
         private string PageName { get; set; }
         private string PageTitle { get; set; }
@@ -47,97 +48,22 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             var sbErrors = new StringBuilder();
-
-            if (HasFlag(FlagParentid))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagParentid), out tmpId))
-                {
-                    ParentId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParentIdNotNumeric", Constants.LocalResourceFile), FlagParentid);
-                }
-            }
-            else if (args.Length > 1 && !IsFlag(args[1]))
-            {
-                int tmpId;
-                if (int.TryParse(args[1], out tmpId))
-                {
-                    ParentId = tmpId;
-                }
-            }
-
-            if (HasFlag(FlagDeleted))
-            {
-                // if flag is specified but has no value, default to it being true
-                if (string.IsNullOrEmpty(Flag(FlagDeleted)))
-                {
-                    Deleted = true;
-                }
-                else
-                {
-                    bool tmpDeleted;
-                    if (bool.TryParse(Flag(FlagDeleted), out tmpDeleted))
-                    {
-                        Deleted = tmpDeleted;
-                    }
-                    else
-                    {
-                        sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourceFile), FlagDeleted);
-                    }
-                }
-            }
-
-            if (HasFlag(FlagVisible))
-            {
-                bool tmp;
-                if (bool.TryParse(Flag(FlagVisible), out tmp))
-                {
-                    PageVisible = tmp;
-                }
-                else if (Flag(FlagVisible, null) == null)
-                {
-                    // default to true
-                    PageVisible = true;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourceFile), FlagVisible);
-                }
-            }
-
-            if (HasFlag(FlagName))
-                PageName = Flag(FlagName);
-            if (HasFlag(FlagTitle))
-                PageTitle = Flag(FlagTitle);
-            if (HasFlag(FlagPath))
-                PagePath = Flag(FlagPath);
-            if (HasFlag(FlagSkin))
-                PageSkin = Flag(FlagSkin);
-            if (HasFlag(FlagPage))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagPage), out tmpId))
-                    Page = tmpId;
-            }
-            if (HasFlag(FlagMax))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagMax), out tmpId))
-                    Max = tmpId > 0 && tmpId < 100 ? tmpId : Max;
-            }
-
-
-            ValidationMessage = sbErrors.ToString();
+            ParentId = GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, true, true);
+            Deleted = GetFlagValue<bool?>(FlagDeleted, "Deleted", null);
+            PageVisible = GetFlagValue<bool?>(FlagVisible, "Page Visible", null);
+            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
+            PageTitle = GetFlagValue(FlagTitle, "Page Title", string.Empty);
+            PagePath = GetFlagValue(FlagPath, "Page Path", string.Empty);
+            PageSkin = GetFlagValue(FlagSkin, "Page Skin", string.Empty);
+            Page = GetFlagValue(FlagPage, "Page", 1);
+            Max = GetFlagValue(FlagMax, "Max", 10);
         }
 
         public override ConsoleResultModel Run()
         {
             var lstOut = new List<PageModelBase>();
             int total;
-            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId, out total, string.Empty, Page > 0 ? Page - 1 : 0, Max);
+            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, Max);
             var totalPages = total / Max + (total % Max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             lstOut.AddRange(lstTabs.Select(tab => new PageModelBase(tab)));
@@ -152,8 +78,8 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 },
                 Records = lstOut.Count,
                 Output = pageNo <= totalPages
-                        ? DotNetNuke.Services.Localization.Localization.GetString("Prompt_ListPagesOutput", Constants.LocalResourceFile)
-                        : DotNetNuke.Services.Localization.Localization.GetString("Prompt_NoPages", Constants.LocalResourceFile),
+                        ? LocalizeString("Prompt_ListPagesOutput")
+                        : LocalizeString("Prompt_NoPages"),
                 FieldOrder = new[]
                 {
                     "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted"

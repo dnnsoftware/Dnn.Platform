@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
     public class ListCommands : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public override ConsoleResultModel Run()
         {

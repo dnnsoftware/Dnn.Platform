@@ -7,6 +7,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
     [ConsoleCommand("echo", "Echos back the first argument received")]
     public class Echo : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public override ConsoleResultModel Run()
         {
             if (Args.Length > 1)

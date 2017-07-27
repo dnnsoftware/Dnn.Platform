@@ -1,6 +1,5 @@
 ﻿using DotNetNuke.Web.Api;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,7 +7,6 @@ using System.Text;
 using System.Web.Http;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Common;
 using Dnn.PersonaBar.Prompt.Components;
 using Dnn.PersonaBar.Prompt.Components.Models;
@@ -17,7 +15,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
-using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
