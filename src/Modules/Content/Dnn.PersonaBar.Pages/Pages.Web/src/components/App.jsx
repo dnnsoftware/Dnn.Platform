@@ -156,6 +156,8 @@ class App extends Component {
     }
 
     onCancelSettings() {
+        console.log(this.props.selectedPageDirty);
+
         if (this.props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
         }
@@ -375,6 +377,12 @@ class App extends Component {
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
         return PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
     }
+
+
+    onCancel(){
+        this.setState({activePage:{ pageType:"normal"}});
+    }
+
     render_PagesTreeViewEditor(){
         return (
             <GridCell columnSize={30}  style={{marginTop:"120px", backgroundColor:"#aaa"}} >
@@ -405,7 +413,7 @@ class App extends Component {
                     AllowContentLocalization={(d)=>{}}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
-                    onCancel={ props.onCancelPage.bind(this) }
+                    onCancel={ this.onCancel.bind(this) }
                     onDelete={ props.onDeletePage.bind(this) }
                     onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}

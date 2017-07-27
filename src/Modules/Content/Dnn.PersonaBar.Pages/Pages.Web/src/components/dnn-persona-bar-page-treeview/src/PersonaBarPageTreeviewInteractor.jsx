@@ -11,6 +11,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     constructor() {
         super();
         this.state = {
+            rootLoaded: false,
             isTreeviewExpanded: false
         };
         this.origin = window.origin;
@@ -78,7 +79,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageList?searchKey=`;
         this.GET(url).then((data) => {
 
-            this.setState({ pageList: data, isTreeviewExpanded: true });
+            this.setState({ pageList: data, isTreeviewExpanded: true, rootLoaded: true });
         });
     }
 
@@ -471,17 +472,27 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
 
-    toggleTreeview() {
-        this.setState({
-            isTreeviewExpanded: !this.state.isTreeviewExpanded
+    toggleExpandAll() {
+        let pageList = null;
+        this._traverse((item, list) => {
+            if (item.hasOwnProperty("childListItems") && item.childListItems.length > 0) {
+                item.isOpen = !item.isOpen;
+                pageList = list;
+            }
         });
+
+
+        if (pageList) {
+            this.setState({ pageList: pageList, isTreeviewExpanded: !this.state.isTreeviewExpanded });
+        }
+
     }
 
 
     render_treeview() {
         return (
             <span className="dnn-persona-bar-treeview-ul">
-                {this.state.isTreeviewExpanded ?
+                {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={this.state.draggedItem}
                         droppedItem={this.state.droppedItem}
@@ -499,6 +510,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onMovePage={this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
                     />
+
                     : null}
             </span>
         );
@@ -506,7 +518,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_collapseExpand() {
         return (
-            <div onClick={this.toggleTreeview.bind(this)} className="collapse-expand">
+            <div onClick={this.toggleExpandAll.bind(this)} className="collapse-expand">
                 [{this.state.isTreeviewExpanded ? "COLLAPSE" : "EXPAND"}]
             </div>
         );
