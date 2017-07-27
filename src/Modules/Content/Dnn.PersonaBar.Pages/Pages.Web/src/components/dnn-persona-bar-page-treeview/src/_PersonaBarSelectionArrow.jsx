@@ -5,7 +5,7 @@ import { ArrowForward } from "dnn-svg-icons";
 import "./styles.less";
 
 export default class PersonaBarSelectionArrow extends Component {
-
+    /* eslint-disable react/no-danger */
     render(){
         const {item} = this.props;
          /*eslint-disable react/no-danger*/

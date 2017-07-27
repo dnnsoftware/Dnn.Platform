@@ -4,7 +4,7 @@ import "./styles.less";
 import {PagesIcon, FolderIcon} from "dnn-svg-icons";
 
 export default class PersonaBarPageIcon extends Component {
-
+    /* eslint-disable react/no-danger */
     selectIcon(number) {
         // 1. PagesIcon
         // 2. FolderIcon
