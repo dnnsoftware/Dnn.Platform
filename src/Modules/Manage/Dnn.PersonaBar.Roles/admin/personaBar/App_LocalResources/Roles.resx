@@ -379,7 +379,7 @@
     <value>--{0} cannot be empty.</value>
   </data>
   <data name="Prompt_InvalidRoleStatus.Text" xml:space="preserve">
-    <value>Invalid value '{0}' passed for --{1}. Expecting 'pending', 'approved', or 'disabled'</value>
+    <value>Invalid value passed for --{0}. Expecting 'pending', 'approved', or 'disabled'</value>
   </data>
   <data name="Prompt_NoRoleWithId.Text" xml:space="preserve">
     <value>No role found with the ID {0}</value>

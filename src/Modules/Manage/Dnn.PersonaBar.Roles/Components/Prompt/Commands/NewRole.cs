@@ -12,7 +12,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
@@ -24,6 +23,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     })]
     public class NewRole : ConsoleCommandBase
     {
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
 
         private const string FlagIsPublic = "public";
@@ -44,91 +45,26 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             var sbErrors = new StringBuilder();
-
-            if (HasFlag(FlagRoleName))
+            RoleName = GetFlagValue(FlagRoleName, "Rolename", string.Empty, true, true);
+            Description = GetFlagValue(FlagDescription, "Description", string.Empty);
+            IsPublic = GetFlagValue(FlagIsPublic, "Is Public", false, true);
+            AutoAssign = GetFlagValue(FlagAutoAssign, "Auto Assign", false, true);
+            var status = GetFlagValue(FlagStatus, "Status", "approved");
+            switch (status)
             {
-                if (string.IsNullOrEmpty(Flag(FlagRoleName)))
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagEmpty", Constants.LocalResourcesFile), FlagRoleName);
-                }
-                else
-                {
-                    // non-empty roles flag.
-                    RoleName = Flag(FlagRoleName);
-                }
+                case "pending":
+                    Status = RoleStatus.Pending;
+                    break;
+                case "approved":
+                    Status = RoleStatus.Approved;
+                    break;
+                case "disabled":
+                    Status = RoleStatus.Disabled;
+                    break;
+                default:
+                    AddMessage(string.Format(LocalizeString("Prompt_InvalidRoleStatus"), FlagStatus));
+                    break;
             }
-            else
-            {
-                // role name is assumed to be the first argument
-                if (args.Length >= 2 && !IsFlag(args[1]))
-                {
-                    RoleName = args[1];
-                }
-            }
-
-            if (string.IsNullOrEmpty(RoleName))
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_RoleNameRequired", Constants.LocalResourcesFile), FlagRoleName);
-            }
-
-            if (HasFlag(FlagDescription))
-            {
-                Description = Flag(FlagDescription);
-            }
-            if (Description == null)
-                Description = string.Empty;
-
-            if (HasFlag(FlagIsPublic))
-            {
-                bool tmpPublic;
-                if (bool.TryParse(Flag(FlagIsPublic), out tmpPublic))
-                {
-                    IsPublic = tmpPublic;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagIsPublic, Flag(FlagIsPublic));
-                }
-            }
-
-            if (HasFlag(FlagAutoAssign))
-            {
-                bool tmpAutoAssign;
-                if (bool.TryParse(Flag(FlagAutoAssign), out tmpAutoAssign))
-                {
-                    AutoAssign = tmpAutoAssign;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_UnableToParseBool", Constants.LocalResourcesFile), FlagAutoAssign, Flag(FlagAutoAssign));
-                }
-            }
-
-            if (HasFlag(FlagStatus))
-            {
-                var status = Flag(FlagStatus).ToLower();
-                switch (status)
-                {
-                    case "pending":
-                        Status = RoleStatus.Pending;
-                        break;
-                    case "approved":
-                        Status = RoleStatus.Approved;
-                        break;
-                    case "disabled":
-                        Status = RoleStatus.Disabled;
-                        break;
-                    default:
-                        sbErrors.AppendFormat(Localization.GetString("Prompt_InvalidRoleStatus", Constants.LocalResourcesFile), Flag(FlagStatus), FlagStatus);
-                        break;
-                }
-            }
-            else
-            {
-                // default to 'approved'
-                Status = RoleStatus.Approved;
-            }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -153,12 +89,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                 if (!success) return new ConsoleErrorResultModel(message.Value);
 
                 lstResults.Add(new RoleModel(RoleController.Instance.GetRoleById(PortalId, roleDto.Id)));
-                return new ConsoleResultModel(Localization.GetString("RoleAdded.Message", Constants.LocalResourcesFile)) { Data = lstResults, Records = lstResults.Count };
+                return new ConsoleResultModel(LocalizeString("RoleAdded.Message")) { Data = lstResults, Records = lstResults.Count };
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(Localization.GetString("RoleAdded.Error", Constants.LocalResourcesFile));
+                return new ConsoleErrorResultModel(LocalizeString("RoleAdded.Error"));
             }
 
         }

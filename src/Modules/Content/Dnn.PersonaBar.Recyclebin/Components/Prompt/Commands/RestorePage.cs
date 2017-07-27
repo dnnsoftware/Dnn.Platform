@@ -1,12 +1,9 @@
-﻿using System.Text;
-using Dnn.PersonaBar.Library.Prompt;
+﻿using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
@@ -17,12 +14,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     })]
     public class RestorePage : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestorePage));
+        protected override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private const string FlagName = "name";
-        private const string FlagParentid = "parentid";
+        private const string FlagParentId = "parentid";
         private const string FlagId = "id";
-
 
         private int PageId { get; set; }
         private string PageName { get; set; }
@@ -31,47 +27,13 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            if (args.Length == 2)
-            {
-                int tmpId;
-                if (!int.TryParse(args[1], out tmpId))
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagId);
-                }
-                else
-                {
-                    PageId = tmpId;
-                }
-            }
-            else if (HasFlag(FlagId))
-            {
-                int tmpId;
-                if (!int.TryParse(Flag(FlagId), out tmpId))
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagId);
-                }
-                else
-                {
-                    PageId = tmpId;
-                }
-            }
-
-            if (HasFlag(FlagParentid))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagParentid), out tmpId))
-                    ParentId = tmpId;
-            }
-
-            PageName = Flag(FlagName);
-
+            PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
+            ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
+            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
             if (PageId <= 0 && string.IsNullOrEmpty(PageName))
             {
-                sbErrors.Append(Localization.GetString("Prompt_RestorePageNoParams", Constants.LocalResourcesFile));
+                AddMessage(LocalizeString("Prompt_RestorePageNoParams"));
             }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -82,7 +44,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 tab = TabController.Instance.GetTab(PageId, PortalId);
                 if (tab == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("PageNotFound", Constants.LocalResourcesFile), PageId));
+                    return new ConsoleErrorResultModel(string.Format(LocalizeString("PageNotFound"), PageId));
                 }
             }
             else if (!string.IsNullOrEmpty(PageName))
@@ -92,18 +54,16 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                     return
                         new ConsoleErrorResultModel(
                             string.Format(
-                                Localization.GetString("PageNotFoundWithName", Constants.LocalResourcesFile),
+                                LocalizeString("PageNotFoundWithName"),
                                 PageName));
             }
             else
             {
-                return new ConsoleErrorResultModel(Localization.GetString("Prompt_RestorePageNoParams", Constants.LocalResourcesFile));
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_RestorePageNoParams"));
             }
             string message;
             RecyclebinController.Instance.RestoreTab(tab, out message);
-            return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(Localization.GetString("Prompt_PageRestoredSuccessfully", Constants.LocalResourcesFile), tab.TabID, tab.TabName)) { Records = 1 } : new ConsoleErrorResultModel(message);
+            return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(LocalizeString("Prompt_PageRestoredSuccessfully"), tab.TabID, tab.TabName)) { Records = 1 } : new ConsoleErrorResultModel(message);
         }
-
-
     }
 }
