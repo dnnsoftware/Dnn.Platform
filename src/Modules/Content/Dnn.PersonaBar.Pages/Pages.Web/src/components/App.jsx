@@ -144,7 +144,6 @@ class App extends Component {
 
     onUpdatePage(update){
         return new Promise((resolve) => {
-            console.log('In Update Page');
             this.setState({activePage: update}, ()=>{
                 this.props.onUpdatePage(update, () =>  resolve());
             });
