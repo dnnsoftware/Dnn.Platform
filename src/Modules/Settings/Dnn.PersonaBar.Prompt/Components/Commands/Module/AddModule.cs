@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             ModuleName = GetFlagValue(FlagModuleName, "Module Name", string.Empty, true, true);
             PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
             ModuleTitle = GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
-            Pane = GetFlagValue(FlagPane, "Module Title", "ContentPane");
+            Pane = GetFlagValue(FlagPane, "Pane", "ContentPane");
         }
 
         public override ConsoleResultModel Run()

@@ -37,8 +37,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
             Roles = GetFlagValue(FlagRoles, "Roles", string.Empty, true);
             StartDate = GetFlagValue<DateTime?>(FlagStart, "Start Date", null);
-            EndDate = GetFlagValue<DateTime?>(FlagRoles, "End Date", null);
-            var sbErrors = new StringBuilder();
+            EndDate = GetFlagValue<DateTime?>(FlagEnd, "End Date", null);
             // validate end date is beyond the start date
             if (StartDate.HasValue && EndDate.HasValue)
             {

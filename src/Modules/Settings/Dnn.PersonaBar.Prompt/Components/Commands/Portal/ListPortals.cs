@@ -19,17 +19,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
             if (args.Length == 1)
             {
                 // do nothing
             }
             else
             {
-                sbErrors.Append("The get-portal command does not take any arguments or flags; ");
+                AddMessage("The get-portal command does not take any arguments or flags; ");
             }
-            AddMessage(sbErrors.ToString());
         }
 
         public override ConsoleResultModel Run()

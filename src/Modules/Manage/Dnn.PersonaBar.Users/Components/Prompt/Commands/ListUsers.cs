@@ -39,7 +39,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
             Email = GetFlagValue(FlagEmail, "Email", string.Empty);
             Username = GetFlagValue(FlagUsername, "Username", string.Empty);
             Page = GetFlagValue(FlagPage, "Page", 1);
@@ -73,12 +72,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
                     if (numFilters != 1)
                     {
-                        sbErrors.AppendFormat(LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole);
+                        AddMessage(string.Format(LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
                     }
                 }
 
             }
-            AddMessage(sbErrors.ToString());
         }
 
         public override ConsoleResultModel Run()

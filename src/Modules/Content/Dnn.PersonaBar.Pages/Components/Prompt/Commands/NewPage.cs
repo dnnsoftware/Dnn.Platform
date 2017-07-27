@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             Url = GetFlagValue(FlagUrl, "Url", string.Empty);
             Description = GetFlagValue(FlagDescription, "Description", string.Empty);
             Keywords = GetFlagValue(FlagKeywords, "Keywords", string.Empty);
-            Visible = GetFlagValue(FlagVisible, "Keywords", true);
+            Visible = GetFlagValue(FlagVisible, "Visible", true);
 
             // validate that parent ID is a valid ID, if it has been passed
             if (!ParentId.HasValue) return;

@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            Notify = GetFlagValue(FlagNotify, "Roles", true);
+            Notify = GetFlagValue(FlagNotify, "Notify", true);
         }
 
         public override ConsoleResultModel Run()

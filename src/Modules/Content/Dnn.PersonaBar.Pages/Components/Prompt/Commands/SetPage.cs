@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             Url = GetFlagValue(FlagUrl, "Url", string.Empty);
             Description = GetFlagValue(FlagDescription, "Description", string.Empty);
             Keywords = GetFlagValue(FlagKeywords, "Keywords", string.Empty);
-            Visible = GetFlagValue<bool?>(FlagVisible, "Keywords", null);
+            Visible = GetFlagValue<bool?>(FlagVisible, "Visible", null);
             if (string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Description) && string.IsNullOrEmpty(Keywords) && string.IsNullOrEmpty(Url) && !ParentId.HasValue && !Visible.HasValue)
             {
                 AddMessage(string.Format(LocalizeString("Prompt_NothingToUpdate"), FlagTitle, FlagDescription, FlagName, FlagVisible));

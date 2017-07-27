@@ -47,7 +47,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
             ParentId = GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, true, true);
             Deleted = GetFlagValue<bool?>(FlagDeleted, "Deleted", null);
             PageVisible = GetFlagValue<bool?>(FlagVisible, "Page Visible", null);
