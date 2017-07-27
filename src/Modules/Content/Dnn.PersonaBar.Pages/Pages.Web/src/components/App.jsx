@@ -138,12 +138,15 @@ class App extends Component {
         props.onLoadPage(pageId);
     }
 
-    onSavePage(input) {
-        return new Promise((resolve) => {
-            const activePage = (input.hasOwnProperty("name")) ? input : this.state.activePage;
+    onCreatePage(input) {
+        this.props.onCreatePage(input);
+    }
 
-            this.setState({activePage: activePage}, ()=>{
-                this.props.onSavePage(activePage, () =>  resolve());
+    onUpdatePage(update){
+        return new Promise((resolve) => {
+            console.log('In Update Page');
+            this.setState({activePage: update}, ()=>{
+                this.props.onUpdatePage(update, () =>  resolve());
             });
         });
     }
@@ -269,7 +272,7 @@ class App extends Component {
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={cancelAction}
                     onDelete={deleteAction}
-                    onSave={this.onSavePage.bind(this)}
+                    onSave={this.onCreatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={props.onChangePageField}
@@ -400,12 +403,12 @@ class App extends Component {
             return (
                 <PageSettings
                     selectedPage={state.activePage}
-                    AllowContentLocalization={(d)=>console.log(d)  }
+                    AllowContentLocalization={(d)=>{}}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={ props.onCancelPage.bind(this) }
                     onDelete={ props.onDeletePage.bind(this) }
-                    onSave={this.onSavePage.bind(this)}
+                    onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={ this.onChangePageField.bind(this) }
@@ -457,7 +460,7 @@ class App extends Component {
                             <PersonaBarPageTreeviewInteractor
                                setActivePage={ this.setActivePage.bind(this) }
                                getActivePage={ this.getActivePage.bind(this) }
-                               saveDropState={this.onSavePage.bind(this)}
+                               saveDropState={this.onUpdatePage.bind(this)}
                                onMovePage={this.onMovePage.bind(this)}
                             />
                             {this.render_PagesDetailEditor()}
@@ -489,7 +492,8 @@ App.propTypes = {
     bulkPage: PropTypes.object,
     editingSettingModuleId: PropTypes.number,
     onCancelPage: PropTypes.func.isRequired,
-    onSavePage: PropTypes.func.isRequired,
+    onCreatePage: PropTypes.func.isRequired,
+    onUpdatePage: PropTypes.func.isRequired,
     onDeletePage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,
@@ -549,7 +553,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         onCancelPage: PageActions.cancelPage,
-        onSavePage: PageActions.savePage,
+        onCreatePage: PageActions.createPage,
+        onUpdatePage: PageActions.updatePage,
         onDeletePage: PageActions.deletePage,
         selectPageSettingTab: PageActions.selectPageSettingTab,
         onLoadPage: PageActions.loadPage,

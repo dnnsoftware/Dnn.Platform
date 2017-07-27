@@ -8,6 +8,7 @@ export default class PersonaBarSelectionArrow extends Component {
 
     render(){
         const {item} = this.props;
+         /*eslint-disable react/no-danger*/
         return(
             <div className="selection-arrow">
               { item.selected ? <div dangerouslySetInnerHTML={{__html:ArrowForward}} /> : <div></div> }

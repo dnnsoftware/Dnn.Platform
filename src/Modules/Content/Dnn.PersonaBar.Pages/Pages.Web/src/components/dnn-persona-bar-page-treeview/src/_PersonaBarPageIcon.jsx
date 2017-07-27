@@ -11,6 +11,7 @@ export default class PersonaBarPageIcon extends Component {
         // 3. RightLink
         // 4. LeftLink
 
+         /*eslint-disable react/no-danger*/
         switch(number) {
             case 1:
                return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);

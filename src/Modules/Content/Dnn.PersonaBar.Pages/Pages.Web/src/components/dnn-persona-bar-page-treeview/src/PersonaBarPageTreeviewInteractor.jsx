@@ -345,7 +345,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     updateTree() {
         const newParent = this.state.droppedItem;
         const moveChild = this.state.draggedItem;
-        console.log(newParent, moveChild);
 
         const condition = (newParent.id != moveChild.parentId);
 
@@ -378,7 +377,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                                 const arr2 = rootList.slice(cachedItemIndex + 1);
                                 rootList = [...arr1, ...arr2];
                                 update = rootList;
-                                console.log(update);
+
                             }
                         });
                     };
