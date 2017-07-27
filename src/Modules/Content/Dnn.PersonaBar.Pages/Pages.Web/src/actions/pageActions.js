@@ -174,9 +174,8 @@ const pageActions = {
                 type: ActionTypes.SAVE_PAGE
             });
             const { pages } = getState();
-            console.log(pages);
             const selectedPage = pages.selectedPage;
-            console.log(selectedPage);
+
             PagesService.savePage(selectedPage, pages.urlChanged).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
@@ -205,7 +204,6 @@ const pageActions = {
     },
 
     updatePage(page, callback){
-          console.log('in update page acction: ', page);
         return (dispatch, getState) => {
 
             const { pages } = getState();
