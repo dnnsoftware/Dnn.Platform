@@ -489,18 +489,21 @@ namespace Dnn.EditBar.UI.Controllers
                     var tabId = PortalSettings.ActiveTab.TabID;
                     int moduleId;
                     if (pendingData.StartsWith("module-")
-                            && Int32.TryParse(pendingData.Substring(7), out moduleId)
-                            && ModuleController.Instance.GetModule(moduleId, tabId, false) != null)
+                        && Int32.TryParse(pendingData.Substring(7), out moduleId))
                     {
-                        RemoveTabModule(tabId, moduleId);
+                        var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                        if (module != null)
+                        {
+                            RemoveTabModule(tabId, moduleId);
 
-                        //remove related modules
-                        ModuleController.Instance.GetTabModules(tabId).Values
-                            .Where(m => m.ModuleID > moduleId)
-                            .ForEach(m =>
-                            {
-                                RemoveTabModule(tabId, m.ModuleID);
-                            });
+                            //remove related modules
+                            ModuleController.Instance.GetTabModules(tabId).Values
+                                .Where(m => m.CreatedOnDate > module.CreatedOnDate && m.CreatedByUserID == module.CreatedByUserID)
+                                .ForEach(m =>
+                                {
+                                    RemoveTabModule(tabId, m.ModuleID);
+                                });
+                        }
                     }
                 }
 
