@@ -167,12 +167,45 @@ const pageActions = {
             });
         };
     },
-    savePage(page, callback) {
+    createPage() {
 
         return (dispatch, getState) => {
-            // dispatch({
-            //     type: ActionTypes.SAVE_PAGE
-            // });
+            dispatch({
+                type: ActionTypes.SAVE_PAGE
+            });
+            const { pages } = getState();
+            const selectedPage = pages.selectedPage;
+
+            PagesService.savePage(selectedPage, pages.urlChanged).then(response => {
+
+                if (response.Status === responseStatus.ERROR) {
+                    utils.notifyError(response.Message, 3000);
+                    return;
+                }
+
+                if (selectedPage.tabId  > 0 && securityService.isSuperUser()) {
+                    utils.notify(Localization.get("PageUpdatedMessage"));
+                }
+
+                if (selectedPage.tabId  > 0 && !securityService.isSuperUser()) {
+                    utils.closePersonaBar();
+                    return;
+                }
+
+                PagesService.openPageInEditMode(response.Page.id, response.Page.url);
+
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_SAVING_PAGE,
+                    data: { error }
+                });
+            });
+        };
+    },
+
+    updatePage(page, callback){
+        return (dispatch, getState) => {
+
             const { pages } = getState();
 
             PagesService.savePage(page, pages.urlChanged).then(response => {
@@ -182,18 +215,17 @@ const pageActions = {
                     return;
                 }
 
-                if (page.tabId > 0 && securityService.isSuperUser()) {
+                if (page.tabId  > 0 && securityService.isSuperUser()) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
                 }
 
-                if (page.tabId > 0 && !securityService.isSuperUser()) {
+                if (page.tabId  > 0 && !securityService.isSuperUser()) {
                     utils.closePersonaBar();
                     return;
                 }
 
-               // PagesService.openPageInEditMode(response.Page.id, response.Page.url);
-               callback();
-               
+                callback();
+
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PAGE,
@@ -202,6 +234,7 @@ const pageActions = {
             });
         };
     },
+
 
     changePageField(key, value, selectedPage) {
 
@@ -217,7 +250,7 @@ const pageActions = {
             if (key === "name" &&
                 pages.selectedPage.tabId === 0 &&
                 !pages.urlChanged &&
-                selectedPage.pageType === "normal") {
+                pages.selectedPage.pageType === "normal") {
                 debouncedUpdateUrlPreview(value, dispatch);
             }
         };
