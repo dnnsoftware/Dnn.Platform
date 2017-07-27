@@ -66,6 +66,9 @@ const ArrowForward = require(`!raw!./svg/arrow_forward.svg`);
 const DownloadIcon = require(`!raw!./svg/download.svg`);
 const ImageIcon = require(`!raw!./svg/image.svg`);
 const HourglassIcon = require(`!raw!./svg/hourglass.svg`);
+const CollapseTree = require(`!raw!./svg/collapse_tree.svg`);
+const ExpandTree = require(`!raw!./svg/expand_tree.svg`);
+
 export {
     ActivityIcon, 
     AddIcon,
@@ -133,5 +136,7 @@ export {
     ArrowForward,
     DownloadIcon,
     ImageIcon,
-    HourglassIcon
+    HourglassIcon,
+    CollapseTree,
+    ExpandTree
 };
