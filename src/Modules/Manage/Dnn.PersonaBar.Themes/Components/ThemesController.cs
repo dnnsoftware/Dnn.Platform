@@ -132,7 +132,7 @@ namespace Dnn.PersonaBar.Themes.Components
                     fallbackSkin = IsFallbackContainer(themePath);
                 }
 
-                var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1 ? "G" : "L";
+                var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.OrdinalIgnoreCase) != -1 ? "G" : "L";
 
                 var canDeleteSkin = SkinController.CanDeleteSkin(themePath, portalSettings.HomeDirectoryMapPath);
                 var arrFiles = Directory.GetFiles(themePath, "*.ascx");
@@ -178,17 +178,17 @@ namespace Dnn.PersonaBar.Themes.Components
         public ThemeFileInfo GetThemeFile(PortalSettings portalSettings, string filePath, ThemeType type)
         {
             var themeName = SkinController.FormatSkinPath(filePath)
-                            .Substring(filePath.IndexOf("/", StringComparison.InvariantCultureIgnoreCase) + 1)
+                            .Substring(filePath.IndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)
                             .Replace("/", string.Empty);
             var themeLevel = GetThemeLevel(filePath);
 
             var themeInfo = (type == ThemeType.Skin ? GetLayouts(portalSettings, ThemeLevel.All)
                                                     : GetContainers(portalSettings, ThemeLevel.All))
-                            .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == themeLevel);
+                            .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == themeLevel);
 
             if (themeInfo != null)
             {
-                return GetThemeFiles(portalSettings, themeInfo).FirstOrDefault(f => (f.Path + ".ascx").Equals(filePath, StringComparison.InvariantCultureIgnoreCase));
+                return GetThemeFiles(portalSettings, themeInfo).FirstOrDefault(f => (f.Path + ".ascx").Equals(filePath, StringComparison.OrdinalIgnoreCase));
             }
 
             return null;
@@ -240,7 +240,7 @@ namespace Dnn.PersonaBar.Themes.Components
         public void ApplyDefaultTheme(PortalSettings portalSettings, string themeName, ThemeLevel level)
         {
             var skin = GetLayouts(portalSettings, ThemeLevel.All)
-                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == level);
+                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
             if (skin != null)
             {
                 var skinFile = GetThemeFiles(portalSettings, skin).FirstOrDefault(t => t.Path == skin.DefaultThemeFile);
@@ -251,7 +251,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             var container = GetContainers(portalSettings, ThemeLevel.All)
-                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == level);
+                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
             if (container != null)
             {
                 var containerFile = GetThemeFiles(portalSettings, container).FirstOrDefault(t => t.Path == container.DefaultThemeFile);
@@ -272,7 +272,7 @@ namespace Dnn.PersonaBar.Themes.Components
             var themePath = SkinController.FormatSkinSrc(themeFile.Path, portalSettings);
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            if (!user.IsSuperUser && themePath.IndexOf("\\portals\\_default\\", StringComparison.InvariantCultureIgnoreCase) != Null.NullInteger)
+            if (!user.IsSuperUser && themePath.IndexOf("\\portals\\_default\\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
             {
                 throw new SecurityException("NoPermission");
             }
@@ -291,7 +291,7 @@ namespace Dnn.PersonaBar.Themes.Components
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            if (!user.IsSuperUser  && themePath.IndexOf("\\portals\\_default\\", StringComparison.InvariantCultureIgnoreCase) != Null.NullInteger)
+            if (!user.IsSuperUser  && themePath.IndexOf("\\portals\\_default\\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
             {
                 throw new SecurityException("NoPermission");
             }
@@ -535,8 +535,8 @@ namespace Dnn.PersonaBar.Themes.Components
             var defaultFile = themeFiles.FirstOrDefault(i =>
             {
                 var fileName = Path.GetFileNameWithoutExtension(i);
-                return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.InvariantCultureIgnoreCase)
-                                              : DefaultContainerNames.Contains(fileName, StringComparer.InvariantCultureIgnoreCase);
+                return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.OrdinalIgnoreCase)
+                                              : DefaultContainerNames.Contains(fileName, StringComparer.OrdinalIgnoreCase);
             });
 
             if (string.IsNullOrEmpty(defaultFile))
@@ -681,13 +681,13 @@ namespace Dnn.PersonaBar.Themes.Components
                 strRootSkin = SkinController.RootContainer.ToLower();
             }
 
-            var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1 ? "G" : "L";
-            if (themePath.IndexOf(portalSettings.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) > -1)
+            var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.OrdinalIgnoreCase) != -1 ? "G" : "L";
+            if (themePath.IndexOf(portalSettings.HomeSystemDirectoryMapPath, StringComparison.OrdinalIgnoreCase) > -1)
             {
                 strSkinType = "S";
             }
 
-            var strUrl = lowercasePath.Substring(filePath.IndexOf("\\" + strRootSkin + "\\", StringComparison.InvariantCultureIgnoreCase))
+            var strUrl = lowercasePath.Substring(filePath.IndexOf("\\" + strRootSkin + "\\", StringComparison.OrdinalIgnoreCase))
                         .Replace(".ascx", "")
                         .Replace("\\", "/")
                         .TrimStart('/');
@@ -701,14 +701,14 @@ namespace Dnn.PersonaBar.Themes.Components
 
         internal static ThemeLevel GetThemeLevel(string themeFilePath)
         {
-            if (themeFilePath.Replace("\\", "/").IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
-                || themeFilePath.StartsWith("[G]", StringComparison.InvariantCultureIgnoreCase))
+            if (themeFilePath.Replace("\\", "/").IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
+                || themeFilePath.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
             {
                 return ThemeLevel.Global;
             }
             else if ((PortalSettings.Current != null &&
-                        themeFilePath.Replace("\\", "/").IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)
-                        || themeFilePath.StartsWith("[S]", StringComparison.InvariantCultureIgnoreCase))
+                        themeFilePath.Replace("\\", "/").IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger)
+                        || themeFilePath.StartsWith("[S]", StringComparison.OrdinalIgnoreCase))
             {
                 return ThemeLevel.SiteSystem;
             }

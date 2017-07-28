@@ -465,9 +465,9 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage GetThemeFiles(string themeName, ThemeLevel level)
         {
             var themeLayout = _themesController.GetLayouts(PortalSettings, level)
-                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == level);
+                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
             var themeContainer = _themesController.GetContainers(PortalSettings, level)
-                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == level);
+                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
 
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -859,7 +859,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         //private bool IsDefaultLanguage(string cultureCode)
         //{
-        //    return string.Equals(cultureCode, PortalSettings.DefaultLanguage, StringComparison.InvariantCultureIgnoreCase);
+        //    return string.Equals(cultureCode, PortalSettings.DefaultLanguage, StringComparison.OrdinalIgnoreCase);
         //}
 
         //private bool IsLanguageEnabled(string cultureCode)

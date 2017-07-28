@@ -150,7 +150,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                     scheduleviews = SchedulingController.GetSchedule(serverName);
                 }
                 if (!string.IsNullOrEmpty(taskName))
-                    scheduleviews = scheduleviews.Where(item => item.FriendlyName.IndexOf(taskName, StringComparison.InvariantCultureIgnoreCase) >= 0);
+                    scheduleviews = scheduleviews.Where(item => item.FriendlyName.IndexOf(taskName, StringComparison.OrdinalIgnoreCase) >= 0);
                 if (enabled.HasValue)
                     scheduleviews = scheduleviews.Where(item => item.Enabled == enabled.Value);
 

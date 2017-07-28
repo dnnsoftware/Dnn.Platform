@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     if (portalId == Null.NullInteger)
                     {
                         typePackages = PackageController.Instance.GetExtensionPackages(
-                            Null.NullInteger, p => "Module".Equals(p.PackageType, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                            Null.NullInteger, p => "Module".Equals(p.PackageType, StringComparison.OrdinalIgnoreCase)).ToList();
                     }
                     else
                     {

@@ -229,7 +229,7 @@ namespace Dnn.PersonaBar.Sites.Components
             };
 
             var filename = Globals.HostMapPath + request.FileName.Replace("/", @"\");
-            if (!filename.EndsWith(".template", StringComparison.InvariantCultureIgnoreCase))
+            if (!filename.EndsWith(".template", StringComparison.OrdinalIgnoreCase))
             {
                 filename += ".template";
             }
@@ -442,7 +442,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 PortalAliasInfo portalAlias = null;
                 foreach (PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values)
                 {
-                    if (string.Equals(alias.HTTPAlias, strPortalAlias, StringComparison.InvariantCultureIgnoreCase))
+                    if (string.Equals(alias.HTTPAlias, strPortalAlias, StringComparison.OrdinalIgnoreCase))
                     {
                         portalAlias = alias;
                         break;

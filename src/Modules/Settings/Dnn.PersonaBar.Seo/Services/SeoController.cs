@@ -487,7 +487,7 @@ namespace Dnn.PersonaBar.Seo.Services
             {
                 SitemapProvider editedProvider =
                     _controller.GetSitemapProviders()
-                        .FirstOrDefault(p => p.Name.Equals(request.Name, StringComparison.InvariantCultureIgnoreCase));
+                        .FirstOrDefault(p => p.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (editedProvider != null)
                 {
