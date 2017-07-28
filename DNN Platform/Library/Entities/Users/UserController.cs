@@ -41,6 +41,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
@@ -2219,6 +2220,47 @@ namespace DotNetNuke.Entities.Users
             user.Membership.Approved = true;
             UpdateUser(portalId, user);
             ApproveUser(user);
+        }
+
+        internal static void UpdateUserLoginStatus(string username, bool loggedIn)
+        {
+            var user = GetUserByName(username);
+            if (user != null)
+            {
+                DataProvider.Instance().UpdateUserLoginStatus(user.UserID, loggedIn);
+            }
+        }
+
+        internal static void UpdateUserLoginStatus(int userId, bool loggedIn)
+        {
+            DataProvider.Instance().UpdateUserLoginStatus(userId, loggedIn);
+        }
+
+        internal static bool GetUserLoginStatus(string username)
+        {
+            var user = GetUserByName(username);
+            return user != null && GetUserLoginStatus(user.UserID);
+        }
+
+        internal static bool GetUserLoginStatus(int userId)
+        {
+            var loginStatus = false;
+            try
+            {
+                var reader = DataProvider.Instance().GetUserLoginStatus(userId);
+                if (reader.Read())
+                {
+                    loginStatus = reader["LoginStatus"] == DBNull.Value || Convert.ToBoolean(reader["LoginStatus"]);
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
+            return loginStatus;
         }
 
         #endregion

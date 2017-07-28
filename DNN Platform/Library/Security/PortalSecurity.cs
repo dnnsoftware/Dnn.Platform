@@ -650,10 +650,18 @@ namespace DotNetNuke.Security
 
             //Identity the Login is processed by system.
             HttpContext.Current.Items["DNN_UserSignIn"] = true;
+
+            UpdateUserLoginStatus(user.Username, true);
         }
 
         public void SignOut()
         {
+            var context = HttpContext.Current;
+            if (context != null && context.Request.IsAuthenticated && context.User.Identity is FormsIdentity)
+            {
+                UpdateUserLoginStatus(context.User.Identity.Name, false);
+            }
+
             //Log User Off from Cookie Authentication System
             var domainCookie = HttpContext.Current.Request.Cookies["SiteGroup"];
             if (domainCookie == null)
@@ -745,6 +753,11 @@ namespace DotNetNuke.Security
                 }
             }
            
+        }
+
+        private void UpdateUserLoginStatus(string username, bool loggedIn)
+        {
+            UserController.UpdateUserLoginStatus(username, loggedIn);
         }
 
         ///-----------------------------------------------------------------------------

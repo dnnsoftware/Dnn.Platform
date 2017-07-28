@@ -182,22 +182,18 @@ namespace DotNetNuke.HttpModules.Membership
                     return;
                 }
 
+                if (user != null && !UserController.GetUserLoginStatus(user.UserID))
+                {
+                    Logout(context, user, portalSettings);
+                    return;
+                }
+
                 //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
                     || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
                     || user.Username.ToLower() != context.User.Identity.Name.ToLower())
                 {
-                    var portalSecurity = new PortalSecurity();
-                    portalSecurity.SignOut();
-
-                    //Remove user from cache
-                    if (user != null)
-                    {
-                        DataCache.ClearUserCache(portalSettings.PortalId, context.User.Identity.Name);
-                    }
-
-                    //Redirect browser back to home page
-                    response.Redirect(request.RawUrl, true);
+                    Logout(context, user, portalSettings);
                     return;
                 }
 
@@ -254,6 +250,21 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 context.Items.Add("UserInfo", new UserInfo());
             }
+        }
+
+        private static void Logout(HttpContextBase context, UserInfo user, PortalSettings portalSettings)
+        {
+            var portalSecurity = new PortalSecurity();
+            portalSecurity.SignOut();
+
+            //Remove user from cache
+            if (user != null)
+            {
+                DataCache.ClearUserCache(portalSettings.PortalId, context.User.Identity.Name);
+            }
+
+            //Redirect browser back to home page
+            context.Response.Redirect(context.Request.RawUrl, true);
         }
     }
 }

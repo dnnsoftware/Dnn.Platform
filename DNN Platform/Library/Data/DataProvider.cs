@@ -2412,6 +2412,16 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UpdateUserLastIpAddress", userId, lastIpAddress);
         }
 
+        public virtual void UpdateUserLoginStatus(int userId, bool loggedIn)
+        {
+            ExecuteNonQuery("UpdateUserLoginStatus", userId, loggedIn);
+        }
+
+        public virtual IDataReader GetUserLoginStatus(int userId)
+        {
+            return ExecuteReader("GetUserLoginStatus", userId);
+        }
+
         #endregion
 
         #region UserRole Methods
