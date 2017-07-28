@@ -4236,7 +4236,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated PreventSQLInjection Function to consolidate Security Filter functions in the PortalSecurity class")]
         public static string PreventSQLInjection(string strSQL)
         {
-            return (new PortalSecurity()).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
+            return (PortalSecurity.Instance).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
 
         [Obsolete("Deprecated in DNN 5.3. Replaced by UserProfileURL")]

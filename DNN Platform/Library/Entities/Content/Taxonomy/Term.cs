@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class Term : BaseEntityInfo, IHydratable
     {
-        private static readonly PortalSecurity Security = new PortalSecurity();
+        private static readonly PortalSecurity Security = PortalSecurity.Instance;
 
         private List<Term> _childTerms;
         private string _description;

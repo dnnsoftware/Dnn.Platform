@@ -298,7 +298,7 @@ namespace DotNetNuke.UI.WebControls
 
             ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            var security = new PortalSecurity();
+            var security = PortalSecurity.Instance;
             writer.Write(security.InputFilter(propValue, PortalSecurity.FilterFlag.NoScripting));
             writer.RenderEndTag();
         }

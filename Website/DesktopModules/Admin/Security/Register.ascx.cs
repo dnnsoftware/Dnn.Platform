@@ -560,7 +560,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		    }
 
 			CreateStatus = UserCreateStatus.AddUser;
-			var portalSecurity = new PortalSecurity();
+			var portalSecurity = PortalSecurity.Instance;
 
 			//Check User Editor
 			bool _IsValid = userForm.IsValid;

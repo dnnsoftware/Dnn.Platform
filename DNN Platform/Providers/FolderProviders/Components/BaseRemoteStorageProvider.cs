@@ -25,7 +25,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         #region Private Members
 
         private readonly string _encryptionKey = Host.GUID;
-        private readonly PortalSecurity _portalSecurity = new PortalSecurity();
+        private readonly PortalSecurity _portalSecurity = PortalSecurity.Instance;
         #endregion
 
         #region Private Methods

@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <param name="newLanguage"></param>
         private string NewUrl(string newLanguage)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             var newLocale = LocaleController.Instance.GetLocale(newLanguage);
 
             //Ensure that the current ActiveTab is the culture of the new language

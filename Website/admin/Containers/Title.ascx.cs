@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.Containers
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
 
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
                 var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);
                 moduleInfo.ModuleTitle = mt;
 

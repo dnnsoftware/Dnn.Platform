@@ -50,6 +50,8 @@ namespace DotNetNuke.Security
 {
     public class PortalSecurity
     {
+        public static readonly PortalSecurity Instance = new PortalSecurity();
+
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";

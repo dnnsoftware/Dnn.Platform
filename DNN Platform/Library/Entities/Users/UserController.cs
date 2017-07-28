@@ -93,7 +93,7 @@ namespace DotNetNuke.Entities.Users
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
         {
             //initialize log record
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             var log = new LogInfo
             {
                 LogTypeKey = loginStatus.ToString(),
@@ -2029,7 +2029,7 @@ namespace DotNetNuke.Entities.Users
             }
 
             //set the forms authentication cookie ( log the user in )
-            var security = new PortalSecurity();
+            var security = PortalSecurity.Instance;
             security.SignIn(user, createPersistentCookie);
 
             EventManager.Instance.OnUserAuthenticated(new UserEventArgs { User = user });
@@ -2181,7 +2181,7 @@ namespace DotNetNuke.Entities.Users
         {
             Requires.NotNullOrEmpty("verificationCode", verificationCode);
 
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             var decryptString = portalSecurity.Decrypt(Config.GetDecryptionkey(), verificationCode);
             var strings = decryptString.Split('-');
 

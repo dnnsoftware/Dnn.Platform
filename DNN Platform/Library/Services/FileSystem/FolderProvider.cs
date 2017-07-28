@@ -312,12 +312,12 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);
             Requires.NotNullOrEmpty(nameof(settingName), settingName);
             
-            return new PortalSecurity().Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
+            return PortalSecurity.Instance.Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
         }
 
         public string EncryptValue(string settingValue)
         {
-            return new PortalSecurity().Encrypt(Host.GUID, settingValue.Trim());
+            return PortalSecurity.Instance.Encrypt(Host.GUID, settingValue.Trim());
         }
 
         public virtual string GetHashCode(IFileInfo file)

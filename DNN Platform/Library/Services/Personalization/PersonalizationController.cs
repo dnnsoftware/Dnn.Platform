@@ -163,12 +163,12 @@ namespace DotNetNuke.Services.Personalization
 
         private static string EncryptData(string profileData)
         {
-            return new PortalSecurity().Encrypt(GetDecryptionkey(), profileData);
+            return PortalSecurity.Instance.Encrypt(GetDecryptionkey(), profileData);
         }
 
         private static string DecryptData(string profileData)
         {
-            return new PortalSecurity().Decrypt(GetDecryptionkey(), profileData);
+            return PortalSecurity.Instance.Decrypt(GetDecryptionkey(), profileData);
         }
 
         private static string GetDecryptionkey()

@@ -819,7 +819,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         {
                             if (IPFilterController.Instance.IsIPBanned(Request.UserHostAddress))
                             {
-                                new PortalSecurity().SignOut();
+                                PortalSecurity.Instance.SignOut();
                                 AddModuleMessage("IPAddressBanned", ModuleMessage.ModuleMessageType.RedError, true);
                                 okToShowPanel = false;
                                 break;
@@ -878,7 +878,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 					//When the user need update its profile to complete login, we need clear the login status because if the logrin is from
 					//3rd party login provider, it may call UserController.UserLogin because they doesn't check this situation.
-					new PortalSecurity().SignOut();
+					PortalSecurity.Instance.SignOut();
 					//Admin has forced profile update
 					AddModuleMessage("ProfileUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
 					PageNo = 3;

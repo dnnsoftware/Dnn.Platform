@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.Groups
         {
             if (GroupId > 0)
             {
-                Security.PortalSecurity ps = new Security.PortalSecurity();
+                Security.PortalSecurity ps = Security.PortalSecurity.Instance;
 
                 txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
                 txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);

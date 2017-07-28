@@ -227,7 +227,7 @@ namespace DotNetNuke.Security.Profile
             {
                 if ((profProperty.PropertyValue != null) && (profProperty.IsDirty))
                 {
-                    var objSecurity = new PortalSecurity();
+                    var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
                     _dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId, 
                                                 propertyValue, (int) profProperty.ProfileVisibility.VisibilityMode, 
