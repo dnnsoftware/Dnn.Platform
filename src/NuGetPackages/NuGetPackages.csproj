@@ -42,7 +42,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Dnn.PersonaBar.Library, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dnn.PersonaBar.Library.1.5.0.21\lib\net45\Dnn.PersonaBar.Library.dll</HintPath>
+      <HintPath>..\packages\Dnn.PersonaBar.Library.1.5.0.24\lib\net45\Dnn.PersonaBar.Library.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke, Version=9.2.0.63, Culture=neutral, processorArchitecture=MSIL">
