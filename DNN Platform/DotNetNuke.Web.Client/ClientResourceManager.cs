@@ -62,15 +62,15 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
             filePath = RemoveQueryString(filePath);
-
+            var cacheKey = filePath.ToLowerInvariant();
             // cache css file paths
-            if (!_fileExistsCache.ContainsKey(filePath))
+            if (!_fileExistsCache.ContainsKey(cacheKey))
             {
                 // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
                 _lockFileExistsCache.EnterWriteLock();
                 try
                 {
-                    _fileExistsCache[filePath] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+                    _fileExistsCache[cacheKey] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
                 }
                 finally
                 {
@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             _lockFileExistsCache.EnterReadLock();
             try
             {
-                return _fileExistsCache[filePath];
+                return _fileExistsCache[cacheKey];
             }
             finally
             {
@@ -453,6 +453,26 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                     Logger.Error(ex);
                 }
 
+            }
+        }
+
+        public static void ClearFileExistsCache(string path)
+        {
+            _lockFileExistsCache.EnterWriteLock();
+            try
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    _fileExistsCache.Clear();
+                }
+                else
+                {
+                    _fileExistsCache.Remove(path.ToLowerInvariant());
+                }
+            }
+            finally
+            {
+                _lockFileExistsCache.ExitWriteLock();
             }
         }
 
