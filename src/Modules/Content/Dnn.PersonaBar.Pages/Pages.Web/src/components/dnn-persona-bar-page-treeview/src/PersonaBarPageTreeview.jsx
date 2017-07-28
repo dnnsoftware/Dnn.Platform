@@ -23,7 +23,6 @@ export class PersonaBarPageTreeview extends Component {
         let path = url.split(/.com\//);
         let newLength = path[1].split(/\//).length*2+1;
         let depth =( newLength < 20) ?  newLength: 19;
-        console.log('item depth', depth);
         return (item.name.length > maxLength-depth) ? `${item.name.substring(0,maxLength-depth)}...` : item.name;
     }
 
