@@ -2781,7 +2781,7 @@ namespace DotNetNuke.Services.Upgrade
             try
             {
                 //the username maybe html encode when register in 7.1.2, it will caught unicode charactors changed, need use InputFilter to correct the value.
-                var portalSecurity = new PortalSecurity();
+                var portalSecurity = PortalSecurity.Instance;
                 using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserID, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
                 {
                     while (reader.Read())

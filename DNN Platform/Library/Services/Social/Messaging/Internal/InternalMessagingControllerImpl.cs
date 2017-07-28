@@ -452,7 +452,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual string InputFilter(string input)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
         }
 

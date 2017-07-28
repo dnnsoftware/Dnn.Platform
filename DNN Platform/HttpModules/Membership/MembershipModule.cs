@@ -126,7 +126,7 @@ namespace DotNetNuke.HttpModules.Membership
                     if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
                     {
                         application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
-                        new PortalSecurity().SignIn(UserController.Instance.GetCurrentUserInfo(), false);
+                        PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
                     }
                 }
             }
@@ -187,7 +187,7 @@ namespace DotNetNuke.HttpModules.Membership
                     || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
                     || user.Username.ToLower() != context.User.Identity.Name.ToLower())
                 {
-                    var portalSecurity = new PortalSecurity();
+                    var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
 
                     //Remove user from cache

@@ -1037,7 +1037,7 @@ namespace DotNetNuke.Entities.Portals
             if (settingNode.Encrypt)
             {
                 return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
-                //return new PortalSecurity().Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
+                //return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
             }
             return ensuredSettingValue;
         }

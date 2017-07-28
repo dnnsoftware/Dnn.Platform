@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.EventQueue.Config
             Name = "";
             Description = "";
             Address = "";
-            var oPortalSecurity = new PortalSecurity();
+            var oPortalSecurity = PortalSecurity.Instance;
             PrivateKey = oPortalSecurity.CreateKey(16);
         }
 

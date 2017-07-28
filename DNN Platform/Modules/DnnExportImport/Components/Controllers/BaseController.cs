@@ -57,7 +57,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             var portalInfo = PortalController.Instance.GetPortal(portalId);
             var userInfo = UserController.Instance.GetUser(portalId, userId);
             var username = objSecurity.InputFilter(userInfo.Username,

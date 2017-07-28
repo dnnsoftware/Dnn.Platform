@@ -240,12 +240,12 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
                 return ps.InputFilter(_Subject, PortalSecurity.FilterFlag.NoMarkup);
             }
             set
             {
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
                 ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
                 _Subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
