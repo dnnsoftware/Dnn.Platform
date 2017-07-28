@@ -12,7 +12,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-user", "Updates values on the specified user", new[]{
+    [ConsoleCommand("set-user", "Prompt_SetUser_Description", new[]{
         "id",
         "email",
         "username",
@@ -25,26 +25,34 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class SetUser : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_SetUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        [FlagParameter("email", "Prompt_SetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
+        [FlagParameter("username", "Prompt_SetUser_FlagUsername", "String")]
         private const string FlagUsername = "username";
+        [FlagParameter("displayname", "Prompt_SetUser_FlagDisplayname", "String")]
         private const string FlagDisplayname = "displayname";
+        [FlagParameter("firstname", "Prompt_SetUser_FlagFirstname", "String")]
         private const string FlagFirstname = "firstname";
+        [FlagParameter("lastname", "Prompt_SetUser_FlagLastname", "String")]
         private const string FlagLastname = "lastname";
+        [FlagParameter("approved", "Prompt_SetUser_FlagApproved", "Boolean")]
         private const string FlagApproved = "approved";
+        [FlagParameter("password", "Prompt_SetUser_FlagPassword", "String")]
         private const string FlagPassword = "password";
 
 
-        public int? UserId { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string DisplayName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public bool? Approved { get; set; }
-        public string Password { get; set; }
+        private int? UserId { get; set; }
+        private string Email { get; set; }
+        private string Username { get; set; }
+        private string DisplayName { get; set; }
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
+        private bool? Approved { get; set; }
+        private string Password { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

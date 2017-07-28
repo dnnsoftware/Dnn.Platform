@@ -852,4 +852,635 @@
   <data name="Prompt_NothingToUpdate.Text" xml:space="preserve">
     <value>Nothing to Update! Tell what to update with flags like --{0} --{1} --{2} --{3}, etc.</value>
   </data>
+  <data name="Prompt_DeletePage_Description.Text" xml:space="preserve">
+    <value>Deletes a page within the portal and sends it to the Recycle Bin. For added safety, this method will not allow deletion of pages with children, Host pages, or pages in the //Admin path.</value>
+  </data>
+  <data name="Prompt_DeletePage_FlagId.Text" xml:space="preserve">
+    <value>Explicitly specifies the Page ID to delete. Use of the flag name is not required. You can simply provide the ID value as the first argument. Required if &lt;span class="mono"&gt;--parentid&lt;/span&gt; is not specified.</value>
+  </data>
+  <data name="Prompt_DeletePage_FlagName.Text" xml:space="preserve">
+    <value>The name (not title) of the page to delete.</value>
+  </data>
+  <data name="Prompt_DeletePage_FlagParentId.Text" xml:space="preserve">
+    <value>The Page/Tab ID of the page's parent in the page hierarchy. Required only if --name is specified as delete parameter and page is not at root.</value>
+  </data>
+  <data name="Prompt_DeletePage_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+    &lt;h4&gt;Delete Page By Page ID&lt;/h4&gt;
+    &lt;code class="block"&gt;
+      delete-page 999
+    &lt;/code&gt;
+
+    &lt;h4&gt;Delete Page by name under another parent&lt;/h4&gt;
+    &lt;p&gt;NOTE: At this time, Prompt will not allow you to delete any pages that have children&lt;/p&gt;
+    &lt;code class="block"&gt;
+      delete-page --name "test" --parentid 999
+    &lt;/code&gt;
+  &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_GetPage_Description.Text" xml:space="preserve">
+    <value>&lt;p class="lead"&gt;Provides information on the specified page.&lt;/p&gt;
+    &lt;blockquote&gt;
+        &lt;strong&gt;Pages vs. Tabs&lt;/strong&gt;: For historical reasons, DNN
+        internally refers to pages as &amp;quot;tabs&amp;quot;. So, whenever you see a reference to &lt;em&gt;tab&lt;/em&gt;
+        or &lt;em&gt;page&lt;/em&gt;, remember that they are equivalent. Values returned from Prompt will usually
+        use DNN's internal naming conventions (hence &lt;em&gt;tab&lt;/em&gt;), though Prompt's own syntax will usually use the word &lt;em&gt;page&lt;/em&gt; instead of &lt;em&gt;tab&lt;/em&gt;.
+    &lt;/blockquote&gt;</value>
+  </data>
+  <data name="Prompt_GetPage_FlagId.Text" xml:space="preserve">
+    <value>Explicitly specifies the Page ID to retrieve. Use of the flag is not required. You can simply provide the ID value as the first argument.</value>
+  </data>
+  <data name="Prompt_GetPage_FlagName.Text" xml:space="preserve">
+    <value>The name (not title) of the page.</value>
+  </data>
+  <data name="Prompt_GetPage_FlagParentId.Text" xml:space="preserve">
+    <value>The Page/Tab ID of the page's parent in the page hierarchy. Required only if --name is specified as get parameter and page is not at root.</value>
+  </data>
+  <data name="Prompt_GetPage_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;Get Page By Page (Tab) ID&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            get-page &lt;em&gt;pageId&lt;/em&gt;
+        &lt;/code&gt;
+
+        &lt;h4&gt;Get Page by Page Name&lt;/h4&gt;
+        &lt;p&gt;
+            NOTE: You cannot retrieve Host pages using this method as it only retrieves pages within a portal. Host pages technically live outside the portal. You can, however, retrieve them using the page's ID (TabID in DNN parlance).
+        &lt;/p&gt;
+        &lt;code class="block"&gt;get-page --name Home&lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;tr&gt;&lt;td&gt;TabId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;345&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Name&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;Home&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Title&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;My Website Home&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;ParentId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;-1&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Container&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;null&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Theme&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;[G]Skins/Xcillion/Home.ascx&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Path&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;//Home&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;IncludeInMenu&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Url&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Keywords&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;DNN, KnowBetter, Prompt&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Description&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;Gnome, gnome on the range....&lt;/td&gt;&lt;/tr&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;Get Page by Page Name and Parent&lt;/h4&gt;
+
+        &lt;code class="block"&gt;get-page --name "Page 1a" --parentid 71&lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;tr&gt;&lt;td&gt;TabId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;72&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Name&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;Page 1a&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Title&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;Page 1a&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;ParentId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;71&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Container&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;null&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Theme&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Path&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;//Page1//Page1a&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;IncludeInMenu&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Url&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Keywords&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Description&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;Page 1 is my parent. I'm Page 1a&lt;/td&gt;&lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_Goto_Description.Text" xml:space="preserve">
+    <value>Navigates to the specified page within the DNN portal</value>
+  </data>
+  <data name="Prompt_Goto_FlagId.Text" xml:space="preserve">
+    <value>Specify the Page (Tab) ID of the page to which you want to navigate. Explicit use of the &lt;span class="mono"&gt;--id&lt;/span&gt; flag is not needed. Simply pass in the Page ID as the first argument after the command name</value>
+  </data>
+  <data name="Prompt_Goto_FlagName.Text" xml:space="preserve">
+    <value>The name (not title) of the page.</value>
+  </data>
+  <data name="Prompt_Goto_FlagParentId.Text" xml:space="preserve">
+    <value>The Page/Tab ID of the page's parent in the page hierarchy. Required only if --name is specified as goto parameter and page is not at root.</value>
+  </data>
+  <data name="Prompt_Goto_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+    &lt;h4&gt;Navigate to A Page Within the Site&lt;/h4&gt;
+    &lt;p&gt;This command navigates the browser to a page with the Page ID of 74&lt;/p&gt;
+    &lt;code class="block"&gt;
+      goto 74
+    &lt;/code&gt;
+  &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_ListPages_Description.Text" xml:space="preserve">
+    <value>&lt;p class="lead"&gt;Retrieves a list of pages based on the specified criteria&lt;/p&gt;
+    &lt;blockquote&gt;
+        &lt;strong&gt;Pages vs. Tabs&lt;/strong&gt;: For historical reasons, DNN
+        internally refers to pages as &amp;quot;tabs&amp;quot;. So, whenever you see a reference to &lt;em&gt;tab&lt;/em&gt;
+        or &lt;em&gt;page&lt;/em&gt;, remember that they are equivalent. Values returned from Prompt will usually
+        use DNN's internal naming conventions (hence &lt;em&gt;tab&lt;/em&gt;), though Prompt's own syntax will usually use the word &lt;em&gt;page&lt;/em&gt; instead of &lt;em&gt;tab&lt;/em&gt;.
+    &lt;/blockquote&gt;</value>
+  </data>
+  <data name="Prompt_ListPages_FlagDeleted.Text" xml:space="preserve">
+    <value>If &lt;span class="mono"&gt;true&lt;/span&gt;, only pages that have been deleted (i.e. in DNN's Recycle Bin) will be returned. If &lt;span class="mono"&gt;false&lt;/span&gt; then only pages that have not been deleted will be returned. If the flag is specified but has no value, then &lt;span class="mono"&gt;true&lt;/span&gt; is assumed. If the flag is not specified, both deleted and non-deleted pages will be returned.</value>
+  </data>
+  <data name="Prompt_ListPages_FlagName.Text" xml:space="preserve">
+    <value>Retrieve only pages whose name matches the expression. Can use the asterisk wildcard (&lt;span class="mono"&gt;*&lt;/span&gt;) to match 0 or more characters.</value>
+  </data>
+  <data name="Prompt_ListPages_FlagParentId.Text" xml:space="preserve">
+    <value>The Page ID (Tab ID) of the parent page whose child pages you'd like to retrieve. If the first argument is a valid Page ID, you do not need to explicitly use the --parentid flag</value>
+  </data>
+  <data name="Prompt_ListPages_FlagPath.Text" xml:space="preserve">
+    <value>Retrieve only pages whose path matches the expression. Can use the asterisk wildcard (&lt;span class="mono"&gt;*&lt;/span&gt;) to match 0 or more characters.</value>
+  </data>
+  <data name="Prompt_ListPages_FlagSkin.Text" xml:space="preserve">
+    <value>Retrieve only pages whose skin matches the expression. Can use the asterisk wildcard (&lt;span class="mono"&gt;*&lt;/span&gt;) to match 0 or more characters.</value>
+  </data>
+  <data name="Prompt_ListPages_FlagTitle.Text" xml:space="preserve">
+    <value>Retrieve only pages whose title matches the expression. Can use the asterisk wildcard (&lt;span class="mono"&gt;*&lt;/span&gt;) to match 0 or more characters.</value>
+  </data>
+  <data name="Prompt_ListPages_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;List All Pages in Current Portal&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            list-pages
+        &lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;TabId&lt;/th&gt;
+                    &lt;th&gt;Name&lt;/th&gt;
+                    &lt;th&gt;Title&lt;/th&gt;
+                    &lt;th&gt;ParentId&lt;/th&gt;
+                    &lt;th&gt;Theme&lt;/th&gt;
+                    &lt;th&gt;Path&lt;/th&gt;
+                    &lt;th&gt;IncludeInMenu&lt;/th&gt;
+                    &lt;th&gt;IsDeleted&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;41&lt;/td&gt;
+                    &lt;td&gt;Home&lt;/td&gt;
+                    &lt;td&gt;Home 3&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;[G]Skins/Xcillion/Home.ascx&lt;/td&gt;
+                    &lt;td&gt;//Home&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;71&lt;/td&gt;
+                    &lt;td&gt;Page 1&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;//Page1&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;42&lt;/td&gt;
+                    &lt;td&gt;Activity Feed&lt;/td&gt;
+                    &lt;td&gt;Activity Feed&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;//ActivityFeed&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="7"&gt;...&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="7"&gt;33 pages found&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;List Child Pages of Parent Page&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            list-pages 43
+        &lt;/code&gt;
+        OR
+        &lt;code class="block"&gt;
+            list-pages --parentid 43
+        &lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;TabId&lt;/th&gt;
+                    &lt;th&gt;Name&lt;/th&gt;
+                    &lt;th&gt;Title&lt;/th&gt;
+                    &lt;th class="bg-info"&gt;ParentId&lt;/th&gt;
+                    &lt;th&gt;Theme&lt;/th&gt;
+                    &lt;th&gt;Path&lt;/th&gt;
+                    &lt;th&gt;IncludeInMenu&lt;/th&gt;
+                    &lt;th&gt;IsDeleted&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;49&lt;/td&gt;
+                    &lt;td&gt;Site Settings&lt;/td&gt;
+                    &lt;td&gt;Site Settings&lt;/td&gt;
+                    &lt;td class="bg-info"&gt;43&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;//Admin//SiteSettings&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;50&lt;/td&gt;
+                    &lt;td&gt;Extensions&lt;/td&gt;
+                    &lt;td&gt;Extensions&lt;/td&gt;
+                    &lt;td class="bg-info"&gt;43&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;//Admin//Extensions&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;51&lt;/td&gt;
+                    &lt;td&gt;Security Roles&lt;/td&gt;
+                    &lt;td&gt;Security Roles&lt;/td&gt;
+                    &lt;td class="bg-info"&gt;43&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;//Admin//SecurityRoles&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="7"&gt;...&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="7"&gt;18 pages found&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;List All Pages in the Recycle Bin&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            list-pages --deleted
+        &lt;/code&gt;
+        OR
+        &lt;code class="block"&gt;
+            list-pages --deleted true
+        &lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;TabId&lt;/th&gt;
+                    &lt;th&gt;Name&lt;/th&gt;
+                    &lt;th&gt;Title&lt;/th&gt;
+                    &lt;th&gt;ParentId&lt;/th&gt;
+                    &lt;th&gt;Theme&lt;/th&gt;
+                    &lt;th&gt;Path&lt;/th&gt;
+                    &lt;th&gt;IncludeInMenu&lt;/th&gt;
+                    &lt;th&gt;IsDeleted&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;71&lt;/td&gt;
+                    &lt;td&gt;Page 1&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;//Page1&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td class="bg-info"&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="7"&gt;1 page found&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;List All &amp;quot;Management&amp;quot; Pages on the Admin Menu&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            list-pages --path //Admin//*Management*
+        &lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;TabId&lt;/th&gt;
+                    &lt;th&gt;Name&lt;/th&gt;
+                    &lt;th&gt;Title&lt;/th&gt;
+                    &lt;th&gt;ParentId&lt;/th&gt;
+                    &lt;th&gt;Theme&lt;/th&gt;
+                    &lt;th&gt;Path&lt;/th&gt;
+                    &lt;th&gt;IncludeInMenu&lt;/th&gt;
+                    &lt;th&gt;IsDeleted&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;53&lt;/td&gt;
+                    &lt;td&gt;File Management&lt;/td&gt;
+                    &lt;td&gt;File Management&lt;/td&gt;
+                    &lt;td&gt;43&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;span class="bg-info"&gt;//Admin//&lt;/span&gt;File&lt;span class="bg-info"&gt;Management&lt;/span&gt;&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;55&lt;/td&gt;
+                    &lt;td&gt;Site Redirection Management&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;43&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;span class="bg-info"&gt;//Admin//&lt;/span&gt;SiteRedirection&lt;span class="bg-info"&gt;Management&lt;/span&gt;&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;56&lt;/td&gt;
+                    &lt;td&gt;Device Preview Management&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;43&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;span class="bg-info"&gt;//Admin//&lt;/span&gt;DevicePreview&lt;span class="bg-info"&gt;Management&lt;/span&gt;&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="7"&gt;3 pages found&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_ListRoles_FlagMax.Text" xml:space="preserve">
+    <value>Page Size for the page. Max is 500.</value>
+  </data>
+  <data name="Prompt_ListRoles_FlagPage.Text" xml:space="preserve">
+    <value>Page number to show records.</value>
+  </data>
+  <data name="Prompt_ListRoles_FlagVisible.Text" xml:space="preserve">
+    <value>If &lt;span class="mono"&gt;true&lt;/span&gt;, only pages that are visible in the navigation menu will be returned. If &lt;span class="mono"&gt;false&lt;/span&gt; then only pages that hidden will be returned. If the flag is specified but has no value, then &lt;span class="mono"&gt;true&lt;/span&gt; is assumed. If the flag is not specified, both visible and hidden pages will be returned.</value>
+  </data>
+  <data name="Prompt_NewPage_Description.Text" xml:space="preserve">
+    <value>Creates a new page within the portal</value>
+  </data>
+  <data name="Prompt_NewPage_FlagDescription.Text" xml:space="preserve">
+    <value>The description to use for the page</value>
+  </data>
+  <data name="Prompt_NewPage_FlagKeywords.Text" xml:space="preserve">
+    <value>Keywords to use for the page</value>
+  </data>
+  <data name="Prompt_NewPage_FlagName.Text" xml:space="preserve">
+    <value>The name to use for the page. The &lt;code&gt;--name&lt;/code&gt; flag does not have to be explicitly declared if the first argument is a string and not a flag.</value>
+  </data>
+  <data name="Prompt_NewPage_FlagParentId.Text" xml:space="preserve">
+    <value>If you want this to be the child of a page, specify that page's ID as the &lt;span class="mono"&gt;--parentid&lt;/span&gt;</value>
+  </data>
+  <data name="Prompt_NewPage_FlagTitle.Text" xml:space="preserve">
+    <value>The display title to use for the page</value>
+  </data>
+  <data name="Prompt_NewPage_FlagUrl.Text" xml:space="preserve">
+    <value>A custom URL to use for the page. If not specified, the &lt;span class="mono"&gt;--name&lt;/span&gt; is used by DNN when creating the URL</value>
+  </data>
+  <data name="Prompt_NewPage_FlagVisible.Text" xml:space="preserve">
+    <value>If true, the page will be visible in the site's navigation menu</value>
+  </data>
+  <data name="Prompt_NewPage_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+    &lt;h4&gt;Create a New Page (Minimum Syntax)&lt;/h4&gt;
+    &lt;h5&gt;Implicitly Use &lt;span class="mono"&gt;--name&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;code class="block"&gt;
+      new-page "My New Page"
+    &lt;/code&gt;
+    &lt;h5&gt;Explicitly Use &lt;span class="mono"&gt;--name&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;code class="block"&gt;
+      new-page --name "My New Page"
+    &lt;/code&gt;
+
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TabId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;78&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Name&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;My New Page&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Title&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;ParentId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;-1&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Container&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;null&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Theme&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Path&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;//MyNewPage&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;IncludeInMenu&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Url&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Keywords&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Description&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h4&gt;Create a Child Page with Additional Options&lt;/h4&gt;
+    &lt;code class="block"&gt;
+      new-page --name "My Sub Page" --parentid 78 --title "This is the sub page title" --keywords "sample, sub-page, prompt, KnowBetter"
+    &lt;/code&gt;
+
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TabId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;79&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Name&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;My Sub Page&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Title&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;This is the sub page title&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;ParentId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;78&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Container&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;null&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Theme&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Path&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;//MyNewPage//MySubPage&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;IncludeInMenu&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Url&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Keywords&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;sample, sub-page, prompt, KnowBetter&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Description&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+
+  &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_SetPage_Description.Text" xml:space="preserve">
+    <value>Sets or updates properties of the specified page</value>
+  </data>
+  <data name="Prompt_SetPage_FlagDescription.Text" xml:space="preserve">
+    <value>The description to use for the page</value>
+  </data>
+  <data name="Prompt_SetPage_FlagId.Text" xml:space="preserve">
+    <value>The ID of the page you want to update.</value>
+  </data>
+  <data name="Prompt_SetPage_FlagKeywords.Text" xml:space="preserve">
+    <value>Keywords to use for the page</value>
+  </data>
+  <data name="Prompt_SetPage_FlagName.Text" xml:space="preserve">
+    <value>The name to use for the page</value>
+  </data>
+  <data name="Prompt_SetPage_FlagParentId.Text" xml:space="preserve">
+    <value>If you want this to be the child of a page, specify that page's ID as the &lt;span class="mono"&gt;--parentid&lt;/span&gt;</value>
+  </data>
+  <data name="Prompt_SetPage_FlagTitle.Text" xml:space="preserve">
+    <value>The display title to use for the page</value>
+  </data>
+  <data name="Prompt_SetPage_FlagUrl.Text" xml:space="preserve">
+    <value>A custom URL to use for the page. If not specified, the &lt;span class="mono"&gt;--name&lt;/span&gt; is used by DNN when creating the URL</value>
+  </data>
+  <data name="Prompt_SetPage_FlagVisible.Text" xml:space="preserve">
+    <value>If true, the page will be visible in the site's navigation menu</value>
+  </data>
+  <data name="Prompt_SetPage_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;Update Properties of a Page&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            set-page 78 --title "My New Page Title" --name Page78
+        &lt;/code&gt;
+
+        &lt;table class="command-result-tbl"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;TabId&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;78&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Name&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;Page25&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Title&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;My New Page Title&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;ParentId&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;-1&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Container&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;null&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Theme&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Path&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;//MyNewPage&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;IncludeInMenu&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;true&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Url&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Keywords&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Description&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;Change the Parent of a Page&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            set-page --id 72 --parentid 79
+        &lt;/code&gt;
+
+        &lt;table class="command-result-tbl"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;TabId&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;72&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Name&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;Page2&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Title&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;Page 2&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;ParentId&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td class="bg-info"&gt;79&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Container&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;null&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Theme&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Path&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td class="bg-info"&gt;//Page3//Page2&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;IncludeInMenu&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;true&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Url&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Keywords&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;sample, sub-page, prompt, KnowBetter&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Description&lt;/td&gt;
+                &lt;td&gt;:&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+
+    &lt;/div&gt;</value>
+  </data>
 </root>

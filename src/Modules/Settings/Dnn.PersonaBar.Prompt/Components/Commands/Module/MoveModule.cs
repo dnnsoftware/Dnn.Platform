@@ -9,14 +9,21 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("move-module", "Copies the module specified", new[] { "id" })]
+    [ConsoleCommand("move-module", "Prompt_MoveModule_Description", new[] { "id" })]
     public class MoveModule : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_MoveModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("pageid", "Prompt_MoveModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
+
+        [FlagParameter("topageid", "Prompt_MoveModule_FlagToPageId", "Integer", true)]
         private const string FlagToPageId = "topageid";
+
+        [FlagParameter("pane", "Prompt_MoveModule_FlagPane", "String", "ContentPane")]
         private const string FlagPane = "pane";
 
         private int ModuleId { get; set; }

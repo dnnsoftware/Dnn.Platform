@@ -8,16 +8,19 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("goto", "Navigates to a specified page within the DNN site", new[]{
+    [ConsoleCommand("goto", "Prompt_Goto_Description", new[]{
         "id",
         "parentid",
         "name"
     })]
     public class Goto : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourceFile;
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+        [FlagParameter("name", "Prompt_Goto_FlagName", "String")]
         private const string FlagName = "name";
+        [FlagParameter("id", "Prompt_Goto_FlagId", "Integer")]
         private const string FlagId = "id";
+        [FlagParameter("parentid", "Prompt_Goto_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
         private int PageId { get; set; } = -1;

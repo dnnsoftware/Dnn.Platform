@@ -9,10 +9,10 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
 {
-    [ConsoleCommand("get-host", "Retrieves information about the current DNN Installation", new[] { "id" })]
+    [ConsoleCommand("get-host", "Prompt_GetHost_Description", new[] { "id" })]
     public class GetHost : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

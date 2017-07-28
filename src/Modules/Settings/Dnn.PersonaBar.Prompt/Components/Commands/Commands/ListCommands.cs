@@ -8,11 +8,11 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
 {
-    [ConsoleCommand("list-commands", "Lists all available commands")]
+    [ConsoleCommand("list-commands", "Prompt_ListCommands_Description")]
     public class ListCommands : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public override ConsoleResultModel Run()
         {

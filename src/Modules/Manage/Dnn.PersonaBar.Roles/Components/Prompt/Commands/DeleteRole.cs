@@ -11,12 +11,13 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("delete-role", "Deletes the specified DNN security role for this portal")]
+    [ConsoleCommand("delete-role", "Prompt_DeleteRole_Description")]
     public class DeleteRole : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DeleteRole));
+        [FlagParameter("id", "Prompt_DeleteRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
         public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);

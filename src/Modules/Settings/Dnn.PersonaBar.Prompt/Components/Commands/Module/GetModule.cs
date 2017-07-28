@@ -9,13 +9,17 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("get-module", "Gets module information for module specified", new[] { "id" })]
+    [ConsoleCommand("get-module", "Prompt_GetModule_Description", new[] { "id" })]
     public class GetModule : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_GetModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("pageid", "Prompt_GetModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
+
 
         private int ModuleId { get; set; }
         private int PageId { get; set; }

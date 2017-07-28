@@ -6,16 +6,19 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("restore-module", "Restores a module from the DNN recycle bin", new[]
+    [ConsoleCommand("restore-module", "Prompt_RestoreModule_Description", new[]
     {
         "id",
         "pageid"
     })]
     public class RestoreModule : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_RestoreModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("pageid", "Prompt_RestoreModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
         private int ModuleId { get; set; }

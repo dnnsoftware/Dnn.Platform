@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -10,7 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-pages", "Retrieves a list of pages based on the specified criteria", new[]{
+    [ConsoleCommand("list-pages", "Prompt_ListPages_Description", new[]{
         "parentid",
         "deleted",
         "name",
@@ -22,17 +21,34 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     })]
     public class ListPages : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourceFile;
+        public override string LocalResourceFile => Constants.LocalResourceFile;
 
+        [FlagParameter("parentid", "Prompt_ListPages_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
+
+        [FlagParameter("deleted", "Prompt_ListPages_FlagDeleted", "Boolean")]
         private const string FlagDeleted = "deleted";
+
+        [FlagParameter("name", "Prompt_ListPages_FlagName", "String")]
         private const string FlagName = "name";
+
+        [FlagParameter("title", "Prompt_ListPages_FlagTitle", "String")]
         private const string FlagTitle = "title";
+
+        [FlagParameter("path", "Prompt_ListPages_FlagPath", "String")]
         private const string FlagPath = "path";
+
+        [FlagParameter("skin", "Prompt_ListPages_FlagSkin", "String")]
         private const string FlagSkin = "skin";
+
+        [FlagParameter("visible", "Prompt_ListRoles_FlagVisible", "Boolean")]
         private const string FlagVisible = "visible";
+
+        [FlagParameter("page", "Prompt_ListRoles_FlagPage", "Integer", "1")]
         private const string FlagPage = "page";
-        private const string FlagMax = "Max";
+
+        [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
+        private const string FlagMax = "max";
 
         private int? ParentId { get; set; } = -1;
         private bool? Deleted { get; set; }
@@ -60,10 +76,12 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
+            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+
             var lstOut = new List<PageModelBase>();
             int total;
-            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, Max);
-            var totalPages = total / Max + (total % Max == 0 ? 0 : 1);
+            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, max);
+            var totalPages = total / max + (total % max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             lstOut.AddRange(lstTabs.Select(tab => new PageModelBase(tab)));
             return new ConsoleResultModel
@@ -73,7 +91,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
-                    PageSize = Max
+                    PageSize = max
                 },
                 Records = lstOut.Count,
                 Output = pageNo <= totalPages

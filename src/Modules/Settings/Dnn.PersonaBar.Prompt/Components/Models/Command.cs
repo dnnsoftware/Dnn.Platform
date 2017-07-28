@@ -1,8 +1,10 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
     [Serializable]
+    [JsonObject]
     public class Command
     {
         public string Key { get; set; }

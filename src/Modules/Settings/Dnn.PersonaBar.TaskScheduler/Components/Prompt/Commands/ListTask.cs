@@ -9,15 +9,18 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-tasks", "Retrieves a list of scheduled tasks", new[]{
+    [ConsoleCommand("list-tasks", "Prompt_ListTasks_Description", new[]{
         "enabled",
         "name"
     })]
     public class ListTasks : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("enabled", "Prompt_ListTasks_FlagEnabled", "Boolean")]
         private const string FlagEnabled = "enabled";
+
+        [FlagParameter("name", "Prompt_ListTasks_FlagName", "String")]
         private const string FlagName = "name";
 
         private bool? Enabled { get; set; }

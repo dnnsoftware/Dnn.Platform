@@ -9,23 +9,26 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-user", "Returns users that match the given expression", new[]{
+    [ConsoleCommand("get-user", "Prompt_GetUser_Description", new[]{
         "id",
         "email",
         "username"
     })]
     public class GetUser : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_GetUser_FlagId", "Integer")]
         private const string FlagId = "id";
+        [FlagParameter("email", "Prompt_GetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
+        [FlagParameter("username", "Prompt_GetUser_FlagUsername", "String")]
         private const string FlagUsername = "username";
 
 
-        public int? UserId { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
+        private int? UserId { get; set; }
+        private string Email { get; set; }
+        private string Username { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

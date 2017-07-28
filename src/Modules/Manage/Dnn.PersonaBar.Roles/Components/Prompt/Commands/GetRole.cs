@@ -10,11 +10,12 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-role", "Retrieves a DNN security role for this portal")]
+    [ConsoleCommand("get-role", "Prompt_GetRole_Description")]
     public class GetRole : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_GetRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
         public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);

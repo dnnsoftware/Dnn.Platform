@@ -38,7 +38,19 @@ namespace Dnn.PersonaBar.Prompt.Services
             try
             {
                 var args = command.Args;
-                var cmdName = args.First().ToUpper();
+                var isHelpCmd = args.First().ToUpper() == "HELP";
+                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "LEARN";
+                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "SYNTAX";
+                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : "") : args.First().ToUpper();
+                if (isHelpCmd && (isHelpSyntax || isHelpLearn))
+                {
+                    return GetHelp(command, null, isHelpSyntax, isHelpLearn);
+                }
+                if (isHelpCmd && args.Length == 1)
+                    return AddLogAndReturnResponse(null, null, command, startTime,
+                        string.Format(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
+                            cmdName.ToLower()));
+
                 var allCommands = CommandRepository.Instance.GetCommands();
                 //If command not found and command contain namespace.
                 if (!allCommands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
@@ -69,6 +81,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 try
                 {
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
+                    if (isHelpCmd) return GetHelp(command, cmdObj);
                     // set env. data for command use
                     cmdObj.Init(args, PortalSettings, UserInfo, command.CurrentPage);
                     return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
@@ -132,6 +145,11 @@ namespace Dnn.PersonaBar.Prompt.Services
             logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
             LogController.Instance.AddLog(logInfo);
             return message;
+        }
+
+        private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
         }
     }
 }

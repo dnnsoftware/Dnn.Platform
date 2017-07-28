@@ -13,7 +13,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-role", "Update a DNN security role with new data", new[]{
+    [ConsoleCommand("set-role", "Prompt_SetRole_Description", new[]{
         "id",
         "name",
         "description",
@@ -21,14 +21,21 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     })]
     public class SetRole : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
+        [FlagParameter("id", "Prompt_SetRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        [FlagParameter("public", "Prompt_SetRole_FlagIsPublic", "Boolean")]
         private const string FlagIsPublic = "public";
+        [FlagParameter("autoassign", "Prompt_SetRole_FlagAutoAssign", "Boolean")]
         private const string FlagAutoAssign = "autoassign";
+        [FlagParameter("name", "Prompt_SetRole_FlagRoleName", "String")]
         private const string FlagRoleName = "name";
+        [FlagParameter("description", "Prompt_SetRole_FlagDescription", "String")]
         private const string FlagDescription = "description";
+        [FlagParameter("status", "Prompt_SetRole_FlagStatus", "Boolean")]
+        private const string FlagStatus = "status";
 
 
         public int RoleId { get; set; }
@@ -36,6 +43,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public string Description { get; set; }
         public bool? IsPublic { get; set; }
         public bool? AutoAssign { get; set; }
+        public RoleStatus? Status { get; set; }
 
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -46,6 +54,22 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             Description = GetFlagValue(FlagDescription, "Description", string.Empty);
             IsPublic = GetFlagValue<bool?>(FlagIsPublic, "Is Public", null);
             AutoAssign = GetFlagValue<bool?>(FlagAutoAssign, "Auto Assign", null);
+            var status = GetFlagValue(FlagStatus, "Status", string.Empty);
+            switch (status)
+            {
+                case "pending":
+                    Status = RoleStatus.Pending;
+                    break;
+                case "approved":
+                    Status = RoleStatus.Approved;
+                    break;
+                case "disabled":
+                    Status = RoleStatus.Disabled;
+                    break;
+                default:
+                    Status = null;
+                    break;
+            }
 
             if (string.IsNullOrEmpty(RoleName) && string.IsNullOrEmpty(Description) && !IsPublic.HasValue && !AutoAssign.HasValue)
             {
@@ -67,7 +91,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     IsPublic = IsPublic ?? existingRole?.IsPublic ?? false,
                     GroupId = existingRole?.RoleGroupID ?? -1,
                     IsSystem = existingRole?.IsSystemRole ?? false,
-                    SecurityMode = existingRole?.SecurityMode ?? SecurityMode.SecurityRole
+                    SecurityMode = existingRole?.SecurityMode ?? SecurityMode.SecurityRole,
+                    Status = Status ?? (existingRole?.Status ?? RoleStatus.Approved)
                 };
                 KeyValuePair<HttpStatusCode, string> message;
                 var success = RolesController.Instance.SaveRole(PortalSettings, roleDto, false, out message);

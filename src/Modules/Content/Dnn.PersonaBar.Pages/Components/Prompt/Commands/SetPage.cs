@@ -10,7 +10,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-page", "Update page with new data", new[]{
+    [ConsoleCommand("set-page", "Prompt_SetPage_Description", new[]{
         "id",
         "title",
         "name",
@@ -22,15 +22,30 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     })]
     public class SetPage : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourceFile;
+        public override string LocalResourceFile => Constants.LocalResourceFile;
 
+        [FlagParameter("id", "Prompt_SetPage_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("title", "Prompt_SetPage_FlagTitle", "String")]
         private const string FlagTitle = "title";
+
+        [FlagParameter("name", "Prompt_SetPage_FlagName", "String")]
         private const string FlagName = "name";
+
+        [FlagParameter("description", "Prompt_SetPage_FlagDescription", "String")]
         private const string FlagDescription = "description";
+
+        [FlagParameter("keywords", "Prompt_SetPage_FlagKeywords", "String")]
         private const string FlagKeywords = "keywords";
+
+        [FlagParameter("visible", "Prompt_SetPage_FlagVisible", "Boolean")]
         private const string FlagVisible = "visible";
+
+        [FlagParameter("url", "Prompt_SetPage_FlagUrl", "String")]
         private const string FlagUrl = "url";
+
+        [FlagParameter("parentid", "Prompt_SetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
         private int PageId { get; set; }

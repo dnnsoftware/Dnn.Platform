@@ -8,26 +8,28 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("delete-user", "Deletes the specifed user from the portal.", new[]{
+    [ConsoleCommand("delete-user", "Prompt_DeleteUser_Description", new[]{
         "id",
         "notify"
     })]
     public class DeleteUser : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_DeleteUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        [FlagParameter("notify", "Prompt_DeleteUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
 
-        public int UserId { get; private set; }
-        public bool Notify { get; private set; }
+        private int UserId { get; set; }
+        private bool Notify { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            Notify = GetFlagValue(FlagNotify, "Notify", true);
+            Notify = GetFlagValue(FlagNotify, "Notify", false);
         }
 
         public override ConsoleResultModel Run()

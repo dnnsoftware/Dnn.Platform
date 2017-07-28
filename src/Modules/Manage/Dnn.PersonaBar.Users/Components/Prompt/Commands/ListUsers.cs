@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -13,7 +12,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-users", "Returns users that match the given expression", new[]{
+    [ConsoleCommand("list-users", "Prompt_ListUsers_Description", new[]{
         "email",
         "username",
         "role",
@@ -22,25 +21,31 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class ListUsers : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("email", "Prompt_ListUsers_FlagEmail", "String")]
         private const string FlagEmail = "email";
+        [FlagParameter("username", "Prompt_ListUsers_FlagUsername", "String")]
         private const string FlagUsername = "username";
+        [FlagParameter("role", "Prompt_ListUsers_FlagRole", "String")]
         private const string FlagRole = "role";
+        [FlagParameter("page", "Prompt_ListUsers_FlagPage", "Integer", "1")]
         private const string FlagPage = "page";
+        [FlagParameter("max", "Prompt_ListUsers_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
 
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Role { get; set; }
-        public int Page { get; set; }
-        public int Max { get; set; } = 10;
+        private string Email { get; set; }
+        private string Username { get; set; }
+        private string Role { get; set; }
+        private int Page { get; set; }
+        private int Max { get; set; } = 10;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             Email = GetFlagValue(FlagEmail, "Email", string.Empty);
             Username = GetFlagValue(FlagUsername, "Username", string.Empty);
+            Role = GetFlagValue(FlagRole, "Role", string.Empty);
             Page = GetFlagValue(FlagPage, "Page", 1);
             Max = GetFlagValue(FlagMax, "Max", 10);
             if (args.Length != 1 && !(args.Length == 3 && (HasFlag(FlagPage) || HasFlag(FlagMax))) && !(args.Length == 5 && HasFlag(FlagPage) && HasFlag(FlagMax)))
@@ -83,11 +88,12 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
             var usersList = new List<UserModelBase>();
             var recCount = 0;
+            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
             var getUsersContract = new GetUsersContract
             {
                 SearchText = null,
                 PageIndex = Page > 0 ? Page - 1 : 0,
-                PageSize = Max,
+                PageSize = max,
                 SortColumn = "displayname",
                 SortAscending = true,
                 PortalId = PortalId,
@@ -114,7 +120,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 // for large user bases this could take a really long time.
                 getUsersContract = null;
                 KeyValuePair<HttpStatusCode, string> response;
-                var users = UsersController.Instance.GetUsersInRole(PortalSettings, Role, out recCount, out response, Page, Max);
+                var users = UsersController.Instance.GetUsersInRole(PortalSettings, Role, out recCount, out response, Page, max);
                 if (users != null)
                     usersList = ConvertList(users);
                 else
@@ -131,7 +137,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 return new ConsoleResultModel(LocalizeString("noUsers"));
             }
-            var totalPages = recCount / Max + (recCount % Max == 0 ? 0 : 1);
+            var totalPages = recCount / max + (recCount % max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             return new ConsoleResultModel
             {
@@ -140,7 +146,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
-                    PageSize = Max
+                    PageSize = max
                 },
                 Records = usersList?.Count ?? 0,
                 Output = pageNo <= totalPages ? LocalizeString("Prompt_ListUsersOutput") : LocalizeString("noUsers")

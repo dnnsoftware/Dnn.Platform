@@ -6,19 +6,21 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("purge-module", "Permanently deletes a module instance that has previously been sent to the DNN Recycle Bin", new[]{
+    [ConsoleCommand("purge-module", "Prompt_PurgeModule_Description", new[]{
         "id",
         "pageid"
     })]
     public class PurgeModule : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_PurgeModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("pageid", "Prompt_PurgeModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
         private int ModuleId { get; set; }
