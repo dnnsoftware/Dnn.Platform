@@ -662,7 +662,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var portalSettings = new PortalSettings(portal);
-            return string.Equals(cultureCode, portalSettings.DefaultLanguage, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(cultureCode, portalSettings.DefaultLanguage, StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsLanguageEnabled(int portalId, string cultureCode)

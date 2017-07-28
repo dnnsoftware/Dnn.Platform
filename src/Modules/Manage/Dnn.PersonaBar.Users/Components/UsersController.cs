@@ -333,7 +333,7 @@ namespace Dnn.PersonaBar.Users.Components
             var roles = RoleController.Instance.GetUserRoles(user, true);
             if (!string.IsNullOrEmpty(keyword))
             {
-                roles = roles.Where(u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                roles = roles.Where(u => u.FullName.StartsWith(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             total = roles.Count;
             pageSize = pageSize > 0 && pageSize < 500 ? pageSize : 500;

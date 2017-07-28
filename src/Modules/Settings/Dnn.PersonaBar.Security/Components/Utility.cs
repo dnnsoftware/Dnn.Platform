@@ -116,7 +116,7 @@ namespace Dnn.PersonaBar.Security.Components
                 var queryMatchingFiles =
                     from file in fileList
                     let fileText = GetFileText(file.FullName)
-                    where fileText.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
+                    where fileText.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) > -1
                     select file;
                 return queryMatchingFiles.Select(f => new
                 {
@@ -138,7 +138,7 @@ namespace Dnn.PersonaBar.Security.Components
         public static IEnumerable<string> FindUnexpectedExtensions()
         {
             var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
-            .Where(s => s.EndsWith(".asp", StringComparison.InvariantCultureIgnoreCase) || s.EndsWith(".php", StringComparison.InvariantCultureIgnoreCase));
+            .Where(s => s.EndsWith(".asp", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".php", StringComparison.OrdinalIgnoreCase));
             return files;
         }
 
@@ -151,7 +151,7 @@ namespace Dnn.PersonaBar.Security.Components
             var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
             .Where(f =>
             {
-                if (Path.GetFileName(f)?.Equals("thumbs.db", StringComparison.InvariantCultureIgnoreCase) == true)
+                if (Path.GetFileName(f)?.Equals("thumbs.db", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     return false;
                 }

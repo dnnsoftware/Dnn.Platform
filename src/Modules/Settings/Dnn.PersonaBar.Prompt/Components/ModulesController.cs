@@ -176,9 +176,9 @@ namespace Dnn.PersonaBar.Prompt.Components
             var modules = ModuleController.Instance.GetModules(portalSettings.PortalId)
                     .Cast<ModuleInfo>().Where(ModulePermissionController.CanViewModule);
             if (!string.IsNullOrEmpty(moduleName))
-                modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(moduleName, StringComparison.InvariantCultureIgnoreCase) >= 0);
+                modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(moduleName, StringComparison.OrdinalIgnoreCase) >= 0);
             if (!string.IsNullOrEmpty(moduleTitle))
-                modules = modules.Where(module => module.ModuleTitle.IndexOf(moduleTitle, StringComparison.InvariantCultureIgnoreCase) >= 0);
+                modules = modules.Where(module => module.ModuleTitle.IndexOf(moduleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
 
             //Return only deleted modules with matching criteria.
             if (pageId.HasValue && pageId.Value > 0)

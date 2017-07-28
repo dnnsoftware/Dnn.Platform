@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                     })
                         .Where(
                             c =>
-                                c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                                c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
 
                 var connector = connectors.FirstOrDefault(c =>
                     (c.SupportsMultiple && (c.Id == id || string.IsNullOrEmpty(c.Id))) ||
@@ -179,7 +179,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                     })
                         .Where(
                             c =>
-                                c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                                c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
 
                 var connector =
                     connectors.FirstOrDefault(c => c.SupportsMultiple && c.Id == id);
@@ -217,7 +217,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                     x.HasConfig(PortalSettings.PortalId);
                 }
             })
-                .FirstOrDefault(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (connection == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);

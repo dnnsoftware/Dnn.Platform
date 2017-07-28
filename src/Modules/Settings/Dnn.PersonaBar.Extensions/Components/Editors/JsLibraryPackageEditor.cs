@@ -18,7 +18,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var usedBy = PackageController.Instance.GetPackageDependencies(d => 
-                            d.PackageName == package.Name && d.Version <= package.Version).Select(d => d.PackageId);
+                            d.PackageName.Equals(package.Name, StringComparison.OrdinalIgnoreCase) &&
+                            d.Version <= package.Version).Select(d => d.PackageId);
 
             var usedByPackages = from p in PackageController.Instance.GetExtensionPackages(portalId)
                                  where usedBy.Contains(p.PackageID)

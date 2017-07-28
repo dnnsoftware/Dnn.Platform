@@ -2601,7 +2601,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         //if the disable language is current language, should redirect to default language.
                         if (
                             request.Code.Equals(Thread.CurrentThread.CurrentUICulture.ToString(),
-                                StringComparison.InvariantCultureIgnoreCase) ||
+                                StringComparison.OrdinalIgnoreCase) ||
                             LocaleController.Instance.GetLocales(pid).Count == 1)
                         {
                             redirectUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID,

@@ -275,8 +275,8 @@ namespace Dnn.PersonaBar.Pages.Components
                                 !t.IsSystem &&
                                     ((string.IsNullOrEmpty(searchKey) && (t.ParentId == parentId))
                                         || (!string.IsNullOrEmpty(searchKey) &&
-                                                (t.TabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
-                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)))
+                                                (t.TabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger
+                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger)))
                         select t;
 
             return pages;
@@ -337,8 +337,8 @@ namespace Dnn.PersonaBar.Pages.Components
                                 !t.IsSystem &&
                                     (string.IsNullOrEmpty(searchKey)
                                         || (!string.IsNullOrEmpty(searchKey) &&
-                                                (t.TabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
-                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)))
+                                                (t.TabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger
+                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger)))
                         select t;
 
             if (!string.IsNullOrEmpty(pageType))
@@ -642,7 +642,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 //get all terms info
                 var allTerms = new List<Term>();
                 var vocabularies = from v in vocabularyController.GetVocabularies()
-                                   where (v.ScopeType.ScopeType == "Portal" && v.ScopeId == tab.PortalID && !v.Name.Equals("Tags", StringComparison.InvariantCultureIgnoreCase))
+                                   where (v.ScopeType.ScopeType == "Portal" && v.ScopeId == tab.PortalID && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase))
                                    select v;
                 foreach (var v in vocabularies)
                 {
@@ -653,7 +653,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     if (!string.IsNullOrEmpty(tag))
                     {
-                        var term = allTerms.FirstOrDefault(t => t.Name.Equals(tag, StringComparison.InvariantCultureIgnoreCase));
+                        var term = allTerms.FirstOrDefault(t => t.Name.Equals(tag, StringComparison.OrdinalIgnoreCase));
                         if (term == null)
                         {
                             var termId = termController.AddTerm(new Term(tag, string.Empty, vocabularyId));
@@ -671,7 +671,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var defaultContainer = _defaultPortalThemeController.GetDefaultPortalContainer();
             if (pageSettings.ContainerSrc != null &&
                 pageSettings.ContainerSrc.Equals(defaultContainer,
-                StringComparison.InvariantCultureIgnoreCase))
+                StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
@@ -683,7 +683,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var defaultSkin = _defaultPortalThemeController.GetDefaultPortalLayout();
             if (pageSettings.SkinSrc != null &&
                 pageSettings.SkinSrc.Equals(defaultSkin,
-                StringComparison.InvariantCultureIgnoreCase))
+                StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
@@ -1164,7 +1164,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private void CopySourceTabProperties(TabInfo tab, TabInfo sourceTab)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            tab.SkinSrc = sourceTab.SkinSrc.Equals(portalSettings.DefaultPortalSkin, StringComparison.InvariantCultureIgnoreCase) ? string.Empty : sourceTab.SkinSrc;
+            tab.SkinSrc = sourceTab.SkinSrc.Equals(portalSettings.DefaultPortalSkin, StringComparison.OrdinalIgnoreCase) ? string.Empty : sourceTab.SkinSrc;
             tab.ContainerSrc = sourceTab.ContainerSrc;
             tab.IconFile = sourceTab.IconFile;
             tab.IconFileLarge = sourceTab.IconFileLarge;
