@@ -283,13 +283,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 });
 
                 this.setState({ pageList: pageList }, () => {
-                    this.getPageInfo(cachedItem.id).then(() => rez());
+                    this.getPageInfo(cachedItem.id).then(() => {
+                        cachedItem.url = `${window.origin}/${this.state.activePage.url}`;
+                        rez();
+                    });
                 });
             });
 
 
             const updateNewParent = () => new Promise((rez) => {
-
                 this._traverse((item, list) => {
                     switch (true) {
                         case item.id === newParentId:
