@@ -43,7 +43,7 @@ class PageDetails extends Component {
 
     render() {
         const {page, errors} = this.props;
-
+        
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
             portalId:  -2,
@@ -56,7 +56,6 @@ class PageDetails extends Component {
 
          let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
          const sf = Utils.getServiceFramework();
-
 
          const defaultLabel = this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified");
          const selectedTabId = this.props.selectedParentPageId  || page.parentId|| -1;

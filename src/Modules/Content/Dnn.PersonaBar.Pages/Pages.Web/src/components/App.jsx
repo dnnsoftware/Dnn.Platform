@@ -156,7 +156,7 @@ class App extends Component {
     }
 
     onCancelSettings() {
-        console.log(this.props.selectedPageDirty);
+
 
         if (this.props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();

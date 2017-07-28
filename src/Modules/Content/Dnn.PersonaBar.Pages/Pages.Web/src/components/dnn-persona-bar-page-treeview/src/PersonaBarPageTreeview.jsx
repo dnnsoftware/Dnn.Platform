@@ -8,6 +8,7 @@ import "./styles.less";
 
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarSelectionArrow from "./_PersonaBarSelectionArrow";
+import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
 
 export class PersonaBarPageTreeview extends Component {
 
@@ -56,9 +57,7 @@ export class PersonaBarPageTreeview extends Component {
 
     render_parentExpandIcon(item){
         return (
-            <div className="parent-expand-icon">
-                {item.isOpen ? "[-]" : "[+]" }
-            </div>
+            <PersonaBarExpandCollapseIcon isOpen={item.isOpen} />
         );
     }
 
