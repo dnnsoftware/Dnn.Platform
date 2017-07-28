@@ -79,7 +79,7 @@ namespace Dnn.EditBar.UI.Services
 
             //remove related modules
             ModuleController.Instance.GetTabModules(tabId).Values
-                .Where(m => m.ModuleID > moduleId)
+                .Where(m => m.CreatedOnDate > module.CreatedOnDate && m.CreatedByUserID == module.CreatedByUserID)
                 .ForEach(m =>
                 {
                     ModuleController.Instance.DeleteTabModule(tabId, m.ModuleID, false);
