@@ -11,6 +11,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     constructor() {
         super();
         this.state = {
+            level:1,
             rootLoaded: false,
             isTreeviewExpanded: false
         };
@@ -474,9 +475,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     toggleExpandAll() {
         let pageList = null;
+        const {isTreeviewExpanded} = this.state;
+
         this._traverse((item, list) => {
             if (item.hasOwnProperty("childListItems") && item.childListItems.length > 0) {
-                item.isOpen = !item.isOpen;
+                item.isOpen = isTreeviewExpanded ?  item.isOpen=false : item.isOpen=true ;
                 pageList = list;
             }
         });

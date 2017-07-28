@@ -1,15 +1,16 @@
 import React, {Component} from "react";
 import { PropTypes } from "prop-types";
 import "./styles.less";
-import {PagesIcon, FolderIcon} from "dnn-svg-icons";
+import {CollapseTree, ExpandTree} from "dnn-svg-icons";
 
 export default class PersonaBarExpandCollapseIcon extends Component {
 
     render(){
         const {isOpen} = this.props;
+
         return(
             <div className="parent-expand-icon">
-                {isOpen ? "[-]" : "[+]" }
+                {isOpen ? <div dangerouslySetInnerHTML={{ __html: CollapseTree }} /> : <div dangerouslySetInnerHTML={{ __html: ExpandTree }} /> }
             </div>
         );
     }

@@ -17,6 +17,16 @@ export class PersonaBarPageTreeview extends Component {
         this.state = {};
     }
 
+    trimName(item){
+        let maxLength = 20;
+        let {name, url} = item;
+        let path = url.split(/.com\//);
+        let newLength = path[1].split(/\//).length*2+1;
+        let depth =( newLength < 20) ?  newLength: 19;
+        console.log('item depth', depth);
+        return (item.name.length > maxLength-depth) ? `${item.name.substring(0,maxLength-depth)}...` : item.name;
+    }
+
     render_tree(childListItems){
         const {
                 draggedItem,
@@ -39,7 +49,6 @@ export class PersonaBarPageTreeview extends Component {
                 draggedItem={draggedItem}
                 droppedItem={droppedItem}
                 dragOverItem={dragOverItem}
-
                 getChildListItems={getChildListItems}
                 listItems={childListItems}
                 onSelection={onSelection}
@@ -91,13 +100,15 @@ export class PersonaBarPageTreeview extends Component {
 
     render_li() {
         const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd, draggedItem} = this.props;
+
         return listItems.map((item)=>{
             return (
-                <li id={`list-item-${item.name}-${item.id}`} className={(item.selected) ? "list-item-highlight" : null}>
+                <li id={`list-item-${item.name}-${item.id}`} >
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
                         <span
                             id={`list-item-title-${item.name}-${item.id}`}
+                            className={(item.selected) ? "list-item-highlight" : null}
                             draggable="true"
                             onDrop={(e)=>{ onDrop(item); }}
                             onDrag={(e)=> {onDrag(e); }}
@@ -111,7 +122,7 @@ export class PersonaBarPageTreeview extends Component {
                                 className={`item-name`}
                                 onClick={()=>{ onSelection(item.id); }}
                                 >
-                                <p>{item.name}</p>
+                                <p>{this.trimName(item)}</p>
                             </span>
                             <PersonaBarSelectionArrow item={item} />
                         </span>
