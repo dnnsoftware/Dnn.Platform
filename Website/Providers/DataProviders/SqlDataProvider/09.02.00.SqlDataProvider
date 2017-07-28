@@ -83,6 +83,43 @@ BEGIN
     VALUES ('Connector', 'Connector', 2)
 END
 GO
+
+/** DNN-8014 - Add login status column **/
+/*******************************************************************/
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}Users ' AND COLUMN_NAME = 'LoginStatus')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}Users
+		  ADD LoginStatus [BIT] DEFAULT(0)
+	END
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdateUserLoginStatus]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserLoginStatus]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserLoginStatus]
+	@UserId             INT,
+	@LoginStatus        BIT
+AS
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}Users]
+        SET LoginStatus = @LoginStatus WHERE UserId = @UserId
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetUserLoginStatus]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserLoginStatus]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserLoginStatus]
+	@UserId             INT
+AS
+BEGIN
+	SELECT LoginStatus FROM {databaseOwner}[{objectQualifier}Users] WHERE UserId = @UserId
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

@@ -651,7 +651,7 @@ namespace DotNetNuke.Security
             //Identity the Login is processed by system.
             HttpContext.Current.Items["DNN_UserSignIn"] = true;
 
-            UpdateMembershipUserStatus(user.Username, string.Empty);
+            UpdateUserLoginStatus(user.Username, true);
         }
 
         public void SignOut()
@@ -659,7 +659,7 @@ namespace DotNetNuke.Security
             var context = HttpContext.Current;
             if (context != null && context.Request.IsAuthenticated && context.User.Identity is FormsIdentity)
             {
-                UpdateMembershipUserStatus(context.User.Identity.Name, DateTime.UtcNow.Ticks.ToString());
+                UpdateUserLoginStatus(context.User.Identity.Name, false);
             }
 
             //Log User Off from Cookie Authentication System
@@ -755,14 +755,9 @@ namespace DotNetNuke.Security
            
         }
 
-        private void UpdateMembershipUserStatus(string username, string status)
+        private void UpdateUserLoginStatus(string username, bool loggedIn)
         {
-            var membershipUser = System.Web.Security.Membership.GetUser(username);
-            if (membershipUser != null)
-            {
-                membershipUser.Comment = status;
-                System.Web.Security.Membership.UpdateUser(membershipUser);
-            }
+            UserController.UpdateUserLoginStatus(username, loggedIn);
         }
 
         ///-----------------------------------------------------------------------------

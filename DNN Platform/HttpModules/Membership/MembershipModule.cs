@@ -182,14 +182,10 @@ namespace DotNetNuke.HttpModules.Membership
                     return;
                 }
 
-                if (context.User.Identity is FormsIdentity)
+                if (user != null && !UserController.GetUserLoginStatus(user.UserID))
                 {
-                    var membershipUser = System.Web.Security.Membership.GetUser(context.User.Identity.Name);
-                    if (membershipUser != null && !string.IsNullOrEmpty(membershipUser.Comment))
-                    {
-                        Logout(context, user, portalSettings);
-                        return;
-                    }
+                    Logout(context, user, portalSettings);
+                    return;
                 }
 
                 //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
