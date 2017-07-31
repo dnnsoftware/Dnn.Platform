@@ -113,7 +113,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
             expandPersonaBarPage: function expandPersonaBar(){
                 var personaBarPage = $(".dnn-persona-bar-page")
-                personaBarPage.css({width:"1000px"});
+                personaBarPage.css({width:"1156px"});
             },
 
             closePersonaBar: function handleClosePersonarBar(callback, keepSelection) {
