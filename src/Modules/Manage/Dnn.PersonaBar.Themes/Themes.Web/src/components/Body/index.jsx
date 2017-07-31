@@ -31,13 +31,20 @@ class Body extends Component {
         }
 
         let searchText = state.searchText;
+        let level = state.level;
         return props.themes.layouts.filter(l => {
             return !searchText || l.packageName.toLowerCase().indexOf(searchText) > -1;
+        }).filter(l => {
+            return level === 7 || l.level === level;
         });
     }
 
     onSearch(value) {
         this.setState({ searchText: value });
+    }
+
+    onFilterChanged(value){
+        this.setState({ level: value });
     }
 
     backToThemes() {
@@ -79,7 +86,7 @@ class Body extends Component {
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
                     <SiteTheme />
-                    <MiddleActions onSearch={this.onSearch.bind(this)} />
+                    <MiddleActions onSearch={this.onSearch.bind(this)} onFilterChanged={this.onFilterChanged.bind(this)} />
                     <ThemeList dataSource={this.getThemesData()} />
                 </PersonaBarPageBody>
             </GridCell>

@@ -1,18 +1,38 @@
 @import "~dnn-global-styles/index";
-.theme-list{
+.theme-list-wrapper {
     border: 1px solid @alto;
     border-radius: 3px;
     background-color: @white;
+    float: left;
+    width: 100%;
 
-    & > div > .dnn-grid-cell {
-        padding: 15px;
+    .theme-list{
+        & > div > .dnn-grid-cell {
+            padding: 15px;
+        }
+
+        & > div:first-child + div{
+            display: none;
+        }
+
+        .dnn-grid-cell{
+            text-align: center;
+        }
     }
 
-    & > div:first-child + div{
-        display: none;
+    .theme-list-title {
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 30px;
+        color: @bulgarianRose;
+        padding: 20px 0 0 20px;
     }
 
-    .dnn-grid-cell{
-        text-align: center;
+    .theme-list-separator {
+        color: @alto;
+        background: @alto;
+        height: 1px;
+        border: none;
+        margin: 0 20px;
     }
 }
