@@ -123,10 +123,10 @@ export class PersonaBarPageTreeview extends Component {
                                 onClick={()=>{ onSelection(item.id); }}
                                 >
                                 <p>{this.trimName(item)}</p>
-                                <div className="draft-pencil">
-                                    <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
-                                </div>
                             </span>
+                            <div className="draft-pencil">
+                                <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
+                            </div>
                             <PersonaBarSelectionArrow item={item} />
                         </span>
                         {this.render_dropZone("after", item)}

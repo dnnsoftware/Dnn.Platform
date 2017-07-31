@@ -6,15 +6,11 @@ import {PagesIcon, FolderIcon, TreeLinkIcon, TreeDraftIcon, TreePaperClip} from 
 export default class PersonaBarPageIcon extends Component {
     /* eslint-disable react/no-danger */
     selectIcon(number) {
-        // 1. PagesIcon
-        // 2. FolderIcon
-        // 3. RightLink
-        // 4. LeftLink
 
          /*eslint-disable react/no-danger*/
         switch(number) {
             case "normal":
-               return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);
+                return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);
 
             case "file":
                 return (<div dangerouslySetInnerHTML={{ __html: FolderIcon }} />);
@@ -23,7 +19,7 @@ export default class PersonaBarPageIcon extends Component {
                 return ( <div dangerouslySetInnerHTML={{ __html: TreeLinkIcon }} /> );
 
             default:
-               return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);
+                return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);
         }
     }
 

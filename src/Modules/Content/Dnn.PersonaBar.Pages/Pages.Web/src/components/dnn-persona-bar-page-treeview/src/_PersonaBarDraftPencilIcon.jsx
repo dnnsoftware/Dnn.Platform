@@ -7,11 +7,11 @@ export default class PersonaBarPageIcon extends Component {
 
     render_icon(hasUnpublishedChanges){
         /*eslint-disable react/no-danger*/
-        
+
         switch (true) {
-            case hasUnpublishedChanges === false:
-                return ( <div dangerouslySetInnerHTML={{ __html: TreeDraftIcon }} /> );
             case hasUnpublishedChanges === true:
+                return ( <div dangerouslySetInnerHTML={{ __html: TreeDraftIcon }} /> );
+            case hasUnpublishedChanges === false:
                  return ( <div /> );
             default:
                 return ( <div /> );
