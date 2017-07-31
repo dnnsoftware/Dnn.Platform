@@ -8,12 +8,23 @@ import "./styles.less";
 
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarSelectionArrow from "./_PersonaBarSelectionArrow";
+import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
+import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeview extends Component {
 
     constructor(){
         super();
         this.state = {};
+    }
+
+    trimName(item){
+        let maxLength = 20;
+        let {name, tabpath} = item;
+        let newLength = tabpath.split(/\//).length*2+1;
+        newLength--;
+        let depth = ( newLength < 20) ?  newLength: 19;
+        return (item.name.length > maxLength-depth) ? `${item.name.slice(0,maxLength-depth)}...` : item.name;
     }
 
     render_tree(childListItems){
@@ -38,7 +49,6 @@ export class PersonaBarPageTreeview extends Component {
                 draggedItem={draggedItem}
                 droppedItem={droppedItem}
                 dragOverItem={dragOverItem}
-
                 getChildListItems={getChildListItems}
                 listItems={childListItems}
                 onSelection={onSelection}
@@ -56,9 +66,7 @@ export class PersonaBarPageTreeview extends Component {
 
     render_parentExpandIcon(item){
         return (
-            <div className="parent-expand-icon">
-                {item.isOpen ? "[-]" : "[+]" }
-            </div>
+            <PersonaBarExpandCollapseIcon isOpen={item.isOpen} />
         );
     }
 
@@ -92,13 +100,15 @@ export class PersonaBarPageTreeview extends Component {
 
     render_li() {
         const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd, draggedItem} = this.props;
+
         return listItems.map((item)=>{
             return (
-                <li id={`list-item-${item.name}-${item.id}`} className={(item.selected) ? "list-item-highlight" : null}>
+                <li id={`list-item-${item.name}-${item.id}`} >
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
                         <span
                             id={`list-item-title-${item.name}-${item.id}`}
+                            className={(item.selected) ? "list-item-highlight" : null}
                             draggable="true"
                             onDrop={(e)=>{ onDrop(item); }}
                             onDrag={(e)=> {onDrag(e); }}
@@ -107,12 +117,15 @@ export class PersonaBarPageTreeview extends Component {
                             onDragEnd={()=>{onDragEnd(item); }}
                          >
                             {this.render_parentExpandButton(item)}
-                            <PersonaBarPageIcon iconType={1}/>
+                            <PersonaBarPageIcon iconType={item.pageType}/>
                             <span
                                 className={`item-name`}
                                 onClick={()=>{ onSelection(item.id); }}
                                 >
-                                <p>{item.name}</p>
+                                <p>{this.trimName(item)}</p>
+                                <div className="draft-pencil">
+                                    <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
+                                </div>
                             </span>
                             <PersonaBarSelectionArrow item={item} />
                         </span>
