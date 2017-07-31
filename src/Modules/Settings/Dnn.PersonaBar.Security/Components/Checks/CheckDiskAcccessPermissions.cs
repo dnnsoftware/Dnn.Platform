@@ -10,10 +10,31 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckDiskAcccessPermissions : IAuditCheck
     {
+        public string Id => "CheckDiskAccess";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckDiskAccess");
-            var accessErrors = CheckAccessToDrives();
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            IList<string> accessErrors = new List<string>();
+            try
+            {
+                accessErrors = CheckAccessToDrives();
+            }
+            catch (IOException)
+            {
+                // e.g., a disk error or a drive was not ready
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // The caller does not have the required permission.
+
+            }
+            catch (System.Security.SecurityException)
+            {
+                //Some security exception
+            }
+
+
             if (accessErrors.Count == 0)
             {
                 result.Severity = SeverityEnum.Pass;
@@ -31,26 +52,52 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         private static IList<string> CheckAccessToDrives()
         {
             var errors = new List<string>();
-            try
+            var dir = new DirectoryInfo(Globals.ApplicationMapPath);
+
+
+            while (dir.Parent != null)
             {
-                var dir = new DirectoryInfo(Globals.ApplicationMapPath);
-                while (dir.Parent != null)
+
+                try
                 {
                     dir = dir.Parent;
                     var permissions = CheckPermissionOnDir(dir);
-                    if (permissions.AnyYes)
+                    var isRoot = dir.Name == dir.Root.Name;
+                    if (permissions.Create == Yes || permissions.Write == Yes || permissions.Delete == Yes || (!isRoot && permissions.Read == Yes))
                     {
-                        errors.Add(GetPermissionText(dir, permissions));
+                        errors.Add(GetPermissionText(dir, permissions, isRoot));
                     }
                 }
+                catch (IOException)
+                {
+                    // e.g., a disk error or a drive was not ready
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // The caller does not have the required permission.
 
-                var drives = DriveInfo.GetDrives();
-                foreach (var drive in drives.Where(d => d.IsReady && d.RootDirectory.Name != dir.Root.Name))
+                }
+
+            }
+
+            var drives = DriveInfo.GetDrives();
+            var checkedDrives = new List<string>();
+            foreach (var drive in drives.Where(d => d.IsReady && d.RootDirectory.Name != dir.Root.Name))
+            {
+                try
                 {
                     var driveType = drive.DriveType;
                     if (driveType == DriveType.Fixed || driveType == DriveType.Network)
                     {
                         var dir2 = drive.RootDirectory;
+                        var key = dir2.FullName.ToLowerInvariant();
+                        if (checkedDrives.Contains(key))
+                        {
+                            continue;
+                        }
+
+                        checkedDrives.Add(key);
+
                         var permissions = CheckPermissionOnDir(dir2);
                         if (permissions.AnyYes)
                         {
@@ -58,20 +105,24 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                         }
                     }
                 }
+                catch (IOException)
+                {
+                    // e.g., a disk error or a drive was not ready
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // The caller does not have the required permission.
+                }
             }
-            catch (IOException)
-            {
-                // e.g., a disk error or a drive was not ready
-            }
-            catch (UnauthorizedAccessException)
-            {
-                // The caller does not have the required permission.
-            }
+
             return errors;
         }
 
-        private static string GetPermissionText(DirectoryInfo dir, Permissions permissions)
+        private static string GetPermissionText(DirectoryInfo dir, Permissions permissions, bool ignoreRead = false)
         {
+            var message = ignoreRead
+                ? @"{0} - Write:{2}, Create:{3}, Delete:{4}"
+                : @"{0} - Read:{1}, Write:{2}, Create:{3}, Delete:{4}";
             return string.Format(@"{0} - Read:{1}, Write:{2}, Create:{3}, Delete:{4}",
                 dir.FullName, permissions.Read, permissions.Write, permissions.Create, permissions.Delete);
         }
@@ -94,7 +145,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                             else
                                 permissions.SetThenLockCreate(No);
 
-                        if ((rule.FileSystemRights & (FileSystemRights.Modify | FileSystemRights.WriteData)) != 0)
+                        if ((rule.FileSystemRights & FileSystemRights.Write) != 0)
                             if (rule.AccessControlType == AccessControlType.Allow)
                                 permissions.Write = Yes;
                             else
