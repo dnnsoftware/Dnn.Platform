@@ -261,4 +261,10 @@
   <data name="ShowFilterLabel">
     <value>Showing:</value>
   </data>
+  <data name="NoThemes">
+    <value>No Themes Found.</value>
+  </data>
+  <data name="NoThemesMessage">
+    <value>Try adjusting your search filters or install a new theme to your library.</value>
+  </data>
 </root>

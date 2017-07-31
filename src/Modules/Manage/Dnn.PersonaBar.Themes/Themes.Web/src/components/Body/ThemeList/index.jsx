@@ -4,7 +4,7 @@ import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import Theme from "./Theme";
-
+const NoDataIcon = require(`!raw!./../SvgIcon/nodata.svg`);
 import "./style.less";
 
 class ThemeList extends Component {
@@ -13,12 +13,20 @@ class ThemeList extends Component {
         this.state = {};
     }
 
+    /*eslint-disable react/no-danger*/
     render() {
         const { props } = this;
         let globalThemes = props.dataSource.filter(t => t.level === 4);
         let siteThemes = props.dataSource.filter(t => t.level === 2);
         return (
             <div className="theme-list-wrapper">
+                {globalThemes.length === 0 && siteThemes.length === 0 &&
+                    <div className="empty-state">
+                        <div className="noThemes">{Localization.get("NoThemes")}</div>
+                        <div className="noThemesMessage">{Localization.get("NoThemesMessage")}</div>
+                        <div className="noThemesIcon" dangerouslySetInnerHTML={{ __html: NoDataIcon }} />
+                    </div>
+                }
                 {globalThemes.length > 0 &&
                     <div>
                         <div className="theme-list-title">{Localization.get("GlobalThemes") }</div>
