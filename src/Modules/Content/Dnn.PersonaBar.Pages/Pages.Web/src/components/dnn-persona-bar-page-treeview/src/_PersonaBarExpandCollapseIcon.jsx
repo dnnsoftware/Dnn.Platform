@@ -7,7 +7,7 @@ export default class PersonaBarExpandCollapseIcon extends Component {
 
     render(){
         const {isOpen} = this.props;
-
+        /*eslint-disable react/no-danger*/
         return(
             <div className="parent-expand-icon">
                 {isOpen ? <div dangerouslySetInnerHTML={{ __html: CollapseTree }} /> : <div dangerouslySetInnerHTML={{ __html: ExpandTree }} /> }
