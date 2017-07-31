@@ -9,5 +9,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         ConsoleResultModel Run();
         bool IsValid();
         string ValidationMessage { get; }
+        string LocalResourceFile { get; }
+        string ResultHtml { get; }
     }
 }
