@@ -1401,13 +1401,16 @@ namespace DotNetNuke.Common.Utilities
                     strPath = strPath.Substring(0, pos);
                 }
 
-                strPath = strPath.Trim().Replace("/", "\\");
+                strPath = strPath.Trim().Replace("/", "\\").TrimStart('\\');
                 if (!string.IsNullOrEmpty(strPath))
                 {
-                    strPath = Globals.ApplicationMapPath + "\\" + strPath;
-                    if (strPath.EndsWith("\\"))
+                    strPath = Path.Combine(Globals.ApplicationMapPath, strPath);
+                    if (strPath.EndsWith("\\") && Directory.Exists(strPath))
                     {
-                        if (Directory.Exists(strPath))
+                        var directoryInfo = new System.IO.DirectoryInfo(strPath);
+                        var applicationPath = Globals.ApplicationMapPath + "\\";
+                        if (directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase)
+                                && !directoryInfo.FullName.Equals(applicationPath, StringComparison.InvariantCultureIgnoreCase))
                         {
                             try
                             {
