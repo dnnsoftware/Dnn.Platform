@@ -142,11 +142,9 @@ class App extends Component {
         this.props.onCreatePage(input);
     }
 
-    onUpdatePage(update){
+    onUpdatePage(){
         return new Promise((resolve) => {
-            this.setState({activePage: update}, ()=>{
-                this.props.onUpdatePage(update, () =>  resolve());
-            });
+             this.props.onUpdatePage(this.state.activePage, () =>  resolve());
         });
     }
 
@@ -156,8 +154,6 @@ class App extends Component {
     }
 
     onCancelSettings() {
-
-
         if (this.props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
         }
@@ -374,6 +370,16 @@ class App extends Component {
         this.setState({activePage});
     }
 
+    onChangePageType(value){
+        const activePage = this.state.activePage;
+        activePage.pageType = value;
+        this.setState({activePage});
+    }
+
+    onChangePermissions(value){
+        console.log(value);
+    }
+
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
         return PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
     }
@@ -419,8 +425,8 @@ class App extends Component {
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={ this.onChangePageField.bind(this) }
-                    onPermissionsChanged={props.onPermissionsChanged}
-                    onChangePageType={props.onChangePageType}
+                    onPermissionsChanged={this.onChangePermissions.bind(this)}
+                    onChangePageType={this.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}
                     onEditingPageModule={props.onEditingPageModule}
                     onCancelEditingPageModule={props.onCancelEditingPageModule}
