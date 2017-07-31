@@ -9,6 +9,7 @@ import "./styles.less";
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarSelectionArrow from "./_PersonaBarSelectionArrow";
 import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
+import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeview extends Component {
 
@@ -19,10 +20,10 @@ export class PersonaBarPageTreeview extends Component {
 
     trimName(item){
         let maxLength = 20;
-        let {name, url} = item;
-        let path = url.split(/.com\//);
-        let newLength = path[1].split(/\//).length*2+1;
-        let depth =( newLength < 20) ?  newLength: 19;
+        let {name, tabpath} = item;
+        let newLength = tabpath.split(/\//).length*2+1;
+        newLength--;
+        let depth = ( newLength < 20) ?  newLength: 19;
         return (item.name.length > maxLength-depth) ? `${item.name.slice(0,maxLength-depth)}...` : item.name;
     }
 
@@ -116,12 +117,15 @@ export class PersonaBarPageTreeview extends Component {
                             onDragEnd={()=>{onDragEnd(item); }}
                          >
                             {this.render_parentExpandButton(item)}
-                            <PersonaBarPageIcon iconType={1}/>
+                            <PersonaBarPageIcon iconType={item.pageType}/>
                             <span
                                 className={`item-name`}
                                 onClick={()=>{ onSelection(item.id); }}
                                 >
                                 <p>{this.trimName(item)}</p>
+                                <div className="draft-pencil">
+                                    <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
+                                </div>
                             </span>
                             <PersonaBarSelectionArrow item={item} />
                         </span>
