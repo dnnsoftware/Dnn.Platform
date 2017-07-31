@@ -11,7 +11,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("new-user", "Creates a new user record", new[]{
+    [ConsoleCommand("new-user", "Prompt_NewUser_Description", new[]{
         "email",
         "username",
         "displayname",
@@ -23,37 +23,41 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class NewUser : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("email", "Prompt_NewUser_FlagEmail", "String", true)]
         private const string FlagEmail = "email";
+        [FlagParameter("username", "Prompt_NewUser_FlagUsername", "String", true)]
         private const string FlagUsername = "username";
-        private const string FlagDisplayname = "displayname";
+        [FlagParameter("firstname", "Prompt_NewUser_FlagFirstname", "String", true)]
         private const string FlagFirstname = "firstname";
+        [FlagParameter("lastname", "Prompt_NewUser_FlagLastname", "String", true)]
         private const string FlagLastname = "lastname";
+        [FlagParameter("password", "Prompt_NewUser_FlagPassword", "String", "auto-generated")]
         private const string FlagPassword = "password";
+        [FlagParameter("approved", "Prompt_NewUser_FlagApproved", "Boolean", "true")]
         private const string FlagApproved = "approved";
+        [FlagParameter("notify", "Prompt_NewUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
-        public string Email { get; private set; }
-        public string Username { get; private set; }
-        public string DisplayName { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public string Password { get; private set; }
-        public bool Approved { get; private set; } = true;
-        public bool Notify { get; private set; }
+        private string Email { get; set; }
+        private string Username { get; set; }
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
+        private string Password { get; set; }
+        private bool Approved { get; set; }
+        private bool Notify { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             Email = GetFlagValue(FlagEmail, "Email", string.Empty, true);
             Username = GetFlagValue(FlagUsername, "Username", string.Empty, true);
-            DisplayName = GetFlagValue(FlagDisplayname, "DisplayName", string.Empty);
             FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);
             LastName = GetFlagValue(FlagLastname, "LastName", string.Empty, true);
             Password = GetFlagValue(FlagPassword, "Password", string.Empty);
             Approved = GetFlagValue(FlagApproved, "Approved", true);
-            Notify = GetFlagValue(FlagNotify, "Notify", PortalSettings.EnableRegisterNotification);
+            Notify = GetFlagValue(FlagNotify, "Notify", false);
             if (string.IsNullOrEmpty(Email)) return;
             var emailVal = new EmailValidator();
             if (!emailVal.IsValid(Email))

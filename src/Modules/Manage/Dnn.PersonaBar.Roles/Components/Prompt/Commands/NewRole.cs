@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -15,7 +14,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("new-role", "Creates a new DNN security roles in the portal.", new[]{
+    [ConsoleCommand("new-role", "Prompt_NewRole_Description", new[]{
         "name",
         "description",
         "public",
@@ -23,14 +22,19 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     })]
     public class NewRole : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
 
+        [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
         private const string FlagIsPublic = "public";
+        [FlagParameter("autoassign", "Prompt_NewRole_FlagAutoAssign", "Boolean", "false")]
         private const string FlagAutoAssign = "autoassign";
+        [FlagParameter("name", "Prompt_NewRole_FlagRoleName", "String", true)]
         private const string FlagRoleName = "name";
+        [FlagParameter("description", "Prompt_NewRole_FlagDescription", "String")]
         private const string FlagDescription = "description";
+        [FlagParameter("status", "Prompt_NewRole_FlagStatus", "Boolean", "approved")]
         private const string FlagStatus = "status";
 
 
@@ -46,7 +50,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             base.Init(args, portalSettings, userInfo, activeTabId);
             RoleName = GetFlagValue(FlagRoleName, "Rolename", string.Empty, true, true);
             Description = GetFlagValue(FlagDescription, "Description", string.Empty);
-            IsPublic = GetFlagValue(FlagIsPublic, "Is Public", false, true);
+            IsPublic = GetFlagValue(FlagIsPublic, "Is Public", false);
             AutoAssign = GetFlagValue(FlagAutoAssign, "Auto Assign", false, true);
             var status = GetFlagValue(FlagStatus, "Status", "approved");
             switch (status)

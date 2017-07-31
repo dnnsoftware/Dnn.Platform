@@ -8,14 +8,15 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
-    [ConsoleCommand("get-portal", "Retrieves information about the current portal", new[] { "id" })]
+    [ConsoleCommand("get-portal", "Prompt_GetPortal_Description", new[] { "id" })]
     public class GetPortal : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
         private const string FlagId = "id";
 
-        public int PortalIdFlagValue { get; private set; }
+        int PortalIdFlagValue { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

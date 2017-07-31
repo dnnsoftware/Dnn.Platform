@@ -9,15 +9,24 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("copy-module", "Copies the module specified", new[] { "id", "pageid", "topageid", "pane" })]
+    [ConsoleCommand("copy-module", "Prompt_CopyModule_Description", new[] { "id", "pageid", "topageid", "pane" })]
     public class CopyModule : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_CopyModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("pageid", "Prompt_CopyModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
+
+        [FlagParameter("topageid", "Prompt_CopyModule_FlagToPageId", "Integer", true)]
         private const string FlagToPageId = "topageid";
+
+        [FlagParameter("pane", "Prompt_CopyModule_FlagPane", "String", "ContentPane")]
         private const string FlagPane = "pane";
+
+        [FlagParameter("includesettings", "Prompt_CopyModule_FlagIncludesettings", "Boolean", "true")]
         private const string FlagIncludesettings = "includesettings";
 
         private int ModuleId { get; set; }
@@ -33,7 +42,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
             TargetPageId = GetFlagValue(FlagToPageId, "To Page Id", -1, true, false, true);
             Pane = GetFlagValue(FlagPane, "Pane", "ContentPane");
-            IncludeSettings = GetFlagValue<bool?>(FlagIncludesettings, "Include settings", true);
+            IncludeSettings = GetFlagValue<bool?>(FlagIncludesettings, "Include settings", null);
             if (PageId == TargetPageId)
             {
                 AddMessage(LocalizeString("Prompt_SourceAndTargetPagesAreSame"));

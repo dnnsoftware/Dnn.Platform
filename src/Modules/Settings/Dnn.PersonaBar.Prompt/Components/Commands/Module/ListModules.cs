@@ -6,7 +6,7 @@ using Dnn.PersonaBar.Prompt.Components.Models;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("list-modules", "Lists modules on current page", new[]{
+    [ConsoleCommand("list-modules", "Prompt_ListModules_Description", new[]{
         "name",
         "title",
         "pageid",
@@ -15,13 +15,24 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     })]
     public class ListModules : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("name", "Prompt_ListModules_FlagModuleName", "String")]
         private const string FlagModuleName = "name";
+
+        [FlagParameter("title", "Prompt_ListModules_FlagModuleTitle", "String")]
         private const string FlagModuleTitle = "title";
+
+        [FlagParameter("pageid", "Prompt_ListModules_FlagPageId", "Integer")]
         private const string FlagPageId = "pageid";
+
+        [FlagParameter("deleted", "Prompt_ListModules_FlagDeleted", "Boolean")]
         private const string FlagDeleted = "deleted";
+
+        [FlagParameter("page", "Prompt_ListModules_FlagPage", "Integer", "1")]
         private const string FlagPage = "page";
+
+        [FlagParameter("max", "Prompt_ListModules_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
 
         private int? PageId { get; set; }
@@ -46,11 +57,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         public override ConsoleResultModel Run()
         {
+            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+
             int total;
             var modules =
                 ModulesController.Instance.GetModules(PortalSettings, Deleted, out total, ModuleName, ModuleTitle,
-                    PageId, (Page > 0 ? Page - 1 : 0), Max).Select(x => ModuleInfoModel.FromDnnModuleInfo(x, Deleted)).ToList();
-            var totalPages = total / Max + (total % Max == 0 ? 0 : 1);
+                    PageId, (Page > 0 ? Page - 1 : 0), max).Select(x => ModuleInfoModel.FromDnnModuleInfo(x, Deleted)).ToList();
+            var totalPages = total / max + (total % max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             return new ConsoleResultModel
             {
@@ -59,7 +72,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
-                    PageSize = Max
+                    PageSize = max
                 },
                 Records = modules.Count,
                 Output =

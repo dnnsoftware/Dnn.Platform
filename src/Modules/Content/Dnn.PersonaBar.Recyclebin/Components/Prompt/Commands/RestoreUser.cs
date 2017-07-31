@@ -6,13 +6,15 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("restore-user", "Recovers a user that has previously been deleted or 'unregistered'", new[] { "id" })]
+    [ConsoleCommand("restore-user", "Prompt_RestoreUser_Description", new[] { "id" })]
     public class RestoreUser : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
-        public int UserId { get; private set; }
+
+        private int UserId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

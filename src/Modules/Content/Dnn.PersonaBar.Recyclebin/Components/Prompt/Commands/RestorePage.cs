@@ -7,17 +7,22 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("restore-page", "Restores a previously deleted page", new[]{
+    [ConsoleCommand("restore-page", "Prompt_RestorePage_Description", new[]{
         "id",
         "name",
         "parentid"
     })]
     public class RestorePage : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("name", "Prompt_RestorePage_FlagName", "String")]
         private const string FlagName = "name";
+
+        [FlagParameter("parentid", "Prompt_RestorePage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
+
+        [FlagParameter("id", "Prompt_RestorePage_FlagId", "Integer")]
         private const string FlagId = "id";
 
         private int PageId { get; set; }

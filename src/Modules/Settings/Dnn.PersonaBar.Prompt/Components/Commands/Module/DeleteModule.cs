@@ -8,12 +8,15 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("delete-module", "Delete a module instance", new[] { "id", "pageid" })]
+    [ConsoleCommand("delete-module", "Prompt_DeleteModule_Description", new[] { "id", "pageid" })]
     public class DeleteModule : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_DeleteModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("pageid", "Prompt_DeleteModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
         private int ModuleId { get; set; }

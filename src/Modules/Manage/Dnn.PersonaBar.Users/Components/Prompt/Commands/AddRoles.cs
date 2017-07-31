@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -10,7 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("add-roles", "Adds one or more DNN security roles to a user.", new[]{
+    [ConsoleCommand("add-roles", "Prompt_AddRoles_Description", new[]{
         "id",
         "roles",
         "start",
@@ -18,18 +17,25 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     })]
     public class AddRoles : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_AddRoles_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("roles", "Prompt_AddRoles_FlagRoles", "String", true)]
         private const string FlagRoles = "roles";
+
+        [FlagParameter("start", "Prompt_AddRoles_FlagStart", "DateTime")]
         private const string FlagStart = "start";
+
+        [FlagParameter("end", "Prompt_AddRoles_FlagEnd", "DateTime")]
         private const string FlagEnd = "end";
 
 
-        public int UserId { get; private set; }
-        public string Roles { get; private set; }
-        public DateTime? StartDate { get; private set; }
-        public DateTime? EndDate { get; private set; }
+        private int UserId { get; set; }
+        private string Roles { get; set; }
+        private DateTime? StartDate { get; set; }
+        private DateTime? EndDate { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

@@ -9,15 +9,18 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("purge-page", "Permanently deletes a page from the DNN Recycle Bin", new[]{
+    [ConsoleCommand("purge-page", "Prompt_PurgePage_Description", new[]{
         "id",
         "deletechildren"
     })]
     public class PurgePage : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_PurgePage_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("deletechildren", "Prompt_PurgePage_FlagDeleteChildren", "Boolean", "false")]
         private const string FlagDeleteChildren = "deletechildren";
 
         private int PageId { get; set; }
@@ -27,7 +30,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             PageId = GetFlagValue(FlagId, "Page Id", -1, true, true, true);
-            DeleteChildren = GetFlagValue(FlagDeleteChildren, "Delete Children", false, true);
+            DeleteChildren = GetFlagValue(FlagDeleteChildren, "Delete Children", false);
         }
 
         public override ConsoleResultModel Run()

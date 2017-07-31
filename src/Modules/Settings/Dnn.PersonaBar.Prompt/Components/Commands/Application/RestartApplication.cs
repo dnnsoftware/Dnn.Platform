@@ -7,7 +7,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
 {
-    [ConsoleCommand("restart-application", "Restarts the application and reloads the page")]
+    [ConsoleCommand("restart-application", "Prompt_RestartApplication_Description")]
     public class RestartApplication : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestartApplication));
@@ -33,6 +33,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
             return new ConsoleResultModel("Application Restarted") { MustReload = true };
         }
 
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
     }
 }

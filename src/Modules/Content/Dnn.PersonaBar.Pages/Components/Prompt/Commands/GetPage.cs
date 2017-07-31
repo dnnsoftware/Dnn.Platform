@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -11,17 +10,20 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-page", "Retrieves information about the specified or current page", new[]{
+    [ConsoleCommand("get-page", "Prompt_GetPage_Description", new[]{
         "id",
         "parentid",
         "name"
     })]
     public class GetPage : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourceFile;
+        public override string LocalResourceFile => Constants.LocalResourceFile;
 
+        [FlagParameter("name", "Prompt_GetPage_FlagName", "String")]
         private const string FlagName = "name";
+        [FlagParameter("id", "Prompt_GetPage_FlagId", "Integer")]
         private const string FlagId = "id";
+        [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
         private int PageId { get; set; } = -1;

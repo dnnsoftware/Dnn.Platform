@@ -11,7 +11,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("new-page", "Create a new page in the portal", new[]{
+    [ConsoleCommand("new-page", "Prompt_NewPage_Description", new[]{
         "title",
         "name",
         "url",
@@ -22,14 +22,27 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     })]
     public class NewPage : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourceFile;
+        public override string LocalResourceFile => Constants.LocalResourceFile;
 
+        [FlagParameter("parentid", "Prompt_NewPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
+
+        [FlagParameter("title", "Prompt_NewPage_FlagTitle", "String")]
         private const string FlagTitle = "title";
+
+        [FlagParameter("name", "Prompt_NewPage_FlagName", "String", true)]
         private const string FlagName = "name";
+
+        [FlagParameter("url", "Prompt_NewPage_FlagUrl", "String")]
         private const string FlagUrl = "url";
+
+        [FlagParameter("description", "Prompt_NewPage_FlagDescription", "String")]
         private const string FlagDescription = "description";
+
+        [FlagParameter("keywords", "Prompt_NewPage_FlagKeywords", "String")]
         private const string FlagKeywords = "keywords";
+
+        [FlagParameter("visible", "Prompt_NewPage_FlagVisible", "Boolean", "true")]
         private const string FlagVisible = "visible";
 
         private string Title { get; set; }

@@ -13,16 +13,23 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("add-module", "Adds a new module instance to a page", new[] { "name", "pageid", "pane", "title" })]
+    [ConsoleCommand("add-module", "Prompt_AddModule_Description", new[] { "name", "pageid", "pane", "title" })]
     public class AddModule : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
+        [FlagParameter("name", "Prompt_AddModule_FlagModuleName", "String", true)]
         private const string FlagModuleName = "name";
+
+        [FlagParameter("pageid", "Prompt_AddModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
+
+        [FlagParameter("pane", "Prompt_AddModule_FlagPane", "String", "ContentPane")]
         private const string FlagPane = "pane";
+
+        [FlagParameter("title", "Prompt_AddModule_FlagModuleTitle", "String")]
         private const string FlagModuleTitle = "title";
 
         private string ModuleName { get; set; }

@@ -6,26 +6,28 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("reset-password", "Resets the user's password", new[]{
+    [ConsoleCommand("reset-password", "Prompt_ResetPassword_Description", new[]{
         "id",
         "notify"
     })]
     public class ResetPassword : ConsoleCommandBase
     {
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        [FlagParameter("id", "Prompt_ResetPassword_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        [FlagParameter("notify", "Prompt_ResetPassword_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
 
-        public bool Notify { get; private set; }
-        public int? UserId { get; private set; }
+        private bool Notify { get; set; }
+        private int? UserId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
             UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            Notify = GetFlagValue(FlagNotify, "Notify", PortalSettings.EnableRegisterNotification);
+            Notify = GetFlagValue(FlagNotify, "Notify", false);
         }
 
         public override ConsoleResultModel Run()

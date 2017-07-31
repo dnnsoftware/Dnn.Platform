@@ -4,13 +4,16 @@ using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("reload", "Reloads the current page")]
+    [ConsoleCommand("reload", "Prompt_Reload_Description")]
     public class Reload : IConsoleCommand
     {
+        public string LocalResourceFile => Constants.LocalResourcesFile;
 
+        public string ResultHtml => Localization.GetString("Prompt_Reload_ResultHtml", LocalResourceFile);
         public string ValidationMessage
         {
             get

@@ -11,7 +11,7 @@ using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-task", "Updates a specific scheduled task with new information", new[]{
+    [ConsoleCommand("set-task", "Prompt_SetTask_Description", new[]{
         "id",
         "enabled"
     })]
@@ -19,7 +19,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
 
+        [FlagParameter("id", "Prompt_SetTask_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        [FlagParameter("enabled", "Prompt_SetTask_FlagEnabled", "Boolean", true)]
         private const string FlagEnabled = "enabled";
 
         private int TaskId { get; set; }
@@ -60,6 +63,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             }
         }
 
-        protected override string LocalResourceFile => Constants.LocalResourcesFile;
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
     }
 }
