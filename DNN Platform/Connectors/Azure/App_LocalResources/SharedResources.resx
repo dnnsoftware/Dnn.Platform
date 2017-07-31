@@ -150,4 +150,13 @@
   <data name="InvalidAccountKey.ErrorMessage" xml:space="preserve">
     <value>Input is not a valid Account Key.</value>
   </data>
+  <data name="InvalidAccountName.ErrorMessage" xml:space="preserve">
+    <value>Input is not a valid Account Name.</value>
+  </data>
+  <data name="AccountNameCannotBeEmpty.ErrorMessage" xml:space="preserve">
+    <value>Account Name cannot be empty.</value>
+  </data>
+  <data name="AccountKeyCannotBeEmpty.ErrorMessage" xml:space="preserve">
+    <value>Account Key cannot be empty.</value>
+  </data>
 </root>

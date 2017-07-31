@@ -233,6 +233,14 @@ namespace Dnn.AzureConnector.Components
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(azureAccountName))
+                {
+                    throw new Exception(Localization.GetString("AccountNameCannotBeEmpty.ErrorMessage", Constants.LocalResourceFile));
+                }
+                if (string.IsNullOrWhiteSpace(azureAccountKey))
+                {
+                    throw new Exception(Localization.GetString("AccountKeyCannotBeEmpty.ErrorMessage", Constants.LocalResourceFile));
+                }
                 StorageCredentialsAccountAndKey sc = new StorageCredentialsAccountAndKey(azureAccountName, azureAccountKey);
                 var csa = new CloudStorageAccount(sc, true);
                 var blobClient = csa.CreateCloudBlobClient();
@@ -271,23 +279,27 @@ namespace Dnn.AzureConnector.Components
                     throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile));
                 }
             }
-            catch (StorageClientException ex)
+            catch (StorageException ex)
             {
                 if (ex.ErrorCode == StorageErrorCode.AccountNotFound)
                 {
                     throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile));
                 }
-                else if (ex.ErrorCode == StorageErrorCode.AuthenticationFailure)
-                {
-                    throw new Exception(Localization.GetString("AuthenticationFailure.ErrorMessage", Constants.LocalResourceFile));
-                }
                 else if (ex.ErrorCode == StorageErrorCode.AccessDenied)
                 {
                     throw new Exception(Localization.GetString("AccessDenied.ErrorMessage", Constants.LocalResourceFile));
                 }
+                else
+                {
+                    throw new Exception(Localization.GetString("AuthenticationFailure.ErrorMessage", Constants.LocalResourceFile));
+                }
             }
-            catch (FormatException)
+            catch (FormatException ex)
             {
+                if (ex.GetType() == typeof(UriFormatException))
+                {
+                    throw new Exception(Localization.GetString("InvalidAccountName.ErrorMessage", Constants.LocalResourceFile));
+                }
                 throw new Exception(Localization.GetString("InvalidAccountKey.ErrorMessage", Constants.LocalResourceFile));
             }
             return false;
