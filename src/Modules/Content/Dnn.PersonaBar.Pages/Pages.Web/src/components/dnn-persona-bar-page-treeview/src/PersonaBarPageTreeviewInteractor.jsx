@@ -92,11 +92,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onSelection(id) {
+
         this._traverse((item, listItem) => {
-            (item.id === id) ? item.selected = true : item.selected = false;
-            this.setState({ pageList: listItem });
+            (item.id === id && item.canViewPage) ? item.selected = true : item.selected = false;
+            this.setState({ pageList: listItem }, ()=>{
+                item.selected ?  this.getPageInfo(id) : null;
+            });
+
         });
-        this.getPageInfo(id);
+
+
     }
 
     getListItemLI(item) {
