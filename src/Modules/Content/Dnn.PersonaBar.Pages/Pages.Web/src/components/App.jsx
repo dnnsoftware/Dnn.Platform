@@ -65,6 +65,8 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
 
+
+
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
         }
@@ -144,7 +146,7 @@ class App extends Component {
 
     onUpdatePage(){
         return new Promise((resolve) => {
-             this.props.onUpdatePage(this.state.activePage, () =>  resolve());
+             this.props.onUpdatePage(this.props.selectedPage, () =>  resolve());
         });
     }
 
@@ -364,10 +366,9 @@ class App extends Component {
         return Object.assign({}, this.state.activePage);
     }
 
-    onChangePageField(key, value) {
-        let activePage = Object.assign({},this.state.activePage);
-        activePage[key] = value;
-        this.setState({activePage});
+
+    onSelection(pageId){
+        this.props.onLoadPage(pageId);
     }
 
     onChangePageType(value){
@@ -376,21 +377,18 @@ class App extends Component {
         this.setState({activePage});
     }
 
-    onChangePermissions(value){
-        const activePage= this.state.activePage;
-        activePage.permissions = value;
-        this.setState({activePage});
-
-    }
 
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
         return PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
     }
 
 
+
     onCancel(){
         this.setState({activePage:{ pageType:"normal"}});
     }
+
+
 
     render_PagesTreeViewEditor(){
         return (
@@ -418,8 +416,8 @@ class App extends Component {
             const {props, state} = this;
             return (
                 <PageSettings
-                    selectedPage={state.activePage}
-                    AllowContentLocalization={(d)=>{}}
+                    selectedPage={this.props.selectedPage}
+                    AllowContentLocalization={(d)=>{console.log(d)}}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={ this.onCancel.bind(this) }
@@ -427,8 +425,8 @@ class App extends Component {
                     onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={ this.onChangePageField.bind(this) }
-                    onPermissionsChanged={this.onChangePermissions.bind(this)}
+                    onChangeField={ props.onChangePageField }
+                    onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={this.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}
                     onEditingPageModule={props.onEditingPageModule}
@@ -446,7 +444,7 @@ class App extends Component {
 
         return (
             <GridCell columnSize={70}  className="treeview-page-details" >
-                {(this.state.activePage) ? render_pageDetails() : render_emptyState() }
+                {(this.props.selectedPage) ? render_pageDetails() : render_emptyState() }
             </GridCell>
         );
     }
@@ -474,10 +472,13 @@ class App extends Component {
                         <GridCell columnSize={100} style={{padding:"20px"}} >
                             <GridCell columnSize={100} className="page-container">
                             <PersonaBarPageTreeviewInteractor
-                               setActivePage={ this.setActivePage.bind(this) }
-                               getActivePage={ this.getActivePage.bind(this) }
-                               saveDropState={this.onUpdatePage.bind(this)}
-                               onMovePage={this.onMovePage.bind(this)}
+                                activePage={this.props.selectedPage}
+                                setActivePage={ this.setActivePage.bind(this) }
+                                getActivePage={ this.getActivePage.bind(this) }
+                                saveDropState={this.onUpdatePage.bind(this)}
+                                onMovePage={this.onMovePage.bind(this)}
+                                onSelection={this.onSelection.bind(this)}
+
                             />
                             {this.render_PagesDetailEditor()}
                             </GridCell>

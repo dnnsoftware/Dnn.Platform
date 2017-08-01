@@ -11,7 +11,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     constructor() {
         super();
         this.state = {
-            level:1,
             rootLoaded: false,
             isTreeviewExpanded: false
         };
@@ -95,7 +94,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this._traverse((item, listItem) => {
             (item.id === id && item.canViewPage) ? item.selected = true : item.selected = false;
             this.setState({ pageList: listItem }, ()=>{
-                item.selected ?  this.getPageInfo(id) : null;
+                item.selected ?  this.props.onSelection(id) : null;
             });
 
         });
@@ -543,7 +542,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 }
 
 PersonaBarPageTreeviewInteractor.propTypes = {
-    OnSelect: PropTypes.func.isRequired,
+    onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired
