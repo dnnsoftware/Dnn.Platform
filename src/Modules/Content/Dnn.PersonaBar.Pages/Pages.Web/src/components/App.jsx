@@ -428,7 +428,7 @@ class App extends Component {
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={ this.showCancelWithoutSavingDialogInEditMode.bind(this) }
-                    onDelete={ props.onDeletePage.bind(this) }
+                    onDelete={ this.onDeleteSettings.bind(this) }
                     onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}

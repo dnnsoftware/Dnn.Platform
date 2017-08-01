@@ -20,10 +20,13 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentDidMount() {
-        this.setState({activePage: this.props.activePage});
+        this.init();
 
     }
 
+    init(){
+        this.setState({activePage: this.props.activePage});
+    }
 
     GET(url, setState) {
         return new Promise((resolve, reject) => {
