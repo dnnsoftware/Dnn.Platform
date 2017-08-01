@@ -11,7 +11,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     constructor() {
         super();
         this.state = {
-            level:1,
             rootLoaded: false,
             isTreeviewExpanded: false
         };
@@ -21,9 +20,13 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentDidMount() {
+        this.init();
 
     }
 
+    init(){
+        this.setState({activePage: this.props.activePage});
+    }
 
     GET(url, setState) {
         return new Promise((resolve, reject) => {
@@ -93,10 +96,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onSelection(id) {
         this._traverse((item, listItem) => {
-            (item.id === id) ? item.selected = true : item.selected = false;
-            this.setState({ pageList: listItem });
+            (item.id === id && item.canViewPage) ? item.selected = true : item.selected = false;
+            this.setState({ pageList: listItem }, ()=>{
+                item.selected ?  this.props.onSelection(id) : null;
+            });
+
         });
-        this.getPageInfo(id);
     }
 
     getListItemLI(item) {
@@ -123,7 +128,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             li.selected = false;
             if (li.id === item.id) {
                 li.selected = true;
-                this.setState({ draggedItem: li, pageList: list, activePage: item });
+                this.setState({ draggedItem: li, pageList: list, activePage: item }, ()=>{
+
+                });
             }
         });
     }
@@ -530,6 +537,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     render() {
+
         return (
             <GridCell columnSize={30} className="dnn-persona-bar-treeview">
                 {this.render_collapseExpand()}
@@ -541,7 +549,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 }
 
 PersonaBarPageTreeviewInteractor.propTypes = {
-    OnSelect: PropTypes.func.isRequired,
+    activePage: PropTypes.object.isRequired,
+    onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired

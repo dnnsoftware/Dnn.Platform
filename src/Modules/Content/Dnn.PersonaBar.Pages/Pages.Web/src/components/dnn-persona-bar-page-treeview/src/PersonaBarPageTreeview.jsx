@@ -23,7 +23,7 @@ export class PersonaBarPageTreeview extends Component {
         let {name, tabpath} = item;
         let newLength = tabpath.split(/\//).length*2+1;
         newLength--;
-        let depth = ( newLength < 20) ?  newLength: 19;
+        let depth = ( newLength < 20) ?  newLength: 1;
         return (item.name.length > maxLength-depth) ? `${item.name.slice(0,maxLength-depth)}...` : item.name;
     }
 
@@ -117,7 +117,7 @@ export class PersonaBarPageTreeview extends Component {
                             onDragEnd={()=>{onDragEnd(item); }}
                          >
                             {this.render_parentExpandButton(item)}
-                            <PersonaBarPageIcon iconType={item.pageType}/>
+                            <PersonaBarPageIcon iconType={item.pageType} selected={item.selected}/>
                             <span
                                 className={`item-name`}
                                 onClick={()=>{ onSelection(item.id); }}

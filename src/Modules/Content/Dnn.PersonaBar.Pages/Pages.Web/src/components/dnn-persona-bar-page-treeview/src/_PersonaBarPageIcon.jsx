@@ -19,13 +19,13 @@ export default class PersonaBarPageIcon extends Component {
                 return ( <div dangerouslySetInnerHTML={{ __html: TreeLinkIcon }} /> );
 
             default:
-                return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);
+                return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }}/>);
         }
     }
 
     render() {
         return (
-            <div className="dnn-persona-bar-treeview-icon">
+            <div  className={(this.props.selected ) ? "dnn-persona-bar-treeview-icon selected-item " : "dnn-persona-bar-treeview-icon"}>
                 {this.selectIcon(this.props.iconType)}
             </div>
         );
@@ -34,5 +34,6 @@ export default class PersonaBarPageIcon extends Component {
 }
 
 PersonaBarPageIcon.propTypes = {
-    iconType: PropTypes.number.isRequired
+    iconType: PropTypes.number.isRequired,
+    selected: PropTypes.bool.isRequired
 };

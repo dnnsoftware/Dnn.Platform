@@ -65,6 +65,8 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
 
+
+
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
         }
@@ -142,11 +144,10 @@ class App extends Component {
         this.props.onCreatePage(input);
     }
 
-    onUpdatePage(update){
+    onUpdatePage(input){
         return new Promise((resolve) => {
-            this.setState({activePage: update}, ()=>{
-                this.props.onUpdatePage(update, () =>  resolve());
-            });
+            const update = (input && input.tabId) ? input  :  this.props.selectedPage;
+            this.props.onUpdatePage(update, () =>  resolve());
         });
     }
 
@@ -156,8 +157,6 @@ class App extends Component {
     }
 
     onCancelSettings() {
-
-
         if (this.props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
         }
@@ -180,9 +179,25 @@ class App extends Component {
         const {props} = this;
         props.onClearCache();
     }
-    
+
     showCancelWithoutSavingDialog() {
-        const onConfirm = () => this.props.onCancelPage();
+        const onConfirm = () =>{
+            this.props.onCancelPage();
+        };
+
+        utils.confirm(
+            Localization.get("CancelWithoutSaving"),
+            Localization.get("Close"),
+            Localization.get("Cancel"),
+            onConfirm);
+    }
+
+
+    showCancelWithoutSavingDialogInEditMode(){
+        const onConfirm = () =>{
+            this.props.onLoadPage(this.props.selectedPage.tabId);
+        };
+
         utils.confirm(
             Localization.get("CancelWithoutSaving"),
             Localization.get("Close"),
@@ -358,9 +373,9 @@ class App extends Component {
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
 
-            this.setState({activePage: pageInfo}, ()=>{
-                resolve();
-            });
+            this.props.onLoadPage(pageInfo.tabId);
+            resolve();
+
         });
     }
 
@@ -368,20 +383,19 @@ class App extends Component {
         return Object.assign({}, this.state.activePage);
     }
 
-    onChangePageField(key, value) {
-        let activePage = Object.assign({},this.state.activePage);
-        activePage[key] = value;
-        this.setState({activePage});
+
+    onSelection(pageId){
+        const {selectedPage} = this.props;
+        if(!selectedPage || selectedPage.tabId !== pageId){
+            this.props.onLoadPage(pageId);
+        }
     }
+
 
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
         return PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
     }
 
-
-    onCancel(){
-        this.setState({activePage:{ pageType:"normal"}});
-    }
 
     render_PagesTreeViewEditor(){
         return (
@@ -409,18 +423,18 @@ class App extends Component {
             const {props, state} = this;
             return (
                 <PageSettings
-                    selectedPage={state.activePage}
+                    selectedPage={this.props.selectedPage}
                     AllowContentLocalization={(d)=>{}}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
-                    onCancel={ this.onCancel.bind(this) }
-                    onDelete={ props.onDeletePage.bind(this) }
+                    onCancel={ this.showCancelWithoutSavingDialogInEditMode.bind(this) }
+                    onDelete={ this.onDeleteSettings.bind(this) }
                     onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={ this.onChangePageField.bind(this) }
+                    onChangeField={ props.onChangePageField }
                     onPermissionsChanged={props.onPermissionsChanged}
-                    onChangePageType={props.onChangePageType}
+                    onChangePageType={props.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}
                     onEditingPageModule={props.onEditingPageModule}
                     onCancelEditingPageModule={props.onCancelEditingPageModule}
@@ -434,10 +448,10 @@ class App extends Component {
                 />
             );
         };
-
+        const {selectedPage} = this.props;
         return (
             <GridCell columnSize={70}  className="treeview-page-details" >
-                {(this.state.activePage) ? render_pageDetails() : render_emptyState() }
+                {(selectedPage && selectedPage.tabId) ? render_pageDetails() : render_emptyState() }
             </GridCell>
         );
     }
@@ -465,10 +479,13 @@ class App extends Component {
                         <GridCell columnSize={100} style={{padding:"20px"}} >
                             <GridCell columnSize={100} className="page-container">
                             <PersonaBarPageTreeviewInteractor
-                               setActivePage={ this.setActivePage.bind(this) }
-                               getActivePage={ this.getActivePage.bind(this) }
-                               saveDropState={this.onUpdatePage.bind(this)}
-                               onMovePage={this.onMovePage.bind(this)}
+                                activePage={this.props.selectedPage}
+                                setActivePage={ this.setActivePage.bind(this) }
+                                getActivePage={ this.getActivePage.bind(this) }
+                                saveDropState={this.onUpdatePage.bind(this)}
+                                onMovePage={this.onMovePage.bind(this)}
+                                onSelection={this.onSelection.bind(this)}
+
                             />
                             {this.render_PagesDetailEditor()}
                             </GridCell>

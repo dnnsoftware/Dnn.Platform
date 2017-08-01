@@ -81,7 +81,7 @@ class PageSettings extends Component {
     getCopyPermissionsToDescendantPagesButton() {
         return <Button 
                 type="secondary"
-                onClick={this.props.onCopyPermissionsToDescendantPages}> 
+                onClick={this.props.onCopyPermissionsToDescendantPages}>
                 {Localization.get("CopyPermissionsToDescendantPages")}
             </Button>;
     }
@@ -194,9 +194,9 @@ class PageSettings extends Component {
             if (isLocalizationTabVisible) {
                 headers.push(Localization.get("Localization"));
             }
-            tabs.push(<div className="dnn-simple-tab-item permission-tab">                
+            tabs.push(<div className="dnn-simple-tab-item permission-tab">
                         <PermissionGrid
-                            permissions={selectedPage.permissions} 
+                            permissions={selectedPage.permissions}
                             onPermissionsChanged={this.props.onPermissionsChanged} />
                         {permissionFooter}
                     </div>);

@@ -45,7 +45,6 @@ const loadPage = function (dispatch, pageId) {
     }
 
     PagesService.getPage(pageId).then(response => {
-
         dispatch({
             type: ActionTypes.LOADED_PAGE,
             data: {
@@ -236,7 +235,7 @@ const pageActions = {
     },
 
 
-    changePageField(key, value, selectedPage) {
+    changePageField(key, value) {
 
         return (dispatch, getState) => {
             const { pages } = getState();
@@ -265,9 +264,11 @@ const pageActions = {
     },
 
     changePermissions(permissions) {
-        return {
-            type: ActionTypes.CHANGE_PERMISSIONS,
-            permissions
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_PERMISSIONS,
+                permissions
+            });
         };
     },
 

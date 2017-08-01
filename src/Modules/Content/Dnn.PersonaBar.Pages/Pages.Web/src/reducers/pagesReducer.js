@@ -9,7 +9,7 @@ export default function pagesReducer(state = {
     urlChanged: false,
     dirtyPage: false,
     selectedPageSettingTab: 0
-}, action) {    
+}, action) {
 
     const changeField = function changeField(field, value) {
         const newSelectedPage = {
