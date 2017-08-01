@@ -417,7 +417,7 @@ class App extends Component {
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
-                    AllowContentLocalization={(d)=>{console.log(d)}}
+                    AllowContentLocalization={(d)=>{}}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={ this.onCancel.bind(this) }

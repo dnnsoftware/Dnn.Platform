@@ -45,7 +45,6 @@ const loadPage = function (dispatch, pageId) {
     }
 
     PagesService.getPage(pageId).then(response => {
-        console.log(response)
         dispatch({
             type: ActionTypes.LOADED_PAGE,
             data: {
