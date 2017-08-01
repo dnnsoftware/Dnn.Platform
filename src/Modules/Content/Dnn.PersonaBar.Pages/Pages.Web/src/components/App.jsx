@@ -377,7 +377,10 @@ class App extends Component {
     }
 
     onChangePermissions(value){
-        console.log(value);
+        const activePage= this.state.activePage;
+        activePage.permissions = value;
+        this.setState({activePage});
+
     }
 
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
