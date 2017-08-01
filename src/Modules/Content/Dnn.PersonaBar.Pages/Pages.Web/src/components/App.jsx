@@ -178,9 +178,25 @@ class App extends Component {
         const {props} = this;
         props.onClearCache();
     }
-    
+
     showCancelWithoutSavingDialog() {
-        const onConfirm = () => this.props.onCancelPage();
+        const onConfirm = () =>{
+            this.props.onCancelPage();
+        };
+
+        utils.confirm(
+            Localization.get("CancelWithoutSaving"),
+            Localization.get("Close"),
+            Localization.get("Cancel"),
+            onConfirm);
+    }
+
+
+    showCancelWithoutSavingDialogInEditMode(){
+        const onConfirm = () =>{
+            this.props.onLoadPage(this.props.selectedPage.tabId);
+        };
+
         utils.confirm(
             Localization.get("CancelWithoutSaving"),
             Localization.get("Close"),
@@ -371,23 +387,10 @@ class App extends Component {
         this.props.onLoadPage(pageId);
     }
 
-    onChangePageType(value){
-        const activePage = this.state.activePage;
-        activePage.pageType = value;
-        this.setState({activePage});
-    }
-
 
     onMovePage({Action, PageId, ParentId, RelatedPageId}){
         return PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
     }
-
-
-
-    onCancel(){
-        this.setState({activePage:{ pageType:"normal"}});
-    }
-
 
 
     render_PagesTreeViewEditor(){
@@ -420,14 +423,14 @@ class App extends Component {
                     AllowContentLocalization={(d)=>{}}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
-                    onCancel={ this.onCancel.bind(this) }
+                    onCancel={ this.showCancelWithoutSavingDialogInEditMode.bind(this) }
                     onDelete={ props.onDeletePage.bind(this) }
                     onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={ props.onChangePageField }
                     onPermissionsChanged={props.onPermissionsChanged}
-                    onChangePageType={this.onChangePageType.bind(this)}
+                    onChangePageType={props.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}
                     onEditingPageModule={props.onEditingPageModule}
                     onCancelEditingPageModule={props.onCancelEditingPageModule}
