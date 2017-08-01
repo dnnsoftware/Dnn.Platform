@@ -444,10 +444,10 @@ class App extends Component {
                 />
             );
         };
-
+        const {selectedPage} = this.props;
         return (
             <GridCell columnSize={70}  className="treeview-page-details" >
-                {(this.props.selectedPage) ? render_pageDetails() : render_emptyState() }
+                {(selectedPage && selectedPage.tabId) ? render_pageDetails() : render_emptyState() }
             </GridCell>
         );
     }
