@@ -243,4 +243,28 @@
   <data name="BackToThemes.Text" xml:space="preserve">
     <value>Back to Themes</value>
   </data>
+  <data name="GlobalThemes.Text" xml:space="preserve">
+    <value>Global Themes</value>
+  </data>
+  <data name="SiteThemes.Text" xml:space="preserve">
+    <value>Site Themes</value>
+  </data>
+  <data name="ThemeLevelAll.Text" xml:space="preserve">
+    <value>All Themes</value>
+  </data>
+  <data name="ThemeLevelGlobal.Text" xml:space="preserve">
+    <value>Global Themes</value>
+  </data>
+  <data name="ThemeLevelSite.Text" xml:space="preserve">
+    <value>Site Themes</value>
+  </data>
+  <data name="ShowFilterLabel">
+    <value>Showing:</value>
+  </data>
+  <data name="NoThemes">
+    <value>No Themes Found.</value>
+  </data>
+  <data name="NoThemesMessage">
+    <value>Try adjusting your search filters or install a new theme to your library.</value>
+  </data>
 </root>
