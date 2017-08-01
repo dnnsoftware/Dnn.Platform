@@ -20,6 +20,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentDidMount() {
+        this.setState({activePage: this.props.activePage});
 
     }
 
@@ -124,7 +125,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             li.selected = false;
             if (li.id === item.id) {
                 li.selected = true;
-                this.setState({ draggedItem: li, pageList: list, activePage: item });
+                this.setState({ draggedItem: li, pageList: list, activePage: item }, ()=>{
+
+                });
             }
         });
     }
@@ -185,6 +188,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             .then((data) => {
                 let activePage = Object.assign({}, this.state.activePage);
                 activePage.parentId = item.id;
+                console.log('on drop', activePage);
                 return this.props.saveDropState(activePage);
             })
             .then(this.getPageInfo.bind(this, activePage.id))
@@ -531,6 +535,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     render() {
+
         return (
             <GridCell columnSize={30} className="dnn-persona-bar-treeview">
                 {this.render_collapseExpand()}
@@ -542,6 +547,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 }
 
 PersonaBarPageTreeviewInteractor.propTypes = {
+    activePage: PropTypes.object.isRequired,
     onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
