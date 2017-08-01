@@ -76,9 +76,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 },
                 Records = modules.Count,
                 Output =
-                    pageNo <= totalPages
+                    pageNo < totalPages
                         ? LocalizeString("Prompt_ListModulesOutput")
-                        : LocalizeString("Prompt_NoModules")
+                        : modules.Count == 0 ? LocalizeString("Prompt_NoModules") : ""
             };
         }
     }

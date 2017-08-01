@@ -38,7 +38,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                      t.IsClass &&
                      !t.IsAbstract &&
                      t.IsVisible &&
-                     typeof(ConsoleCommandBase).IsAssignableFrom(t));
+                     typeof(IConsoleCommand).IsAssignableFrom(t));
             foreach (var cmd in allCommandTypes)
             {
                 var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault();

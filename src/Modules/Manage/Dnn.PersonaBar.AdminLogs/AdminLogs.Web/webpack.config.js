@@ -33,7 +33,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"],        
+        extensions: ["", ".js", ".json", ".jsx"],
         root: [
             path.resolve('./src'),          // Look in src first
             path.resolve('./node_modules')  // Last fallback to node_modules
@@ -42,16 +42,21 @@ module.exports = {
 
     externals: require("dnn-webpack-externals"),
 
-    plugins: isProduction ? [
-        new webpack.optimize.UglifyJsPlugin(),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.DefinePlugin({
-            VERSION: JSON.stringify(packageJson.version),
-            "process.env": {
-                "NODE_ENV": JSON.stringify("production")
-            }
-        })
-    ] : [
+    plugins:
+    isProduction
+        ?
+        [
+            new webpack.optimize.UglifyJsPlugin(),
+            new webpack.optimize.DedupePlugin(),
+            new webpack.DefinePlugin({
+                VERSION: JSON.stringify(packageJson.version),
+                "process.env": {
+                    "NODE_ENV": JSON.stringify("production")
+                }
+            })
+        ]
+        :
+        [
             new webpack.DefinePlugin({
                 VERSION: JSON.stringify(packageJson.version)
             })

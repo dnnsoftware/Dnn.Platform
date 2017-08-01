@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (args.Length != 1)
             {
-                if (args.Length == 2 && !UserId.HasValue && Email == null && Username == null)
+                if (args.Length == 2 && !UserId.HasValue && string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Username))
                 {
                     // only one value passed and it's not a flagged value. Try to interpret it.
                     if (args[1].Contains("@"))

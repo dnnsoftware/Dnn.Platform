@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
             }
-            return new ConsoleResultModel(tab.FullUrl);
+            return new ConsoleResultModel(tab.FullUrl) {MustReload = true};
         }
     }
 }
