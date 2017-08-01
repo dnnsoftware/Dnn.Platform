@@ -79,7 +79,7 @@ class Theme extends Component {
 
         let isHost = utils.params.settings.isHost;
         return <span className="actions">
-            <ul className={(isHost || theme.level === 1) ? "" : "short"}>
+            <ul>
                 <li onClick={this.previewTheme.bind(this) } title={Localization.get("PreviewTheme") }><SvgIcon name="View" /></li>
                 {canEdit && <li onClick={this.applyDefaultTheme.bind(this) } title={Localization.get("ApplyTheme") }><SvgIcon name="Apply" /></li>}
                 {((isHost || theme.level === 1 || theme.level === 2) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this) } title={Localization.get("DeleteTheme") }><SvgIcon name="Trash" /></li>}

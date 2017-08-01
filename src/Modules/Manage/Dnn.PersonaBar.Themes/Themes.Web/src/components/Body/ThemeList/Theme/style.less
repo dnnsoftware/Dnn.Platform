@@ -49,28 +49,22 @@
 
             ul{
                 margin: 0;
-                display: inline-block;
+                white-space: nowrap;
                 padding: 0;
                 list-style: none;
-                width: 116px;
                 height: 32px;
                 position: absolute;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
 
-                &.short{
-                    width: 84px;
-                }
-
                 li{
                     width: 32px;
                     height: 32px;
-                    float: left;
                     margin-left: 10px;
                     position: relative;
                     cursor: pointer;
-
+                    display: inline-block;
                     svg{
                         width: 32px;
                         fill: @white;
