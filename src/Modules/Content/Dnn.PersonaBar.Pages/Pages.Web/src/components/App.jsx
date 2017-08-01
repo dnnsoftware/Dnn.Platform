@@ -146,7 +146,7 @@ class App extends Component {
 
     onUpdatePage(input){
         return new Promise((resolve) => {
-            const update = input || this.props.selectedPage;
+            const update = (input && input.tabId) ? input  :  this.props.selectedPage;
             this.props.onUpdatePage(update, () =>  resolve());
         });
     }
@@ -385,7 +385,10 @@ class App extends Component {
 
 
     onSelection(pageId){
-        this.props.onLoadPage(pageId);
+        const {selectedPage} = this.props;
+        if(!selectedPage || selectedPage.tabId !== pageId){
+            this.props.onLoadPage(pageId);
+        }
     }
 
 
