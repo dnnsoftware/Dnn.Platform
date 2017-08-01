@@ -147,7 +147,6 @@ class App extends Component {
     onUpdatePage(input){
         return new Promise((resolve) => {
             const update = input || this.props.selectedPage;
-            console.log('in update: ', update);
             this.props.onUpdatePage(update, () =>  resolve());
         });
     }
@@ -373,7 +372,7 @@ class App extends Component {
         return new Promise((resolve)=>{
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
-        
+
             this.props.onLoadPage(pageInfo.tabId);
             resolve();
 

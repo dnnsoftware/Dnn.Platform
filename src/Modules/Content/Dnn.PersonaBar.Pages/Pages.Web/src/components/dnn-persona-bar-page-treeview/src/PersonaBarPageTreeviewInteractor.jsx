@@ -188,7 +188,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             .then((data) => {
                 let activePage = Object.assign({}, this.state.activePage);
                 activePage.parentId = item.id;
-                console.log('on drop', activePage);
                 return this.props.saveDropState(activePage);
             })
             .then(this.getPageInfo.bind(this, activePage.id))
