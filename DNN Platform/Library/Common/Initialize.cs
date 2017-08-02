@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
@@ -34,6 +35,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
@@ -260,6 +262,7 @@ namespace DotNetNuke.Common
                     Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
                     //Try and Upgrade to Current Framewok
                     Upgrade.TryUpgradeNETFramework();
+                    Upgrade.CheckFipsCompilanceAssemblies();
 
                     //Log Server information
                     ServerController.UpdateServerActivity(new ServerInfo());
@@ -273,6 +276,8 @@ namespace DotNetNuke.Common
                     ServicesRoutingManager.RegisterServiceRoutes();
 
                     ModuleInjectionManager.RegisterInjectionFilters();
+
+                    ConnectionsManager.Instance.RegisterConnections();
 
                     //Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
@@ -413,7 +418,29 @@ namespace DotNetNuke.Common
                 log.AddProperty("Shutdown Details", shutdownDetail);
                 LogController.Instance.AddLog(log);
 
-                Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                // enhanced shutdown logging
+                var runtime = typeof(HttpRuntime).InvokeMember("_theRuntime",
+                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
+                    null, null, null) as HttpRuntime;
+
+                if (runtime == null)
+                {
+                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                }
+                else
+                {
+                    var shutDownMessage = runtime.GetType().InvokeMember("_shutDownMessage",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    var shutDownStack = runtime.GetType().InvokeMember("_shutDownStack",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    Logger.Info("Application shutting down. Reason: " + shutdownDetail
+                                + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
+                                + Environment.NewLine + shutDownStack);
+                }
             }
             catch (Exception exc)
             {

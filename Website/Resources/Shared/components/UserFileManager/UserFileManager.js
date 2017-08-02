@@ -162,9 +162,9 @@
 	                $wrap.dialog("widget").find('.ui-dialog-buttonpane').empty();
                     $div.appendTo($wrap.dialog("widget").find('.ui-dialog-buttonpane'));
                     $wrap.dialog("widget").find('.ui-dialog-buttonset').hide();
-					
-					if(typeof $.ui.dialog.prototype.options.open == 'function')
-					    $.ui.dialog.prototype.options.open();
+                    if (typeof $.ui.dialog.prototype.options.open == 'function') {
+                        $.ui.dialog.prototype.options.open.apply(this, arguments);
+                    }
                 },
                 buttons: [{}],
                 close: function () {

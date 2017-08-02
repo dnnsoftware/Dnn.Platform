@@ -501,8 +501,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private void UpdateModuleOrder(int tabId, TabVersionDetail detailToRestore)
         {
-            var restoredModule = _moduleController.GetModule(detailToRestore.ModuleId, tabId, true);            
-            UpdateModuleInfoOrder(restoredModule, detailToRestore);
+            var restoredModule = _moduleController.GetModule(detailToRestore.ModuleId, tabId, true);
+            if (restoredModule != null)
+            {
+                UpdateModuleInfoOrder(restoredModule, detailToRestore);
+            }
         }
 
         private void UpdateModuleInfoOrder(ModuleInfo module, TabVersionDetail detailToRestore)
@@ -704,6 +707,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private int RollBackDetail(int tabId, TabVersionDetail unPublishedDetail)
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
+            if (moduleInfo == null) return Null.NullInteger;
 
             var versionableController = GetVersionableController(moduleInfo);
             if (versionableController == null) return Null.NullInteger;
@@ -720,7 +724,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
 
-            if (_moduleController.IsSharedModule(moduleInfo))
+            if (moduleInfo == null || _moduleController.IsSharedModule(moduleInfo))
             {
                 return;
             }

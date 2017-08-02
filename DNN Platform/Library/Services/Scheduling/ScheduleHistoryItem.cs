@@ -34,8 +34,7 @@ namespace DotNetNuke.Services.Scheduling
     [Serializable]
     public class ScheduleHistoryItem : ScheduleItem
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ScheduleHistoryItem));
-        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private static readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger(typeof(ScheduleHistoryItem));
 
         private StringBuilder _LogNotes;
         private int _ScheduleHistoryID;
@@ -235,7 +234,8 @@ namespace DotNetNuke.Services.Scheduling
         public virtual void AddLogNote(string notes)
         {
             _LogNotes.Append(notes);
-            Logger.Trace(notes.Replace(@"<br/>", Environment.NewLine));
+            if (_tracelLogger.IsTraceEnabled)
+                _tracelLogger.Trace(notes.Replace(@"<br/>", Environment.NewLine));
         }
 
         public override void Fill(IDataReader dr)
@@ -246,7 +246,7 @@ namespace DotNetNuke.Services.Scheduling
             Succeeded = Null.SetNullBoolean(dr["Succeeded"]);
             LogNotes = Null.SetNullString(dr["LogNotes"]);
             Server = Null.SetNullString(dr["Server"]);
-            base.FillInternal(dr);
+            FillInternal(dr);
         }
     }
 }

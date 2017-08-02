@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
             if (type == null)
             {
                 //This package type not registered
@@ -331,7 +331,7 @@ namespace DotNetNuke.Services.Installer.Installers
             Package.PackageType = Util.ReadAttribute(manifestNav, "type", Log, Util.EXCEPTION_TypeMissing);
 
             //If Skin or Container then set PortalID
-            if (Package.PackageType == "Skin" || Package.PackageType == "Container")
+            if (Package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) || Package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase))
             {
                 Package.PortalID = Package.InstallerInfo.PortalID;
             }
@@ -360,17 +360,18 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             //Attempt to get the Package from the Data Store (see if its installed)
-            var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+            var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
 
             if (packageType.SupportsSideBySideInstallation)
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name
-                                                                                                            && p.PackageType == Package.PackageType
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name.Equals(Package.Name, StringComparison.OrdinalIgnoreCase)
+                                                                                                            && p.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase)
                                                                                                             && p.Version == Package.Version);                
             }
             else
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.PackageType == Package.PackageType);
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name.Equals(Package.Name, StringComparison.OrdinalIgnoreCase) 
+                                                                                                            && p.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
             }
 
             if (_installedPackage != null)

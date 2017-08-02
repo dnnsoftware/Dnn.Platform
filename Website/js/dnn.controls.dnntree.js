@@ -1,6 +1,6 @@
 ﻿
 Type.registerNamespace('dnn.controls');dnn.extend(dnn.controls,{initTree:function(ctl)
-{if(ctl)
+{if(ctl&&dnn.controls.controls[ctl.id]==null)
 {var tree=new dnn.controls.DNNTree(ctl);tree.initialize();return tree;}}});dnn.controls.DNNTree=function(o)
 {dnn.controls.DNNTree.initializeBase(this,[o]);this.rootNode=null;this.nodes=[];this._loadNodes();this.hoverTreeNode=null;this.selTreeNode=null;this.css=this.getProp('css','');this.cssChild=this.getProp('csschild','');this.cssHover=this.getProp('csshover','');this.cssSel=this.getProp('csssel','');this.cssIcon=this.getProp('cssicon','');this.sysImgPath=this.getProp('sysimgpath','images/');this.imageList=this.getProp('imagelist','').split(',');this.expandImg=this.getProp('expimg','');this.workImg=this.getProp('workimg','dnnanim.gif');this.animf=new Number(this.getProp('animf','5'));this.collapseImg=this.getProp('colimg','');this.indentWidth=new Number(this.getProp('indentw','10'));if(this.indentWidth==0)
 this.indentWidth=10;this.checkBoxes=this.getProp('checkboxes','0')=='1';this.checkBoxMode=new Number(this.getProp('cbm','0'));this.target=this.getProp('target','');this.defaultJS=this.getProp('js','');this.postBack=this.getProp('postback','');this.callBack=this.getProp('callback','');this.callBackStatFunc=this.getProp('callbackSF','');if(this.callBackStatFunc.length>0)

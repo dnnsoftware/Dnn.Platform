@@ -448,7 +448,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //DNN-26777 
-            new PortalSecurity().SignOut();
+            PortalSecurity.Instance.SignOut();
             Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId));
         }
 

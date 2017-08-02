@@ -490,7 +490,7 @@ namespace DotNetNuke.Entities.Portals
 		{
 			get
 			{
-				if (HttpContext.Current.Request.IsAuthenticated)
+				if (HttpContext.Current!= null && HttpContext.Current.Request.IsAuthenticated)
 				{
 					return UserInfo.UserID;
 				}

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using DotNetNuke.Application;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -24,7 +25,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
         }
 
         private string _beaconEndpoint;
-        private readonly SHA256 _sha256 = SHA256.Create();
 
         public string GetBeaconEndpoint()
         {
@@ -121,7 +121,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
         private string GetHash(string data)
         {
-            return Convert.ToBase64String(_sha256.ComputeHash(Encoding.UTF8.GetBytes(data)));
+            using (var sha256 = CryptographyUtils.CreateSHA256())
+            {
+                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
+                return Convert.ToBase64String(hash);
+            }
         }
 
         private static RolesEnum GetUserRolesBitValues(UserInfo user)

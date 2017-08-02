@@ -1390,20 +1390,27 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DeleteFiles(Array arrPaths)
         {
-            string strExceptions = "";
-            for (int i = 0; i < arrPaths.Length; i++)
+            var strExceptions = "";
+            for (var i = 0; i < arrPaths.Length; i++)
             {
-                string strPath = arrPaths.GetValue(i).ToString();
-                if (strPath.IndexOf("'") != -1)
+                var strPath = (arrPaths.GetValue(i) ?? "").ToString();
+                var pos = strPath.IndexOf("'", StringComparison.Ordinal);
+                if (pos != -1)
                 {
-                    strPath = strPath.Substring(0, strPath.IndexOf("'"));
+                    // the (') represents a comment to the end of the line
+                    strPath = strPath.Substring(0, pos);
                 }
-                if (!String.IsNullOrEmpty(strPath.Trim()))
+
+                strPath = strPath.Trim().Replace("/", "\\").TrimStart('\\');
+                if (!string.IsNullOrEmpty(strPath))
                 {
-                    strPath = Globals.ApplicationMapPath + "\\" + strPath;
-                    if (strPath.EndsWith("\\"))
+                    strPath = Path.Combine(Globals.ApplicationMapPath, strPath);
+                    if (strPath.EndsWith("\\") && Directory.Exists(strPath))
                     {
-                        if (Directory.Exists(strPath))
+                        var directoryInfo = new System.IO.DirectoryInfo(strPath);
+                        var applicationPath = Globals.ApplicationMapPath + "\\";
+                        if (directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase)
+                                && !directoryInfo.FullName.Equals(applicationPath, StringComparison.InvariantCultureIgnoreCase))
                         {
                             try
                             {
@@ -1412,7 +1419,7 @@ namespace DotNetNuke.Common.Utilities
                             catch (Exception ex)
                             {
                                 Logger.Error(ex);
-                                strExceptions += "Error: " + ex.Message + Environment.NewLine;
+                                strExceptions += $"Processing folder ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                             }
                         }
                     }
@@ -1428,7 +1435,7 @@ namespace DotNetNuke.Common.Utilities
                             catch (Exception ex)
                             {
                                 Logger.Error(ex);
-                                strExceptions += "Error: " + ex.Message + Environment.NewLine;
+                                strExceptions += $"Processing file ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                             }
                         }
                     }
@@ -1468,7 +1475,8 @@ namespace DotNetNuke.Common.Utilities
 
         public static void DeleteFolderRecursive(string strRoot)
         {
-            if (String.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot.Trim()))
+            strRoot = strRoot.Replace("/", "\\");
+            if (string.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot.Trim()))
             {   Logger.Info(strRoot + " does not exist. ");
                 return;
             }
@@ -1493,6 +1501,7 @@ namespace DotNetNuke.Common.Utilities
 
             try
             {
+                Directory.SetAttributes(strRoot, FileAttributes.Normal);
                 Directory.Delete(strRoot);
             }
             catch (Exception ex)

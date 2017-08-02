@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class Vocabulary : BaseEntityInfo, IHydratable
     {
-        private static readonly PortalSecurity Security = new PortalSecurity();
+        private static readonly PortalSecurity Security = PortalSecurity.Instance;
 
         private string _Description;
         private bool _IsSystem;

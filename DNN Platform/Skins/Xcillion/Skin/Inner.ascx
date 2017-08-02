@@ -43,8 +43,7 @@
                         <dnn:SEARCH ID="dnnSearch" runat="server" ShowSite="false" ShowWeb="false" EnableTheming="true" Submit="Search" CssClass="SearchButton" />
                     </div>
                     <%-- search action for Search function on small devices --%>
-                    <a href="#" id="search-action">
-                    </a>
+                    <a id="search-action" aria-label="Search"></a>
                     <div id="login" class="pull-right">
                         <dnn:LOGIN ID="dnnLogin" CssClass="LoginLink" runat="server" LegacyMode="false" />
                         <dnn:USER ID="dnnUser" runat="server" LegacyMode="false" />
@@ -88,7 +87,7 @@
                 <div id="HeaderPane" class="col-md-12 headerPane" runat="server"></div> 
             </div>
             <div id="breadcrumb" class="col-md-12">
-                <dnn:BREADCRUMB ID="dnnBreadcrumb" runat="server" CssClass="breadcrumbLink" RootLevel="0" Separator="&lt;img src=&quot;/Portals/_default/Skins/Xcillion/Images/breadcrumb-arrow.png&quot;&gt;" HideWithNoBreadCrumb="true" />
+                <dnn:BREADCRUMB ID="dnnBreadcrumb" runat="server" CssClass="breadcrumbLink" RootLevel="0" Separator="&lt;img src=&quot;/Portals/_default/Skins/Xcillion/Images/breadcrumb-arrow.png&quot; alt=&quot;breadcrumb separator&quot;&gt;" HideWithNoBreadCrumb="true" />
             </div>
             <div id="mainContent-inner">
                 <div class="row dnnpane">

@@ -35,6 +35,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
+using DotNetNuke.Web.UI.WebControls.Internal;
 
 #endregion
 

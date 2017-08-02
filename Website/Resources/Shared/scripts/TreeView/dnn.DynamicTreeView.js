@@ -80,7 +80,7 @@
                 textNode.addClass(this.options.unselectableCss);
             }
             $nodeElement
-                .append($("<a href='javascript:;'/>").addClass(this.options.iconCss).on("click", this._onNodeIconClickHandler))
+                .append($("<a href='javascript:;' aria-label=\"Node\"/>").addClass(this.options.iconCss).on("click", this._onNodeIconClickHandler))
                 .append(textNode);
             this._initializeNodeIcon(nodeContext, $nodeElement);
             $nodeElement.children().eq(1).prop("title", data.name);
@@ -370,9 +370,9 @@
                         .append($("<a href='javascript:void(0);' class='" + this.options.sortButtonCss + "'><span>" + this.options.sortAscendingButtonTitle + "</span></a>"))
                         .append($("<div class='" + this.options.searchContainerCss + "'/>")
                             .append($("<div class='" + this.options.searchInputContainerCss + "'/>")
-                                .append($("<input type='text' placeholder='" + this.options.searchInputPlaceHolder + "' maxlength='200' autocomplete='off' class='" + this.options.searchInputCss + "'>")))
-                            .append($("<a href='javascript:void(0);' title='" + this.options.clearButtonTooltip + "' style='display:none;' class='" + this.options.clearButtonCss + "'/>"))
-                            .append($("<a href='javascript:void(0);' title='" + this.options.searchButtonTooltip + "' class='" + this.options.searchButtonCss + "'/>"))))
+                                .append($("<input type='text' placeholder='" + this.options.searchInputPlaceHolder + "' maxlength='200' autocomplete='off' class='" + this.options.searchInputCss + "' aria-label=\"Search\">")))
+                            .append($("<a href='javascript:void(0);' title='" + this.options.clearButtonTooltip + "' style='display:none;' class='" + this.options.clearButtonCss + "' aria-label=\"Clear\"/>"))
+                            .append($("<a href='javascript:void(0);' title='" + this.options.searchButtonTooltip + "' class='" + this.options.searchButtonCss + "' aria-label=\"Search\"/>"))))
                     .append($("<div class='" + this.options.contentCss + "'/>")
                         .append($("<div class='" + this.options.treeContainerCss + "'/>")))
                     .append($("<div class='" + this.options.footerCss + "'/>")
@@ -728,7 +728,7 @@
 
         getChildren: function (parentId, sortOrder, searchText, onGetChildrenCallback) {
             var onGetChildrenHandler = $.proxy(this._onGetChildren, this, onGetChildrenCallback);
-            this._callGet({ parentId: parentId, sortOrder: sortOrder, searchText: searchText }, onGetChildrenHandler, this.options.getNodeDescendantsMethod);
+            this._callGet({ parentId: parentId, sortOrder: sortOrder, searchText: searchText, includeAllTypes: true }, onGetChildrenHandler, this.options.getNodeDescendantsMethod);
         },
 
         _onGetChildren: function(onGetChildrenCallback, data, textStatus, jqXhr) {
@@ -738,12 +738,12 @@
 
         search: function(searchText, sortOrder, onSearchCallback) {
             var onSearchHandler = $.proxy(this._onGetTree, this, onSearchCallback);
-            this._callGet({ searchText: searchText, sortOrder: sortOrder }, onSearchHandler, this.options.searchTreeMethod);
+            this._callGet({ searchText: searchText, sortOrder: sortOrder, includeAllTypes: true }, onSearchHandler, this.options.searchTreeMethod);
         },
 
         getTree: function (sortOrder, onGetFirstLevelItemsCallback) {
             var onGetFirstLevelItemsHandler = $.proxy(this._onGetTree, this, onGetFirstLevelItemsCallback);
-            this._callGet({ sortOrder: sortOrder }, onGetFirstLevelItemsHandler, this.options.getTreeMethod);
+            this._callGet({ sortOrder: sortOrder, includeAllTypes: true }, onGetFirstLevelItemsHandler, this.options.getTreeMethod);
         },
 
         sortTree: function (sortOrder, rootNode, searchText, onSortTreeCallback) {

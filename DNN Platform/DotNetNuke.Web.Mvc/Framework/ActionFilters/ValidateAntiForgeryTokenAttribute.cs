@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                     return false;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

@@ -77,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
             _textBox.CssClass = TextBoxCssClass;
             _textBox.AutoCompleteType = AutoCompleteType;
             _textBox.TextChanged += TextChanged;
+            _textBox.Attributes.Add("aria-label", DataField);
 
             //Load from ControlState
             _textBox.Text = Convert.ToString(Value);

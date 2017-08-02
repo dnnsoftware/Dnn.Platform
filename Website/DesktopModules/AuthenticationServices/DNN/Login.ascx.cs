@@ -94,13 +94,15 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 			cancelLink.NavigateUrl = GetRedirectUrl(false);
 
-			ClientAPI.RegisterKeyCapture(Parent, cmdLogin, 13);
-
             if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration)
             {
                 liRegister.Visible = false;
             }
             lblLogin.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
+		    if (string.IsNullOrEmpty(lblLogin.Text))
+		    {
+		        lblLogin.AssociatedControlID = string.Empty;
+		    }
 
             if (!string.IsNullOrEmpty(Response.Cookies["USERNAME_CHANGED"].Value))
             {
@@ -256,7 +258,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			if ((UseCaptcha && ctlCaptcha.IsValid) || !UseCaptcha)
 			{
 				var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-				string userName = new PortalSecurity().InputFilter(txtUsername.Text, 
+				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text, 
 										PortalSecurity.FilterFlag.NoScripting | 
                                         PortalSecurity.FilterFlag.NoAngleBrackets | 
                                         PortalSecurity.FilterFlag.NoMarkup);

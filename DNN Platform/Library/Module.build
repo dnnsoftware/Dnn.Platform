@@ -17,7 +17,8 @@
     <ItemGroup>
       <Templates Include="..\Website\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
-      <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
+      <RadSpell Include="..\Components\Telerik\App_Data\RadSpell\*.tdf" />
+      <ExportImport Include="..\Website\App_Data\ExportImport\PlaceHolder.txt" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <InstallFiles Include="..\Website\Install\InstallWizard*.*" />
@@ -37,6 +38,7 @@
       <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
       <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
       <KnockoutMapping Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping\*.*" />
+      <Selectize Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize\*.*" />
     </ItemGroup>
   </Target>
   
@@ -60,6 +62,7 @@
 
     <Copy SourceFiles="@(Database)" DestinationFolder="$(WebsiteAppDataPath)" Condition="'@(WebsiteDatabase)' == ''" />
     <Copy SourceFiles="@(RadSpell)" DestinationFolder="$(WebsiteRadSpellPath)" Condition="'@(WebsiteRadSpell)' == ''" />
+    <Copy SourceFiles="@(ExportImport)" DestinationFolder="$(WebsiteAppDataPath)\ExportImport"/>
     <Copy SourceFiles="@(Templates)" DestinationFolder="$(WebsiteHostPortalPath)" Condition="'@(WebsiteTemplates)' == ''"/>
     <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" Condition="'@(WebsiteConfig)' == ''"/>
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />
@@ -93,6 +96,9 @@
     <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
 
+    <Zip Files="@(Selectize)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Selectize.zip" />
+
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
             XPath="dotnetnuke/packages/package/@version"
@@ -103,6 +109,7 @@
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="..\Components\Telerik\Package\bin" />
     <Copy SourceFiles="..\Components\Telerik\DotNetNuke.Telerik.Web.dnn" DestinationFolder="..\Components\Telerik\Package" />
     <Copy SourceFiles="..\Components\Telerik\Telerik_EULA.pdf" DestinationFolder="..\Components\Telerik\Package\Documentation" />
+    <Copy SourceFiles="..\Components\Telerik\App_Data\RadSpell\en-US.tdf" DestinationFolder="..\Components\Telerik\Package\App_Data\RadSpell" />
     <CreateItem Include="..\Components\Telerik\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="TelerikContent" />
     </CreateItem>

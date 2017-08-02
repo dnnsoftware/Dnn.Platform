@@ -486,7 +486,7 @@ namespace DotNetNuke.Common
             {
                 if (_installMapPath == null)
                 {
-                    _installMapPath = HttpContext.Current.Server.MapPath(InstallPath);
+                    _installMapPath = ApplicationMapPath + "\\Install\\";
                 }
                 return _installMapPath;
             }
@@ -1911,8 +1911,13 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
-            return PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit &&
-                TabPermissionController.CanAddContentToPage();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (portalSettings == null)
+            {
+                return false;
+            }
+
+            return portalSettings.UserMode == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
@@ -2844,7 +2849,7 @@ namespace DotNetNuke.Common
                 returnUrl = string.Format("returnurl={0}", returnUrl);
             }
             var popUpParameter = "";
-            if (HttpUtility.UrlDecode(returnUrl).Contains("popUp=true"))
+            if (HttpUtility.UrlDecode(returnUrl).IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 popUpParameter = "popUp=true";
             }
@@ -4231,7 +4236,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated PreventSQLInjection Function to consolidate Security Filter functions in the PortalSecurity class")]
         public static string PreventSQLInjection(string strSQL)
         {
-            return (new PortalSecurity()).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
+            return (PortalSecurity.Instance).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
 
         [Obsolete("Deprecated in DNN 5.3. Replaced by UserProfileURL")]

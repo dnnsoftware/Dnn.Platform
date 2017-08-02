@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override void ExecuteNonQuery(int timeout, string procedureName, params object[] commandParameters)
+        public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -59,7 +59,18 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeout)
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec,
+            Dictionary<string, object> commandParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -69,7 +80,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override IDataReader ExecuteReader(int timeout, string procedureName, params object[] commandParameters)
+        public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -79,7 +90,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override T ExecuteScalar<T>(int timeout, string procedureName, params object[] commandParameters)
+        public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -89,7 +100,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override IDataReader ExecuteSQL(string sql, int timeout)
+        public override IDataReader ExecuteSQL(string sql, int timeoutSec)
         {
             throw new System.NotImplementedException();
         }
@@ -99,7 +110,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override string ExecuteScript(string script, int timeout)
+        public override string ExecuteScript(string script, int timeoutSec)
         {
             throw new System.NotImplementedException();
         }
@@ -109,7 +120,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override string ExecuteScript(string connectionString, string sql, int timeout)
+        public override string ExecuteScript(string connectionString, string sql, int timeoutSec)
         {
             throw new System.NotImplementedException();
         }
@@ -119,7 +130,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout)
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
         {
             throw new System.NotImplementedException();
         }
@@ -129,7 +140,7 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout, out string errorMessage)
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
             throw new System.NotImplementedException();
         }

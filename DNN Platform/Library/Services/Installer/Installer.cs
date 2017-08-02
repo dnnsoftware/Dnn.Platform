@@ -23,7 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -52,6 +54,8 @@ namespace DotNetNuke.Services.Installer
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Installer));
 		#region Private Members
+
+        private Stream _inputStream;
 
         #endregion
 
@@ -106,6 +110,9 @@ namespace DotNetNuke.Services.Installer
         public Installer(Stream inputStream, string physicalSitePath, bool loadManifest, bool deleteTemp)
         {
             Packages = new SortedList<int, PackageInstaller>();
+
+            _inputStream = new MemoryStream();
+            inputStream.CopyTo(_inputStream);
             //Called from Batch installer - default IgnoreWhiteList to true
             InstallerInfo = new InstallerInfo(inputStream, physicalSitePath) { IgnoreWhiteList = true };
 
@@ -408,10 +415,37 @@ namespace DotNetNuke.Services.Installer
 
             return nav;
         }
-		
-		#endregion
 
-		#region Public Methods
+        private void BackupStreamIntoFile(Stream stream, PackageInfo package)
+        {
+            try
+            {
+                var filePath = Util.GetPackageBackupPath(package);
+
+                if (File.Exists(filePath))
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    File.Delete(filePath);
+                }
+
+                using (var fileStream = File.Create(filePath))
+                {
+                    if (stream.CanSeek)
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                    }
+                    stream.CopyTo(fileStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
 
         public void DeleteTempFolder()
         {
@@ -476,8 +510,23 @@ namespace DotNetNuke.Services.Installer
             //log installation event
             LogInstallEvent("Package", "Install");
 
+            //when the installer initialized by file stream, we need save the file stream into backup folder.
+            if (_inputStream != null && bStatus && Packages.Any())
+            {
+                Task.Run(() =>
+                {
+                    BackupStreamIntoFile(_inputStream, Packages[0].Package);
+                });
+            }
+
             //Clear Host Cache
             DataCache.ClearHostCache(true);
+
+            if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
+            {
+                // force application restart after the new changes only when FCN is disabled
+                Config.Touch();
+            }
 
             return bStatus;
         }

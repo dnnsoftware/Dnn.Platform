@@ -131,7 +131,7 @@
                         <asp:Label runat="server" ID="VanityUrlHeader" CssClass="NormalBold" resourcekey="VanityUrlHeader"/>
                         <div>
                             <asp:Label runat="server" ID="VanityUrlAlias" />
-                            <asp:TextBox CssClass="dnnUserVanityUrl" runat="server" ID="VanityUrlTextBox" />
+                            <asp:TextBox CssClass="dnnUserVanityUrl" runat="server" ID="VanityUrlTextBox" aria-label="Vanity Url" />
                             <a id="updateProfileUrl" href="#" class="dnnSecondaryAction"><%=LocalizeString("cmdUpdate")%></a>
                         </div>
                     </div>

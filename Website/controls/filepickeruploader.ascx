@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Web.UI.WebControls.DnnFilePickerUploader" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <asp:Panel runat="server" ID="dnnFileUploadScope" CssClass="dnnFileUploadScope">
     <div class="dnnLeft">
         <div class="dnnFormItem dnnFileUploadFolder">
@@ -12,7 +12,7 @@
             <span><%= FileLabel  %></span><dnn:DnnFileDropDownList runat="server" ID="FilesComboBox" />
         </div>
         <div class="dnnFormItem">
-            <input type="file" name="postfile" multiple style="display: none" class="normalFileUpload" />
+            <input type="file" name="postfile" multiple style="display: none" class="normalFileUpload" aria-label="Upload" />
             <input type="button" name="uploadFileButton" value="<%= UploadFileLabel  %>"/>
             <dnn:DnnFileUpload runat="server" ID="FileUploadControl"></dnn:DnnFileUpload>
         </div>

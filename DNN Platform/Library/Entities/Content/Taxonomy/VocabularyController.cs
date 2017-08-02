@@ -40,8 +40,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     public class VocabularyController : IVocabularyController
     {
         private readonly IDataService _DataService;
-        private string _CacheKey = "Vocabularies";
-        private int _CacheTimeOut = 20;
+        private const int _CacheTimeOut = 20;
 
         #region Constructors
 
@@ -77,14 +76,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             vocabulary.VocabularyId = _DataService.AddVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Refresh Cache
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.VocabularyCacheKey);
 
             return vocabulary.VocabularyId;
         }
 
         public void ClearVocabularyCache()
         {
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
         public void DeleteVocabulary(Vocabulary vocabulary)
@@ -96,12 +95,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             _DataService.DeleteVocabulary(vocabulary);
 
             //Refresh Cache
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
         public IQueryable<Vocabulary> GetVocabularies()
         {
-            return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(_CacheKey, _CacheTimeOut), GetVocabulariesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, _CacheTimeOut), GetVocabulariesCallBack).AsQueryable();
         }
 
         public void UpdateVocabulary(Vocabulary vocabulary)
@@ -112,7 +111,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNullOrEmpty("vocabulary", "Name", vocabulary.Name);
 
             //Refresh Cache
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.VocabularyCacheKey);
 
             _DataService.UpdateVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
         }

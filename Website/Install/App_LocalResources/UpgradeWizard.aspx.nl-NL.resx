@@ -1,5 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -7,84 +112,90 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountInfo.Text">
-    <value xml:space="preserve">Account Informatie</value>
+  <data name="AcceptTerms.Required" xml:space="preserve">
+    <value>Accept the terms of the license agreement to continue.</value>
   </data>
-  <data name="BestPractices.Text">
-    <value xml:space="preserve">U staat op het punt om uw website te upgraden naar een recentere versie van de applicatie. Het toepassen van upgrades op een consistente basis is de beste manier om ervoor te zorgen dat u de integriteit van uw investering en de veiligheid van uw gebruikers en bezittingen te garanderen. Voordat u verder gaat met de geautomatiseerde upgrade-proces moet u ervoor zorgen dat: &lt;ul&gt; &lt;li&gt; je hebt plannen gemaakt om dit proces eerste poging in een staging-omgeving &lt;li&gt; u uw huidige installatie kenmerken gedocumenteerd in onder meer het doen van onderzoek over de verenigbaarheid van een derde partij modules die u gebruikt &lt;li&gt; die u hebt gemaakt van de nodige back-ups van uw omgeving, zodat u in staat zal zijn om uw website te herstellen in het geval van een onverwachte upgrade mislukking. &lt;/ Ul&gt;</value>
+  <data name="AcceptTerms.Text" xml:space="preserve">
+    <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
-  <data name="CurrentVersion.Text">
-    <value xml:space="preserve">Huidige versie - {0}</value>
+  <data name="AccountInfo.Text" xml:space="preserve">
+    <value>Account Informatie</value>
   </data>
-  <data name="DatabaseUpgrade.Text">
-    <value xml:space="preserve">Database bijwerken</value>
+  <data name="BestPractices.Text" xml:space="preserve">
+    <value>U staat op het punt om uw website te upgraden naar een recentere versie van de applicatie. Het toepassen van upgrades op een consistente basis is de beste manier om ervoor te zorgen dat u de integriteit van uw investering en de veiligheid van uw gebruikers en bezittingen te garanderen. Voordat u verder gaat met de geautomatiseerde upgrade-proces moet u ervoor zorgen dat: &lt;ul&gt; &lt;li&gt; je hebt plannen gemaakt om dit proces eerste poging in een staging-omgeving &lt;li&gt; u uw huidige installatie kenmerken gedocumenteerd in onder meer het doen van onderzoek over de verenigbaarheid van een derde partij modules die u gebruikt &lt;li&gt; die u hebt gemaakt van de nodige back-ups van uw omgeving, zodat u in staat zal zijn om uw website te herstellen in het geval van een onverwachte upgrade mislukking. &lt;/ Ul&gt;</value>
   </data>
-  <data name="Error.Text">
-    <value xml:space="preserve">Fout</value>
+  <data name="CurrentVersion.Text" xml:space="preserve">
+    <value>Huidige versie - {0}</value>
   </data>
-  <data name="ErrorInStep.Text">
-    <value xml:space="preserve">Er is een fout opgetreden - {0}</value>
+  <data name="DatabaseUpgrade.Text" xml:space="preserve">
+    <value>Database bijwerken</value>
   </data>
-  <data name="ExtensionsUpgrade.Text">
-    <value xml:space="preserve">Extensies bijwerken</value>
+  <data name="Error.Text" xml:space="preserve">
+    <value>Fout</value>
   </data>
-  <data name="IntroDetail.Text">
-    <value xml:space="preserve">&lt;p&gt; Welkom op de DotNetNuke Upgrade Pagina.&lt;/p&gt;De eerste stap is het kiezen van de taal die u wilt gebruiken voor de upgrade.&lt;/p&gt;</value>
+  <data name="ErrorInStep.Text" xml:space="preserve">
+    <value>Er is een fout opgetreden - {0}</value>
   </data>
-  <data name="InvalidCredentials.Text">
-    <value xml:space="preserve">Gebruikersnaam en wachtwoord niet herkend</value>
+  <data name="ExtensionsUpgrade.Text" xml:space="preserve">
+    <value>Extensies bijwerken</value>
   </data>
-  <data name="Next.Text">
-    <value xml:space="preserve">Nu Upgraden</value>
+  <data name="IntroDetail.Text" xml:space="preserve">
+    <value>&lt;p&gt; Welkom op de DotNetNuke Upgrade Pagina.&lt;/p&gt;De eerste stap is het kiezen van de taal die u wilt gebruiken voor de upgrade.&lt;/p&gt;</value>
   </data>
-  <data name="NoInstallationLog.Text">
-    <value xml:space="preserve">Geen installatie log</value>
+  <data name="InvalidCredentials.Text" xml:space="preserve">
+    <value>Gebruikersnaam en wachtwoord niet herkend</value>
   </data>
-  <data name="Password.Help">
-    <value xml:space="preserve">Het wachtwoord voor het Super User account</value>
+  <data name="Next.Text" xml:space="preserve">
+    <value>Nu Upgraden</value>
   </data>
-  <data name="Password.Text">
-    <value xml:space="preserve">Wachtwoord:</value>
+  <data name="NoInstallationLog.Text" xml:space="preserve">
+    <value>Geen installatie log</value>
   </data>
-  <data name="Retry.Text">
-    <value xml:space="preserve">Opnieuw proberen</value>
+  <data name="Password.Help" xml:space="preserve">
+    <value>Het wachtwoord voor het Super User account</value>
   </data>
-  <data name="SeeLogs.Text">
-    <value xml:space="preserve">Logs weergeven</value>
+  <data name="Password.Text" xml:space="preserve">
+    <value>Wachtwoord:</value>
   </data>
-  <data name="TimerMinutes.Text">
-    <value xml:space="preserve">Minuten</value>
+  <data name="Retry.Text" xml:space="preserve">
+    <value>Opnieuw proberen</value>
   </data>
-  <data name="Title.Text">
-    <value xml:space="preserve">Upgrade</value>
+  <data name="SeeLogs.Text" xml:space="preserve">
+    <value>Logs weergeven</value>
   </data>
-  <data name="Upgrade.Text">
-    <value xml:space="preserve">upgrade</value>
+  <data name="TimerMinutes.Text" xml:space="preserve">
+    <value>Minuten</value>
   </data>
-  <data name="UpgradeDone.Text">
-    <value xml:space="preserve">Upgrade voltooid</value>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Upgrade</value>
   </data>
-  <data name="UpgradingDatabase.Text">
-    <value xml:space="preserve">Database bijwerken</value>
+  <data name="Upgrade.Text" xml:space="preserve">
+    <value>upgrade</value>
   </data>
-  <data name="Username.Help">
-    <value xml:space="preserve">De gebruikersnaam voor het Super User account</value>
+  <data name="UpgradeDone.Text" xml:space="preserve">
+    <value>Upgrade voltooid</value>
   </data>
-  <data name="Username.Text">
-    <value xml:space="preserve">Host (SuperUser) Gebruikersnaam:</value>
+  <data name="UpgradingDatabase.Text" xml:space="preserve">
+    <value>Database bijwerken</value>
   </data>
-  <data name="Version.Text">
-    <value xml:space="preserve">Upgrade - versie {0}</value>
+  <data name="Username.Help" xml:space="preserve">
+    <value>De gebruikersnaam voor het Super User account</value>
   </data>
-  <data name="ViewWebsite.Text">
-    <value xml:space="preserve">Website weergeven</value>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Host (SuperUser) Gebruikersnaam:</value>
   </data>
-  <data name="VisitWebsite.Text">
-    <value xml:space="preserve">Website bezoeken</value>
+  <data name="Version.Text" xml:space="preserve">
+    <value>Upgrade - versie {0}</value>
+  </data>
+  <data name="ViewWebsite.Text" xml:space="preserve">
+    <value>Website weergeven</value>
+  </data>
+  <data name="VisitWebsite.Text" xml:space="preserve">
+    <value>Website bezoeken</value>
   </data>
 </root>

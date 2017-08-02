@@ -9,7 +9,7 @@ Type.registerNamespace('dnn.controls');
 dnn.extend(dnn.controls, {
     initTree: function(ctl)
     {
-        if (ctl)
+        if (ctl && dnn.controls.controls[ctl.id] == null)
         {
             var tree = new dnn.controls.DNNTree(ctl);
             tree.initialize();

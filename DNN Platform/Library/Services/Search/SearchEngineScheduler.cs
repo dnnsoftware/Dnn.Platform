@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     public class SearchEngineScheduler : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchEngineScheduler));
 
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {

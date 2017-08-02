@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -454,7 +455,22 @@ namespace DotNetNuke.Web.InternalServices
                 userMode = new UserModeDTO { UserMode = "VIEW" };
 
             ToggleUserMode(userMode.UserMode);
-            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            var response = Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+
+
+            if (userMode.UserMode.Equals("VIEW", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var cookie = Request.Headers.GetCookies("StayInEditMode").FirstOrDefault();
+                if (cookie != null && !string.IsNullOrEmpty(cookie["StayInEditMode"].Value))
+                {
+                    var expireCookie = new CookieHeaderValue("StayInEditMode", "");
+                    expireCookie.Expires = DateTimeOffset.Now.AddDays(-1);
+                    expireCookie.Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/";
+                    response.Headers.AddCookies(new List<CookieHeaderValue> { expireCookie });
+                }
+            }
+
+            return response;
         }
 
         public class BookmarkDTO

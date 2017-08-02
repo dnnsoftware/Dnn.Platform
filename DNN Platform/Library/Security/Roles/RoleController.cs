@@ -234,7 +234,6 @@ namespace DotNetNuke.Security.Roles
             }
 
             EventManager.Instance.OnRoleJoined(new RoleEventArgs() { Role = GetRoleById(portalId, roleId), User = user });
-
             //Remove the UserInfo and Roles from the Cache, as they have been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
@@ -502,7 +501,6 @@ namespace DotNetNuke.Security.Roles
                     AddUserRole(portalId, userId, roleId, status, isOwner, EffectiveDate, ExpiryDate);
                 }
             }
-
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
@@ -522,8 +520,10 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static int AddRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
-            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_CREATED);
-            return provider.CreateRoleGroup(objRoleGroupInfo);
+            var id = provider.CreateRoleGroup(objRoleGroupInfo);
+            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_CREATED);
+            return id;
         }
 
         /// <summary>
@@ -665,7 +665,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
-			return provider.GetRoleGroup(portalId, roleGroupId);
+            return provider.GetRoleGroup(portalId, roleGroupId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -679,7 +679,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
 		public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
-			return provider.GetRoleGroupByName(portalId, roleGroupName);
+            return provider.GetRoleGroupByName(portalId, roleGroupName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -703,19 +703,19 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static void SerializeRoleGroups(XmlWriter writer, int portalID)
         {
-			//Serialize Role Groups
+            //Serialize Role Groups
             writer.WriteStartElement("rolegroups");
             foreach (RoleGroupInfo objRoleGroup in GetRoleGroups(portalID))
             {
                 CBO.SerializeObject(objRoleGroup, writer);
             }
-			
+
             //Serialize Global Roles
             var globalRoleGroup = new RoleGroupInfo(Null.NullInteger, portalID, true)
-                                      {
-                                          RoleGroupName = "GlobalRoles",
-                                          Description = "A dummy role group that represents the Global roles"
-                                      };
+            {
+                RoleGroupName = "GlobalRoles",
+                Description = "A dummy role group that represents the Global roles"
+            };
             CBO.SerializeObject(globalRoleGroup, writer);
             writer.WriteEndElement();
         }
@@ -744,8 +744,8 @@ namespace DotNetNuke.Security.Roles
                 }
             }
         }
-		
-		#endregion
 
-     }
+        #endregion
+
+    }
 }

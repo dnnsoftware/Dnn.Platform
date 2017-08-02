@@ -155,7 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
+      <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Api\AuthFilterBase.cs" />
     <Compile Include="Api\AuthFilterContext.cs" />
@@ -190,6 +190,8 @@
     <Compile Include="Api\TraceWriter.cs" />
     <Compile Include="Api\UrlHelperExtensions.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Common\DotNetNukeSecurity.cs" />
+    <Compile Include="Common\DotNetNukeShutdownOverload.cs" />
     <Compile Include="Common\DynamicSharedConstants.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
     <Compile Include="Api\WebApiException.cs" />
@@ -329,6 +331,22 @@
     <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
     <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
     <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnCheckBoxList.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnComboBoxOption.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnDatePicker.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnDateTimePicker.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnFormComboBoxItem.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnFormToggleButtonItem.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGrid.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGridBoundColumn.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGridTemplateColumn.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnModuleComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnScriptBlock.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnSkinComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\TermsSelector.cs" />
     <Compile Include="UI\WebControls\ItemListOptions.cs" />
     <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
     <Compile Include="UI\WebControls\RibbonBarToolInfo.cs" />

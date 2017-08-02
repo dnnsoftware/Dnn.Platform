@@ -373,7 +373,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void LogResult(string message)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
 
 			var log = new LogInfo
             {
@@ -401,7 +401,7 @@ namespace DotNetNuke.Modules.Admin.Security
 			
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect(RedirectURL, true);
+            Response.Redirect(Globals.NavigateURL(), true);
         }
 
         #endregion

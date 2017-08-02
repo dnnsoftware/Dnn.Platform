@@ -246,7 +246,8 @@ namespace DotNetNuke.Common.Utilities
         public static string GetFcnMode()
         {
             var section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
-            return section?.FcnMode.ToString() ?? FcnMode.NotSet.ToString();
+            var mode = section?.FcnMode;
+            return ((ValueType) mode ?? FcnMode.NotSet).ToString();
         }
 
         /// -----------------------------------------------------------------------------
@@ -734,7 +735,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static XmlDocument UpdateMachineKey(XmlDocument xmlConfig)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string validationKey = portalSecurity.CreateKey(20);
             string decryptionKey = portalSecurity.CreateKey(24);
 
@@ -782,7 +783,7 @@ namespace DotNetNuke.Common.Utilities
             XmlNode xmlMachineKey = xmlConfig.SelectSingleNode("configuration/system.web/machineKey");
             if (xmlMachineKey.Attributes["validationKey"].Value == "F9D1A2D3E1D3E2F7B3D9F90FF3965ABDAC304902")
             {
-                var objSecurity = new PortalSecurity();
+                var objSecurity = PortalSecurity.Instance;
                 string validationKey = objSecurity.CreateKey(20);
                 XmlUtils.UpdateAttribute(xmlMachineKey, "validationKey", validationKey);
             }

@@ -521,19 +521,12 @@
         $('#dnnSearchResultAdvancedSearch').on('click', function (e, isTrigger) {
             var tags = $('#advancedTagsCtrl').val() ? $('#advancedTagsCtrl').val().split(',') : [];
 
-            var afterCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedDates);
-            var afterCtrlVal = afterCtrl.get_value();
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
+            var afterCtrlVal = afterCtrl.val();
 
-            var scopeCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedScope);
-            var scopeCtrlItems = scopeCtrl.get_items();
-            var scopeList = [];
-            for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
-                var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                if (scopeCtrlItem.get_checked()) {
-                    scopeList.push(scopeCtrlItem.get_text());
-                }
-            }
-            if (scopeList.length == scopeCtrlItems.get_count())
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope)[0].selectize;
+            var scopeList = scopeCtrl.get_items();
+            if (scopeList.length === scopeCtrl.get_options().length)
                 scopeList = [];
 
             var exactSearch = $('#dnnSearchResultAdvancedExactSearch').is(':checked');
@@ -560,16 +553,13 @@
         $('#dnnSearchResultAdvancedClear').on('click', function () {
             $('#advancedTagsCtrl').dnnImportTags('');
 
-            var afterCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedDates);
-            var afterCtrlItem = afterCtrl.get_items().getItem(0);
-            afterCtrlItem.select();
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates)[0].selectize;
+            afterCtrl.setValue('');
 
-            var scopeCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedScope);
-            var scopeCtrlItems = scopeCtrl.get_items();
-            for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
-                var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                scopeCtrlItem.set_checked(true);
-            }
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope)[0].selectize;
+            $.each(scopeCtrl.get_options(), function (index, item) {
+                scopeCtrl.addItem(item.id);
+            });
 
             $('#dnnSearchResultAdvancedExactSearch').removeAttr('checked');
 
@@ -592,16 +582,13 @@
         $('#dnnSearchResult_dnnSearchBox_input').prev().on('click', function () {
             $('#advancedTagsCtrl').dnnImportTags('');
 
-            var afterCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedDates);
-            var afterCtrlItem = afterCtrl.get_items().getItem(0);
-            afterCtrlItem.select();
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates)[0].selectize;
+            afterCtrl.setValue('');
 
-            var scopeCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedScope);
-            var scopeCtrlItems = scopeCtrl.get_items();
-            for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
-                var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                scopeCtrlItem.set_checked(true);
-            }
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope)[0].selectize;
+            $.each(scopeCtrl.get_options(), function (index, item) {
+                scopeCtrl.addItem(item.id);
+            });
 
             $('#dnnSearchResultAdvancedExactSearch').removeAttr('checked');
 

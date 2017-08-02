@@ -1,6 +1,6 @@
 ; if (typeof dnn === "undefined") { dnn = {}; }; //var dnn = dnn || {};
 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // All Rights Reserved
@@ -143,12 +143,16 @@
             this._$scrollbarY.css({ top: this._scrollbarYTop + this.$element.scrollTop() });
         },
 
+        _getDocument: function() {
+            return this.options.document || document;
+        },
+
         _onMouseDownX: function (e) {
             this._currentPageX = e.pageX;
             this._currentLeft = this._$scrollbarX.position().left;
             this._$scrollbarX.addClass('in-scrolling');
-            $(document).on('mousemove.perfect-scroll', this._onMouseMoveXHandler);
-            $(document).on('mouseup.perfect-scroll', this._onMouseUpXHandler);
+            $(this._getDocument()).on('mousemove.perfect-scroll', this._onMouseMoveXHandler);
+            $(this._getDocument()).on('mouseup.perfect-scroll', this._onMouseUpXHandler);
             e.stopPropagation();
             e.preventDefault();
         },
@@ -157,8 +161,8 @@
             this._currentPageY = e.pageY;
             this._currentTop = this._$scrollbarY.position().top;
             this._$scrollbarY.addClass('in-scrolling');
-            $(document).on('mousemove.perfect-scroll', this._onMouseMoveYHandler);
-            $(document).on('mouseup.perfect-scroll', this._onMouseUpYHandler);
+            $(this._getDocument()).on('mousemove.perfect-scroll', this._onMouseMoveYHandler);
+            $(this._getDocument()).on('mouseup.perfect-scroll', this._onMouseUpYHandler);
             e.stopPropagation();
             e.preventDefault();
         },
@@ -185,16 +189,16 @@
             if (this._$scrollbarX.hasClass('in-scrolling')) {
                 this._$scrollbarX.removeClass('in-scrolling');
             }
-            $(document).off('mousemove.perfect-scroll', this._onMouseMoveXHandler);
-            $(document).off('mouseup.perfect-scroll', this._onMouseUpXHandler);
+            $(this._getDocument()).off('mousemove.perfect-scroll', this._onMouseMoveXHandler);
+            $(this._getDocument()).off('mouseup.perfect-scroll', this._onMouseUpXHandler);
         },
 
         _onMouseUpY: function (e) {
             if (this._$scrollbarY.hasClass('in-scrolling')) {
                 this._$scrollbarY.removeClass('in-scrolling');
             }
-            $(document).off('mousemove.perfect-scroll', this._onMouseMoveYHandler);
-            $(document).off('mouseup.perfect-scroll', this._onMouseUpYHandler);
+            $(this._getDocument()).off('mousemove.perfect-scroll', this._onMouseMoveYHandler);
+            $(this._getDocument()).off('mouseup.perfect-scroll', this._onMouseUpYHandler);
         },
 
         _onMouseWheel: function (e, delta, deltaX, deltaY) {

@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
                 //Get Package from DataStore
                 PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, 
-                                                (p) => p.Name == PackageDependency.PackageName 
+                                                (p) => p.Name.Equals(PackageDependency.PackageName, StringComparison.OrdinalIgnoreCase)
                                                                 && p.Version >= PackageDependency.Version);
                 if (package == null)
                 {

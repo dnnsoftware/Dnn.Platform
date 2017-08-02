@@ -44,14 +44,14 @@ namespace DotNetNuke.Data
 {
     public sealed class SqlDataProvider : DataProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SqlDataProvider));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         #region Private Members
 
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
-		private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)", 
-															RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-		private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)",
+                                                            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Data
             return connectionValid;
         }
 
-        private string ExecuteScriptInternal(string connectionString, string script, int timeout = 0)
+        private string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
         {
             string exceptions = "";
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Data
                     sql = DataUtil.ReplaceTokens(sql);
 
                     //Clean up some SQL Azure incompatabilities
-	                var query = GetAzureCompactScript(sql);
+                    var query = GetAzureCompactScript(sql);
 
                     if (query != sql)
                     {
@@ -133,7 +133,7 @@ namespace DotNetNuke.Data
                         using (var connection = new SqlConnection(connectionString))
                         {
                             //Create a new command
-                            using (var command = new SqlCommand(query, connection) {CommandTimeout = timeout})
+                            using (var command = new SqlCommand(query, connection) { CommandTimeout = timeoutSec })
                             {
                                 connection.Open();
                                 command.ExecuteNonQuery();
@@ -152,13 +152,13 @@ namespace DotNetNuke.Data
             return exceptions;
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeout = 0)
+        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec = 0)
         {
             string errorMessage;
-            return ExecuteSQLInternal(connectionString, sql, timeout, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeout, out string errorMessage)
+        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
             try
             {
@@ -168,12 +168,12 @@ namespace DotNetNuke.Data
                 if (string.IsNullOrEmpty(connectionString))
                     throw new ArgumentNullException(nameof(connectionString));
 
-                if (timeout > 0)
+                if (timeoutSec > 0)
                 {
                     var builder = GetConnectionStringBuilder();
                     builder.ConnectionString = connectionString;
                     builder["Connect Timeout"] = null;
-                    builder["Connection Timeout"] = timeout;
+                    builder["Connection Timeout"] = timeoutSec;
                     connectionString = builder.ConnectionString;
                 }
 
@@ -319,20 +319,20 @@ namespace DotNetNuke.Data
             return Exceptions;
         }
 
-		private string GetAzureCompactScript(string script)
-		{
-			if (ScriptWithRegex.IsMatch(script))
-			{
-				script = ScriptWithRegex.Replace(script, string.Empty);
-			}
+        private string GetAzureCompactScript(string script)
+        {
+            if (ScriptWithRegex.IsMatch(script))
+            {
+                script = ScriptWithRegex.Replace(script, string.Empty);
+            }
 
-			if (ScriptOnPrimaryRegex.IsMatch(script))
-			{
-				script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
-			}
+            if (ScriptOnPrimaryRegex.IsMatch(script))
+            {
+                script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
+            }
 
-			return script;
-		}
+            return script;
+        }
 
         #endregion
 
@@ -343,9 +343,9 @@ namespace DotNetNuke.Data
             PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
-        public override void ExecuteNonQuery(int timeout, string procedureName, params object[] commandParameters)
+        public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeout, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
@@ -353,9 +353,19 @@ namespace DotNetNuke.Data
             PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
-        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeout)
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
         {
-            PetaPocoHelper.BulkInsert(ConnectionString, timeout, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+            PetaPocoHelper.BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, timeoutSec, commandParameters);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
@@ -363,19 +373,19 @@ namespace DotNetNuke.Data
             return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
-        public override IDataReader ExecuteReader(int timeout, string procedureName, params object[] commandParameters)
+        public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeout, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
+            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
-        public override T ExecuteScalar<T>(int timeout, string procedureName, params object[] commandParameters)
+        public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeout, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
+            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override string ExecuteScript(string script)
@@ -383,9 +393,9 @@ namespace DotNetNuke.Data
             return ExecuteScript(script, 0);
         }
 
-        public override string ExecuteScript(string script, int timeout)
+        public override string ExecuteScript(string script, int timeoutSec)
         {
-            string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeout);
+            string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeoutSec);
 
             //if the upgrade connection string is specified or or db_owner setting is not set to dbo
             if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLower() != "dbo.")
@@ -426,12 +436,12 @@ namespace DotNetNuke.Data
 
         public override string ExecuteScript(string connectionString, string script)
         {
-            return ExecuteScriptInternal(connectionString, script); 
+            return ExecuteScriptInternal(connectionString, script);
         }
 
-        public override string ExecuteScript(string connectionString, string script, int timeout)
+        public override string ExecuteScript(string connectionString, string script, int timeoutSec)
         {
-            return ExecuteScriptInternal(connectionString, script, timeout); 
+            return ExecuteScriptInternal(connectionString, script, timeoutSec);
         }
 
         public override IDataReader ExecuteSQL(string sql)
@@ -439,9 +449,9 @@ namespace DotNetNuke.Data
             return ExecuteSQLInternal(ConnectionString, sql);
         }
 
-        public override IDataReader ExecuteSQL(string sql, int timeout)
+        public override IDataReader ExecuteSQL(string sql, int timeoutSec)
         {
-            return ExecuteSQLInternal(ConnectionString, sql, timeout);
+            return ExecuteSQLInternal(ConnectionString, sql, timeoutSec);
         }
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
@@ -450,10 +460,10 @@ namespace DotNetNuke.Data
             return ExecuteSQLTemp(connectionString, sql, out errorMessage);
         }
 
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout)
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
         {
             string errorMessage;
-            return ExecuteSQLTemp(connectionString, sql, timeout, out errorMessage);
+            return ExecuteSQLTemp(connectionString, sql, timeoutSec, out errorMessage);
         }
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
@@ -461,9 +471,9 @@ namespace DotNetNuke.Data
             return ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
         }
 
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout, out string errorMessage)
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
-            return ExecuteSQLInternal(connectionString, sql, timeout, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
         #endregion

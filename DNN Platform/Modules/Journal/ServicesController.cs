@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.Journal
                 ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));
                 ji.Summary = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Summary));
 
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
 
                 ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoScripting);
                 ji.Title = Utilities.RemoveHTML(ji.Title);

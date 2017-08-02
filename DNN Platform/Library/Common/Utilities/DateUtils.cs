@@ -34,37 +34,71 @@ namespace DotNetNuke.Common.Utilities
     public class DateUtils
     {
 
-        private static DateTime _lastUpdate = DateTime.MinValue;
+        private static DateTime _lastUpdateUtc = DateTime.MinValue;
+        private static DateTime _lastUpdateLocal = DateTime.MinValue;
 
-        private static TimeSpan _drift = TimeSpan.MinValue;
+        private static TimeSpan _driftUtc = TimeSpan.MinValue;
+
+        private static TimeSpan _driftLocal = TimeSpan.MinValue;
 
         /// <summary>
         /// Gets the database time.
         /// </summary>
         /// <returns>Date/time of the database in UTC</returns>
+        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime")]
         public static DateTime GetDatabaseTime()
         {
-            DateTime result;
+            return GetDatabaseUtcTime();
+        }
+
+        /// <summary>
+        /// Gets the database server's time in UTC.
+        /// </summary>
+        /// <returns>Date/time of the database in UTC</returns>
+        public static DateTime GetDatabaseUtcTime()
+        {
             try
             {
                 // Also We check that drift is not the initial value and it is not out of the maximum UTC offset
-                if (DateTime.UtcNow >= _lastUpdate + TimeSpan.FromMinutes(5) || !(TimeSpan.FromHours(-26) <= _drift && _drift <= TimeSpan.FromHours(26)) || _drift == TimeSpan.MinValue)
+                if (DateTime.UtcNow >= _lastUpdateUtc + TimeSpan.FromMinutes(15) || !(TimeSpan.FromHours(-26) <= _driftUtc && _driftUtc <= TimeSpan.FromHours(26)) || _driftUtc == TimeSpan.MinValue)
                 {
-                    _lastUpdate = DateTime.UtcNow;
-                    _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
+                    _lastUpdateUtc = DateTime.UtcNow;
+                    _driftUtc = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
                 }
-
-                result = DateTime.UtcNow + _drift;
             }
             catch (ArgumentOutOfRangeException)
             {
-                _lastUpdate = DateTime.UtcNow;
-                _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
-                result = DateTime.UtcNow + _drift;
+                _lastUpdateUtc = DateTime.UtcNow;
+                _driftUtc = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
             }
 
-            return result;
+            return DateTime.UtcNow + _driftUtc;
         }
+
+        /// <summary>
+        /// Gets the database server's local time of the DB server and not the web server's local time.
+        /// </summary>
+        /// <returns>Date/time of the database in UTC</returns>
+        public static DateTime GetDatabaseLocalTime()
+        {
+            try
+            {
+                // Also We check that drift is not the initial value and it is not out of the maximum UTC offset
+                if (DateTime.UtcNow >= _lastUpdateLocal + TimeSpan.FromMinutes(15) || !(TimeSpan.FromHours(-26) <= _driftLocal && _driftLocal <= TimeSpan.FromHours(26)) || _driftLocal == TimeSpan.MinValue)
+                {
+                    _lastUpdateLocal = DateTime.Now;
+                    _driftLocal = DateTime.Now - DataProvider.Instance().GetDatabaseTime();
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                _lastUpdateLocal = DateTime.Now;
+                _driftLocal = DateTime.Now - DataProvider.Instance().GetDatabaseTime();
+            }
+
+            return DateTime.Now + _driftLocal;
+        }
+
 
         /// <summary>
         /// Returns a string with the pretty printed amount of time since the specified date.

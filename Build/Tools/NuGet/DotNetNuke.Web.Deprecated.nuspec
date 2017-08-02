@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.Web.Deprecated</id>
-    <version>9.1.0</version>
+    <version>9.1.1</version>
     <title>DNN Platform (Deprecated Components)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
@@ -16,7 +16,7 @@
     </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
-      <dependency id="DotNetNuke.Web" version="9.1.0" />
+      <dependency id="DotNetNuke.Web" version="9.1.1" />
     </dependencies>
   </metadata>
   <files>

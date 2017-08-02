@@ -35,7 +35,6 @@ namespace DotNetNuke.Services.Scheduling
 	/// </summary>
     public abstract class SchedulerClient
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SchedulerClient));
         public SchedulerClient()
         {
             SchedulerEventGUID = Null.NullString;
@@ -91,7 +90,6 @@ namespace DotNetNuke.Services.Scheduling
 
         public void Errored(ref Exception objException)
         {
-            Logger.Error(objException);
             if (ProcessErrored != null)
             {
                 ProcessErrored(this, objException);

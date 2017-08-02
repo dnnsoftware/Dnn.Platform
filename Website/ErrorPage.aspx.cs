@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Exceptions
             headerImage.Visible = !string.IsNullOrEmpty(headerImage.ImageUrl);
 
             string localizedMessage;
-            var security = new PortalSecurity();
+            var security = PortalSecurity.Instance;
             var status = security.InputFilter(Request.QueryString["status"],
                                                     PortalSecurity.FilterFlag.NoScripting |
                                                     PortalSecurity.FilterFlag.NoMarkup);
