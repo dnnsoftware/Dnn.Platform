@@ -4,9 +4,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckDebug : IAuditCheck
     {
+        public string Id => "CheckDebug";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckDebug")
+            var result = new CheckResult(SeverityEnum.Unverified, Id)
             {
                 Severity = HttpContext.Current.IsDebuggingEnabled
                     ? SeverityEnum.Warning

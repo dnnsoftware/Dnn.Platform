@@ -12,6 +12,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckSqlRisk : IAuditCheck
     {
+        public string Id => "CheckSqlRisk";
+
         private string LocalResourceFile
         {
             get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
@@ -19,7 +21,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckSqlRisk");
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
             IList<string> checkList = new List<string>()
             {
                 "SysAdmin",

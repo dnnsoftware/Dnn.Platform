@@ -5,9 +5,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckSiteRegistration : IAuditCheck
     {
+        public string Id => "CheckSiteRegistration";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckSiteRegistration");
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
             try
             {
                 var portalController = new PortalController();

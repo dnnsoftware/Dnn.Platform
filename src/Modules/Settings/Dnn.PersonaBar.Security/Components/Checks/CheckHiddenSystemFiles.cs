@@ -5,9 +5,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckHiddenSystemFiles : IAuditCheck
     {
+        public string Id => "CheckHiddenSystemFiles";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckHiddenSystemFiles");
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
             try
             {
                 var investigatefiles = Utility.FineHiddenSystemFiles();

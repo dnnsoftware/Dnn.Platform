@@ -103,6 +103,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\AuditChecks.cs" />
+    <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\CheckResult.cs" />
     <Compile Include="Components\Checks\CheckAllowableFileExtensions.cs" />
     <Compile Include="Components\Checks\CheckBiography.cs" />

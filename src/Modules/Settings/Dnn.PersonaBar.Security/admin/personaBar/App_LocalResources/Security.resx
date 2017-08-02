@@ -977,7 +977,7 @@
     <value>Check Password Format Setting</value>
   </data>
   <data name="CheckPasswordFormatFailure.Text" xml:space="preserve">
-    <value>The setting passwordFormat is not set to Hashed in web.config - consider editing web.config and setting it to Hashed (or use the configuration manager)</value>
+    <value>The setting passwordFormat is not set to Hashed in web.config - consider editing web.config and setting it to Hashed (or use the configuration manager). More information can be found &lt;a href="http://www.dnnsoftware.com/wiki/hashed-passwords" target="_blank"&gt;here&lt;/a&gt;.</value>
   </data>
   <data name="CheckPasswordFormatReason.Text" xml:space="preserve">
     <value>If the value is Clear or Encrypters, hacker can retrieve password from user's password from database.</value>
