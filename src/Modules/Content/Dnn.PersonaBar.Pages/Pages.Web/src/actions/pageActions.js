@@ -96,26 +96,36 @@ const pageActions = {
         };
     },
 
-    addPage() {
-        return (dispatch, getState) => {
-            const { pages } = getState();
-            const previousPage = pages.selectedPage;
+    // addPage() {
+    //     return (dispatch, getState) => {
+    //         const { pages } = getState();
+    //         const previousPage = pages.selectedPage;
+    //         dispatch({
+    //             type: ActionTypes.LOAD_PAGE
+    //         });
+
+    //         PagesService.getNewPage().then(page => {
+    //             if (previousPage && !securityService.isSuperUser()) {
+    //                 page.hierarchy = previousPage.name;
+    //                 page.permissions = cloneDeep(previousPage.permissions);
+    //             }
+    //             dispatch({
+    //                 type: ActionTypes.LOADED_PAGE,
+    //                 data: { page }
+    //             });
+    //         });
+    //     };
+    // },
+
+
+    getNewPage(){
+        return (dispatch) => PagesService.getNewPage().then((page) => {
             dispatch({
-                type: ActionTypes.LOAD_PAGE
+                type: ActionTypes.LOADED_PAGE,
+                data: {page}
             });
 
-            PagesService.getNewPage().then(page => {
-                if (previousPage && !securityService.isSuperUser()) {
-                    page.hierarchy = previousPage.name;
-                    page.permissions = cloneDeep(previousPage.permissions);
-                }
-
-                dispatch({
-                    type: ActionTypes.LOADED_PAGE,
-                    data: { page }
-                });
-            });
-        };
+        });
     },
 
     cancelPage() {

@@ -53,7 +53,8 @@ class App extends Component {
         super();
         this.state = {
             referral: "",
-            referralText: ""
+            referralText: "",
+            renderAddPage: false
         };
 
     }
@@ -153,7 +154,8 @@ class App extends Component {
 
     onAddPage() {
         const {props} = this;
-        props.onAddPage();
+        props.getNewPage();
+
     }
 
     onCancelSettings() {
@@ -456,6 +458,41 @@ class App extends Component {
         );
     }
 
+    render_addPageEditor(){
+        const {props} = this;
+        const cancelAction = this.onCancelSettings.bind(this);
+        const deleteAction = this.onDeleteSettings.bind(this);
+        const AllowContentLocalization = !!props.isContentLocalizationEnabled;
+
+        return(
+            <GridCell columnSize={70}  className="treeview-page-details" >
+            <PageSettings selectedPage={props.selectedPage || {}}
+                    AllowContentLocalization={AllowContentLocalization}
+                    selectedPageErrors={props.selectedPageErrors}
+                    selectedPageDirty={props.selectedPageDirty}
+                    onCancel={cancelAction}
+                    onDelete={deleteAction}
+                    onSave={this.onCreatePage.bind(this)}
+                    selectedPageSettingTab={props.selectedPageSettingTab}
+                    selectPageSettingTab={this.selectPageSettingTab.bind(this)}
+                    onChangeField={props.onChangePageField}
+                    onPermissionsChanged={props.onPermissionsChanged}
+                    onChangePageType={props.onChangePageType}
+                    onDeletePageModule={props.onDeletePageModule}
+                    onEditingPageModule={props.onEditingPageModule}
+                    onCancelEditingPageModule={props.onCancelEditingPageModule}
+                    editingSettingModuleId={props.editingSettingModuleId}
+                    onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
+                    onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
+                    pageDetailsFooterComponents={props.pageDetailsFooterComponents}
+                    pageTypeSelectorComponents={props.pageTypeSelectorComponents}
+                    onGetCachedPageCount={props.onGetCachedPageCount}
+                    onClearCache={props.onClearCache} />
+                </GridCell>
+
+        );
+    }
+
     render_pageList() {
         return (
             <PageList onPageSettings={this.onPageSettings.bind(this)} />
@@ -465,6 +502,7 @@ class App extends Component {
 
     render() {
         const {props} = this;
+        const {selectedPage} = props;
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
         return (
@@ -487,7 +525,7 @@ class App extends Component {
                                 onSelection={this.onSelection.bind(this)}
 
                             />
-                            {this.render_PagesDetailEditor()}
+                            {(selectedPage && selectedPage.tabId===0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
                             </GridCell>
                         </GridCell>
                     </PersonaBarPage>
@@ -583,6 +621,7 @@ function mapDispatchToProps(dispatch) {
         selectPageSettingTab: PageActions.selectPageSettingTab,
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,
+        getNewPage: PageActions.getNewPage,
         onSaveMultiplePages: AddPagesActions.addPages,
         onCancelAddMultiplePages: AddPagesActions.cancelAddMultiplePages,
         onLoadAddMultiplePages: AddPagesActions.loadAddMultiplePages,
