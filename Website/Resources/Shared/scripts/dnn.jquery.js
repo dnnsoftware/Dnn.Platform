@@ -212,10 +212,10 @@
         $wrap.each(function () {
             var $this = $(this);
             if (typeof (opts.onExpand) === "function") {
-                $this.bind('onExpand', opts.onExpand);
+                $this.on('onExpand', opts.onExpand);
             }
             if (typeof (opts.onHide) === "function") {
-                $this.bind('onHide', opts.onHide);
+                $this.on('onHide', opts.onHide);
             }
             // wire up click event to perform slide toggle
             $this.find(opts.clickToToggleSelector).click(function (e) {
@@ -622,9 +622,9 @@
                 cb(e);
             }
 
-            $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
-            $ch.bind('check', function () { ch.wrapper.addClass(settings.cls + '-checked'); }).bind('uncheck', function () { ch.wrapper.removeClass(settings.cls + '-checked'); });
-            $ch.bind('focus', function (e) { if (!e.isTrigger) ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
+            $ch.on('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).on('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
+            $ch.on('check', function () { ch.wrapper.addClass(settings.cls + '-checked'); }).on('uncheck', function () { ch.wrapper.removeClass(settings.cls + '-checked'); });
+            $ch.on('focus', function (e) { if (!e.isTrigger) ch.wrapper.addClass(settings.cls + '-focus'); }).on('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
 
             /* Applying checkbox state */
             if (ch.checked)
@@ -689,7 +689,7 @@
                 }, 400);
             }
 
-            $pd.bind('mousemove', function (e) {
+            $pd.on('mousemove', function (e) {
                 var x = e.pageX; var y = e.pageY;
                 var pos = $('body').css('position');
                 if (pos == 'relative') y -= 38;
@@ -1994,7 +1994,7 @@
                 });
 
                 $(data.fake_input).dnnResetAutosize(settings);
-                $(data.holder).bind('click', data, function (event) {
+                $(data.holder).on('click', data, function (event) {
                     $(event.data.real_input).triggerHandler('focus');
                     $(event.data.fake_input).triggerHandler('focus');
                     return false;
@@ -2006,7 +2006,7 @@
                         }
 
                         $(data.fake_input).dnnAutocomplete(settings.autocomplete_url, settings.autocomplete);
-                        $(data.fake_input).bind('result', data, function (event, tag) {
+                        $(data.fake_input).on('result', data, function (event, tag) {
                             if (tag) {
                                 var tagslist = $(event.data.real_input).val().split(delimiter[id]);
                                 if (tagslist[0] == '') {
@@ -2025,7 +2025,7 @@
                 } else {
                     // if a user tabs out of the field, create a new tag
                     // this is only available if autocomplete is not used.
-                    $(data.fake_input).bind('blur', data, function (event) {
+                    $(data.fake_input).on('blur', data, function (event) {
                         var d = $(this).attr('data-default');
                         var tagslist = $(event.data.real_input).val().split(delimiter[id]);
                         if (tagslist[0] == '') {
@@ -2102,7 +2102,7 @@
 
                 var tagTooLongErrMsg = $('<span class="dnnFormError dnnFormMessage">' + String.format(settings.moreThanMaxCharsErrorText, settings.maxChars) + '</span>');
                 // if user types a comma, create a new tag
-                $(data.fake_input).bind('keypress keydown blur', data, function (event) {
+                $(data.fake_input).on('keypress keydown blur', data, function (event) {
                     if ($(this).val() === "" || clickedOnAutoComplete) {
                         return;
                     }
@@ -2122,7 +2122,7 @@
                     return true;
                 });
                 //Delete last tag on backspace
-                data.removeWithBackspace && $(data.fake_input).bind('keydown', function (event) {
+                data.removeWithBackspace && $(data.fake_input).on('keydown', function (event) {
                     if (event.keyCode == 8 && $(this).val() == '') {
                         event.preventDefault();
                         var lastTag = $(this).closest('.dnnTagsInput').find('.tag:last').text();
@@ -2323,7 +2323,7 @@
                             $(this).toggleErrorMessage({ show: false });
                         };
 
-                        ele.unbind('focus', hideErrorInfo).bind('focus', hideErrorInfo);
+                        ele.off('focus', hideErrorInfo).on('focus', hideErrorInfo);
                     }
                 }
 
@@ -2363,8 +2363,8 @@
 
             $(this).toggleErrorMessage({ show: false, removeErrorMessage: false });
         };
-        $('.RadPicker_Default a.rcCalPopup').unbind('click', dnnRadPickerPopupFix).bind('click', dnnRadPickerPopupFix);
-        $('.RadPicker_Default .riTextBox').unbind('focus', hideErrorInfo).bind('focus', hideErrorInfo);
+        $('.RadPicker_Default a.rcCalPopup').off('click', dnnRadPickerPopupFix).on('click', dnnRadPickerPopupFix);
+        $('.RadPicker_Default .riTextBox').off('focus', hideErrorInfo).on('focus', hideErrorInfo);
     };
 
     // remove combobox inline style
@@ -2449,7 +2449,7 @@
             ele.scrollPane = $this.jScrollPane();
             var api = ele.scrollPane.data('jsp');
             var throttleTimeout;
-            $(window).bind(
+            $(window).on(
                 'resize',
                 function () {
                     if (!$.support.cssFloat) {
@@ -2508,11 +2508,11 @@
 
     $.fn.extend({
         mousewheel: function (fn) {
-            return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
+            return fn ? this.on("mousewheel", fn) : this.trigger("mousewheel");
         },
 
         unmousewheel: function (fn) {
-            return this.unbind("mousewheel", fn);
+            return this.off("mousewheel", fn);
         }
     });
 
@@ -3042,15 +3042,15 @@
                     verticalDrag = verticalTrack.find('>.jspDrag');
 
                     if (settings.showArrows) {
-                        arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
+                        arrowUp = $('<a class="jspArrow jspArrowUp" />').on(
 							'mousedown.jsp', getArrowScroll(0, -1)
-						).bind('click.jsp', nil);
-                        arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
+						).on('click.jsp', nil);
+                        arrowDown = $('<a class="jspArrow jspArrowDown" />').on(
 							'mousedown.jsp', getArrowScroll(0, 1)
-						).bind('click.jsp', nil);
+						).on('click.jsp', nil);
                         if (settings.arrowScrollOnHover) {
-                            arrowUp.bind('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
-                            arrowDown.bind('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
+                            arrowUp.on('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
+                            arrowDown.on('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
                         }
 
                         appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
@@ -3071,22 +3071,22 @@
 						function () {
 						    verticalDrag.removeClass('jspHover');
 						}
-					).bind(
+					).on(
 						'mousedown.jsp',
 						function (e) {
 						    // Stop IE from allowing text selection
-						    $('html').bind('dragstart.jsp selectstart.jsp', nil);
+						    $('html').on('dragstart.jsp selectstart.jsp', nil);
 
 						    verticalDrag.addClass('jspActive');
 
 						    var startY = e.pageY - verticalDrag.position().top;
 
-						    $('html').bind(
+						    $('html').on(
 								'mousemove.jsp',
 								function (e) {
 								    positionDragY(e.pageY - startY, false);
 								}
-							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
+							).on('mouseup.jsp mouseleave.jsp', cancelDrag);
 						    return false;
 						}
 					);
@@ -3133,15 +3133,15 @@
                     horizontalDrag = horizontalTrack.find('>.jspDrag');
 
                     if (settings.showArrows) {
-                        arrowLeft = $('<a class="jspArrow jspArrowLeft" />').bind(
+                        arrowLeft = $('<a class="jspArrow jspArrowLeft" />').on(
 							'mousedown.jsp', getArrowScroll(-1, 0)
-						).bind('click.jsp', nil);
-                        arrowRight = $('<a class="jspArrow jspArrowRight" />').bind(
+						).on('click.jsp', nil);
+                        arrowRight = $('<a class="jspArrow jspArrowRight" />').on(
 							'mousedown.jsp', getArrowScroll(1, 0)
-						).bind('click.jsp', nil);
+						).on('click.jsp', nil);
                         if (settings.arrowScrollOnHover) {
-                            arrowLeft.bind('mouseover.jsp', getArrowScroll(-1, 0, arrowLeft));
-                            arrowRight.bind('mouseover.jsp', getArrowScroll(1, 0, arrowRight));
+                            arrowLeft.on('mouseover.jsp', getArrowScroll(-1, 0, arrowLeft));
+                            arrowRight.on('mouseover.jsp', getArrowScroll(1, 0, arrowRight));
                         }
                         appendArrows(horizontalTrack, settings.horizontalArrowPositions, arrowLeft, arrowRight);
                     }
@@ -3153,22 +3153,22 @@
 						function () {
 						    horizontalDrag.removeClass('jspHover');
 						}
-					).bind(
+					).on(
 						'mousedown.jsp',
 						function (e) {
 						    // Stop IE from allowing text selection
-						    $('html').bind('dragstart.jsp selectstart.jsp', nil);
+						    $('html').on('dragstart.jsp selectstart.jsp', nil);
 
 						    horizontalDrag.addClass('jspActive');
 
 						    var startX = e.pageX - horizontalDrag.position().left;
 
-						    $('html').bind(
+						    $('html').on(
 								'mousemove.jsp',
 								function (e) {
 								    positionDragX(e.pageX - startX, false);
 								}
-							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
+							).on('mouseup.jsp mouseleave.jsp', cancelDrag);
 						    return false;
 						}
 					);
@@ -3287,13 +3287,13 @@
 
                 eve = ele ? 'mouseout.jsp' : 'mouseup.jsp';
                 ele = ele || $('html');
-                ele.bind(
+                ele.on(
 					eve,
 					function () {
 					    arrow.removeClass('jspActive');
 					    scrollTimeout && clearTimeout(scrollTimeout);
 					    scrollTimeout = null;
-					    ele.unbind(eve);
+					    ele.off(eve);
 					}
 				);
             }
@@ -3301,7 +3301,7 @@
             function initClickOnTrack() {
                 removeClickOnTrack();
                 if (isScrollableV) {
-                    verticalTrack.bind(
+                    verticalTrack.on(
 						'mousedown.jsp',
 						function (e) {
 						    if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
@@ -3337,10 +3337,10 @@
 									cancelClick = function () {
 									    scrollTimeout && clearTimeout(scrollTimeout);
 									    scrollTimeout = null;
-									    $(document).unbind('mouseup.jsp', cancelClick);
+									    $(document).off('mouseup.jsp', cancelClick);
 									};
 						        doScroll();
-						        $(document).bind('mouseup.jsp', cancelClick);
+						        $(document).on('mouseup.jsp', cancelClick);
 						        return false;
 						    }
 						}
@@ -3348,7 +3348,7 @@
                 }
 
                 if (isScrollableH) {
-                    horizontalTrack.bind(
+                    horizontalTrack.on(
 						'mousedown.jsp',
 						function (e) {
 						    if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
@@ -3384,10 +3384,10 @@
 									cancelClick = function () {
 									    scrollTimeout && clearTimeout(scrollTimeout);
 									    scrollTimeout = null;
-									    $(document).unbind('mouseup.jsp', cancelClick);
+									    $(document).off('mouseup.jsp', cancelClick);
 									};
 						        doScroll();
-						        $(document).bind('mouseup.jsp', cancelClick);
+						        $(document).on('mouseup.jsp', cancelClick);
 						        return false;
 						    }
 						}
@@ -3397,15 +3397,15 @@
 
             function removeClickOnTrack() {
                 if (horizontalTrack) {
-                    horizontalTrack.unbind('mousedown.jsp');
+                    horizontalTrack.off('mousedown.jsp');
                 }
                 if (verticalTrack) {
-                    verticalTrack.unbind('mousedown.jsp');
+                    verticalTrack.off('mousedown.jsp');
                 }
             }
 
             function cancelDrag() {
-                $('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
+                $('html').off('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
 
                 if (verticalDrag) {
                     verticalDrag.removeClass('jspActive');
@@ -3603,7 +3603,7 @@
             }
 
             function initMousewheel() {
-                container.unbind(mwEvent).bind(
+                container.off(mwEvent).on(
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 					    var dX = horizontalDragPosition, dY = verticalDragPosition;
@@ -3615,7 +3615,7 @@
             }
 
             function removeMousewheel() {
-                container.unbind(mwEvent);
+                container.off(mwEvent);
             }
 
             function nil() {
@@ -3623,7 +3623,7 @@
             }
 
             function initFocusHandler() {
-                pane.find(':input,a').unbind('focus.jsp').bind(
+                pane.find(':input,a').off('focus.jsp').on(
 					'focus.jsp',
 					function (e) {
 					    scrollToElement(e.target, false);
@@ -3632,7 +3632,7 @@
             }
 
             function removeFocusHandler() {
-                pane.find(':input,a').unbind('focus.jsp');
+                pane.find(':input,a').off('focus.jsp');
             }
 
             function initKeyboardNav() {
@@ -3648,8 +3648,8 @@
 				);
 
                 elem.attr('tabindex', 0)
-					.unbind('keydown.jsp keypress.jsp')
-					.bind(
+					.off('keydown.jsp keypress.jsp')
+					.on(
 						'keydown.jsp',
 						function (e) {
 						    if (e.target !== this && !(validParents.length && $(e.target).closest(validParents).length)) {
@@ -3680,7 +3680,7 @@
 						    elementHasScrolled = e.keyCode == keyDown && dX != horizontalDragPosition || dY != verticalDragPosition;
 						    return !elementHasScrolled;
 						}
-					).bind(
+					).off(
 						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses if the JSP scrolls...
 						function (e) {
 						    if (e.keyCode == keyDown) {
@@ -3734,7 +3734,7 @@
             function removeKeyboardNav() {
                 elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
-					.unbind('keydown.jsp keypress.jsp');
+					.off('keydown.jsp keypress.jsp');
             }
 
             function observeHash() {
@@ -3848,7 +3848,7 @@
 					moved,
 					moving = false;
 
-                container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').bind(
+                container.off('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').on(
 					'touchstart.jsp',
 					function (e) {
 					    var touch = e.originalEvent.touches[0];
@@ -3859,7 +3859,7 @@
 					    moved = false;
 					    moving = true;
 					}
-				).bind(
+				).on(
 					'touchmove.jsp',
 					function (ev) {
 					    if (!moving) {
@@ -3876,7 +3876,7 @@
 					    // return true if there was no movement so rest of screen can scroll
 					    return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
-				).bind(
+				).on(
 					'touchend.jsp',
 					function (e) {
 					    moving = false;
@@ -3884,7 +3884,7 @@
 							return false;
 						}*/
 					}
-				).bind(
+				).on(
 					'click.jsp-touchclick',
 					function (e) {
 					    if (moved) {
@@ -3898,7 +3898,7 @@
             function destroy() {
                 var currentY = contentPositionY(),
 					currentX = contentPositionX();
-                elem.removeClass('jspScrollable').unbind('.jsp');
+                elem.removeClass('jspScrollable').off('.jsp');
                 elem.replaceWith(originalElement.append(pane.children()));
                 originalElement.scrollTop(currentY);
                 originalElement.scrollLeft(currentX);
@@ -4155,7 +4155,7 @@
         };
 
         return $(this).each(function () {
-            $(this).unbind('click', clicked).bind('click', clicked);
+            $(this).off('click', clicked).on('click', clicked);
             $(this).parent().hoverIntent(hoverConfig);
         });
     };
@@ -4165,7 +4165,7 @@
     $.fn.onEnter = function (fn) {
         return this.each(function () {
             var $this = $(this);
-            $this.bind('onEnter', fn);
+            $this.on('onEnter', fn);
             $this.keydown(function (e) {
                 if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
                     e.preventDefault();

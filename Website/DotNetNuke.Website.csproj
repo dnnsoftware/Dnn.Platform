@@ -1519,8 +1519,6 @@
     <Content Include="Resources\Shared\components\TimePicker\Themes\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery-ui.css" />
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
-    <Content Include="Resources\Shared\scripts\jquery\20170207124400.png" />
-    <Content Include="Resources\Shared\scripts\jquery\DSC_6401.JPG" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />

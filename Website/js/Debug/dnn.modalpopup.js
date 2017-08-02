@@ -122,7 +122,7 @@
             };			
             var dialogOpened = function () {
                 
-				$modal.bind("load", function() {
+                $modal.on("load", function () {
 					hideLoading();
 					var iframe = document.getElementById("iPopUp");
 					var currentHost = window.location.hostname.toLowerCase();

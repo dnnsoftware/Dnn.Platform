@@ -61,7 +61,7 @@
         destroy: function () {
             this._$scrollbarX.remove();
             this._$scrollbarY.remove();
-            this.$element.unbind("mousewheel");
+            this.$element.off("mousewheel");
         },
 
         _scrollY: function () {
@@ -147,8 +147,8 @@
             this._currentPageX = e.pageX;
             this._currentLeft = this._$scrollbarX.position().left;
             this._$scrollbarX.addClass('in-scrolling');
-            $(document).bind('mousemove.perfect-scroll', this._onMouseMoveXHandler);
-            $(document).bind('mouseup.perfect-scroll', this._onMouseUpXHandler);
+            $(document).on('mousemove.perfect-scroll', this._onMouseMoveXHandler);
+            $(document).on('mouseup.perfect-scroll', this._onMouseUpXHandler);
             e.stopPropagation();
             e.preventDefault();
         },
@@ -157,8 +157,8 @@
             this._currentPageY = e.pageY;
             this._currentTop = this._$scrollbarY.position().top;
             this._$scrollbarY.addClass('in-scrolling');
-            $(document).bind('mousemove.perfect-scroll', this._onMouseMoveYHandler);
-            $(document).bind('mouseup.perfect-scroll', this._onMouseUpYHandler);
+            $(document).on('mousemove.perfect-scroll', this._onMouseMoveYHandler);
+            $(document).on('mouseup.perfect-scroll', this._onMouseUpYHandler);
             e.stopPropagation();
             e.preventDefault();
         },
@@ -185,16 +185,16 @@
             if (this._$scrollbarX.hasClass('in-scrolling')) {
                 this._$scrollbarX.removeClass('in-scrolling');
             }
-            $(document).unbind('mousemove.perfect-scroll', this._onMouseMoveXHandler);
-            $(document).unbind('mouseup.perfect-scroll', this._onMouseUpXHandler);
+            $(document).off('mousemove.perfect-scroll', this._onMouseMoveXHandler);
+            $(document).off('mouseup.perfect-scroll', this._onMouseUpXHandler);
         },
 
         _onMouseUpY: function (e) {
             if (this._$scrollbarY.hasClass('in-scrolling')) {
                 this._$scrollbarY.removeClass('in-scrolling');
             }
-            $(document).unbind('mousemove.perfect-scroll', this._onMouseMoveYHandler);
-            $(document).unbind('mouseup.perfect-scroll', this._onMouseUpYHandler);
+            $(document).off('mousemove.perfect-scroll', this._onMouseMoveYHandler);
+            $(document).off('mouseup.perfect-scroll', this._onMouseUpYHandler);
         },
 
         _onMouseWheel: function (e, delta, deltaX, deltaY) {

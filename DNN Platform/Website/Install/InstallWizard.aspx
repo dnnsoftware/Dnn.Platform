@@ -566,7 +566,7 @@
                             $("#bannerLink").click(function () { return false; });
                         }
                         else {
-                            $("#bannerLink").unbind('click');// click(function () { return false; });
+                            $("#bannerLink").off('click');// click(function () { return false; });
                             $("#bannerImage").attr("src", "http://cdn.dotnetnuke.com/installer/banners/banner_" + installWizard.bannerIndex + ".jpg");
                             $("#bannerLink").attr("href", "http://www.dotnetnuke.com/installation/Banner" + installWizard.bannerIndex + ".aspx");
                             $("#bannerLink").attr("target", "_blank");
@@ -584,7 +584,7 @@
         /*globals jQuery, window, Sys */
         (function ($, Sys) {
             $(function () {
-                $("#tabs").bind("tabscreate", function (event, ui) {
+                $("#tabs").on("tabscreate", function (event, ui) {
                     var index = 0, selectedIndex = 0;
                     $('.ui-tabs-nav li', $(this)).each(function () {
                         if ($(this).hasClass('ui-tabs-active'))
@@ -596,7 +596,7 @@
                         $('.dnnWizardStepArrow', $(this)).eq(selectedIndex - 1).css('background-position', '0 -201px');
                 });
 
-                $("#tabs").bind("tabsactivate", function (event, ui) {
+                $("#tabs").on("tabsactivate", function (event, ui) {
                     var index = ui.newTab.index();
                     $('.dnnWizardStepArrow', $(this)).css('background-position', '0 -401px');
                     $('.dnnWizardStepArrow', $(this)).eq(index).css('background-position', '0 -299px');

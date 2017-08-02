@@ -216,7 +216,7 @@
                 $("link[class=needVer]").each(function(index, item) {
                     $(item).attr("href", $(item).attr("href") + "?<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>");
                 });
-                $("#tabs").bind("tabscreate", function (event, ui) {
+                $("#tabs").on("tabscreate", function (event, ui) {
                     var index = 0, selectedIndex = 0;
                     $('.ui-tabs-nav li', $(this)).each(function () {
                         if ($(this).hasClass('ui-tabs-active'))
@@ -229,7 +229,7 @@
                         $('.dnnWizardStepArrow', $(this)).eq(selectedIndex - 1).css('background-position', '0 -201px');
                 });
 
-                $("#tabs").bind("tabsactivate", function (event, ui) {
+                $("#tabs").on("tabsactivate", function (event, ui) {
                     var index = ui.newTab.index();
                     $('.dnnWizardStepArrow', $(this)).css('background-position', '0 -401px');
                     $('.dnnWizardStepArrow', $(this)).eq(index).css('background-position', '0 -299px');
