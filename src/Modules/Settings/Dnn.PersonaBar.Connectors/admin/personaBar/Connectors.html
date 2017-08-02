@@ -21,7 +21,7 @@
                     <!-- ko if: connections().length < 2 -->
                     <!-- ko foreach: connections -->
 
-                    <tr data-bind="css: {'last-row':$index() == $parent.connections().length - 1}">
+                    <tr data-bind="css: {'last-row':$index() == $parent.connections().length - 1, 'in-edit': inEdit()}" class="edit-title">
                         <td><span class="socialnetwork-connection" data-bind="css: { verified: connected }"></span></td>
                         <td>
                             <span data-bind="attr: { 'class': faviconCss, 'style': 'background-image: url(' + icon + ');' }, css: { connected: connected() }"></span>
@@ -31,11 +31,11 @@
                             <a class='primarybtn' data-bind="click: edit, html: $root.resx.btn_Edit, visible: connected() && !inEdit()"></a>
                             <a class='plainbtn' data-bind="click: edit, html: $root.resx.btn_Connect, visible: !connected() && !inEdit()"></a>
                             <!-- ko if:  inEdit() && supportsMultiple -->
-                            <a class='primarybtn add-new-connection' data-bind="click: function() {$parent.onAddNew($parent)}, html: '<em>&#10010;</em>' +$root.resx.txt_AddNew"></a>
+                            <a class='secondarybtn add-new-connection' data-bind="click: function() {$parent.onAddNew($parent)}, html: '<em>&#10010;</em>' +$root.resx.txt_AddNew"></a>
                             <!-- /ko -->
                         </td>
                     </tr>
-                    <tr class="edit-row">
+                    <tr class="edit-row" data-bind="css: {'in-edit': inEdit()}">
                         <td colspan="4">
                             <div data-bind="attr: {id: 'connector-' + name.replace(/ /g,''), class: 'edit-form '  + ($parent.isOpen() ? 'open' : '')}">
                                 <!-- ko if: componentInitialized -->
@@ -62,7 +62,7 @@
 
 
                     <!-- ko if: connections().length > 1 -->
-                    <tr data-bind="css: {'last-row':$index() == $parent.connections().length - 1, 'open': isOpen()}">
+                    <tr data-bind="css: {'last-row':$index() == $parent.connections().length - 1, 'open': isOpen(), 'in-edit': isOpen()}" class="edit-title">
                         <td><span class="socialnetwork-connection" data-bind="css: { verified: connected }"></span></td>
                         <td>
                             <span data-bind="attr: { 'class': 'socialnetwork-favicon ' + name, 'style': 'background-image: url(' + icon + ');' }, css: { connected: connected() }">
@@ -75,12 +75,12 @@
                             <a class='primarybtn' data-bind="click: onOpen, html: $root.resx.btn_Edit"></a>
                             <!-- /ko -->
                             <!-- ko if:  isOpen() -->
-                            <a class='primarybtn add-new-connection' data-bind="click: onAddNew, html: '<em>&#10010;</em>' + $root.resx.txt_AddNew"></a>
+                            <a class='secondarybtn add-new-connection' data-bind="click: onAddNew, html: '<em>&#10010;</em>' + $root.resx.txt_AddNew"></a>
                             <!-- /ko -->
 
                         </td>
                     </tr>
-                    <tr class="edit-row">
+                    <tr class="edit-row" data-bind="css: {'in-edit': isOpen()}">
                         <td colspan="4">
                             <div data-bind="css: 'parent-container ' + (isOpen() ? 'open' : '')">
                                 <div class="inner-container">
