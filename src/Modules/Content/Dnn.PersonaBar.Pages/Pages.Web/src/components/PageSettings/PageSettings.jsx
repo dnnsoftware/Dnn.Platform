@@ -35,7 +35,6 @@ class PageSettings extends Component {
 
         let buttons = [<Button
                     type="secondary"
-                    disabled={(!selectedPageDirty) ? true : false}
                     onClick={onCancel}>
                     {Localization.get("Cancel")}
                 </Button>,

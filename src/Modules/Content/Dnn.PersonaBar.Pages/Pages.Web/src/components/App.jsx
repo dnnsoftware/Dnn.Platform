@@ -529,13 +529,15 @@ class App extends Component {
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{ padding: "20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className="tree-container" style={(selectedPage && selectedPage.tabId === 0) ? { opacity: .5, "pointerEvents": "none" } : { opacity: 1, "pointerEvents": "auto" }}>
+                                <div className="tree-container" className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
+                                    <div>
                                     <PersonaBarPageTreeviewInteractor
                                         activePage={this.props.selectedPage}
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}
                                         onMovePage={this.onMovePage.bind(this)}
                                         onSelection={this.onSelection.bind(this)} />
+                                    </div>
                                 </div>
 
                                 {(selectedPage && selectedPage.tabId === 0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
