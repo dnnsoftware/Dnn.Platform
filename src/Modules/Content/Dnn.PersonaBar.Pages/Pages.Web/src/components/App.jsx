@@ -53,8 +53,7 @@ class App extends Component {
         super();
         this.state = {
             referral: "",
-            referralText: "",
-            renderAddPage: false
+            referralText: ""
         };
 
     }
