@@ -11,7 +11,7 @@ export default function pagesReducer(state = {
     selectedPageSettingTab: 0
 }, action) {
 
-    console.log(action);
+
 
     const changeField = function changeField(field, value) {
         const newSelectedPage = {
@@ -42,7 +42,6 @@ export default function pagesReducer(state = {
             };
 
         case ActionTypes.LOADED_PAGE:
-            console.log('assigning', action.data.page);
             return { ...state,
                 selectedPage: action.data.page,
                 errors: {},

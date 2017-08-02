@@ -381,11 +381,6 @@ class App extends Component {
         });
     }
 
-    getActivePage(){
-        return Object.assign({}, this.state.activePage);
-    }
-
-
     onSelection(pageId){
         const {selectedPage} = this.props;
         if(!selectedPage || selectedPage.tabId !== pageId){
@@ -516,15 +511,15 @@ class App extends Component {
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{padding:"20px"}} >
                             <GridCell columnSize={100} className="page-container">
-                            <PersonaBarPageTreeviewInteractor
-                                activePage={this.props.selectedPage}
-                                setActivePage={ this.setActivePage.bind(this) }
-                                getActivePage={ this.getActivePage.bind(this) }
-                                saveDropState={this.onUpdatePage.bind(this)}
-                                onMovePage={this.onMovePage.bind(this)}
-                                onSelection={this.onSelection.bind(this)}
+                            <div className="tree-container" style={(selectedPage && selectedPage.tabId===0) ? {opacity:.5} : {opacity:1} }>
+                                <PersonaBarPageTreeviewInteractor
+                                    activePage={this.props.selectedPage}
+                                    setActivePage={ this.setActivePage.bind(this)}
+                                    saveDropState={this.onUpdatePage.bind(this)}
+                                    onMovePage={this.onMovePage.bind(this)}
+                                    onSelection={this.onSelection.bind(this)}/>
+                                </div>
 
-                            />
                             {(selectedPage && selectedPage.tabId===0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
                             </GridCell>
                         </GridCell>
@@ -557,8 +552,8 @@ App.propTypes = {
     onCreatePage: PropTypes.func.isRequired,
     onUpdatePage: PropTypes.func.isRequired,
     onDeletePage: PropTypes.func.isRequired,
+    getNewPage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
-    onAddPage: PropTypes.func.isRequired,
     onCancelAddMultiplePages: PropTypes.func.isRequired,
     onSaveMultiplePages: PropTypes.func.isRequired,
     onLoadAddMultiplePages: PropTypes.func.isRequired,
@@ -620,7 +615,6 @@ function mapDispatchToProps(dispatch) {
         onDeletePage: PageActions.deletePage,
         selectPageSettingTab: PageActions.selectPageSettingTab,
         onLoadPage: PageActions.loadPage,
-        onAddPage: PageActions.addPage,
         getNewPage: PageActions.getNewPage,
         onSaveMultiplePages: AddPagesActions.addPages,
         onCancelAddMultiplePages: AddPagesActions.cancelAddMultiplePages,
