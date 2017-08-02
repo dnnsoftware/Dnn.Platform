@@ -206,15 +206,17 @@ class App extends Component {
 
 
     showCancelWithoutSavingDialogInEditMode() {
-        const onConfirm = () => {
-            this.props.onLoadPage(this.props.selectedPage.tabId);
-        };
+        if (this.props.selectedPageDirty) {
+            const onConfirm = () => this.props.onLoadPage(this.props.selectedPage.tabId);
+            utils.confirm(
+                Localization.get("CancelWithoutSavingPage"),
+                Localization.get("Revert"),
+                Localization.get("Go Back"),
+                onConfirm);
 
-        utils.confirm(
-            Localization.get("CancelWithoutSavingPage"),
-            Localization.get("Revert"),
-            Localization.get("Go Back"),
-            onConfirm);
+        } else {
+            this.props.onLoadPage(this.props.selectedPage.tabId);
+        }
     }
 
     isNewPage() {
@@ -521,8 +523,8 @@ class App extends Component {
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
-                            <Button type="primary" disabled={(selectedPage && selectedPage.tabId===0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                            <Button type="secondary" disabled={(selectedPage && selectedPage.tabId===0) ? true : false} size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
+                            <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                            <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{ padding: "20px" }} >
