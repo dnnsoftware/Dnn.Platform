@@ -86,7 +86,9 @@ export default function pagesReducer(state = {
                 editingSettingModuleId
             };
         }
-        
+        case ActionTypes.CANCEL_PAGE:
+            return {};
+
         case ActionTypes.CANCEL_EDITING_PAGE_MODULE: {
             const editingSettingModuleId = null;
             return { ...state,

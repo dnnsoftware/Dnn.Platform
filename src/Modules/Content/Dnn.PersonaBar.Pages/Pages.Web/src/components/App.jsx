@@ -33,7 +33,7 @@ import Promise from "promise";
 import "./style.less";
 
 
-import {PersonaBarPageTreeviewInteractor} from "./dnn-persona-bar-page-treeview";
+import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
 function getSelectedTabBeingViewed(viewTab) {
     switch (viewTab) {
@@ -59,7 +59,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const {props} = this;
+        const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
         window.dnn.utility.closeSocialTasks();
@@ -136,7 +136,7 @@ class App extends Component {
     }
 
     onPageSettings(pageId) {
-        const {props} = this;
+        const { props } = this;
         props.onLoadPage(pageId);
     }
 
@@ -144,17 +144,27 @@ class App extends Component {
         this.props.onCreatePage(input);
     }
 
-    onUpdatePage(input){
+    onUpdatePage(input) {
         return new Promise((resolve) => {
-            const update = (input && input.tabId) ? input  :  this.props.selectedPage;
-            this.props.onUpdatePage(update, () =>  resolve());
+            const update = (input && input.tabId) ? input : this.props.selectedPage;
+            this.props.onUpdatePage(update, () => resolve());
         });
     }
 
     onAddPage() {
-        const {props} = this;
-        props.getNewPage();
+        const { props } = this;
+        const { selectedPage } = props;
+        if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+            const onConfirm = () => this.props.getNewPage();
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                onConfirm);
 
+        } else {
+            props.getNewPage();
+        }
     }
 
     onCancelSettings() {
@@ -167,7 +177,7 @@ class App extends Component {
     }
 
     onDeleteSettings() {
-        const {props} = this;
+        const { props } = this;
         const onDelete = () => this.props.onDeletePage(props.selectedPage);
         utils.confirm(
             Localization.get("DeletePageConfirm"),
@@ -177,13 +187,14 @@ class App extends Component {
     }
 
     onClearCache() {
-        const {props} = this;
+        const { props } = this;
         props.onClearCache();
     }
 
     showCancelWithoutSavingDialog() {
-        const onConfirm = () =>{
+        const onConfirm = () => {
             this.props.onCancelPage();
+
         };
 
         utils.confirm(
@@ -194,8 +205,8 @@ class App extends Component {
     }
 
 
-    showCancelWithoutSavingDialogInEditMode(){
-        const onConfirm = () =>{
+    showCancelWithoutSavingDialogInEditMode() {
+        const onConfirm = () => {
             this.props.onLoadPage(this.props.selectedPage.tabId);
         };
 
@@ -207,24 +218,24 @@ class App extends Component {
     }
 
     isNewPage() {
-        const {selectedPage} = this.props;
+        const { selectedPage } = this.props;
         return selectedPage.tabId === 0;
     }
 
     getPageTitle() {
-        const {selectedPage} = this.props;
+        const { selectedPage } = this.props;
         return this.isNewPage() ?
             Localization.get("AddPage") :
             selectedPage.name;
     }
 
     getSettingsButtons() {
-        const {settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel} = this.props;
+        const { settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
         const deleteAction = this.onDeleteSettings.bind(this);
 
         return (
-            <div className="heading-buttons">                
+            <div className="heading-buttons">
                 <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true}>
                     <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                 </Sec>
@@ -247,14 +258,14 @@ class App extends Component {
                         {Localization.get("DuplicatePage")}
                     </Button>
                 </Sec>
-                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE) && 
+                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE) &&
                     <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true}>
                         <Button
                             type="secondary"
                             size="large"
                             onClick={deleteAction}>
                             {Localization.get("Delete")}
-                        </Button>    
+                        </Button>
                     </Sec>
                 }
             </div>
@@ -266,7 +277,7 @@ class App extends Component {
     }
 
     getSettingsPage() {
-        const {props} = this;
+        const { props } = this;
         const titleSettings = this.getPageTitle();
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
@@ -310,7 +321,7 @@ class App extends Component {
     }
 
     getAddPages() {
-        const {props} = this;
+        const { props } = this;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
             <PersonaBarPageHeader title={Localization.get("AddMultiplePages")}>
@@ -330,7 +341,7 @@ class App extends Component {
     }
 
     getSaveAsTemplatePage() {
-        const {props} = this;
+        const { props } = this;
         const pageName = props.selectedPage && props.selectedPage.name;
         const backToLabel = Localization.get("BackToPageSettings") + ": " + pageName;
 
@@ -349,7 +360,7 @@ class App extends Component {
 
     getAdditionalPanels() {
         const additionalPanels = [];
-        const {props} = this;
+        const { props } = this;
 
         if (props.additionalPanels) {
             for (let i = 0; i < props.additionalPanels.length; i++) {
@@ -357,7 +368,7 @@ class App extends Component {
                 if (props.selectedView === panel.panelId) {
                     const Component = panel.component;
                     additionalPanels.push(
-                        <Component 
+                        <Component
                             onCancel={props.onCancelSavePageAsTemplate}
                             selectedPage={props.selectedPage}
                             store={panel.store} />
@@ -370,7 +381,7 @@ class App extends Component {
     }
 
     setActivePage(pageInfo) {
-        return new Promise((resolve)=>{
+        return new Promise((resolve) => {
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
 
@@ -380,28 +391,28 @@ class App extends Component {
         });
     }
 
-    onSelection(pageId){
-        const {selectedPage} = this.props;
-        if(!selectedPage || selectedPage.tabId !== pageId){
+    onSelection(pageId) {
+        const { selectedPage } = this.props;
+        if (!selectedPage || selectedPage.tabId !== pageId) {
             this.props.onLoadPage(pageId);
         }
     }
 
 
-    onMovePage({Action, PageId, ParentId, RelatedPageId}){
-        return PageActions.movePage({Action, PageId, ParentId, RelatedPageId});
+    onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
+        return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
 
 
-    render_PagesTreeViewEditor(){
+    render_PagesTreeViewEditor() {
         return (
-            <GridCell columnSize={30}  style={{marginTop:"120px", backgroundColor:"#aaa"}} >
+            <GridCell columnSize={30} style={{ marginTop: "120px", backgroundColor: "#aaa" }} >
                 <p>Tree Controller</p>
             </GridCell>
         );
     }
 
-    render_PagesDetailEditor(){
+    render_PagesDetailEditor() {
 
         const render_emptyState = () => {
             return (
@@ -416,19 +427,19 @@ class App extends Component {
 
 
         const render_pageDetails = () => {
-            const {props, state} = this;
+            const { props, state } = this;
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
-                    AllowContentLocalization={(d)=>{}}
+                    AllowContentLocalization={(d) => { }}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
-                    onCancel={ this.showCancelWithoutSavingDialogInEditMode.bind(this) }
-                    onDelete={ this.onDeleteSettings.bind(this) }
+                    onCancel={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
+                    onDelete={this.onDeleteSettings.bind(this)}
                     onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={ props.onChangePageField }
+                    onChangeField={props.onChangePageField}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}
@@ -444,23 +455,23 @@ class App extends Component {
                 />
             );
         };
-        const {selectedPage} = this.props;
+        const { selectedPage } = this.props;
         return (
-            <GridCell columnSize={70}  className="treeview-page-details" >
-                {(selectedPage && selectedPage.tabId) ? render_pageDetails() : render_emptyState() }
+            <GridCell columnSize={70} className="treeview-page-details" >
+                {(selectedPage && selectedPage.tabId) ? render_pageDetails() : render_emptyState()}
             </GridCell>
         );
     }
 
-    render_addPageEditor(){
-        const {props} = this;
+    render_addPageEditor() {
+        const { props } = this;
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
 
-        return(
-            <GridCell columnSize={70}  className="treeview-page-details" >
-            <PageSettings selectedPage={props.selectedPage || {}}
+        return (
+            <GridCell columnSize={70} className="treeview-page-details" >
+                <PageSettings selectedPage={props.selectedPage || {}}
                     AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
@@ -482,9 +493,14 @@ class App extends Component {
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents}
                     onGetCachedPageCount={props.onGetCachedPageCount}
                     onClearCache={props.onClearCache} />
-                </GridCell>
+            </GridCell>
 
         );
+    }
+
+
+    render_details() {
+        const { selectedPage } = this.props;
     }
 
     render_pageList() {
@@ -495,10 +511,11 @@ class App extends Component {
 
 
     render() {
-        const {props} = this;
-        const {selectedPage} = props;
+        const { props } = this;
+        const { selectedPage } = props;
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
+
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
@@ -506,20 +523,20 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
-                            <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage}/>
+                            <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
-                        <GridCell columnSize={100} style={{padding:"20px"}} >
+                        <GridCell columnSize={100} style={{ padding: "20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                            <div className="tree-container" style={(selectedPage && selectedPage.tabId===0) ? {opacity:.5} : {opacity:1} }>
-                                <PersonaBarPageTreeviewInteractor
-                                    activePage={this.props.selectedPage}
-                                    setActivePage={ this.setActivePage.bind(this)}
-                                    saveDropState={this.onUpdatePage.bind(this)}
-                                    onMovePage={this.onMovePage.bind(this)}
-                                    onSelection={this.onSelection.bind(this)}/>
+                                <div className="tree-container" style={(selectedPage && selectedPage.tabId === 0) ? { opacity: .5, "pointerEvents": "none" } : { opacity: 1, "pointerEvents": "auto" }}>
+                                    <PersonaBarPageTreeviewInteractor
+                                        activePage={this.props.selectedPage}
+                                        setActivePage={this.setActivePage.bind(this)}
+                                        saveDropState={this.onUpdatePage.bind(this)}
+                                        onMovePage={this.onMovePage.bind(this)}
+                                        onSelection={this.onSelection.bind(this)} />
                                 </div>
 
-                            {(selectedPage && selectedPage.tabId===0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
+                                {(selectedPage && selectedPage.tabId === 0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
                             </GridCell>
                         </GridCell>
                     </PersonaBarPage>
