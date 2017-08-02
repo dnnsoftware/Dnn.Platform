@@ -7,7 +7,7 @@
     
     The primary goals of this format is to allow a simple XML format 
     that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+    various data types are done through the TypeConverter classes
     associated with the data types.
     
     Example:
@@ -482,6 +482,9 @@
   </data>
   <data name="CancelWithoutSaving.Text" xml:space="preserve">
     <value>Are you sure you want to close? Any changes will be lost.</value>
+  </data>
+  <data name="CancelWithoutSavingPage.Text" xml:space="preserve">
+    <value>Are you sure you want to cancel? Any changes will be reverted.</value>
   </data>
   <data name="PathDuplicateWithAlias.Text" xml:space="preserve">
     <value>There is already a page with the same name, {0} at the same URL path {1}.</value>
