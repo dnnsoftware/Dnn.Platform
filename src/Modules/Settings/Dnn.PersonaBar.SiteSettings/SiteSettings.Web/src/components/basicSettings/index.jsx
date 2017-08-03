@@ -268,7 +268,7 @@ class BasicSettingsPanelBody extends Component {
                         selectedFile={state.basicSettings.LogoFile}
                         folderName={state.basicSettings.LogoFile ? state.basicSettings.LogoFile.FolderName : null}
                         onSelectFile={this.onSettingChange.bind(this, "LogoFile") }
-                        fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpeg"]}
+                        fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpeg", "image/svg+xml"]}
                         />
                 </InputGroup>
             </div>;
