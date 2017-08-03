@@ -2919,9 +2919,6 @@
     <Content Include="Resources\ControlPanel\ControlPanel.debug.js" />
     <Content Include="Resources\ControlPanel\ControlPanel.js" />
     <Content Include="Resources\Dashboard\jquery.dashboard.js" />
-    <Content Include="Resources\Libraries\jQuery-Migrate\01_02_01\jquery-migrate.js" />
-    <Content Include="Resources\Libraries\jQuery\01_09_01\jquery.js" />
-    <Content Include="Resources\Libraries\Knockout.Mapping\02_04_01\knockout.mapping.js" />
     <Content Include="Resources\Search\Search.js" />
     <Content Include="Resources\Search\SearchSkinObjectPreview.css" />
     <Content Include="Resources\Search\SearchSkinObjectPreview.js" />
@@ -3290,7 +3287,6 @@
     <None Include="release.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\Libraries\jQuery\01_09_01\jquery.min.map" />
     <None Include="Resources\Shared\scripts\jquery\jquery.min.map" />
   </ItemGroup>
   <ItemGroup>

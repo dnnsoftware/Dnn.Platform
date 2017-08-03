@@ -99,8 +99,8 @@ jQuery(document).ready(function($) {
     $('#dashboardTabs div[id$="-tab"] table').zebratable();
 
     // clean up to avoid memory leaks in certain versions of IE 6
-    $(window).bind('unload', function() {
-        $('#dashboardTabs').unbind('click');
+    $(window).on('unload', function () {
+        $('#dashboardTabs').off('click');
     });
 
 });

@@ -35,10 +35,10 @@
             DOWN: 40,
             COMMA: 188
         };
-        $wrap.bind("mouseup", function () {
+        $wrap.on("mouseup", function () {
             saveSelection();
         })
-        .bind("keypress", function (event) {
+        .on("keypress", function (event) {
             switch (event.keyCode) {
                 case KEY.TAB:
                     event.preventDefault();
@@ -66,20 +66,20 @@
             }
 
         })
-        .bind("mousedown", function (event) {
+        .on("mousedown", function (event) {
             return cancelEvent(event);
         })
-        .bind("click", function (event) {
+        .on("click", function (event) {
             return cancelEvent(event);
         })
-        .bind("blur", function () {
+        .on("blur", function () {
             isInFocus = false;
             console.log(savedRange);
         })
-        .bind("focus", function () {
+        .on("focus", function () {
             restoreSelection();
         })
-        .bind("keyup", function (event) {
+        .on("keyup", function (event) {
             switch (event.keyCode) {
                 case KEY.DOWN:
                     event.preventDefault();

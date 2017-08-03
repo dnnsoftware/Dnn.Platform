@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="jQuery-Migrate" type="JavaScript_Library" version="01.02.01" isSystem="true">
+    <package name="jQuery-Migrate" type="JavaScript_Library" version="03.00.00" isSystem="true">
       <friendlyName>jQuery Migrate JavaScript Library</friendlyName>
       <description>jQuery Migrate is a JavaScript library that is used to mintain jQuery backwards compatability.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
@@ -21,7 +21,7 @@
           <javaScriptLibrary>
             <libraryName>jQuery-Migrate</libraryName>
             <fileName>jquery-migrate.js</fileName>
-            <CDNPath>//code.jquery.com/jquery-migrate-1.2.1.min.js</CDNPath>
+            <CDNPath>//code.jquery.com/jquery-migrate-3.0.0.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">

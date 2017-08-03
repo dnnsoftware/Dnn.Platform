@@ -116,7 +116,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (selectedTab != NaN && selectedTab != null) options.selected = selectedTab;
         $('#' + controls.scopeWrapperId)
             .dnnTabs(options)
-            .bind("tabsactivate", function (event, ui) {
+            .on("tabsactivate", function (event, ui) {
                 currentTab = ui.newTab.index();
                 controller.leftPaneTabActivated(ui.newPanel[0].id);
                 if (currentTab == 0) {
@@ -1540,8 +1540,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         grid.dataBind();
 
         $("#" + controls.gridId + " tbody input[type='checkbox']").dnnCheckbox()
-            .unbind('click', gridSelectionCheckboxClick)
-            .bind('click', gridSelectionCheckboxClick);
+            .off('click', gridSelectionCheckboxClick)
+            .on('click', gridSelectionCheckboxClick);
         gridSelectUnselectAll.prop("checked", false);
 
         if (settings.isFilteredContent === false) {
@@ -1567,8 +1567,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         listView.set_dataSource(prepareListViewData(data));
         listView.dataBind();
-        $("#dnnModuleDigitalAssetsListView .dnnModuleDigitalAssetsListViewItem .dnnModuleDigitalAssetsListViewItemLinkName").bind("click", clickOnListViewItemNameLink);
-        $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", '#' + controls.scopeWrapperId).unbind("click", listviewSelectAllOnClick).bind("click", listviewSelectAllOnClick);
+        $("#dnnModuleDigitalAssetsListView .dnnModuleDigitalAssetsListViewItem .dnnModuleDigitalAssetsListViewItemLinkName").on("click", clickOnListViewItemNameLink);
+        $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", '#' + controls.scopeWrapperId).off("click", listviewSelectAllOnClick).on("click", listviewSelectAllOnClick);
         listViewInitialize();
 
         if (settings.isFilteredContent === false) {
