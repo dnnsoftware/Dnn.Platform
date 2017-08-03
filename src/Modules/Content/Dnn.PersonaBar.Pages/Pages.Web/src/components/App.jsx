@@ -55,7 +55,7 @@ class App extends Component {
             referral: "",
             referralText: ""
         };
-
+       
     }
 
     componentDidMount() {
@@ -64,8 +64,10 @@ class App extends Component {
         const viewParams = utils.getViewParams();
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
+         this.props.getPageList();
 
 
+        
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
@@ -118,6 +120,7 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
+        
     }
 
     componentWillUnmount() {
@@ -382,14 +385,35 @@ class App extends Component {
         return additionalPanels;
     }
 
+    _traverse(comparator) {
+        let listItems = JSON.parse(JSON.stringify(this.props.pageList));
+        const cachedChildListItems = [];
+        cachedChildListItems.push(listItems);
+        const condition = cachedChildListItems.length > 0;
+
+        const loop = () => {
+            const childItem = cachedChildListItems.length ? cachedChildListItems.shift() : null;
+            const left = () => childItem.forEach(item => {
+                comparator(item, listItems, (pageList) => this.props.updatePageListStore(pageList) );
+                Array.isArray(item.childListItems) ? cachedChildListItems.push(item.childListItems) : null;
+                condition ? loop() : exit();
+            });
+            const right = () => null;
+            childItem ? left() : right();
+        };
+
+        const exit = () => null;
+
+        loop();
+        return;
+    }
+
     setActivePage(pageInfo) {
         return new Promise((resolve) => {
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
-
             this.props.onLoadPage(pageInfo.tabId);
             resolve();
-
         });
     }
 
@@ -517,6 +541,7 @@ class App extends Component {
         const { selectedPage } = props;
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
+       
 
         return (
             <div className="pages-app personaBar-mainContainer">
@@ -529,9 +554,11 @@ class App extends Component {
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{ padding: "20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className="tree-container" className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
+                                <div className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                     <PersonaBarPageTreeviewInteractor
+                                        pageList = {this.props.pageList}
+                                        _traverse = {this._traverse.bind(this)}
                                         activePage={this.props.selectedPage}
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}
@@ -562,6 +589,7 @@ class App extends Component {
 
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    pageList: PropTypes.array.isRequired,
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
@@ -572,6 +600,8 @@ App.propTypes = {
     onCreatePage: PropTypes.func.isRequired,
     onUpdatePage: PropTypes.func.isRequired,
     onDeletePage: PropTypes.func.isRequired,
+    getPageList: PropTypes.func.isRequired,
+    updatePageListStore: PropTypes.func.isRequire,
     getNewPage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
     onCancelAddMultiplePages: PropTypes.func.isRequired,
@@ -609,6 +639,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        pageList: state.pageList.pageList,
         selectedView: state.visiblePanel.selectedPage,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
@@ -629,13 +660,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        getNewPage: PageActions.getNewPage,
+        getPageList: PageActions.getPageList,
+        updatePageListStore: PageActions.updatePageListStore,
         onCancelPage: PageActions.cancelPage,
         onCreatePage: PageActions.createPage,
         onUpdatePage: PageActions.updatePage,
         onDeletePage: PageActions.deletePage,
         selectPageSettingTab: PageActions.selectPageSettingTab,
         onLoadPage: PageActions.loadPage,
-        getNewPage: PageActions.getNewPage,
         onSaveMultiplePages: AddPagesActions.addPages,
         onCancelAddMultiplePages: AddPagesActions.cancelAddMultiplePages,
         onLoadAddMultiplePages: AddPagesActions.loadAddMultiplePages,

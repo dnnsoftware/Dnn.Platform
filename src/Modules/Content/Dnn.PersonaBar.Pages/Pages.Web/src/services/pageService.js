@@ -159,7 +159,13 @@ const PageService = function () {
         return api.post("ClearCache?cacheProvider=" + cacheProvider + "&tabId=" + pageId);
     };
 
+    const getPageList = () => {
+        const api = getOverridablePagesApi();
+        return api.get("GetPageList", {searchKey:""});
+    };
+
     return {
+        getPageList,
         getPage,
         savePage,
         deletePage,

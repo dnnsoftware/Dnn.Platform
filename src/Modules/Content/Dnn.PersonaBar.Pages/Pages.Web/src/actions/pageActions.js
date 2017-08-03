@@ -1,4 +1,5 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
+import PageListActionTypes from "../constants/actionTypes/pageListActionTypes";
 import responseStatus from "../constants/responseStatus";
 import PagesService from "../services/pageService";
 import utils from "../utils";
@@ -58,7 +59,26 @@ const loadPage = function (dispatch, pageId) {
         });
     });
 };
+
 const pageActions = {
+    getPageList(){
+        return (dispatch) => PagesService.getPageList().then(pageList => {
+            dispatch({
+                type:PageListActionTypes.SAVE,
+                data:{pageList}
+            });
+        });
+    },
+
+    updatePageListStore(pageList){
+        return (dispatch) => {
+            dispatch({
+                type: PageListActionTypes.SAVE,
+                data:{pageList}
+            });
+        };
+    },
+
     selectPageSettingTab(selectedPageSettingTab) {
         return (dispatch) => {
             dispatch({
@@ -67,6 +87,7 @@ const pageActions = {
             });
         };
     },
+
     loadPage(pageId) {
         return (dispatch) => {
             loadPage(dispatch, pageId);
@@ -233,6 +254,11 @@ const pageActions = {
                 field: key,
                 value
             });
+
+            dispatch({
+                type: PageListActionTypes.SAVE,
+                data:{pageList:[]}
+            })
 
             if (key === "name" &&
                 pages.selectedPage.tabId === 0 &&

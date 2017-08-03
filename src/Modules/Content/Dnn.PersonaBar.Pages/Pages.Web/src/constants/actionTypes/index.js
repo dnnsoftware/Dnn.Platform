@@ -5,9 +5,11 @@ import pageSeoTypes from "./pageSeoTypes";
 import templateActionTypes from "./templateActionTypes";
 import visiblePanelActionTypes from "./visiblePanelActionTypes";
 import languagesActionTypes from "./languagesActionTypes";
+import pageListActionTypes from "./pageListActionTypes";
 
 export {
     pagination,
+    pageListActionTypes,
     pageActionTypes,
     addPagesActionTypes,
     pageSeoTypes,
