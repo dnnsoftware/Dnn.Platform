@@ -224,7 +224,7 @@
                 var toggle = $(this).toggleClass(opts.toggleClass).parent().next(opts.regionToToggleSelector).slideToggle(function () {
                     var visible = $(this).is(':visible');
                     if (opts.saveState) {
-                        var id = $(toggle.context.parentNode).attr("id");
+                        var id = $(toggle).prev().attr("id");
                         var cookieId = id ? id.replace(/[^a-zA-Z0-9\-]+/g, "") : '';
                         if (cookieId) {
                             dnn.dom.setCookie(cookieId, visible, opts.cookieDays, '/', '', false, opts.cookieMilleseconds);
