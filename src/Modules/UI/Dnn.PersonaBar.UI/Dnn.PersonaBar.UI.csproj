@@ -173,6 +173,7 @@
     <Content Include="admin\personaBar\images\nav_manage.svg" />
     <Content Include="admin\personaBar\images\nav_settings.svg" />
     <Content Include="admin\personaBar\images\x_thin.svg" />
+    <Content Include="admin\personaBar\scripts\contrib\jquery.easydropdown.min.js" />
     <Content Include="admin\personaBar\scripts\menuIconLoader.js" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
