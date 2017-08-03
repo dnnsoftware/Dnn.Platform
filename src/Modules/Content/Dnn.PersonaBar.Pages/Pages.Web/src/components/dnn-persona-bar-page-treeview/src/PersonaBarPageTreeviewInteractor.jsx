@@ -15,8 +15,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             isTreeviewExpanded: false
         };
         this.origin = window.origin;
-
-       
     }
 
     componentDidMount() {
@@ -25,7 +23,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        console.log('inside tree interactor', newProps);
         const pageList = JSON.parse(JSON.stringify(newProps.pageList));
         this.setState({ pageList: pageList, isTreeviewExpanded: true, rootLoaded: true });
     }

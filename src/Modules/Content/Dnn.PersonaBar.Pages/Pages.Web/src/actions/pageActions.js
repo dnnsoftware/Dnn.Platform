@@ -45,7 +45,7 @@ const loadPage = function (dispatch, pageId) {
         return;
     }
 
-    PagesService.getPage(pageId).then(response => {
+    return PagesService.getPage(pageId).then(response => {
         dispatch({
             type: ActionTypes.LOADED_PAGE,
             data: {
@@ -90,7 +90,7 @@ const pageActions = {
 
     loadPage(pageId) {
         return (dispatch) => {
-            loadPage(dispatch, pageId);
+            return loadPage(dispatch, pageId);
         };
     },
 
@@ -255,10 +255,6 @@ const pageActions = {
                 value
             });
 
-            dispatch({
-                type: PageListActionTypes.SAVE,
-                data:{pageList:[]}
-            })
 
             if (key === "name" &&
                 pages.selectedPage.tabId === 0 &&

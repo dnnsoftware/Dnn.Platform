@@ -210,7 +210,17 @@ class App extends Component {
 
     showCancelWithoutSavingDialogInEditMode() {
         if (this.props.selectedPageDirty) {
-            const onConfirm = () => this.props.onLoadPage(this.props.selectedPage.tabId);
+            const onConfirm = () => {
+                this.props.onLoadPage(this.props.selectedPage.tabId).then((data)=>{
+                    this._traverse((item, list, updateStore)=>{
+                        if(item.id === this.props.selectedPage.tabId){
+                            Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key])
+                            this.props.updatePageListStore(list); 
+                        }
+                    });
+                });
+            };
+
             utils.confirm(
                 Localization.get("CancelWithoutSavingPage"),
                 Localization.get("Revert"),
@@ -424,6 +434,15 @@ class App extends Component {
         }
     }
 
+    onChangePageField(key, value){
+        this.props.onChangePageField(key,value);
+        this._traverse((item, list, updateStore)=>{
+            if(item.id == this.props.selectedPage.tabId){
+                item[key]=value;
+                updateStore(list);
+            }
+        });
+    }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
@@ -465,7 +484,7 @@ class App extends Component {
                     onSave={this.onUpdatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={props.onChangePageField}
+                    onChangeField={this.onChangePageField.bind(this)}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}
@@ -506,7 +525,7 @@ class App extends Component {
                     onSave={this.onCreatePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={props.onChangePageField}
+                    onChangeField={this.onChangePageField.bind(this)}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType}
                     onDeletePageModule={props.onDeletePageModule}
