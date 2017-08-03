@@ -151,7 +151,9 @@
     <Content Include="Dnn.PersonaBar.Security.dnn" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\Security.resx" />
+    <Content Include="admin\personaBar\App_LocalResources\Security.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Components\Resources\CheckFileExists.resources" />

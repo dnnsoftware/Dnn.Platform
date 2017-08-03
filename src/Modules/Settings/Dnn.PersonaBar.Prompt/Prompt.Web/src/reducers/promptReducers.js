@@ -3,6 +3,7 @@ import util from "../utils";
 export default function logList(state = {
     commandList: [],
     pagingInfo: null,
+    nextPageCommand: null,
     reload: false,
     fieldOrder: null,
     output: null,
@@ -24,6 +25,27 @@ export default function logList(state = {
                 ...state,
                 commandList: action.data.commands
             };
+        case ActionTypes.END_PAGING:
+            return {
+                ...state,
+                commandList: [],
+                pagingInfo: null,
+                nextPageCommand: null,
+                reload: false,
+                fieldOrder: null,
+                output: null,
+                isHtml: false,
+                isError: false,
+                data: null,
+                clearOutput: false,
+                style: null,
+                isHelp: false,
+                name: null,
+                description: null,
+                options: null,
+                resultHtml: null,
+                error: null
+            };
         case ActionTypes.EXECUTED_COMMAND:
             if (action.data.result.Message) {
                 return {
@@ -44,6 +66,7 @@ export default function logList(state = {
                     data: action.data.result.data,
                     fieldOrder: action.data.result.fieldOrder,
                     output: action.data.result.output,
+                    nextPageCommand: action.data.result.nextPageCommand,
                     style: action.style
                 };
             }

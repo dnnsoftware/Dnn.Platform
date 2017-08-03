@@ -10,12 +10,18 @@ import "./Prompt.less";
 import {
     prompt as PromptActions
 } from "../actions";
+import { formatString } from "../helpers";
 
 class App extends Component {
     constructor() {
         super();
         this.isBusy = false;
+        this.isPaging = false;
         this.history = [];
+        if (sessionStorage.getItem("dnn-prompt-console-history") !== null) {
+            this.history = JSON.parse(sessionStorage.getItem("dnn-prompt-console-history"));
+        }
+        this.cmdOffset = 0; // reverse offset into history
         this.keyDownHandler = this.onKeyDown.bind(this);
         this.clickHandler = this.onClickHandler.bind(this);
         this.mouseDownHandler = this.onMouseDownHandler.bind(this);
@@ -28,7 +34,7 @@ class App extends Component {
         document.addEventListener('mouseup', this.mouseUpHandler);
         document.addEventListener('click', this.clickHandler); this._isMounted = true;
         this._isMounted = true;
-        this.focus();
+        this.setFocus(true);
     }
     componentWillMount() {
         this.showGreeting();
@@ -56,101 +62,61 @@ class App extends Component {
         if (e.target.classList.contains("dnn-prompt-cmd-insert")) {
             this.setValue(e.target.dataset.cmd.replace(/'/g, '"'));
             this.toggleInput(true);
-            this.focus();
+            this.setFocus(true);
         } else {
-            this.focus();
+            this.setFocus(true);
         }
     }
-    focus() {
-        this.refs.cmdPromptInput.focus();
-    }
-    getTabId() {
-        const dnnVariable = JSON.parse(window.parent.document.getElementsByName("__dnnVariable")[0].value);
-        return dnnVariable.sf_tabId;
-    }
+
     scrollToBottom() {
-        this.scrollTop = this.scrollHeight;
+        this.refs.cmdPrompt.scrollTop = this.refs.cmdPrompt.scrollHeight;
     }
     busy(b) {
         this.isBusy = b;
-        //this.busyEl.style.display = b ? "block" : "none";
         this.toggleInput(!b);
     }
-    runCmd() {
-        let self = this;
-        const txt = self.refs.cmdPromptInput.value.trim();
-        let { props } = self;
-        if (!self.tabId) {
-            self.tabId = self.getTabId();
-        }
 
-        self.cmdOffset = 0; // reset history index
-        self.setValue(""); // clearn input for future commands.
-
-        if (txt === "") {
-            return;
-        } // don't process if cmd is emtpy
-        props.dispatch(PromptActions.runLocalCommand("INFO", txt, 'cmd'));
-        self.history.push(txt); // Add cmd to history
-        if (sessionStorage) {
-            sessionStorage.setItem('dnn-prompt-console-history', JSON.stringify(self.history));
-        }
-
-        // Client Command
-        const tokens = txt.split(" "),
-            cmd = tokens[0].toUpperCase();
-
-        if (cmd === "CLS" || cmd === "CLEAR-SCREEN" || cmd === "EXIT" || cmd === "RELOAD") {
-            props.dispatch(PromptActions.runLocalCommand(cmd, null));
-            return;
-        }
-        if (cmd === "CLH" || cmd === "CLEAR-HISTORY") {
-            self.history = [];
-            sessionStorage.removeItem('dnn-prompt-console-history');
-            props.dispatch(PromptActions.runLocalCommand(cmd, "Session command history cleared"));
-            return;
-        }
-        if (cmd === "CONFIG") {
-            self.configConsole(tokens);
-            return;
-        }
-
-        if (cmd === "SET-MODE") {
-            self.changeUserMode(tokens);
-            return;
-        }
-        // Server Command
-        self.busy(true);
-        if (cmd === "HELP") {
-            props.dispatch(PromptActions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
-                self.busy(false);
-                self.focus();
-            }, (error) => {
-                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
-                self.busy(false);
-                self.focus();
-            }));
-        } else {
-            props.dispatch(PromptActions.runCommand({ cmdLine: txt, currentPage: self.tabId }, () => { }, (error) => {
-                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
-                self.busy(false);
-                self.focus();
-            }));
-        }
-        self.refs.cmdPromptInput.blur(); // remove focus from input elment
-
-    }
     showGreeting() {
         let { props } = this;
-        props.dispatch(PromptActions.runLocalCommand("INFO", 'Prompt [' + util.version + '] Type \'help\' to get a list of commands', 'cmd'));
+        props.dispatch(PromptActions.runLocalCommand("INFO", formatString(Localization.get('PromptGreeting'), util.version), 'cmd'));
     }
     setValue(value) {
-        this.refs.cmdPromptInput.value = value;
+        this.refs.cmdPromptInputControl.getWrappedInstance().setValue(value);
+    }
+    getValue(value) {
+        return this.refs.cmdPromptInputControl.getWrappedInstance().getValue(value);
+    }
+    setFocus(focus) {
+        this.refs.cmdPromptInputControl.getWrappedInstance().setFocus(focus);
     }
     toggleInput(show) {
-        this.refs.cmdPromptInputDiv.style.display = show ? "block" : "none";
+        this.refs.cmdPromptInputControl.getWrappedInstance().toggleInput(show);
     }
+    runCmd() {
+        this.refs.cmdPromptInputControl.getWrappedInstance().runCmd();
+    }
+    pushHistory(value) {
+        this.history.push(value);
+        if (sessionStorage) {
+            sessionStorage.setItem('dnn-prompt-console-history', JSON.stringify(this.history));
+        }
+    }
+    paging(isPaging) {
+        this.isPaging = isPaging;
+    }
+    // client commands
+
+
+    setHeight(height) {
+        if (this.refs.cmdPrompt !== undefined && height !== undefined && height !== "") {
+            height = height.replace("%", "");
+            if (parseInt(height) > 0 && parseInt(height) <= 100)
+                this.refs.cmdPrompt.style.height = height + "%";
+        }
+    }
+
     onKeyDown(e) {
+        let { props } = this;
         // CTRL + `
         if (e.ctrlKey) {
             if (e.keyCode === 192) {
@@ -167,16 +133,17 @@ class App extends Component {
                 return;
             }
             if (e.keyCode === 88) {
+                props.dispatch(PromptActions.endPaging());
                 this.toggleInput(true);
-                this.focus();
-                //End paging. Return to prompt.
-                //ShowPrompt();
+                this.setFocus(true);
                 return;
             }
         }
 
         if (this.isBusy) return;
-        if (this.refs.cmdPromptInput === document.activeElement) {
+        if (document.activeElement.className === "dnn-prompt-input" && document.activeElement.offsetParent !== null
+            && document.activeElement.offsetParent.className === "dnn-prompt-input-wrapper" && document.activeElement.tagName === "INPUT"
+            && document.activeElement.type === "text") {
             switch (e.keyCode) {
                 case 13: // enter key
                     return this.runCmd();
@@ -196,17 +163,19 @@ class App extends Component {
                     break;
             }
         }
+        if (this.isPaging && !e.ctrlKey) {
+            return this.runCmd();
+        }
     }
 
     render() {
         return (
-            <div className="dnn-prompt workspace" style={{ display: "block" }}>
+            <div className="dnn-prompt workspace" style={{ display: "block" }} ref="cmdPrompt">
                 <Output className="Output" scrollToBottom={this.scrollToBottom.bind(this)}
-                    busy={this.busy.bind(this)} focus={this.focus.bind(this)} toggleInput={this.toggleInput.bind(this)}></Output>
+                    busy={this.busy.bind(this)} focus={this.setFocus.bind(this)} toggleInput={this.toggleInput.bind(this)} IsPaging={this.paging.bind(this)}></Output>
                 <br />
-                <div className="dnn-prompt-input-wrapper" ref="cmdPromptInputDiv">
-                    <input className="dnn-prompt-input" ref="cmdPromptInput" />
-                </div>
+                <Input ref="cmdPromptInputControl" pushHistory={this.pushHistory.bind(this)} busy={this.busy.bind(this)} paging={this.paging.bind(this)} setHeight={this.setHeight.bind(this)} />
+
             </div >
         );
     }
@@ -216,7 +185,6 @@ App.PropTypes = {
 };
 
 function mapStateToProps(state) {
-    return {};
 }
 
 export default connect(mapStateToProps)(App);

@@ -11,6 +11,7 @@ using Dnn.PersonaBar.Prompt.Common;
 using Dnn.PersonaBar.Prompt.Components;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -23,6 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Services
     public class CommandController : ControllerBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
+        private static string[] _blackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
         [HttpGet]
         public HttpResponseMessage List()
@@ -117,7 +119,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             {
                 LogTypeKey = "PROMPT_ALERT"
             };
-            logInfo.LogProperties.Add(new LogDetailInfo("Command", command.CmdLine));
+            logInfo.LogProperties.Add(new LogDetailInfo("Command", FilterCommand(command.CmdLine)));
             logInfo.LogProperties.Add(new LogDetailInfo("IsValid", isValid.ToString()));
 
             try
@@ -127,6 +129,34 @@ namespace Dnn.PersonaBar.Prompt.Services
                 if (isValid)
                 {
                     var result = consoleCommand.Run();
+                    if (result.PagingInfo != null)
+                    {
+                        if (result.PagingInfo.PageNo < result.PagingInfo.TotalPages)
+                        {
+                            result.Output = string.Format(Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
+                                    result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+
+                            var args = command.Args;
+                            var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
+                                ? args.TakeWhile(arg => arg.ToLowerInvariant() != "--page").Count()
+                                : -1;
+                            if (indexOfPage > -1)
+                            {
+                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString();
+                            }
+                            var nextPageCommand = string.Join(" ", args);
+                            if (indexOfPage == -1)
+                            {
+                                nextPageCommand += " --page " + (result.PagingInfo.PageNo + 1);
+                            }
+                            result.NextPageCommand = nextPageCommand;
+                        }
+                        else if (result.Records > 0)
+                        {
+                            result.Output = string.Format(Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
+                                    result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                        }
+                    }
                     message = Request.CreateResponse(HttpStatusCode.OK, result);
                     logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
@@ -150,6 +180,24 @@ namespace Dnn.PersonaBar.Prompt.Services
         private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
         {
             return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
+        }
+
+        private static string FilterCommand(string command)
+        {
+            var blackList = _blackList;
+            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
+                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (promptBlackList.Length > 0)
+            {
+                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
+            }
+            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
+            foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
+                        .Where(lowerKey => args.Any(arg => arg.Replace("-", "") == lowerKey)))
+            {
+                args[args.TakeWhile(arg => arg.Replace("-", "") != lowerKey).Count() + 1] = "******";
+            }
+            return string.Join(" ", args);
         }
     }
 }

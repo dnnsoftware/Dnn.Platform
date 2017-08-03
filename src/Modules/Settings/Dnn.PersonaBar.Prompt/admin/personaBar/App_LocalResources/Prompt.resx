@@ -147,9 +147,6 @@
   <data name="DidYouMean.Text" xml:space="preserve">
     <value>Did you mean '{0}'?</value>
   </data>
-  <data name="Prompt_ListModulesOutput.Text" xml:space="preserve">
-    <value>Press CTRL+X to end.\nPress any key to load more....</value>
-  </data>
   <data name="Prompt_NoModules.Text" xml:space="preserve">
     <value>No modules found.</value>
   </data>
@@ -989,5 +986,38 @@
   </data>
   <data name="Prompt_Reload_Description.Text" xml:space="preserve">
     <value>Reloads the current page</value>
+  </data>
+  <data name="Prompt_PagingMessage.Text" xml:space="preserve">
+    <value>Page {0} of {1}.</value>
+  </data>
+  <data name="Prompt_PagingMessageWithLoad.Text" xml:space="preserve">
+    <value>Page {0} of {1}. Press any key to load next page. Press CTRL + X to end.</value>
+  </data>
+  <data name="Help_Default.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Help_Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Help_Flag.Text" xml:space="preserve">
+    <value>Flag</value>
+  </data>
+  <data name="Help_Options.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Help_Required.Text" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="Help_Type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="PromptGreeting.Text" xml:space="preserve">
+    <value>Prompt {0} Type \'help\' to get a list of commands</value>
+  </data>
+  <data name="ReloadingText.Text" xml:space="preserve">
+    <value>Reloading in 3 seconds</value>
+  </data>
+  <data name="SessionHisotryCleared.Text" xml:space="preserve">
+    <value>Session command history cleared.</value>
   </data>
 </root>

@@ -5,242 +5,198 @@ import { connect } from "react-redux";
 import Localization from "localization";
 import util from "../../utils";
 import "../Prompt.less";
+import {
+    prompt as PromptActions
+} from "../../actions";
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 class Input extends Component {
     constructor() {
         super();
-        this.state = {
-            inputValue: ""
-        };
-        this.keyDownHandler = this.onKeyDown.bind(this);
     }
-    componentDidMount() {
-        document.addEventListener('keydown', this.keyDownHandler);
+    componentDidUpdate() {
+        const consoleHeight = cookies.get("dnn-prompt-console-height");
+        if (consoleHeight) {
+            this.configConsole(['config', consoleHeight]);
+        }
     }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.keyDownHandler);
+    setValue(value) {
+        this.refs.cmdPromptInput.value = value;
+    }
+    getValue() {
+        return this.refs.cmdPromptInput.value;
+    }
+    setFocus(focus) {
+        if (focus)
+            this.refs.cmdPromptInput.focus();
+        else
+            this.refs.cmdPromptInput.blur();
+    }
+    toggleInput(show) {
+        this.refs.cmdPromptInputDiv.style.display = show ? "block" : "none";
     }
     getTabId() {
-        const dnnVariable = JSON.parse(window.parent.document.getElementsByName("__dnnVariable"));
+        const dnnVariable = JSON.parse(window.parent.document.getElementsByName("__dnnVariable")[0].value);
         return dnnVariable.sf_tabId;
     }
-    writeLine(txt, cssSuffix) {
-        let { props } = this;
-        let span = document.createElement('span');
-        cssSuffix = cssSuffix || 'ok';
-        span.className = 'dnn-prompt-' + cssSuffix;
-        span.innerText = txt;
-        props.pushToOutput(span);
-        this.newLine();
-    }
-    newLine() {
-        let { props } = this;
-        props.pushToOutput(document.createElement('br'));
-        props.scrollToBottom();
-    }
     runCmd() {
-        const txt = this.state.inputValue.trim();
-        let { props } = this;
-        if (!this.tabId) {
-            this.tabId = this.getTabId();
+        let self = this;
+        let { props } = self;
+        let txt = self.getValue().trim();
+        if (txt === "" && props.nextPageCommand !== null && props.nextPageCommand != "")
+            txt = props.nextPageCommand;
+        if (!self.tabId) {
+            self.tabId = self.getTabId();
         }
 
-        this.cmdOffset = 0; // reset history index
-        this.setValue(""); // clearn input for future commands.
-        this.writeLine(txt, "cmd"); // Write cmd to output
+        self.cmdOffset = 0; // reset history index
+        self.setValue(""); // clearn input for future commands.
+
         if (txt === "") {
             return;
         } // don't process if cmd is emtpy
-        this.history.push(txt); // Add cmd to history
-        if (sessionStorage) {
-            sessionStorage.setItem('dnn-prompt-console-history', JSON.stringify(this.history));
-        }
-
+        props.dispatch(PromptActions.runLocalCommand("INFO", "\n" + txt + "\n", "cmd"));
+        if (props.nextPageCommand === null || props.nextPageCommand === "")
+            props.pushHistory(txt); // Add cmd to history
         // Client Command
         const tokens = txt.split(" "),
             cmd = tokens[0].toUpperCase();
 
-        if (cmd === "CLS" || cmd === "CLEAR-SCREEN") {
-            props.setOutput("");
+        if (cmd === "CLS" || cmd === "CLEAR-SCREEN" || cmd === "EXIT" || cmd === "RELOAD") {
+            props.dispatch(PromptActions.runLocalCommand(cmd, null));
             return;
         }
-        if (cmd === "EXIT") {
-            util.closePersonaBar();
-            return;
-        }
-        if (cmd === "HELP") {
-            this.renderHelp(tokens);
+        if (cmd === "CLH" || cmd === "CLEAR-HISTORY") {
+            self.history = [];
+            sessionStorage.removeItem('dnn-prompt-console-history');
+            props.dispatch(PromptActions.runLocalCommand(cmd, Localization.get("SessionHisotryCleared")));
             return;
         }
         if (cmd === "CONFIG") {
             this.configConsole(tokens);
             return;
         }
-        if (cmd === "CLH" || cmd === "CLEAR-HISTORY") {
-            this.history = [];
-            sessionStorage.removeItem('dnn-prompt-console-history');
-            this.writeLine("Session command history cleared");
-            return;
-        }
+
         if (cmd === "SET-MODE") {
-            this.changeUserMode(tokens);
+            self.changeUserMode(tokens);
             return;
         }
-        // using if/else to allow reload if hash in URL and also prevent 'syntax invalid' message;
-        if (cmd === "RELOAD") {
-            window.top.location.reload(true);
+        // Server Command
+        props.busy(true);
+        if (cmd === "HELP") {
+            props.dispatch(PromptActions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
+                props.busy(false);
+                self.setFocus(true);
+            }, (error) => {
+                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
+                props.busy(false);
+                self.setFocus(true);
+            }));
         } else {
-            // Server Command
-            this.busy(true);
-            // special handling for 'goto' command
-            let bRedirect = false;
-            if (cmd === "GOTO") {
-                bRedirect = true;
-            }
+            props.dispatch(PromptActions.runCommand({ cmdLine: txt, currentPage: self.tabId }, () => { }, (error) => {
+                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
+                props.busy(false);
+                self.setFocus(true);
+            }));
+        }
+        this.setFocus(false);
+    }
 
-            const afVal = util.sf.antiForgeryToken;
 
-            let path = 'API/PersonaBar/Command/Cmd';
-            if (util.sf) {
-                path = util.sf.getSiteRoot() + path;
-            } else {
-                path = '/' + path;
-            }
-
-            fetch(path, {
-                method: 'post',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': afVal
-                }),
-                credentials: 'include',
-                body: JSON.stringify({ cmdLine: txt, currentPage: this.tabId })
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (result) {
-                    if (result.Message) {
-                        // dnn web api error
-                        result.output = result.Message;
-                        result.isError = true;
-                    }
-                    const output = result.output;
-                    const style = result.isError ? "error" : "ok";
-                    const data = result.data;
-                    let fieldOrder = result.fieldOrder;
-                    if (typeof fieldOrder === 'undefined' || !fieldOrder || fieldOrder.length === 0) {
-                        fieldOrder = null;
-                    }
-
-                    if (bRedirect) {
-                        window.top.location.href = output;
+    changeUserMode(tokens) {
+        let { props } = this;
+        if (!tokens && tokens.length >= 2) {
+            return;
+        }
+        let mode = null;
+        if (this.hasFlag("--mode")) {
+            mode = this.getFlag("--mode", tokens);
+        } else if (!this.isFlag(tokens[1])) {
+            mode = tokens[1];
+        }
+        if (mode) {
+            props.dispatch(PromptActions.changeUserMode({ UserMode: mode.toUpperCase() }, () => {
+                if (mode.toUpperCase() === "EDIT")
+                    util.utilities.closePersonaBar();
+                window.parent.document.location.reload(true);
+            }, (error) => {
+                this.setValue(error);
+            }));
+        }
+    }
+    isFlag(token) {
+        return (token && token.startsWith('--'));
+    }
+    getFlag(flag, tokens) {
+        let token = null;
+        if (!tokens || tokens.length) {
+            return null;
+        }
+        for (let i = 1; i < tokens.length; i++) {
+            token = tokens[i];
+            // did we find the flag name?
+            if (this.isFlag(token) && (token.toUpperCase() === flag.toUpperCase())) {
+                // is there a value to be had?
+                if ((i + 1) < tokens.length) {
+                    if (!this.isFlag(tokens[i + 1])) {
+                        return tokens[i + 1];
                     } else {
-                        if (data) {
-                            let html = this.renderData(data, fieldOrder);
-                            this.writeHtml(html);
-                            if (output) { this.writeLine(output); }
-                        } else if (result.isHtml) {
-                            this.writeHtml(output);
-                        } else {
-                            this.writeLine(output, style);
-                        }
+                        // next token is a flag and not a value. return nothing.
+                        return null;
                     }
-
-                    if (result.mustReload) {
-                        this.writeHtml('<div class="dnn-prompt-ok"><strong>Reloading in 3 seconds</strong></div>');
-                        setTimeout(() => location.reload(true), 3000);
-                    }
-                })
-                .catch(function (err) {
-                    console.log('err', err);
-                    this.writeLine("Error sending request to server", "error");
-                })
-                .then(function () {
-                    // finally
-                    this.busy(false);
-                    this.focus();
-                });
-
-            this.inputEl.blur(); // remove focus from input elment
-        }
-
-    }
-    onClick(value) {
-        this.setValue(value);
-    }
-    setValue(value) {
-        let { state } = this;
-        state.inputValue = value;
-        this.setState(this, () => {
-            this.focus();
-        });
-    }
-    onKeyDown(e) {
-        // CTRL + `
-        if (e.ctrlKey) {
-            if (e.keyCode === 192) {
-                if (this.wrapper[0].offsetLeft <= 0) {
-                    this.util.loadPanel("Dnn.Prompt", {
-                        moduleName: "Dnn.Prompt",
-                        folderName: "",
-                        identifier: "Dnn.Prompt",
-                        path: "Prompt"
-                    });
                 } else {
-                    this.util.closePersonaBar();
+                    // found but no value
+                    return null;
                 }
-                return;
             }
-            if (e.keyCode === 88) {
-                //End paging. Return to prompt.
-                //ShowPrompt();
-                return;
-            }
+        }
+        // not found
+        return null;
+    }
+    configConsole(tokens) {
+        let { props } = this;
+        let height = null;
+        if (this.hasFlag("--height")) {
+            height = this.getFlag("--height", tokens);
+        } else if (!this.isFlag(tokens[1])) {
+            height = tokens[1];
         }
 
-        if (this.isBusy) return;
-        if (this === document.activeElement) {
-            switch (e.keyCode) {
-                case 13: // enter key
-                    return this.runCmd();
-                case 38: // Up arrow
-                    if ((this.history.length + this.cmdOffset > 0)) {
-                        this.cmdOffset--;
-                        this.setValue(this.history[this.history.length + this.cmdOffset]);
-                        e.preventDefault();
-                    }
-                    break;
-                case 40: // Down arrow
-                    if ((this.cmdOffset < -1)) {
-                        this.cmdOffset++;
-                        this.setValue(this.history[this.history.length + this.cmdOffset]);
-                        e.preventDefault();
-                    }
-                    break;
+        if (height) {
+            props.setHeight(height);
+            cookies.set("dnn-prompt-console-height", height, { path: '/' });
+        }
+    }
+    hasFlag(flag, tokens) {
+        if (!tokens || tokens.length) return false;
+        for (let i = 0; i < tokens.length; i++) {
+            if (tokens[i].toUpperCase === flag.toUpperCase()) {
+                return true;
             }
         }
+        return false;
     }
     render() {
         return (
-            <input className="dnn-prompt-input" />
+            <div className="dnn-prompt-input-wrapper" ref="cmdPromptInputDiv">
+                <input className="dnn-prompt-input" ref="cmdPromptInput" />
+            </div>
         );
     }
 }
 Input.PropTypes = {
     dispatch: PropTypes.func.isRequired,
-    onMouseDown: PropTypes.func.isRequired,
-    onMouseUp: PropTypes.func.isRequired,
-    onClick: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func.isRequired,
-    pushToOutput: PropTypes.func.isRequired,
-    setOutput: PropTypes.func.isRequired,
-    scrollToBottom: PropTypes.func.isRequired
+    nextPageCommand: PropTypes.string,
+    pushHistory: PropTypes.func.isRequired,
+    busy: PropTypes.func.isRequired,
+    setHeight: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    return {};
+    return {
+        nextPageCommand: state.prompt.nextPageCommand
+    };
 }
 
-export default connect(mapStateToProps)(Input);
+export default connect(mapStateToProps, null, null, { withRef: true })(Input);

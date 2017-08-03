@@ -149,7 +149,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     PageSize = max
                 },
                 Records = usersList?.Count ?? 0,
-                Output = pageNo < totalPages ? LocalizeString("Prompt_ListUsersOutput") : usersList?.Count == 0 ? LocalizeString("noUsers") : ""
+                Output = usersList?.Count == 0 ? LocalizeString("noUsers") : ""
             };
         }
 

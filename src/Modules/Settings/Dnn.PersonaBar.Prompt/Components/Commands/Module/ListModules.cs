@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int activeTabId)
         {
             base.Init(args, portalSettings, userInfo, activeTabId);
-            PageId = GetFlagValue(FlagPageId, "Page Id", -1, false, true);
+            PageId = GetFlagValue(FlagPageId, "Page Id", -1);
             ModuleName = GetFlagValue(FlagModuleName, "Module Name", string.Empty);
             ModuleTitle = GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
             Deleted = GetFlagValue<bool?>(FlagDeleted, "Deleted", null);
@@ -75,10 +75,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     PageSize = max
                 },
                 Records = modules.Count,
-                Output =
-                    pageNo < totalPages
-                        ? LocalizeString("Prompt_ListModulesOutput")
-                        : modules.Count == 0 ? LocalizeString("Prompt_NoModules") : ""
+                Output = modules.Count == 0 ? LocalizeString("Prompt_NoModules") : ""
             };
         }
     }

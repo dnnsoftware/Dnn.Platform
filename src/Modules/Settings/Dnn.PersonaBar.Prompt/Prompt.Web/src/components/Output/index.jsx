@@ -23,16 +23,55 @@ class Output extends Component {
             description: null,
             options: null,
             resultHtml: null,
-            error: null
+            error: null,
+            nextPageCommand: null
         };
     }
     componentWillMount() {
         let { props } = this;
         this.updateState(props);
     }
-    componentWillReceiveProps(newProps) {
-        this.updateState(newProps);
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.shallowCompare(this, nextProps, nextState))
+            this.updateState(nextProps);
     }
+    shallowEqual(objA, objB) {
+        if (objA === objB) {
+            return true;
+        }
+
+        if (typeof objA !== "object" || objA === null ||
+            typeof objB !== "object" || objB === null) {
+            return false;
+        }
+
+        let keysA = Object.keys(objA);
+        let keysB = Object.keys(objB);
+
+        if (keysA.length !== keysB.length) {
+            return false;
+        }
+
+        // Test for A's keys different from B.
+        let bHasOwnProperty = hasOwnProperty.bind(objB);
+        for (let i = 0; i < keysA.length; i++) {
+            if (typeof objA[keysA[i]] !== "function" || typeof objB[keysA[i]] !== "function") {
+                if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+    shallowCompare(instance, nextProps, nextState) {
+        let result = (
+            !this.shallowEqual(instance.props, nextProps) ||
+            !this.shallowEqual(instance.state, nextState)
+        );
+        return result;
+    }
+
     updateState(props) {
         let { state } = this;
         let self = this;
@@ -51,6 +90,7 @@ class Output extends Component {
         state.options = props.options;
         state.resultHtml = props.resultHtml;
         state.error = props.error;
+        state.nextPageCommand = props.nextPageCommand;
         this.setState({}, () => {
             self.renderResults();
         });
@@ -58,6 +98,7 @@ class Output extends Component {
     renderResults() {
         let { state } = this;
         let { props } = this;
+        props.IsPaging(false);
         const style = state.style ? state.style : state.isError ? "error" : "ok";
         let { fieldOrder } = state;
         if (state.isHelp) {
@@ -80,7 +121,7 @@ class Output extends Component {
             if (state.output !== null && state.output !== "" && state.output.toLowerCase().indexOf("http") >= 0) {
                 window.top.location.href = state.output;
             } else {
-                this.writeHtml('<div class="dnn-prompt-ok"><strong>Reloading in 3 seconds</strong></div>');
+                this.writeHtml('<div class="dnn-prompt-ok"><strong>' + Localization.get("ReloadingText") + '</strong></div>');
                 setTimeout(() => location.reload(true), 3000);
             }
         }
@@ -96,13 +137,17 @@ class Output extends Component {
             this.writeLine(state.output, style);
         }
         props.busy(false);
-        props.focus();
-        if (state.paging && state.paging.pageNo < state.paging.totalPages) {
+        props.focus(true);
+        if (state.paging && state.paging.pageNo < state.paging.totalPages && state.nextPageCommand !== null && state.nextPageCommand !== "") {
             props.toggleInput(false);
+            props.IsPaging(true);
         }
+        props.scrollToBottom();
     }
     renderHelp() {
         let { state } = this;
+        let { props } = this;
+        props.IsPaging(false);
         const style = state.style ? state.style : state.isError ? "error" : "ok";
         if (state.isError) {
             this.writeLine(state.error, style);
@@ -124,8 +169,8 @@ class Output extends Component {
         //        this.refs.cmdPromptOutput.appendChild(section);
         if (state.options && state.options.length > 0) {
             let headingOptions = document.createElement("h4");
-            headingOptions.innerHTML = "Options";
-            let fields = ["$Flag", "Type", "Required", "Default", "Description"];
+            headingOptions.innerHTML = Localization.get("Help_Options");
+            let fields = ["$" + Localization.get("Help_Flag"), Localization.get("Help_Type"), Localization.get("Help_Required"), Localization.get("Help_Default"), Localization.get("Help_Description")];
             let options = this.renderTable(state.options, fields, "table");
             section.appendChild(headingOptions);
             let div = document.createElement('div');
@@ -137,7 +182,6 @@ class Output extends Component {
             divResults.innerHTML = state.resultHtml;
             section.appendChild(divResults);
         }
-        let { props } = this;
         this.refs.cmdPromptOutput.appendChild(section);
         props.scrollToBottom();
     }
@@ -291,6 +335,7 @@ Output.PropTypes = {
     style: PropTypes.string,
     isHelp: PropTypes.bool,
     name: PropTypes.string,
+    nextPageCommand: PropTypes.string,
     description: PropTypes.string,
     options: PropTypes.array,
     resultHtml: PropTypes.string,
@@ -298,7 +343,8 @@ Output.PropTypes = {
     scrollToBottom: PropTypes.func.isRequired,
     busy: PropTypes.func.isRequired,
     focus: PropTypes.func.isRequired,
-    toggleInput: PropTypes.func.isRequired
+    toggleInput: PropTypes.func.isRequired,
+    IsPaging: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -317,8 +363,9 @@ function mapStateToProps(state) {
         description: state.prompt.description,
         options: state.prompt.options,
         resultHtml: state.prompt.resultHtml,
-        error: state.prompt.error
+        error: state.prompt.error,
+        nextPageCommand: state.prompt.nextPageCommand
     };
 }
 
-export default connect(mapStateToProps)(Output);
+export default connect(mapStateToProps, null, null, { withRef: true })(Output);

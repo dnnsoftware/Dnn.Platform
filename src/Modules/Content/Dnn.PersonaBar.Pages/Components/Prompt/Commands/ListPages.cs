@@ -94,9 +94,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                     PageSize = max
                 },
                 Records = lstOut.Count,
-                Output = pageNo < totalPages
-                        ? LocalizeString("Prompt_ListPagesOutput")
-                        : lstOut.Count == 0 ? LocalizeString("Prompt_NoPages") : "",
+                Output = lstOut.Count == 0 ? LocalizeString("Prompt_NoPages") : "",
                 FieldOrder = new[]
                 {
                     "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted"

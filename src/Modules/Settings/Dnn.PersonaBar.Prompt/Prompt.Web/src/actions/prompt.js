@@ -64,6 +64,32 @@ const promptActions = {
                 style: style
             });
         };
+    },
+    endPaging() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.END_PAGING
+            });
+        };
+    },
+    changeUserMode(payload, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.changeUserMode(payload, data => {
+                dispatch({
+                    type: ActionTypes.CHANGE_USER_MODE,
+                    data: {
+                        result: data
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (errorCallback) {
+                    errorCallback(data);
+                }
+            });
+        };
     }
 };
 
