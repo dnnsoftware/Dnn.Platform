@@ -1,5 +1,5 @@
 ﻿'use strict';
-define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'main/PersonaBarDialog'],
+define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'main/PersonaBarDialog', 'jquery.easydropdown.min', 'dnn.jquery'],
     function ($, ko, pager, validator, cf, personaBarDialog) {
         var utility = null;
         var config = cf.init();
