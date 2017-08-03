@@ -10,7 +10,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-role", "Prompt_GetRole_Description")]
+    [ConsoleCommand("get-role", Constants.RolesCategory, "Prompt_GetRole_Description")]
     public class GetRole : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

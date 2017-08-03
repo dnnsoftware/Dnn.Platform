@@ -10,11 +10,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("delete-page", "Prompt_DeletePage_Description", new[]{
-        "id",
-        "parentid",
-        "name"
-    })]
+    [ConsoleCommand("delete-page", Constants.PagesCategory, "Prompt_DeletePage_Description")]
     public class DeletePage : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourceFile;

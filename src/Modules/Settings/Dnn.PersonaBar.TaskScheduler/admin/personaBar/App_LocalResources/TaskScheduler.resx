@@ -986,4 +986,7 @@
     &lt;/tr&gt;
   &lt;/table&gt;</value>
   </data>
+  <data name="Prompt_SchedulerCategory.Text" xml:space="preserve">
+    <value>Scheduler Commands</value>
+  </data>
 </root>

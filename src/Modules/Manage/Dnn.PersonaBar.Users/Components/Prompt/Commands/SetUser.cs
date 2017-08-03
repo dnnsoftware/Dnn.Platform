@@ -12,17 +12,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-user", "Prompt_SetUser_Description", new[]{
-        "id",
-        "email",
-        "username",
-        "displayname",
-        "firstname",
-        "lastname",
-        "approved",
-        "password"
-
-    })]
+    [ConsoleCommand("set-user", Constants.UsersCategory, "Prompt_SetUser_Description")]
     public class SetUser : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

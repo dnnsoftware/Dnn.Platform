@@ -14,7 +14,6 @@ module.exports = {
     },
     devtool: '#source-map',
     resolve: {
-        //extensions: ['*', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.css', '.json'],
         extensions: ["", ".js", ".json", ".jsx"],
         root: [
             path.resolve('./src'),          // Look in src first
@@ -22,14 +21,6 @@ module.exports = {
         ]
     },
     module: {
-        // rules: [{
-        //     test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: 'babel-loader',
-        //     options: { presets: ['es2015'] }
-        // },
-        // {
-        //     test: /\.css$/,
-        //     loader: extractTextPlugin.extract({ use: 'css-loader' })
-        // }],
         loaders: [
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
@@ -60,22 +51,4 @@ module.exports = {
                 VERSION: JSON.stringify(packageJson.version)
             })
         ]
-    // plugins: [
-    //     new webpack.ProvidePlugin({
-    //         $: 'jquery',
-    //         jQuery: 'jquery',
-    //         'window.jQuery': 'jquery'
-    //     }),
-
-    //     //new webpack.optimize.UglifyJsPlugin({
-    //     //    compress: { warnings: false }
-    //     //}),
-    //     new extractTextPlugin('../../css/Prompt.css'),
-    //     new optimizeCssAssetsPlugin({
-    //         assetNameRegExp: /\.css$/g,
-    //         cssProcessor: require('cssnano'),
-    //         cssProcessorOptions: { discardComments: { removeAll: true } },
-    //         canPrint: true
-    //     })
-    // ]
-}
+};

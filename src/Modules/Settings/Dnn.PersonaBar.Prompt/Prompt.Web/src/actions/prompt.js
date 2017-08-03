@@ -2,7 +2,7 @@ import { prompt as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const promptActions = {
-    getCommandList(callback) {
+    getCommandList(callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getCommandList(data => {
                 dispatch({
@@ -13,6 +13,10 @@ const promptActions = {
                 });
                 if (callback) {
                     callback(data);
+                }
+            }, data => {
+                if (errorCallback) {
+                    errorCallback(data);
                 }
             });
         };

@@ -9,10 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("purge-module", "Prompt_PurgeModule_Description", new[]{
-        "id",
-        "pageid"
-    })]
+    [ConsoleCommand("purge-module", Constants.RecylcleBinCategory, "Prompt_PurgeModule_Description")]
     public class PurgeModule : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

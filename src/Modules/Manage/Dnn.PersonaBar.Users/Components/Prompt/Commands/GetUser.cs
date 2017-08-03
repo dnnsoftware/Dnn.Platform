@@ -9,11 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-user", "Prompt_GetUser_Description", new[]{
-        "id",
-        "email",
-        "username"
-    })]
+    [ConsoleCommand("get-user", Constants.UsersCategory, "Prompt_GetUser_Description")]
     public class GetUser : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

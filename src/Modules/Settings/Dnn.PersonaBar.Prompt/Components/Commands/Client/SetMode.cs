@@ -8,12 +8,14 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("exit", Constants.GeneralCategory, "Prompt_Exit_Description")]
-    public class Exit : IConsoleCommand
+    [ConsoleCommand("set-mode", Constants.GeneralCategory, "Prompt_SetMode_Description")]
+    public class SetMode : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;
+        [FlagParameter("mode", "Prompt_SetMode_FlagMode", "DNN View Mode", true)]
+        private const string FlagMode = "mode";
 
-        public string ResultHtml => Localization.GetString("Prompt_Exit_ResultHtml", LocalResourceFile);
+        public string ResultHtml => Localization.GetString("Prompt_SetMode_ResultHtml", LocalResourceFile);
 
         public string ValidationMessage
         {

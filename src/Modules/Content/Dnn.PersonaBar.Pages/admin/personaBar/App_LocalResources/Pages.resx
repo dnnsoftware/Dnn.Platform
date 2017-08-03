@@ -1480,4 +1480,7 @@
 
     &lt;/div&gt;</value>
   </data>
+  <data name="Prompt_PagesCategory.Text" xml:space="preserve">
+    <value>Page Commands</value>
+  </data>
 </root>

@@ -428,4 +428,7 @@
         &lt;p&gt;This is the more explicit form of the above code.&lt;/p&gt;
         &lt;code class="block"&gt;restore-user --id 345&lt;/code&gt;</value>
   </data>
+  <data name="Prompt_RecylcleBinCategory.Text" xml:space="preserve">
+    <value>Recycle Bin Commands</value>
+  </data>
 </root>

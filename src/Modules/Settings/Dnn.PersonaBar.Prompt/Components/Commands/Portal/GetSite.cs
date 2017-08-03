@@ -5,7 +5,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     /// <summary>
     /// alias for get-portal
     /// </summary>
-    [ConsoleCommand("get-site", "Prompt_GetSite_Description", new[] { "id" })]
+    [ConsoleCommand("get-site", Constants.PortalCategory, "Prompt_GetSite_Description")]
     public class GetSite : GetPortal
     {
     }

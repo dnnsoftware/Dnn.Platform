@@ -116,6 +116,7 @@
     <Compile Include="Components\Commands\Client\Clh.cs" />
     <Compile Include="Components\Commands\Client\ClearHistory.cs" />
     <Compile Include="Components\Commands\Client\ClearScreen.cs" />
+    <Compile Include="Components\Commands\Client\SetMode.cs" />
     <Compile Include="Components\Commands\Client\Cls.cs" />
     <Compile Include="Components\Commands\Client\Exit.cs" />
     <Compile Include="Components\Commands\Client\Reload.cs" />

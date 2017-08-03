@@ -1,7 +1,7 @@
 import { prompt as ActionTypes } from "../constants/actionTypes";
 import util from "../utils";
 export default function logList(state = {
-    commandList: [],
+    commandList: null,
     pagingInfo: null,
     nextPageCommand: null,
     reload: false,
@@ -23,12 +23,28 @@ export default function logList(state = {
         case ActionTypes.RETRIEVED_COMMAND_LIST:
             return {
                 ...state,
-                commandList: action.data.commands
+                commandList: action.data.commands,
+                pagingInfo: null,
+                nextPageCommand: null,
+                reload: false,
+                fieldOrder: null,
+                output: null,
+                isHtml: false,
+                isError: false,
+                data: null,
+                clearOutput: false,
+                style: null,
+                isHelp: true,
+                name: null,
+                description: null,
+                options: null,
+                resultHtml: null,
+                error: null
             };
         case ActionTypes.END_PAGING:
             return {
                 ...state,
-                commandList: [],
+                commandList: null,
                 pagingInfo: null,
                 nextPageCommand: null,
                 reload: false,
@@ -82,6 +98,7 @@ export default function logList(state = {
             } else {
                 return {
                     ...state,
+                    commandList: null,
                     isHelp: true,
                     name: action.data.result.name,
                     description: action.data.result.description,

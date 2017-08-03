@@ -6,10 +6,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("reset-password", "Prompt_ResetPassword_Description", new[]{
-        "id",
-        "notify"
-    })]
+    [ConsoleCommand("reset-password", Constants.UsersCategory, "Prompt_ResetPassword_Description")]
     public class ResetPassword : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

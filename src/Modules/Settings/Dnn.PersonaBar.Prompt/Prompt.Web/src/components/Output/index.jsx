@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
-import GridCell from "dnn-grid-cell";
 import { connect } from "react-redux";
 import Localization from "localization";
 import "../Prompt.less";
+import { sort } from "../../helpers";
 
 class Output extends Component {
     constructor() {
         super();
         this.state = {
+            commandList: null,
             output: "",
             data: [],
             paging: {},
@@ -75,6 +75,7 @@ class Output extends Component {
     updateState(props) {
         let { state } = this;
         let self = this;
+        state.commandList = props.commandList;
         state.output = props.output;
         state.data = props.data;
         state.paging = props.paging;
@@ -102,7 +103,11 @@ class Output extends Component {
         const style = state.style ? state.style : state.isError ? "error" : "ok";
         let { fieldOrder } = state;
         if (state.isHelp) {
-            this.renderHelp();
+            if (state.commandList !== null && state.commandList.length > 0) {
+                this.renderCommands();
+            } else {
+                this.renderHelp();
+            }
             return;
         }
         if ((typeof fieldOrder === "undefined" || !fieldOrder || fieldOrder.length === 0) && fieldOrder !== null) {
@@ -121,7 +126,7 @@ class Output extends Component {
             if (state.output !== null && state.output !== "" && state.output.toLowerCase().indexOf("http") >= 0) {
                 window.top.location.href = state.output;
             } else {
-                this.writeHtml('<div class="dnn-prompt-ok"><strong>' + Localization.get("ReloadingText") + '</strong></div>');
+                this.writeHtml("<div class='dnn-prompt-ok'><strong>" + Localization.get("ReloadingText") + "</strong></div>");
                 setTimeout(() => location.reload(true), 3000);
             }
         }
@@ -137,11 +142,79 @@ class Output extends Component {
             this.writeLine(state.output, style);
         }
         props.busy(false);
-        props.focus(true);
         if (state.paging && state.paging.pageNo < state.paging.totalPages && state.nextPageCommand !== null && state.nextPageCommand !== "") {
             props.toggleInput(false);
             props.IsPaging(true);
         }
+        props.scrollToBottom();
+    }
+    renderCommands() {
+        let { props } = this;
+        props.IsPaging(false);
+        let section = document.createElement("section");
+        let headingName = document.createElement("h3");
+        let paragraphDescription = document.createElement("p");
+        let headingCommands = document.createElement("h4");
+        let divCommands = document.createElement("div");
+        let commandsHtml = "";
+        let headingSeeAlso = document.createElement("h4");
+        let anchorSyntax = document.createElement("a");
+        let anchorLearn = document.createElement("a");
+        section.className = "dnn-prompt-inline-help";
+        headingName.className = "mono";
+        headingName.innerHTML = Localization.get("Prompt_Help_PromptCommands");
+        paragraphDescription.className = "lead";
+        paragraphDescription.innerHTML = Localization.get("Prompt_Help_ListOfAvailableMsg");
+        headingCommands.innerHTML = Localization.get("Prompt_Help_Commands");
+
+        //divCommands.className = "table";
+        commandsHtml += "<table class='table'><thead><tr>";
+        commandsHtml += `<th>${Localization.get("Prompt_Help_Command")}</th>`;
+        commandsHtml += `<th>${Localization.get("Prompt_Help_Description")}</th>`;
+        commandsHtml += "</tr></thead>";
+        commandsHtml += "<tbody>";
+        let currentCategory = "";
+        let { commandList } = this.state;
+        commandList = sort(Object.assign(commandList), "Category");
+        let helpItems = commandList.map((cmd) => {
+            let returnHtml = "";
+            if (currentCategory !== cmd.Category) {
+                currentCategory = cmd.Category;
+                returnHtml = `<tr class="divider"><td colspan="2">${currentCategory}</td></tr>`;
+            }
+            returnHtml += "<tr>";
+            returnHtml += "<td class='mono'>";
+            returnHtml += `<a class="dnn-prompt-cmd-insert" data-cmd="help ${cmd.Key.toLowerCase()}" href="#">${cmd.Key}</a>`;
+            returnHtml += "</td>";
+            returnHtml += `<td>${cmd.Description}</td>`;
+            returnHtml += "</tr>";
+            return returnHtml;
+        });
+        helpItems.map((line => {
+            commandsHtml += line;
+        }));
+        commandsHtml += "</tbody></table>";
+        divCommands.innerHTML = commandsHtml;
+
+        headingSeeAlso.innerHTML = Localization.get("Prompt_Help_SeeAlso");
+        anchorSyntax.className = "dnn-prompt-cmd-insert";
+        anchorSyntax.setAttribute("data-cmd", "help syntax");
+        anchorSyntax.innerHTML = Localization.get("Prompt_Help_Syntax");
+        anchorSyntax.href = "#";
+        anchorLearn.className = "dnn-prompt-cmd-insert";
+        anchorLearn.setAttribute("data-cmd", "help learn");
+        anchorLearn.innerHTML = Localization.get("Prompt_Help_Learn");
+        anchorLearn.style.marginLeft = "10px";
+        anchorLearn.href = "#";
+
+        section.appendChild(headingName);
+        section.appendChild(paragraphDescription);
+        section.appendChild(headingCommands);
+        section.appendChild(divCommands);
+        section.appendChild(headingSeeAlso);
+        section.appendChild(anchorSyntax);
+        section.appendChild(anchorLearn);
+        this.refs.cmdPromptOutput.appendChild(section);
         props.scrollToBottom();
     }
     renderHelp() {
@@ -153,10 +226,10 @@ class Output extends Component {
             this.writeLine(state.error, style);
             return;
         }
-        let section = document.createElement('section');
-        let headingName = document.createElement('h3');
-        let anchorName = document.createElement('a');
-        let paragraphDescription = document.createElement('p');
+        let section = document.createElement("section");
+        let headingName = document.createElement("h3");
+        let anchorName = document.createElement("a");
+        let paragraphDescription = document.createElement("p");
         section.className = "dnn-prompt-inline-help";
         anchorName.attributes["name"] = state.name;
         headingName.className = "mono";
@@ -170,10 +243,11 @@ class Output extends Component {
         if (state.options && state.options.length > 0) {
             let headingOptions = document.createElement("h4");
             headingOptions.innerHTML = Localization.get("Help_Options");
-            let fields = ["$" + Localization.get("Help_Flag"), Localization.get("Help_Type"), Localization.get("Help_Required"), Localization.get("Help_Default"), Localization.get("Help_Description")];
+            //let fields = ["$" + Localization.get("Help_Flag"), Localization.get("Help_Type"), Localization.get("Help_Required"), Localization.get("Help_Default"), Localization.get("Help_Description")];
+            let fields = ["$Flag", "Type", "Required", "Default", "Description"];
             let options = this.renderTable(state.options, fields, "table");
             section.appendChild(headingOptions);
-            let div = document.createElement('div');
+            let div = document.createElement("div");
             div.innerHTML = options;
             section.appendChild(div);
         }
@@ -187,16 +261,16 @@ class Output extends Component {
     }
     newLine() {
         let { props } = this;
-        this.refs.cmdPromptOutput.appendChild(document.createElement('br'));
+        this.refs.cmdPromptOutput.appendChild(document.createElement("br"));
         props.scrollToBottom();
     }
 
     writeLine(txt, cssSuffix) {
         let textLines = txt.split("\\n");
         textLines.map((line) => {
-            let span = document.createElement('span');
-            cssSuffix = cssSuffix || 'ok';
-            span.className = 'dnn-prompt-' + cssSuffix;
+            let span = document.createElement("span");
+            cssSuffix = cssSuffix || "ok";
+            span.className = "dnn-prompt-" + cssSuffix;
             span.innerText = line;
             this.refs.cmdPromptOutput.appendChild(span);
             this.newLine();
@@ -204,7 +278,7 @@ class Output extends Component {
     }
 
     writeHtml(markup) {
-        let div = document.createElement('div');
+        let div = document.createElement("div");
         div.innerHTML = markup;
         this.refs.cmdPromptOutput.appendChild(div);
         this.newLine();
@@ -332,6 +406,7 @@ Output.PropTypes = {
     isError: PropTypes.bool,
     clearOutput: PropTypes.bool,
     fieldOrder: PropTypes.array,
+    commandList: PropTypes.array,
     style: PropTypes.string,
     isHelp: PropTypes.bool,
     name: PropTypes.string,
@@ -342,7 +417,6 @@ Output.PropTypes = {
     error: PropTypes.string,
     scrollToBottom: PropTypes.func.isRequired,
     busy: PropTypes.func.isRequired,
-    focus: PropTypes.func.isRequired,
     toggleInput: PropTypes.func.isRequired,
     IsPaging: PropTypes.func.isRequired
 };
@@ -356,6 +430,7 @@ function mapStateToProps(state) {
         reload: state.prompt.reload,
         style: state.prompt.style,
         fieldOrder: state.prompt.fieldOrder,
+        commandList: state.prompt.commandList,
         isError: state.prompt.isError,
         clearOutput: state.prompt.clearOutput,
         isHelp: state.prompt.isHelp,

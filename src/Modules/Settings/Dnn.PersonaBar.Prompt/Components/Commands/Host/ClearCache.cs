@@ -7,7 +7,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
 {
-    [ConsoleCommand("clear-cache", "Prompt_ClearCache_Description")]
+    [ConsoleCommand("clear-cache", Constants.HostCategory, "Prompt_ClearCache_Description")]
     public class ClearCache : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -24,9 +24,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel("An error occurred while attempting to clear the cache.");
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_ClearCache_Error"));
             }
-            return new ConsoleResultModel("Cache Cleared") { MustReload = true };
+            return new ConsoleResultModel(LocalizeString("Prompt_ClearCache_Success")) { MustReload = true };
         }
     }
 }

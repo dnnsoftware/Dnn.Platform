@@ -6,7 +6,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("restore-user", "Prompt_RestoreUser_Description", new[] { "id" })]
+    [ConsoleCommand("restore-user", Constants.RecylcleBinCategory, "Prompt_RestoreUser_Description")]
     public class RestoreUser : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

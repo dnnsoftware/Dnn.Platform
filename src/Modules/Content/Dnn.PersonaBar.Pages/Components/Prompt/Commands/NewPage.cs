@@ -11,15 +11,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("new-page", "Prompt_NewPage_Description", new[]{
-        "title",
-        "name",
-        "url",
-        "parentid",
-        "description",
-        "keywords",
-        "visible"
-    })]
+    [ConsoleCommand("new-page", Constants.PagesCategory, "Prompt_NewPage_Description")]
     public class NewPage : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourceFile;

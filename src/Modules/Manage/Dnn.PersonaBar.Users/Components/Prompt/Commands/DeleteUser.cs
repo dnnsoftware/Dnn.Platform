@@ -8,10 +8,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("delete-user", "Prompt_DeleteUser_Description", new[]{
-        "id",
-        "notify"
-    })]
+    [ConsoleCommand("delete-user", Constants.UsersCategory, "Prompt_DeleteUser_Description")]
     public class DeleteUser : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

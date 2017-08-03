@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
-import GridCell from "dnn-grid-cell";
 import { connect } from "react-redux";
 import Localization from "localization";
 import util from "../../utils";
@@ -10,12 +8,14 @@ import {
 } from "../../actions";
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
+import { formatString } from "../../helpers";
 
 class Input extends Component {
     constructor() {
         super();
     }
     componentDidUpdate() {
+        //This should be replaced by User Personalization API
         const consoleHeight = cookies.get("dnn-prompt-console-height");
         if (consoleHeight) {
             this.configConsole(['config', consoleHeight]);
@@ -58,7 +58,7 @@ class Input extends Component {
         } // don't process if cmd is emtpy
         props.dispatch(PromptActions.runLocalCommand("INFO", "\n" + txt + "\n", "cmd"));
         if (props.nextPageCommand === null || props.nextPageCommand === "")
-            props.pushHistory(txt); // Add cmd to history
+            props.updateHistory(txt); // Add cmd to history
         // Client Command
         const tokens = txt.split(" "),
             cmd = tokens[0].toUpperCase();
@@ -68,8 +68,7 @@ class Input extends Component {
             return;
         }
         if (cmd === "CLH" || cmd === "CLEAR-HISTORY") {
-            self.history = [];
-            sessionStorage.removeItem('dnn-prompt-console-history');
+            props.updateHistory("", true);
             props.dispatch(PromptActions.runLocalCommand(cmd, Localization.get("SessionHisotryCleared")));
             return;
         }
@@ -85,19 +84,25 @@ class Input extends Component {
         // Server Command
         props.busy(true);
         if (cmd === "HELP") {
-            props.dispatch(PromptActions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
-                props.busy(false);
-                self.setFocus(true);
-            }, (error) => {
-                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
-                props.busy(false);
-                self.setFocus(true);
-            }));
+            if (txt.toUpperCase() === "HELP") {
+                props.dispatch(PromptActions.getCommandList(() => {
+                    props.busy(false);
+                }, (error) => {
+                    props.busy(false);
+                    props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
+                }));
+            } else {
+                props.dispatch(PromptActions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
+                    props.busy(false);
+                }, (error) => {
+                    props.busy(false);
+                    props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
+                }));
+            }
         } else {
             props.dispatch(PromptActions.runCommand({ cmdLine: txt, currentPage: self.tabId }, () => { }, (error) => {
-                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
                 props.busy(false);
-                self.setFocus(true);
+                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
             }));
         }
         this.setFocus(false);
@@ -121,8 +126,10 @@ class Input extends Component {
                     util.utilities.closePersonaBar();
                 window.parent.document.location.reload(true);
             }, (error) => {
-                this.setValue(error);
+                props.dispatch(PromptActions.runLocalCommand("ERROR", error));
             }));
+        } else {
+            props.dispatch(PromptActions.runLocalCommand("ERROR", formatString(Localization.get("Prompt_FlagIsRequired"), "Mode")));
         }
     }
     isFlag(token) {
@@ -166,6 +173,8 @@ class Input extends Component {
         if (height) {
             props.setHeight(height);
             cookies.set("dnn-prompt-console-height", height, { path: '/' });
+        } else {
+            props.dispatch(PromptActions.runLocalCommand("ERROR", formatString(Localization.get("Prompt_FlagIsRequired"), "Height")));
         }
     }
     hasFlag(flag, tokens) {
@@ -188,7 +197,7 @@ class Input extends Component {
 Input.PropTypes = {
     dispatch: PropTypes.func.isRequired,
     nextPageCommand: PropTypes.string,
-    pushHistory: PropTypes.func.isRequired,
+    updateHistory: PropTypes.func.isRequired,
     busy: PropTypes.func.isRequired,
     setHeight: PropTypes.func.isRequired
 };

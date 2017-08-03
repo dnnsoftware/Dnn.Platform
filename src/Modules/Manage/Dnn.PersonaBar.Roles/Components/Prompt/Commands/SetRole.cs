@@ -13,12 +13,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-role", "Prompt_SetRole_Description", new[]{
-        "id",
-        "name",
-        "description",
-        "public"
-    })]
+    [ConsoleCommand("set-role", Constants.RolesCategory, "Prompt_SetRole_Description")]
     public class SetRole : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

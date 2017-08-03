@@ -779,4 +779,7 @@
     &lt;/tr&gt;
   &lt;/table&gt;</value>
   </data>
+  <data name="Prompt_RolesCategory.Text" xml:space="preserve">
+    <value>Role Commands</value>
+  </data>
 </root>

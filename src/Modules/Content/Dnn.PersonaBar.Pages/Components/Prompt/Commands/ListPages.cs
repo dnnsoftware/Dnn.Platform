@@ -9,16 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-pages", "Prompt_ListPages_Description", new[]{
-        "parentid",
-        "deleted",
-        "name",
-        "title",
-        "path",
-        "skin",
-        "page",
-        "max"
-    })]
+    [ConsoleCommand("list-pages", Constants.PagesCategory, "Prompt_ListPages_Description")]
     public class ListPages : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourceFile;

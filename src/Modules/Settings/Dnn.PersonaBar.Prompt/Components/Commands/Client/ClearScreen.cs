@@ -8,7 +8,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("clear-screen", "Prompt_Cls_Description")]
+    [ConsoleCommand("clear-screen", Constants.GeneralCategory, "Prompt_Cls_Description")]
     public class ClearScreen : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;

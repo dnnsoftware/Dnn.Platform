@@ -13,7 +13,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("add-module", "Prompt_AddModule_Description", new[] { "name", "pageid", "pane", "title" })]
+    [ConsoleCommand("add-module", Constants.ModulesCategory, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

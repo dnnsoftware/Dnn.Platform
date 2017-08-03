@@ -9,7 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("get-module", "Prompt_GetModule_Description", new[] { "id" })]
+    [ConsoleCommand("get-module", Constants.ModulesCategory, "Prompt_GetModule_Description")]
     public class GetModule : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

@@ -12,13 +12,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-users", "Prompt_ListUsers_Description", new[]{
-        "email",
-        "username",
-        "role",
-        "page",
-        "max"
-    })]
+    [ConsoleCommand("list-users", Constants.UsersCategory, "Prompt_ListUsers_Description")]
     public class ListUsers : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

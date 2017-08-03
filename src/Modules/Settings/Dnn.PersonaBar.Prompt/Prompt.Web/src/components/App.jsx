@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
-import GridCell from "dnn-grid-cell";
 import Output from "./Output";
 import Input from "./Input";
 import { connect } from "react-redux";
@@ -18,9 +16,6 @@ class App extends Component {
         this.isBusy = false;
         this.isPaging = false;
         this.history = [];
-        if (sessionStorage.getItem("dnn-prompt-console-history") !== null) {
-            this.history = JSON.parse(sessionStorage.getItem("dnn-prompt-console-history"));
-        }
         this.cmdOffset = 0; // reverse offset into history
         this.keyDownHandler = this.onKeyDown.bind(this);
         this.clickHandler = this.onClickHandler.bind(this);
@@ -91,22 +86,29 @@ class App extends Component {
     }
     toggleInput(show) {
         this.refs.cmdPromptInputControl.getWrappedInstance().toggleInput(show);
+        this.setFocus(show);
     }
     runCmd() {
         this.refs.cmdPromptInputControl.getWrappedInstance().runCmd();
     }
-    pushHistory(value) {
-        this.history.push(value);
-        if (sessionStorage) {
-            sessionStorage.setItem('dnn-prompt-console-history', JSON.stringify(this.history));
+    updateHistory(value, isClear) {
+        this.cmdOffset = 0; // reset history index
+        if (isClear) {
+            this.history = [];
+        } else {
+            //Remove command from history if already exists. 
+            if (this.history.some(item => item === value)) {
+                this.history = this.history.filter(item => {
+                    return item !== value;
+                });
+            }
+            //Push the command as the last run.
+            this.history.push(value);
         }
     }
     paging(isPaging) {
         this.isPaging = isPaging;
     }
-    // client commands
-
-
     setHeight(height) {
         if (this.refs.cmdPrompt !== undefined && height !== undefined && height !== "") {
             height = height.replace("%", "");
@@ -117,7 +119,7 @@ class App extends Component {
 
     onKeyDown(e) {
         let { props } = this;
-        // CTRL + `
+        //CTRL + Key
         if (e.ctrlKey) {
             if (e.keyCode === 192) {
                 if (this.wrapper[0].offsetLeft <= 0) {
@@ -170,11 +172,11 @@ class App extends Component {
 
     render() {
         return (
-            <div className="dnn-prompt workspace" style={{ display: "block" }} ref="cmdPrompt">
+            <div className="dnn-prompt" style={{ display: "block" }} ref="cmdPrompt">
                 <Output className="Output" scrollToBottom={this.scrollToBottom.bind(this)}
-                    busy={this.busy.bind(this)} focus={this.setFocus.bind(this)} toggleInput={this.toggleInput.bind(this)} IsPaging={this.paging.bind(this)}></Output>
+                    busy={this.busy.bind(this)} toggleInput={this.toggleInput.bind(this)} IsPaging={this.paging.bind(this)}></Output>
                 <br />
-                <Input ref="cmdPromptInputControl" pushHistory={this.pushHistory.bind(this)} busy={this.busy.bind(this)} paging={this.paging.bind(this)} setHeight={this.setHeight.bind(this)} />
+                <Input ref="cmdPromptInputControl" updateHistory={this.updateHistory.bind(this)} busy={this.busy.bind(this)} paging={this.paging.bind(this)} setHeight={this.setHeight.bind(this)} />
 
             </div >
         );

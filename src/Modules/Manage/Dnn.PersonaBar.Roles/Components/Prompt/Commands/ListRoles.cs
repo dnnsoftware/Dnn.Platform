@@ -11,7 +11,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-roles", "Prompt_ListRoles_Description", new[] { "page", "max" })]
+    [ConsoleCommand("list-roles", Constants.RolesCategory, "Prompt_ListRoles_Description")]
     public class ListRoles : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

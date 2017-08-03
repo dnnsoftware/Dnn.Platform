@@ -6,13 +6,7 @@ using Dnn.PersonaBar.Prompt.Components.Models;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("list-modules", "Prompt_ListModules_Description", new[]{
-        "name",
-        "title",
-        "pageid",
-        "page",
-        "max"
-    })]
+    [ConsoleCommand("list-modules", Constants.ModulesCategory, "Prompt_ListModules_Description")]
     public class ListModules : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

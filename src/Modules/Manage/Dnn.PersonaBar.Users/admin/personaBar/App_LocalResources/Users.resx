@@ -1235,4 +1235,7 @@
     <value>Enables you to display the current user's information, or retrieve a user by their User ID, Username or Email address.
     Supports partial searching. Returns the first user found.</value>
   </data>
+  <data name="Prompt_UsersCategory.Text" xml:space="preserve">
+    <value>User Commands</value>
+  </data>
 </root>

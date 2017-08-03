@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Services
     public class CommandController : ControllerBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
-        private static string[] _blackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
+        private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
         [HttpGet]
         public HttpResponseMessage List()
@@ -54,17 +54,6 @@ namespace Dnn.PersonaBar.Prompt.Services
                             cmdName.ToLower()));
 
                 var allCommands = CommandRepository.Instance.GetCommands();
-                //If command not found and command contain namespace.
-                if (!allCommands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
-                {
-                    var seek = allCommands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
-                    // if there is a command which matches then we assume the user meant that namespace
-                    if (seek != null)
-                    {
-                        cmdName = $"{seek.NameSpace.ToUpper()}.{cmdName}";
-                    }
-                }
-
                 // if no command found notify
                 if (!allCommands.ContainsKey(cmdName))
                 {
@@ -184,7 +173,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         private static string FilterCommand(string command)
         {
-            var blackList = _blackList;
+            var blackList = BlackList;
             var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
                 .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (promptBlackList.Length > 0)
