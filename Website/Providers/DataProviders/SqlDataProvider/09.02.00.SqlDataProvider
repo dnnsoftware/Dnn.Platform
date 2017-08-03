@@ -83,6 +83,20 @@ BEGIN
     VALUES ('Connector', 'Connector', 2)
 END
 GO
+
+/***** DNN-9963: Add svg & ico Image File Type to Lists *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='svg')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'svg', N'Scalable Vector Graphics', 0, 0, 0, -1, N'', -1, 1, -1, '2000-01-01 00:00:00.000', NULL, NULL)
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='ico')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'ico', N'Icon', 0, 0, 0, -1, N'', -1, 1, -1, '2000-01-01 00:00:00.000', NULL, NULL)
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

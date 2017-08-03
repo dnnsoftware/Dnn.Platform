@@ -820,7 +820,7 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Image file types
         /// </summary>
-        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,swf</value>
+        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico</value>
         public static string glbImageFileTypes
         {
             get
@@ -829,7 +829,7 @@ namespace DotNetNuke.Common
                 var listEntries = listController.GetListEntryInfoItems("ImageTypes");
                 if (listEntries == null || listEntries.Count() == 0)
                 {
-                    return "jpg,jpeg,jpe,gif,bmp,png";
+                    return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
                 }
                 return String.Join(",", listEntries.Select(l => l.Value));
             }
