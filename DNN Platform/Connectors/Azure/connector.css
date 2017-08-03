@@ -10,6 +10,10 @@
     width: 65% !important;
 }
 
+#connector-Azure>div.edit-fields>div>div .pb-dropdown {
+    width: 65% !important;
+}
+
 #connector-Azure>div.edit-fields>div>div input[type='password'], .connector-Azure>div.edit-fields>div>div input[type='password'] {
     width: 65% !important;
     box-sizing: border-box !important;

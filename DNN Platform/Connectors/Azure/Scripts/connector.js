@@ -91,6 +91,8 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
         if (typeof conn.container() == "undefined" || conn.container() == "") {
             conn.container("/");
         }
+
+        $('#connector-Azure').find('select').easyDropDown({ wrapperClass: 'pb-dropdown', cutOff: 10, inFocus: true });
     };
 
     var folderLoadFailed = function (conn, xhr) {
