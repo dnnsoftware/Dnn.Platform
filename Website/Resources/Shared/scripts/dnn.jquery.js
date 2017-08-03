@@ -269,7 +269,7 @@
                 // default value
                 var isOpen = false;
                 if ((indexInArray === 0 && opts.defaultState == "first") || // cookie set to true OR first panel
-                    ($parentSeparator.size() > 0 && groupPanelIndex === 0 && opts.defaultState == "first") || // grouping is used & its the first panel in its group
+                    ($parentSeparator.length > 0 && groupPanelIndex === 0 && opts.defaultState == "first") || // grouping is used & its the first panel in its group
                     (opts.defaultState == "open"))  // default open
                 {
                     isOpen = true;
@@ -2651,7 +2651,7 @@
                 done: function (e, data) {
                     $('#' + settings.progressBarId).parent().hide();
                     var img = new Image();
-                    $(img).load(function () {
+                    $(img).on('load', function () {
                         $('#' + settings.dropZoneId + ' img').remove();
                         $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
                     });
@@ -2735,7 +2735,7 @@
                         data: { fileId: selectedFileId },
                         success: function (d) {
                             var img = new Image();
-                            $(img).load(function () {
+                            $(img).on('load', function () {
                                 $('#' + settings.dropZoneId + ' img').remove();
                                 $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
                             });
@@ -2797,7 +2797,7 @@
                     data: { fileId: fileId },
                     success: function (d) {
                         var img = new Image();
-                        $(img).load(function () {
+                        $(img).on('load', function () {
                             $('#' + settings.dropZoneId + ' img').remove();
                             $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
                         });
