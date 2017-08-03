@@ -181,7 +181,24 @@ class App extends Component {
 
     onDeleteSettings() {
         const { props } = this;
-        const onDelete = () => this.props.onDeletePage(props.selectedPage);
+        const onDelete = () => {
+            this.props.onDeletePage(props.selectedPage);
+            this._traverse((item, list, updateStore) => {
+                if(item.id === props.selectedPage.parentId){
+                    let itemIndex = null;
+                    item.childListItems.forEach((child, index)=>{
+                        if(child.id===props.selectedPage.tabId){
+                            itemIndex=index;
+                        }
+                    });
+                    const arr1 = item.childListItems.slice(0,itemIndex);
+                    const arr2 = item.childListItems.slice(itemIndex+1);
+                    item.childListItems = [...arr1, ...arr2];
+                    updateStore(list); 
+                    props.onCancelPage();
+                }
+            });
+        };
         utils.confirm(
             Localization.get("DeletePageConfirm"),
             Localization.get("Delete"),
