@@ -83,6 +83,13 @@ BEGIN
     VALUES ('Connector', 'Connector', 2)
 END
 GO
+
+/* Add Svg Image File Type to Lists    */
+/************************************/
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'svg', N'Scalable Vector Graphics', 0, 0, 0, -1, N'', -1, 1, -1, '2017-08-03 09:13:51.647', -1, '2017-08-03 09:13:51.647')
+
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
