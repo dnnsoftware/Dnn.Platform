@@ -8,25 +8,14 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 #pragma warning restore CS3015 // Type has no accessible constructors which use only CLS-compliant types
     {
         public string Name { get; set; }
-        public string NameSpace { get; set; }
+        public string Category { get; set; }
         public string Description { get; set; }
-        public string[] Options;
 
-        public ConsoleCommandAttribute(string name, string description) : this(name, description, new string[] { })
-        {
-        }
-
-        public ConsoleCommandAttribute(string name, string description, string[] options)
-            : this(name, "", description, options)
-        {
-        }
-
-        public ConsoleCommandAttribute(string name, string nameSpace, string description, string[] options)
+        public ConsoleCommandAttribute(string name, string category, string description)
         {
             Name = name;
-            NameSpace = nameSpace;
+            Category = category;
             Description = description;
-            Options = options;
         }
     }
 }
