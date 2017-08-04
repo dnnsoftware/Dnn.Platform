@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 if (attr != null)
                 {
                     commandHelp.Name = attr.Name;
-                    commandHelp.Description = LocalizeString(attr.Description);
+                    commandHelp.Description = Localization.GetString(attr.Description, consoleCommand.LocalResourceFile);
                     var flagAttributes = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                         .Select(x => x.GetCustomAttributes(typeof(FlagParameterAttribute), false).FirstOrDefault())
                         .Cast<FlagParameterAttribute>().ToList();
