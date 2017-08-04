@@ -126,8 +126,7 @@ class Output extends Component {
             if (state.output !== null && state.output !== "" && state.output.toLowerCase().indexOf("http") >= 0) {
                 window.top.location.href = state.output;
             } else {
-                this.writeHtml("<div class='dnn-prompt-ok'><strong>" + Localization.get("ReloadingText") + "</strong></div>");
-                setTimeout(() => location.reload(true), 3000);
+                location.reload(true);
             }
         }
         else if (state.data) {
