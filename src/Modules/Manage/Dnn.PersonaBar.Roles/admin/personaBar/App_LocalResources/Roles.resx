@@ -369,9 +369,6 @@
   <data name="Prompt_ListRolesFailed.Text" xml:space="preserve">
     <value>Failed to list the roles.</value>
   </data>
-  <data name="Prompt_ListRolesOutput.Text" xml:space="preserve">
-    <value>Press CTRL+X to end.\nPress any key to load more....</value>
-  </data>
   <data name="Prompt_NoRoles.Text" xml:space="preserve">
     <value>No roles found.</value>
   </data>
@@ -781,5 +778,8 @@
       &lt;td colspan="3"&gt;Role successfully created.&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_RolesCategory.Text" xml:space="preserve">
+    <value>Role Commands</value>
   </data>
 </root>

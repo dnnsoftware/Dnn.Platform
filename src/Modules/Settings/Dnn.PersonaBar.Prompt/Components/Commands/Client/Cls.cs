@@ -8,7 +8,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("cls", "Prompt_Cls_Description")]
+    [ConsoleCommand("cls", Constants.GeneralCategory, "Prompt_Cls_Description")]
     public class Cls : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;

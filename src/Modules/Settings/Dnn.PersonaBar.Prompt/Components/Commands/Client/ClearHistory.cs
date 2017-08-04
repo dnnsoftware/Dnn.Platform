@@ -8,7 +8,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("clear-history", "Prompt_ClearHistory_Description")]
+    [ConsoleCommand("clear-history", Constants.GeneralCategory, "Prompt_ClearHistory_Description")]
     public class ClearHistory : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;

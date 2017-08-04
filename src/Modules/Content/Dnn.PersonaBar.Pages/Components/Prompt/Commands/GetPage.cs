@@ -10,11 +10,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-page", "Prompt_GetPage_Description", new[]{
-        "id",
-        "parentid",
-        "name"
-    })]
+    [ConsoleCommand("get-page", Constants.PagesCategory, "Prompt_GetPage_Description")]
     public class GetPage : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourceFile;

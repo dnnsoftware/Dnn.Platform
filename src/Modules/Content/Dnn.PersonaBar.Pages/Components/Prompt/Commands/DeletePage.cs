@@ -10,11 +10,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("delete-page", "Prompt_DeletePage_Description", new[]{
-        "id",
-        "parentid",
-        "name"
-    })]
+    [ConsoleCommand("delete-page", Constants.PagesCategory, "Prompt_DeletePage_Description")]
     public class DeletePage : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourceFile;
@@ -65,7 +61,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
             }
-            return new ConsoleResultModel(LocalizeString("PageDeletedMessage")) { Records = 1 };
+            return new ConsoleResultModel(LocalizeString("PageDeletedMessage")) { Records = 1, MustReload = TabId == PageId };
         }
     }
 }

@@ -7,7 +7,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
-    [ConsoleCommand("clear-log", "Prompt_ClearLog_Description")]
+    [ConsoleCommand("clear-log", Constants.PortalCategory, "Prompt_ClearLog_Description")]
     public class ClearLog : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -22,9 +22,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel("An error occurred while attempting to clear the Event Log.");
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_ClearLog_Error"));
             }
-            return new ConsoleResultModel("Event Log Cleared");
+            return new ConsoleResultModel(LocalizeString("Prompt_ClearLog_Success"));
 
         }
     }

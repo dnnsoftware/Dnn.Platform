@@ -147,9 +147,6 @@
   <data name="DidYouMean.Text" xml:space="preserve">
     <value>Did you mean '{0}'?</value>
   </data>
-  <data name="Prompt_ListModulesOutput.Text" xml:space="preserve">
-    <value>Press CTRL+X to end.\nPress any key to load more....</value>
-  </data>
   <data name="Prompt_NoModules.Text" xml:space="preserve">
     <value>No modules found.</value>
   </data>
@@ -989,5 +986,155 @@
   </data>
   <data name="Prompt_Reload_Description.Text" xml:space="preserve">
     <value>Reloads the current page</value>
+  </data>
+  <data name="Prompt_PagingMessage.Text" xml:space="preserve">
+    <value>Page {0} of {1}.</value>
+  </data>
+  <data name="Prompt_PagingMessageWithLoad.Text" xml:space="preserve">
+    <value>Page {0} of {1}. Press any key to load next page. Press CTRL + X to end.</value>
+  </data>
+  <data name="Help_Default.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Help_Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Help_Flag.Text" xml:space="preserve">
+    <value>Flag</value>
+  </data>
+  <data name="Help_Options.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Help_Required.Text" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="Help_Type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="PromptGreeting.Text" xml:space="preserve">
+    <value>Prompt {0} Type \'help\' to get a list of commands</value>
+  </data>
+  <data name="ReloadingText.Text" xml:space="preserve">
+    <value>Reloading in 3 seconds</value>
+  </data>
+  <data name="SessionHisotryCleared.Text" xml:space="preserve">
+    <value>Session command history cleared.</value>
+  </data>
+  <data name="Prompt_GeneralCategory.Text" xml:space="preserve">
+    <value>General Commands</value>
+  </data>
+  <data name="Prompt_HostCategory.Text" xml:space="preserve">
+    <value>Host Commands</value>
+  </data>
+  <data name="Prompt_ModulesCategory.Text" xml:space="preserve">
+    <value>Module Commands</value>
+  </data>
+  <data name="Prompt_PortalCategory.Text" xml:space="preserve">
+    <value>Portal Commands</value>
+  </data>
+  <data name="Prompt_Help_Command.Text" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="Prompt_Help_Commands.Text" xml:space="preserve">
+    <value>Commands</value>
+  </data>
+  <data name="Prompt_Help_Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Prompt_Help_Learn.Text" xml:space="preserve">
+    <value>Learning Prompt Commands</value>
+  </data>
+  <data name="Prompt_Help_ListOfAvailableMsg.Text" xml:space="preserve">
+    <value>Here is a list of available commands for Prompt.</value>
+  </data>
+  <data name="Prompt_Help_PromptCommands.Text" xml:space="preserve">
+    <value>Prompt Commands</value>
+  </data>
+  <data name="Prompt_Help_SeeAlso.Text" xml:space="preserve">
+    <value>See Also</value>
+  </data>
+  <data name="Prompt_Help_Syntax.Text" xml:space="preserve">
+    <value>Overview/Basic Syntax</value>
+  </data>
+  <data name="Prompt_ClearCache_Error.Text" xml:space="preserve">
+    <value>An error occurred while attempting to clear the cache.</value>
+  </data>
+  <data name="Prompt_ClearCache_Success.Text" xml:space="preserve">
+    <value>Cache Cleared.</value>
+  </data>
+  <data name="Prompt_ClearLog_Error.Text" xml:space="preserve">
+    <value>An error occurred while attempting to clear the Event Log.</value>
+  </data>
+  <data name="Prompt_ClearLog_Success.Text" xml:space="preserve">
+    <value>Event Log Cleared.</value>
+  </data>
+  <data name="Prompt_Echo_Nothing.Text" xml:space="preserve">
+    <value>Nothing to echo back</value>
+  </data>
+  <data name="Prompt_Echo_ResultHtml.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Prompt_FlagIsRequired.Text" xml:space="preserve">
+    <value>'[0]' is required.</value>
+  </data>
+  <data name="Prompt_GetHost_Unauthorized.Text" xml:space="preserve">
+    <value>You do not have authorization to access this functionality.</value>
+  </data>
+  <data name="Prompt_GetHost__NoArgs.Text" xml:space="preserve">
+    <value>The get-host command does not take any arguments or flags.</value>
+  </data>
+  <data name="Prompt_GetPortal_NoArgs.Text" xml:space="preserve">
+    <value>The get-portal command does not take any arguments or flags.</value>
+  </data>
+  <data name="Prompt_GetPortal_NotFound.Text" xml:space="preserve">
+    <value>Could not find a portal with ID of '{0}'</value>
+  </data>
+  <data name="Prompt_ListCommands_Error.Text" xml:space="preserve">
+    <value>An error occurred while attempting to list the commands.</value>
+  </data>
+  <data name="Prompt_ListCommands_Found.Text" xml:space="preserve">
+    <value>Found {0} commands.</value>
+  </data>
+  <data name="Prompt_ListCommands_H_Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Prompt_ListCommands_H_Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Prompt_ListCommands_H_Version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Prompt_ListCommands__H_Category.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Prompt_ListPortals_NoArgs.Text" xml:space="preserve">
+    <value>The list-portal command does not take any arguments or flags</value>
+  </data>
+  <data name="Prompt_SetMode_Description.Text" xml:space="preserve">
+    <value>Sets the DNN View Mode. This has the same effect as clicking the appropriate options in the DNN Control Bar.</value>
+  </data>
+  <data name="Prompt_SetMode_FlagMode.Text" xml:space="preserve">
+    <value>One of three view modes: &lt;code&gt;edit&lt;/code&gt;, &lt;code&gt;layout&lt;/code&gt;, or &lt;code&gt;view&lt;/code&gt;. You do not need to specify
+          the &lt;span class="mono"&gt;--mode&lt;/span&gt; flag explicitly. Simply type one of the view mode values after the command.</value>
+  </data>
+  <data name="Prompt_SetMode_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+    &lt;h4&gt;Change the DNN View Mode&lt;/h4&gt;
+    &lt;code class="block"&gt;
+      set-mode layout
+    &lt;/code&gt; OR
+    &lt;code class="block"&gt;
+      set-mode view
+    &lt;/code&gt; OR
+    &lt;code class="block"&gt;
+      set-mode edit
+    &lt;/code&gt;
+  &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_UserRestart_Error.Text" xml:space="preserve">
+    <value>An error occurred while attempting to restart the application.</value>
+  </data>
+  <data name="Prompt_UserRestart_Success.Text" xml:space="preserve">
+    <value>Application Restarted</value>
   </data>
 </root>

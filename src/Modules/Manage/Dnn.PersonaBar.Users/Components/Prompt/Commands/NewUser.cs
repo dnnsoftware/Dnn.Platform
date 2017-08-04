@@ -11,16 +11,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("new-user", "Prompt_NewUser_Description", new[]{
-        "email",
-        "username",
-        "displayname",
-        "firstname",
-        "lastname",
-        "password",
-        "approved",
-        "notify"
-    })]
+    [ConsoleCommand("new-user", Constants.UsersCategory, "Prompt_NewUser_Description")]
     public class NewUser : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

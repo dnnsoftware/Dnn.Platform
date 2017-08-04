@@ -9,12 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("add-roles", "Prompt_AddRoles_Description", new[]{
-        "id",
-        "roles",
-        "start",
-        "end"
-    })]
+    [ConsoleCommand("add-roles", Constants.UsersCategory, "Prompt_AddRoles_Description")]
     public class AddRoles : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

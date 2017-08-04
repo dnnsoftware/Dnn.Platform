@@ -11,7 +11,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("delete-role", "Prompt_DeleteRole_Description")]
+    [ConsoleCommand("delete-role", Constants.RolesCategory, "Prompt_DeleteRole_Description")]
     public class DeleteRole : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

@@ -9,7 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("copy-module", "Prompt_CopyModule_Description", new[] { "id", "pageid", "topageid", "pane" })]
+    [ConsoleCommand("copy-module", Constants.ModulesCategory, "Prompt_CopyModule_Description")]
     public class CopyModule : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

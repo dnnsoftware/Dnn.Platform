@@ -8,7 +8,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("delete-module", "Prompt_DeleteModule_Description", new[] { "id", "pageid" })]
+    [ConsoleCommand("delete-module", Constants.ModulesCategory, "Prompt_DeleteModule_Description")]
     public class DeleteModule : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

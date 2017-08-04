@@ -7,11 +7,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("restore-page", "Prompt_RestorePage_Description", new[]{
-        "id",
-        "name",
-        "parentid"
-    })]
+    [ConsoleCommand("restore-page", Constants.RecylcleBinCategory, "Prompt_RestorePage_Description")]
     public class RestorePage : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

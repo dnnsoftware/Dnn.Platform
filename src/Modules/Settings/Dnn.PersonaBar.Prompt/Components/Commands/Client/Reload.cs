@@ -8,7 +8,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("reload", "Prompt_Reload_Description")]
+    [ConsoleCommand("reload", Constants.GeneralCategory, "Prompt_Reload_Description")]
     public class Reload : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;

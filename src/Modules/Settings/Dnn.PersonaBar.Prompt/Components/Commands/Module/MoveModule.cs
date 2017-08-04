@@ -9,7 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("move-module", "Prompt_MoveModule_Description", new[] { "id" })]
+    [ConsoleCommand("move-module", Constants.ModulesCategory, "Prompt_MoveModule_Description")]
     public class MoveModule : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

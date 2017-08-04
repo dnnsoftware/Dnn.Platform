@@ -8,7 +8,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("exit", "Prompt_Exit_Description")]
+    [ConsoleCommand("exit", Constants.GeneralCategory, "Prompt_Exit_Description")]
     public class Exit : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;

@@ -819,9 +819,6 @@
   <data name="Prompt_ParentIdNotNumeric.Text" xml:space="preserve">
     <value>When specifying --{0}, you must supply a valid numeric Page (Tab) ID</value>
   </data>
-  <data name="Prompt_ListPagesOutput.Text" xml:space="preserve">
-    <value>Press CTRL+X to end.\nPress any key to load more....</value>
-  </data>
   <data name="Prompt_NoPages.Text" xml:space="preserve">
     <value>No pages found.</value>
   </data>
@@ -1482,5 +1479,8 @@
         &lt;/table&gt;
 
     &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_PagesCategory.Text" xml:space="preserve">
+    <value>Page Commands</value>
   </data>
 </root>

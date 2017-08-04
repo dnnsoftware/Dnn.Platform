@@ -38,19 +38,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.63\lib\ClientDependency.Core.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.66\lib\ClientDependency.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dnn.PersonaBar.Library, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dnn.PersonaBar.Library.1.5.0.25\lib\net45\Dnn.PersonaBar.Library.dll</HintPath>
+      <HintPath>..\packages\Dnn.PersonaBar.Library.1.5.0.31\lib\net45\Dnn.PersonaBar.Library.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke, Version=9.2.0.63, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetNuke.Core.9.2.0.63\lib\net40\DotNetNuke.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke.HttpModules, Version=9.2.0.63, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.63\lib\DotNetNuke.HttpModules.dll</HintPath>
+    <Reference Include="DotNetNuke.HttpModules, Version=9.2.0.66, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.66\lib\DotNetNuke.HttpModules.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation, Version=9.2.0.63, Culture=neutral, processorArchitecture=MSIL">
@@ -61,16 +61,16 @@
       <HintPath>..\packages\DotNetNuke.Instrumentation.9.2.0.63\lib\net40\DotNetNuke.Log4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Modules.DigitalAssets, Version=9.2.0.63, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.63\lib\DotNetNuke.Modules.DigitalAssets.dll</HintPath>
+    <Reference Include="DotNetNuke.Modules.DigitalAssets, Version=9.2.0.66, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.66\lib\DotNetNuke.Modules.DigitalAssets.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Tests.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.63\lib\DotNetNuke.Tests.Data.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.66\lib\DotNetNuke.Tests.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Tests.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.63\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.66\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web, Version=9.2.0.63, Culture=neutral, processorArchitecture=MSIL">
@@ -90,7 +90,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.63\lib\DotNetNuke.WebControls.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.66\lib\DotNetNuke.WebControls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
@@ -98,7 +98,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FiftyOne.Foundation, Version=3.2.3.2, Culture=neutral, PublicKeyToken=e967ae578dabd98e, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.63\lib\FiftyOne.Foundation.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.66\lib\FiftyOne.Foundation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

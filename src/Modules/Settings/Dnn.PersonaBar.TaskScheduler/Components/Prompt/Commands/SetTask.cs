@@ -11,10 +11,7 @@ using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-task", "Prompt_SetTask_Description", new[]{
-        "id",
-        "enabled"
-    })]
+    [ConsoleCommand("set-task", Constants.SchedulerCategory, "Prompt_SetTask_Description")]
     public class SetTask : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));

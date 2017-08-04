@@ -8,7 +8,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
-    [ConsoleCommand("list-portals", "Prompt_ListPortals_Description")]
+    [ConsoleCommand("list-portals", Constants.PortalCategory, "Prompt_ListPortals_Description")]
     public class ListPortals : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
             else
             {
-                AddMessage("The get-portal command does not take any arguments or flags; ");
+                AddMessage(LocalizeString("Prompt_ListPortals_NoArgs"));
             }
         }
 

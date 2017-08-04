@@ -8,11 +8,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("goto", "Prompt_Goto_Description", new[]{
-        "id",
-        "parentid",
-        "name"
-    })]
+    [ConsoleCommand("goto", Constants.PagesCategory, "Prompt_Goto_Description")]
     public class Goto : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourceFile;
@@ -56,7 +52,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
             }
-            return new ConsoleResultModel(tab.FullUrl);
+            return new ConsoleResultModel(tab.FullUrl) {MustReload = true};
         }
     }
 }

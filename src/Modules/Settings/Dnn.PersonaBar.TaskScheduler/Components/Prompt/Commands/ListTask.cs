@@ -9,10 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-tasks", "Prompt_ListTasks_Description", new[]{
-        "enabled",
-        "name"
-    })]
+    [ConsoleCommand("list-tasks", Constants.SchedulerCategory, "Prompt_ListTasks_Description")]
     public class ListTasks : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

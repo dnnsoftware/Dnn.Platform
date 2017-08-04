@@ -9,11 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-user", "Prompt_GetUser_Description", new[]{
-        "id",
-        "email",
-        "username"
-    })]
+    [ConsoleCommand("get-user", Constants.UsersCategory, "Prompt_GetUser_Description")]
     public class GetUser : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -39,7 +35,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (args.Length != 1)
             {
-                if (args.Length == 2 && !UserId.HasValue && Email == null && Username == null)
+                if (args.Length == 2 && !UserId.HasValue && string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Username))
                 {
                     // only one value passed and it's not a flagged value. Try to interpret it.
                     if (args[1].Contains("@"))

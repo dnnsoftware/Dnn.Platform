@@ -7,7 +7,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
-    [ConsoleCommand("purge-user", "Prompt_PurgeUser_Description", new[] { "id" })]
+    [ConsoleCommand("purge-user", Constants.RecylcleBinCategory, "Prompt_PurgeUser_Description")]
     public class PurgeUser : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

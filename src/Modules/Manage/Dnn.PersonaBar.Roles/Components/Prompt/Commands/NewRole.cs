@@ -14,12 +14,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("new-role", "Prompt_NewRole_Description", new[]{
-        "name",
-        "description",
-        "public",
-        "autoassign"
-    })]
+    [ConsoleCommand("new-role", Constants.RolesCategory, "Prompt_NewRole_Description")]
     public class NewRole : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;

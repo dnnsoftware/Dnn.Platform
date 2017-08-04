@@ -11,7 +11,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-roles", "Prompt_ListRoles_Description", new[] { "page", "max" })]
+    [ConsoleCommand("list-roles", Constants.RolesCategory, "Prompt_ListRoles_Description")]
     public class ListRoles : ConsoleCommandBase
     {
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                         PageSize = max
                     },
                     Records = roles.Count,
-                    Output = pageNo <= totalPages ? LocalizeString("Prompt_ListRolesOutput") : LocalizeString("Prompt_NoRoles")
+                    Output = roles.Count == 0 ? LocalizeString("Prompt_NoRoles") : ""
                 };
 
             }
