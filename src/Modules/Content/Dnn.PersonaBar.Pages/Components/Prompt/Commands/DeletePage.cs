@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
             }
-            return new ConsoleResultModel(LocalizeString("PageDeletedMessage")) { Records = 1, MustReload = TabId == PageId };
+            return new ConsoleResultModel(LocalizeString("PageDeletedMessage")) { Records = 1 };
         }
     }
 }
