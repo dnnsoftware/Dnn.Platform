@@ -161,6 +161,17 @@ class App extends Component {
     onAddPage() {
         const { props } = this;
         const { selectedPage } = props;
+        let runUpdateStore = null;
+        let pageList = null;
+
+        this._traverse((item, list, updateStore)=>{
+            item.selected=false;
+            pageList = list;
+            runUpdateStore = updateStore;
+        });
+
+        runUpdateStore(pageList);
+
         if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
             const onConfirm = () => this.props.getNewPage();
             utils.confirm(
