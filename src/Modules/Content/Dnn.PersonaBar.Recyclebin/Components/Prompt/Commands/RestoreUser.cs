@@ -31,9 +31,6 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             if (!userInfo.IsDeleted)
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_RestoreNotRequired"));
 
-            if (!UserController.RestoreUser(ref userInfo))
-                return new ConsoleErrorResultModel(LocalizeString("UserRestoreError"));
-
             string message;
             var restoredUser = RecyclebinController.Instance.RestoreUser(userInfo, out message);
             return restoredUser

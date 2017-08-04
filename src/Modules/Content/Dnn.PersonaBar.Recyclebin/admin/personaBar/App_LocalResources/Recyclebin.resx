@@ -431,4 +431,7 @@
   <data name="Prompt_RecylcleBinCategory.Text" xml:space="preserve">
     <value>Recycle Bin Commands</value>
   </data>
+  <data name="UserRestored.Text" xml:space="preserve">
+    <value>User restored successfully.</value>
+  </data>
 </root>
