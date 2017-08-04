@@ -66,7 +66,7 @@ class App extends Component {
         window.dnn.utility.expandPersonaBarPage();
          this.props.getPageList();
 
-
+         
         
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
@@ -104,11 +104,15 @@ class App extends Component {
 
     //Resolves tab being viewed if view params are present.
     resolveTabBeingViewed(viewParams) {
+        window.dnn.utility.closeSocialTasks();
+        window.dnn.utility.expandPersonaBarPage();
+
         if (!viewParams) {
             return;
         }
         if (viewParams.pageId) {
             this.props.onLoadPage(viewParams.pageId);
+ 
         }
         if (viewParams.viewTab) {
             this.selectPageSettingTab(getSelectedTabBeingViewed(viewParams.viewTab));
@@ -181,24 +185,51 @@ class App extends Component {
 
     onDeleteSettings() {
         const { props } = this;
-        const onDelete = () => {
-            this.props.onDeletePage(props.selectedPage);
-            this._traverse((item, list, updateStore) => {
-                if(item.id === props.selectedPage.parentId){
-                    let itemIndex = null;
-                    item.childListItems.forEach((child, index)=>{
-                        if(child.id===props.selectedPage.tabId){
-                            itemIndex=index;
-                        }
-                    });
-                    const arr1 = item.childListItems.slice(0,itemIndex);
-                    const arr2 = item.childListItems.slice(itemIndex+1);
-                    item.childListItems = [...arr1, ...arr2];
-                    updateStore(list); 
-                    props.onCancelPage();
-                }
-            });
+        const {selectedPage} = props;
+       
+        const left = () => {
+            return () => {
+                this.props.onDeletePage(props.selectedPage);
+                this._traverse((item, list, updateStore) => {
+                    if(item.id === props.selectedPage.parentId){
+                        let itemIndex = null;
+                        item.childListItems.forEach((child, index)=>{
+                            if(child.id===props.selectedPage.tabId){
+                                itemIndex=index;
+                            }
+                        });
+                        const arr1 = item.childListItems.slice(0,itemIndex);
+                        const arr2 = item.childListItems.slice(itemIndex+1);
+                        item.childListItems = [...arr1, ...arr2];
+                        updateStore(list); 
+                        props.onCancelPage();
+                    }
+                });
+            }
         };
+
+        const right = () => {
+            return () => {
+                let itemIndex;
+                const pageList = JSON.parse(JSON.stringify(this.props.pageList));
+                pageList.forEach((item, index) => {
+                    if(item.id === selectedPage.tabId){
+                        itemIndex = index;
+                    }
+                });
+             
+                const arr1 = pageList.slice(0, itemIndex);
+                const arr2 = pageList.slice(itemIndex+1);
+                const update = [...arr1, ...arr2];
+                this.props.onDeletePage(props.selectedPage);
+                this.props.updatePageListStore(update);
+                this.props.onCancelPage();
+
+            }
+        };
+
+        const onDelete = (selectedPage.parentId !== -1) ? left() : right();
+        
         utils.confirm(
             Localization.get("DeletePageConfirm"),
             Localization.get("Delete"),
@@ -490,6 +521,7 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const { props, state } = this;
+        
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
@@ -573,11 +605,11 @@ class App extends Component {
 
 
     render() {
+        
         const { props } = this;
         const { selectedPage } = props;
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
-       
 
         return (
             <div className="pages-app personaBar-mainContainer">

@@ -21,10 +21,22 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this.init();
 
     }
-
+ 
     componentWillReceiveProps(newProps){
+        const {activePage} = newProps;
         const pageList = JSON.parse(JSON.stringify(newProps.pageList));
         this.setState({ pageList: pageList, isTreeviewExpanded: true, rootLoaded: true });
+       
+        if(activePage){
+            this.props._traverse((item, list, updateStore) => {
+                item.selected=false
+                if(item.id === activePage.tabId){
+                    item.selected=true; 
+                    this.setState({pageList:list});
+                }
+            });  
+        }
+
     }
 
     init(){
