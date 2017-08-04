@@ -136,6 +136,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             li.selected = false;
             if (li.id === item.id) {
                 li.selected = true;
+                li.isOpen=false;
                 this.setState({ draggedItem: li, pageList: list, activePage: item }, ()=>updateStore(list));
             }
         });
@@ -186,25 +187,30 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDrop(item) {
         this.removeClone();
-        let activePage = Object.assign({}, this.state.activePage);
-        let pageList = null;
-        let runUpdateStore = null;
-        this.props._traverse((pageListItem, list, updateStore) => {
-            pageListItem.onDragOverState = false;
-            pageList = list;
-            runUpdateStore = updateStore;
-        });
-        this.setState({ pageList }, ()=>runUpdateStore(pageList));
+        const left = () => {
+            let activePage = Object.assign({}, this.state.activePage);
+            let pageList = null;
+            let runUpdateStore = null;
+            this.props._traverse((pageListItem, list, updateStore) => {
+                pageListItem.onDragOverState = false;
+                pageList = list;
+                runUpdateStore = updateStore;
+            });
+            this.setState({ pageList }, ()=>runUpdateStore(pageList));
 
-        this.getPageInfo(activePage.id)
-            .then((data) => {
-                let activePage = Object.assign({}, this.state.activePage);
-                activePage.parentId = item.id;
-                return this.props.saveDropState(activePage);
-            })
-            .then(this.getPageInfo.bind(this, activePage.id))
-            .then(() => this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree()));
+            this.getPageInfo(activePage.id)
+                .then((data) => {
+                    let activePage = Object.assign({}, this.state.activePage);
+                    activePage.parentId = item.id;
+                    return this.props.saveDropState(activePage);
+                })
+                .then(this.getPageInfo.bind(this, activePage.id))
+                .then(() => this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree()));
+        };
 
+        const right = () => null;
+
+        (item.id !== this.state.draggedItem.id) ? left() : right();
     }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {

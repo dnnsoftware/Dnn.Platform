@@ -232,6 +232,11 @@ const pageActions = {
                     return;
                 }
 
+                dispatch({
+                    type:ActionTypes.SAVE_PAGE,
+                    data:null
+                });
+                
                 callback(page);
 
             }).catch((error) => {
