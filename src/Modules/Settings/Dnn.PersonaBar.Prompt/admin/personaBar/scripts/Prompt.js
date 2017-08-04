@@ -15,7 +15,7 @@ define(['jquery', 'main/extension', 'main/config'], function ($, ext, cf) {
                 version: "1.0.0"
             };
         };
-        utility.loadBundleScript('http://localhost:8100/dist/prompt-bundle.js');
+        utility.loadBundleScript('modules/dnn.Prompt/scripts/bundles/prompt-bundle.js');
 
         if (typeof callback === 'function') {
             callback();
