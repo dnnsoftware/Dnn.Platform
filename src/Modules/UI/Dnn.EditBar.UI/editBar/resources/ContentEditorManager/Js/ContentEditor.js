@@ -309,7 +309,7 @@ dnn.ContentEditorManager = $.extend({}, dnn.ContentEditorManager, {
         dnn.ContentEditorManager.catchSortEvents();
     });
 
-    $(window).load(function handlerNewModuleFromCookie() {
+	$(window).on('load', function handlerNewModuleFromCookie() {
         //handle the floating module from cookie
         var handleNewModuleFromCookie = function handleNewModuleFromCookie() {
             var moduleDialog = dnn.ContentEditorManager.getModuleDialog();
