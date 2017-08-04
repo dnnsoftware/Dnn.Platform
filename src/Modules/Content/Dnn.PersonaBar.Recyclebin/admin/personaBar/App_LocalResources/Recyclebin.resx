@@ -434,4 +434,7 @@
   <data name="UserRestored.Text" xml:space="preserve">
     <value>User restored successfully.</value>
   </data>
+  <data name="Prompt_RestoreNotRequired.Text" xml:space="preserve">
+    <value>User not deleted. Restore not required.</value>
+  </data>
 </root>
