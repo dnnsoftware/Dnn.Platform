@@ -232,7 +232,7 @@ const pageActions = {
                     return;
                 }
 
-                callback();
+                callback(page);
 
             }).catch((error) => {
                 dispatch({

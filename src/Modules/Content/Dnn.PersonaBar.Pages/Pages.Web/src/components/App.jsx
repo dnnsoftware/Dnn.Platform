@@ -154,7 +154,15 @@ class App extends Component {
     onUpdatePage(input) {
         return new Promise((resolve) => {
             const update = (input && input.tabId) ? input : this.props.selectedPage;
-            this.props.onUpdatePage(update, () => resolve());
+            this.props.onUpdatePage(update, (page) => {
+                this._traverse((item, list)=>{
+                    if(item.id == this.props.selectedPage.tabId){
+                        item.name = page.name;
+                        this.props.updatePageListStore(list);
+                        resolve();
+                    }
+                });
+            });
         });
     }
 
@@ -204,6 +212,9 @@ class App extends Component {
                 this._traverse((item, list, updateStore) => {
                     if(item.id === props.selectedPage.parentId){
                         let itemIndex = null;
+                        item.childCount--;
+                       (item.childCount===0) ? item.isOpen=false : null;
+
                         item.childListItems.forEach((child, index)=>{
                             if(child.id===props.selectedPage.tabId){
                                 itemIndex=index;
@@ -495,12 +506,7 @@ class App extends Component {
 
     onChangePageField(key, value){
         this.props.onChangePageField(key,value);
-        this._traverse((item, list, updateStore)=>{
-            if(item.id == this.props.selectedPage.tabId){
-                item[key]=value;
-                updateStore(list);
-            }
-        });
+
     }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {

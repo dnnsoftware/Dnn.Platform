@@ -43,7 +43,7 @@ class PageDetails extends Component {
 
     render() {
         const {page, errors} = this.props;
-        
+
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
             portalId:  -2,
@@ -123,7 +123,7 @@ class PageDetails extends Component {
 
                                 defaultLabel={defaultLabel}
                                 selectedTabId={selectedTabId}
-                                portalTabsParameters={TabParameters_1}
+                                PortalTabsParameters={TabParameters_1}
 
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
