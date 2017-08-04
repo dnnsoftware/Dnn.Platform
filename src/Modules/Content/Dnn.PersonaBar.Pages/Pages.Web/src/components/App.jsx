@@ -216,7 +216,7 @@ class App extends Component {
                         props.onCancelPage();
                     }
                 });
-            }
+            };
         };
 
         const right = () => {
@@ -236,7 +236,7 @@ class App extends Component {
                 this.props.updatePageListStore(update);
                 this.props.onCancelPage();
 
-            }
+            };
         };
 
         const onDelete = (selectedPage.parentId !== -1) ? left() : right();
@@ -273,7 +273,7 @@ class App extends Component {
                 this.props.onLoadPage(this.props.selectedPage.tabId).then((data)=>{
                     this._traverse((item, list, updateStore)=>{
                         if(item.id === this.props.selectedPage.tabId){
-                            Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key])
+                            Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key]);
                             this.props.updatePageListStore(list); 
                         }
                     });

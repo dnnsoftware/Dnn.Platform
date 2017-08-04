@@ -29,7 +29,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
        
         if(activePage){
             this.props._traverse((item, list, updateStore) => {
-                item.selected=false
+                item.selected=false;
                 if(item.id === activePage.tabId){
                     item.selected=true; 
                     this.setState({pageList:list});
