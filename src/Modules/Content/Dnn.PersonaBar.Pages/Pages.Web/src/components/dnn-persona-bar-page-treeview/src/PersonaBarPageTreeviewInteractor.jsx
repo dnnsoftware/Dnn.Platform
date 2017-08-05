@@ -12,7 +12,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         super();
         this.state = {
             rootLoaded: false,
-            isTreeviewExpanded: false
+            isTreeviewExpanded: true
         };
         this.origin = window.origin;
     }
@@ -21,11 +21,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this.init();
 
     }
- 
+
     componentWillReceiveProps(newProps){
         const {activePage} = newProps;
         const pageList = JSON.parse(JSON.stringify(newProps.pageList));
-        this.setState({ pageList: pageList, isTreeviewExpanded: true, rootLoaded: true });
+        this.setState({ pageList: pageList, rootLoaded: true });
        
         if(activePage){
             this.props._traverse((item, list, updateStore) => {
@@ -34,7 +34,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     item.selected=true; 
                     this.setState({pageList:list});
                 }
-            });  
+            });
         }
 
     }
@@ -97,17 +97,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     toggleParentCollapsedState(id) {
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id) ? item.isOpen = !item.isOpen : null;
-            this.setState( { pageList: listItem }, ()=> updateStore(listItem) );
+            updateStore(listItem);
         });
     }
 
     onSelection(id) {
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id && item.canViewPage) ? item.selected = true : item.selected = false;
-            this.setState({ pageList: listItem }, ()=>{
-                item.selected ?  this.props.onSelection(id) : null;
-                updateStore(listItem);
-            });
+             item.selected ?  this.props.onSelection(id) : null;
+            updateStore(listItem);
+
 
         });
     }
@@ -511,15 +510,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     toggleExpandAll() {
         let pageList = null;
+        let runUpdateStore = null;
         const {isTreeviewExpanded} = this.state;
 
         this.props._traverse((item, list, updateStore) => {
             if (item.hasOwnProperty("childListItems") && item.childListItems.length > 0) {
-                item.isOpen = isTreeviewExpanded ?  item.isOpen=false : item.isOpen=true ;
-                pageList = list;
-                this.setState({ pageList: pageList, isTreeviewExpanded: !this.state.isTreeviewExpanded }, ()=>updateStore(pageList));
+                item.isOpen = !item.isOpen;
+                updateStore(list);
             }
         });
+        this.setState({isTreeviewExpanded:!this.state.isTreeviewExpanded});
     }
 
 
