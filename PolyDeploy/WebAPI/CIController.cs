@@ -33,10 +33,21 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         [AllowAnonymous]
         [InWhitelist]
         [APIAuthentication]
-        [HttpPost]
-        public async Task<HttpResponseMessage> AddPackages(string session)
+        [HttpGet]
+        public HttpResponseMessage GetSession(string sessionGuid)
         {
-            if (!SessionController.SessionExists(session))
+            Session session = SessionController.GetSession(sessionGuid);
+
+            return Request.CreateResponse(HttpStatusCode.OK, session);
+        }
+
+        [AllowAnonymous]
+        [InWhitelist]
+        [APIAuthentication]
+        [HttpPost]
+        public async Task<HttpResponseMessage> AddPackages(string sessionGuid)
+        {
+            if (!SessionController.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -67,7 +78,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                     {
                         using (Stream ds = Crypto.Decrypt(ms, apiUser.EncryptionKey))
                         {
-                            SessionController.AddPackage(session, ds, filename);
+                            SessionController.AddPackage(sessionGuid, ds, filename);
                         }
                     }
                 }
@@ -84,15 +95,13 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         [InWhitelist]
         [APIAuthentication]
         [HttpGet]
-        public HttpResponseMessage Install(string session)
+        public HttpResponseMessage Install(string sessionGuid)
         {
-            if (!SessionController.SessionExists(session))
+            if (!SessionController.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
             }
-
-            Dictionary<string, List<InstallJob>> payload = null;
 
             EventLogController elc = new EventLogController();
 
@@ -106,27 +115,14 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                 // Get the api key from the header.
                 apiKey = Request.Headers.GetValues("x-api-key").FirstOrDefault();
 
-                // Get the session path.
-                string sessionPath = SessionController.PathForSession(session);
+                // Get the session.
+                Session sessionObj = SessionController.GetSession(sessionGuid);
 
                 // Create a deploy operation.
-                CIDeploy deployOperation = new CIDeploy(sessionPath, ipAddress, apiKey);
+                CIDeploy deployOperation = new CIDeploy(sessionObj, ipAddress, apiKey);
 
                 // Deploy.
-                payload = deployOperation.Deploy();
-
-                int installed = payload.ContainsKey("Installed") ? payload["Installed"].Count : -1;
-                int failed = payload.ContainsKey("Failed") ? payload["Failed"].Count : -1;
-                int total = -1;
-
-                if (installed >= 0 && failed >= 0)
-                {
-                    total = installed + failed;
-                }
-
-                string log = string.Format("(APIKey: {0}) Installed {1}/{2} at {3}", apiKey, installed, total, DateTime.Now.ToString());
-
-                elc.AddLog("PolyDeploy", log, EventLogController.EventLogType.HOST_ALERT);
+                deployOperation.Deploy();
             }
             catch (Exception ex)
             {
@@ -137,7 +133,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, payload);
+            return Request.CreateResponse(HttpStatusCode.OK, "Operation started.");
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
     {
         private APIUser APIUser { get; set; }
 
-        public CIDeploy(string sessionPath, string ipAddress, string apiKey) : base(sessionPath, ipAddress)
+        public CIDeploy(Session session, string ipAddress, string apiKey) : base(session, ipAddress)
         {
             // Retrieve our API user.
             APIUser = APIUserController.GetByAPIKey(apiKey);

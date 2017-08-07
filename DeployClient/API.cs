@@ -19,7 +19,7 @@ namespace DeployClient
 
             client.BaseAddress = new Uri(new Uri(Properties.Settings.Default.TargetUri), "DesktopModules/PolyDeploy/API/");
             client.DefaultRequestHeaders.Add("x-api-key", Properties.Settings.Default.APIKey);
-            client.Timeout = TimeSpan.FromMinutes(5);
+            client.Timeout = TimeSpan.FromSeconds(25);
 
             return client;
         }
@@ -47,9 +47,23 @@ namespace DeployClient
             }
         }
 
-        public static void AddPackages(string session, List<KeyValuePair<string, Stream>> streams)
+        public static Dictionary<string, dynamic> GetSession(string sessionGuid)
         {
-            string endpoint = string.Format("CI/AddPackages?session={0}", session);
+            string endpoint = string.Format("CI/GetSession?sessionGuid={0}", sessionGuid);
+
+            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
+
+            using (HttpClient client = BuildClient())
+            {
+                string json = client.GetStringAsync(endpoint).Result;
+
+                return jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+            }
+        }
+
+        public static void AddPackages(string sessionGuid, List<KeyValuePair<string, Stream>> streams)
+        {
+            string endpoint = string.Format("CI/AddPackages?sessionGuid={0}", sessionGuid);
 
             using (HttpClient client = BuildClient())
             {
@@ -64,9 +78,9 @@ namespace DeployClient
             }
         }
 
-        public static void AddPackageAsync(string session, Stream stream, string filename)
+        public static void AddPackageAsync(string sessionGuid, Stream stream, string filename)
         {
-            string endpoint = string.Format("CI/AddPackages?session={0}", session);
+            string endpoint = string.Format("CI/AddPackages?sessionGuid={0}", sessionGuid);
 
             using (HttpClient client = BuildClient())
             {
@@ -78,39 +92,35 @@ namespace DeployClient
             }
         }
 
-        public static Dictionary<string, dynamic> Install(string session)
+        public static bool Install(string sessionGuid, out Dictionary<string, dynamic> response)
         {
-            string endpoint = string.Format("CI/Install?session={0}", session);
+            string endpoint = string.Format("CI/Install?sessionGuid={0}", sessionGuid);
+
+            bool success = false;
 
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
-            string json = "{}";
+            response = null;
 
             using (HttpClient client = BuildClient())
             {
                 try
                 {
-                    HttpResponseMessage response = client.GetAsync(endpoint).Result;
+                    HttpResponseMessage httpResponse = client.GetAsync(endpoint).Result;
 
-                    Console.WriteLine(response.RequestMessage.RequestUri);
-
-                    if (response.StatusCode.Equals(HttpStatusCode.OK))
+                    if (httpResponse.StatusCode.Equals(HttpStatusCode.OK))
                     {
-                        json = response.Content.ReadAsStringAsync().Result;
+                        success = true;
+                        string json = httpResponse.Content.ReadAsStringAsync().Result;
+                        response = jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
                     }
-                    else
-                    {
-                        throw new Exception(string.Format("Received status code: {0}", response.StatusCode.ToString()));
-                    }
-
-                    Console.WriteLine(json);
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("CIInstall failure", ex);
+                    // Nothing to do.
                 }
 
-                return jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+                return success;
             }
         }
     }

@@ -21,6 +21,13 @@ namespace Cantarus.Modules.PolyDeploy.Components
             return session;
         }
 
+        public static Session GetSession(string sessionGuid)
+        {
+            SessionDataController dc = new SessionDataController();
+
+            return dc.FindByGuid(sessionGuid); ;
+        }
+
         public static bool SessionExists(string sessionGuid)
         {
             SessionDataController dc = new SessionDataController();

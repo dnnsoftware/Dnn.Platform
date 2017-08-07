@@ -1,62 +1,40 @@
-﻿using System;
+﻿using Cantarus.Modules.PolyDeploy.DataAccess.DataControllers;
+using Cantarus.Modules.PolyDeploy.DataAccess.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Web.Script.Serialization;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal class Deployment
     {
-        //protected string IntakePath
-        //{
-        //    get
-        //    {
-        //        return Path.Combine(WorkingPath, "intake");
-        //    }
-        //}
-
-        //protected string ModulesPath
-        //{
-        //    get
-        //    {
-        //        return Path.Combine(WorkingPath, "modules");
-        //    }
-        //}
-
         protected string TempPath
         {
             get
             {
-                return Path.Combine(SessionPath, "temp");
+                return Path.Combine(SessionController.PathForSession(Session.Guid), "temp");
             }
         }
 
         protected string IPAddress { get; set; }
-        protected string SessionPath { get; set; }
+        protected Session Session { get; set; }
         protected List<string> PackageZips { get; set; }
 
-        public Deployment(string sessionPath, string ipAddress)
+        public Deployment(Session session, string ipAddress)
         {
             // Store ip address for logging later.
             IPAddress = ipAddress;
 
-            // store the session path.
-            SessionPath = sessionPath;
-
-            //// Create working directory if it doesn't exist.
-            //CreateDirectoryIfNotExist(WorkingPath);
-
-            //// Create the intake directory if it doesn't exist.
-            //CreateDirectoryIfNotExist(IntakePath);
-
-            //// Create the modules directory if it doesn't exist.
-            //CreateDirectoryIfNotExist(ModulesPath);
+            // Store the session.
+            Session = session;
 
             // Create the temporary directory if it doesn't exist.
             CreateDirectoryIfNotExist(TempPath);
         }
 
-        public Dictionary<string, List<InstallJob>> Deploy()
+        public void Deploy()
         {
             // Identify package zips.
             List<string> packageZips = IdentifyPackages();
@@ -85,6 +63,18 @@ namespace Cantarus.Modules.PolyDeploy.Components
             List<InstallJob> successJobs = new List<InstallJob>();
             List<InstallJob> failedJobs = new List<InstallJob>();
 
+            Dictionary<string, List<InstallJob>> results = new Dictionary<string, List<InstallJob>>();
+
+            results.Add("Installed", successJobs);
+            results.Add("Failed", failedJobs);
+
+            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
+            SessionDataController dc = new SessionDataController();
+
+            // Set as started.
+            Session.Status = SessionStatus.InProgess;
+            dc.Update(Session);
+
             foreach (KeyValuePair<int, InstallJob> keyPair in orderedInstall)
             {
                 InstallJob job = keyPair.Value;
@@ -92,22 +82,24 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 if (job.Install())
                 {
                     successJobs.Add(job);
-                } else
+                }
+                else
                 {
                     failedJobs.Add(job);
                 }
+
+                // After each install job, update response.
+                Session.Response = jsonSer.Serialize(results);
+                dc.Update(Session);
             }
+
+            // Done.
+            Session.Status = SessionStatus.Complete;
+            dc.Update(Session);
 
             // Log failures.
             LogAnyFailures(successJobs);
             LogAnyFailures(failedJobs);
-
-            Dictionary<string, List<InstallJob>> results = new Dictionary<string, List<InstallJob>>();
-
-            results.Add("Installed", successJobs);
-            results.Add("Failed", failedJobs);
-
-            return results;
         }
 
         protected virtual void LogAnyFailures(List<InstallJob> jobs)
@@ -201,7 +193,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         protected List<string> IdentifyPackages()
         {
-            return IdentifyPackagesInDirectory(SessionPath);
+            return IdentifyPackagesInDirectory(SessionController.PathForSession(Session.Guid));
         }
 
         protected List<string> IdentifyPackagesInDirectory(string directoryPath)

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Web.Script.Serialization;
 
 namespace DeployClient
 {
@@ -110,9 +111,9 @@ namespace DeployClient
                 WriteLine("Starting encryption and upload...");
 
                 // Get a session.
-                string session = API.CreateSession();
+                string sessionGuid = API.CreateSession();
 
-                WriteLine(string.Format("Got session: {0}", session));
+                WriteLine(string.Format("Got session: {0}", sessionGuid));
 
                 DateTime startTime = DateTime.Now;
 
@@ -121,13 +122,14 @@ namespace DeployClient
 
                     using (FileStream fs = new FileStream(zipFile, FileMode.Open))
                     {
-                        Write(string.Format("\t{0} encrypting...", Path.GetFileName(zipFile)));
+                        WriteLine(string.Format("\t{0}", Path.GetFileName(zipFile)));
+                        Write("\t\t...encrypting...");
 
                         using (Stream es = Crypto.Encrypt(fs, Properties.Settings.Default.EncryptionKey))
                         {
                             Write("uploading...");
 
-                            API.AddPackageAsync(session, es, Path.GetFileName(zipFile));
+                            API.AddPackageAsync(sessionGuid, es, Path.GetFileName(zipFile));
                         }
 
                         WriteLine("done.");
@@ -140,24 +142,79 @@ namespace DeployClient
                 WriteLine("Starting installation...");
 
                 DateTime installStartTime = DateTime.Now;
+                JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
-                Dictionary<string, dynamic> results = API.Install(session);
+                // Start.
+                Dictionary<string, dynamic> results = null;
 
-                ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
-                ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
-
-                // Any failures?
-                if (failed.Count > 0)
+                if (!API.Install(sessionGuid, out results))
                 {
-                    WriteLine(string.Format("{0} module archives failed to install.", failed.Count));
-                    ReadLine();
-                    Environment.Exit((int)ExitCode.InstallFailure);
+                    DateTime abortTime = DateTime.Now.AddMinutes(10);
+                    TimeSpan interval = new TimeSpan(0, 0, 0, 2);
+
+                    int status = -1;
+                    string previousPrint = null;
+
+                    // While the process isn't complete and we haven't exceeded our abort time.
+                    while (status < 2 && DateTime.Now < abortTime)
+                    {
+                        // Get response.
+                        Dictionary<string, dynamic> response = API.GetSession(sessionGuid);
+
+                        // Is there a status key?
+                        if (response.ContainsKey("Status"))
+                        {   
+                            // Yes, get the status.
+                            status = response["Status"];
+                        }
+
+                        // Is there a response key?
+                        if (response.ContainsKey("Response"))
+                        {
+                            // Yes, get the response.
+                            results = jsonSer.Deserialize<Dictionary<string, dynamic>>(response["Response"]);
+                        }
+
+                        // As long as we have something.
+                        if (status != -1 && results != null)
+                        {   
+                            // Get the installed and failed lists.
+                            ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
+                            ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
+
+                            // Give some feedback on it, only if it's changed.
+                            string print = string.Format("\t{0} module archives processed, {0}/{1} succeeded.", installed.Count + failed.Count, installed.Count);
+                            
+                            if (print != previousPrint)
+                            {
+                                WriteLine(print);
+                                previousPrint = print;
+                            }
+                        }
+
+                        // Is finished?
+                        if (status == 2)
+                        {
+                            break;
+                        }
+
+                        // Sleep.
+                        System.Threading.Thread.Sleep(interval);
+                    }
+                }
+                else
+                {
+                    // Get the installed and failed lists.
+                    ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
+                    ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
+
+                    // Give some feedback on it.
+                    WriteLine(string.Format("\t{0} module archives processed, {0}/{1} succeeded.", installed.Count + failed.Count, installed.Count));
+                    
                 }
 
-                // Output result
-                WriteLine(string.Format("{0} module archives installed successfully.", installed.Count));
-                ReadLine();
                 WriteLine(string.Format("Finished installation in {0} ms.", (DateTime.Now - installStartTime).TotalMilliseconds));
+                ReadLine();
             }
             catch (Exception ex)
             {

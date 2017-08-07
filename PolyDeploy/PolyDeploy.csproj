@@ -179,6 +179,7 @@
     <Content Include="SqlDataProviders\00.02.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\Uninstall.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.03.00.SqlDataProvider" />
+    <Content Include="SqlDataProviders\00.04.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\cantarus.png" />
