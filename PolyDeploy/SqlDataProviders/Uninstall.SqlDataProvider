@@ -1,5 +1,5 @@
 ﻿/************************************************************/
-/*****              SqlDataProvider                     *****/
+/***** SqlDataProvider                                  *****/
 /*****                                                  *****/
 /*****                                                  *****/
 /***** Note: To manually execute this script you must   *****/
@@ -7,7 +7,7 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
-/* Cantarus_PolyDeploy Uninstall                            */
+/*** Cantarus_PolyDeploy Uninstall                        ***/
 /************************************************************/
 
 /*********************************************************************************************************/
@@ -27,5 +27,15 @@ GO
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     BEGIN
         DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]
+    END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_Sessions TABLE ******************************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]
     END
 GO

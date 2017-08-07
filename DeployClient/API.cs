@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -18,13 +19,51 @@ namespace DeployClient
 
             client.BaseAddress = new Uri(new Uri(Properties.Settings.Default.TargetUri), "DesktopModules/PolyDeploy/API/");
             client.DefaultRequestHeaders.Add("x-api-key", Properties.Settings.Default.APIKey);
+            client.Timeout = TimeSpan.FromSeconds(25);
 
             return client;
         }
 
-        public static async Task<Dictionary<string, dynamic>> CIInstall(List<KeyValuePair<string, Stream>> streams)
+        public static string CreateSession()
         {
-            string endpoint = "CI/Install";
+            string endpoint = "CI/CreateSession";
+
+            using (HttpClient client = BuildClient())
+            {
+                string json = client.GetStringAsync(endpoint).Result;
+
+                JavaScriptSerializer jsonSer = new JavaScriptSerializer();
+
+                Dictionary<string, dynamic> session = jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+
+                string sessionGuid = null;
+
+                if (session.ContainsKey("Guid"))
+                {
+                    sessionGuid = session["Guid"];
+                }
+
+                return sessionGuid;
+            }
+        }
+
+        public static Dictionary<string, dynamic> GetSession(string sessionGuid)
+        {
+            string endpoint = string.Format("CI/GetSession?sessionGuid={0}", sessionGuid);
+
+            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
+
+            using (HttpClient client = BuildClient())
+            {
+                string json = client.GetStringAsync(endpoint).Result;
+
+                return jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+            }
+        }
+
+        public static void AddPackages(string sessionGuid, List<KeyValuePair<string, Stream>> streams)
+        {
+            string endpoint = string.Format("CI/AddPackages?sessionGuid={0}", sessionGuid);
 
             using (HttpClient client = BuildClient())
             {
@@ -35,13 +74,53 @@ namespace DeployClient
                     form.Add(new StreamContent(keyValuePair.Value), "none", keyValuePair.Key);
                 }
 
-                HttpResponseMessage response = await client.PostAsync(endpoint, form);
+                HttpResponseMessage response = client.PostAsync(endpoint, form).Result;
+            }
+        }
 
-                string json = await response.Content.ReadAsStringAsync();
+        public static void AddPackageAsync(string sessionGuid, Stream stream, string filename)
+        {
+            string endpoint = string.Format("CI/AddPackages?sessionGuid={0}", sessionGuid);
 
-                JavaScriptSerializer jsonSer = new JavaScriptSerializer();
+            using (HttpClient client = BuildClient())
+            {
+                MultipartFormDataContent form = new MultipartFormDataContent();
 
-                return jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+                form.Add(new StreamContent(stream), "none", filename);
+
+                HttpResponseMessage response = client.PostAsync(endpoint, form).Result;
+            }
+        }
+
+        public static bool Install(string sessionGuid, out Dictionary<string, dynamic> response)
+        {
+            string endpoint = string.Format("CI/Install?sessionGuid={0}", sessionGuid);
+
+            bool success = false;
+
+            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
+
+            response = null;
+
+            using (HttpClient client = BuildClient())
+            {
+                try
+                {
+                    HttpResponseMessage httpResponse = client.GetAsync(endpoint).Result;
+
+                    if (httpResponse.StatusCode.Equals(HttpStatusCode.OK))
+                    {
+                        success = true;
+                        string json = httpResponse.Content.ReadAsStringAsync().Result;
+                        response = jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Nothing to do.
+                }
+
+                return success;
             }
         }
     }

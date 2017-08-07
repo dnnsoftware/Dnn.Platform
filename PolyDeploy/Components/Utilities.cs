@@ -4,15 +4,17 @@ using System.IO;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-    public class Utilities
+    internal class Utilities
     {
-        public static string AvailableDirectory(string basePath = null)
+        public static string ModulePath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", "Cantarus", "PolyDeploy");
+
+        public static string AvailableTempDirectory(string basePath = null)
         {
             // Need to set sensible base?
             if (basePath == null)
             {
                 // We'll create a temporary folder in the module folder.
-                basePath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", "Cantarus", "PolyDeploy");
+                basePath = ModulePath;
 
                 // Check we found the module directory.
                 if (Directory.Exists(basePath))
@@ -41,7 +43,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
             if (Directory.Exists(dir))
             {
                 // My mistake, try again!
-                return AvailableDirectory();
+                return AvailableTempDirectory();
             }
 
             return dir;
@@ -49,7 +51,11 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public static string RandomName()
         {
-            return Guid.NewGuid().ToString().ToUpper();
+            // Get new guid as string.
+            string guidString = Guid.NewGuid().ToString();
+
+            // Remove hyphens, uppercase and return.
+            return guidString.Replace("-", null).ToUpper();
         }
     }
 }

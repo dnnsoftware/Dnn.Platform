@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Web.Script.Serialization;
 
 namespace DeployClient
 {
@@ -107,50 +108,145 @@ namespace DeployClient
                 }
 
                 // Inform user of encryption.
-                WriteLine("Starting encryption...");
+                WriteLine("Starting encryption and upload...");
 
-                List<KeyValuePair<string, Stream>> encryptedStreams = new List<KeyValuePair<string, Stream>>();
+                // Get a session.
+                string sessionGuid = API.CreateSession();
+
+                WriteLine(string.Format("Got session: {0}", sessionGuid));
+
+                DateTime startTime = DateTime.Now;
 
                 foreach (string zipFile in zipFiles)
                 {
+
                     using (FileStream fs = new FileStream(zipFile, FileMode.Open))
                     {
-                        encryptedStreams.Add(new KeyValuePair<string, Stream>(Path.GetFileName(zipFile), Crypto.Encrypt(fs, Properties.Settings.Default.EncryptionKey)));
+                        WriteLine(string.Format("\t{0}", Path.GetFileName(zipFile)));
+                        Write("\t\t...encrypting...");
+
+                        using (Stream es = Crypto.Encrypt(fs, Properties.Settings.Default.EncryptionKey))
+                        {
+                            Write("uploading...");
+
+                            API.AddPackageAsync(sessionGuid, es, Path.GetFileName(zipFile));
+                        }
+
+                        WriteLine("done.");
                     }
-                    WriteLine(string.Format("\tEncrypting {0}", Path.GetFileName(zipFile)));
                 }
+
+                WriteLine(string.Format("Finished encryption and upload in {0} ms.", (DateTime.Now - startTime).TotalMilliseconds));
                 WriteLine();
 
-                Dictionary<string, dynamic> results = API.CIInstall(encryptedStreams).Result;
+                WriteLine("Starting installation...");
 
-                ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
-                ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
+                DateTime installStartTime = DateTime.Now;
+                JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
-                // Any failures?
-                if (failed.Count > 0)
+                // Start.
+                Dictionary<string, dynamic> results = null;
+
+                if (!API.Install(sessionGuid, out results))
                 {
-                    WriteLine(string.Format("{0}/{1} module archives failed to install.", failed.Count, encryptedStreams.Count));
-                    ReadLine();
-                    Environment.Exit((int)ExitCode.InstallFailure);
+                    DateTime abortTime = DateTime.Now.AddMinutes(10);
+                    TimeSpan interval = new TimeSpan(0, 0, 0, 2);
+
+                    int status = -1;
+                    string previousPrint = null;
+
+                    // While the process isn't complete and we haven't exceeded our abort time.
+                    while (status < 2 && DateTime.Now < abortTime)
+                    {
+                        // Get response.
+                        Dictionary<string, dynamic> response = API.GetSession(sessionGuid);
+
+                        // Is there a status key?
+                        if (response.ContainsKey("Status"))
+                        {   
+                            // Yes, get the status.
+                            status = response["Status"];
+                        }
+
+                        // Is there a response key?
+                        if (response.ContainsKey("Response"))
+                        {
+                            // Yes, get the response.
+                            results = jsonSer.Deserialize<Dictionary<string, dynamic>>(response["Response"]);
+                        }
+
+                        // As long as we have something.
+                        if (status != -1 && results != null)
+                        {   
+                            // Get the installed and failed lists.
+                            ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
+                            ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
+
+                            // Give some feedback on it, only if it's changed.
+                            string print = string.Format("\t{0} module archives processed, {0}/{1} succeeded.", installed.Count + failed.Count, installed.Count);
+                            
+                            if (print != previousPrint)
+                            {
+                                WriteLine(print);
+                                previousPrint = print;
+                            }
+                        }
+
+                        // Is finished?
+                        if (status == 2)
+                        {
+                            break;
+                        }
+
+                        // Sleep.
+                        System.Threading.Thread.Sleep(interval);
+                    }
+                }
+                else
+                {
+                    // Get the installed and failed lists.
+                    ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
+                    ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
+
+                    // Give some feedback on it.
+                    WriteLine(string.Format("\t{0} module archives processed, {0}/{1} succeeded.", installed.Count + failed.Count, installed.Count));
+                    
                 }
 
-                // Output result
-                WriteLine(string.Format("{0}/{1} module archives installed successfully.", installed.Count, encryptedStreams.Count));
+                WriteLine(string.Format("Finished installation in {0} ms.", (DateTime.Now - installStartTime).TotalMilliseconds));
                 ReadLine();
-
-                foreach (KeyValuePair<string, Stream> keyValuePair in encryptedStreams)
-                {
-                    keyValuePair.Value.Dispose();
-                }
             }
             catch (Exception ex)
             {
                 // Output exception message and stack trace.
-                WriteLine(ex.Message);
-                WriteLine(ex.StackTrace);
+                WriteLine(string.Format("Exception caught at: {0}.", DateTime.Now.ToString()));
+                WriteException(ex);
+
                 ReadLine();
                 Environment.Exit((int)ExitCode.Error);
             }
+        }
+
+        private static void WriteException(Exception ex, int maxDepth = 10, int depth = 0)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+
+            if (depth < maxDepth && ex.InnerException != null)
+            {
+                depth++;
+                WriteException(ex.InnerException, maxDepth, depth);
+            }
+        }
+
+        private static void Write(string message)
+        {
+            if(IsSilent)
+            {
+                return;
+            }
+
+            Console.Write(message);
         }
 
         private static void WriteLine(string message = "")

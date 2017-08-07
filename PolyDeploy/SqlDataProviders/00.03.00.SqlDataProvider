@@ -7,22 +7,21 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
-/*** Cantarus_PolyDeploy v0.1.0                           ***/
+/*** Cantarus_PolyDeploy v0.3.0                           ***/
 /************************************************************/
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
+/*** Cantarus_PolyDeploy_Sessions TABLE ******************************************************************/
 /*********************************************************************************************************/
 
-IF NOT EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+IF NOT EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     BEGIN
-        CREATE TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]
+        CREATE TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]
         (
-            [APIUserID]     [INT] NOT NULL IDENTITY,
-            [Name]          [VARCHAR](64) NOT NULL UNIQUE,
-            [APIKey]        [VARCHAR](32) NOT NULL UNIQUE,
-            [EncryptionKey] [VARCHAR](32) NOT NULL UNIQUE
+            [SessionID] [INT] NOT NULL IDENTITY,
+            [Guid]      [VARCHAR](32) NOT NULL UNIQUE,
+            [LastUsed]  [DATETIME] NOT NULL
         )
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers] PRIMARY KEY CLUSTERED ([APIUserID])
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ADD CONSTRAINT [PK_{objectQualifier}Cantarus_PolyDeploy_Sessions] PRIMARY KEY CLUSTERED ([SessionID])
     END
 GO
