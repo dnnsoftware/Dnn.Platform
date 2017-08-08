@@ -18,7 +18,6 @@ export default function pagesReducer(state = {
             ...state.selectedPage
         };
         newSelectedPage[field] = value;
-        
         return newSelectedPage;
     };
 
@@ -52,7 +51,7 @@ export default function pagesReducer(state = {
         
         case ActionTypes.CHANGE_FIELD_VALUE:
             return { ...state,
-                selectedPage: changeField(action.field, action.value), 
+                selectedPage: changeField(action.field, action.value),
                 errors: {
                     ...(state.errors),
                     ...validateFields(action.field, action.value)

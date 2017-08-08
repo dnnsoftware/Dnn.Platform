@@ -122,7 +122,6 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
-        
     }
 
     componentWillUnmount() {
@@ -154,16 +153,22 @@ class App extends Component {
     onUpdatePage(input) {
         return new Promise((resolve) => {
             const update = (input && input.tabId) ? input : this.props.selectedPage;
+            const newList = null;
             this.props.onUpdatePage(update, (page) => {
                 this._traverse((item, list)=>{
-                    if(item.id == this.props.selectedPage.tabId){
+                    if(item.id === update.tabId){
                         item.name = page.name;
+                        item.parentId = page.parentId;
                         this.props.updatePageListStore(list);
                         resolve();
                     }
                 });
             });
         });
+    }
+
+    onChangeParentId(newParentId){
+        this.onChangePageField('parentId', newParentId);
     }
 
     onAddPage() {
@@ -278,12 +283,13 @@ class App extends Component {
     }
 
 
-    showCancelWithoutSavingDialogInEditMode() {
+    showCancelWithoutSavingDialogInEditMode(input) {
+        const id = input || this.props.selectedPage.TabId;
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(this.props.selectedPage.tabId).then((data)=>{
+                this.props.onLoadPage(id).then((data)=>{
                     this._traverse((item, list, updateStore)=>{
-                        if(item.id === this.props.selectedPage.tabId){
+                        if(item.id === id){
                             Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key]);
                             this.props.updatePageListStore(list); 
                         }
@@ -298,7 +304,7 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            this.props.onLoadPage(this.props.selectedPage.tabId);
+            this.props.onLoadPage(id);
         }
     }
 
@@ -498,10 +504,15 @@ class App extends Component {
     }
 
     onSelection(pageId) {
-        const { selectedPage } = this.props;
-        if (!selectedPage || selectedPage.tabId !== pageId) {
-            this.props.onLoadPage(pageId);
-        }
+        const { selectedPage, selectedPageDirty } = this.props;
+        const left = () => {
+            if (!selectedPage || selectedPage.tabId !== pageId) {
+                this.props.onLoadPage(pageId);
+            }
+        };
+        const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
+
+        (!selectedPageDirty) ? left() : right();
     }
 
     onChangePageField(key, value){
@@ -551,6 +562,7 @@ class App extends Component {
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={this.onChangePageField.bind(this)}
+                    onChangeParentId={this.onChangeParentId.bind(this)}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}

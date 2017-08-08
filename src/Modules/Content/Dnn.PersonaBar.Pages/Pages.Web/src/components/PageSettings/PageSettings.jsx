@@ -88,6 +88,7 @@ class PageSettings extends Component {
 
     onSelectParentPageId(parentPageId, parentPageName){
         this.setState({parentPageId, parentPageName});
+        this.props.onChangeParentId(parentPageId);
     }
 
     render() {
@@ -239,6 +240,7 @@ PageSettings.propTypes = {
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
+    onChangeParentId: PropTypes.func.isRequired,
     onPermissionsChanged: PropTypes.func.isRequired,
     onChangePageType: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
