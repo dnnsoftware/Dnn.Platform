@@ -67,7 +67,7 @@ class App extends Component {
          this.props.getPageList();
 
          
-        
+
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
@@ -104,8 +104,6 @@ class App extends Component {
 
     //Resolves tab being viewed if view params are present.
     resolveTabBeingViewed(viewParams) {
-        window.dnn.utility.closeSocialTasks();
-        window.dnn.utility.expandPersonaBarPage();
 
         if (!viewParams) {
             return;
@@ -133,6 +131,8 @@ class App extends Component {
 
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
+        window.dnn.utility.closeSocialTasks();
+        window.dnn.utility.expandPersonaBarPage();
     }
 
     notifyErrorIfNeeded(newProps) {
