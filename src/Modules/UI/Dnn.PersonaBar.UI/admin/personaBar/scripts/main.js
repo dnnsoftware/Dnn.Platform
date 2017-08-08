@@ -98,7 +98,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         }
         
         var menuViewModel = utility.buildMenuViewModel(config.menuStructure);
-        
+         var cachedPersonaBarPageWidth = 860;
+
         // define util -- very important
         var util = {
             sf: sf.init(config.siteRoot, config.tabId, config.antiForgeryToken),
@@ -106,14 +107,25 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             moment: moment,
             persistent: persistent.init(config, sf),
             inAnimation: inAnimation,
+
+            openSocialTasks: function openTaskWindow(){
+                 var taskWindow = $('.socialtasks');
+                 taskWindow.css({visibility:'visible'});
+            },
+
             closeSocialTasks: function closeTaskWindow() {
                  var taskWindow = $('.socialtasks')
-                 taskWindow.hide();
+                 taskWindow.css({visibility:'hidden'});
             },
 
             expandPersonaBarPage: function expandPersonaBar(){
                 var personaBarPage = $(".dnn-persona-bar-page")
-                personaBarPage.css({width:"1156px"});
+                personaBarPage.css({width:"1159px"});
+            },
+
+            contractPersonaBarPage: function contractPersonaBar(){
+                var personaBarPage = $('.dnn-persona-bar-page');
+                personaBarPage.css({width: cachedPersonaBarPageWidth+'px'});
             },
 
             closePersonaBar: function handleClosePersonarBar(callback, keepSelection) {
@@ -180,6 +192,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             },
             loadPanel: function handleLoadPanel(identifier, params) {
                 var savePersistentCallback;
+                this.openSocialTasks();
 
                 if (inAnimation) return;
 
@@ -918,7 +931,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     util.initCustomModules(callback);
                 }
         ],
-        function loadPanelFromPersistedSetting() {            
+        function loadPanelFromPersistedSetting() {
             var pageUrl = window.top.location.href.toLowerCase();
             if (pageUrl.indexOf("skinsrc=") > -1 || pageUrl.indexOf("containersrc=") > -1 || pageUrl.indexOf("dnnprintmode=") > -1) {
                 return;
