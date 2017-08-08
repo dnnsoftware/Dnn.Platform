@@ -64,7 +64,7 @@ class App extends Component {
         const viewParams = utils.getViewParams();
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
-         this.props.getPageList();
+        this.props.getPageList();
 
          
 
@@ -110,7 +110,7 @@ class App extends Component {
         }
         if (viewParams.pageId) {
             this.props.onLoadPage(viewParams.pageId);
- 
+
         }
         if (viewParams.viewTab) {
             this.selectPageSettingTab(getSelectedTabBeingViewed(viewParams.viewTab));
@@ -153,22 +153,67 @@ class App extends Component {
     onUpdatePage(input) {
         return new Promise((resolve) => {
             const update = (input && input.tabId) ? input : this.props.selectedPage;
-            const newList = null;
-            this.props.onUpdatePage(update, (page) => {
-                this._traverse((item, list)=>{
-                    if(item.id === update.tabId){
-                        item.name = page.name;
-                        item.parentId = page.parentId;
-                        this.props.updatePageListStore(list);
-                        resolve();
+            let newList = null;
+            let cachedItem = null;
+
+
+            const removeFromOldParent = () => {
+                this._traverse((item, list, updateStore) => {
+                    if(item.id == update.oldParentId){
+                        item.childListItems.forEach((child, index)=>{
+                            if(child.id === update.tabId){
+                                cachedItem = child;
+                                const arr1 = item.childListItems.slice(0, index);
+                                const arr2 = item.childListItems.slice(index+2);
+                                item.childListItems = [...arr1, ...arr2];
+                                updateStore(list);
+                            }
+                        });
                     }
                 });
+            };
+
+            const addToNewParent = () => {
+                this._traverse((item, list, updateStore)=>{
+                    if(item.id == update.parentId){
+                        cachedItem.parentId = item.id;
+
+                        switch(true){
+                            case item.childCount > 0 && !item.childListItems:
+                                this.props.getChildPageList(item.id).then((data) => {
+                                    item.isOpen=true;
+                                    item.childListItems = data;
+                                    updateStore(list);
+                                });
+                            break;
+                            case item.childCount == 0 && !item.childListItems:
+                                item.childCount++;
+                                item.childListItems=[];
+                                item.childListItems.push(cachedItem);
+                            break;
+                            case Array.isArray(item.childListItems) === true:
+                                 item.childCount++;
+                                 item.childListItems.push(cachedItem);
+
+                            break;
+                        }
+                        item.isOpen=true;
+                        updateStore(list);
+                    }
+
+                });
+            };
+
+
+            this.props.onUpdatePage(update, (page) => {
+                removeFromOldParent();
+                addToNewParent();
             });
         });
     }
 
     onChangeParentId(newParentId){
-        this.onChangePageField('parentId', newParentId);
+        this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
     onAddPage() {
@@ -687,6 +732,7 @@ class App extends Component {
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     pageList: PropTypes.array.isRequired,
+    getChildPageList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
@@ -759,6 +805,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
+        getChildPageList: PageActions.getChildPageList,
         updatePageListStore: PageActions.updatePageListStore,
         onCancelPage: PageActions.cancelPage,
         onCreatePage: PageActions.createPage,

@@ -61,13 +61,17 @@ const loadPage = function (dispatch, pageId) {
 };
 
 const pageActions = {
-    getPageList(){
-        return (dispatch) => PagesService.getPageList().then(pageList => {
+    getPageList(id){
+        return (dispatch) => PagesService.getPageList(id).then(pageList => {
             dispatch({
                 type:PageListActionTypes.SAVE,
                 data:{pageList}
             });
         });
+    },
+
+    getChildPageList(id){
+        return () => PagesService.getChildPageList(id);
     },
 
     updatePageListStore(pageList){
@@ -236,7 +240,7 @@ const pageActions = {
                     type:ActionTypes.SAVE_PAGE,
                     data:null
                 });
-                
+
                 callback(page);
 
             }).catch((error) => {
