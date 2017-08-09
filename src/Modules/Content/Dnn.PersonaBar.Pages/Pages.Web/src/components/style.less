@@ -6,6 +6,21 @@
         margin-top: 105px;
         background-color:#fff;
         border: 1px solid @alto;
+
+        .tree-container{
+            transition: all .5s;
+            opacity:1;
+            cursor: auto;
+        }
+
+        .disabled{
+            opacity:0.5;
+            .dnn-persona-bar-treeview{
+                cursor:not-allowed;
+                li{pointer-events:none;}
+            }
+        }
+
     }
 
     .empty-page-state {

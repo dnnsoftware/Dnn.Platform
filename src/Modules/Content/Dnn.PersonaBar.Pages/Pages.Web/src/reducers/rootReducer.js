@@ -10,8 +10,10 @@ import pageSeo from "./pageSeoReducer";
 import extensions from "./extensionsReducer";
 import template from "./templateReducer";
 import languages from "./languagesReducer";
+import pageList from "./pageListReducer";
 
 const rootReducer = combineReducers({
+    pageList,
     pagination,
     visiblePanel,
     pages,

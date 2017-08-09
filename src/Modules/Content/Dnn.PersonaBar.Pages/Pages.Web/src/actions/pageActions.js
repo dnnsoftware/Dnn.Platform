@@ -1,4 +1,5 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
+import PageListActionTypes from "../constants/actionTypes/pageListActionTypes";
 import responseStatus from "../constants/responseStatus";
 import PagesService from "../services/pageService";
 import utils from "../utils";
@@ -44,7 +45,7 @@ const loadPage = function (dispatch, pageId) {
         return;
     }
 
-    PagesService.getPage(pageId).then(response => {
+    return PagesService.getPage(pageId).then(response => {
         dispatch({
             type: ActionTypes.LOADED_PAGE,
             data: {
@@ -58,7 +59,26 @@ const loadPage = function (dispatch, pageId) {
         });
     });
 };
+
 const pageActions = {
+    getPageList(){
+        return (dispatch) => PagesService.getPageList().then(pageList => {
+            dispatch({
+                type:PageListActionTypes.SAVE,
+                data:{pageList}
+            });
+        });
+    },
+
+    updatePageListStore(pageList){
+        return (dispatch) => {
+            dispatch({
+                type: PageListActionTypes.SAVE,
+                data:{pageList}
+            });
+        };
+    },
+
     selectPageSettingTab(selectedPageSettingTab) {
         return (dispatch) => {
             dispatch({
@@ -67,9 +87,10 @@ const pageActions = {
             });
         };
     },
+
     loadPage(pageId) {
         return (dispatch) => {
-            loadPage(dispatch, pageId);
+            return loadPage(dispatch, pageId);
         };
     },
 
@@ -96,26 +117,14 @@ const pageActions = {
         };
     },
 
-    addPage() {
-        return (dispatch, getState) => {
-            const { pages } = getState();
-            const previousPage = pages.selectedPage;
+
+    getNewPage(){
+        return (dispatch) => PagesService.getNewPage().then((page) => {
             dispatch({
-                type: ActionTypes.LOAD_PAGE
+                type: ActionTypes.LOADED_PAGE,
+                data: {page}
             });
-
-            PagesService.getNewPage().then(page => {
-                if (previousPage && !securityService.isSuperUser()) {
-                    page.hierarchy = previousPage.name;
-                    page.permissions = cloneDeep(previousPage.permissions);
-                }
-
-                dispatch({
-                    type: ActionTypes.LOADED_PAGE,
-                    data: { page }
-                });
-            });
-        };
+        });
     },
 
     cancelPage() {
@@ -124,7 +133,6 @@ const pageActions = {
                 utils.getUtilities().closePersonaBar(function () {
                     loadPage(dispatch, utils.getCurrentPageId());
                 });
-
                 return;
             }
 
@@ -134,6 +142,7 @@ const pageActions = {
             });
         };
     },
+
     deletePage(page) {
         return (dispatch) => {
             dispatch({
@@ -223,7 +232,12 @@ const pageActions = {
                     return;
                 }
 
-                callback();
+                dispatch({
+                    type:ActionTypes.SAVE_PAGE,
+                    data:null
+                });
+                
+                callback(page);
 
             }).catch((error) => {
                 dispatch({
@@ -245,6 +259,7 @@ const pageActions = {
                 field: key,
                 value
             });
+
 
             if (key === "name" &&
                 pages.selectedPage.tabId === 0 &&

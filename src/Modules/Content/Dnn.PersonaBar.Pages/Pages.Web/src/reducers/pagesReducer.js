@@ -11,10 +11,12 @@ export default function pagesReducer(state = {
     selectedPageSettingTab: 0
 }, action) {
 
+
+
     const changeField = function changeField(field, value) {
         const newSelectedPage = {
             ...state.selectedPage
-        };  
+        };
         newSelectedPage[field] = value;
         
         return newSelectedPage;
@@ -84,7 +86,12 @@ export default function pagesReducer(state = {
                 editingSettingModuleId
             };
         }
-        
+        case ActionTypes.CANCEL_PAGE:
+            return {};
+
+        case ActionTypes.SAVE_PAGE:
+            return {...state, dirtyPage:false};
+
         case ActionTypes.CANCEL_EDITING_PAGE_MODULE: {
             const editingSettingModuleId = null;
             return { ...state,
