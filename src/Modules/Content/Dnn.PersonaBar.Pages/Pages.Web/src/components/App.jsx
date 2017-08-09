@@ -157,20 +157,40 @@ class App extends Component {
             let cachedItem = null;
 
             const removeFromOldParent = () => {
-                this._traverse((item, list, updateStore) => {
-                    if(item.id == update.oldParentId){
-                        item.childListItems.forEach((child, index)=>{
-                            if(child.id === update.tabId){
-                                cachedItem = child;
-                                const arr1 = item.childListItems.slice(0, index);
-                                const arr2 = item.childListItems.slice(index+2);
-                                item.childListItems = [...arr1, ...arr2];
-                                item.childCount--;
-                                updateStore(list);
-                            }
-                        });
-                    }
-                });
+
+               const left = () => {
+                   console.log("left");
+                    this._traverse((item, list, updateStore) => {
+                        if(item.id == update.oldParentId){
+                            item.childListItems.forEach((child, index)=>{
+                                if(child.id === update.tabId){
+                                    cachedItem = child;
+                                    const arr1 = item.childListItems.slice(0, index);
+                                    const arr2 = item.childListItems.slice(index+2);
+                                    item.childListItems = [...arr1, ...arr2];
+                                    item.childCount--;
+                                    updateStore(list);
+                                }
+                            });
+                        }
+                    });
+               };
+
+                const right = () => {
+                    console.log('in right')
+                    const {pageList} = this.props;
+                    pageList.forEach((item, index) => {
+                        if(item.id == update.tabId) {
+                            cachedItem = item;
+                            const arr1 = pageList.slice(0, index);
+                            const arr2 = pageList.slice(index+1);
+                            const newPageList = [...arr1, ...arr2];
+                            this.props.updatePageListStore(newPageList);
+                        }
+                    });
+                };
+
+                (update.oldParentId !== -1) ? left() : right();
             };
 
             const addToNewParent = () => {
@@ -205,6 +225,7 @@ class App extends Component {
             };
 
             this.props.onUpdatePage(update, (page) => {
+                console.log('does it get here')
                 removeFromOldParent();
                 addToNewParent();
                 resolve();
@@ -336,7 +357,7 @@ class App extends Component {
                     this._traverse((item, list, updateStore)=>{
                         if(item.id === id){
                             Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key]);
-                            this.props.updatePageListStore(list); 
+                            this.props.updatePageListStore(list);
                         }
                     });
                 });
