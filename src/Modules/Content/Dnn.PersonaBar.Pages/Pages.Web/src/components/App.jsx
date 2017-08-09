@@ -159,7 +159,6 @@ class App extends Component {
             const removeFromOldParent = () => {
 
                const left = () => {
-                   console.log("left");
                     this._traverse((item, list, updateStore) => {
                         if(item.id == update.oldParentId){
                             item.childListItems.forEach((child, index)=>{
@@ -177,7 +176,6 @@ class App extends Component {
                };
 
                 const right = () => {
-                    console.log('in right')
                     const {pageList} = this.props;
                     pageList.forEach((item, index) => {
                         if(item.id == update.tabId) {
@@ -198,6 +196,7 @@ class App extends Component {
                     if(item.id == update.parentId){
                         cachedItem.parentId = item.id;
 
+
                         switch(true){
                             case item.childCount > 0 && !item.childListItems:
                                 this.props.getChildPageList(item.id).then((data) => {
@@ -216,6 +215,8 @@ class App extends Component {
                                 item.childListItems.push(cachedItem);
                                 this.props.onLoadPage(cachedItem.id);
                             break;
+
+
                         }
                         item.isOpen=true;
                         updateStore(list);
@@ -225,9 +226,15 @@ class App extends Component {
             };
 
             this.props.onUpdatePage(update, (page) => {
-                console.log('does it get here')
                 removeFromOldParent();
                 addToNewParent();
+                this._traverse((item, list, updateStore) => {
+                    if(item.id == update.tabId){
+                        item.name = update.name;
+                        updateStore(list);
+                    }
+                });
+
                 resolve();
             });
         });
@@ -350,7 +357,8 @@ class App extends Component {
 
 
     showCancelWithoutSavingDialogInEditMode(input) {
-        const id = input || this.props.selectedPage.TabId;
+        const id = (input.hasOwnProperty('parentId')) ? input : this.props.selectedPage.tabId;
+        
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
                 this.props.onLoadPage(id).then((data)=>{
