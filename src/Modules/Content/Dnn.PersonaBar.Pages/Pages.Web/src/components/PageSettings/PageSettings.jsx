@@ -93,8 +93,8 @@ class PageSettings extends Component {
 
     render() {
         const {
-            selectedPage, 
-            selectedPageErrors, 
+            selectedPage,
+            selectedPageErrors,
             onChangeField, 
             onChangePageType, 
             onDeletePageModule, 
@@ -157,7 +157,7 @@ class PageSettings extends Component {
         if (isEditingExistingPage && selectedPage.pageType === "normal") {
             advancedTabs.unshift({
                 label: Localization.get("Modules"),
-                component: <div className="dnn-simple-tab-item">
+                component: <div className="dnn-simple-tab-item dnn-simple-tab-item-modules">
                                 <Modules 
                                     modules={selectedPage.modules}
                                     onDeleteModule={onDeletePageModule}
@@ -180,8 +180,8 @@ class PageSettings extends Component {
                             components={pageTypeSelectorComponents} />
                         <PageDetails
                             page={selectedPage}
-                            selectedParentPageName={this.state.parentPageName}
-                            selectedParentPageId={this.state.parentPageId}
+                            selectedParentPageName={this.props.selectedPage.hierarchy}
+                            selectedParentPageId={this.props.selectedPage.tabId}
                             onSelectParentPageId={this.onSelectParentPageId.bind(this)}
                             errors={selectedPageErrors}
                             onChangeField={onChangeField}
@@ -212,7 +212,7 @@ class PageSettings extends Component {
         if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
             headers.push(Localization.get("Advanced"));
             tabs.push(<div>
-                        <Tabs 
+                        <Tabs
                             tabHeaders={advancedTabs.map(tab => tab.label)}                        
                             type="secondary">
                             {advancedTabs.map(tab => tab.component)}

@@ -6,9 +6,6 @@ export default function  pageListReducer(state = { pageList:[] } , action) {
         case ActionTypes.SAVE:
             return {...state, pageList:JSON.parse(JSON.stringify(action.data.pageList))};
 
-        case ActionTypes.SAVE_CHILDREN:
-            console.log(action);
-            return state;
         default:
             return state;
     }

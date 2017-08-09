@@ -156,7 +156,6 @@ class App extends Component {
             let newList = null;
             let cachedItem = null;
 
-
             const removeFromOldParent = () => {
                 this._traverse((item, list, updateStore) => {
                     if(item.id == update.oldParentId){
@@ -166,6 +165,7 @@ class App extends Component {
                                 const arr1 = item.childListItems.slice(0, index);
                                 const arr2 = item.childListItems.slice(index+2);
                                 item.childListItems = [...arr1, ...arr2];
+                                item.childCount--;
                                 updateStore(list);
                             }
                         });
@@ -192,9 +192,9 @@ class App extends Component {
                                 item.childListItems.push(cachedItem);
                             break;
                             case Array.isArray(item.childListItems) === true:
-                                 item.childCount++;
-                                 item.childListItems.push(cachedItem);
-
+                                item.childCount++;
+                                item.childListItems.push(cachedItem);
+                                this.props.onLoadPage(cachedItem.id);
                             break;
                         }
                         item.isOpen=true;
@@ -204,10 +204,10 @@ class App extends Component {
                 });
             };
 
-
             this.props.onUpdatePage(update, (page) => {
                 removeFromOldParent();
                 addToNewParent();
+                resolve();
             });
         });
     }

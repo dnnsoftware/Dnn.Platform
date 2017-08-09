@@ -1,6 +1,5 @@
 const pageListActionTypes =  {
-    SAVE: "SAVE",
-    SAVE_CHILDREN: "SAVE_CHILDREN"
+    SAVE: "SAVE"
 };
 
 export default pageListActionTypes;
