@@ -192,10 +192,10 @@ class App extends Component {
             };
 
             const addToNewParent = () => {
+                
                 this._traverse((item, list, updateStore)=>{
                     if(item.id == update.parentId){
                         (cachedItem) ? cachedItem.parentId = item.id : null;
-
 
                         switch(true){
                             case item.childCount > 0 && !item.childListItems:
@@ -226,15 +226,20 @@ class App extends Component {
             };
 
             this.props.onUpdatePage(update, (page) => {
-                removeFromOldParent();
-                addToNewParent();
+                if(update.oldParentId){
+                    removeFromOldParent();
+                    addToNewParent();
+                }
+
                 this._traverse((item, list, updateStore) => {
                     if(item.id == update.tabId){
                         item.name = update.name;
+                        item.pageType = update.pageType;
                         updateStore(list);
                     }
                 });
 
+                this.props.onLoadPage(update.tabId);
                 resolve();
             });
         });
