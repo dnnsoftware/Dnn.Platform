@@ -89,13 +89,14 @@ class PageSettings extends Component {
     onSelectParentPageId(parentPageId, parentPageName){
         this.setState({parentPageId, parentPageName});
         this.props.onChangeParentId(parentPageId);
+        this.props.onChangeField("hierarchy", parentPageName);
     }
 
     render() {
         const {
             selectedPage,
             selectedPageErrors,
-            onChangeField, 
+            onChangeField,
             onChangePageType, 
             onDeletePageModule, 
             onEditingPageModule,
@@ -158,7 +159,7 @@ class PageSettings extends Component {
             advancedTabs.unshift({
                 label: Localization.get("Modules"),
                 component: <div className="dnn-simple-tab-item dnn-simple-tab-item-modules">
-                                <Modules 
+                                <Modules
                                     modules={selectedPage.modules}
                                     onDeleteModule={onDeletePageModule}
                                     onEditingModule={onEditingPageModule}
@@ -176,7 +177,7 @@ class PageSettings extends Component {
                 <div className="dnn-simple-tab-item">
                         <PageTypeSelector
                             page={selectedPage}
-                            onChangePageType={onChangePageType} 
+                            onChangePageType={onChangePageType}
                             components={pageTypeSelectorComponents} />
                         <PageDetails
                             page={selectedPage}

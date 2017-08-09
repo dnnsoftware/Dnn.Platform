@@ -157,8 +157,21 @@ class App extends Component {
             let cachedItem = null;
 
             const removeFromOldParent = () => {
+                const left = () => {
+                    const {pageList} = this.props;
+                    pageList.forEach((item, index) => {
+                        if(item.id == update.tabId) {
+                            cachedItem = item;
+                            const arr1 = pageList.slice(0, index);
+                            const arr2 = pageList.slice(index+1);
+                            const newPageList = [...arr1, ...arr2];
+                            this.props.updatePageListStore(newPageList);
+                        }
+                    });
+                };
 
-               const left = () => {
+
+               const right = () => {
                     this._traverse((item, list, updateStore) => {
                         if(item.id == update.oldParentId){
                             item.childListItems.forEach((child, index)=>{
@@ -175,26 +188,13 @@ class App extends Component {
                     });
                };
 
-                const right = () => {
-                    const {pageList} = this.props;
-                    pageList.forEach((item, index) => {
-                        if(item.id == update.tabId) {
-                            cachedItem = item;
-                            const arr1 = pageList.slice(0, index);
-                            const arr2 = pageList.slice(index+1);
-                            const newPageList = [...arr1, ...arr2];
-                            this.props.updatePageListStore(newPageList);
-                        }
-                    });
-                };
-
-                (update.oldParentId !== -1) ? left() : right();
+                (update.oldParentId == -1 || update.parentId == -1) ? left() : right();
             };
 
             const addToNewParent = () => {
                 this._traverse((item, list, updateStore)=>{
                     if(item.id == update.parentId){
-                        cachedItem.parentId = item.id;
+                        (cachedItem) ? cachedItem.parentId = item.id : null;
 
 
                         switch(true){
@@ -358,7 +358,7 @@ class App extends Component {
 
     showCancelWithoutSavingDialogInEditMode(input) {
         const id = (input.hasOwnProperty('parentId')) ? input : this.props.selectedPage.tabId;
-        
+
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
                 this.props.onLoadPage(id).then((data)=>{
