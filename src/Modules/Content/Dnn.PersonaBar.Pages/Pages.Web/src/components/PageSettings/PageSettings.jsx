@@ -203,7 +203,7 @@ class PageSettings extends Component {
                         {permissionFooter}
                     </div>);
             if (isLocalizationTabVisible) {
-                tabs.push(<div className="dnn-simple-tab-item">
+                tabs.push(<div className="dnn-simple-tab-item dnn-simple-tab-item-localization">
                             <PageLocalization
                                 page={selectedPage}
                             />
