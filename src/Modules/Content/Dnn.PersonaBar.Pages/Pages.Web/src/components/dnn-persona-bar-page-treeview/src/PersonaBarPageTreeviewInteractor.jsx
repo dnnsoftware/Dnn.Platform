@@ -120,25 +120,35 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragStart(e, item) {
-        const img = new Image();
-        e.dataTransfer.setDragImage(img, 0, 0);
 
-        const element = this.getListItemLI(item);
-        this.clonedElement = element.cloneNode(true);
-        this.clonedElement.id = "cloned";
-        this.clonedElement.style.transition = "all";
-        this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
 
-        document.body.appendChild(this.clonedElement);
+        const left = () => {
+            const img = new Image();
+            e.dataTransfer.setDragImage(img, 0, 0);
 
-        this.props._traverse((li, list, updateStore) => {
-            li.selected = false;
-            if (li.id === item.id) {
-                li.selected = true;
-                li.isOpen=false;
-                this.setState({ draggedItem: li, pageList: list, activePage: item }, ()=>updateStore(list));
-            }
-        });
+            const element = this.getListItemLI(item);
+            this.clonedElement = element.cloneNode(true);
+            this.clonedElement.id = "cloned";
+            this.clonedElement.style.transition = "all";
+            this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
+
+            document.body.appendChild(this.clonedElement);
+
+            this.props._traverse((li, list, updateStore) => {
+                li.selected = false;
+                if (li.id === item.id) {
+                    li.selected = true;
+                    li.isOpen=false;
+                    this.setState({ draggedItem: li, pageList: list, activePage: item }, ()=>updateStore(list));
+                }
+            });
+        };
+
+        const right = ()  => {
+            this.props.showCancelDialog(item.id);
+        };
+
+        (!this.props.selectedPageDirty) ? left() : right();
     }
 
     onDrag(e) {
@@ -477,6 +487,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 PersonaBarPageTreeviewInteractor.propTypes = {
     _traverse: PropTypes.func.isRequired,
+    showCancelDialog: PropTypes.func.showCancelDialog,
+    selectedPageDirty: PropTypes.bool.isRequired,
     activePage: PropTypes.object.isRequired,
     onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,

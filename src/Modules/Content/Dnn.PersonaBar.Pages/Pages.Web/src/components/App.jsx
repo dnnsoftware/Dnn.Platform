@@ -699,8 +699,10 @@ class App extends Component {
                                 <div className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                     <PersonaBarPageTreeviewInteractor
-                                        pageList = {this.props.pageList}
-                                        _traverse = {this._traverse.bind(this)}
+                                        pageList={this.props.pageList}
+                                        _traverse={this._traverse.bind(this)}
+                                        showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
+                                        selectedPageDirty={this.props.selectedPageDirty}
                                         activePage={this.props.selectedPage}
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}
