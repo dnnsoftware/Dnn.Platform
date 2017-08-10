@@ -164,8 +164,14 @@ const PageService = function () {
         return api.get("GetPageList", {searchKey:""});
     };
 
+    const getChildPageList = (id="") => {
+        const api = getOverridablePagesApi();
+        return api.get("GetPageList", {parentId:id});
+    };
+
     return {
         getPageList,
+        getChildPageList,
         getPage,
         savePage,
         deletePage,
@@ -182,6 +188,11 @@ const PageService = function () {
         movePage
     };
 };
+
+
+
+
+
 
 const pageService = PageService();
 export default pageService;

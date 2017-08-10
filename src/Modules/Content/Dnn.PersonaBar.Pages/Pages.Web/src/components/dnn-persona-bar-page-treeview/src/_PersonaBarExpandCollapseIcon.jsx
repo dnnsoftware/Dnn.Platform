@@ -6,16 +6,17 @@ import {CollapseTree, ExpandTree} from "dnn-svg-icons";
 export default class PersonaBarExpandCollapseIcon extends Component {
 
     render(){
-        const {isOpen} = this.props;
+        const {isOpen, item} = this.props;
         /*eslint-disable react/no-danger*/
         return(
             <div className="parent-expand-icon">
-                {isOpen ? <div dangerouslySetInnerHTML={{ __html: CollapseTree }} /> : <div dangerouslySetInnerHTML={{ __html: ExpandTree }} /> }
+                {isOpen ? <div id={`collapse-${item.name}`} className="treeview-parent-collapse-button"  dangerouslySetInnerHTML={{ __html: CollapseTree }} /> : <div id={`expand-${item.name}`} className="treeview-parent-expand-button" dangerouslySetInnerHTML={{ __html: ExpandTree }} /> }
             </div>
         );
     }
 }
 
 PersonaBarExpandCollapseIcon.propTypes = {
-    isOpen: PropTypes.bool.isRequired
+    isOpen: PropTypes.bool.isRequired,
+    item: PropTypes.object.isRequired
 };

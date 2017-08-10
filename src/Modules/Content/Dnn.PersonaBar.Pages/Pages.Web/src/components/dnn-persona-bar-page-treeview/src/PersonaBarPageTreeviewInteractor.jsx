@@ -12,7 +12,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         super();
         this.state = {
             rootLoaded: false,
-            isTreeviewExpanded: true
+            isTreeviewExpanded: true,
+            initialCollapse: true
         };
         this.origin = window.origin;
     }
@@ -23,6 +24,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentWillReceiveProps(newProps){
+        let setTreeViewExpanded = null;
         const {activePage} = newProps;
         const pageList = JSON.parse(JSON.stringify(newProps.pageList));
         this.setState({ pageList: pageList, rootLoaded: true });
@@ -37,6 +39,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             });
         }
 
+        if(!this.state.initialCollapse){
+            this.props._traverse((item) => {
+                if(item.isOpen){
+                    setTreeViewExpanded = true;
+                }
+            });
+
+            (setTreeViewExpanded) ? this.setState({isTreeviewExpanded:true}) : this.setState({isTreeviewExpanded:false});
+        }
     }
 
     init(){
@@ -95,10 +106,13 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     toggleParentCollapsedState(id) {
+        this.setState({initialCollapse:false});
+        let setTreeViewExpanded = null;
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id) ? item.isOpen = !item.isOpen : null;
             updateStore(listItem);
         });
+
     }
 
     onSelection(id) {
@@ -106,8 +120,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             (item.id === id && item.canViewPage) ? item.selected = true : item.selected = false;
              item.selected ?  this.props.onSelection(id) : null;
             updateStore(listItem);
-
-
         });
     }
 
@@ -120,25 +132,35 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragStart(e, item) {
-        const img = new Image();
-        e.dataTransfer.setDragImage(img, 0, 0);
 
-        const element = this.getListItemLI(item);
-        this.clonedElement = element.cloneNode(true);
-        this.clonedElement.id = "cloned";
-        this.clonedElement.style.transition = "all";
-        this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
 
-        document.body.appendChild(this.clonedElement);
+        const left = () => {
+            const img = new Image();
+            e.dataTransfer.setDragImage(img, 0, 0);
 
-        this.props._traverse((li, list, updateStore) => {
-            li.selected = false;
-            if (li.id === item.id) {
-                li.selected = true;
-                li.isOpen=false;
-                this.setState({ draggedItem: li, pageList: list, activePage: item }, ()=>updateStore(list));
-            }
-        });
+            const element = this.getListItemLI(item);
+            this.clonedElement = element.cloneNode(true);
+            this.clonedElement.id = "cloned";
+            this.clonedElement.style.transition = "all";
+            this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
+
+            document.body.appendChild(this.clonedElement);
+
+            this.props._traverse((li, list, updateStore) => {
+                li.selected = false;
+                if (li.id === item.id) {
+                    li.selected = true;
+                    li.isOpen=false;
+                    this.setState({ draggedItem: li, pageList: list, activePage: item }, ()=>updateStore(list));
+                }
+            });
+        };
+
+        const right = ()  => {
+            this.props.showCancelDialog(item.id);
+        };
+
+        (!this.props.selectedPageDirty) ? left() : right();
     }
 
     onDrag(e) {
@@ -200,11 +222,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             this.getPageInfo(activePage.id)
                 .then((data) => {
                     let activePage = Object.assign({}, this.state.activePage);
+                    activePage.oldParentId = activePage.parentId;
                     activePage.parentId = item.id;
                     return this.props.saveDropState(activePage);
                 })
                 .then(this.getPageInfo.bind(this, activePage.id))
-                .then(() => this.setState({ activePage: activePage, droppedItem: item }, () => this.updateTree()));
+                .then(() => this.setState({ activePage: activePage, droppedItem: item } ));
         };
 
         const right = () => null;
@@ -367,7 +390,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 });
                 this.setState({ pageList }, () => {
                     runUpdateStore(pageList);
-                    rez();              
+                    rez();
                 });
             });
 
@@ -377,102 +400,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    updateTree() {
-        const newParent = this.state.droppedItem;
-        const moveChild = this.state.draggedItem;
-        let runUpdateStore = null;
-        const condition = (newParent.id != moveChild.parentId);
-
-        const popMoveChildItem = () => {
-            return new Promise((resolve, reject) => {
-                let update = null;
-                this.props._traverse((item, list, updateStore) => {
-                    runUpdateStore = updateStore;
-                    let cachedItemIndex;
-                    let cachedItemIndexParent;
-
-                    const left = () => {
-                        item.childListItems.filter((data, index) => {
-                            if (data.id === moveChild.id) {
-                                cachedItemIndex = index;
-                            }
-                        });
-                        const arr1 = item.childListItems.slice(0, cachedItemIndex);
-                        const arr2 = item.childListItems.slice(cachedItemIndex + 1);
-                        item.childListItems = [...arr1, ...arr2];
-                        item.childCount--;
-                        update = list;
-                    };
-
-                    const right = () => {
-                        let rootList = list.concat();
-                        rootList.filter((item, index) => {
-                            if (item.id === moveChild.id) {
-                                cachedItemIndex = index;
-                                const arr1 = rootList.slice(0, cachedItemIndex);
-                                const arr2 = rootList.slice(cachedItemIndex + 1);
-                                rootList = [...arr1, ...arr2];
-                                update = rootList;
-
-                            }
-                        });
-                    };
-
-                    switch (true) {
-                        case item.id === moveChild.parentId:
-                            left();
-                            return;
-                        case moveChild.parentId === -1:
-                            right();
-                            return;
-                        default:
-
-                    }
-
-                });
-
-                this.setState({ pageList: update }, () => {
-                    runUpdateStore(update);
-                    resolve();
-                });
-
-            });
-        };
-
-        const insertMoveChild = () => {
-            this.props._traverse((item, list, updateStore) => {
-                const left = () => {
-                    moveChild.parentId = item.id;
-                    item.childCount++;
-                    item.childListItems = (Array.isArray(item.childListItems)) ? item.childListItems : [];
-                    item.childListItems.push(moveChild);
-                    this.setState({ pageList: list }, ()=>updateStore(list));
-                };
-                const right = () => {
-                    this.getChildListItems(item.id)
-                        .then(() => {
-
-                            if (item.id === newParent.id) {
-                                moveChild.parentId = item.id;
-                                item.isOpen = true;
-                                item.childCount++;
-                                item.childListItems.push(moveChild);
-                                this.setState({ pageList: list }, ()=>updateStore(list));
-                            }
-
-                        });
-                };
-
-                if (item.id === newParent.id) {
-                    (item.childCount === 0) ? left() : right();
-                }
-
-            });
-        };
-
-        popMoveChildItem().then(() => insertMoveChild());
-
-    }
 
     getChildListItems(id) {
         return new Promise((resolve, reject) => {
@@ -515,11 +442,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
         this.props._traverse((item, list, updateStore) => {
             if (item.hasOwnProperty("childListItems") && item.childListItems.length > 0) {
-                item.isOpen = !item.isOpen;
+                item.isOpen = (isTreeviewExpanded) ? false : true;
                 updateStore(list);
+                this.setState({isTreeviewExpanded:!this.state.isTreeviewExpanded});
             }
         });
-        this.setState({isTreeviewExpanded:!this.state.isTreeviewExpanded});
+
     }
 
 
@@ -552,7 +480,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_collapseExpand() {
         return (
-            <div onClick={this.toggleExpandAll.bind(this)} className="collapse-expand">
+            <div onClick={this.toggleExpandAll.bind(this)} className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"}>
                 [{this.state.isTreeviewExpanded ? "COLLAPSE" : "EXPAND"}]
             </div>
         );
@@ -572,6 +500,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 PersonaBarPageTreeviewInteractor.propTypes = {
     _traverse: PropTypes.func.isRequired,
+    showCancelDialog: PropTypes.func.showCancelDialog,
+    selectedPageDirty: PropTypes.bool.isRequired,
     activePage: PropTypes.object.isRequired,
     onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,

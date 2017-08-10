@@ -10,7 +10,6 @@ import styles from "./style.less";
 import Tags from "dnn-tags";
 import Label from "dnn-label";
 import PagePicker from "dnn-page-picker";
-// import PagePicker from "./PagePicker/src/PagePicker";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {
@@ -57,8 +56,8 @@ class PageDetails extends Component {
          let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
          const sf = Utils.getServiceFramework();
 
-         const defaultLabel = this.props.selectedParentPageName || page.hierarchy || Localization.get("NoneSpecified");
-         const selectedTabId = this.props.selectedParentPageId  || page.parentId|| -1;
+         const defaultLabel =   page.hierarchy || Localization.get("NoneSpecified");
+         const selectedTabId =  page.parentId || -1;
 
 
         return (

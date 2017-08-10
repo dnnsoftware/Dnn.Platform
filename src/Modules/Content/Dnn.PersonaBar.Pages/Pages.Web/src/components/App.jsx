@@ -64,7 +64,7 @@ class App extends Component {
         const viewParams = utils.getViewParams();
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
-         this.props.getPageList();
+        this.props.getPageList();
 
          
 
@@ -110,7 +110,7 @@ class App extends Component {
         }
         if (viewParams.pageId) {
             this.props.onLoadPage(viewParams.pageId);
- 
+
         }
         if (viewParams.viewTab) {
             this.selectPageSettingTab(getSelectedTabBeingViewed(viewParams.viewTab));
@@ -122,7 +122,6 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
-        
     }
 
     componentWillUnmount() {
@@ -154,16 +153,100 @@ class App extends Component {
     onUpdatePage(input) {
         return new Promise((resolve) => {
             const update = (input && input.tabId) ? input : this.props.selectedPage;
+            let newList = null;
+            let cachedItem = null;
+
+            const removeFromOldParent = () => {
+                const left = () => {
+                    const {pageList} = this.props;
+                    pageList.forEach((item, index) => {
+                        if(item.id == update.tabId) {
+                            cachedItem = item;
+                            const arr1 = pageList.slice(0, index);
+                            const arr2 = pageList.slice(index+1);
+                            const newPageList = [...arr1, ...arr2];
+                            this.props.updatePageListStore(newPageList);
+                        }
+                    });
+                };
+
+
+               const right = () => {
+                    this._traverse((item, list, updateStore) => {
+                        if(item.id == update.oldParentId){
+                            item.childListItems.forEach((child, index)=>{
+                                if(child.id === update.tabId){
+                                    cachedItem = child;
+                                    const arr1 = item.childListItems.slice(0, index);
+                                    const arr2 = item.childListItems.slice(index+2);
+                                    item.childListItems = [...arr1, ...arr2];
+                                    item.childCount--;
+                                    updateStore(list);
+                                }
+                            });
+                        }
+                    });
+               };
+
+                (update.oldParentId == -1 || update.parentId == -1) ? left() : right();
+            };
+
+            const addToNewParent = () => {
+
+                this._traverse((item, list, updateStore)=>{
+                    if(item.id == update.parentId){
+                        (cachedItem) ? cachedItem.parentId = item.id : null;
+
+                        switch(true){
+                            case item.childCount > 0 && !item.childListItems:
+                                this.props.getChildPageList(item.id).then((data) => {
+                                    item.isOpen=true;
+                                    item.childListItems = data;
+                                    updateStore(list);
+                                });
+                            break;
+                            case item.childCount == 0 && !item.childListItems:
+                                item.childCount++;
+                                item.childListItems=[];
+                                item.childListItems.push(cachedItem);
+                            break;
+                            case Array.isArray(item.childListItems) === true:
+                                item.childCount++;
+                                item.childListItems.push(cachedItem);
+                                this.props.onLoadPage(cachedItem.id);
+                            break;
+
+
+                        }
+                        item.isOpen=true;
+                        updateStore(list);
+                    }
+
+                });
+            };
+
             this.props.onUpdatePage(update, (page) => {
-                this._traverse((item, list)=>{
-                    if(item.id == this.props.selectedPage.tabId){
-                        item.name = page.name;
-                        this.props.updatePageListStore(list);
-                        resolve();
+                if(update.oldParentId){
+                    removeFromOldParent();
+                    addToNewParent();
+                }
+
+                this._traverse((item, list, updateStore) => {
+                    if(item.id == update.tabId){
+                        item.name = update.name;
+                        item.pageType = update.pageType;
+                        updateStore(list);
                     }
                 });
+
+                this.props.onLoadPage(update.tabId);
+                resolve();
             });
         });
+    }
+
+    onChangeParentId(newParentId){
+        this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
     onAddPage() {
@@ -278,14 +361,16 @@ class App extends Component {
     }
 
 
-    showCancelWithoutSavingDialogInEditMode() {
+    showCancelWithoutSavingDialogInEditMode(input) {
+        const id = (input.hasOwnProperty('parentId')) ? input : this.props.selectedPage.tabId;
+
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(this.props.selectedPage.tabId).then((data)=>{
+                this.props.onLoadPage(id).then((data)=>{
                     this._traverse((item, list, updateStore)=>{
-                        if(item.id === this.props.selectedPage.tabId){
+                        if(item.id === id){
                             Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key]);
-                            this.props.updatePageListStore(list); 
+                            this.props.updatePageListStore(list);
                         }
                     });
                 });
@@ -298,7 +383,7 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            this.props.onLoadPage(this.props.selectedPage.tabId);
+            this.props.onLoadPage(id);
         }
     }
 
@@ -498,10 +583,15 @@ class App extends Component {
     }
 
     onSelection(pageId) {
-        const { selectedPage } = this.props;
-        if (!selectedPage || selectedPage.tabId !== pageId) {
-            this.props.onLoadPage(pageId);
-        }
+        const { selectedPage, selectedPageDirty } = this.props;
+        const left = () => {
+            if (!selectedPage || selectedPage.tabId !== pageId) {
+                this.props.onLoadPage(pageId);
+            }
+        };
+        const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
+
+        (!selectedPageDirty) ? left() : right();
     }
 
     onChangePageField(key, value){
@@ -551,6 +641,7 @@ class App extends Component {
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={this.onChangePageField.bind(this)}
+                    onChangeParentId={this.onChangeParentId.bind(this)}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType.bind(this)}
                     onDeletePageModule={props.onDeletePageModule}
@@ -642,8 +733,10 @@ class App extends Component {
                                 <div className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                     <PersonaBarPageTreeviewInteractor
-                                        pageList = {this.props.pageList}
-                                        _traverse = {this._traverse.bind(this)}
+                                        pageList={this.props.pageList}
+                                        _traverse={this._traverse.bind(this)}
+                                        showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
+                                        selectedPageDirty={this.props.selectedPageDirty}
                                         activePage={this.props.selectedPage}
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}
@@ -675,6 +768,7 @@ class App extends Component {
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     pageList: PropTypes.array.isRequired,
+    getChildPageList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
@@ -747,6 +841,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
+        getChildPageList: PageActions.getChildPageList,
         updatePageListStore: PageActions.updatePageListStore,
         onCancelPage: PageActions.cancelPage,
         onCreatePage: PageActions.createPage,

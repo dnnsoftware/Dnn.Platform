@@ -88,13 +88,15 @@ class PageSettings extends Component {
 
     onSelectParentPageId(parentPageId, parentPageName){
         this.setState({parentPageId, parentPageName});
+        this.props.onChangeParentId(parentPageId);
+        this.props.onChangeField("hierarchy", parentPageName);
     }
 
     render() {
         const {
-            selectedPage, 
-            selectedPageErrors, 
-            onChangeField, 
+            selectedPage,
+            selectedPageErrors,
+            onChangeField,
             onChangePageType, 
             onDeletePageModule, 
             onEditingPageModule,
@@ -156,8 +158,8 @@ class PageSettings extends Component {
         if (isEditingExistingPage && selectedPage.pageType === "normal") {
             advancedTabs.unshift({
                 label: Localization.get("Modules"),
-                component: <div className="dnn-simple-tab-item">
-                                <Modules 
+                component: <div className="dnn-simple-tab-item dnn-simple-tab-item-modules">
+                                <Modules
                                     modules={selectedPage.modules}
                                     onDeleteModule={onDeletePageModule}
                                     onEditingModule={onEditingPageModule}
@@ -175,12 +177,12 @@ class PageSettings extends Component {
                 <div className="dnn-simple-tab-item">
                         <PageTypeSelector
                             page={selectedPage}
-                            onChangePageType={onChangePageType} 
+                            onChangePageType={onChangePageType}
                             components={pageTypeSelectorComponents} />
                         <PageDetails
                             page={selectedPage}
-                            selectedParentPageName={this.state.parentPageName}
-                            selectedParentPageId={this.state.parentPageId}
+                            selectedParentPageName={this.props.selectedPage.hierarchy}
+                            selectedParentPageId={this.props.selectedPage.tabId}
                             onSelectParentPageId={this.onSelectParentPageId.bind(this)}
                             errors={selectedPageErrors}
                             onChangeField={onChangeField}
@@ -201,7 +203,7 @@ class PageSettings extends Component {
                         {permissionFooter}
                     </div>);
             if (isLocalizationTabVisible) {
-                tabs.push(<div className="dnn-simple-tab-item">
+                tabs.push(<div className="dnn-simple-tab-item dnn-simple-tab-item-localization">
                             <PageLocalization
                                 page={selectedPage}
                             />
@@ -211,7 +213,7 @@ class PageSettings extends Component {
         if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
             headers.push(Localization.get("Advanced"));
             tabs.push(<div>
-                        <Tabs 
+                        <Tabs
                             tabHeaders={advancedTabs.map(tab => tab.label)}                        
                             type="secondary">
                             {advancedTabs.map(tab => tab.component)}
@@ -239,6 +241,7 @@ PageSettings.propTypes = {
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
+    onChangeParentId: PropTypes.func.isRequired,
     onPermissionsChanged: PropTypes.func.isRequired,
     onChangePageType: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,

@@ -66,7 +66,7 @@ export class PersonaBarPageTreeview extends Component {
 
     render_parentExpandIcon(item){
         return (
-            <PersonaBarExpandCollapseIcon isOpen={item.isOpen} />
+            <PersonaBarExpandCollapseIcon isOpen={item.isOpen} item={item}/>
         );
     }
 
