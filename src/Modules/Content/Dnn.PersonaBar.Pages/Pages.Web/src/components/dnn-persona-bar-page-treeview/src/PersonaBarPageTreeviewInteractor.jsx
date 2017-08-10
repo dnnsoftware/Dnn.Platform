@@ -24,7 +24,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        console.log('are you running')
         let setTreeViewExpanded = null;
         const {activePage} = newProps;
         const pageList = JSON.parse(JSON.stringify(newProps.pageList));
@@ -107,7 +106,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     toggleParentCollapsedState(id) {
-        this.setState({initialCollapse:false})
+        this.setState({initialCollapse:false});
         let setTreeViewExpanded = null;
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id) ? item.isOpen = !item.isOpen : null;

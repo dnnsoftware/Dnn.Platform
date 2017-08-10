@@ -192,7 +192,7 @@ class App extends Component {
             };
 
             const addToNewParent = () => {
-                
+
                 this._traverse((item, list, updateStore)=>{
                     if(item.id == update.parentId){
                         (cachedItem) ? cachedItem.parentId = item.id : null;
