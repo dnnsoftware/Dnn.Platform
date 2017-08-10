@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\APIUserController.cs" />
-    <Compile Include="Components\CIDeploy.cs" />
+    <Compile Include="Components\RemoteDeployment.cs" />
     <Compile Include="Components\Deployment.cs" />
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\InstallJob.cs" />
@@ -153,10 +153,10 @@
     <Compile Include="PolyDeployModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebAPI\APIAuthentication.cs" />
+    <Compile Include="WebAPI\ActionFilters\APIAuthentication.cs" />
+    <Compile Include="WebAPI\ActionFilters\InWhitelist.cs" />
     <Compile Include="WebAPI\APIUsersController.cs" />
     <Compile Include="WebAPI\CIController.cs" />
-    <Compile Include="WebAPI\InWhitelist.cs" />
     <Compile Include="WebAPI\Routes.cs" />
     <Compile Include="WebAPI\WhitelistController.cs" />
   </ItemGroup>

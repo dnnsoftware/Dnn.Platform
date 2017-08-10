@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace Cantarus.Modules.PolyDeploy.WebAPI
+namespace Cantarus.Modules.PolyDeploy.WebAPI.ActionFilters
 {
     public class APIAuthentication : ActionFilterAttribute
     {
