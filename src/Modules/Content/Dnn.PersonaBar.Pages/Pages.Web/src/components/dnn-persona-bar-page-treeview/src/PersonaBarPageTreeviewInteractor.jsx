@@ -157,7 +157,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
     onDragStart(e, item) {
-        e.dataTransfer.effectAllowed="move";
+
 
         this._fadeOutTooltips();
 
@@ -242,7 +242,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     onDrop(item, e) {
         this._fadeInTooltips();
         this.removeClone();
-        e.dataTransfer.dropEffect="move";
+
 
         const left = () => {
             let activePage = Object.assign({}, this.state.activePage);
@@ -271,7 +271,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         (item.id !== this.state.draggedItem.id) ? left() : right();
     }
 
-    onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
+    onMovePage({e, Action, PageId, ParentId, RelatedPageId }) {
         const { onMovePage } = this.props;
 
         onMovePage({ Action, PageId, ParentId, RelatedPageId })

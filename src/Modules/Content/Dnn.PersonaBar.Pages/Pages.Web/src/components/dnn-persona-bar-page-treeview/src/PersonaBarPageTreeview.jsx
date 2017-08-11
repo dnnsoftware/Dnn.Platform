@@ -88,6 +88,11 @@ export class PersonaBarPageTreeview extends Component {
             (direction==="before") ? elm.style.borderBottom="2px solid blue" : elm.style.borderTop="2px solid blue";
         };
 
+        const onDragLeave = (item, direction) => {
+            const elm = document.getElementById(`dropzone-${item.name}-${item.id}-${direction}`);
+            (direction==="before") ? elm.style.borderBottom="2px solid transparent" : elm.style.borderTop="2px solid transparent";
+        };
+
         if(item.onDragOverState) {
             return (
                 <div
@@ -95,8 +100,10 @@ export class PersonaBarPageTreeview extends Component {
                     className={(item.id !== draggedItem.id ) ? "dropZoneArea" : "" }
                     style={(item.id === draggedItem.id) ? {display:"none"} : {}}
                     draggable="false"
-                    onDragOver={(e)=>onDragOver(item)}
-                    onDrop={()=>onMovePage({Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})} >
+                    onDragOver={(e)=>onDragOver(item, direction)}
+                    onDragLeave={()=>onDragLeave(item, direction)}
+                    onDragEnd={()=>onDragLeave(item, direction)}
+                    onDrop={(e)=>onMovePage({ e:e,  Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})} >
 
                     +
 
