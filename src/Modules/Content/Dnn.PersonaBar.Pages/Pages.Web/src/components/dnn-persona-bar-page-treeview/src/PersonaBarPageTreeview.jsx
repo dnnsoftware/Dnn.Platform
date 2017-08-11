@@ -19,13 +19,13 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     trimName(item){
-        // let maxLength = 20;
-        // let {name, tabpath} = item;
-        // let newLength = tabpath.split(/\//).length*2+1;
-        // newLength--;
-        // let depth = ( newLength < 20) ?  newLength: 1;
-        //return (item.name.length > maxLength-depth) ? `${item.name.slice(0,maxLength-depth)}...` : item.name;
-         return item.name;
+        let maxLength = 15;
+        let {name, tabpath} = item;
+        let newLength = tabpath.split(/\//).length*2+1;
+        newLength--;
+        let depth = ( newLength < maxLength) ?  newLength: 1;
+        return (item.name.length > maxLength-depth) ? `${item.name.slice(0,maxLength-depth)}...` : item.name;
+
     }
 
     render_tree(childListItems){
@@ -118,7 +118,7 @@ export class PersonaBarPageTreeview extends Component {
                             onDragStart={(e)=>{ onDragStart(e, item); }}
                             onDragEnd={()=>{onDragEnd(item); }}
                          >
-                            
+
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected}/>
                             <span
                                 className={`item-name`}
