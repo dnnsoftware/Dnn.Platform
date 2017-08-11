@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+import Scrollbars from "react-custom-scrollbars";
 import { PersonaBarPageTreeview } from "./PersonaBarPageTreeview";
+import { PersonaBarPageTreeMenu} from "./PersonaBarPageTreeMenu";
+import { PersonaBarPageTreeParentExpand} from "./PersonaBarPageTreeParentExpand";
+
 import { PropTypes } from "prop-types";
 import Promise from "promise";
 import GridCell from "dnn-grid-cell";
@@ -478,6 +482,28 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         );
     }
 
+    render_treemenu() {
+        return (
+            <span className="dnn-persona-bar-treeview-ul">
+                {this.state.rootLoaded ?
+                    <PersonaBarPageTreeMenu listItems={this.state.pageList} />
+
+                    : null}
+            </span>
+        );
+    }
+
+    render_tree_parent_expand() {
+        return (
+            <span className="dnn-persona-bar-treeview-ul">
+                {this.state.rootLoaded ?
+                    <PersonaBarPageTreeParentExpand listItems={this.state.pageList}  getChildListItems={this.getChildListItems.bind(this)}/>
+
+                    : null}
+            </span>
+        );
+    }
+
     render_collapseExpand() {
         return (
             <div onClick={this.toggleExpandAll.bind(this)} className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"}>
@@ -490,9 +516,25 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
         return (
             <GridCell columnSize={30} className="dnn-persona-bar-treeview">
-                {this.render_collapseExpand()}
-                {this.render_treeview()}
-
+                 {this.render_collapseExpand()}
+                <GridCell columnSize={15}>
+                    <div className="dnn-persona-bar-treeview-menu">
+                         {this.render_tree_parent_expand()}
+                    </div>
+                </GridCell>
+                <GridCell columnSize={55}>
+                    <Scrollbars className="scrollArea content-horizontal"
+                        autoHeight
+                        autoHeightMin={0}
+                        autoHeightMax={9999}>
+                            {this.render_treeview()}
+                    </Scrollbars>
+                </GridCell>
+                <GridCell columnSize={30}>
+                    <div className="dnn-persona-bar-treeview-menu" style={{float:"right"}}>
+                         {this.render_treemenu()}
+                    </div>
+                </GridCell>
             </GridCell>
         );
     }
@@ -509,3 +551,5 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     saveDropState: PropTypes.func.isRequired
 
 };
+
+// <PersonaBarPageTreeMenu listItems={this.state.pageList} />

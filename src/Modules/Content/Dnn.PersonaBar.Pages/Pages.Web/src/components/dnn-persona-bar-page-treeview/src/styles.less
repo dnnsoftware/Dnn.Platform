@@ -1,9 +1,56 @@
 @import "~dnn-global-styles/index";
 
+.dnn-persona-bar-treeview-menu {
+    padding:0;
+
+    .parent-expand {
+        margin-left:10px;
+       .list-item-menu {
+           text-align:left;
+       }
+
+       .treeview-parent-expand-button,  .treeview-parent-collapse-button{
+           margin-top:-2px;
+       }
+
+    }
+
+    .dnn-persona-bar-treeview-ul{
+        margin-left:0px;
+        padding:0;
+
+    }
+    .list-item-menu{
+        width:40px;
+        text-align:right;
+        .draft-pencil {
+            margin-left:3px;
+            width:20px;
+            height:20px;
+            display:inline-block;
+            svg:hover{
+                fill:@alto;
+            }
+        }
+
+    }
+
+    .tree-menu-ul ul {
+        padding:0;
+    }
+
+    .selection-arrow{
+        top: 5px;
+    }
+
+
+}
+
 .dnn-persona-bar-treeview {
     font-family: inherit;
     cursor: pointer;
     padding: 15px;
+
 
     .collapse-expand {
         font-size: 12px;
@@ -64,8 +111,9 @@
     .selection-arrow {
         display:inline-block;
         position:relative;
+        z-index:1000;
         top:2px;
-        left:30px;
+        left:5px;
         font-size:18px;
         width:20px;
         font-weight:bold;
@@ -92,17 +140,19 @@
 }
 
 .dnn-persona-bar-treeview-ul {
-
+    span{
+        padding:0;
+        margin:0;
+    }
     ul{
         margin-left:20px;
         padding:0;
     }
     li {
-        width:100%;
-        padding: 2px;
+        width:150px;
         list-style:none;
-        padding:0;
-
+        background-color: powderblue;
+        border: 1px solid orange;
     }
 
     .collapse-expand {
@@ -123,6 +173,7 @@
     .dropZoneInactive {
         transition: all .75s;
         margin: 0;
+        padding:0;
         height:inherit;
 
     }
@@ -133,6 +184,7 @@
         background-color:@curiousBlue;
         color:#fff;
     }
+
 
 }
 
