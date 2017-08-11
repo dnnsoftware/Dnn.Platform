@@ -1,0 +1,20 @@
+{
+  "name": "poly-deploy",
+  "version": "0.4.0",
+  "main": "app.js",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.6.5",
+    "angular-ui-router": "^0.2.15"
+  },
+  "devDependencies": {
+    "bluebird": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-less": "^3.3.2",
+    "gulp-minify": "^1.0.0"
+  }
+}

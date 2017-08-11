@@ -41,12 +41,21 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Angular|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=7.0.0.1586, Culture=neutral, processorArchitecture=MSIL">
@@ -168,7 +177,11 @@
     <None Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Angular\src\app.js" />
+    <Content Include="Angular\src\bundle.js" />
+    <Content Include="gulpfile.js" />
     <Content Include="packages.config" />
+    <Content Include="package.json" />
     <None Include="PolyDeploy.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -191,6 +204,13 @@
       <Project>{ab5a3320-f260-42ee-8f19-ccf7546ca511}</Project>
       <Name>Encryption</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Angular\dist\" />
+    <Folder Include="Angular\src\controllers\" />
+    <Folder Include="Angular\src\directives\" />
+    <Folder Include="Angular\src\services\" />
+    <Folder Include="Angular\src\templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -215,4 +235,10 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(MSBuildProjectDirectory)\BuildScripts\ModulePackage.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>gulp pre-msbuild-$(ConfigurationName)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>gulp post-msbuild-$(ConfigurationName)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
