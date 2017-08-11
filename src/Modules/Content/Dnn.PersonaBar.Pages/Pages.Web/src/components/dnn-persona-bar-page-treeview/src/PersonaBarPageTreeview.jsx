@@ -83,13 +83,19 @@ export class PersonaBarPageTreeview extends Component {
 
     render_dropZone(direction, item) {
         const {onMovePage, draggedItem, dragOverItem} = this.props;
+        const onDragOver = (item, direction) => {
+            const elm = document.getElementById(`dropzone-${item.name}-${item.id}-${direction}`);
+            (direction==="before") ? elm.style.borderBottom="2px solid blue" : elm.style.borderTop="2px solid blue";
+        };
+
         if(item.onDragOverState) {
             return (
                 <div
+                    id={`dropzone-${item.name}-${item.id}-${direction}`}
                     className={(item.id !== draggedItem.id ) ? "dropZoneArea" : "" }
                     style={(item.id === draggedItem.id) ? {display:"none"} : {}}
                     draggable="false"
-                    onDragOver={(e)=>{e.preventDefault();}}
+                    onDragOver={(e)=>onDragOver(item)}
                     onDrop={()=>onMovePage({Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})} >
 
                     +
@@ -127,7 +133,7 @@ export class PersonaBarPageTreeview extends Component {
                             className={(item.selected) ? "list-item-highlight" : null}
                             style={{height:"28px"}}
                             draggable="true"
-                            onDrop={(e)=>{ onDrop(item); }}
+                            onDrop={(e)=>{ onDrop(item, e); }}
                             onDrag={(e)=> {onDrag(e); }}
                             onDragOver={(e)=>{ onDragOver(e, item); }}
                             onDragStart={(e)=>{ onDragStart(e, item); }}

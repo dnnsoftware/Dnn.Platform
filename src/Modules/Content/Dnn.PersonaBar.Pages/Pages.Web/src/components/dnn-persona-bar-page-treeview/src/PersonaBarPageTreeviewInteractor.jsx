@@ -157,6 +157,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
     onDragStart(e, item) {
+        e.dataTransfer.effectAllowed="move";
 
         this._fadeOutTooltips();
 
@@ -167,7 +168,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             const element = this.getListItemLI(item);
             this.clonedElement = element.cloneNode(true);
             this.clonedElement.id = "cloned";
-            this.clonedElement.style.transition = "all";
+            this.clonedElement.style.transition = "all .15s";
+            this.clonedElement.style.top = `${e.clientY}px`;
+            this.clonedElement.style.left = `${e.clientX}px`;
             this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
 
             document.body.appendChild(this.clonedElement);
@@ -193,6 +196,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const elm = this.clonedElement;
         elm.style.top = `${e.clientY}px`;
         elm.style.left = `${e.clientX - 30}px`;
+        elm.style.transform = "rotate('5deg')";
     }
 
     onDragEnd(item) {
@@ -221,6 +225,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragOver(e, item) {
+
         e.preventDefault();
         let pageList = null;
         this.props._traverse((pageListItem, list, updateStore) => {
@@ -234,9 +239,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    onDrop(item) {
+    onDrop(item, e) {
         this._fadeInTooltips();
         this.removeClone();
+        e.dataTransfer.dropEffect="move";
+
         const left = () => {
             let activePage = Object.assign({}, this.state.activePage);
             let pageList = null;
