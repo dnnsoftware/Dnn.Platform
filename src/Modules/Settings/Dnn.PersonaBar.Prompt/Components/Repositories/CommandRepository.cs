@@ -50,8 +50,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 var localResourceFile = ((IConsoleCommand)Activator.CreateInstance(cmd))?.LocalResourceFile;
                 commands.Add(key, new Command
                 {
-                    Category = Localization.GetString(commandAttribute.Category, localResourceFile),
-                    Description = Localization.GetString(commandAttribute.Description, localResourceFile),
+                    Category = LocalizeString(commandAttribute.Category, localResourceFile),
+                    Description = LocalizeString(commandAttribute.Description, localResourceFile),
                     Key = key,
                     Name = commandAttribute.Name,
                     Version = version,
@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 if (attr != null)
                 {
                     commandHelp.Name = attr.Name;
-                    commandHelp.Description = Localization.GetString(attr.Description, consoleCommand.LocalResourceFile);
+                    commandHelp.Description = LocalizeString(attr.Description, consoleCommand.LocalResourceFile);
                     var flagAttributes = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                         .Select(x => x.GetCustomAttributes(typeof(FlagParameterAttribute), false).FirstOrDefault())
                         .Cast<FlagParameterAttribute>().ToList();
@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                             Required = attribute.Required,
                             DefaultValue = attribute.DefaultValue,
                             Description =
-                                   Localization.GetString(attribute.Description, consoleCommand.LocalResourceFile)
+                                   LocalizeString(attribute.Description, consoleCommand.LocalResourceFile)
                         }).ToList();
                         commandHelp.Options = options;
                     }
@@ -120,9 +120,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             return commandHelp;
         }
 
-        private static string LocalizeString(string key)
+        private static string LocalizeString(string key, string resourcesFile = Constants.LocalResourcesFile)
         {
-            var localizedText = Localization.GetString(key, Constants.LocalResourcesFile);
+            var localizedText = Localization.GetString(key, resourcesFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
     }
