@@ -120,7 +120,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                 Session sessionObj = SessionController.GetSession(sessionGuid);
 
                 // Create a deploy operation.
-                CIDeploy deployOperation = new CIDeploy(sessionObj, ipAddress, apiKey);
+                RemoteDeployment deployOperation = new RemoteDeployment(sessionObj, ipAddress, apiKey);
 
                 // Deploy.
                 deployOperation.Deploy();
