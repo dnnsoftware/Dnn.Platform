@@ -202,6 +202,6 @@ namespace Dnn.PersonaBar.Library.Prompt
         /// <summary>
         /// Resource key for the result html.
         /// </summary>
-        public string ResultHtml => LocalizeString($"Prompt_{GetType().Name}_ResultHtml");
+        public virtual string ResultHtml => LocalizeString($"Prompt_{GetType().Name}_ResultHtml");
     }
 }
