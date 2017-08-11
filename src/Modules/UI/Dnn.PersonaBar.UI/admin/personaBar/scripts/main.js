@@ -192,7 +192,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             },
             loadPanel: function handleLoadPanel(identifier, params) {
                 var savePersistentCallback;
-                this.openSocialTasks();
 
                 if (inAnimation) return;
 
