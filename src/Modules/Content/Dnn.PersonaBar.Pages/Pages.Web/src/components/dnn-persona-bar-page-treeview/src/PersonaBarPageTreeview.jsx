@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import GridCell from "dnn-grid-cell";
+import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new"
 import { PropTypes } from "prop-types";
 import {DragSource} from 'react-dnd';
 
@@ -101,8 +102,22 @@ export class PersonaBarPageTreeview extends Component {
 
     render_li() {
         const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd, draggedItem} = this.props;
+        const hotspotStyles = {
+            position:"relative",
+            zIndex: 10000,
+            wordWrap: "break-word",
+            textOverflow: "wrap",
+            width:"90%",
+            height: "20px",
+            marginTop:"-20px",
+            backgroundColor:"transparent"
+
+        };
 
         return listItems.map((item)=>{
+            const name = this.trimName(item);
+            const showTooltip = /\.\.\./.test(name);
+
             return (
                 <li id={`list-item-${item.name}-${item.id}`} >
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
@@ -124,12 +139,12 @@ export class PersonaBarPageTreeview extends Component {
                                 className={`item-name`}
                                 onClick={()=>{ onSelection(item.id); }}
                                 >
-                                <p>{this.trimName(item)}</p>
+                                <p>{name}</p>
                             </span>
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
                             </div>
-
+                            {showTooltip ? <TextOverflowWrapperNew text={item.name} hotspotStyles={hotspotStyles} />: null }
                         </div>
                         {this.render_dropZone("after", item)}
                     </div>

@@ -135,8 +135,30 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return document.getElementById(`list-item-title-${item.name}-${item.id}`);
     }
 
+    _fadeOutTooltips(){
+         const tooltips = document.getElementsByClassName("__react_component_tooltip");
+         for(let i=0; i<tooltips.length; i++){
+            tooltips[i].style.transition="all .5s";
+            tooltips[i].style.opacity=0;
+         }
+    }
+
+     _fadeInTooltips(){
+         const tooltips = document.getElementsByClassName("__react_component_tooltip");
+         const run = () => {
+             for (let i=0; i<tooltips.length; i++){
+                tooltips[i].style.opacity=1;
+             }
+         };
+
+         setTimeout(()=>run(), 1000);
+    }
+
+
+
     onDragStart(e, item) {
 
+        this._fadeOutTooltips();
 
         const left = () => {
             const img = new Image();
@@ -174,6 +196,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragEnd(item) {
+        this._fadeInTooltips();
+
         let pageList = null;
         let runUpdateStore = null;
         this.removeClone();
@@ -211,6 +235,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDrop(item) {
+        this._fadeInTooltips();
         this.removeClone();
         const left = () => {
             let activePage = Object.assign({}, this.state.activePage);
