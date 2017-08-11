@@ -62,7 +62,6 @@ class App extends Component {
         const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
-        window.dnn.utility.closeSocialTasks();
         this.props.getPageList();
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
@@ -126,7 +125,6 @@ class App extends Component {
 
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
-        window.dnn.utility.closeSocialTasks();
     }
 
     notifyErrorIfNeeded(newProps) {
