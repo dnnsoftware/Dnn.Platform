@@ -163,11 +163,11 @@
     }
 
     .dropZoneActive{
+        transition: all .15s;
         margin: 5px 0;
-        padding:0;
-        height: 90px;
-        background-color:#fff;
-        border-bottom: 2px solid transparent
+        padding: 0;
+        border-bottom: 2px solid transparent;
+
     }
 
     .dropZoneInactive {
@@ -185,6 +185,18 @@
         text-align:center;
         background-color:transparent;
         border-bottom: 2px solid transparent;
+    }
+
+    .list-item-border-bottom {
+        transition: all .15s;
+        border-bottom: 2px solid @curiousBlue;
+        padding:20px 0;
+    }
+
+    .list-item-border-top {
+        transition: all .15s;
+        border-top: 2px solid @curiousBlue;
+        padding:20px 0;
     }
 
 
