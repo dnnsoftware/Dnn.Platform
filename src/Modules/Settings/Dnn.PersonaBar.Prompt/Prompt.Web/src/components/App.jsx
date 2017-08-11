@@ -9,6 +9,7 @@ import {
     prompt as PromptActions
 } from "../actions";
 import { formatString } from "../helpers";
+import PersonaBarPage from "dnn-persona-bar-page";
 
 class App extends Component {
     constructor() {
@@ -172,13 +173,14 @@ class App extends Component {
 
     render() {
         return (
-            <div className="dnn-prompt" style={{ display: "block" }} ref="cmdPrompt">
-                <Output className="Output" scrollToBottom={this.scrollToBottom.bind(this)}
-                    busy={this.busy.bind(this)} toggleInput={this.toggleInput.bind(this)} IsPaging={this.paging.bind(this)}></Output>
-                <br />
-                <Input ref="cmdPromptInputControl" updateHistory={this.updateHistory.bind(this)} busy={this.busy.bind(this)} paging={this.paging.bind(this)} setHeight={this.setHeight.bind(this)} />
-
-            </div >
+            <PersonaBarPage isOpen={true} fullWidth={true}>
+                <div className="dnn-prompt" style={{ display: "block" }} ref="cmdPrompt">
+                    <Output className="Output" scrollToBottom={this.scrollToBottom.bind(this)}
+                        busy={this.busy.bind(this)} toggleInput={this.toggleInput.bind(this)} IsPaging={this.paging.bind(this)}></Output>
+                    <br />
+                    <Input ref="cmdPromptInputControl" updateHistory={this.updateHistory.bind(this)} busy={this.busy.bind(this)} paging={this.paging.bind(this)} setHeight={this.setHeight.bind(this)} />
+                </div>
+            </PersonaBarPage>
         );
     }
 }

@@ -62,12 +62,7 @@ class App extends Component {
         const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
-        window.dnn.utility.closeSocialTasks();
-        window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
-
-         
-
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
@@ -130,8 +125,6 @@ class App extends Component {
 
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
-        window.dnn.utility.closeSocialTasks();
-        window.dnn.utility.expandPersonaBarPage();
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -722,7 +715,7 @@ class App extends Component {
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
-                    <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
+                    <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL} fullWidth={true}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
