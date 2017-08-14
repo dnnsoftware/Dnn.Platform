@@ -157,8 +157,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
     onDragStart(e, item) {
-
-    
         this._fadeOutTooltips();
 
         const left = () => {
@@ -567,14 +565,14 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     render() {
 
         return (
-            <GridCell columnSize={30} className="dnn-persona-bar-treeview">
+            <GridCell columnSize={30} className="dnn-persona-bar-treeview" style={{"zIndex":1000}}>
                  {this.render_collapseExpand()}
                 <GridCell columnSize={15}>
                     <div className="dnn-persona-bar-treeview-menu">
                          {this.render_tree_parent_expand()}
                     </div>
                 </GridCell>
-                <GridCell columnSize={55}>
+                <GridCell columnSize={55} style={{marginLeft:"-2px" }}>
                     <Scrollbars className="scrollArea content-horizontal"
                         autoHeight
                         autoHeightMin={0}
@@ -583,7 +581,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     </Scrollbars>
                 </GridCell>
                 <GridCell columnSize={30}>
-                    <div className="dnn-persona-bar-treeview-menu" style={{float:"right"}}>
+                    <div className="dnn-persona-bar-treeview-menu selection-arrows" style={{float:"right"}}>
                          {this.render_treemenu()}
                     </div>
                 </GridCell>

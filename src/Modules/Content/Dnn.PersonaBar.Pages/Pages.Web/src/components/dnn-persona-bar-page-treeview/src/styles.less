@@ -5,12 +5,13 @@
 
     .parent-expand {
         margin-left:10px;
+        margin-left:6px;
+
        .list-item-menu {
            text-align:left;
        }
 
        .treeview-parent-expand-button,  .treeview-parent-collapse-button{
-            margin-left:2px;
             margin-top:-2px;
        }
 
@@ -22,19 +23,16 @@
     }
 
     .list-item-menu{
-        width:40px;
-
-        text-align:right;
+        width:90px;
         .draft-pencil {
             margin-left:3px;
-            width:20px;
             height:32px;
             display:inline-block;
+
             svg:hover{
                 fill:@alto;
             }
         }
-
     }
 
     .tree-menu-ul ul {
@@ -44,7 +42,6 @@
     .selection-arrow{
         top: 5px;
     }
-
 
 }
 
@@ -94,7 +91,7 @@
     .parent-expand-button {
         display:inline-block;
         position: relative;
-        left: 10px;
+        left: 15px;
         div{
             width:24px;
         }
@@ -113,17 +110,37 @@
     .selection-arrow {
         display:inline-block;
         position:relative;
+        width:90px;
         z-index:1000;
         top:2px;
         left:5px;
         font-size:18px;
-        width:20px;
         font-weight:bold;
         color: @curiousBlue;
-        float:right;
+        div{
+            float:right;
+            height:20px;
+            width:20px;
+            display:inherit;
+        }
+
+        .dots{
+            margin-right:10px;
+            svg{
+                circle{
+                    fill: @curiousBlue;
+                }
+            }
+        }
+
 
         svg{
+            width:20px;
             fill:@curiousBlue;
+        }
+
+        svg:hover{
+            fill:@curiousBlue!important;
         }
     }
 
@@ -151,8 +168,13 @@
         margin-left:20px;
         padding:0;
     }
+
+    ul:first-child{
+        margin-left:0px;
+    }
+
     li {
-        width:250px;
+        width:150px;
         list-style:none;
         // background-color: powderblue;
         // border: 1px solid orange;
