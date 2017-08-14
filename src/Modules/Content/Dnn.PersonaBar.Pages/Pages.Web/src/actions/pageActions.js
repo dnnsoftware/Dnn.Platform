@@ -70,6 +70,10 @@ const pageActions = {
         });
     },
 
+    getPage(id){
+        return (dispatch) => PagesService.getPage(id);
+    },
+
     getChildPageList(id){
         return () => PagesService.getChildPageList(id);
     },

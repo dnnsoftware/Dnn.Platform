@@ -53,7 +53,8 @@ class App extends Component {
         super();
         this.state = {
             referral: "",
-            referralText: ""
+            referralText: "",
+            busy:false
         };
        
     }
@@ -119,6 +120,7 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
+
     }
 
     componentWillUnmount() {
@@ -129,6 +131,22 @@ class App extends Component {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
+
+        //debounce update
+        if(!this.state.busy){
+            this.setState({busy:true});
+            console.log(this.state.busy);
+            console.log('this message should only appear once');
+            setTimeout(()=>{
+                this.setState({busy:false});
+                this.props.getPage(utils.getCurrentPageId()).then((data)=>{
+                    console.log(data);
+                });
+
+
+            },2000);
+        }
+
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -571,12 +589,38 @@ class App extends Component {
         return;
     }
 
+    getToRootParent(){
+        const {selectedPage} = this.props;
+        let currentPage = selectedPage;
+
+        const loop = () => {
+            let condition = currentPage.parentId !== -1;
+
+            const left = () => {
+                const requestAsync = () => {
+                    currentPage.parentId=-1;
+                    console.log('in left loop',currentPage);
+                    loop();
+                };
+                requestAsync();
+            };
+            const right = () => exit();
+
+            condition ? left() : right();
+        };
+
+        const exit = () => console.log('exiting loop');
+
+        selectedPage.tabId !== -1 ? loop() : exit();
+    }
+
     setActivePage(pageInfo) {
         return new Promise((resolve) => {
             this.selectPageSettingTab(0);
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
             this.props.onLoadPage(pageInfo.tabId);
+
             resolve();
         });
     }
@@ -586,8 +630,11 @@ class App extends Component {
         this.selectPageSettingTab(0);
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
-                this.props.onLoadPage(pageId);
+                this.props.onLoadPage(pageId).then((data) => {
+                    this.getToRootParent();
+                });
                 this.selectPageSettingTab(0);
+
             }
         };
         const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
@@ -782,6 +829,7 @@ App.propTypes = {
     onUpdatePage: PropTypes.func.isRequired,
     onDeletePage: PropTypes.func.isRequired,
     getPageList: PropTypes.func.isRequired,
+    getPage: PropTypes.func.isRequired,
     updatePageListStore: PropTypes.func.isRequire,
     getNewPage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
@@ -843,6 +891,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
+        getPage: PageActions.getPage,
         getChildPageList: PageActions.getChildPageList,
         updatePageListStore: PageActions.updatePageListStore,
         onCancelPage: PageActions.cancelPage,
