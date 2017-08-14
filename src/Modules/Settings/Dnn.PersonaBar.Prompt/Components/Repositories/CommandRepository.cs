@@ -11,6 +11,7 @@ using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
+using System.Text.RegularExpressions;
 
 namespace Dnn.PersonaBar.Prompt.Components.Repositories
 {
@@ -41,8 +42,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                      typeof(IConsoleCommand).IsAssignableFrom(t));
             foreach (var cmd in allCommandTypes)
             {
-                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault();
-                if (attr == null) continue;
+                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.GeneralCategory, $"Prompt_{cmd.Name}_Description");
                 var assemblyName = cmd.Assembly.GetName();
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
@@ -74,36 +74,27 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             var commandHelp = new CommandHelp();
             if (consoleCommand != null)
             {
-                var type = consoleCommand.GetType();
-                var attr =
-                    type.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() as
-                        ConsoleCommandAttribute;
-                if (attr != null)
+                var cmd = consoleCommand.GetType();
+                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() as ConsoleCommandAttribute ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.GeneralCategory, $"Prompt_{cmd.Name}_Description");
+                commandHelp.Name = attr.Name;
+                commandHelp.Description = LocalizeString(attr.Description, consoleCommand.LocalResourceFile);
+                var flagAttributes = cmd.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
+                    .Select(x => x.GetCustomAttributes(typeof(FlagParameterAttribute), false).FirstOrDefault())
+                    .Cast<FlagParameterAttribute>().ToList();
+                if (flagAttributes.Any())
                 {
-                    commandHelp.Name = attr.Name;
-                    commandHelp.Description = LocalizeString(attr.Description, consoleCommand.LocalResourceFile);
-                    var flagAttributes = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
-                        .Select(x => x.GetCustomAttributes(typeof(FlagParameterAttribute), false).FirstOrDefault())
-                        .Cast<FlagParameterAttribute>().ToList();
-                    if (flagAttributes.Any())
+                    var options = flagAttributes.Where(attribute => attribute != null).Select(attribute => new CommandOption
                     {
-                        var options = flagAttributes.Where(attribute => attribute != null).Select(attribute => new CommandOption
-                        {
-                            Flag = attribute.Flag,
-                            Type = attribute.Type,
-                            Required = attribute.Required,
-                            DefaultValue = attribute.DefaultValue,
-                            Description =
-                                   LocalizeString(attribute.Description, consoleCommand.LocalResourceFile)
-                        }).ToList();
-                        commandHelp.Options = options;
-                    }
-                    commandHelp.ResultHtml = consoleCommand.ResultHtml;
+                        Flag = attribute.Flag,
+                        Type = attribute.Type,
+                        Required = attribute.Required,
+                        DefaultValue = attribute.DefaultValue,
+                        Description =
+                               LocalizeString(attribute.Description, consoleCommand.LocalResourceFile)
+                    }).ToList();
+                    commandHelp.Options = options;
                 }
-                else
-                {
-                    commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
-                }
+                commandHelp.ResultHtml = consoleCommand.ResultHtml;
             }
             else if (showLearn)
             {
@@ -124,6 +115,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
         {
             var localizedText = Localization.GetString(key, resourcesFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
+        }
+
+        private static string CreateCommandFromClass(string className)
+        {
+            var camelCasedParts = SplitCamelCase(className);
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+        }
+        private static string[] SplitCamelCase(string source)
+        {
+            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
     }
 }
