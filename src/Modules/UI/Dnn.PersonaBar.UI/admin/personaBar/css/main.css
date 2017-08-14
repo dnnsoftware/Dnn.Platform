@@ -296,6 +296,11 @@ a.plainbtn {
     background-color: #028ed9
 }
 
+#confirmation-dialog.full-width-mode,
+#notification-dialog.full-width-mode {
+    left: 415px;
+}
+
 /* basic layout */
 .two-columns {
     display: block;
