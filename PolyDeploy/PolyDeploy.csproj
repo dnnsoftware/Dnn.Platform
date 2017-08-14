@@ -206,7 +206,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Angular\dist\" />
     <Folder Include="Angular\src\controllers\" />
     <Folder Include="Angular\src\directives\" />
     <Folder Include="Angular\src\services\" />
