@@ -172,9 +172,9 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = _exportImportJob.PortalId;
             var createdBy = Util.GetUserIdByName(_exportImportJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
             var modifiedBy = Util.GetUserIdByName(_exportImportJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
-            var localTab = localTabs.FirstOrDefault(t =>
-                otherTab.TabPath.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
-                && (t.CultureCode ?? "") == (otherTab.CultureCode ?? ""));
+            var localTab = localTabs.FirstOrDefault(t => otherTab.UniqueId.Equals(t.UniqueId)) ?? localTabs.FirstOrDefault(t =>
+                  otherTab.TabPath.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
+                  && (t.CultureCode ?? "") == (otherTab.CultureCode ?? ""));
 
             if (localTab != null)
             {
@@ -210,7 +210,12 @@ namespace Dnn.ExportImport.Components.Services
                         // this is not saved when adding the tab; so set it explicitly
                         localTab.IsVisible = otherTab.IsVisible;
                         EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
-
+                        //Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
+                        if (localTab.UniqueId != otherTab.UniqueId && !DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
+                        {
+                            localTab.UniqueId = otherTab.UniqueId;
+                            UpdateTabUniqueId(localTab.TabID, localTab.UniqueId);
+                        }
                         try
                         {
                             localTab.TabPermissions.Clear(); // without this the UpdateTab() could fail
@@ -291,6 +296,12 @@ namespace Dnn.ExportImport.Components.Services
                 localTab.IsVisible = otherTab.IsVisible;
                 EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
                 //_tabController.UpdateTab(localTab); // to clear cache
+                //Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
+                if (!DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
+                {
+                    localTab.UniqueId = otherTab.UniqueId;
+                    UpdateTabUniqueId(localTab.TabID, localTab.UniqueId);
+                }
 
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
@@ -736,7 +747,7 @@ namespace Dnn.ExportImport.Components.Services
                                     Footer = other.Footer,
                                     CultureCode = other.CultureCode,
                                     //UniqueId = other.UniqueId,
-                                    UniqueId = Guid.NewGuid(),
+                                    UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                                     LocalizedVersionGuid = other.LocalizedVersionGuid,
@@ -810,9 +821,11 @@ namespace Dnn.ExportImport.Components.Services
                                 local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
                                 local.LocalizedVersionGuid = other.LocalizedVersionGuid;
                                 local.CultureCode = other.CultureCode;
-
-                                // this coould cause problem in some cases
-                                //if (local.UniqueId != other.UniqueId) local.UniqueId = other.UniqueId;
+                                if (local.UniqueId != other.UniqueId && !DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId))
+                                {
+                                    local.UniqueId = other.UniqueId;
+                                    UpdateModuleUniqueId(local.TabModuleID, other.UniqueId);
+                                }
 
                                 // updates both module and tab module db records
                                 _moduleController.UpdateModule(local);
@@ -1235,7 +1248,6 @@ namespace Dnn.ExportImport.Components.Services
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
-            //TODO: check if these GUIDs need changing
             //localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.DefaultLanguageGuid = otherTab.DefaultLanguageGuid ?? Guid.Empty;
@@ -1293,6 +1305,17 @@ namespace Dnn.ExportImport.Components.Services
         {
             _dataProvider.UpdateSettingRecordChangers("ModuleSettings", "ModuleID", moduleId, settingName, createdBy, modifiedBy);
         }
+
+        private void UpdateTabUniqueId(int tabId, Guid uniqueId)
+        {
+            _dataProvider.UpdateUniqueId("Tabs", "TabID", tabId, uniqueId);
+        }
+
+        private void UpdateModuleUniqueId(int tabModuleId, Guid uniqueId)
+        {
+            _dataProvider.UpdateUniqueId("TabModules", "TabModuleID", tabModuleId, uniqueId);
+        }
+        
 
         #endregion
 
@@ -1577,7 +1600,7 @@ namespace Dnn.ExportImport.Components.Services
                 IconFileLarge = tab.IconFileLarge,
                 CultureCode = tab.CultureCode,
                 ContentItemID = tab.ContentItemId < 0 ? null : (int?)tab.ContentItemId,
-                UniqueId = Guid.NewGuid(), //tab.UniqueId,
+                UniqueId = tab.UniqueId,
                 VersionGuid = tab.VersionGuid,
                 DefaultLanguageGuid = tab.DefaultLanguageGuid == Guid.Empty ? null : (Guid?)tab.DefaultLanguageGuid,
                 LocalizedVersionGuid = tab.LocalizedVersionGuid,

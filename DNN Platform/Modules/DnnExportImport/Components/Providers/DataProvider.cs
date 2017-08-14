@@ -61,6 +61,11 @@ namespace Dnn.ExportImport.Components.Providers
                 "Export_GenericUpdateRecordChangers", tableName, primaryKeyName, primaryKeyId, createdBy, modifiedBy);
         }
 
+        public void UpdateUniqueId(string tableName, string primaryKeyName, int primaryKeyId, Guid uniqueId)
+        {
+            _dataProvider.ExecuteNonQuery("Export_UpdateUniqueId", tableName, primaryKeyName, primaryKeyId, uniqueId);
+        }
+
         public void UpdateSettingRecordChangers(string tableName, string primaryKeyName, int parentKeyId, string settingName, int? createdBy, int? modifiedBy)
         {
             _dataProvider.ExecuteNonQuery(
@@ -329,6 +334,11 @@ namespace Dnn.ExportImport.Components.Providers
         public bool CheckTabModuleUniqueIdExists(Guid uniqueId)
         {
             return _dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabModuleUniqueIdExists", uniqueId) > 0;
+        }
+
+        public bool CheckTabUniqueIdExists(Guid uniqueId)
+        {
+            return _dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabUniqueIdExists", uniqueId) > 0;
         }
 
         public IDataReader GetAllTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)
