@@ -18,7 +18,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         public RemoteDeployment(Session session, string ipAddress, string apiKey) : base(session, ipAddress)
         {
             // Retrieve our API user.
-            APIUser = APIUserController.GetByAPIKey(apiKey);
+            APIUser = APIUserManager.GetByAPIKey(apiKey);
 
             // Did we find an API user?
             if (APIUser == null)

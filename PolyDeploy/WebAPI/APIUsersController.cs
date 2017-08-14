@@ -22,7 +22,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
             }
 
             // Create user.
-            APIUser apiUser = APIUserController.Create(name);
+            APIUser apiUser = APIUserManager.Create(name);
 
             return Request.CreateResponse(HttpStatusCode.Created, apiUser);
         }

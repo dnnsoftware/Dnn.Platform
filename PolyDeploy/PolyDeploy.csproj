@@ -125,7 +125,7 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\APIUserController.cs" />
+    <Compile Include="Components\APIUserManager.cs" />
     <Compile Include="Components\RemoteDeployment.cs" />
     <Compile Include="Components\Deployment.cs" />
     <Compile Include="Components\FeatureController.cs" />
@@ -133,7 +133,7 @@
     <Compile Include="Components\IPSpecController.cs" />
     <Compile Include="Components\PackageDependency.cs" />
     <Compile Include="Components\PackageJob.cs" />
-    <Compile Include="Components\SessionController.cs" />
+    <Compile Include="Components\SessionManager.cs" />
     <Compile Include="Components\Utilities.cs" />
     <Compile Include="DataAccess\DataControllers\IPSpecDataController.cs" />
     <Compile Include="DataAccess\DataControllers\SessionDataController.cs" />

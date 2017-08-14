@@ -33,7 +33,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI.ActionFilters
                     if (apiKey != null && apiKey.Length == 32)
                     {
                         // Attempt to look up the api user.
-                        APIUser apiUser = APIUserController.GetByAPIKey(apiKey);
+                        APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
 
                         // Did we find one and double check the api key.
                         if (apiUser != null && apiUser.APIKey == apiKey)

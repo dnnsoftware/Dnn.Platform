@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-    internal class SessionController
+    internal class SessionManager
     {
         public static Session CreateSession()
         {

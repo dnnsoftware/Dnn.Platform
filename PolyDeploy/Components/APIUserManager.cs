@@ -4,9 +4,9 @@ using System;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-    internal class APIUserController
+    internal class APIUserManager
     {
-        private static APIUserController _instance;
+        private static APIUserManager _instance;
 
         public static APIUser Create(string name)
         {

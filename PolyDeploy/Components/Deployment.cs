@@ -14,7 +14,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         {
             get
             {
-                return Path.Combine(SessionController.PathForSession(Session.Guid), "temp");
+                return Path.Combine(SessionManager.PathForSession(Session.Guid), "temp");
             }
         }
 
@@ -193,7 +193,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         protected List<string> IdentifyPackages()
         {
-            return IdentifyPackagesInDirectory(SessionController.PathForSession(Session.Guid));
+            return IdentifyPackagesInDirectory(SessionManager.PathForSession(Session.Guid));
         }
 
         protected List<string> IdentifyPackagesInDirectory(string directoryPath)
