@@ -51,7 +51,7 @@ export class PersonaBarPageTreeParentExpand extends Component {
                 <li className="list-item-menu">
                     <div
                         className={(item.selected) ? "list-item-highlight" : null}
-                        style={{height:"28px"}}>
+                        style={{height:"30px"}}>
 
                         <div className="draft-pencil">
                            {this.render_parentExpandButton(item)}

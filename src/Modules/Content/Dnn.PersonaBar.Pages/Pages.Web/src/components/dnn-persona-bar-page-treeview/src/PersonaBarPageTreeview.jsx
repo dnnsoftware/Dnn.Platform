@@ -106,7 +106,7 @@ export class PersonaBarPageTreeview extends Component {
                     onDragEnd={()=>onDragLeave(item, direction)}
                     onDrop={(e)=>onMovePage({ e:e,  Action:direction, PageId:draggedItem.id, ParentId:draggedItem.parentId, RelatedPageId: dragOverItem.id})} >
 
-                    
+
 
                 </div>
             );
@@ -124,7 +124,8 @@ export class PersonaBarPageTreeview extends Component {
             width:"90%",
             height: "20px",
             marginTop:"-20px",
-            backgroundColor:"transparent"
+            backgroundColor:"transparent",
+            pointerEvents:"none"
 
         };
 

@@ -23,11 +23,12 @@
 
     .list-item-menu{
         width:40px;
+
         text-align:right;
         .draft-pencil {
             margin-left:3px;
             width:20px;
-            height:20px;
+            height:32px;
             display:inline-block;
             svg:hover{
                 fill:@alto;
@@ -163,40 +164,48 @@
     }
 
     .dropZoneActive{
-        transition: all .15s;
         margin: 5px 0;
-        padding: 0;
+        padding:0;
+        height: 20px;
+        background-color:#fff;
         border-bottom: 2px solid transparent;
-
+        transition:all .5s;
     }
 
     .dropZoneInactive {
         transition: all .75s;
         margin: 0;
         padding:0;
+        height:20px;
         height:inherit;
-        border-bottom: 2px solid transparent
+        border-bottom: 2px solid transparent;
+        transition:all .5s;
 
     }
 
     .dropZoneArea {
         transition: all .15s ease-out;
         padding: 2px 0;
+        height:10px;
         text-align:center;
         background-color:transparent;
         border-bottom: 2px solid transparent;
+        background-color:#eee;
+        transition:all .5s;
     }
 
-    .list-item-border-bottom {
-        transition: all .15s;
+    .treeview-border-bottom {
         border-bottom: 2px solid @curiousBlue;
-        padding:20px 0;
+        background-color:#eee;
+        padding:2px 0;
+        height:10x;
     }
 
-    .list-item-border-top {
-        transition: all .15s;
+    .treeview-border-top {
         border-top: 2px solid @curiousBlue;
-        padding:20px 0;
+        background-color:#eee;
+        padding:2px 0;
+        height:10px;
     }
 
 
