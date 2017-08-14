@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
             }
         }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             throw new NotImplementedException();
         }

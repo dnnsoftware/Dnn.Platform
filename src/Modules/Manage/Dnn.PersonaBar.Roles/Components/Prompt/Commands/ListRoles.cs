@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
+            
             Page = GetFlagValue(FlagPage, "Page", 1);
             Max = GetFlagValue(FlagMax, "Max", 10);
         }

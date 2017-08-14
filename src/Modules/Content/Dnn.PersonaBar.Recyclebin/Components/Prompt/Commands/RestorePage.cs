@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
+            
             PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
             ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
             PageName = GetFlagValue(FlagName, "Page Name", string.Empty);

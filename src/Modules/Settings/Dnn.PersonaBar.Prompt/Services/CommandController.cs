@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
                     if (isHelpCmd) return GetHelp(command, cmdObj);
                     // set env. data for command use
-                    cmdObj.Init(args, PortalSettings, UserInfo, command.CurrentPage);
+                    cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
                     return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
                 }
                 catch (Exception ex)

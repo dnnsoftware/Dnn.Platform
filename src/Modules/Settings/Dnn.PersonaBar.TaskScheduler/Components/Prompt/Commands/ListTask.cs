@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
+            
             Enabled = GetFlagValue<bool?>(FlagEnabled, "Enabled", null, false, true);
             TaskName = GetFlagValue(FlagName, "Task Name", string.Empty, false, !Enabled.HasValue);
         }

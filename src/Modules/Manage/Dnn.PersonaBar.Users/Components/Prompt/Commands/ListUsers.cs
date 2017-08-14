@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
+            
             Email = GetFlagValue(FlagEmail, "Email", string.Empty);
             Username = GetFlagValue(FlagUsername, "Username", string.Empty);
             Role = GetFlagValue(FlagRole, "Role", string.Empty);
