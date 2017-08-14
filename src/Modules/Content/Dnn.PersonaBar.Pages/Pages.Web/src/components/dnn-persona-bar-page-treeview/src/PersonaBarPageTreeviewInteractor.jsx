@@ -158,7 +158,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDragStart(e, item) {
 
-
+    
         this._fadeOutTooltips();
 
         const left = () => {
@@ -169,8 +169,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             this.clonedElement = element.cloneNode(true);
             this.clonedElement.id = "cloned";
             this.clonedElement.style.transition = "all .15s";
-            this.clonedElement.style.top = `${e.clientY}px`;
-            this.clonedElement.style.left = `${e.clientX}px`;
+            this.clonedElement.style.top = `${e.pageY}px`;
+            this.clonedElement.style.left = `${e.pageX}px`;
             this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
 
             document.body.appendChild(this.clonedElement);
@@ -194,8 +194,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDrag(e) {
         const elm = this.clonedElement;
-        elm.style.top = `${e.clientY}px`;
-        elm.style.left = `${e.clientX - 30}px`;
+        elm.style.top = `${e.pageY}px`;
+        elm.style.left = `${e.pageX - 30}px`;
         elm.style.transform = "rotate('5deg')";
     }
 
@@ -487,6 +487,24 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
 
+    showTooltip(id) {
+        this.props._traverse((item, list, updateStore)=>{
+            if(id === item.id ) {
+                item.showTooltip = true;
+                updateStore(list);
+            }
+        });
+    }
+
+    hideTooltip(id) {
+        this.props._traverse((item, list, updateStore)=>{
+            if(id === item.id ) {
+                delete item.showTooltip;
+                updateStore(list);
+            }
+        });
+    }
+
     render_treeview() {
         return (
             <span className="dnn-persona-bar-treeview-ul">
@@ -507,6 +525,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDrop={this.onDrop.bind(this)}
                         onMovePage={this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
+                        showTooltip={this.showTooltip.bind(this)}
+                        hideTooltip={this.hideTooltip.bind(this)}
                     />
 
                     : null}

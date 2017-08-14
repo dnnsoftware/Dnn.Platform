@@ -66,9 +66,6 @@ class App extends Component {
         window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
 
-
-
-
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
         }
@@ -576,6 +573,7 @@ class App extends Component {
 
     setActivePage(pageInfo) {
         return new Promise((resolve) => {
+            this.selectPageSettingTab(0);
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
             this.props.onLoadPage(pageInfo.tabId);
@@ -585,6 +583,7 @@ class App extends Component {
 
     onSelection(pageId) {
         const { selectedPage, selectedPageDirty } = this.props;
+        this.selectPageSettingTab(0);
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId);
@@ -685,6 +684,7 @@ class App extends Component {
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={this.onChangePageField.bind(this)}
+                    onChangeParentId={this.onChangeParentId.bind(this)}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType}
                     onDeletePageModule={props.onDeletePageModule}

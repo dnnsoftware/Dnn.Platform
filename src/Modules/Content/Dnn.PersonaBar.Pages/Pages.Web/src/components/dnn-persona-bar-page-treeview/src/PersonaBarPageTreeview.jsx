@@ -42,7 +42,9 @@ export class PersonaBarPageTreeview extends Component {
                 onDragOver,
                 onDragLeave,
                 onDragEnd,
-                onMovePage
+                onMovePage,
+                showTooltip,
+                hideTooltip
 
         } = this.props;
 
@@ -61,6 +63,8 @@ export class PersonaBarPageTreeview extends Component {
                 onDragLeave={onDragLeave}
                 onDragEnd={onDragEnd}
                 onMovePage={onMovePage}
+                showTooltip={showTooltip}
+                hideTooltip={hideTooltip}
              />
         );
     }
@@ -115,26 +119,40 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_li() {
-        const {listItems, getChildListItems, onSelection, onDrop, onDrag, onDragStart, onDragOver, onDragLeave, onDragEnd, draggedItem} = this.props;
+        const {
+            listItems,
+            getChildListItems,
+            onSelection,
+            onDrop,
+            onDrag,
+            onDragStart,
+            onDragOver,
+            onDragLeave,
+            onDragEnd,
+            draggedItem,
+            showTooltip,
+            hideTooltip} = this.props;
+
         const hotspotStyles = {
+
             position:"relative",
             zIndex: 10000,
             wordWrap: "break-word",
             textOverflow: "wrap",
-            width:"90%",
+            width:"100%",
             height: "20px",
             marginTop:"-20px",
-            backgroundColor:"transparent",
-            pointerEvents:"none"
+            backgroundColor:"transparent"
 
         };
 
         return listItems.map((item)=>{
             const name = this.trimName(item);
-            const showTooltip = /\.\.\./.test(name);
+            const shouldShowTooltip = /\.\.\./.test(name);
+            let activate = false;
 
             return (
-                <li id={`list-item-${item.name}-${item.id}`} >
+                <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
                         <div
@@ -147,8 +165,10 @@ export class PersonaBarPageTreeview extends Component {
                             onDragOver={(e)=>{ onDragOver(e, item); }}
                             onDragStart={(e)=>{ onDragStart(e, item); }}
                             onDragEnd={()=>{onDragEnd(item); }}
+                            onMouseOver={()=>{showTooltip(item.id); }}
+                            onMouseLeave={()=>{hideTooltip(item.id); }}
+                            onClick={()=>{hideTooltip(item.id); onSelection(item.id);}}
                          >
-
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected}/>
                             <span
                                 className={`item-name`}
@@ -159,7 +179,7 @@ export class PersonaBarPageTreeview extends Component {
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
                             </div>
-                            {showTooltip ? <TextOverflowWrapperNew text={item.name} hotspotStyles={hotspotStyles} />: null }
+                            {shouldShowTooltip && item.showTooltip ? <TextOverflowWrapperNew text={item.name} hotspotStyles={hotspotStyles} />: null }
                         </div>
                         {this.render_dropZone("after", item)}
                     </div>
@@ -195,5 +215,7 @@ PersonaBarPageTreeview.propTypes = {
     getChildListItems: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,
     icons: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired
+    onSelect: PropTypes.func.isRequired,
+    showTooltip: PropTypes.func.isRequired,
+    hideTooltip: PropTypes.func.isRequired
 };
