@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         /// <param name="checkmain">Try to find the flag value in first args or not.</param>
         /// <param name="checkpositive">This would be applicable only if the output is of type int or double and value should be positive.</param>
         /// <returns></returns>
-        protected virtual T GetFlagValue<T>(string flag, string fieldName, T defaultVal, bool required = false,
+        public virtual T GetFlagValue<T>(string flag, string fieldName, T defaultVal, bool required = false,
             bool checkmain = false, bool checkpositive = false)
         {
             const string resourceFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx";
@@ -99,7 +99,13 @@ namespace Dnn.PersonaBar.Library.Prompt
         #endregion
 
         #region Public Methods
+
         public virtual void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        {
+
+        }
+
+        public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             Args = args;
             PortalSettings = portalSettings;
@@ -108,6 +114,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             TabId = activeTabId;
             ValidationMessage = "";
             ParseFlags();
+            Init(args, portalSettings, userInfo, activeTabId);
         }
 
         public abstract ConsoleResultModel Run();
