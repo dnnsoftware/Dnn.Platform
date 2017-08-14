@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Cantarus.PolyDeploy" type="Module" version="00.04.00">
+    <package name="Cantarus.PolyDeploy" type="Module" version="00.05.00">
       <friendlyName>Cantarus PolyDeploy</friendlyName>
       <description>Cantarus PolyDeploy module</description>
       <iconFile>Images/cantarus.png</iconFile>

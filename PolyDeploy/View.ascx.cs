@@ -1,10 +1,9 @@
 using System;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Security;
-
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace Cantarus.Modules.PolyDeploy
 {
@@ -21,6 +20,17 @@ namespace Cantarus.Modules.PolyDeploy
 
         override protected void OnInit(EventArgs e)
         {
+
+#if RELEASE
+            // Minified resources for Release.
+            ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.bundle.min.js", TemplateSourceDirectory), 3);
+            ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.min.js", TemplateSourceDirectory), 4);
+#else
+            // Non-minified resources for everything else.
+            ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.bundle.js", TemplateSourceDirectory), 500);
+            ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.js", TemplateSourceDirectory), 501);
+#endif
+
             InitializeComponent();
             base.OnInit(e);
         }
