@@ -321,19 +321,18 @@ class Output extends Component {
 
         // build header
         let out = '<table class="' + (cssClass !== undefined && cssClass !== null && cssClass !== '' ? cssClass : "dnn-prompt-tbl") + '"><thead><tr>';
-        for (let col in columns) {
-            let lbl = this.formatLabel(columns[col]);
+        columns.map((col) => {
+            let lbl = this.formatLabel(col);
             out += `<th>${lbl}</th>`;
-        }
+        });
         out += '</tr></thead><tbody>';
 
         // build rows
-        for (let i = 0; i < rows.length; i++) {
-            let row = rows[i];
+        rows.map((row) => {
             out += '<tr>';
             // only use specified columns
-            for (let fld in columns) {
-                let fldName = columns[fld];
+            columns.map((fldName) => {
+                //let fldName = columns[fld];
                 let fldVal = row[fldName.replace("$", "")] ? row[fldName.replace("$", "")] : '';
                 let cmd = row["__" + fldName] ? row["__" + fldName] : null;
                 if (cmd) {
@@ -345,9 +344,9 @@ class Output extends Component {
                 else {
                     out += `<td> ${fldVal}</td>`;
                 }
-            }
+            });
             out += '</tr>';
-        }
+        });
         out += '</tbody></table>';
         return out;
     }
@@ -365,8 +364,7 @@ class Output extends Component {
             }
         }
         let out = '<table class="dnn-prompt-tbl">';
-        for (let fld in columns) {
-            let fldName = columns[fld];
+        columns.map((fldName) => {
             let lbl = this.formatLabel(fldName);
             let fldVal = data[fldName] ? data[fldName] : '';
             let cmd = data["__" + fldName] ? data["__" + fldName] : null;
@@ -377,16 +375,19 @@ class Output extends Component {
                 out += `<tr><td class="dnn-prompt-lbl">${lbl}</td><td>:</td><td>${fldVal}</td></tr>`;
             }
 
-        }
+        });
         out += '</table>';
         return out;
     }
 
     formatLabel(input) {
-        // format camelcase and remove Is from labels
-        let output = input.replace("$", "").replace(/^(Is)(.+)/i, "$2");
-        output = output.match(/[A-Z][a-z]+/g).join(" "); // rudimentary but should handle normal Camelcase
-        return output;
+        if (typeof input === "string") {
+            // format camelcase and remove Is from labels
+            let output = input.replace("$", "").replace(/^(Is)(.+)/i, "$2");
+            output = output.match(/[A-Z][a-z]+/g).join(" "); // rudimentary but should handle normal Camelcase
+            return output;
+        }
+        return "";
     }
     render() {
         return (
