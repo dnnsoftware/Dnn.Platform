@@ -1,8 +1,8 @@
 @import "~dnn-global-styles/index";
 .dnn-persona-bar-page-header {
-    position: fixed;
+    position: absolute;
     top: 0;
-    width: 860px;
+    width: 100%;
     background-color: @white;
     .prefixes(box-sizing, border-box);
     min-height: 103px;
@@ -36,4 +36,9 @@
             }
         }
     }
+}
+
+.socialpanelheader {
+    position: relative!important;
+    width:100%!important;
 }
