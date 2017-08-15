@@ -1072,7 +1072,7 @@
     <value>Nothing to echo back</value>
   </data>
   <data name="Prompt_Echo_ResultHtml.Text" xml:space="preserve">
-    <value />
+    <value>&lt;h4&gt;&lt;/h4&gt;</value>
   </data>
   <data name="Prompt_FlagIsRequired.Text" xml:space="preserve">
     <value>'[0]' is required.</value>
@@ -1182,6 +1182,16 @@
       &lt;tr&gt;
         &lt;td colspan="3"&gt;Successfully copied the module.&lt;/td&gt;
       &lt;/tr&gt;
+    &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_ListCommands_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;&lt;/h4&gt;</value>
+  </data>
+  <data name="Prompt_RestartApplication_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Results&lt;/h4&gt;
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;&lt;td&gt;Application restarted&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Reloading in 3 seconds&lt;/td&gt;&lt;/tr&gt;
     &lt;/table&gt;</value>
   </data>
 </root>
