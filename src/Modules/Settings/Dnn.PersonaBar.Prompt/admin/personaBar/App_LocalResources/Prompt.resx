@@ -1187,6 +1187,12 @@
   <data name="Prompt_ListCommands_ResultHtml.Text" xml:space="preserve">
     <value>&lt;h4&gt;&lt;/h4&gt;</value>
   </data>
+  <data name="Prompt_ListPortals_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;&lt;/h4&gt;</value>
+  </data>
+  <data name="Prompt_ListSites_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;&lt;/h4&gt;</value>
+  </data>
   <data name="Prompt_RestartApplication_ResultHtml.Text" xml:space="preserve">
     <value>&lt;h4&gt;Results&lt;/h4&gt;
     &lt;table class="command-result-tbl"&gt;
