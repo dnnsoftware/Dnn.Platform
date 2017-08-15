@@ -333,6 +333,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         });
                     }
                 }
+                setCloseButtonClass(panelId);
             },
             panelLoaded: function (params) {
                 extension.load(util, params);
@@ -420,6 +421,25 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         };
         util = $.extend(util, utility);
         // end define util
+
+        function setCloseButtonClass(id) {
+            var panel = document.querySelector('#' + id + '>div');
+            if (panel != null && panel.innerHTML !== "") {
+                var page = panel.querySelector('.dnn-persona-bar-page');
+                if (page != null && page.classList.contains('full-width')) {
+                    $showSiteButton.addClass('full-width-mode');
+                }
+                else {
+                    $showSiteButton.removeClass();
+                }
+                return;
+            }
+            else {
+                setTimeout(function () {
+                    setCloseButtonClass(id);
+                }, 100);
+            }
+        }
         
         function onShownPersonaBar() {
             (function handleResizeWindow() {
