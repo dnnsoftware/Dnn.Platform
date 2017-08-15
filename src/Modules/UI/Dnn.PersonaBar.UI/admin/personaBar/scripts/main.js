@@ -264,7 +264,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     savePersistentCallback = function () {
                         activePath = path;
                         activemodule = moduleName;
-                        $showSiteButton.show();
                         eventEmitter.emitOpenPanelEvent();
 
                         iframe.style.width = "100%";
@@ -432,6 +431,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 else {
                     $showSiteButton.removeClass();
                 }
+                $showSiteButton.show();
                 return;
             }
             else {
