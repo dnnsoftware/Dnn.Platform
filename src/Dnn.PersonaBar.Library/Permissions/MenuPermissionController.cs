@@ -282,7 +282,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing);
                 var permissions = GetPermissions(menuItem.MenuId)
                     .Where(p => p.MenuId == Null.NullInteger
-                                    || (roleName == administratorRole && defaultPermissions.Count == 1)
+                                    || (roleName == administratorRole && defaultPermissions.Count == 0)//Administrator gets all granular permissions only if no permission specified explicity.
                                     || defaultPermissions.Contains(p.PermissionKey));
 
                 var roleId = nullRoleId;
