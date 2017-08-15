@@ -20,7 +20,7 @@ import {
 
 let pageSizeOptions = [];
 let canEdit = false;
-
+let isHost = false;
 /*eslint-disable eqeqeq*/
 class AdminLogPanelBody extends Component {
     constructor() {
@@ -42,6 +42,7 @@ class AdminLogPanelBody extends Component {
             totalCount: 0
         };
         canEdit = util.settings.isHost || util.settings.permissions.ADMIN_LOGS_EDIT;
+        isHost = util.settings.isHost;
     }
 
     componentWillMount() {
@@ -353,14 +354,14 @@ class AdminLogPanelBody extends Component {
                             </div>
                         </div>
                     }
-                    {canEdit && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this) } style={{ width: "18%" }}>
+                    {isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this) } style={{ width: "18%" }}>
                         <TextOverflowWrapper
                             text={Localization.get("btnDelete") }
                             maxWidth={115}
                             />
                     </div>
                     }
-                    {canEdit && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) } style={{ borderLeft: "none", width: "15%" }}>
+                    {isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) } style={{ borderLeft: "none", width: "15%" }}>
                         <TextOverflowWrapper
                             text={Localization.get("btnClear") }
                             maxWidth={90}
