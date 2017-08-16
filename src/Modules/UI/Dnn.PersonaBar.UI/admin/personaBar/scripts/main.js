@@ -232,7 +232,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 if (activePath === path && activemodule === moduleName) {
                     return;
                 }
-
+                $showSiteButton.hide();
                 var $menuItems = $(".btn_panel");
                 var $hoverMenuItems = $(".hovermenu > ul > li");
                 
