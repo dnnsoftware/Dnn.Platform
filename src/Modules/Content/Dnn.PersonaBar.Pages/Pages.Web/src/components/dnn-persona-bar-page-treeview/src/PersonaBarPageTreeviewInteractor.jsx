@@ -482,26 +482,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 this.setState({isTreeviewExpanded:!this.state.isTreeviewExpanded});
             }
         });
-
-    }
-
-
-    showTooltip(id) {
-        this.props._traverse((item, list, updateStore)=>{
-            if(id === item.id ) {
-                item.showTooltip = true;
-                updateStore(list);
-            }
-        });
-    }
-
-    hideTooltip(id) {
-        this.props._traverse((item, list, updateStore)=>{
-            if(id === item.id ) {
-                delete item.showTooltip;
-                updateStore(list);
-            }
-        });
     }
 
     render_treeview() {
@@ -524,8 +504,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDrop={this.onDrop.bind(this)}
                         onMovePage={this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
-                        showTooltip={this.showTooltip.bind(this)}
-                        hideTooltip={this.hideTooltip.bind(this)}
+
                     />
 
                     : null}

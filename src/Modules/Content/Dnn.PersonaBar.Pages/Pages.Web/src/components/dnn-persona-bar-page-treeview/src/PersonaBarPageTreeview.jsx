@@ -42,9 +42,7 @@ export class PersonaBarPageTreeview extends Component {
                 onDragOver,
                 onDragLeave,
                 onDragEnd,
-                onMovePage,
-                showTooltip,
-                hideTooltip
+                onMovePage
 
         } = this.props;
 
@@ -63,8 +61,7 @@ export class PersonaBarPageTreeview extends Component {
                 onDragLeave={onDragLeave}
                 onDragEnd={onDragEnd}
                 onMovePage={onMovePage}
-                showTooltip={showTooltip}
-                hideTooltip={hideTooltip}
+
              />
         );
     }
@@ -129,9 +126,7 @@ export class PersonaBarPageTreeview extends Component {
             onDragOver,
             onDragLeave,
             onDragEnd,
-            draggedItem,
-            showTooltip,
-            hideTooltip} = this.props;
+            draggedItem} = this.props;
 
         const hotspotStyles = {
 
@@ -165,9 +160,7 @@ export class PersonaBarPageTreeview extends Component {
                             onDragOver={(e)=>{ onDragOver(e, item); }}
                             onDragStart={(e)=>{ onDragStart(e, item); }}
                             onDragEnd={()=>{onDragEnd(item); }}
-                            onMouseOver={()=>{showTooltip(item.id); }}
-                            onMouseLeave={()=>{hideTooltip(item.id); }}
-                            onClick={()=>{hideTooltip(item.id); onSelection(item.id);}}
+                            onClick={()=>{onSelection(item.id);}}
                          >
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected}/>
                             <span
@@ -179,7 +172,7 @@ export class PersonaBarPageTreeview extends Component {
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
                             </div>
-                            {shouldShowTooltip && item.showTooltip ? <TextOverflowWrapperNew text={item.name} hotspotStyles={hotspotStyles} />: null }
+                            <TextOverflowWrapperNew text={item.name} hotspotStyles={hotspotStyles} />
                         </div>
                         {this.render_dropZone("after", item)}
                     </div>
@@ -215,7 +208,5 @@ PersonaBarPageTreeview.propTypes = {
     getChildListItems: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,
     icons: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    showTooltip: PropTypes.func.isRequired,
-    hideTooltip: PropTypes.func.isRequired
+    onSelect: PropTypes.func.isRequired
 };
