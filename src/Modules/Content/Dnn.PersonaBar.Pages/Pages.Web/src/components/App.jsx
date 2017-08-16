@@ -133,13 +133,20 @@ class App extends Component {
 
     }
 
+
+    
+
     componentWillReceiveProps(newProps) {
 
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
 
+        console.log(newProps);
+
     }
+
+
 
     notifyErrorIfNeeded(newProps) {
         if (newProps.error !== this.props.error) {

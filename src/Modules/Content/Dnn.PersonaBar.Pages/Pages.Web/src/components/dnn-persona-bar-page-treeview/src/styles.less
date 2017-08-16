@@ -14,7 +14,6 @@
        .treeview-parent-expand-button,  .treeview-parent-collapse-button{
             margin-top:-2px;
        }
-
     }
 
     .dnn-persona-bar-treeview-ul{
@@ -43,6 +42,7 @@
         top: 5px;
 
         .in-context-menu {
+            clear:both;
             pointer-events: none;
             transition: all .20s forwards ease-in-out;
             position:absolute;
@@ -55,19 +55,27 @@
             -webkit-box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
             -moz-box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
             box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
+
+            ul{
+                clear:both;
+                background-color:orange;
+            }
+            li {
+                clear:both;
+                display:block;
+                width:100%;
+            }
         };
 
         .in-context-menu.active {
             pointer-events: auto;
             animation: BounceHeightIn .20s forwards ease-in;
-
         }
 
         .in-context-menu.inactive{
             visibility: visible;
             pointer-events: none;
             animation: BounceHeightOut .20s forwards ease-out;
-
         }
 
         .in-context-menu.hidden {
@@ -233,7 +241,6 @@
         height:inherit;
         border-bottom: 2px solid transparent;
         transition:all .5s;
-
     }
 
     .dropZoneArea {
@@ -251,14 +258,12 @@
         border-bottom: 2px solid @curiousBlue;
         background-color:#eee;
         padding:10px 0;
-
     }
 
     .list-item-border-top {
         border-top: 2px solid @curiousBlue;
         background-color:#eee;
         padding:10px 0;
-
     }
 
 
