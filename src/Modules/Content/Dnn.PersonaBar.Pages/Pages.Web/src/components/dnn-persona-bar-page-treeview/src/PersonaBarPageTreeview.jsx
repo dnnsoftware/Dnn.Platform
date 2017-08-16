@@ -142,7 +142,7 @@ export class PersonaBarPageTreeview extends Component {
             width:"100%",
             height: "20px",
             marginTop:"-20px",
-            backgroundColor:"transparent"
+            backgroundColor:"rgb(0,1,2,.5)"
 
         };
 

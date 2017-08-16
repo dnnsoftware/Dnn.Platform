@@ -41,6 +41,38 @@
 
     .selection-arrow{
         top: 5px;
+
+        .in-context-menu {
+            pointer-events: none;
+            transition: all .20s forwards ease-in-out;
+            position:absolute;
+            top: 30px;
+            right:5px;
+            height:0px;
+            width:200px;
+            background-color:#fff;
+            z-index:1000;
+            -webkit-box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
+            -moz-box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
+            box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
+        };
+
+        .in-context-menu.active {
+            pointer-events: auto;
+            animation: BounceHeightIn .20s forwards ease-in;
+
+        }
+
+        .in-context-menu.inactive{
+            visibility: visible;
+            pointer-events: none;
+            animation: BounceHeightOut .20s forwards ease-out;
+
+        }
+
+        .in-context-menu.hidden {
+            visibility: hidden;
+        }
     }
 
 }
@@ -111,12 +143,13 @@
         display:inline-block;
         position:relative;
         width:90px;
-        z-index:1000;
+        z-index:9998;
         top:2px;
         left:5px;
         font-size:18px;
         font-weight:bold;
         color: @curiousBlue;
+
         div{
             float:right;
             height:20px;
@@ -271,4 +304,16 @@
         display:none;
     }
 
+}
+
+@keyframes BounceHeightIn {
+    0%{ opacity:0; height: 0px;}
+    85%{opacity: .8; height:220px;}
+    100%{ opacity: 1; height:200px;}
+}
+
+@keyframes BounceHeightOut{
+    0%{ opacity:1; height: 200px;}
+    15%{opacity: .8; height:220px;}
+    100%{ opacity: 0; height:0px;}
 }

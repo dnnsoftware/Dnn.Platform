@@ -31,7 +31,10 @@ import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
 import "./style.less";
-
+console.log(window);
+window.addEventListener("Hello", ()=>{
+    alert('djfksdjfklds');
+}, false);
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
@@ -48,6 +51,7 @@ function getSelectedTabBeingViewed(viewTab) {
     }
 }
 
+
 class App extends Component {
     constructor() {
         super();
@@ -56,7 +60,7 @@ class App extends Component {
             referralText: "",
             busy:false
         };
-       
+
     }
 
     componentDidMount() {
@@ -121,31 +125,19 @@ class App extends Component {
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
 
+
     }
 
     componentWillUnmount() {
         document.removeEventListener("viewPageSettings");
+
     }
 
     componentWillReceiveProps(newProps) {
+
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
-
-        //debounce update
-        if(!this.state.busy){
-            this.setState({busy:true});
-            console.log(this.state.busy);
-            console.log('this message should only appear once');
-            setTimeout(()=>{
-                this.setState({busy:false});
-                this.props.getPage(utils.getCurrentPageId()).then((data)=>{
-                    console.log(data);
-                });
-
-
-            },2000);
-        }
 
     }
 
@@ -590,28 +582,28 @@ class App extends Component {
     }
 
     getToRootParent(){
-        const {selectedPage} = this.props;
-        let currentPage = selectedPage;
+        // const {selectedPage} = this.props;
+        // let currentPage = selectedPage;
 
-        const loop = () => {
-            let condition = currentPage.parentId !== -1;
+        // const loop = () => {
+        //     let condition = currentPage.parentId !== -1;
 
-            const left = () => {
-                const requestAsync = () => {
-                    currentPage.parentId=-1;
-                    console.log('in left loop',currentPage);
-                    loop();
-                };
-                requestAsync();
-            };
-            const right = () => exit();
+        //     const left = () => {
+        //         const requestAsync = () => {
+        //             currentPage.parentId=-1;
+        //             console.log('in left loop',currentPage);
+        //             loop();
+        //         };
+        //         requestAsync();
+        //     };
+        //     const right = () => exit();
 
-            condition ? left() : right();
-        };
+        //     condition ? left() : right();
+        // };
 
-        const exit = () => console.log('exiting loop');
+        // const exit = () => console.log('exiting loop');
 
-        selectedPage.tabId !== -1 ? loop() : exit();
+        // selectedPage.tabId !== -1 ? loop() : exit();
     }
 
     setActivePage(pageInfo) {

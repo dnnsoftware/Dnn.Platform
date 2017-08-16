@@ -123,6 +123,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id && item.canViewPage) ? item.selected = true : item.selected = false;
              item.selected ?  this.props.onSelection(id) : null;
+             delete item.showInContextMenu;
             updateStore(listItem);
         });
     }
@@ -536,8 +537,10 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return (
             <span className="dnn-persona-bar-treeview-ul">
                 {this.state.rootLoaded ?
-                    <PersonaBarPageTreeMenu listItems={this.state.pageList} />
-
+                    <PersonaBarPageTreeMenu
+                        listItems={this.state.pageList}
+                        _traverse={this.props._traverse.bind(this)}
+                    />
                     : null}
             </span>
         );

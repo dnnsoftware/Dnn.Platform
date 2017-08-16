@@ -19,9 +19,10 @@ export class PersonaBarPageTreeMenu extends Component {
     }
 
 
+
     render_tree(childListItems){
         return (
-             <PersonaBarPageTreeMenu listItems={childListItems} />
+             <PersonaBarPageTreeMenu listItems={childListItems} _traverse={this.props._traverse} />
         );
     }
 
@@ -42,7 +43,7 @@ export class PersonaBarPageTreeMenu extends Component {
 
 
     render_li() {
-        const {listItems} = this.props;
+        const {listItems, _traverse} = this.props;
 
         return listItems.map((item)=>{
             return (
@@ -52,7 +53,7 @@ export class PersonaBarPageTreeMenu extends Component {
                         style={{height:"30px"}}>
 
                         <div className="draft-pencil">
-                            <PersonaBarSelectionArrow item={item} />
+                            <PersonaBarSelectionArrow item={item} _traverse={_traverse} />
                         </div>
                     </div>
                     { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }
@@ -73,5 +74,6 @@ export class PersonaBarPageTreeMenu extends Component {
 }
 
 PersonaBarPageTreeMenu.propTypes = {
+    _traverse: PropTypes.func.isRequired,
     listItems: PropTypes.array.isRequired
 };
