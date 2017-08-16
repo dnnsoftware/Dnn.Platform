@@ -310,7 +310,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (string.IsNullOrEmpty(url))
                 {
-                    return "";
+                    return url;
                 }
 
                 url = url.Replace("\\", "/");
