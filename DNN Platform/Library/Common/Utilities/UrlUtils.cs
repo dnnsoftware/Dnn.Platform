@@ -310,6 +310,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (string.IsNullOrEmpty(url))
                 {
+                    //DNN-10193: returns the same value as passed in rather than empty string
                     return url;
                 }
 
