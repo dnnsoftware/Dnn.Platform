@@ -310,7 +310,8 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (string.IsNullOrEmpty(url))
                 {
-                    return "";
+                    //DNN-10193: returns the same value as passed in rather than empty string
+                    return url;
                 }
 
                 url = url.Replace("\\", "/");
