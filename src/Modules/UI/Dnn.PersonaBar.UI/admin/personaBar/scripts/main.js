@@ -232,7 +232,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 if (activePath === path && activemodule === moduleName) {
                     return;
                 }
-
+                $showSiteButton.hide();
                 var $menuItems = $(".btn_panel");
                 var $hoverMenuItems = $(".hovermenu > ul > li");
                 
@@ -264,7 +264,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     savePersistentCallback = function () {
                         activePath = path;
                         activemodule = moduleName;
-                        $showSiteButton.show();
                         eventEmitter.emitOpenPanelEvent();
 
                         iframe.style.width = "100%";
@@ -333,6 +332,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         });
                     }
                 }
+                setCloseButtonClass(panelId);
             },
             panelLoaded: function (params) {
                 extension.load(util, params);
@@ -420,6 +420,26 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         };
         util = $.extend(util, utility);
         // end define util
+
+        function setCloseButtonClass(id) {
+            var panel = document.querySelector('#' + id + '>div');
+            if (panel != null && panel.innerHTML !== "") {
+                var page = panel.querySelector('.dnn-persona-bar-page');
+                if (page != null && page.classList.contains('full-width')) {
+                    $showSiteButton.addClass('full-width-mode');
+                }
+                else {
+                    $showSiteButton.removeClass();
+                }
+                $showSiteButton.show();
+                return;
+            }
+            else {
+                setTimeout(function () {
+                    setCloseButtonClass(id);
+                }, 100);
+            }
+        }
         
         function onShownPersonaBar() {
             (function handleResizeWindow() {

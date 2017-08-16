@@ -878,6 +878,10 @@ transform: rotate(180deg);
     background-image: url('../images/close_thin-hover.svg')
 }
 
+.personabarnav > li#showsite.full-width-mode {
+    left: 1221px;
+}
+
 .personabarnav > li#Logout, .personabarnav > li#Edit {
     width: 100%;
 }
