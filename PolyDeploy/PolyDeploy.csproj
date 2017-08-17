@@ -170,7 +170,6 @@
     <Compile Include="WebAPI\ActionFilters\InWhitelist.cs" />
     <Compile Include="WebAPI\APIUsersController.cs" />
     <Compile Include="WebAPI\CIController.cs" />
-    <Compile Include="WebAPI\PackageController.cs" />
     <Compile Include="WebAPI\Routes.cs" />
     <Compile Include="WebAPI\SessionController.cs" />
     <Compile Include="WebAPI\WhitelistController.cs" />

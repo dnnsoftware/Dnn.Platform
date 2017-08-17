@@ -17,7 +17,7 @@
             function setupUploader(sessionGuid) {
 
                 // Construct upload url.
-                var uploadUrl = apiUrl + 'Package/Add?guid=' + sessionGuid;
+                var uploadUrl = apiUrl + 'Session/AddPackage?guid=' + sessionGuid;
 
                 // Create uploader.
                 var uploader = new FileUploader({
