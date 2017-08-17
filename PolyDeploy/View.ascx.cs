@@ -23,10 +23,14 @@ namespace Cantarus.Modules.PolyDeploy
 
 #if RELEASE
             // Minified resources for Release.
+            ClientResourceManager.RegisterStyleSheet(Page, string.Format("{0}/css/poly-deploy.min.css", TemplateSourceDirectory));
+
             ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.bundle.min.js", TemplateSourceDirectory), 3);
             ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.min.js", TemplateSourceDirectory), 4);
 #else
             // Non-minified resources for everything else.
+            ClientResourceManager.RegisterStyleSheet(Page, string.Format("{0}/css/poly-deploy.css", TemplateSourceDirectory));
+
             ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.bundle.js", TemplateSourceDirectory), 500);
             ClientResourceManager.RegisterScript(Page, string.Format("{0}/Angular/dist/poly-deploy.js", TemplateSourceDirectory), 501);
 #endif

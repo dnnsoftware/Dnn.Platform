@@ -8,7 +8,7 @@
         function (DataService) {
 
             // Session storage.
-            var currentSession;
+            var sessionPromise;
 
             // Get a session when the service is first used.
             getSession();
@@ -17,18 +17,16 @@
             function getSession() {
 
                 // Get a session from the API.
-                DataService.session.create().then(
+                sessionPromise = DataService.session.create().then(
                     function (data) {
 
                         // Store it.
-                        currentSession = data;
-
-                        console.log(currentSession);
+                        return data.Guid;
                     });
             }
 
             return {
-                session: currentSession
+                session: sessionPromise
             };
 
         }]);

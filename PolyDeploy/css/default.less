@@ -1,0 +1,25 @@
+﻿/* Paths */
+@path-node-modules: "../node_modules/";
+
+
+#cantarus-poly-deploy {
+    // Import namespaced bootstrap.
+    @import "@{path-node-modules}bootstrap/less/bootstrap.less";
+
+    #upload {
+
+        .drop-zone {
+            line-height: 90px;
+            border: 2px dashed rgba(0,0,0,0.3);
+            text-align: center;
+            font-size: 14pt;
+            color: rgba(0,0,0,0.3);
+            font-weight: bold;
+
+            &:hover {
+                border-color: rgba(0,0,0,0.6);
+                color: rgba(0,0,0,0.6);
+            }
+        }
+    }
+}

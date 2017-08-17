@@ -1,21 +1,33 @@
 <%@ Control language="C#" Inherits="Cantarus.Modules.PolyDeploy.View" AutoEventWireup="false"  Codebehind="View.ascx.cs" %>
 
 <!-- App Wrapper -->
-<div ng-app="cantarus.poly-deploy">
+<div class="container-fluid">
+    <div id="cantarus-poly-deploy" ng-app="cantarus.poly-deploy">
 
-    <!-- Main Controller -->
-    <div ng-controller="MainController">
+        <!-- Main Controller -->
+        <div ng-controller="MainController">
 
-        <!-- Navigation -->
-        <nav>
-            App Navigation
-        </nav>
-        <!-- /Navigation -->
+            <!-- Navigation -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <nav>
+                        App Navigation
+                    </nav>
+                </div>
+            </div>
+            <!-- /Navigation -->
         
-        <div ui-view></div>
+            <!-- Content -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div ui-view></div>
+                </div>
+            </div>
+            <!-- /Content -->
+
+        </div>
+        <!-- /MainController -->
 
     </div>
-    <!-- /MainController -->
-
 </div>
 <!-- /App Wrapper -->

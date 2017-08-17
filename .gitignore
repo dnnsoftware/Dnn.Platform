@@ -299,3 +299,6 @@ __pycache__/
 # Angular Build
 **/Angular/dist
 
+# Compiled LESS
+**/css/**/*.css
+
