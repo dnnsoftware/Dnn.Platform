@@ -5,7 +5,9 @@
   "private": true,
   "dependencies": {
     "angular": "^1.4.3",
-    "angular-ui-router": "^0.2.15"
+    "angular-file-upload": "^2.5.0",
+    "angular-ui-router": "^0.2.15",
+    "bootstrap": "^3.3.7"
   },
   "devDependencies": {
     "bluebird": "^3.5.0",

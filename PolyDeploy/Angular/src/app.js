@@ -4,7 +4,8 @@
 
     // Create Angular module.
     var module = angular.module('cantarus.poly-deploy', [
-        'ui.router'
+        'ui.router',
+        'angularFileUpload'
     ]);
 
     // Set up values.
