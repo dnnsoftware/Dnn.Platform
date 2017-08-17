@@ -33,6 +33,8 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                 // Receive files.
                 MultipartMemoryStreamProvider provider = await Request.Content.ReadAsMultipartAsync();
 
+                // TODO: Add filtering so that non .zip archives are not added.
+
                 foreach (HttpContent file in provider.Contents)
                 {
                     string filename = file.Headers.ContentDisposition.FileName.Replace("\"", "");

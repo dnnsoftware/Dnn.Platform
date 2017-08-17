@@ -7,19 +7,57 @@
     module.controller('UploadController', ['$scope', 'FileUploader', 'SessionService', 'apiUrl',
         function ($scope, FileUploader, SessionService, apiUrl) {
 
+            // Store for errors.
+            $scope.errors = [];
+
             // Wait for session guid.
-            SessionService.session.then(function (sessionGuid) {
+            SessionService.session.then(setupUploader);
+
+            // Setup uploader.
+            function setupUploader(sessionGuid) {
 
                 // Construct upload url.
                 var uploadUrl = apiUrl + 'Package/Add?guid=' + sessionGuid;
 
-                console.log('uploadUrl: ' + uploadUrl);
-
                 // Create uploader.
-                $scope.uploader = new FileUploader({
+                var uploader = new FileUploader({
                     url: uploadUrl
                 });
-            });
+
+                // Place on scope.
+                $scope.uploader = uploader;
+
+                // Add .zip filter.
+                uploader.filters.push({
+                    name: 'zipOnly',
+                    rejectionMessage: 'is not a .zip file.',
+                    fn: function (item, options) {
+
+                        // Is there a name?
+                        if (!item.name) {
+                            return false;
+                        }
+
+                        // Very rudimentary check to see if there is a .zip extension.
+                        var name = item.name;
+
+                        // Get extension.
+                        var ext = name.substring(name.lastIndexOf('.'));
+
+                        // Is .zip?
+                        if (ext.toLowerCase() !== '.zip') {
+                            return false;
+                        }
+
+                        return true;
+                    }
+                });
+
+                // Add handling for failed file add.
+                uploader.onWhenAddingFileFailed = function (item, filter, options) {
+                    $scope.errors.push(item.name + ' ' + filter.rejectionMessage);
+                };
+            }
 
         }]);
 })();

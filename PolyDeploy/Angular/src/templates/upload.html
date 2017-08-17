@@ -8,6 +8,20 @@
     </div>
     <!-- /Header -->
 
+    <!-- Errors -->
+    <div ng-show="errors.length > 0" class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-danger">
+                <ul>
+                    <li ng-repeat="errorMessage in errors">
+                        {{ errorMessage }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Errors -->
+
     <!-- Content -->
     <div ng-if="uploader" class="row">
 
@@ -19,7 +33,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <h3>Drop Files</h3>
-                        <div class="well drop-zone" nv-file-drop nv-file-over="" uploader="uploader">
+                        <div class="drop-zone" nv-file-drop nv-file-over="" uploader="uploader">
                             Drop files here.
                         </div>
                     </div>
@@ -37,6 +51,15 @@
             </div>
             /Regular -->
 
+            <!-- Controls -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>Controls</h3>
+                    <button onclick="return false;" class="btn btn-success" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">Upload</button>
+                </div>
+            </div>
+            <!-- /Controls -->
+
         </div>
         <!-- /Upload -->
 
@@ -45,24 +68,18 @@
 
             <h3>Upload Queue</h3>
 
-            <!-- Controls -->
-            <div class="row">
-                <div class="col-xs-12">
-                    <button onclick="return false;" class="btn btn-success" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">Upload</button>
-                </div>
-            </div>
-            <!-- /Controls -->
-
             <!-- Files -->
             <div class="row">
                 <div class="col-xs-12">
-                    <ul>
+                    <ul class="file-list">
                         <li ng-repeat="item in uploader.queue">
                             <ul>
-                                <li><strong>Name: </strong>{{ item.file.name }}</li>
-                                <li><strong>Size: </strong>{{ item.file.size / 1024 / 1024 | number: 2 }} MB</li>
-                                <li><strong>Progress: </strong>{{ item.progress }}</li>
+                                <li><h4>{{ item.file.name }}</h4></li>
+                                <li><strong>Size:</strong> {{ item.file.size / 1024 / 1024 | number: 2 }} MB</li>
                             </ul>
+                            <div class="progress-bar">
+                                <span style="width: {{ item.progress }}%;"></span>
+                            </div>
                         </li>
                     </ul>
                 </div>

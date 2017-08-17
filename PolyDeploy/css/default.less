@@ -15,10 +15,53 @@
             font-size: 14pt;
             color: rgba(0,0,0,0.3);
             font-weight: bold;
+            background: rgba(255,255,255,0.5);
 
             &:hover {
                 border-color: rgba(0,0,0,0.6);
                 color: rgba(0,0,0,0.6);
+            }
+        }
+
+        .file-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            border: 2px solid rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.5);
+
+            > li {
+                position: relative;
+                padding: 10px;
+                border-top: 1px solid rgba(0,0,0,0.3);
+                padding-bottom: 20px;
+
+                &:first-of-type {
+                    border-top: none;
+                }
+
+                .progress-bar {
+                    position: absolute;
+                    height: 10px;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    background: rgba(0,0,0,0.2);
+
+                    span {
+                        position: absolute;
+                        height: 100%;
+                        left: 0;
+                        top: 0;
+                        background: green;
+                    }
+                }
+            }
+
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
             }
         }
     }
