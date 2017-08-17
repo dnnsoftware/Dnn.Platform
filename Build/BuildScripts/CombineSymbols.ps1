@@ -25,14 +25,14 @@ if (!(Test-Path $artifactsPath -PathType Container))
     
 # extract all resources files to bin folder
 Get-ChildItem Resources.zip -Recurse | Foreach-Object {
-    Expand-Archive -LiteralPath "$($_.FullName)" -DestinationPath "$baseFolder"
+    Expand-Archive -Force -LiteralPath "$($_.FullName)" -DestinationPath "$baseFolder"
 }
 
 # compress all files in bin folder
-Compress-Archive -Path "$binFolder" -CompressionLevel Optimal -DestinationPath "$resourcePath"
+Compress-Archive -Force -Path "$binFolder" -CompressionLevel Optimal -DestinationPath "$resourcePath"
 
 Get-ChildItem *Symbols.zip |  Foreach-Object {
     # add teh resources file back to the symbols
-    Compress-Archive -LiteralPath "$resourcePath" -Update -CompressionLevel Optimal -DestinationPath "$($_.FullName)"
+    Compress-Archive -Force -LiteralPath "$resourcePath" -Update -CompressionLevel Optimal -DestinationPath "$($_.FullName)"
     Copy-Item "$($_.FullName)" "$artifactsPath"
 }
