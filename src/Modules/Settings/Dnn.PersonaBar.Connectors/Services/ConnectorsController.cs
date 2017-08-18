@@ -82,9 +82,9 @@ namespace Dnn.PersonaBar.Connectors.Services
             {
                 var jsonData = DotNetNuke.Common.Utilities.Json.Serialize(postData);
                 var serializer = new JavaScriptSerializer();
-                serializer.RegisterConverters(new[] { new DynamicJsonConverter() });
+                serializer.RegisterConverters(new[] {new DynamicJsonConverter()});
 
-                dynamic postObject = serializer.Deserialize(jsonData, typeof(object));
+                dynamic postObject = serializer.Deserialize(jsonData, typeof (object));
 
                 var name = postObject.name;
                 var displayName = postObject.displayName;
@@ -146,9 +146,16 @@ namespace Dnn.PersonaBar.Connectors.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                if (ex is ConnectorArgumentException)
+                {
+                    Logger.Warn(ex);
+                }
+                else
+                {
+                    Logger.Error(ex);
+                }
                 return Request.CreateResponse(HttpStatusCode.InternalServerError,
-                    new { Success = false, Message = ex.Message });
+                    new {Success = false, Message = ex.Message});
             }
         }
 
