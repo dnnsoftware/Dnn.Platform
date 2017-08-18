@@ -1,6 +1,7 @@
 Param(
     [parameter(Mandatory=$true)][string]$checkoutDir,
-    [parameter(Mandatory=$false)][string]$symbolsDir = "Dnn.Symbols"
+    [parameter(Mandatory=$false)][string]$symbolsDir = "Dnn.Symbols",
+    [parameter(Mandatory=$false)][string]$symbolsName
 	)
 
 $baseFolder   = ([System.IO.FileInfo]"$checkoutDir\$symbolsDir").FullName
@@ -48,6 +49,14 @@ try
         $symbolsZip = (Get-ChildItem "*Symbols.zip").FullName
         Write-Host "Adding $resourcePath to $symbolsZip"
         Compress-Archive -LiteralPath "$resourcePath" -Update -CompressionLevel Optimal -DestinationPath "$symbolsZip"
+
+        if ($symbolsName)
+        {
+            Write-Host "Renaming $symbolsZip to $symbolsName"
+            Rename-Item "$symbolsZip" "$symbolsName"
+            $symbolsZip = $symbolsName
+        }
+
         Write-Host "Copying $symbolsZip to $artifactsPath"
         Copy-Item "$symbolsZip" "$artifactsPath"
     }
