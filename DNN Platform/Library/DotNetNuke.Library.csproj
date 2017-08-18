@@ -684,6 +684,7 @@
     <Compile Include="Services\Connections\IConnectionsController.cs" />
     <Compile Include="Services\Connections\IConnectionsManager.cs" />
     <Compile Include="Services\Connections\IConnector.cs" />
+    <Compile Include="Services\Connections\ConnectorArgumentException.cs" />
     <Compile Include="Services\Cryptography\FipsCompilanceCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CoreCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
