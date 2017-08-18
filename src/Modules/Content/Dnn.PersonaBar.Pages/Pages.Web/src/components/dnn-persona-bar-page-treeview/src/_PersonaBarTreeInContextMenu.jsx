@@ -10,8 +10,9 @@ import "./styles.less";
 export class PersonaBarTreeInContextMenu extends Component {
 
 
-    cloak(){
-
+    onViewPage(item){
+        window.dnn.PersonaBar.closePanel();
+        window.parent.location = item.url;
     }
 
     render_default(item){
@@ -19,6 +20,7 @@ export class PersonaBarTreeInContextMenu extends Component {
             <div className="in-context-menu"></div>
         );
     }
+
 
     render_actionable(item) {
         const cloak = !item.selected || !item.hasOwnProperty('showInContextMenu') ? {visibility:"hidden"} : {visibility:"visible"};
@@ -35,15 +37,15 @@ export class PersonaBarTreeInContextMenu extends Component {
                         <div className="icon" dangerouslySetInnerHTML={{__html:TreeAddPage}}/>
                         <div className="label">Add Page</div>
                     </li>
-                    <li>
+                    <li onClick={()=>this.onViewPage(item)}>
                         <div className="icon" dangerouslySetInnerHTML={{__html:TreeEye}}/>
                         <div className="label">View</div>
                     </li>
-                    <li>
+                    <li onClick={()=>this.props.onViewPage(item.id, item.url)}>
                         <div className="icon" dangerouslySetInnerHTML={{__html:TreeEdit}}/>
                         <div className="label">Edit</div>
                     </li>
-                    <li>
+                    <li onClick={()=>this.props.onDuplicatePage()}>
                         <div className="icon" dangerouslySetInnerHTML={{__html:TreeCopy}}/>
                         <div className="label">Duplicate</div>
                     </li>
@@ -67,6 +69,8 @@ export class PersonaBarTreeInContextMenu extends Component {
 }
 
 PersonaBarTreeInContextMenu.propTypes = {
+    onViewPage: PropTypes.func.isRequired,
+    onDuplicatePage: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired
 };
 

@@ -142,8 +142,6 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
 
-        console.log(newProps);
-
     }
 
 
@@ -650,6 +648,10 @@ class App extends Component {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
 
+    onViewPage(id, url){
+        console.log('view page')
+        return PageActions.viewPage(id, url);
+    }
 
     render_PagesTreeViewEditor() {
         return (
@@ -789,6 +791,8 @@ class App extends Component {
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}
                                         onMovePage={this.onMovePage.bind(this)}
+                                        onViewPage={ this.onViewPage.bind(this)}
+                                        onDuplicatePage={this.props.onDuplicatePage}
                                         onSelection={this.onSelection.bind(this)} />
                                     </div>
                                 </div>
@@ -891,6 +895,7 @@ function mapDispatchToProps(dispatch) {
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
         getPage: PageActions.getPage,
+        viewPage: PageActions.viewPage,
         getChildPageList: PageActions.getChildPageList,
         updatePageListStore: PageActions.updatePageListStore,
         onCancelPage: PageActions.cancelPage,

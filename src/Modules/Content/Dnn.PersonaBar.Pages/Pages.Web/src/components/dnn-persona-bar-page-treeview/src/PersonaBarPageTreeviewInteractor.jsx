@@ -517,6 +517,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             <span className="dnn-persona-bar-treeview-ul">
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeMenu
+                        onViewPage={this.props.onViewPage}
+                        onDuplicatePage={this.props.onDuplicatePage}
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
                     />
@@ -579,6 +581,8 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     activePage: PropTypes.object.isRequired,
     onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,
+    onViewPage: PropTypes.func.isRequired,
+    onDuplicatePage: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired
 

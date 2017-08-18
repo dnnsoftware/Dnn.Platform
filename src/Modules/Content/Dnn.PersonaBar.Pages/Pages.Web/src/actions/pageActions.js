@@ -102,14 +102,22 @@ const pageActions = {
         };
     },
 
+    viewPage(id, url){
+        console.log(id, url);
+        PagesService.openPageInEditMode(id, url);
+        return (dispatch) => {
+
+        };
+    },
+
     duplicatePage() {
         return (dispatch, getState) => {
             const { pages } = getState();
             const duplicatedPage = cloneDeep(pages.selectedPage);
 
-            dispatch({
-                type: ActionTypes.LOAD_PAGE
-            });
+            // dispatch({
+            //     type: ActionTypes.LOAD_PAGE
+            // });
 
             duplicatedPage.templateTabId = duplicatedPage.tabId;
             duplicatedPage.tabId = 0;

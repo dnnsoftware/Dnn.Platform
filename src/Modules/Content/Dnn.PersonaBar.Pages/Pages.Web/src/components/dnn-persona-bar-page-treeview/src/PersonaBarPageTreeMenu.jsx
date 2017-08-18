@@ -22,7 +22,13 @@ export class PersonaBarPageTreeMenu extends Component {
 
     render_tree(childListItems){
         return (
-             <PersonaBarPageTreeMenu listItems={childListItems} _traverse={this.props._traverse} />
+             <PersonaBarPageTreeMenu
+                onViewPage={this.props.onViewPage}
+                onDuplicatePage={this.props.onDuplicatePage}
+                listItems={childListItems}
+                _traverse={this.props._traverse}
+
+                />
         );
     }
 
@@ -53,7 +59,11 @@ export class PersonaBarPageTreeMenu extends Component {
                         style={{height:"30px"}}>
 
                         <div className="draft-pencil">
-                            <PersonaBarSelectionArrow item={item} _traverse={_traverse} />
+                            <PersonaBarSelectionArrow
+                                onViewPage={this.props.onViewPage}
+                                onDuplicatePage={this.props.onDuplicatePage}
+                                item={item}
+                                _traverse={_traverse} />
                         </div>
                     </div>
                     { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }
@@ -74,6 +84,8 @@ export class PersonaBarPageTreeMenu extends Component {
 }
 
 PersonaBarPageTreeMenu.propTypes = {
+    onViewPage: PropTypes.func.isRequired,
+    onDuplicatePage: PropTypes.func.isRequired,
     _traverse: PropTypes.func.isRequired,
     listItems: PropTypes.array.isRequired
 };

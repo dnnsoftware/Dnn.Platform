@@ -35,7 +35,7 @@ export default class PersonaBarSelectionArrow extends Component {
             <div id={`menu-item-${item.name}`} className="selection-arrow">
                 { item.selected ? <div dangerouslySetInnerHTML={{__html:ArrowForward}} /> : <div></div> }
                 { item.selected ?  <div className="dots" dangerouslySetInnerHTML={{__html:MoreMenuIcon}} onClick={()=>this.toggleInContext(item)}/> : <div></div> }
-                 <PersonaBarTreeInContextMenu item={item} />
+                 <PersonaBarTreeInContextMenu  onDuplicatePage={this.props.onDuplicatePage} onViewPage={this.props.onViewPage} item={item} />
             </div>
 
         );
@@ -43,6 +43,8 @@ export default class PersonaBarSelectionArrow extends Component {
 }
 
 PersonaBarSelectionArrow.propTypes = {
+    onViewPage: PropTypes.func.isRequired,
+    onDuplicatePage: PropTypes.func.isRequired,
     _traverse: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired
 };
