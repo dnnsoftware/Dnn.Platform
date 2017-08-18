@@ -103,7 +103,6 @@ const pageActions = {
     },
 
     viewPage(id, url){
-        console.log(id, url);
         PagesService.openPageInEditMode(id, url);
         return (dispatch) => {
 

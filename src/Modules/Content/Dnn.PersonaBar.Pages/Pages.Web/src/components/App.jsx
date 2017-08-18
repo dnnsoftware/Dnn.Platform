@@ -31,10 +31,6 @@ import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
 import "./style.less";
-console.log(window);
-window.addEventListener("Hello", ()=>{
-    alert('djfksdjfklds');
-}, false);
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
@@ -649,7 +645,6 @@ class App extends Component {
     }
 
     onViewPage(id, url){
-        console.log('view page')
         return PageActions.viewPage(id, url);
     }
 

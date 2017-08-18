@@ -140,7 +140,6 @@ const PageService = function () {
     };
     
     const openPageInEditMode = function (id, url) {
-        console.log(id, url);
         const api = getPagesApi();
         return api.post("EditModeForPage?id=" + id, {})
             .then(() => 
