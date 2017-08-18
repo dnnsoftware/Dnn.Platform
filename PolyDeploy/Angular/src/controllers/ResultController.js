@@ -9,7 +9,7 @@
 
             // Wait for session.
             SessionService.sessionPromise.then(
-                function (session) {
+                function (sess) {
 
                     // Add session to scope.
                     var session = SessionService.session;
