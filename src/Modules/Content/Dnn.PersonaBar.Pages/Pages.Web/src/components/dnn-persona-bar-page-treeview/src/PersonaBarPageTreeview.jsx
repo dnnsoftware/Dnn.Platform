@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import GridCell from "dnn-grid-cell";
-import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new"
+import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new";
 import { PropTypes } from "prop-types";
 import {DragSource} from 'react-dnd';
 

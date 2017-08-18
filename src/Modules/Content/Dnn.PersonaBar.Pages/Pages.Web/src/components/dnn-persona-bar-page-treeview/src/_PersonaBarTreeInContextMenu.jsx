@@ -24,7 +24,7 @@ export class PersonaBarTreeInContextMenu extends Component {
 
     render_actionable(item) {
         const cloak = !item.selected || !item.hasOwnProperty('showInContextMenu') ? {visibility:"hidden"} : {visibility:"visible"};
-
+        /*eslint-disable react/no-danger*/
         return(
             <div
                 id={`context-menu-${item.name}-${item.id}`}

@@ -587,5 +587,3 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     saveDropState: PropTypes.func.isRequired
 
 };
-
-// <PersonaBarPageTreeMenu listItems={this.state.pageList} />
