@@ -386,8 +386,8 @@ class App extends Component {
             };
 
             utils.confirm(
-                Localization.get("CancelWithoutSavingPage"),
-                Localization.get("Revert"),
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Continue"),
                 Localization.get("Go Back"),
                 onConfirm);
 

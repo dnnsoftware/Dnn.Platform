@@ -481,10 +481,7 @@
     <value>Please, you must select a layout and a container to perform this operation.</value>
   </data>
   <data name="CancelWithoutSaving.Text" xml:space="preserve">
-    <value>Are you sure you want to close? Any changes will be lost.</value>
-  </data>
-  <data name="CancelWithoutSavingPage.Text" xml:space="preserve">
-    <value>Are you sure you want to cancel? Any changes will be reverted.</value>
+    <value>Are you sure you want to close? Changes have been made and will be lost. Do you wish continue? </value>
   </data>
   <data name="PathDuplicateWithAlias.Text" xml:space="preserve">
     <value>There is already a page with the same name, {0} at the same URL path {1}.</value>
