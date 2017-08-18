@@ -235,13 +235,16 @@ namespace Dnn.AzureConnector.Components
             {
                 if (string.IsNullOrWhiteSpace(azureAccountName))
                 {
-                    throw new Exception(Localization.GetString("AccountNameCannotBeEmpty.ErrorMessage", Constants.LocalResourceFile));
+                    throw new ConnectorArgumentException(Localization.GetString("AccountNameCannotBeEmpty.ErrorMessage",
+                        Constants.LocalResourceFile));
                 }
                 if (string.IsNullOrWhiteSpace(azureAccountKey))
                 {
-                    throw new Exception(Localization.GetString("AccountKeyCannotBeEmpty.ErrorMessage", Constants.LocalResourceFile));
+                    throw new ConnectorArgumentException(Localization.GetString("AccountKeyCannotBeEmpty.ErrorMessage",
+                        Constants.LocalResourceFile));
                 }
-                StorageCredentialsAccountAndKey sc = new StorageCredentialsAccountAndKey(azureAccountName, azureAccountKey);
+                StorageCredentialsAccountAndKey sc = new StorageCredentialsAccountAndKey(azureAccountName,
+                    azureAccountKey);
                 var csa = new CloudStorageAccount(sc, true);
                 var blobClient = csa.CreateCloudBlobClient();
 
@@ -276,14 +279,16 @@ namespace Dnn.AzureConnector.Components
                 }
                 else
                 {
-                    throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile));
+                    throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
+                        Constants.LocalResourceFile));
                 }
             }
             catch (StorageException ex)
             {
                 if (ex.ErrorCode == StorageErrorCode.AccountNotFound)
                 {
-                    throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile));
+                    throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
+                        Constants.LocalResourceFile));
                 }
                 else if (ex.ErrorCode == StorageErrorCode.AccessDenied)
                 {
@@ -291,16 +296,19 @@ namespace Dnn.AzureConnector.Components
                 }
                 else
                 {
-                    throw new Exception(Localization.GetString("AuthenticationFailure.ErrorMessage", Constants.LocalResourceFile));
+                    throw new Exception(Localization.GetString("AuthenticationFailure.ErrorMessage",
+                        Constants.LocalResourceFile));
                 }
             }
             catch (FormatException ex)
             {
-                if (ex.GetType() == typeof(UriFormatException))
+                if (ex.GetType() == typeof (UriFormatException))
                 {
-                    throw new Exception(Localization.GetString("InvalidAccountName.ErrorMessage", Constants.LocalResourceFile));
+                    throw new ConnectorArgumentException(Localization.GetString("InvalidAccountName.ErrorMessage",
+                        Constants.LocalResourceFile));
                 }
-                throw new Exception(Localization.GetString("InvalidAccountKey.ErrorMessage", Constants.LocalResourceFile));
+                throw new ConnectorArgumentException(Localization.GetString("InvalidAccountKey.ErrorMessage",
+                    Constants.LocalResourceFile));
             }
             return false;
         }
