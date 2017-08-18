@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <nav>
-                        App Navigation
+                        <a ui-sref="install">Install Modules</a> | <a ui-sref="manage-users">Manage API Users</a>
                     </nav>
                 </div>
             </div>

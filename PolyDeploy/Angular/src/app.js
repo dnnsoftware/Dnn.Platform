@@ -40,6 +40,11 @@
                 url: '/result',
                 templateUrl: appRoot + 'templates/result.html',
                 controller: 'ResultController'
+            })
+            .state('manage-users', {
+                url: '/manage-users',
+                templateUrl: appRoot + 'templates/manage-users.html',
+                controller: 'ManageUsersController'
             });
     });
 
