@@ -4,12 +4,16 @@ using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
-    [ConsoleCommand("cls", "Clears the console screen")]
+    [ConsoleCommand("cls", Constants.GeneralCategory, "Prompt_Cls_Description")]
     public class Cls : IConsoleCommand
     {
+        public string LocalResourceFile => Constants.LocalResourcesFile;
+
+        public string ResultHtml => Localization.GetString("Prompt_Cls_ResultHtml", LocalResourceFile);
 
         public string ValidationMessage
         {
@@ -19,7 +23,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
             }
         }
 
-        public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             throw new NotImplementedException();
         }

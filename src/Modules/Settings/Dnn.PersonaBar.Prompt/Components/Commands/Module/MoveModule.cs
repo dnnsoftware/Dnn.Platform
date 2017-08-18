@@ -1,22 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("move-module", "Copies the module specified", new[] { "id" })]
+    [ConsoleCommand("move-module", Constants.ModulesCategory, "Prompt_MoveModule_Description")]
     public class MoveModule : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        [FlagParameter("id", "Prompt_MoveModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
-        private const string FlagPageid = "pageid";
-        private const string FlagTopageid = "topageid";
+
+        [FlagParameter("pageid", "Prompt_MoveModule_FlagPageId", "Integer", true)]
+        private const string FlagPageId = "pageid";
+
+        [FlagParameter("topageid", "Prompt_MoveModule_FlagToPageId", "Integer", true)]
+        private const string FlagToPageId = "topageid";
+
+        [FlagParameter("pane", "Prompt_MoveModule_FlagPane", "String", "ContentPane")]
         private const string FlagPane = "pane";
 
         private int ModuleId { get; set; }
@@ -26,97 +33,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
+            
+            ModuleId = GetFlagValue(FlagId, "Module Id", -1, true, true, true);
+            PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
+            TargetPageId = GetFlagValue(FlagToPageId, "To Page Id", -1, true, false, true);
+            Pane = GetFlagValue(FlagPane, "Pane", "ContentPane");
 
-            if (HasFlag(FlagId))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagId), out tmpId))
-                {
-                    ModuleId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagId);
-                }
-            }
-            else if (args.Length >= 2 && !IsFlag(args[1]))
-            {
-                int tmpId;
-                if (int.TryParse(args[1], out tmpId))
-                {
-                    ModuleId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(
-                        Localization.GetString("Prompt_MainParamRequired", Constants.LocalResourcesFile), "Module Id",
-                        FlagId);
-                }
-            }
-            else
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_MainParamRequired", Constants.LocalResourcesFile), "Module Id", FlagId);
-            }
-
-            if (HasFlag(FlagPageid))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagPageid), out tmpId))
-                {
-                    PageId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile),
-                        FlagPageid);
-                }
-            }
-            else
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagPageid);
-            }
-
-            if (HasFlag(FlagTopageid))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagTopageid), out tmpId))
-                {
-                    TargetPageId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagTopageid);
-                }
-            }
-            else
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagTopageid);
-            }
-
-            if (HasFlag(FlagPane))
-                Pane = Flag(FlagPane);
-            if (string.IsNullOrEmpty(Pane))
-                Pane = "ContentPane";
-
-            if (ModuleId <= 0)
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagId);
-            }
-            if (PageId <= 0)
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagPageid);
-            }
-            if (TargetPageId <= 0)
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagTopageid);
-            }
             if (PageId == TargetPageId)
             {
-                sbErrors.Append(Localization.GetString("Prompt_SourceAndTargetPagesAreSame", Constants.LocalResourcesFile));
+                AddMessage(LocalizeString("Prompt_SourceAndTargetPagesAreSame"));
             }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -127,7 +53,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             if (movedModule == null && !string.IsNullOrEmpty(message.Value))
                 return new ConsoleErrorResultModel(message.Value);
             modules.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
-            return new ConsoleResultModel(Localization.GetString("Prompt_ModuleMoved", Constants.LocalResourcesFile)) { Data = modules, Records = modules.Count };
+            return new ConsoleResultModel(LocalizeString("Prompt_ModuleMoved")) { Data = modules, Records = modules.Count };
         }
     }
 }

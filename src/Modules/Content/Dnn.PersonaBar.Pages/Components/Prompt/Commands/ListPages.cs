@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -10,30 +9,39 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("list-pages", "Retrieves a list of pages based on the specified criteria", new[]{
-        "parentid",
-        "deleted",
-        "name",
-        "title",
-        "path",
-        "skin",
-        "page",
-        "max"
-    })]
+    [ConsoleCommand("list-pages", Constants.PagesCategory, "Prompt_ListPages_Description")]
     public class ListPages : ConsoleCommandBase
     {
-        private const string FlagParentid = "parentid";
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+
+        [FlagParameter("parentid", "Prompt_ListPages_FlagParentId", "Integer")]
+        private const string FlagParentId = "parentid";
+
+        [FlagParameter("deleted", "Prompt_ListPages_FlagDeleted", "Boolean")]
         private const string FlagDeleted = "deleted";
+
+        [FlagParameter("name", "Prompt_ListPages_FlagName", "String")]
         private const string FlagName = "name";
+
+        [FlagParameter("title", "Prompt_ListPages_FlagTitle", "String")]
         private const string FlagTitle = "title";
+
+        [FlagParameter("path", "Prompt_ListPages_FlagPath", "String")]
         private const string FlagPath = "path";
+
+        [FlagParameter("skin", "Prompt_ListPages_FlagSkin", "String")]
         private const string FlagSkin = "skin";
+
+        [FlagParameter("visible", "Prompt_ListRoles_FlagVisible", "Boolean")]
         private const string FlagVisible = "visible";
+
+        [FlagParameter("page", "Prompt_ListRoles_FlagPage", "Integer", "1")]
         private const string FlagPage = "page";
-        private const string FlagMax = "Max";
 
+        [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
+        private const string FlagMax = "max";
 
-        private int ParentId { get; set; } = -1;
+        private int? ParentId { get; set; } = -1;
         private bool? Deleted { get; set; }
         private string PageName { get; set; }
         private string PageTitle { get; set; }
@@ -45,100 +53,26 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            if (HasFlag(FlagParentid))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagParentid), out tmpId))
-                {
-                    ParentId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParentIdNotNumeric", Constants.LocalResourceFile), FlagParentid);
-                }
-            }
-            else if (args.Length > 1 && !IsFlag(args[1]))
-            {
-                int tmpId;
-                if (int.TryParse(args[1], out tmpId))
-                {
-                    ParentId = tmpId;
-                }
-            }
-
-            if (HasFlag(FlagDeleted))
-            {
-                // if flag is specified but has no value, default to it being true
-                if (string.IsNullOrEmpty(Flag(FlagDeleted)))
-                {
-                    Deleted = true;
-                }
-                else
-                {
-                    bool tmpDeleted;
-                    if (bool.TryParse(Flag(FlagDeleted), out tmpDeleted))
-                    {
-                        Deleted = tmpDeleted;
-                    }
-                    else
-                    {
-                        sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourceFile), FlagDeleted);
-                    }
-                }
-            }
-
-            if (HasFlag(FlagVisible))
-            {
-                bool tmp;
-                if (bool.TryParse(Flag(FlagVisible), out tmp))
-                {
-                    PageVisible = tmp;
-                }
-                else if (Flag(FlagVisible, null) == null)
-                {
-                    // default to true
-                    PageVisible = true;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_IfSpecifiedMustHaveValue", Constants.LocalResourceFile), FlagVisible);
-                }
-            }
-
-            if (HasFlag(FlagName))
-                PageName = Flag(FlagName);
-            if (HasFlag(FlagTitle))
-                PageTitle = Flag(FlagTitle);
-            if (HasFlag(FlagPath))
-                PagePath = Flag(FlagPath);
-            if (HasFlag(FlagSkin))
-                PageSkin = Flag(FlagSkin);
-            if (HasFlag(FlagPage))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagPage), out tmpId))
-                    Page = tmpId;
-            }
-            if (HasFlag(FlagMax))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagMax), out tmpId))
-                    Max = tmpId > 0 && tmpId < 100 ? tmpId : Max;
-            }
-
-
-            ValidationMessage = sbErrors.ToString();
+            
+            ParentId = GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, true, true);
+            Deleted = GetFlagValue<bool?>(FlagDeleted, "Deleted", null);
+            PageVisible = GetFlagValue<bool?>(FlagVisible, "Page Visible", null);
+            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
+            PageTitle = GetFlagValue(FlagTitle, "Page Title", string.Empty);
+            PagePath = GetFlagValue(FlagPath, "Page Path", string.Empty);
+            PageSkin = GetFlagValue(FlagSkin, "Page Skin", string.Empty);
+            Page = GetFlagValue(FlagPage, "Page", 1);
+            Max = GetFlagValue(FlagMax, "Max", 10);
         }
 
         public override ConsoleResultModel Run()
         {
+            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+
             var lstOut = new List<PageModelBase>();
             int total;
-            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId, out total, string.Empty, Page > 0 ? Page - 1 : 0, Max);
-            var totalPages = total / Max + (total % Max == 0 ? 0 : 1);
+            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, max);
+            var totalPages = total / max + (total % max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             lstOut.AddRange(lstTabs.Select(tab => new PageModelBase(tab)));
             return new ConsoleResultModel
@@ -148,12 +82,10 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
-                    PageSize = Max
+                    PageSize = max
                 },
                 Records = lstOut.Count,
-                Output = pageNo <= totalPages
-                        ? DotNetNuke.Services.Localization.Localization.GetString("Prompt_ListPagesOutput", Constants.LocalResourceFile)
-                        : DotNetNuke.Services.Localization.Localization.GetString("Prompt_NoPages", Constants.LocalResourceFile),
+                Output = lstOut.Count == 0 ? LocalizeString("Prompt_NoPages") : "",
                 FieldOrder = new[]
                 {
                     "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted"

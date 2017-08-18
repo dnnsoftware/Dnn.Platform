@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -11,15 +10,16 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-page", "Retrieves information about the specified or current page", new[]{
-        "id",
-        "parentid",
-        "name"
-    })]
+    [ConsoleCommand("get-page", Constants.PagesCategory, "Prompt_GetPage_Description")]
     public class GetPage : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+
+        [FlagParameter("name", "Prompt_GetPage_FlagName", "String")]
         private const string FlagName = "name";
+        [FlagParameter("id", "Prompt_GetPage_FlagId", "Integer")]
         private const string FlagId = "id";
+        [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
         private int PageId { get; set; } = -1;
@@ -28,55 +28,14 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            // default usage: return current page if nothing else specified
-            if (args.Length == 1)
-            {
-                PageId = TabId;
-            }
-            else if (args.Length == 2)
-            {
-                var tmpId = 0;
-                if (!int.TryParse(args[1], out tmpId))
-                {
-                    sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_NoPageId", Constants.LocalResourceFile));
-                }
-                else
-                {
-                    PageId = tmpId;
-                }
-            }
-            else
-            {
-                if (HasFlag(FlagId))
-                {
-                    int tmpId;
-                    if (!int.TryParse(Flag(FlagId), out tmpId))
-                    {
-                        sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_InvalidPageId", Constants.LocalResourceFile));
-                    }
-                    else
-                    {
-                        PageId = tmpId;
-                    }
-                }
-            }
-
-            PageName = Flag(FlagName);
-            if (HasFlag(FlagParentId))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagParentId), out tmpId))
-                    ParentId = tmpId;
-            }
-
+            
+            PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
+            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
+            ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
             if (PageId == -1 && string.IsNullOrEmpty(PageName))
             {
-                sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParameterRequired", Constants.LocalResourceFile));
+                AddMessage(LocalizeString("Prompt_ParameterRequired"));
             }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -88,11 +47,11 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             if (tab == null)
             {
-                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageNotFound", Constants.LocalResourceFile));
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
             }
             if (!SecurityService.Instance.CanManagePage(PageId))
             {
-                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("MethodPermissionDenied", Constants.LocalResourceFile));
+                return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
             }
 
             lst.Add(new PageModel(tab));

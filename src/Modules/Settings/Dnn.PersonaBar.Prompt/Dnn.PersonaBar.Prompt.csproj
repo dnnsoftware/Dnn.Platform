@@ -113,7 +113,10 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\Commands\Application\RestartApplication.cs" />
+    <Compile Include="Components\Commands\Client\Clh.cs" />
     <Compile Include="Components\Commands\Client\ClearHistory.cs" />
+    <Compile Include="Components\Commands\Client\ClearScreen.cs" />
+    <Compile Include="Components\Commands\Client\SetMode.cs" />
     <Compile Include="Components\Commands\Client\Cls.cs" />
     <Compile Include="Components\Commands\Client\Exit.cs" />
     <Compile Include="Components\Commands\Client\Reload.cs" />
@@ -136,6 +139,8 @@
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\IModulesController.cs" />
     <Compile Include="Components\Models\Command.cs" />
+    <Compile Include="Components\Models\CommandHelp.cs" />
+    <Compile Include="Components\Models\CommandOption.cs" />
     <Compile Include="Components\ModulesController.cs" />
     <Compile Include="MenuControllers\PromptMenuController.cs" />
     <Compile Include="Components\Models\CommandInputModel.cs" />
@@ -152,54 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\Prompt.css" />
-    <Content Include="admin\personaBar\help\add-roles.html" />
-    <Content Include="admin\personaBar\help\clear-log.html" />
-    <Content Include="admin\personaBar\help\clear-cache.html" />
-    <Content Include="admin\personaBar\help\clear-history.html" />
-    <Content Include="admin\personaBar\help\clear-screen.html" />
-    <Content Include="admin\personaBar\help\clh.html" />
-    <Content Include="admin\personaBar\help\cls.html" />
-    <Content Include="admin\personaBar\help\config.html" />
-    <Content Include="admin\personaBar\help\copy-module.html" />
-    <Content Include="admin\personaBar\help\delete-module.html" />
-    <Content Include="admin\personaBar\help\delete-page.html" />
-    <Content Include="admin\personaBar\help\delete-role.html" />
-    <Content Include="admin\personaBar\help\delete-user.html" />
-    <Content Include="admin\personaBar\help\exit.html" />
-    <Content Include="admin\personaBar\help\get-host.html" />
-    <Content Include="admin\personaBar\help\get-module.html" />
-    <Content Include="admin\personaBar\help\get-page.html" />
-    <Content Include="admin\personaBar\help\get-portal.html" />
-    <Content Include="admin\personaBar\help\get-role.html" />
-    <Content Include="admin\personaBar\help\get-task.html" />
-    <Content Include="admin\personaBar\help\set-user.html" />
-    <Content Include="admin\personaBar\help\get-user.html" />
-    <Content Include="admin\personaBar\help\goto.html" />
-    <Content Include="admin\personaBar\help\index.html" />
-    <Content Include="admin\personaBar\help\learn.html" />
-    <Content Include="admin\personaBar\help\list-modules.html" />
-    <Content Include="admin\personaBar\help\list-pages.html" />
-    <Content Include="admin\personaBar\help\list-roles.html" />
-    <Content Include="admin\personaBar\help\list-tasks.html" />
-    <Content Include="admin\personaBar\help\list-users.html" />
-    <Content Include="admin\personaBar\help\move-module.html" />
-    <Content Include="admin\personaBar\help\new-page.html" />
-    <Content Include="admin\personaBar\help\new-role.html" />
-    <Content Include="admin\personaBar\help\new-user.html" />
-    <Content Include="admin\personaBar\help\purge-module.html" />
-    <Content Include="admin\personaBar\help\purge-page.html" />
-    <Content Include="admin\personaBar\help\purge-user.html" />
-    <Content Include="admin\personaBar\help\reload.html" />
-    <Content Include="admin\personaBar\help\reset-password.html" />
-    <Content Include="admin\personaBar\help\restart-application.html" />
-    <Content Include="admin\personaBar\help\restore-module.html" />
-    <Content Include="admin\personaBar\help\restore-page.html" />
-    <Content Include="admin\personaBar\help\restore-user.html" />
-    <Content Include="admin\personaBar\help\set-mode.html" />
-    <Content Include="admin\personaBar\help\set-page.html" />
-    <Content Include="admin\personaBar\help\set-role.html" />
-    <Content Include="admin\personaBar\help\set-task.html" />
-    <Content Include="admin\personaBar\help\syntax.html" />
     <Content Include="admin\personaBar\Prompt.html" />
     <Content Include="admin\personaBar\scripts\bundles\prompt-bundle.js" />
     <Content Include="admin\personaBar\scripts\Prompt.js" />

@@ -369,9 +369,6 @@
   <data name="Prompt_ListRolesFailed.Text" xml:space="preserve">
     <value>Failed to list the roles.</value>
   </data>
-  <data name="Prompt_ListRolesOutput.Text" xml:space="preserve">
-    <value>Press CTRL+X to end.\nPress any key to load more....</value>
-  </data>
   <data name="Prompt_NoRoles.Text" xml:space="preserve">
     <value>No roles found.</value>
   </data>
@@ -379,7 +376,7 @@
     <value>--{0} cannot be empty.</value>
   </data>
   <data name="Prompt_InvalidRoleStatus.Text" xml:space="preserve">
-    <value>Invalid value '{0}' passed for --{1}. Expecting 'pending', 'approved', or 'disabled'</value>
+    <value>Invalid value passed for --{0}. Expecting 'pending', 'approved', or 'disabled'</value>
   </data>
   <data name="Prompt_NoRoleWithId.Text" xml:space="preserve">
     <value>No role found with the ID {0}</value>
@@ -413,5 +410,376 @@
   </data>
   <data name="plRSVPLink.Help" xml:space="preserve">
     <value>A link that allows users to subscribe to this role will be displayed when an RSVP Code is saved for this role.</value>
+  </data>
+  <data name="Prompt_DeleteRole_Description.Text" xml:space="preserve">
+    <value>Permanently deletes the given DNN Security Role. You cannot delete the built-in DNN security roles of Administrator, RegisteredUser,
+    Subscriber, or UnverifiedUser. &lt;small&gt;&lt;strong class="text-danger"&gt;WARNING: This is a permanent action and cannot be undone&lt;/strong&gt;&lt;/small&gt;</value>
+  </data>
+  <data name="Prompt_DeleteRole_FlagId.Text" xml:space="preserve">
+    <value>The ID of the security role to delete. This value is required. However, if you pass the id as the first argument after the command, you do not need to explicitly use the &lt;span class="mono"&gt;--id&lt;/span&gt; flag.</value>
+  </data>
+  <data name="Prompt_DeleteRole_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Permanently Delete A DNN Security Role&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    delete-role 11
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Successfully deleted role 'Public' (11)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_GetRole_Description.Text" xml:space="preserve">
+    <value>Retrieves the details of a given DNN Security Role.</value>
+  </data>
+  <data name="Prompt_GetRole_FlagId.Text" xml:space="preserve">
+    <value>The ID of the security role. This value is required. However, if you pass the id as the first argument after the command, you do not need to explicitly use the &lt;span class="mono"&gt;--id&lt;/span&gt; flag.</value>
+  </data>
+  <data name="Prompt_GetRole_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Get A DNN Security Role&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    get-role 11
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleGroupId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;-1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Public&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Description&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Role for all users&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IsPublic&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;AutoAssign&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;UserCount&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CreatedDate&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2016-12-31T14:53:44.033&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CreatedBy&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ModifiedDate&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:07:39.233&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ModifiedBy&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="3"&gt;1 role found&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_ListRoles_Description.Text" xml:space="preserve">
+    <value>Retrieves a list of DNN security roles for the portal.</value>
+  </data>
+  <data name="Prompt_ListRoles_FlagMax.Text" xml:space="preserve">
+    <value>Page Size for the page. Max is 500.</value>
+  </data>
+  <data name="Prompt_ListRoles_FlagPage.Text" xml:space="preserve">
+    <value>Page number to show records.</value>
+  </data>
+  <data name="Prompt_ListRoles_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;Get Information on Current Portal&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            list-roles
+        &lt;/code&gt;
+        &lt;h4&gt;Results&lt;/h4&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;RoleId&lt;/th&gt;
+                    &lt;th&gt;RoleGroupId&lt;/th&gt;
+                    &lt;th&gt;RoleName&lt;/th&gt;
+                    &lt;th&gt;Description&lt;/th&gt;
+                    &lt;th&gt;IsPublic&lt;/th&gt;
+                    &lt;th&gt;AutoAssign&lt;/th&gt;
+                    &lt;th&gt;UserCount&lt;/th&gt;
+                    &lt;th&gt;CreatedDate&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;0&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;Administrators&lt;/td&gt;
+                    &lt;td&gt;Administrators of this Website&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;2016-12-01T06:03:11.35&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;My New Role&lt;/td&gt;
+                    &lt;td&gt;A test role&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;0&lt;/td&gt;
+                    &lt;td&gt;2016-12-15T07:28:16.49&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;Registered Users&lt;/td&gt;
+                    &lt;td&gt;Registered Users&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;2016-12-01T06:03:11.357&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;Subscribers&lt;/td&gt;
+                    &lt;td&gt;A public role for site subscriptions&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                    &lt;td&gt;5&lt;/td&gt;
+                    &lt;td&gt;2016-12-01T06:03:11.39&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;Translator (en-US)&lt;/td&gt;
+                    &lt;td&gt;A role for English (United States) translators&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;0&lt;/td&gt;
+                    &lt;td&gt;2016-12-01T06:03:11.39&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;4&lt;/td&gt;
+                    &lt;td&gt;-1&lt;/td&gt;
+                    &lt;td&gt;Unverified Users&lt;/td&gt;
+                    &lt;td&gt;Unverified Users&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;0&lt;/td&gt;
+                    &lt;td&gt;2016-12-01T06:03:11.393&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_NewRole_Description.Text" xml:space="preserve">
+    <value>Creates a new DNN security role for the portal.</value>
+  </data>
+  <data name="Prompt_NewRole_FlagAutoAssign.Text" xml:space="preserve">
+    <value>When true, this role will be automatically assigned to users of the site including existing users.</value>
+  </data>
+  <data name="Prompt_NewRole_FlagDescription.Text" xml:space="preserve">
+    <value>A description of the role.</value>
+  </data>
+  <data name="Prompt_NewRole_FlagIsPublic.Text" xml:space="preserve">
+    <value>When true, users will be able to see the role and assign themselves to the role.</value>
+  </data>
+  <data name="Prompt_NewRole_FlagRoleName.Text" xml:space="preserve">
+    <value>The name of the security role. This value is required. However, if you pass the name as the first argument after the command, you do not need to explicitly use the &lt;span class="mono"&gt;--name&lt;/span&gt; flag.</value>
+  </data>
+  <data name="Prompt_NewRole_FlagStatus.Text" xml:space="preserve">
+    <value>Status of the role. Possible values are "approved", "pending" and "disabled".</value>
+  </data>
+  <data name="Prompt_NewRole_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Create A New DNN Security Role (Minimum Syntax)&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    new-role Role1
+  &lt;/code&gt;
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleGroupId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;-1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Role1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Description&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IsPublic&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;AutoAssign&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;UserCount&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CreatedDate&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2016-12-31T14:53:44.033&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="3"&gt;Role successfully created.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+
+
+  &lt;h4&gt;Create A New DNN Security Role&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    new-role "General Public" --description "Role for all users" --public true --autoassign true
+  &lt;/code&gt;
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleGroupId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;-1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;General Public&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Description&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Role for all users&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IsPublic&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;AutoAssign&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;UserCount&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CreatedDate&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2016-12-31T15:06:02.563&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="3"&gt;Role successfully created.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_SetRole_Description.Text" xml:space="preserve">
+    <value>Sets or updates properties of a DNN Security Role. Only properties you specify will be updated on the role.</value>
+  </data>
+  <data name="Prompt_SetRole_FlagAutoAssign.Text" xml:space="preserve">
+    <value>When true, this role will be automatically assigned to users of the site including existing users.</value>
+  </data>
+  <data name="Prompt_SetRole_FlagDescription.Text" xml:space="preserve">
+    <value>A description of the role.</value>
+  </data>
+  <data name="Prompt_SetRole_FlagId.Text" xml:space="preserve">
+    <value>The ID of the security role. This value is required. However, if you pass the id as the first argument after the command, you do not need to explicitly use the &lt;span class="mono"&gt;--id&lt;/span&gt; flag.</value>
+  </data>
+  <data name="Prompt_SetRole_FlagIsPublic.Text" xml:space="preserve">
+    <value>When true, users will be able to see the role and assign themselves to the role.</value>
+  </data>
+  <data name="Prompt_SetRole_FlagRoleName.Text" xml:space="preserve">
+    <value>The name of the security role.</value>
+  </data>
+  <data name="Prompt_SetRole_FlagStatus.Text" xml:space="preserve">
+    <value>Status of the role. Possible values are "approved", "pending" and "disabled".</value>
+  </data>
+  <data name="Prompt_SetRole_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Update A DNN Security Role&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    set-role 10 --name Public
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleGroupId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;-1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RoleName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Public&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Description&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Role for all users&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IsPublic&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;AutoAssign&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;UserCount&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CreatedDate&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2016-12-31T14:53:44.033&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="3"&gt;Role successfully created.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_RolesCategory.Text" xml:space="preserve">
+    <value>Role Commands</value>
   </data>
 </root>

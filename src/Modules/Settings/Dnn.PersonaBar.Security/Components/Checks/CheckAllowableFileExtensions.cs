@@ -5,9 +5,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckAllowableFileExtensions : IAuditCheck
     {
+        public string Id => "CheckAllowableFileExtensions";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckAllowableFileExtensions");
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
             try
             {
                 if (Host.AllowedExtensionWhitelist.IsAllowedExtension("asp")

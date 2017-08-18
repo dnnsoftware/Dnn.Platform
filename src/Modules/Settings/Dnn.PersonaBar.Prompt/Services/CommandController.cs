@@ -1,6 +1,5 @@
 ﻿using DotNetNuke.Web.Api;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,16 +7,15 @@ using System.Text;
 using System.Web.Http;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Common;
 using Dnn.PersonaBar.Prompt.Components;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
-using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
@@ -26,6 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Services
     public class CommandController : ControllerBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
+        private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
         [HttpGet]
         public HttpResponseMessage List()
@@ -41,19 +40,20 @@ namespace Dnn.PersonaBar.Prompt.Services
             try
             {
                 var args = command.Args;
-                var cmdName = args.First().ToUpper();
-                var allCommands = CommandRepository.Instance.GetCommands();
-                //If command not found and command contain namespace.
-                if (!allCommands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
+                var isHelpCmd = args.First().ToUpper() == "HELP";
+                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "LEARN";
+                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "SYNTAX";
+                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : "") : args.First().ToUpper();
+                if (isHelpCmd && (isHelpSyntax || isHelpLearn))
                 {
-                    var seek = allCommands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
-                    // if there is a command which matches then we assume the user meant that namespace
-                    if (seek != null)
-                    {
-                        cmdName = $"{seek.NameSpace.ToUpper()}.{cmdName}";
-                    }
+                    return GetHelp(command, null, isHelpSyntax, isHelpLearn);
                 }
+                if (isHelpCmd && args.Length == 1)
+                    return AddLogAndReturnResponse(null, null, command, startTime,
+                        string.Format(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
+                            cmdName.ToLower()));
 
+                var allCommands = CommandRepository.Instance.GetCommands();
                 // if no command found notify
                 if (!allCommands.ContainsKey(cmdName))
                 {
@@ -72,8 +72,9 @@ namespace Dnn.PersonaBar.Prompt.Services
                 try
                 {
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
+                    if (isHelpCmd) return GetHelp(command, cmdObj);
                     // set env. data for command use
-                    cmdObj.Init(args, PortalSettings, UserInfo, command.CurrentPage);
+                    cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
                     return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
                 }
                 catch (Exception ex)
@@ -107,7 +108,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             {
                 LogTypeKey = "PROMPT_ALERT"
             };
-            logInfo.LogProperties.Add(new LogDetailInfo("Command", command.CmdLine));
+            logInfo.LogProperties.Add(new LogDetailInfo("Command", FilterCommand(command.CmdLine)));
             logInfo.LogProperties.Add(new LogDetailInfo("IsValid", isValid.ToString()));
 
             try
@@ -117,6 +118,34 @@ namespace Dnn.PersonaBar.Prompt.Services
                 if (isValid)
                 {
                     var result = consoleCommand.Run();
+                    if (result.PagingInfo != null)
+                    {
+                        if (result.PagingInfo.PageNo < result.PagingInfo.TotalPages)
+                        {
+                            result.Output = string.Format(Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
+                                    result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+
+                            var args = command.Args;
+                            var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
+                                ? args.TakeWhile(arg => arg.ToLowerInvariant() != "--page").Count()
+                                : -1;
+                            if (indexOfPage > -1)
+                            {
+                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString();
+                            }
+                            var nextPageCommand = string.Join(" ", args);
+                            if (indexOfPage == -1)
+                            {
+                                nextPageCommand += " --page " + (result.PagingInfo.PageNo + 1);
+                            }
+                            result.NextPageCommand = nextPageCommand;
+                        }
+                        else if (result.Records > 0)
+                        {
+                            result.Output = string.Format(Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
+                                    result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                        }
+                    }
                     message = Request.CreateResponse(HttpStatusCode.OK, result);
                     logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
@@ -135,6 +164,29 @@ namespace Dnn.PersonaBar.Prompt.Services
             logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
             LogController.Instance.AddLog(logInfo);
             return message;
+        }
+
+        private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
+        }
+
+        private static string FilterCommand(string command)
+        {
+            var blackList = BlackList;
+            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
+                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (promptBlackList.Length > 0)
+            {
+                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
+            }
+            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
+            foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
+                        .Where(lowerKey => args.Any(arg => arg.Replace("-", "") == lowerKey)))
+            {
+                args[args.TakeWhile(arg => arg.Replace("-", "") != lowerKey).Count() + 1] = "******";
+            }
+            return string.Join(" ", args);
         }
     }
 }

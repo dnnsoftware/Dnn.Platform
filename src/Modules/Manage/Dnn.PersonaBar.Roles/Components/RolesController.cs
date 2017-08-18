@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Roles.Components
                 .Where(r => isAdmin || r.RoleID != portalSettings.AdministratorRoleId);
             if (!string.IsNullOrEmpty(keyword))
             {
-                roles = roles.Where(r => r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger);
+                roles = roles.Where(r => r.RoleName.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) > Null.NullInteger);
             }
 
             var roleInfos = roles as IList<RoleInfo> ?? roles.ToList();
@@ -87,7 +87,7 @@ namespace Dnn.PersonaBar.Roles.Components
 
             if (roleDto.Id == Null.NullInteger)
             {
-                if (RoleController.Instance.GetRole(portalSettings.PortalId, r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase)) == null)
+                if (RoleController.Instance.GetRole(portalSettings.PortalId, r => rolename.Equals(r.RoleName, StringComparison.OrdinalIgnoreCase)) == null)
                 {
                     RoleController.Instance.AddRole(role, assignExistUsers);
                     roleDto.Id = role.RoleID;
@@ -115,7 +115,7 @@ namespace Dnn.PersonaBar.Roles.Components
                         RoleController.Instance.UpdateRole(existingRole, assignExistUsers);
                     }
                 }
-                else if (RoleController.Instance.GetRole(portalSettings.PortalId, r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase) && r.RoleID != roleDto.Id) == null)
+                else if (RoleController.Instance.GetRole(portalSettings.PortalId, r => rolename.Equals(r.RoleName, StringComparison.OrdinalIgnoreCase) && r.RoleID != roleDto.Id) == null)
                 {
                     existingRole.RoleName = role.RoleName;
                     existingRole.Description = role.Description;

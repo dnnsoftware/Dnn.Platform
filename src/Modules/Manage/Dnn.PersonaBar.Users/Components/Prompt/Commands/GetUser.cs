@@ -1,55 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("get-user", "Returns users that match the given expression", new[]{
-        "id",
-        "email",
-        "username"
-    })]
+    [ConsoleCommand("get-user", Constants.UsersCategory, "Prompt_GetUser_Description")]
     public class GetUser : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        [FlagParameter("id", "Prompt_GetUser_FlagId", "Integer")]
         private const string FlagId = "id";
+        [FlagParameter("email", "Prompt_GetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
+        [FlagParameter("username", "Prompt_GetUser_FlagUsername", "String")]
         private const string FlagUsername = "username";
 
 
-        public int? UserId { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
+        private int? UserId { get; set; }
+        private string Email { get; set; }
+        private string Username { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            // If no 'find flags (email, id, etc.) are specied, return current user. this is handled in Run so we don't have 
-            // to do another datbase lookup
-
-            if (HasFlag(FlagId))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagId), out tmpId))
-                    UserId = tmpId;
-            }
-            if (HasFlag(FlagEmail))
-                Email = Flag(FlagEmail);
-            if (HasFlag(FlagUsername))
-                Username = Flag(FlagUsername);
+            
+            UserId = GetFlagValue<int?>(FlagId, "User Id", null);
+            Email = GetFlagValue(FlagEmail, "Email", string.Empty);
+            Username = GetFlagValue(FlagUsername, "Username", string.Empty);
 
             if (args.Length != 1)
             {
-                if (args.Length == 2 && !UserId.HasValue && Email == null && Username == null)
+                if (args.Length == 2 && !UserId.HasValue && string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Username))
                 {
                     // only one value passed and it's not a flagged value. Try to interpret it.
                     if (args[1].Contains("@"))
@@ -70,12 +56,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                         }
                     }
                 }
-                if (!UserId.HasValue && Email == null && Username == null)
+                if (!UserId.HasValue && string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Username))
                 {
-                    sbErrors.Append(Localization.GetString("Prompt_SearchUserParameterRequired", Constants.LocalResourcesFile));
+                    AddMessage(LocalizeString("Prompt_SearchUserParameterRequired"));
                 }
             }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()

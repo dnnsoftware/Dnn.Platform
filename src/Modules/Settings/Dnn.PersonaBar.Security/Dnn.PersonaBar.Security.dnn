@@ -78,6 +78,15 @@
           </permission>
         </component>
       </components>
+      <eventMessage>
+        <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+        <processorCommand>UpgradeModule</processorCommand>
+        <attributes>
+          <businessControllerClass>Dnn.PersonaBar.Security.Components.BusinessController, Dnn.PersonaBar.Security</businessControllerClass>
+          <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+          <upgradeVersionsList>01.05.00</upgradeVersionsList>
+        </attributes>
+      </eventMessage>
     </package>
   </packages>
 </dotnetnuke>

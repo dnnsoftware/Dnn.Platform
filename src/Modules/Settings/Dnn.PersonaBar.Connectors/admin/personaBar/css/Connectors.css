@@ -74,10 +74,6 @@ table#connectionstbl span.socialnetwork-name {
     text-align: left;
 }
 
-.common-table td a{ color: #0087c6;text-decoration: none;}
-.common-table td a:hover{ color: #2fa6eb;}
-
-
 .common-table tfoot {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 5px;
@@ -155,11 +151,21 @@ table#connectionstbl span.socialnetwork-name {
 .common-table tbody.edit-body tr.edit-row td {
     border-bottom: none;
 }
+.common-table tr.edit-title td a.primarybtn,
+.common-table tr.edit-title td a.plainbtn {
+    min-width: 93px;
+}
+.common-table tr.edit-title.in-edit {
+    border-top: 2px solid #1e88c3;
+}
+
+.common-table tr.edit-row.in-edit {
+    border-bottom: 2px solid #1e88c3;
+}
 
 .common-table tr.edit-row > td > div {
     display: none;
     padding: 33px 9px 15px 9px;
-    border-bottom: 2px solid #0087c6;
 }
 
 .common-table tr.edit-row > td > div > h5 {
@@ -333,9 +339,30 @@ table#connectionstbl span.socialnetwork-name {
 .common-table tr.edit-row > td > div > div.edit-items input[type="password"], .common-table tr.edit-row > td > div > div.edit-items input[type="text"], .common-table tr.edit-row > td > div > div.edit-items select {
     width: 45%;
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid #c8c8c8;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+}
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="password"]:hover, 
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="text"]:hover,
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="password"]:focus, 
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="text"]:focus
+.common-table tr.edit-row > td > div > div.edit-items input[type="password"]:hover, 
+.common-table tr.edit-row > td > div > div.edit-items input[type="text"]:hover,
+.common-table tr.edit-row > td > div > div.edit-items input[type="password"]:focus, 
+.common-table tr.edit-row > td > div > div.edit-items input[type="text"]:focus {
+    border-color: #1e88c3;
+    outline: none;
+}
+
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="password"][disabled],
+.common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="text"][disabled],
+.common-table tr.edit-row > td > div > div.edit-items input[type="password"][disabled], 
+.common-table tr.edit-row > td > div > div.edit-items input[type="text"][disabled] {
+    color: #959695;
+    cursor: default;
+    background: #e5e7e6;
+    border-color: #e5e7e6;
 }
 
 .common-table tr.edit-row > td > div > div.edit-items a.secondarybtn {
@@ -392,7 +419,6 @@ table#connectionstbl span.socialnetwork-name {
     float: left;
     box-sizing: border-box;
     width: 100%;
-    border-bottom: 2px solid #0087c6;
 }
 
 .common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector {
@@ -513,7 +539,7 @@ table#connectionstbl span.socialnetwork-name {
 .common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="password"], .common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit input[type="text"], .common-table tr.edit-row>td>div.parent-container .inner-container .sub-connector-row-edit select {
     width: 45%;
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid #c8c8c8;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
@@ -534,13 +560,13 @@ table#connectionstbl span.socialnetwork-name {
     display: block !important;
 }
 
-.primarybtn.add-new-connection {
-    color: #0087c6 !important;
-    background: transparent !important;
+.secondarybtn.add-new-connection {
     font-weight: 600;
+    padding: 0 8px;
+    border: none;
 }
 
-.primarybtn.add-new-connection em {
+.secondarybtn.add-new-connection em {
     margin-right: 4px;
 }
 
@@ -570,8 +596,4 @@ table#connectionstbl span.socialnetwork-name {
 .edit-form-multiple .edit-items.edit-buttons {
     float: left;
     width: 100%;
-}
-
-table#connectionstbl.common-table tr input:focus {
-    box-shadow: 0px 0px 0px 1px rgb(77, 144, 254);
 }

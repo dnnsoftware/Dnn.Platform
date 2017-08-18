@@ -11,9 +11,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckTracing : IAuditCheck
     {
+        public string Id => "CheckTracing";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckTracing");
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
 
             result.Severity = EnableTrace() ? SeverityEnum.Failure : SeverityEnum.Pass;
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -12,23 +11,30 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("new-page", "Create a new page in the portal", new[]{
-        "title",
-        "name",
-        "url",
-        "parentid",
-        "description",
-        "keywords",
-        "visible"
-    })]
+    [ConsoleCommand("new-page", Constants.PagesCategory, "Prompt_NewPage_Description")]
     public class NewPage : ConsoleCommandBase
     {
-        private const string FlagParentid = "parentid";
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+
+        [FlagParameter("parentid", "Prompt_NewPage_FlagParentId", "Integer")]
+        private const string FlagParentId = "parentid";
+
+        [FlagParameter("title", "Prompt_NewPage_FlagTitle", "String")]
         private const string FlagTitle = "title";
+
+        [FlagParameter("name", "Prompt_NewPage_FlagName", "String", true)]
         private const string FlagName = "name";
+
+        [FlagParameter("url", "Prompt_NewPage_FlagUrl", "String")]
         private const string FlagUrl = "url";
+
+        [FlagParameter("description", "Prompt_NewPage_FlagDescription", "String")]
         private const string FlagDescription = "description";
+
+        [FlagParameter("keywords", "Prompt_NewPage_FlagKeywords", "String")]
         private const string FlagKeywords = "keywords";
+
+        [FlagParameter("visible", "Prompt_NewPage_FlagVisible", "Boolean", "true")]
         private const string FlagVisible = "visible";
 
         private string Title { get; set; }
@@ -41,80 +47,22 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-
-            var sbErrors = new StringBuilder();
-            if (HasFlag(FlagParentid))
-            {
-                int tempId;
-                if (int.TryParse(Flag(FlagParentid), out tempId))
-                {
-                    ParentId = tempId;
-                }
-                else if (Flag(FlagParentid) == "me")
-                {
-                    ParentId = activeTabId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_InvalidParentId", Constants.LocalResourceFile), FlagParentid);
-                }
-            }
-
-            if (HasFlag(FlagTitle))
-                Title = Flag(FlagTitle);
-            if (HasFlag(FlagName))
-            {
-                Name = Flag(FlagName);
-            }
-            else
-            {
-                // Let Name be the default argument
-                if (args.Length > 1 && !IsFlag(args[1]))
-                {
-                    Name = args[1];
-                }
-            }
-
-            if (HasFlag(FlagUrl))
-                Url = Flag(FlagUrl);
-            if (HasFlag(FlagDescription))
-                Description = Flag(FlagDescription);
-            if (HasFlag(FlagKeywords))
-                Keywords = Flag(FlagKeywords);
-            if (HasFlag(FlagVisible))
-            {
-                bool tempVisible;
-                if (!bool.TryParse(Flag(FlagVisible), out tempVisible))
-                {
-                    sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_TrueFalseRequired", Constants.LocalResourceFile), FlagVisible);
-                }
-                else
-                {
-                    Visible = tempVisible;
-                }
-            }
-            else
-            {
-                Visible = true; // default
-            }
-
-            // Check for required fields here
-            if (string.IsNullOrEmpty(Name))
-            {
-                sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_FlagRequired", Constants.LocalResourceFile), FlagName);
-            }
+            
+            ParentId = GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, false, true);
+            Title = GetFlagValue(FlagTitle, "Title", string.Empty);
+            Name = GetFlagValue(FlagName, "Page Name", string.Empty, true, true);
+            Url = GetFlagValue(FlagUrl, "Url", string.Empty);
+            Description = GetFlagValue(FlagDescription, "Description", string.Empty);
+            Keywords = GetFlagValue(FlagKeywords, "Keywords", string.Empty);
+            Visible = GetFlagValue(FlagVisible, "Visible", true);
 
             // validate that parent ID is a valid ID, if it has been passed
-            if (ParentId.HasValue)
+            if (!ParentId.HasValue) return;
+            var testTab = TabController.Instance.GetTab((int)ParentId, PortalId);
+            if (testTab == null)
             {
-                var testTab = TabController.Instance.GetTab((int)ParentId, PortalId);
-                if (testTab == null)
-                {
-                    sbErrors.AppendFormat(DotNetNuke.Services.Localization.Localization.GetString("Prompt_UnableToFindSpecified", Constants.LocalResourceFile), FlagParentid, ParentId);
-                }
+                AddMessage(string.Format(LocalizeString("Prompt_UnableToFindSpecified"), FlagParentId, ParentId));
             }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -143,7 +91,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
                 if (!SecurityService.Instance.CanSavePageDetails(pageSettings))
                 {
-                    return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("MethodPermissionDenied", Constants.LocalResourceFile));
+                    return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
                 }
                 var newTab = PagesController.Instance.SavePageDetails(pageSettings);
 
@@ -155,14 +103,14 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 }
                 else
                 {
-                    return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageCreateFailed", Constants.LocalResourceFile));
+                    return new ConsoleErrorResultModel(LocalizeString("Prompt_PageCreateFailed"));
                 }
 
-                return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageCreated", Constants.LocalResourceFile)) { Data = lstResults, Records = lstResults.Count };
+                return new ConsoleResultModel(LocalizeString("Prompt_PageCreated")) { Data = lstResults, Records = lstResults.Count };
             }
             catch (PageNotFoundException)
             {
-                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("PageNotFound", Constants.LocalResourceFile));
+                return new ConsoleErrorResultModel(LocalizeString("PageNotFound"));
             }
             catch (PageValidationException ex)
             {

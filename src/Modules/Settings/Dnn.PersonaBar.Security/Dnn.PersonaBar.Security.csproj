@@ -103,6 +103,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\AuditChecks.cs" />
+    <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\CheckResult.cs" />
     <Compile Include="Components\Checks\CheckAllowableFileExtensions.cs" />
     <Compile Include="Components\Checks\CheckBiography.cs" />
@@ -151,7 +152,9 @@
     <Content Include="Dnn.PersonaBar.Security.dnn" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\Security.resx" />
+    <Content Include="admin\personaBar\App_LocalResources\Security.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Components\Resources\CheckFileExists.resources" />

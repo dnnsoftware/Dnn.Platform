@@ -65,43 +65,6 @@ namespace Dnn.PersonaBar.Security.Components
             }
         }
 
-        private static string GetFileText(string name)
-        {
-            var fileContents = String.Empty;
-            try
-            {
-                // If the file has been deleted since we took  
-                // the snapshot, ignore it and return the empty string. 
-                if (IsReadable(name))
-                {
-                    fileContents = File.ReadAllText(name);
-                }
-            }
-            catch (Exception)
-            {
-                
-                //might be a locking issue
-            }
-          
-            return fileContents;
-        }
-
-        private static bool IsReadable(string name)
-        {
-            if (!File.Exists(name))
-            {
-                return false;
-            }
-
-            var file = new FileInfo(name);
-            if (file.Length > MaxFileSize) //when file large than 10M, then don't read it.
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         /// <summary>
         ///     search all files in the website for matching text
         /// </summary>
@@ -111,13 +74,13 @@ namespace Dnn.PersonaBar.Security.Components
         {
             try
             {
-                var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-                IEnumerable<FileInfo> fileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
+                var fileList = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories);
                 var queryMatchingFiles =
                     from file in fileList
-                    let fileText = GetFileText(file.FullName)
+                    let fileText = GetFileText(file)
+                    let fileInfo = new FileInfo(file)
                     where fileText.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
-                    select file;
+                    select fileInfo;
                 return queryMatchingFiles.Select(f => new
                 {
                     FileName = f.Name,
@@ -135,10 +98,10 @@ namespace Dnn.PersonaBar.Security.Components
         ///     search all website files for files with a potential dangerous extension
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<string> FindUnexpectedExtensions()
+        public static IEnumerable<string> FindUnexpectedExtensions(IList<string> invalidFolders)
         {
-            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
-            .Where(s => s.EndsWith(".asp", StringComparison.InvariantCultureIgnoreCase) || s.EndsWith(".php", StringComparison.InvariantCultureIgnoreCase));
+            var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories, invalidFolders)
+            .Where(s => s.EndsWith(".asp", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".php", StringComparison.OrdinalIgnoreCase));
             return files;
         }
 
@@ -148,10 +111,10 @@ namespace Dnn.PersonaBar.Security.Components
         /// <returns></returns>
         public static IEnumerable<string> FineHiddenSystemFiles()
         {
-            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
+            var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
             .Where(f =>
             {
-                if (Path.GetFileName(f)?.Equals("thumbs.db", StringComparison.InvariantCultureIgnoreCase) == true)
+                if (Path.GetFileName(f)?.Equals("thumbs.db", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     return false;
                 }
@@ -241,7 +204,7 @@ namespace Dnn.PersonaBar.Security.Components
 
         public static IList<FileInfo> GetLastModifiedFiles()
         {
-            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
+            var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
                 .Where(f => !ExcludedFilePathRegexList.Any(r => r.IsMatch(f)))
                 .Select(f => new FileInfo(f))
                 .OrderByDescending(f => f.LastWriteTime)
@@ -253,7 +216,7 @@ namespace Dnn.PersonaBar.Security.Components
         public static IList<FileInfo> GetLastModifiedExecutableFiles()
         {
             var executableExtensions = new List<string>() {".asp", ".aspx", ".php"};
-            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
+            var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
                 .Where(f =>
                 {
                     var extension = Path.GetExtension(f);
@@ -273,6 +236,83 @@ namespace Dnn.PersonaBar.Security.Components
             .OrderByDescending(f => f.LastWriteTime)
             .Take(ModifiedFilesCount).ToList();
 
+        }
+
+        private static string GetFileText(string name)
+        {
+            var fileContents = String.Empty;
+            try
+            {
+                // If the file has been deleted since we took  
+                // the snapshot, ignore it and return the empty string. 
+                if (IsReadable(name))
+                {
+                    fileContents = File.ReadAllText(name);
+                }
+            }
+            catch (Exception)
+            {
+
+                //might be a locking issue
+            }
+
+            return fileContents;
+        }
+
+        private static bool IsReadable(string name)
+        {
+            if (!File.Exists(name))
+            {
+                return false;
+            }
+
+            var file = new FileInfo(name);
+            if (file.Length > MaxFileSize) //when file large than 10M, then don't read it.
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Recursively finds file
+        /// </summary>
+        /// <returns></returns>
+        private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
+        {
+            IList<string> invalidFolders = new List<string>();
+            return GetFiles(path, searchPattern, searchOption, invalidFolders);
+        }
+
+        /// <summary>
+        /// Recursively finds file
+        /// </summary>
+        /// <returns></returns>
+        private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, IList<string> invalidFolders)
+        {
+            try
+            {
+                //Looking at the root folder only. There should not be any permission issue here.
+                var files = Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList();
+
+                if (searchOption == SearchOption.AllDirectories)
+                {
+                    var folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
+                    foreach (var folder in folders)
+                    {
+                        //recursive call to the same method
+                        files.AddRange(GetFiles(folder, searchPattern, searchOption, invalidFolders));
+                    }
+                }
+
+                return files;
+            }
+            catch (Exception)
+            {
+                invalidFolders.Add(path);
+                return new List<string>();
+            }
         }
     }
 }

@@ -4,9 +4,11 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
 {
-    [ConsoleCommand("echo", "Echos back the first argument received")]
+    [ConsoleCommand("echo", Constants.GeneralCategory, "Prompt_Echo_Description")]
     public class Echo : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public override ConsoleResultModel Run()
         {
             if (Args.Length > 1)
@@ -15,7 +17,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
             }
 
 
-            return new ConsoleErrorResultModel("Nothing to echo back");
+            return new ConsoleErrorResultModel(LocalizeString("Prompt_Echo_Nothing"));
         }
 
     }

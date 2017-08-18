@@ -241,8 +241,8 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             if (installer.Packages.Count > 0)
             {
-                if (installer.Packages[0].Package.PackageType.Equals("CoreLanguagePack", StringComparison.InvariantCultureIgnoreCase)
-                        || installer.Packages[0].Package.PackageType.Equals("ExtensionLanguagePack", StringComparison.InvariantCultureIgnoreCase))
+                if (installer.Packages[0].Package.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase)
+                        || installer.Packages[0].Package.PackageType.Equals("ExtensionLanguagePack", StringComparison.OrdinalIgnoreCase))
                 {
                     compact = true;
                 }

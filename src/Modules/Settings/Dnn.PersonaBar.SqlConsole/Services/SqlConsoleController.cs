@@ -79,7 +79,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             if (query.QueryId <= 0)
             {
                 var saveQueries = _controller.GetQueries();
-                var saveQuery = saveQueries.FirstOrDefault(q => q.Name.Equals(query.Name, StringComparison.InvariantCultureIgnoreCase));
+                var saveQuery = saveQueries.FirstOrDefault(q => q.Name.Equals(query.Name, StringComparison.OrdinalIgnoreCase));
                 if (saveQuery != null)
                 {
                     query.QueryId = saveQuery.QueryId;

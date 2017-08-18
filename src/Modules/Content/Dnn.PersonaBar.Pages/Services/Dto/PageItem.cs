@@ -38,6 +38,27 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "canViewPage")]
         public bool CanViewPage { get; set; }
 
+        [DataMember(Name = "canManagePage")]
+        public bool CanManagePage { get; set; }
+
+        [DataMember(Name = "canAddPage")]
+        public bool CanAddPage { get; set; }
+
+        [DataMember(Name = "canAdminPage")]
+        public bool CanAdminPage { get; set; }
+
+        [DataMember(Name = "canCopyPage")]
+        public bool CanCopyPage { get; set; }
+
+        [DataMember(Name = "canDeletePage")]
+        public bool CanDeletePage { get; set; }
+
+        [DataMember(Name = "canAddContentToPage")]
+        public bool CanAddContentToPage { get; set; }
+
+        [DataMember(Name = "canNavigateToPage")]
+        public bool CanNavigateToPage { get; set; }
+
         [DataMember(Name = "lastModifiedOnDate")]
         public string LastModifiedOnDate { get; set; }
 

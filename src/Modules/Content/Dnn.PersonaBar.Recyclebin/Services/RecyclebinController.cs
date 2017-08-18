@@ -325,7 +325,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         private bool UseDefaultSkin(TabInfo tab)
         {
             return !string.IsNullOrEmpty(tab.SkinSrc) &&
-                   tab.SkinSrc.Equals(PortalSettings.DefaultPortalSkin, StringComparison.InvariantCultureIgnoreCase);
+                   tab.SkinSrc.Equals(PortalSettings.DefaultPortalSkin, StringComparison.OrdinalIgnoreCase);
         }
 
         private ModuleItem ConvertToModuleItem(ModuleInfo mod)

@@ -9,28 +9,30 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
 {
-    [ConsoleCommand("get-host", "Retrieves information about the current DNN Installation", new[] { "id" })]
+    [ConsoleCommand("get-host", Constants.HostCategory, "Prompt_GetHost_Description")]
     public class GetHost : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
+            
             var sbErrors = new StringBuilder();
 
             // HOST-ONLY ACCESS
             if (!userInfo.IsSuperUser)
             {
-                sbErrors.Append("You do not have authorization to access this functionality");
+                sbErrors.Append(LocalizeString("Prompt_GetHost_Unauthorized"));
             }
             else
             {
                 // default usage: return current page if nothing else specified
                 if (args.Length != 1)
                 {
-                    sbErrors.Append("The get-host command does not take any arguments or flags; ");
+                    sbErrors.Append(LocalizeString("Prompt_GetHost__NoArgs"));
                 }
             }
-            ValidationMessage = sbErrors.ToString();
+            AddMessage(sbErrors.ToString());
         }
 
         public override ConsoleResultModel Run()

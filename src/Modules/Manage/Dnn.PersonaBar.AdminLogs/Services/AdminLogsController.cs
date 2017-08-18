@@ -151,7 +151,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, CheckPermissionForAdmin = true)]
+        [RequireHost]
         public HttpResponseMessage DeleteLogItems(IEnumerable<string> logIds)
         {
             try
@@ -225,7 +225,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AdminLogsView + "&" + Components.Constants.AdminLogsEdit, CheckPermissionForAdmin = true)]
+        [RequireHost]
         public HttpResponseMessage ClearLog()
         {
             try

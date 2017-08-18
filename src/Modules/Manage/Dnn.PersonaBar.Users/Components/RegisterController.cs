@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.Users.Components
             //Verify Profanity filter
             if (GetBoolSetting(settings, "Registration_UseProfanityFilter"))
             {
-                var portalSecurity = new PortalSecurity();
+                var portalSecurity = PortalSecurity.Instance;
                 if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
                 {
                     throw new Exception(Localization.GetString("RegistrationProfanityNotAllowed",

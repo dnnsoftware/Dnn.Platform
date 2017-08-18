@@ -576,9 +576,6 @@
   <data name="Prompt_InvalidFlag.Text" xml:space="preserve">
     <value>Invalid flag '--{0}'. Did you mean --{1} ?</value>
   </data>
-  <data name="Prompt_ListUsersOutput.Text" xml:space="preserve">
-    <value>Press CTRL+X to end.\nPress any key to load more....</value>
-  </data>
   <data name="Prompt_NothingToSetUser.Text" xml:space="preserve">
     <value>Nothing to update. Please pass-in one or more flags with values to update on the user or type 'help set-user' for more help</value>
   </data>
@@ -614,5 +611,631 @@
   </data>
   <data name="Prompt_UserPurged.Text" xml:space="preserve">
     <value>The User has been permanently removed from the site.</value>
+  </data>
+  <data name="Prompt_AddRoles_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Add a Role to a User&lt;/h4&gt;
+    &lt;code class="block"&gt;add-roles --id 23 --roles Editor&lt;/code&gt; OR
+    &lt;code class="block"&gt;add-roles 23 --roles Editor&lt;/code&gt; OR
+    &lt;code class="block"&gt;add-roles --id 23 "Editor"&lt;/code&gt;
+    &lt;h4&gt;Add a Multi-Word Role to a User&lt;/h4&gt;
+    &lt;code class="block"&gt;add-roles --id 23 --roles "Article Reviewer"&lt;/code&gt;
+
+    &lt;h4&gt;Add Multiple Roles to a User&lt;/h4&gt;
+    &lt;code class="block"&gt;add-roles --id 23 --roles "Editor, Writer, Article Reviewer"&lt;/code&gt;</value>
+  </data>
+  <data name="Prompt_AddRoles_Description.Text" xml:space="preserve">
+    <value>Add one or more DNN security roles to a user.</value>
+  </data>
+  <data name="Prompt_AddRoles_FlagEnd.Text" xml:space="preserve">
+    <value>End date of the role.</value>
+  </data>
+  <data name="Prompt_AddRoles_FlagId.Text" xml:space="preserve">
+    <value>User ID of user to which the roles will be added. If a number is passed as the first argument, you do not need
+            to use the &lt;span class="mono"&gt;--id&lt;/span&gt; flag explicitly</value>
+  </data>
+  <data name="Prompt_AddRoles_FlagRoles.Text" xml:space="preserve">
+    <value>Comma-delimited string of DNN role names to apply to user.</value>
+  </data>
+  <data name="Prompt_AddRoles_FlagStart.Text" xml:space="preserve">
+    <value>Effective date of the role.</value>
+  </data>
+  <data name="Prompt_DeleteUser_Description.Text" xml:space="preserve">
+    <value>Deletes the specified user from the portal. After deletion, the user can still be recovered. To delete the user permanently, follow this command with the &lt;code&gt;purge-user&lt;/code&gt; command.</value>
+  </data>
+  <data name="Prompt_DeleteUser_FlagId.Text" xml:space="preserve">
+    <value>The user's User ID. If the flag is not used, then the user's ID must be the first argument.</value>
+  </data>
+  <data name="Prompt_DeleteUser_FlagNotify.Text" xml:space="preserve">
+    <value>If true, the &amp;quot;Unregister User&amp;quot; notification email will be sent (typically to the site Admin)</value>
+  </data>
+  <data name="Prompt_DeleteUser_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Delete a User&lt;/h4&gt;
+    &lt;p&gt;This delete's the user with a User ID of 345. The user is not permanently deleted at this point. It is in a kind of recycle bin. You can use &lt;code&gt;get-user 345&lt;/code&gt; to see the user details and you'll see that the &lt;code&gt;IsDeleted&lt;/code&gt; property is now True.  So, you can use the &lt;code&gt;restore-user&lt;/code&gt; command to recover the user record or you can recover the user using DNN's user interface. If you want to permanently delete the user, then you'll need to execute a second command: &lt;code&gt;purge-user&lt;/code&gt;&lt;/p&gt;
+    &lt;code class="block"&gt;delete-user 345&lt;/code&gt;
+    &lt;p&gt;This is the more explicit form of the above code.&lt;/p&gt;
+    &lt;code class="block"&gt;delete-user --id 345&lt;/code&gt;
+
+    &lt;h4&gt;Delete a User and Send Notification&lt;/h4&gt;
+    &lt;p&gt;This delete's the user with a User ID of 345 and sends an email notification. Like above, the user is not permanently deleted at this point. If you want to permanently delete the user, then you'll need to execute a second command: &lt;code&gt;purge-user&lt;/code&gt;&lt;/p&gt;
+    &lt;code class="block"&gt;delete-user 345 --notify true&lt;/code&gt;
+    &lt;p&gt;This is the more explicit form of the above code.&lt;/p&gt;
+    &lt;code class="block"&gt;delete-user --id 345 --notify true&lt;/code&gt;</value>
+  </data>
+  <data name="Prompt_GetUser_FlagEmail.Text" xml:space="preserve">
+    <value>The email address for the user being retrieved. You can use the asterisk (&lt;span class="mono"&gt; * &lt;/span&gt;) as a wildcard
+          to signify 0 or more characters.</value>
+  </data>
+  <data name="Prompt_GetUser_FlagId.Text" xml:space="preserve">
+    <value>Explicitly specifies the UserId for the user being retrieved.</value>
+  </data>
+  <data name="Prompt_GetUser_FlagUsername.Text" xml:space="preserve">
+    <value>The username for the user being retrieved. You can use the asterisk (&lt;span class="mono"&gt; * &lt;/span&gt;) as a wildcard
+          to signify 0 or more characters.</value>
+  </data>
+  <data name="Prompt_GetUser_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+    &lt;h4&gt;Get Current User&lt;/h4&gt;
+    &lt;code class="block"&gt;
+      get-user
+    &lt;/code&gt;
+
+    &lt;h4&gt;Get User by User ID&lt;/h4&gt;
+
+    &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--id&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;When specifying a single value after the command name, if it is an integer, Prompt will assume it is a User ID&lt;/p&gt;
+    &lt;code class="block"&gt;get-user 345&lt;/code&gt;
+
+    &lt;h5&gt;Explicit use of &lt;span class="mono"&gt;--id&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;You can explicitly use the &lt;span class="mono"&gt;--id&lt;/span&gt; flag to avoid any confusion&lt;/p&gt;
+    &lt;code class="block"&gt;get-user --id 345&lt;/code&gt;
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;UserId&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;345&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Username&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Email&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith@sample.com&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;DisplayName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;FirstName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastLogin&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;IsAuthorized&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;true&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h4&gt;Get User by Email&lt;/h4&gt;
+
+    &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;When specifying a single value after the command name, if it contains the at symbol (&lt;span class="mono"&gt; @ &lt;/span&gt;),
+      Prompt will assume it is an Email&lt;/p&gt;
+    &lt;code class="block"&gt;get-user jsmith@sample.com&lt;/code&gt;
+
+    &lt;h5&gt;Explicit Use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;You can explicitly use the &lt;span class="mono"&gt;--email&lt;/span&gt; flag to avoid any confusion&lt;/p&gt;
+    &lt;code class="block"&gt;get-user --email jsmith@sample.com&lt;/code&gt;
+
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;UserId&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;345&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Username&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Email&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith@sample.com&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;DisplayName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;FirstName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastLogin&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;IsAuthorized&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;true&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h4&gt;Search for User by Email Using Wildcards&lt;/h4&gt;
+    &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;
+      When specifying a single value after the command name, if it contains the at symbol (&lt;span class="mono"&gt; @ &lt;/span&gt;),
+      Prompt will assume it is an Email. Only the first matched user record will be returned. Try using &lt;span class="mono"&gt;list-users&lt;/span&gt;      if you would like to find all matching users.
+    &lt;/p&gt;
+    &lt;code class="block"&gt;get-user jsmith*@sample.com&lt;/code&gt;
+    &lt;h5&gt;Explicit Use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;code class="block"&gt;get-user --email jsmith*@sample.com&lt;/code&gt;
+
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;UserId&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;345&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Username&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Email&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith@sample.com&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;DisplayName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;FirstName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastLogin&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;IsAuthorized&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;true&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h4&gt;Get User by Username&lt;/h4&gt;
+    &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;When specifying a single value after the command name, if it is not a number and does not contain the at symbol (
+      &lt;span class="mono"&gt; @ &lt;/span&gt;), Prompt will assume it is a Username&lt;/p&gt;
+    &lt;code class="block"&gt;get-user jsmith&lt;/code&gt;
+
+    &lt;h5&gt;Explicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;You can explicitly use the &lt;span class="mono"&gt;--username&lt;/span&gt; flag to avoid any confusion&lt;/p&gt;
+    &lt;code class="block"&gt;get-user --username jsmith&lt;/code&gt;
+
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;UserId&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;345&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Username&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Email&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith@sample.com&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;DisplayName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;FirstName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastLogin&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;IsAuthorized&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;true&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h4&gt;Search for User by Username Using Wildcards&lt;/h4&gt;
+    &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;p&gt;When specifying a single value after the command name, if it is not a number and does not contain the at symbol (
+      &lt;span class="mono"&gt; @ &lt;/span&gt;), Prompt will assume it is a Username&lt;/p&gt;
+    &lt;code class="block"&gt;get-user --username jsmith*&lt;/code&gt;
+    &lt;h5&gt;Explicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+    &lt;code class="block"&gt;get-user jsmith*&lt;/code&gt; (value cannot have an @ symbol or be interpreted as an Integer for this to
+    work)
+
+    &lt;table class="command-result-tbl"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;UserId&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;345&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Username&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Email&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;jsmith@sample.com&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;DisplayName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;FirstName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;John&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastName&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;Smith&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;LastLogin&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;IsAuthorized&lt;/td&gt;
+        &lt;td&gt;:&lt;/td&gt;
+        &lt;td&gt;true&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_ListUsers_Description.Text" xml:space="preserve">
+    <value>Find users based on email or username. Supports partial matching on Email or Username. You can only search by on flag at a time. Flags may not be combined.</value>
+  </data>
+  <data name="Prompt_ListUsers_FlagEmail.Text" xml:space="preserve">
+    <value>A search pattern to search for in the user's email address. You can use the asterisk (&lt;span class="mono"&gt; * &lt;/span&gt;) as a wildcard to signify 0 or more characters</value>
+  </data>
+  <data name="Prompt_ListUsers_FlagMax.Text" xml:space="preserve">
+    <value>Page Size for the page. Max is 500.</value>
+  </data>
+  <data name="Prompt_ListUsers_FlagPage.Text" xml:space="preserve">
+    <value>Page number to show records.</value>
+  </data>
+  <data name="Prompt_ListUsers_FlagRole.Text" xml:space="preserve">
+    <value>The name of the DNN Security Role whose members you'd like to list. IMPORTANT: wildcard searching is NOT enabled for this flag at this time. Role names are case-insensitive but spacing must match.</value>
+  </data>
+  <data name="Prompt_ListUsers_FlagUsername.Text" xml:space="preserve">
+    <value>A search pattern to search for in the username. You can use the asterisk (&lt;span class="mono"&gt; * &lt;/span&gt;) as a wildcard to signify 0 or more characters</value>
+  </data>
+  <data name="Prompt_ListUsers_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;List All Users in Current Portal&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            list-users
+        &lt;/code&gt;
+
+        &lt;h4&gt;Search for Users by Email&lt;/h4&gt;
+        &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;p&gt;When specifying a single value after the command name, if it contains the at symbol (&lt;span class="mono"&gt; @ &lt;/span&gt;), Prompt will assume it is an Email&lt;/p&gt;
+        &lt;code class="block"&gt;list-users jsmith@sample.com&lt;/code&gt;
+        &lt;h5&gt;Explicit use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;code class="block"&gt;list-users --email jsmith@sample.com&lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;tr&gt;&lt;td&gt;UserId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;345&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Username&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;jsmith&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Email&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;jsmith@sample.com&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;DisplayName&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;John Smith&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;FirstName&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;John&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;LastName&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;Smith&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;LastLogin&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;&lt;/tr&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;Search for Users by Email Using Wildcards&lt;/h4&gt;
+        &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;p&gt;When specifying a single value after the command name, if it contains the at symbol (&lt;span class="mono"&gt; @ &lt;/span&gt;), Prompt will assume it is an Email&lt;/p&gt;
+        &lt;code class="block"&gt;list-users jsmith*@sample.com&lt;/code&gt;
+        &lt;h5&gt;Explicit use of &lt;span class="mono"&gt;--email&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;code class="block"&gt;list-users --email jsmith*@sample.com&lt;/code&gt;
+
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;UserId&lt;/th&gt;
+                    &lt;th&gt;Username&lt;/th&gt;
+                    &lt;th&gt;Email&lt;/th&gt;
+                    &lt;th&gt;DisplayName&lt;/th&gt;
+                    &lt;th&gt;FirstName&lt;/th&gt;
+                    &lt;th&gt;LastName&lt;/th&gt;
+                    &lt;th&gt;LastLogin&lt;/th&gt;
+                    &lt;th&gt;IsAuthorized&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;345&lt;/td&gt;
+                    &lt;td&gt;jsmith&lt;/td&gt;
+                    &lt;td&gt;jsmith@sample.com&lt;/td&gt;
+                    &lt;td&gt;John Smith&lt;/td&gt;
+                    &lt;td&gt;John&lt;/td&gt;
+                    &lt;td&gt;Smith&lt;/td&gt;
+                    &lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;1095&lt;/td&gt;
+                    &lt;td&gt;jsmithson&lt;/td&gt;
+                    &lt;td&gt;jsmithson@sample.com&lt;/td&gt;
+                    &lt;td&gt;Jerry Smithson&lt;/td&gt;
+                    &lt;td&gt;Jerry&lt;/td&gt;
+                    &lt;td&gt;Smithson&lt;/td&gt;
+                    &lt;td&gt;2016-12-063T08:15:28.123-07:00&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;Search for Users by Username&lt;/h4&gt;
+        &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;p&gt;When specifying a single value after the command name, if it is not a number and does not contain the at symbol (&lt;span class="mono"&gt; @ &lt;/span&gt;), Prompt will assume it is a Username&lt;/p&gt;
+        &lt;code class="block"&gt;list-users jsmith&lt;/code&gt;
+        &lt;h5&gt;Explicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;code class="block"&gt;list-users --username jsmith&lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;tr&gt;&lt;td&gt;UserId&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;345&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Username&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;jsmith&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Email&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;jsmith@sample.com&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;DisplayName&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;John Smith&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;FirstName&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;John&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;LastName&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;Smith&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;LastLogin&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;IsAuthorized&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;Created&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;2016-12-06T09:31:38&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td&gt;IsDeleted&lt;/td&gt;&lt;td&gt;:&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;Search for User by Username Using Wildcards&lt;/h4&gt;
+        &lt;h5&gt;Implicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;p&gt;When specifying a single value after the command name, if it is not a number and does not contain the at symbol (&lt;span class="mono"&gt; @ &lt;/span&gt;), Prompt will assume it is a Username&lt;/p&gt;
+        &lt;code class="block"&gt;list-users jsmith*&lt;/code&gt;
+        &lt;h5&gt;Explicit Use of &lt;span class="mono"&gt;--username&lt;/span&gt; flag&lt;/h5&gt;
+        &lt;code class="block"&gt;list-users --username jsmith*&lt;/code&gt;
+
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;UserId&lt;/th&gt;
+                    &lt;th&gt;Username&lt;/th&gt;
+                    &lt;th&gt;Email&lt;/th&gt;
+                    &lt;th&gt;LastLogin&lt;/th&gt;
+                    &lt;th&gt;IsDeleted&lt;/th&gt;
+                    &lt;th&gt;IsAuthorized&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;345&lt;/td&gt;
+                    &lt;td&gt;jsmith&lt;/td&gt;
+                    &lt;td&gt;jsmith@sample.com&lt;/td&gt;
+                    &lt;td&gt;2016-12-06T09:31:38.413-07:00&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;1095&lt;/td&gt;
+                    &lt;td&gt;jsmithson&lt;/td&gt;
+                    &lt;td&gt;jsmithson@sample.com&lt;/td&gt;
+                    &lt;td&gt;2016-12-063T08:15:28.123-07:00&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;h4&gt;List Users In a DNN Security Role&lt;/h4&gt;
+        &lt;code class="block"&gt;list-users --role "Registered Users"&lt;/code&gt;
+        &lt;table class="command-result-tbl"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;UserId&lt;/th&gt;
+                    &lt;th&gt;Username&lt;/th&gt;
+                    &lt;th&gt;Email&lt;/th&gt;
+                    &lt;th&gt;LastLogin&lt;/th&gt;
+                    &lt;th&gt;IsDeleted&lt;/th&gt;
+                    &lt;th&gt;IsAuthorized&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;2&lt;/td&gt;
+                    &lt;td&gt;admin&lt;/td&gt;
+                    &lt;td&gt;admin@mysite.com&lt;/td&gt;
+                    &lt;td&gt;2016-12-01T06:03:10-07:00&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;3&lt;/td&gt;
+                    &lt;td&gt;tuser1&lt;/td&gt;
+                    &lt;td&gt;tuser1@mysite.com&lt;/td&gt;
+                    &lt;td&gt;2016-12-01T09:31:38.413-07:00&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;31&lt;/td&gt;
+                    &lt;td&gt;jsmith&lt;/td&gt;
+                    &lt;td&gt;jsmith@mysite.com&lt;/td&gt;
+                    &lt;td&gt;2016-12-19T12:23:39-07:00&lt;/td&gt;
+                    &lt;td&gt;false&lt;/td&gt;
+                    &lt;td&gt;true&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_NewUser_Description.Text" xml:space="preserve">
+    <value>Creates a new User record in the portal</value>
+  </data>
+  <data name="Prompt_NewUser_FlagApproved.Text" xml:space="preserve">
+    <value>Whether the user account is authorized. Defaults to true if not specified.</value>
+  </data>
+  <data name="Prompt_NewUser_FlagEmail.Text" xml:space="preserve">
+    <value>The user's Email address</value>
+  </data>
+  <data name="Prompt_NewUser_FlagFirstname.Text" xml:space="preserve">
+    <value>The user's First Name</value>
+  </data>
+  <data name="Prompt_NewUser_FlagLastname.Text" xml:space="preserve">
+    <value>The user's Last Name</value>
+  </data>
+  <data name="Prompt_NewUser_FlagNotify.Text" xml:space="preserve">
+    <value>If true, the system email will be sent to the user at the user's email address. The type of email is determined
+            by the registration type. If this is not passed, the default portal settings will be observed. If the site's
+            registration mode is set to None, no email will be sent regardless of the value of &lt;code&gt;--notify&lt;/code&gt;.</value>
+  </data>
+  <data name="Prompt_NewUser_FlagPassword.Text" xml:space="preserve">
+    <value>The Password for the user account. If not specified, a random password will be generated. Note that unless you
+            are forcing the user to reset their password, you should ensure that &lt;em&gt;someone&lt;/em&gt; is notified of the password.</value>
+  </data>
+  <data name="Prompt_NewUser_FlagUsername.Text" xml:space="preserve">
+    <value>The user's Username</value>
+  </data>
+  <data name="Prompt_NewUser_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Create a New User with Just the Required Values&lt;/h4&gt;
+    &lt;p&gt;This generates a random password and assigns it to the newly created user. Display name is generated by concatenating
+      the first and last name. Note that because "van Doorne" contains a space, we need to enclose it in double-quotes. The
+      resulting Display name will be "Erik van Doorne".&lt;/p&gt;
+    &lt;code class="block"&gt;new-user --username edoorne --email edoorne@myemail.com --firstname Erik --lastname "van Doorne"&lt;/code&gt;</value>
+  </data>
+  <data name="Prompt_ResetPassword_Description.Text" xml:space="preserve">
+    <value>Sets the reset password token for the user. &lt;em&gt;It does not automatically reset the user's password&lt;/em&gt;. By default,
+    this command will send the reset password email to the user. You can override this behavior by specifying the &lt;code&gt;--notify&lt;/code&gt;    flag with a value of &lt;code&gt;false&lt;/code&gt;</value>
+  </data>
+  <data name="Prompt_ResetPassword_FlagId.Text" xml:space="preserve">
+    <value>User ID of user to send Reset Password link to.</value>
+  </data>
+  <data name="Prompt_ResetPassword_FlagNotify.Text" xml:space="preserve">
+    <value>If true, the system email will be sent to the user at the user's email address.</value>
+  </data>
+  <data name="Prompt_ResetPassword_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;code class="block"&gt;
+    reset-password &lt;em&gt;userId&lt;/em&gt;
+  &lt;/code&gt;</value>
+  </data>
+  <data name="Prompt_SetUser_Description.Text" xml:space="preserve">
+    <value>Enables you to set various values related to the specified user.</value>
+  </data>
+  <data name="Prompt_SetUser_FlagApproved.Text" xml:space="preserve">
+    <value>Approval status of the user.</value>
+  </data>
+  <data name="Prompt_SetUser_FlagDisplayname.Text" xml:space="preserve">
+    <value>The name to be displayed for the user.</value>
+  </data>
+  <data name="Prompt_SetUser_FlagEmail.Text" xml:space="preserve">
+    <value>The email address to set for the user.</value>
+  </data>
+  <data name="Prompt_SetUser_FlagFirstname.Text" xml:space="preserve">
+    <value>The first name of the user.</value>
+  </data>
+  <data name="Prompt_SetUser_FlagId.Text" xml:space="preserve">
+    <value>The UserId for the user being updated. This value is required, but if you pass the value as the first argument after the
+                    command name, you do not need to explicitly use the &lt;span class="mono"&gt;--id&lt;/span&gt; flag. (see the examples below)</value>
+  </data>
+  <data name="Prompt_SetUser_FlagLastname.Text" xml:space="preserve">
+    <value>The last name of the user.</value>
+  </data>
+  <data name="Prompt_SetUser_FlagPassword.Text" xml:space="preserve">
+    <value>The new password to assign to the user. The password must be valid according to the site's password rules.</value>
+  </data>
+  <data name="Prompt_SetUser_FlagUsername.Text" xml:space="preserve">
+    <value>The username to set for the user.</value>
+  </data>
+  <data name="Prompt_SetUser_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;Approve/UnApprove a User&lt;/h4&gt;
+        &lt;p&gt;
+            Approves/UnApproves the user with a User ID of 345. In this example, true is passed for the &lt;span class="mono"&gt;--approve&lt;/span&gt;            flag.
+        &lt;/p&gt;
+        &lt;code class="block"&gt;
+            set-user 345 --approve true
+        &lt;/code&gt;
+
+        &lt;h4&gt;Change a User's Username&lt;/h4&gt;
+        &lt;p&gt;Changes the username of the user with a User ID of 345 to &lt;em&gt;john.smith&lt;/em&gt;.&lt;/p&gt;
+        &lt;code class="block"&gt;
+            set-user 345 --username "john.smith"
+        &lt;/code&gt;
+
+        &lt;h4&gt;Change a User's Name Properties&lt;/h4&gt;
+        &lt;p&gt;
+            Sets the first, last, and display name for the user with an ID of 345. Note that &lt;em&gt;John&lt;/em&gt; and &lt;em&gt;Smith&lt;/em&gt;            do not need to be surrounded by quotes but &lt;em&gt;Johnny Smith&lt;/em&gt; does since it is more than one word.
+        &lt;/p&gt;
+        &lt;code class="block"&gt;
+            set-user 345 --firstname John --lastname Smith --displayname "Johnny Smith"
+        &lt;/code&gt;
+
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_GetUser_Description.Text" xml:space="preserve">
+    <value>Enables you to display the current user's information, or retrieve a user by their User ID, Username or Email address.
+    Supports partial searching. Returns the first user found.</value>
+  </data>
+  <data name="Prompt_UsersCategory.Text" xml:space="preserve">
+    <value>User Commands</value>
   </data>
 </root>

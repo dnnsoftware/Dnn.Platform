@@ -264,7 +264,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 if (!string.IsNullOrEmpty(keyword))
                 {
                     users =
-                        users.Where(u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase))
+                        users.Where(u => u.FullName.StartsWith(keyword, StringComparison.OrdinalIgnoreCase))
                             .ToList();
                 }
 

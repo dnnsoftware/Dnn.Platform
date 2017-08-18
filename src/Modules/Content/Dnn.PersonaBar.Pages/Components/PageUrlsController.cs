@@ -190,7 +190,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
                 else
                 {
-                    if (!tabUrl.Url.Equals("/" + urlPath, StringComparison.InvariantCultureIgnoreCase))
+                    if (!tabUrl.Url.Equals("/" + urlPath, StringComparison.OrdinalIgnoreCase))
                     {
                         //Change the original 200 url to a redirect
                         tabUrl.HttpStatus = "301";
@@ -314,7 +314,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                     path = path.Replace(Globals.AddHTTP(alias.HTTPAlias), "");
                     int status = 200;
-                    if (customPath != null && (string.Compare(customPath, path, StringComparison.InvariantCultureIgnoreCase) != 0))
+                    if (customPath != null && (string.Compare(customPath, path, StringComparison.OrdinalIgnoreCase) != 0))
                     {
                         //difference in custom/standard URL, so standard is 301
                         status = 301;
@@ -347,7 +347,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         if (tab.TabName.Contains(" ") && friendlyUrlSettings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                         {
                             path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, String.Empty);
-                            if (customPath != null && string.Compare(customPath, path, StringComparison.InvariantCultureIgnoreCase) != 0)
+                            if (customPath != null && string.Compare(customPath, path, StringComparison.OrdinalIgnoreCase) != 0)
                             {
                                 AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
                             }
@@ -462,7 +462,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             public int Compare(KeyValuePair<int, string> pair1, KeyValuePair<int, string> pair2)
             {
-                return String.Compare(pair1.Value, pair2.Value, StringComparison.InvariantCultureIgnoreCase);
+                return String.Compare(pair1.Value, pair2.Value, StringComparison.OrdinalIgnoreCase);
             }
         }
 

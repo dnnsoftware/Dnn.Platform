@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Dnn.PersonaBar.Library.Prompt;
+﻿using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
@@ -11,15 +10,16 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
-    [ConsoleCommand("delete-page", "Deletes the specified page", new[]{
-        "id",
-        "parentid",
-        "name"
-    })]
+    [ConsoleCommand("delete-page", Constants.PagesCategory, "Prompt_DeletePage_Description")]
     public class DeletePage : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+
+        [FlagParameter("name", "Prompt_DeletePage_FlagName", "String")]
         private const string FlagName = "name";
+        [FlagParameter("id", "Prompt_DeletePage_FlagId", "Integer")]
         private const string FlagId = "id";
+        [FlagParameter("parentid", "Prompt_DeletePage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
         private int PageId { get; set; } = -1;
@@ -28,50 +28,15 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            if (args.Length == 2)
-            {
-                int tmpId;
-                if (!int.TryParse(args[1], out tmpId))
-                {
-                    sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_NoPageId", Constants.LocalResourceFile));
-                }
-                else
-                {
-                    PageId = tmpId;
-                }
-            }
-            else
-            {
-                if (HasFlag(FlagId))
-                {
-                    int tmpId;
-                    if (!int.TryParse(Flag(FlagId), out tmpId))
-                    {
-                        sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_InvalidPageId", Constants.LocalResourceFile));
-                    }
-                    else
-                    {
-                        PageId = tmpId;
-                    }
-                }
-            }
-
-            PageName = Flag(FlagName);
-            if (HasFlag(FlagParentId))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagParentId), out tmpId))
-                    ParentId = tmpId;
-            }
+            
+            PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
+            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
+            ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
 
             if (PageId == -1 && string.IsNullOrEmpty(PageName))
             {
-                sbErrors.Append(DotNetNuke.Services.Localization.Localization.GetString("Prompt_ParameterRequired", Constants.LocalResourceFile));
+                AddMessage(LocalizeString("Prompt_ParameterRequired"));
             }
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -82,11 +47,11 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             if (PageId == -1)
             {
-                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageNotFound", Constants.LocalResourceFile));
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
             }
             if (!SecurityService.Instance.CanDeletePage(PageId))
             {
-                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("MethodPermissionDenied", Constants.LocalResourceFile));
+                return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
             }
             try
             {
@@ -94,9 +59,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
             catch (PageNotFoundException)
             {
-                return new ConsoleErrorResultModel(DotNetNuke.Services.Localization.Localization.GetString("Prompt_PageNotFound", Constants.LocalResourceFile));
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
             }
-            return new ConsoleResultModel(DotNetNuke.Services.Localization.Localization.GetString("PageDeletedMessage", Constants.LocalResourceFile)) { Records = 1 };
+            return new ConsoleResultModel(LocalizeString("PageDeletedMessage")) { Records = 1 };
         }
     }
 }

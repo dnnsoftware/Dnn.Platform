@@ -633,4 +633,360 @@
   <data name="Prompt_TaskUpdateFailed.Text" xml:space="preserve">
     <value>Failed to update the task.</value>
   </data>
+  <data name="Prompt_GetTask_Description.Text" xml:space="preserve">
+    <value>Retrieves details for the specified Scheduler Task. DNN refers to these as schedules or scheduler items. Prompt refers to them as tasks.</value>
+  </data>
+  <data name="Prompt_GetTask_FlagId.Text" xml:space="preserve">
+    <value>The Schedule ID for the item you want to retrieve. If you pass the ID as the first value after the command name, you do not need to explicitly use the &lt;span class="mono"&gt;--id&lt;/span&gt; flag name.</value>
+  </data>
+  <data name="Prompt_GetTask_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Get A Task&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    get-task 11
+  &lt;/code&gt;
+  OR
+  &lt;code class="block"&gt;
+    get-task --id 11
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ScheduleId&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;11&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FreindlyName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Messaging Dispatch&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TypeName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;DotNteNuke.Services.Social.Messaging.Scheduler.CoreMessagingScheduler,DotNetNuke&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;NextStart&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:19:49.53&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Enabled&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CatchUp&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Created&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;0001-01-01T00:00:00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;StartDate&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;0001-01-01T00:00:00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_ListTasks_Description.Text" xml:space="preserve">
+    <value>Retrieves a list of scheduled tasks based on the specified criteria. DNN refers to these as schedules or scheduler items. Prompt refers to them as tasks.</value>
+  </data>
+  <data name="Prompt_ListTasks_FlagEnabled.Text" xml:space="preserve">
+    <value>When specified, Prompt will return tasks that are enabled (if this flag is set to true) or disabled (if this is set to false). If this flag is not specified, Prompt will return tasks regardless of their enabled status.</value>
+  </data>
+  <data name="Prompt_ListTasks_FlagName.Text" xml:space="preserve">
+    <value>When specified, Prompt will return tasks whose Friendly Name matches the expression. This supports wildcard matching via the asterisk ( &lt;span class="mono"&gt;*&lt;/span&gt; ) to represent zero (0) or more characters.</value>
+  </data>
+  <data name="Prompt_ListTasks_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;List All Tasks&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    list-tasks
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ScheduleId&lt;/th&gt;
+      &lt;th&gt;FriendlyName&lt;/th&gt;
+      &lt;th&gt;NextStart&lt;/th&gt;
+      &lt;th&gt;Enabled&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;MessagingDispatch&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:19:49.53&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;Purge Cache&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:08:07.4342281-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td&gt;Purge Client Dependency Files&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:08:07.4342281-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;Purge Log Buffer&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:08:07.4342281-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;Purge Module Cache&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:19:50.533&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="4"&gt;...&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="4"&gt;10 tasks found&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h4&gt;List All Enabled Tasks&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    list-tasks true
+  &lt;/code&gt;
+  OR
+  &lt;code class="block"&gt;
+    list-tasks --enabled true
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ScheduleId&lt;/th&gt;
+      &lt;th&gt;FriendlyName&lt;/th&gt;
+      &lt;th&gt;NextStart&lt;/th&gt;
+      &lt;th&gt;Enabled&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;MessagingDispatch&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:19:49.53&lt;/td&gt;
+      &lt;td class="bg-info"&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;Purge Module Cache&lt;/td&gt;
+      &lt;td&gt;2017-01-02T08:19:50.533&lt;/td&gt;
+      &lt;td class="bg-info"&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Purge Schedule History&lt;/td&gt;
+      &lt;td&gt;2017-01-03T08:08:10.45&lt;/td&gt;
+      &lt;td class="bg-info"&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;Search: Site Crawler&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:09:09.94&lt;/td&gt;
+      &lt;td class="bg-info"&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="4"&gt;4 tasks found&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h4&gt;List All Tasks Whose Name Begins With &amp;quot;purge&amp;quot;&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    list-tasks purge*
+  &lt;/code&gt;
+  OR
+  &lt;code class="block"&gt;
+    list-tasks --name purge*
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ScheduleId&lt;/th&gt;
+      &lt;th&gt;FriendlyName&lt;/th&gt;
+      &lt;th&gt;NextStart&lt;/th&gt;
+      &lt;th&gt;Enabled&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Cache&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:08:55.2867143-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Client Dependency Files&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:08:55.2867143-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Log Buffer&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:08:55.2867143-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Module Cache&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:17:20.48&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;13&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Output Cache&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:08:55.2867143-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Schedule History&lt;/td&gt;
+      &lt;td&gt;2017-01-03T08:08:10.45&lt;/td&gt;
+      &lt;td&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Users Online&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:08:55.2867143-07:00&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="4"&gt;7 tasks found&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h4&gt;List All Enabled Tasks Whose Name Begins With &amp;quot;purge&amp;quot;&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    list-tasks purge* --enabled true
+  &lt;/code&gt;
+  OR
+  &lt;code class="block"&gt;
+    list-tasks true --name purge*
+  &lt;/code&gt;
+  OR
+  &lt;code class="block"&gt;
+    list-tasks --enabled true --name purge*
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ScheduleId&lt;/th&gt;
+      &lt;th&gt;FriendlyName&lt;/th&gt;
+      &lt;th&gt;NextStart&lt;/th&gt;
+      &lt;th&gt;Enabled&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Module Cache&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:17:20.48&lt;/td&gt;
+      &lt;td class="bg-info"&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td class="bg-info"&gt;Purge Schedule History&lt;/td&gt;
+      &lt;td&gt;2017-01-03T08:08:10.45&lt;/td&gt;
+      &lt;td class="bg-info"&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="4"&gt;2 tasks found&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_SetTask_Description.Text" xml:space="preserve">
+    <value>Set or update properties on the specified Scheduled task.</value>
+  </data>
+  <data name="Prompt_SetTask_FlagEnabled.Text" xml:space="preserve">
+    <value>When true, the specified task will be enabled. When false, the specified task will be disabled.</value>
+  </data>
+  <data name="Prompt_SetTask_FlagId.Text" xml:space="preserve">
+    <value>The Schedule ID of the task you want to update. You can avoid explicitly typing the &lt;span class="mono"&gt;--id&lt;/span&gt; flag by just passing the Schedule ID as the first argument.</value>
+  </data>
+  <data name="Prompt_SetTask_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Disable the &amp;quot;Purge Schedule History&amp;quot; Task&lt;/h4&gt;
+  &lt;code class="block"&gt;
+    set-task 3 --enabled false
+  &lt;/code&gt;
+  OR
+  &lt;code class="block"&gt;
+    set-task --id 3 --enabled false
+  &lt;/code&gt;
+
+  &lt;h4&gt;Results&lt;/h4&gt;
+  &lt;table class="command-result-tbl"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ScheduleId&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FreindlyName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;Purge Schedule History&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TypeName&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;DotNetNuke.Services.Scheduling.PurgeScheduleHistory, DOTNETNUKE&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;NextStart&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:08:55.2867143-07:00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Enabled&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CatchUp&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Created&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;0001-01-01T00:00:00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;StartDate&lt;/td&gt;
+      &lt;td&gt;:&lt;/td&gt;
+      &lt;td&gt;2017-01-02T09:47:31.79&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td colspan="3"&gt;
+        1 task updated
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;</value>
+  </data>
+  <data name="Prompt_SchedulerCategory.Text" xml:space="preserve">
+    <value>Scheduler Commands</value>
+  </data>
 </root>

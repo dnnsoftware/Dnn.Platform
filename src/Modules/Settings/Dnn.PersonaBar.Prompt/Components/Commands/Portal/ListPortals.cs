@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -9,40 +8,30 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
-    [ConsoleCommand("list-portals", "Retrieves a list of portals for the current DNN Installation")]
+    [ConsoleCommand("list-portals", Constants.PortalCategory, "Prompt_ListPortals_Description")]
     public class ListPortals : ConsoleCommandBase
     {
-
-        public int? PortalIdFlagValue { get; private set; }
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
+            
             if (args.Length == 1)
             {
                 // do nothing
             }
             else
             {
-                sbErrors.Append("The get-portal command does not take any arguments or flags; ");
+                AddMessage(LocalizeString("Prompt_ListPortals_NoArgs"));
             }
-
-
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
         {
             var pc = PortalController.Instance;
-            var lst = new List<PortalModelBase>();
 
             var alPortals = pc.GetPortals();
-            foreach (PortalInfo portal in alPortals)
-            {
-                lst.Add(new PortalModelBase(portal));
-            }
+            var lst = (from PortalInfo portal in alPortals select new PortalModelBase(portal)).ToList();
 
             return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count };
         }

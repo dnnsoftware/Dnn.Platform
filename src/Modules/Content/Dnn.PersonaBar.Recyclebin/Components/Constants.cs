@@ -10,5 +10,6 @@
         public const string RecycleBinUsersView = "RECYCLEBIN_USERS_VIEW";
         public const string RecycleBinUsersEdit = "RECYCLEBIN_USERS_EDIT";
         public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Recyclebin/App_LocalResources/Recyclebin.resx";
+        public const string RecylcleBinCategory = "Prompt_RecylcleBinCategory";
     }
 }

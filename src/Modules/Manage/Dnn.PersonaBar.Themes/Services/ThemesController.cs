@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Themes.Services
             {
                 var theme = (type == ThemeType.Skin ? _controller.GetLayouts(PortalSettings, level)
                                                     : _controller.GetContainers(PortalSettings, level)
-                            ).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+                            ).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase));
 
                 if (theme == null)
                 {
@@ -134,7 +134,7 @@ namespace Dnn.PersonaBar.Themes.Services
             {
                 var themeInfo = _controller.GetLayouts(PortalSettings, ThemeLevel.All)
                                     .FirstOrDefault(
-                                        t => t.PackageName.Equals(defaultTheme.ThemeName, StringComparison.InvariantCultureIgnoreCase)
+                                        t => t.PackageName.Equals(defaultTheme.ThemeName, StringComparison.OrdinalIgnoreCase)
                                                 && t.Level == defaultTheme.Level);
 
                 if (themeInfo == null)
@@ -310,7 +310,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 var themeName = parseTheme.ThemeName;
 
                 var layout = _controller.GetLayouts(PortalSettings, ThemeLevel.All)
-                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == parseTheme.Level);
+                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == parseTheme.Level);
 
                 if (layout != null)
                 {
@@ -318,7 +318,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 }
 
                 var container = _controller.GetContainers(PortalSettings, ThemeLevel.All)
-                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase) && t.Level == parseTheme.Level);
+                                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == parseTheme.Level);
 
                 if (container != null)
                 {

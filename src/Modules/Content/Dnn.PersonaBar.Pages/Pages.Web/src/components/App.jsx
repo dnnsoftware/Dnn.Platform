@@ -134,7 +134,7 @@ class App extends Component {
     }
 
 
-    
+
 
     componentWillReceiveProps(newProps) {
 
@@ -506,7 +506,7 @@ class App extends Component {
     getAddPages() {
         const { props } = this;
 
-        return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
+        return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL} fullWidth={true}>
             <PersonaBarPageHeader title={Localization.get("AddMultiplePages")}>
             </PersonaBarPageHeader>
             <PersonaBarPageBody backToLinkProps={{

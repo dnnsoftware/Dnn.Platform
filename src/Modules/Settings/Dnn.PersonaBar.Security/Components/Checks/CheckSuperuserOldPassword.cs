@@ -5,9 +5,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckSuperuserOldPassword : IAuditCheck
     {
+        public string Id => "CheckSuperuserOldPassword";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckSuperuserOldPassword");
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
             try
             {
                 var totalRecords = 0;

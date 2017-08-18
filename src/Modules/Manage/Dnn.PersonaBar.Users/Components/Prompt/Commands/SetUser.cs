@@ -9,110 +9,64 @@ using Dnn.PersonaBar.Users.Components.Dto;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
-    [ConsoleCommand("set-user", "Updates values on the specified user", new[]{
-        "id",
-        "email",
-        "username",
-        "displayname",
-        "firstname",
-        "lastname",
-        "approved",
-        "password"
-
-    })]
+    [ConsoleCommand("set-user", Constants.UsersCategory, "Prompt_SetUser_Description")]
     public class SetUser : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        [FlagParameter("id", "Prompt_SetUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        [FlagParameter("email", "Prompt_SetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
+        [FlagParameter("username", "Prompt_SetUser_FlagUsername", "String")]
         private const string FlagUsername = "username";
+        [FlagParameter("displayname", "Prompt_SetUser_FlagDisplayname", "String")]
         private const string FlagDisplayname = "displayname";
+        [FlagParameter("firstname", "Prompt_SetUser_FlagFirstname", "String")]
         private const string FlagFirstname = "firstname";
+        [FlagParameter("lastname", "Prompt_SetUser_FlagLastname", "String")]
         private const string FlagLastname = "lastname";
+        [FlagParameter("approved", "Prompt_SetUser_FlagApproved", "Boolean")]
         private const string FlagApproved = "approved";
+        [FlagParameter("password", "Prompt_SetUser_FlagPassword", "String")]
         private const string FlagPassword = "password";
 
 
-        public int? UserId { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string DisplayName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public bool? Approved { get; set; }
-        public string Password { get; set; }
+        private int? UserId { get; set; }
+        private string Email { get; set; }
+        private string Username { get; set; }
+        private string DisplayName { get; set; }
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
+        private bool? Approved { get; set; }
+        private string Password { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
+            
+            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            Email = GetFlagValue(FlagEmail, "Email", string.Empty);
+            Username = GetFlagValue(FlagUsername, "Username", string.Empty);
+            DisplayName = GetFlagValue(FlagDisplayname, "DisplayName", string.Empty);
+            FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);
+            LastName = GetFlagValue(FlagLastname, "LastName", string.Empty, true);
+            Password = GetFlagValue(FlagPassword, "Password", string.Empty);
+            Approved = GetFlagValue<bool?>(FlagApproved, "Approved", null);
 
-
-            if (HasFlag(FlagId))
+            // ensure there's something to update
+            if (string.IsNullOrEmpty(Email) &&
+                string.IsNullOrEmpty(Username) &&
+                string.IsNullOrEmpty(DisplayName) &&
+                string.IsNullOrEmpty(FirstName) &&
+                string.IsNullOrEmpty(LastName) &&
+                string.IsNullOrEmpty(Password) &&
+                !Approved.HasValue)
             {
-                var tmpId = 0;
-                if (int.TryParse(Flag(FlagId), out tmpId))
-                    UserId = tmpId;
+                AddMessage(LocalizeString("Prompt_NothingToSetUser"));
             }
-            else
-            {
-                // if ID not explicitly passed, it must be the first argument
-                if (args.Length > 1 && !IsFlag(args[1]))
-                {
-                    var tmpId = 0;
-                    if (int.TryParse(args[1], out tmpId))
-                    {
-                        UserId = tmpId;
-                    }
-                }
-            }
-            if (!UserId.HasValue)
-            {
-                // error. no valid user ID passed
-                sbErrors.Append(Localization.GetString("Prompt_UserIdIsRequired", Constants.LocalResourcesFile));
-            }
-            else
-            {
-                // Only continue if there's a valid UserID
-                if (HasFlag(FlagEmail))
-                    Email = Flag(FlagEmail);
-                if (HasFlag(FlagUsername))
-                    Username = Flag(FlagUsername);
-                if (HasFlag(FlagDisplayname))
-                    DisplayName = Flag(FlagDisplayname);
-                if (HasFlag(FlagFirstname))
-                    FirstName = Flag(FlagFirstname);
-                if (HasFlag(FlagLastname))
-                    LastName = Flag(FlagLastname);
-                if (HasFlag(FlagPassword))
-                {
-                    Password = Flag(FlagPassword);
-                }
-                Approved = null;
-                if (HasFlag(FlagApproved))
-                {
-                    bool approved;
-                    if (bool.TryParse(Flag(FlagApproved), out approved))
-                        Approved = approved;
-                }
-
-                // ensure there's something to update
-                if (string.IsNullOrEmpty(Email) &&
-                    string.IsNullOrEmpty(Username) &&
-                    string.IsNullOrEmpty(DisplayName) &&
-                    string.IsNullOrEmpty(FirstName) &&
-                    string.IsNullOrEmpty(LastName) &&
-                    string.IsNullOrEmpty(Password) &&
-                    !Approved.HasValue)
-                {
-                    sbErrors.Append(Localization.GetString("Prompt_NothingToSetUser", Constants.LocalResourcesFile));
-                }
-            }
-
-            ValidationMessage = sbErrors.ToString();
         }
 
         public override ConsoleResultModel Run()
@@ -130,7 +84,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 try
                 {
                     UsersController.Instance.ChangePassword(PortalId, userInfo.UserID, Password);
-                    sbResults.Append(Localization.GetString("ChangeSuccessful", Constants.LocalResourcesFile));
+                    sbResults.Append(LocalizeString("ChangeSuccessful"));
                 }
                 catch (Exception ex)
                 {
@@ -140,7 +94,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             if (Approved.HasValue && userInfo.Membership.Approved != Approved.Value)
             {
                 UsersController.Instance.UpdateAuthorizeStatus(userInfo, PortalId, Approved.Value);
-                sbResults.Append(Localization.GetString(Approved.Value ? "UserAuthorized" : "UserUnAuthorized", Constants.LocalResourcesFile));
+                sbResults.Append(LocalizeString(Approved.Value ? "UserAuthorized" : "UserUnAuthorized"));
 
             }
             var basicUpdated = !string.IsNullOrEmpty(Username) || !string.IsNullOrEmpty(DisplayName) || !string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName) || !string.IsNullOrEmpty(Email);
@@ -174,7 +128,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 }
                 catch (SqlException)
                 {
-                    return new ConsoleErrorResultModel(Localization.GetString("UsernameNotUnique", Constants.LocalResourcesFile) + "\n" + sbResults);
+                    return new ConsoleErrorResultModel(LocalizeString("UsernameNotUnique") + "\n" + sbResults);
                 }
                 catch (Exception ex)
                 {
@@ -191,7 +145,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Data = lst,
                 Records = lst.Count,
                 FieldOrder = UserModel.FieldOrder,
-                Output = Localization.GetString("UserUpdated", Constants.LocalResourcesFile)
+                Output = LocalizeString("UserUpdated")
             };
         }
 

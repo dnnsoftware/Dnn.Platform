@@ -23,6 +23,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace Dnn.PersonaBar.CssEditor.Services
 {
@@ -95,12 +96,14 @@ namespace Dnn.PersonaBar.CssEditor.Services
             {
                 try
                 {
-                    string strUploadDirectory = "";
+                    string strUploadDirectory = string.Empty;
+                    var relativePath = string.Empty;
 
                     PortalInfo objPortal = PortalController.Instance.GetPortal(request.PortalId);
                     if (objPortal != null)
                     {
                         strUploadDirectory = objPortal.HomeDirectoryMapPath;
+                        relativePath = $"{Globals.ApplicationPath}/{objPortal.HomeDirectory}/portal.css";
                     }
 
                     //reset attributes
@@ -133,6 +136,8 @@ namespace Dnn.PersonaBar.CssEditor.Services
                             HostController.Instance.IncrementCrmVersion(false);
                         }
                     }
+
+                    ClientResourceManager.ClearFileExistsCache(relativePath);
 
                     return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
                 }
@@ -177,6 +182,8 @@ namespace Dnn.PersonaBar.CssEditor.Services
                         {
                             File.Copy(Globals.HostMapPath + "portal.css", portal.HomeDirectoryMapPath + "portal.css");
                         }
+
+                        ClientResourceManager.ClearFileExistsCache($"{Globals.ApplicationPath}/{portal.HomeDirectory}/portal.css");
                     }
                     var content = LoadStyleSheet(request.PortalId);
 

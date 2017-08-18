@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
@@ -11,18 +10,26 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
-    [ConsoleCommand("add-module", "Adds a new module instance to a page", new[] { "name", "pageid", "pane", "title" })]
+    [ConsoleCommand("add-module", Constants.ModulesCategory, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommandBase
     {
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
+        [FlagParameter("name", "Prompt_AddModule_FlagModuleName", "String", true)]
         private const string FlagModuleName = "name";
+
+        [FlagParameter("pageid", "Prompt_AddModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
+
+        [FlagParameter("pane", "Prompt_AddModule_FlagPane", "String", "ContentPane")]
         private const string FlagPane = "pane";
+
+        [FlagParameter("title", "Prompt_AddModule_FlagModuleTitle", "String")]
         private const string FlagModuleTitle = "title";
 
         private string ModuleName { get; set; }
@@ -32,67 +39,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            base.Init(args, portalSettings, userInfo, activeTabId);
-            var sbErrors = new StringBuilder();
-
-            if (HasFlag(FlagModuleName))
-            {
-                ModuleName = Flag(FlagModuleName);
-            }
-            else if (args.Length >= 2 && !IsFlag(args[1]))
-            {
-                // assume first argument is the module name
-                ModuleName = args[1];
-            }
-            if (string.IsNullOrEmpty(ModuleName))
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_MainParamRequired", Constants.LocalResourcesFile), "Module Name", FlagModuleName);
-            }
-
-            if (HasFlag(FlagPageId))
-            {
-                int tmpId;
-                if (int.TryParse(Flag(FlagPageId), out tmpId))
-                {
-                    PageId = tmpId;
-                }
-                else
-                {
-                    sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotInt", Constants.LocalResourcesFile), FlagPageId);
-                }
-            }
-            else
-            {
-                // Page ID is required
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagRequired", Constants.LocalResourcesFile), FlagPageId);
-            }
-
-            if (HasFlag(FlagModuleTitle))
-                ModuleTitle = Flag(FlagModuleTitle);
-
-            if (HasFlag(FlagPane))
-                Pane = Flag(FlagPane);
-            if (string.IsNullOrEmpty(Pane))
-                Pane = "ContentPane";
-
-            if (PageId <= 0)
-            {
-                sbErrors.AppendFormat(Localization.GetString("Prompt_FlagNotPositiveInt", Constants.LocalResourcesFile), FlagPageId);
-            }
-
-            ValidationMessage = sbErrors.ToString();
+            
+            ModuleName = GetFlagValue(FlagModuleName, "Module Name", string.Empty, true, true);
+            PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
+            ModuleTitle = GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
+            Pane = GetFlagValue(FlagPane, "Pane", "ContentPane");
         }
 
         public override ConsoleResultModel Run()
         {
-
-            // get the desktop module id from the module name
             try
             {
                 var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalId);
                 if (desktopModule == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(Localization.GetString("Prompt_DesktopModuleNotFound", Constants.LocalResourcesFile), ModuleName));
+                    return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_DesktopModuleNotFound"), ModuleName));
                 }
 
                 KeyValuePair<HttpStatusCode, string> message;
@@ -102,15 +63,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     return new ConsoleErrorResultModel(message.Value);
                 }
                 if (addedModules.Count == 0)
-                    return new ConsoleErrorResultModel(Localization.GetString("Prompt_NoModulesAdded", Constants.LocalResourcesFile));
+                    return new ConsoleErrorResultModel(LocalizeString("Prompt_NoModulesAdded"));
                 var modules = addedModules.Select(newModule => ModuleInstanceModel.FromDnnModuleInfo(ModuleController.Instance.GetTabModule(newModule.TabModuleID))).ToList();
 
-                return new ConsoleResultModel(string.Format(Localization.GetString("Prompt_ModuleAdded", Constants.LocalResourcesFile), modules.Count, modules.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
+                return new ConsoleResultModel(string.Format(LocalizeString("Prompt_ModuleAdded"), modules.Count, modules.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(Localization.GetString("Prompt_AddModuleError", Constants.LocalResourcesFile));
+                return new ConsoleErrorResultModel(LocalizeString("Prompt_AddModuleError"));
             }
         }
     }

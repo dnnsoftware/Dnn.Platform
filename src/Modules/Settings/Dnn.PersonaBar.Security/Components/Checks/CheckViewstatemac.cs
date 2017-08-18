@@ -6,9 +6,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     public class CheckViewstatemac : IAuditCheck
     {
+        public string Id => "CheckViewstatemac";
+
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, "CheckViewstatemac");
+            var result = new CheckResult(SeverityEnum.Unverified, Id);
             try
             {
                 var page = HttpContext.Current.Handler as Page;
