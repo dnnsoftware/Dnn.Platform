@@ -1,10 +1,12 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components;
+using Cantarus.Modules.PolyDeploy.DataAccess.Models;
 using DotNetNuke.Web.Api;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace Cantarus.Modules.PolyDeploy.WebAPI
@@ -69,6 +71,68 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
             }
 
             return Request.CreateResponse(HttpStatusCode.Created);
+        }
+
+        // TODO: Will use DNN SF to secure.
+        [HttpGet]
+        public HttpResponseMessage Summary(string guid)
+        {
+            if (!SessionManager.SessionExists(guid))
+            {
+                // Session doesn't exist.
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
+            }
+
+            try
+            {
+                // Get the users ip address.
+                string ipAddress = HttpContext.Current.Request.UserHostAddress;
+
+                // Get the session.
+                Session sessionObj = SessionManager.GetSession(guid);
+
+                // Create a deploy operation.
+                Deployment deployOperation = new Deployment(sessionObj, ipAddress);
+
+                var summary = deployOperation.Summary();
+
+                return Request.CreateResponse(HttpStatusCode.OK, summary);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // TODO: Will use DNN SF to secure.
+        [HttpGet]
+        public HttpResponseMessage Install(string guid)
+        {
+            if (!SessionManager.SessionExists(guid))
+            {
+                // Session doesn't exist.
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
+            }
+
+            try
+            {
+                // Get the users ip address.
+                string ipAddress = HttpContext.Current.Request.UserHostAddress;
+
+                // Get the session.
+                Session sessionObj = SessionManager.GetSession(guid);
+
+                // Create a deploy operation.
+                Deployment deployOperation = new Deployment(sessionObj, ipAddress);
+
+                deployOperation.Deploy();
+
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
         }
     }
 }

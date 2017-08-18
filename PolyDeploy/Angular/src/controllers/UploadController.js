@@ -11,13 +11,13 @@
             $scope.errors = [];
 
             // Wait for session guid.
-            SessionService.session.then(setupUploader);
+            SessionService.sessionPromise.then(setupUploader);
 
             // Setup uploader.
-            function setupUploader(sessionGuid) {
+            function setupUploader(session) {
 
                 // Construct upload url.
-                var uploadUrl = apiUrl + 'Session/AddPackage?guid=' + sessionGuid;
+                var uploadUrl = apiUrl + 'Session/AddPackage?guid=' + session.Guid;
 
                 // Create uploader.
                 var uploader = new FileUploader({

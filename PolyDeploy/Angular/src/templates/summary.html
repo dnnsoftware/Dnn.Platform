@@ -1,3 +1,43 @@
-﻿<div>
-    Summary view
+﻿<div id="summary">
+    
+    <!-- Header -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Install Summary</h2>
+            <p>
+                Below is a summary of the installation if you choose to proceed.
+            </p>
+        </div>
+    </div>
+    <!-- /Header -->
+
+    <!-- Content -->
+    <div class="row">
+        <div class="col-xs-12">
+            
+            <ol>
+                <li ng-repeat="job in summaryData | orderBy: order">
+                    <ul>
+                        <li ng-repeat="package in job.packages">
+                            <ul class="package-info">
+                                <li><strong>Package:</strong> {{ package.name }}</li>
+                                <li><strong>Version:</strong> {{ package.version }}</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+
+        </div>
+    </div>
+    <!-- /Content -->
+
+    <!-- Continue -->
+    <div class="row">
+        <div class="col-xs-12">
+            <button onclick="return false;" class="btn btn-success" ui-sref="install.result">Continue</button>
+        </div>
+    </div>
+    <!-- Continue -->
+
 </div>

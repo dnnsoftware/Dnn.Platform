@@ -35,6 +35,11 @@
                 url: '/summary',
                 templateUrl: appRoot + 'templates/summary.html',
                 controller: 'SummaryController'
+            })
+            .state('install.result', {
+                url: '/result',
+                templateUrl: appRoot + 'templates/result.html',
+                controller: 'ResultController'
             });
     });
 

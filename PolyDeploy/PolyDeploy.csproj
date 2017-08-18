@@ -185,12 +185,14 @@
     <Content Include="Angular\src\app.js" />
     <Content Include="Angular\src\bundle.js" />
     <Content Include="Angular\src\controllers\InstallController.js" />
+    <Content Include="Angular\src\controllers\ResultController.js" />
     <Content Include="Angular\src\controllers\SummaryController.js" />
     <Content Include="Angular\src\controllers\UploadController.js" />
     <Content Include="Angular\src\controllers\MainController.js" />
     <Content Include="Angular\src\services\DataService.js" />
     <Content Include="Angular\src\services\SessionDataService.js" />
     <Content Include="Angular\src\services\SessionService.js" />
+    <Content Include="Angular\src\templates\result.html" />
     <Content Include="Angular\src\templates\upload.html" />
     <Content Include="Angular\src\templates\summary.html" />
     <Content Include="Angular\src\templates\install.html" />

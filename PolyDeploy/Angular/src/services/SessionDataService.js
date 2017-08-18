@@ -17,8 +17,17 @@
                 return $http.post(controllerUrl + 'Create').then(
                     function (response) {
 
-                        // Return unpacked data.
-                        return response.data;
+                        // Unpack data.
+                        var data = response.data;
+
+                        // Parse if we need to.
+                        if (data.Response) {
+                            data.Response = JSON.parse(data.Response);
+                        } else {
+                            data.Response = undefined;
+                        }
+
+                        return data;
                     });
             }
 
@@ -30,13 +39,71 @@
                 return $http.get(controllerUrl + 'Get?guid=' + guid).then(
                     function (response) {
 
-                        // Return unpacked data.
-                        return response.data;
+                        // Unpack data.
+                        var data = response.data;
+
+                        // Parse if we need to.
+                        if (data.Response) {
+                            data.Response = JSON.parse(data.Response);
+                        } else {
+                            data.Response = undefined;
+                        }
+
+                        return data;
                     });
             }
 
+            // GET
+            // Retrieve the session summary.
+            function summary(guid) {
+
+                // Make request.
+                return $http.get(controllerUrl + 'Summary?guid=' + guid).then(
+                    function (response) {
+
+                        // Grab unpacked data.
+                        var data = response.data;
+
+                        var installJobs = [];
+
+                        for (prop in data) {
+
+                            var installJob = {
+                                order: parseInt(prop),
+                                packages: []
+                            };
+
+                            var object = data[prop];
+
+                            installJob.canInstall = object.CanInstall;
+
+                            angular.forEach(object.Packages, function (package) {
+                                installJob.packages.push({
+                                    name: package.Name,
+                                    version: package.VersionStr
+                                });
+                            });
+
+
+                            installJobs.push(installJob);
+                        }
+
+                        return installJobs;
+                    });
+            }
+
+            // GET
+            // Start installation.
+            function install(guid) {
+
+                $http.get(controllerUrl + 'Install?guid=' + guid);
+            }
+
             return {
-                create: create
+                create: create,
+                get: get,
+                summary: summary,
+                install: install
             };
 
         }]);
