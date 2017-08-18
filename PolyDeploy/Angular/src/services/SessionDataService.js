@@ -77,13 +77,12 @@
 
                             installJob.canInstall = object.CanInstall;
 
-                            angular.forEach(object.Packages, function (package) {
+                            angular.forEach(object.Packages, function (pkg) {
                                 installJob.packages.push({
-                                    name: package.Name,
-                                    version: package.VersionStr
+                                    name: pkg.Name,
+                                    version: pkg.VersionStr
                                 });
                             });
-
 
                             installJobs.push(installJob);
                         }
