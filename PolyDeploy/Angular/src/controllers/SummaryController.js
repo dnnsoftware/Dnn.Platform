@@ -7,7 +7,7 @@
     module.controller('SummaryController', ['$scope', 'SessionService',
         function ($scope, SessionService) {
 
-            SessionService.getSummary().then(function (summaryData) {
+            SessionService.summary().then(function (summaryData) {
                 console.log(summaryData);
                 $scope.summaryData = summaryData;
             });
