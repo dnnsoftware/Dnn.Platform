@@ -28,10 +28,7 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId) {
-    // dispatch({
-    //     type: ActionTypes.LOAD_PAGE
-    // });
-
+    
     if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
         dispatch({
             type: ActionTypes.LOADED_PAGE,
@@ -113,10 +110,6 @@ const pageActions = {
         return (dispatch, getState) => {
             const { pages } = getState();
             const duplicatedPage = cloneDeep(pages.selectedPage);
-
-            // dispatch({
-            //     type: ActionTypes.LOAD_PAGE
-            // });
 
             duplicatedPage.templateTabId = duplicatedPage.tabId;
             duplicatedPage.tabId = 0;

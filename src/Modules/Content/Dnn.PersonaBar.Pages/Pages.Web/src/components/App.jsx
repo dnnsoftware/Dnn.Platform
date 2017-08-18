@@ -455,49 +455,6 @@ class App extends Component {
         this.props.selectPageSettingTab(index);
     }
 
-    getSettingsPage() {
-        const { props } = this;
-        const titleSettings = this.getPageTitle();
-        const cancelAction = this.onCancelSettings.bind(this);
-        const deleteAction = this.onDeleteSettings.bind(this);
-        const backToReferral = this.backToReferral.bind(this, this.state.referral);
-        const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-        return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
-            <PersonaBarPageHeader title={titleSettings} tooltip={titleSettings}>
-                {!this.isNewPage() &&
-                    this.getSettingsButtons()
-                }
-            </PersonaBarPageHeader>
-            <PersonaBarPageBody
-                backToLinkProps={{
-                    text: securityService.isSuperUser() && (this.state.referralText || Localization.get("BackToPages")),
-                    onClick: (this.state.referral ? backToReferral : cancelAction)
-                }}>
-                <PageSettings selectedPage={props.selectedPage}
-                    AllowContentLocalization={AllowContentLocalization}
-                    selectedPageErrors={props.selectedPageErrors}
-                    selectedPageDirty={props.selectedPageDirty}
-                    onCancel={cancelAction}
-                    onDelete={deleteAction}
-                    onSave={this.onCreatePage.bind(this)}
-                    selectedPageSettingTab={props.selectedPageSettingTab}
-                    selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={props.onChangePageField}
-                    onPermissionsChanged={props.onPermissionsChanged}
-                    onChangePageType={props.onChangePageType}
-                    onDeletePageModule={props.onDeletePageModule}
-                    onEditingPageModule={props.onEditingPageModule}
-                    onCancelEditingPageModule={props.onCancelEditingPageModule}
-                    editingSettingModuleId={props.editingSettingModuleId}
-                    onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
-                    onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
-                    pageDetailsFooterComponents={props.pageDetailsFooterComponents}
-                    pageTypeSelectorComponents={props.pageTypeSelectorComponents}
-                    onGetCachedPageCount={props.onGetCachedPageCount}
-                    onClearCache={props.onClearCache} />
-            </PersonaBarPageBody>
-        </PersonaBarPage>);
-    }
 
     getAddPages() {
         const { props } = this;
@@ -582,38 +539,12 @@ class App extends Component {
         return;
     }
 
-    getToRootParent(){
-        // const {selectedPage} = this.props;
-        // let currentPage = selectedPage;
-
-        // const loop = () => {
-        //     let condition = currentPage.parentId !== -1;
-
-        //     const left = () => {
-        //         const requestAsync = () => {
-        //             currentPage.parentId=-1;
-        //             console.log('in left loop',currentPage);
-        //             loop();
-        //         };
-        //         requestAsync();
-        //     };
-        //     const right = () => exit();
-
-        //     condition ? left() : right();
-        // };
-
-        // const exit = () => console.log('exiting loop');
-
-        // selectedPage.tabId !== -1 ? loop() : exit();
-    }
-
     setActivePage(pageInfo) {
         return new Promise((resolve) => {
             this.selectPageSettingTab(0);
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
             this.props.onLoadPage(pageInfo.tabId);
-
             resolve();
         });
     }
@@ -672,7 +603,7 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const { props, state } = this;
-        
+
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
@@ -746,10 +677,6 @@ class App extends Component {
     }
 
 
-    render_details() {
-        const { selectedPage } = this.props;
-    }
-
     render_pageList() {
         return (
             <PageList onPageSettings={this.onPageSettings.bind(this)} />
@@ -779,6 +706,7 @@ class App extends Component {
                                     <div>
                                     <PersonaBarPageTreeviewInteractor
                                         pageList={this.props.pageList}
+                                        getChildPageList={this.props.getChildPageList}
                                         _traverse={this._traverse.bind(this)}
                                         showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                         selectedPageDirty={this.props.selectedPageDirty}
