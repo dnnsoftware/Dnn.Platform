@@ -42,7 +42,6 @@
         top: 5px;
 
         .in-context-menu {
-            clear:both;
             pointer-events: none;
             transition: all .20s forwards ease-in-out;
             position:absolute;
@@ -50,6 +49,7 @@
             right:5px;
             height:0px;
             width:200px;
+            overflow-y:hidden;
             background-color:#fff;
             z-index:1000;
             -webkit-box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
@@ -58,22 +58,55 @@
 
             ul{
                 clear:both;
-                background-color:orange;
+
             }
             li {
+                transition: all .20s ease-in;
                 clear:both;
                 display:block;
                 width:100%;
+                padding: 15px;
+                color:black;
+                svg{
+                    fill:black;;
+                }
+                .icon{
+                    transition: padding-left .20s ease-in;
+                    float:left;
+                    width:15%;
+                }
+                .label{
+                    transition: padding-left .20s ease-in;
+                    padding-top:2px;
+                    float:left;
+                    width:85%;
+                }
+            }
+
+            li:hover{
+                background-color:@alto;
+                color: @curiousBlue;
+                svg{
+                    fill:@curiousBlue;
+                }
+                .icon, .label{
+                    padding-left:2px;
+                }
+
             }
         };
 
         .in-context-menu.active {
-            pointer-events: auto;
+            display:block;
+            pointer-events: all;
             animation: BounceHeightIn .20s forwards ease-in;
+            li {
+                height:40px;
+            }
         }
 
         .in-context-menu.inactive{
-            visibility: visible;
+            display:none;
             pointer-events: none;
             animation: BounceHeightOut .20s forwards ease-out;
         }

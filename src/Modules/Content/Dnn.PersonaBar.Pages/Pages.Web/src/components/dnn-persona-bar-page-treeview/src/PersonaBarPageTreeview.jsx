@@ -131,7 +131,7 @@ export class PersonaBarPageTreeview extends Component {
         const hotspotStyles = {
 
             position:"relative",
-            zIndex: 10000,
+            zIndex: 9997,
             wordWrap: "break-word",
             textOverflow: "wrap",
             width:"100%",
