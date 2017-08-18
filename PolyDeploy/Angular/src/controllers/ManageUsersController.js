@@ -35,8 +35,6 @@
                 DataService.apiUser.getUsers().then(
                     function (apiUsers) {
 
-                        console.log(apiUsers);
-
                         // Pop them on the scope.
                         $scope.users = apiUsers;
 
