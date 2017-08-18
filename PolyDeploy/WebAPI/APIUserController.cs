@@ -2,7 +2,9 @@
 using Cantarus.Modules.PolyDeploy.DataAccess.Models;
 using DotNetNuke.Web.Api;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -17,7 +19,15 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
-            return Request.CreateResponse(HttpStatusCode.Created, APIUserManager.GetAll());
+            List<APIUser> apiUsers = APIUserManager.GetAll().ToList();
+
+            foreach(APIUser apiUser in apiUsers)
+            {
+                apiUser.APIKey = string.Format("****************************{0}", apiUser.APIKey.Substring(apiUser.APIKey.Length - 4));
+                apiUser.EncryptionKey = string.Format("****************************{0}", apiUser.EncryptionKey.Substring(apiUser.EncryptionKey.Length - 4));
+            }
+
+            return Request.CreateResponse(HttpStatusCode.Created, apiUsers);
         }
 
         // TODO: Will use DNN SF to secure.
@@ -69,21 +79,17 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
 
         // TODO: Will use DNN SF to secure.
         [HttpDelete]
-        public HttpResponseMessage Delete()
+        public HttpResponseMessage Delete(int id)
         {
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
             string json = Request.Content.ReadAsStringAsync().Result;
 
-            APIUser apiUser;
+            APIUser apiUser = APIUserManager.GetById(id);
 
-            try
+            if (apiUser == null)
             {
-                apiUser = jsonSer.Deserialize<APIUser>(json);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Deserialization failure.");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "API user not found.");
             }
 
             try
@@ -92,7 +98,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Failed to update API user.");
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Failed to delete API user.");
             }
 
             return Request.CreateResponse(HttpStatusCode.NoContent);

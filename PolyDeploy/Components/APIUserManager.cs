@@ -34,6 +34,13 @@ namespace Cantarus.Modules.PolyDeploy.Components
             return dc.Get();
         }
 
+        public static APIUser GetById(int id)
+        {
+            APIUserDataController dc = new APIUserDataController();
+
+            return dc.Get(id);
+        }
+
         public static APIUser GetByAPIKey(string apiKey)
         {
             APIUserDataController dc = new APIUserDataController();

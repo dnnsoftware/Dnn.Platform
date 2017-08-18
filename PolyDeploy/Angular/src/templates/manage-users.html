@@ -9,10 +9,65 @@
     <!-- /Header -->
 
     <!-- Content -->
-    <div ng-if="session" class="row">
+    <div class="row">
         <div class="col-xs-12">
 
-            
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">New API User</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" ng-model="newUserName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-success" onclick="return false;" ng-click="createUser(newUserName)">Create</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">API Users</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>API Key</th>
+                                        <th>Encryption Key</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="user in users">
+                                        <td>{{ user.Name }}</td>
+                                        <td>{{ user.APIKey }}</td>
+                                        <td>{{ user.EncryptionKey }}</td>
+                                        <td><button class="btn btn-sm btn-danger" onclick="return false;" ng-click="deleteUser(user)">Delete</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Users Table -->
 
         </div>
     </div>

@@ -51,9 +51,10 @@
             // DELETE
             // Delete API user;
             function deleteUser(apiUser) {
-
+                console.log('Deleting: ');
+                console.log(apiUser);
                 // Make request.
-                return $http.delete(controllerUrl + 'Delete', apiUser).then(
+                return $http.delete(controllerUrl + 'Delete?id=' + apiUser.APIUserId).then(
                     function (response) {
 
                         // Return unpacked data.
