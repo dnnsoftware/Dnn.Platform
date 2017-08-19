@@ -281,7 +281,7 @@ class PagePicker extends Component {
             const pageIcon = PagesIcon;
             const textClass = props.IsMultiSelect && props.ShowIcon ? " text-with-page-icon" : (!props.IsMultiSelect && !props.ShowIcon ? "no-icon" : "");
             const pageClass = props.IsMultiSelect && props.ShowIcon ? " page-icon" : "";
-            return <li className={"page-item" + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
+            return <li className={"page-item page-" + page.TabId + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
                 {(!page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
                 {(page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
                 <div className={this.getSelected(page) } onClick={page.Selectable ? this.onPageSelect.bind(this, page) : void (0) }>
