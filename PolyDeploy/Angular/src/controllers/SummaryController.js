@@ -12,6 +12,22 @@
                 $scope.summaryData = summaryData;
             });
 
+            $scope.dependenciesString = function(deps) {
+
+                var depString = '';
+
+                angular.forEach(deps, function (dep) {
+
+                    if (depString.length !== 0) {
+                        depString = depString + ', ';
+                    }
+
+                    depString = depString + dep;
+                });
+
+                return depString;
+            };
+
         }]);
 
 })();

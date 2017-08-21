@@ -64,6 +64,8 @@
                         // Grab unpacked data.
                         var data = response.data;
 
+                        console.log(data);
+
                         var installJobs = [];
 
                         for (prop in data) {
@@ -78,9 +80,21 @@
                             installJob.canInstall = object.CanInstall;
 
                             angular.forEach(object.Packages, function (pkg) {
+
+                                var dependencies = [];
+
+                                angular.forEach(pkg.Dependencies, function (dep) {
+
+                                    if (dep.Type === 'package') {
+
+                                        dependencies.push(dep.Value);
+                                    }
+                                });
+
                                 installJob.packages.push({
                                     name: pkg.Name,
-                                    version: pkg.VersionStr
+                                    version: pkg.VersionStr,
+                                    dependencies: dependencies
                                 });
                             });
 

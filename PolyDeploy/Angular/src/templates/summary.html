@@ -22,6 +22,7 @@
                             <ul class="package-info">
                                 <li><strong>Package:</strong> {{ package.name }}</li>
                                 <li><strong>Version:</strong> {{ package.version }}</li>
+                                <li><strong>Dependencies:</strong> {{ dependenciesString(package.dependencies) }}</li>
                             </ul>
                         </li>
                     </ul>
