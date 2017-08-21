@@ -75,7 +75,7 @@
                         DataService.session.install(session.Guid);
 
                         // Start refresh interval.
-                        sessionRefreshInterval = $interval(refreshSession, 5000);
+                        sessionRefreshInterval = $interval(refreshSession, 1000);
                     });
             }
 

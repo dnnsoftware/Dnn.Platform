@@ -29,7 +29,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="module-info" ng-repeat="module in session.Response.Installed">
-
+                                <h4>{{ module.Name }}</h4>
                                 <h5>Packages</h5>
                                 <div ng-repeat="package in module.Packages">
                                     <ul class="package-info">

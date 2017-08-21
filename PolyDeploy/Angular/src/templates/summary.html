@@ -14,20 +14,24 @@
     <!-- Content -->
     <div class="row">
         <div class="col-xs-12">
-            
-            <ol>
-                <li ng-repeat="job in summaryData | orderBy: order">
-                    <ul>
-                        <li ng-repeat="package in job.packages">
-                            <ul class="package-info">
-                                <li><strong>Package:</strong> {{ package.name }}</li>
-                                <li><strong>Version:</strong> {{ package.version }}</li>
-                                <li><strong>Dependencies:</strong> {{ dependenciesString(package.dependencies) }}</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ol>
+
+            <div class="panel panel-info" ng-repeat="job in summaryData | orderBy: order">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{ job.order + 1 }}. {{ job.name }}</h4>
+                </div>
+                <div class="panel-body">
+                    
+                    <h5>Packages</h5>
+                    <div ng-repeat="package in job.packages">
+                        <ul class="package-info">
+                            <li><strong>Name:</strong> {{ package.name }}</li>
+                            <li><strong>Version:</strong> {{ package.version }}</li>
+                            <li><strong>Dependencies:</strong> {{ dependenciesString(package.dependencies) }}</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
     </div>

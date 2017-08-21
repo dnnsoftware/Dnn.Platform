@@ -77,6 +77,7 @@
 
                             var object = data[prop];
 
+                            installJob.name = object.Name;
                             installJob.canInstall = object.CanInstall;
 
                             angular.forEach(object.Packages, function (pkg) {
