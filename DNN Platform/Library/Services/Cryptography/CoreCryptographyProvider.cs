@@ -86,6 +86,11 @@ namespace DotNetNuke.Services.Cryptography
         /// <returns></returns>
         public override string DecryptParameter(string message, string passphrase)
         {
+            if (string.IsNullOrEmpty(message))
+            {
+                return "";
+            }
+
             string strValue = "";
             if (!String.IsNullOrEmpty(passphrase))
             {
