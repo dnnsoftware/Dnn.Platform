@@ -34,21 +34,33 @@
                     return 'Starting install...';
                 }
 
+                // Get session response.
                 var response = session.Response;
 
+                // Get counts.
                 var installed = response.Installed.length;
                 var failed = response.Failed.length;
+
+                // Create start of string.
                 var installStatus = 'Installation ';
 
-                if (session.Status === 1) {
-                    installStatus = installStatus + 'in Progress';
-                }
+                // Enumeration for session status.
+                // Could consider moving this in to the
+                // SessionDataService and having the correct enumeration
+                // applied to the data as it comes in.
+                var sessionStatusEnum = {
+                    '0': 'Not Started',
+                    '1': 'in Progress',
+                    '2': 'Complete'
+                };
 
-                if (session.Status === 2) {
-                    installStatus = installStatus + 'Complete';
-                }
+                // Append status.
+                installStatus = installStatus + sessionStatusEnum[session.Status.toString()];
 
-                return installStatus + ': ' + installed + ' successful installs and ' + failed + ' failures.';
+                // Append success and failure.
+                installStatus = installStatus + ': ' + installed + ' successful installs and ' + failed + ' failures.';
+
+                return installStatus;
             };
 
         }]);
