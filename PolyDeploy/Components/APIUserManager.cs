@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-    internal class APIUserManager
+    internal static class APIUserManager
     {
         public static APIUser Create(string name)
         {
