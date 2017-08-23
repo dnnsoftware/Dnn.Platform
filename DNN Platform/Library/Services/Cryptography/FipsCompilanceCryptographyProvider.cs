@@ -87,41 +87,27 @@ namespace DotNetNuke.Services.Cryptography
         /// <returns></returns>
         public override string DecryptParameter(string message, string passphrase)
         {
-            if (string.IsNullOrEmpty(message))
-            {
-                return "";
-            }
-
             string strValue = "";
-            if (!String.IsNullOrEmpty(passphrase))
+            if (!string.IsNullOrEmpty(passphrase) && !string.IsNullOrEmpty(message))
             {
-                //convert key to 16 characters for simplicity
-                if (passphrase.Length < 16)
-                {
-                    passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
-                }
-                else
-                {
-                    passphrase = passphrase.Substring(0, 16);
-                }
-
-                //create encryption keys
-                byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
-                byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
-
                 //convert data to byte array and Base64 decode
-                var byteData = new byte[message.Length];
                 try
                 {
-                    byteData = Convert.FromBase64String(message);
-                }
-                catch //invalid length
-                {
-                    return string.Empty;
-                }
+                    //convert key to 16 characters for simplicity
+                    if (passphrase.Length < 16)
+                    {
+                        passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
+                    }
+                    else
+                    {
+                        passphrase = passphrase.Substring(0, 16);
+                    }
 
-                try
-                {
+                    //create encryption keys
+                    byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
+                    byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
+                    byte[] byteData = Convert.FromBase64String(message);
+
                     //decrypt
                     using (var objDes = new DESCryptoServiceProvider())
                     using (var objMemoryStream = new MemoryStream())
