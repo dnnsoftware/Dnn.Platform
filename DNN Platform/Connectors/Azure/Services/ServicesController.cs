@@ -13,7 +13,7 @@ using System.Web.Http;
 using DotNetNuke.Providers.FolderProviders.AzureFolderProvider;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Api;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage;
 
 namespace Dnn.AzureConnector.Services
 {
@@ -37,10 +37,10 @@ namespace Dnn.AzureConnector.Services
 
                 return Request.CreateResponse(HttpStatusCode.OK, containers);
             }
-            catch (StorageClientException ex)
+            catch (StorageException ex)
             {
                 Exceptions.LogException(ex);
-                var message = ex.Message;
+                var message = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Message = message });
             }
             catch (Exception ex)

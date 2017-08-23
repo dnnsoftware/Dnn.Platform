@@ -62,8 +62,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.WindowsAzure.StorageClient">
-      <HintPath>..\..\Components\WindowsAzure\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\WindowsAzure\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -90,15 +91,18 @@
       <DependentUpon>Settings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\BaseRemoteStorageProvider.cs" />
+    <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\IRemoteStorageItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="09.02.00.txt" />
     <Content Include="AzureFolderProvider\images\FolderAzure_16x16_Standard.png" />
     <Content Include="AzureFolderProvider\images\FolderAzure_32x32_Standard.png" />
     <None Include="app.config" />
-    <None Include="DotNetNuke.Providers.FolderProviders.nuspec" />
-    <None Include="FolderProviders.dnn" />
+    <None Include="FolderProviders.dnn">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="AzureFolderProvider\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
