@@ -7,6 +7,8 @@ namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal static class APIUserManager
     {
+        private static APIUserDataController APIUserDC = new APIUserDataController();
+
         public static APIUser Create(string name)
         {
             APIUser newApiUser;
@@ -29,39 +31,29 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public static IEnumerable<APIUser> GetAll()
         {
-            APIUserDataController dc = new APIUserDataController();
-
-            return dc.Get();
+            return APIUserDC.Get();
         }
 
         public static APIUser GetById(int id)
         {
-            APIUserDataController dc = new APIUserDataController();
-
-            return dc.Get(id);
+            return APIUserDC.Get(id);
         }
 
         public static APIUser GetByAPIKey(string apiKey)
         {
-            APIUserDataController dc = new APIUserDataController();
-
-            return dc.Get(apiKey);
+            return APIUserDC.Get(apiKey);
         }
 
         public static APIUser Update(APIUser apiUser)
         {
-            APIUserDataController dc = new APIUserDataController();
+            APIUserDC.Update(apiUser);
 
-            dc.Update(apiUser);
-
-            return dc.Get(apiUser.APIUserId);
+            return APIUserDC.Get(apiUser.APIUserId);
         }
 
         public static void Delete(APIUser apiuser)
         {
-            APIUserDataController dc = new APIUserDataController();
-
-            dc.Delete(apiuser);
+            APIUserDC.Delete(apiuser);
         }
     }
 }
