@@ -8,9 +8,7 @@
         function ($interval, DataService) {
 
             // Session storage.
-            var sessionObject = {
-                nope: 'what?'
-            };
+            var sessionObject = {};
             var sessionPromise;
             var sessionRefreshInterval;
 
