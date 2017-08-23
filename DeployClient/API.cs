@@ -120,7 +120,8 @@ namespace DeployClient
                     // Nothing to do.
                 }
 
-                return success;
+                // Always fail.
+                return false;
             }
         }
     }
