@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-success" onclick="return false;" ng-click="createUser(newUserName)">Create</button>
+                            <button type="button" class="btn btn-success" ng-click="createUser(newUserName)">Create</button>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -57,7 +57,7 @@
                                 <td>{{ user.Name }}</td>
                                 <td>{{ user.APIKey }}</td>
                                 <td>{{ user.EncryptionKey }}</td>
-                                <td><button class="btn btn-sm btn-danger" onclick="return false;" ng-click="deleteUser(user)">Delete</button></td>
+                                <td><button type="button" class="btn btn-sm btn-danger" ng-click="deleteUser(user)">Delete</button></td>
                             </tr>
                         </tbody>
                     </table>
