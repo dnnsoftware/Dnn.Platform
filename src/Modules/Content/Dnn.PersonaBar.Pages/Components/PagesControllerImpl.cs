@@ -143,11 +143,25 @@ namespace Dnn.PersonaBar.Pages.Components
                 throw new PageNotFoundException();
             }
 
-            if (tab.ParentId != request.ParentId)
+            if (request.Action == "parent" && tab.ParentId != request.ParentId)
             {
                 string errorMessage;
 
                 if (!IsValidTabPath(tab, Globals.GenerateTabPath(request.ParentId, tab.TabName), tab.TabName, out errorMessage))
+                {
+                    throw new PageException(errorMessage);
+                }
+            }
+            else if (request.Action == "before" || request.Action == "after")
+            {
+                var relatedTab = TabController.Instance.GetTab(request.RelatedPageId, portalSettings.PortalId);
+                if (relatedTab == null)
+                {
+                    throw new PageNotFoundException();
+                }
+                string errorMessage;
+
+                if (tab.ParentId != relatedTab.ParentId && !IsValidTabPath(tab, Globals.GenerateTabPath(relatedTab.ParentId, tab.TabName), tab.TabName, out errorMessage))
                 {
                     throw new PageException(errorMessage);
                 }
@@ -418,7 +432,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 return false;
             }
 
-            var parentId = tab?.ParentId ?? Null.NullInteger;
+            var parentId = pageSettings.ParentId ?? tab?.ParentId ?? Null.NullInteger;
+
             if (pageSettings.PageType == "template")
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -485,7 +500,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var portalId = portalSettings.PortalId;
-            var tab = new TabInfo { PortalID = portalId };
+            var tab = new TabInfo { PortalID = portalId, ParentId = pageSettings.ParentId ?? Null.NullInteger };
             UpdateTabInfoFromPageSettings(tab, pageSettings);
 
             if (portalSettings.ContentLocalizationEnabled)

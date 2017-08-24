@@ -32,7 +32,6 @@ import Promise from "promise";
 
 import "./style.less";
 
-
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
 function getSelectedTabBeingViewed(viewTab) {
@@ -48,20 +47,24 @@ function getSelectedTabBeingViewed(viewTab) {
     }
 }
 
+
 class App extends Component {
     constructor() {
         super();
         this.state = {
             referral: "",
-            referralText: ""
+            referralText: "",
+            busy:false
         };
-       
+
     }
 
     componentDidMount() {
         const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
+        window.dnn.utility.closeSocialTasks();
+        window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
@@ -117,15 +120,27 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
+
+
     }
 
     componentWillUnmount() {
         document.removeEventListener("viewPageSettings");
+
     }
 
+
+
+
     componentWillReceiveProps(newProps) {
+
         this.notifyErrorIfNeeded(newProps);
+        window.dnn.utility.closeSocialTasks();
+        window.dnn.utility.expandPersonaBarPage();
+
     }
+
+
 
     notifyErrorIfNeeded(newProps) {
         if (newProps.error !== this.props.error) {
@@ -242,7 +257,7 @@ class App extends Component {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
-    onAddPage() {
+    onAddPage(parentPage) {
         const { props } = this;
         const { selectedPage } = props;
         let runUpdateStore = null;
@@ -257,7 +272,7 @@ class App extends Component {
         runUpdateStore(pageList);
 
         if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-            const onConfirm = () => this.props.getNewPage();
+            const onConfirm = () => this.props.getNewPage(parentPage);
             utils.confirm(
                 Localization.get("CancelWithoutSaving"),
                 Localization.get("Close"),
@@ -265,7 +280,7 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            props.getNewPage();
+            props.getNewPage(parentPage);
         }
     }
 
@@ -364,14 +379,15 @@ class App extends Component {
                         if(item.id === id){
                             Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key]);
                             this.props.updatePageListStore(list);
+                            this.selectPageSettingTab(0);
                         }
                     });
                 });
             };
 
             utils.confirm(
-                Localization.get("CancelWithoutSavingPage"),
-                Localization.get("Revert"),
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Continue"),
                 Localization.get("Go Back"),
                 onConfirm);
 
@@ -439,54 +455,11 @@ class App extends Component {
         this.props.selectPageSettingTab(index);
     }
 
-    getSettingsPage() {
-        const { props } = this;
-        const titleSettings = this.getPageTitle();
-        const cancelAction = this.onCancelSettings.bind(this);
-        const deleteAction = this.onDeleteSettings.bind(this);
-        const backToReferral = this.backToReferral.bind(this, this.state.referral);
-        const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-        return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
-            <PersonaBarPageHeader title={titleSettings} tooltip={titleSettings}>
-                {!this.isNewPage() &&
-                    this.getSettingsButtons()
-                }
-            </PersonaBarPageHeader>
-            <PersonaBarPageBody
-                backToLinkProps={{
-                    text: securityService.isSuperUser() && (this.state.referralText || Localization.get("BackToPages")),
-                    onClick: (this.state.referral ? backToReferral : cancelAction)
-                }}>
-                <PageSettings selectedPage={props.selectedPage}
-                    AllowContentLocalization={AllowContentLocalization}
-                    selectedPageErrors={props.selectedPageErrors}
-                    selectedPageDirty={props.selectedPageDirty}
-                    onCancel={cancelAction}
-                    onDelete={deleteAction}
-                    onSave={this.onCreatePage.bind(this)}
-                    selectedPageSettingTab={props.selectedPageSettingTab}
-                    selectPageSettingTab={this.selectPageSettingTab.bind(this)}
-                    onChangeField={props.onChangePageField}
-                    onPermissionsChanged={props.onPermissionsChanged}
-                    onChangePageType={props.onChangePageType}
-                    onDeletePageModule={props.onDeletePageModule}
-                    onEditingPageModule={props.onEditingPageModule}
-                    onCancelEditingPageModule={props.onCancelEditingPageModule}
-                    editingSettingModuleId={props.editingSettingModuleId}
-                    onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
-                    onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
-                    pageDetailsFooterComponents={props.pageDetailsFooterComponents}
-                    pageTypeSelectorComponents={props.pageTypeSelectorComponents}
-                    onGetCachedPageCount={props.onGetCachedPageCount}
-                    onClearCache={props.onClearCache} />
-            </PersonaBarPageBody>
-        </PersonaBarPage>);
-    }
 
     getAddPages() {
         const { props } = this;
 
-        return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
+        return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL} fullWidth={true}>
             <PersonaBarPageHeader title={Localization.get("AddMultiplePages")}>
             </PersonaBarPageHeader>
             <PersonaBarPageBody backToLinkProps={{
@@ -568,6 +541,7 @@ class App extends Component {
 
     setActivePage(pageInfo) {
         return new Promise((resolve) => {
+            this.selectPageSettingTab(0);
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
             this.props.onLoadPage(pageInfo.tabId);
@@ -577,9 +551,14 @@ class App extends Component {
 
     onSelection(pageId) {
         const { selectedPage, selectedPageDirty } = this.props;
+        this.selectPageSettingTab(0);
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
-                this.props.onLoadPage(pageId);
+                this.props.onLoadPage(pageId).then((data) => {
+                    this.getToRootParent();
+                });
+                this.selectPageSettingTab(0);
+
             }
         };
         const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
@@ -596,6 +575,9 @@ class App extends Component {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
 
+    onViewPage(id, url){
+        return PageActions.viewPage(id, url);
+    }
 
     render_PagesTreeViewEditor() {
         return (
@@ -621,7 +603,7 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const { props, state } = this;
-        
+
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
@@ -663,7 +645,7 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-
+        this.selectPageSettingTab(0);
         return (
             <GridCell columnSize={70} className="treeview-page-details" >
                 <PageSettings selectedPage={props.selectedPage || {}}
@@ -676,6 +658,7 @@ class App extends Component {
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
                     onChangeField={this.onChangePageField.bind(this)}
+                    onChangeParentId={this.onChangeParentId.bind(this)}
                     onPermissionsChanged={props.onPermissionsChanged}
                     onChangePageType={props.onChangePageType}
                     onDeletePageModule={props.onDeletePageModule}
@@ -694,10 +677,6 @@ class App extends Component {
     }
 
 
-    render_details() {
-        const { selectedPage } = this.props;
-    }
-
     render_pageList() {
         return (
             <PageList onPageSettings={this.onPageSettings.bind(this)} />
@@ -715,7 +694,7 @@ class App extends Component {
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
-                    <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL} fullWidth={true}>
+                    <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
@@ -727,6 +706,7 @@ class App extends Component {
                                     <div>
                                     <PersonaBarPageTreeviewInteractor
                                         pageList={this.props.pageList}
+                                        getChildPageList={this.props.getChildPageList}
                                         _traverse={this._traverse.bind(this)}
                                         showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                         selectedPageDirty={this.props.selectedPageDirty}
@@ -734,6 +714,9 @@ class App extends Component {
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}
                                         onMovePage={this.onMovePage.bind(this)}
+                                        onViewPage={ this.onViewPage.bind(this)}
+                                        onDuplicatePage={this.props.onDuplicatePage}
+                                        onAddPage={this.onAddPage.bind(this)}
                                         onSelection={this.onSelection.bind(this)} />
                                     </div>
                                 </div>
@@ -773,6 +756,7 @@ App.propTypes = {
     onUpdatePage: PropTypes.func.isRequired,
     onDeletePage: PropTypes.func.isRequired,
     getPageList: PropTypes.func.isRequired,
+    getPage: PropTypes.func.isRequired,
     updatePageListStore: PropTypes.func.isRequire,
     getNewPage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
@@ -834,6 +818,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
+        getPage: PageActions.getPage,
+        viewPage: PageActions.viewPage,
         getChildPageList: PageActions.getChildPageList,
         updatePageListStore: PageActions.updatePageListStore,
         onCancelPage: PageActions.cancelPage,

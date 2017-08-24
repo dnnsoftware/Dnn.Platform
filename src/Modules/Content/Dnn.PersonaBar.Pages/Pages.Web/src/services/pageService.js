@@ -6,7 +6,7 @@ const PageService = function () {
     function getOverridablePagesApi() {
         return new Api(window.dnn.pages.apiController);
     }
-    
+
     function getPagesApi() {
         return new Api("Pages");
     }
@@ -24,7 +24,7 @@ const PageService = function () {
         if (page.tabId === 0 && !securityService.isSuperUser()) {
             request = {
                 ...page,
-                parentId: utils.getCurrentPageId() 
+                parentId: utils.getCurrentPageId()
             };
         }
         if (!hasChangeUrl) {
@@ -32,14 +32,14 @@ const PageService = function () {
                 ...request,
                 url: ""
             };
-        }   
+        }
 
         return api.post("SavePageDetails", toBackEndPage(request));
     };
-    
+
     const deletePage = function (page) {
         const api = getPagesApi();
-        return api.post("DeletePage", {id: page.tabId});
+        return api.post("DeletePage", { id: page.tabId });
     };
 
     const addPages = function (bulkPage) {
@@ -62,7 +62,8 @@ const PageService = function () {
         return api.get("GetPageUrlPreview", { url: value });
     };
 
-    const getNewPage = function () {
+    const getNewPage = function (parentPage) {
+        console.log("getNewPage parentPage", parentPage);
         const api = getOverridablePagesApi();
         return api.get("GetDefaultSettings")
             .then(settings => {
@@ -84,7 +85,6 @@ const PageService = function () {
                 page.allowIndex = true;
                 page.thumbnail = "";
                 page.created = "";
-                page.hierarchy = "";
                 page.hasChild = false;
                 page.type = 0;
                 page.customUrlEnabled = true;
@@ -99,7 +99,9 @@ const PageService = function () {
                 page.permanentRedirect = false;
                 page.linkNewWindow = false;
                 page.templateTabId = null;
-
+                page.hasParent = parentPage && typeof parentPage !== "function" && parentPage.id || page.hasParent;
+                page.hierarchy = parentPage && typeof parentPage !== "function" && parentPage.id && parentPage.name || page.hierarchy;
+                page.parentId = parentPage && typeof parentPage !== "function" && parentPage.id || page.parentId;
                 return page;
             });
     };
@@ -122,13 +124,13 @@ const PageService = function () {
             pageId
         });
     };
-    
+
     const toFrontEndPage = function (page) {
         return {
             ...page,
-            schedulingEnabled: page.startDate || page.endDate 
+            schedulingEnabled: page.startDate || page.endDate
         };
-    }; 
+    };
 
     const toBackEndPage = function (page) {
         return {
@@ -138,11 +140,11 @@ const PageService = function () {
             schedulingEnabled: undefined
         };
     };
-    
+
     const openPageInEditMode = function (id, url) {
         const api = getPagesApi();
         return api.post("EditModeForPage?id=" + id, {})
-            .then(() => 
+            .then(() =>
                 utils.getUtilities().closePersonaBar(function () {
                     window.top.location.href = url;
                 })
@@ -161,12 +163,12 @@ const PageService = function () {
 
     const getPageList = () => {
         const api = getOverridablePagesApi();
-        return api.get("GetPageList", {searchKey:""});
+        return api.get("GetPageList", { searchKey: "" });
     };
 
-    const getChildPageList = (id="") => {
+    const getChildPageList = (id = "") => {
         const api = getOverridablePagesApi();
-        return api.get("GetPageList", {parentId:id});
+        return api.get("GetPageList", { parentId: id });
     };
 
     return {
