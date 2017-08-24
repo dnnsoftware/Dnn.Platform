@@ -1,356 +1,322 @@
 @import "~dnn-global-styles/index";
-
 .dnn-persona-bar-treeview-menu {
-    padding:0;
-
+    padding: 0;
     .parent-expand {
-        margin-left:10px;
-        margin-left:6px;
-
-       .list-item-menu {
-           text-align:left;
-       }
-
-       .treeview-parent-expand-button,  .treeview-parent-collapse-button{
-            margin-top:-2px;
-       }
+        margin-left: 10px;
+        margin-left: 6px;
+        .list-item-menu {
+            text-align: left;
+        }
+        .treeview-parent-expand-button, .treeview-parent-collapse-button {
+            margin-top: -2px;
+        }
     }
-
-    .dnn-persona-bar-treeview-ul{
-        margin-left:0px;
-        padding:0;
+    .dnn-persona-bar-treeview-ul {
+        margin-left: 0px;
+        padding: 0;
     }
-
-    .list-item-menu{
-        width:90px;
+    .list-item-menu {
+        width: 90px;
         .draft-pencil {
-            margin-left:3px;
-            height:32px;
-            display:inline-block;
-
-            svg:hover{
-                fill:@alto;
+            margin-left: 3px;
+            height: 32px;
+            display: inline-block;
+            svg:hover {
+                fill: @alto;
             }
         }
     }
-
     .tree-menu-ul ul {
-        padding:0;
+        padding: 0;
     }
-
-    .selection-arrow{
+    .selection-arrow {
         top: 5px;
-
         .in-context-menu {
             pointer-events: none;
             transition: all .20s forwards ease-in-out;
-            position:absolute;
+            position: absolute;
             top: 30px;
-            right:5px;
-            height:0px;
-            width:200px;
-            overflow-y:hidden;
-            background-color:#fff;
-            z-index:1000;
-            -webkit-box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
-            -moz-box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
-            box-shadow: 2px 11px 53px -10px rgba(0,0,0,0.26);
-
-            ul{
-                clear:both;
-
+            right: 5px;
+            height: 0px;
+            width: 200px;
+            overflow-y: hidden;
+            background-color: #fff;
+            z-index: 1000;
+            -webkit-box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
+            -moz-box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
+            box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
+            ul {
+                clear: both;
             }
             li {
                 transition: all .20s ease-in;
-                clear:both;
-                display:block;
-                width:100%;
+                clear: both;
+                display: block;
+                width: 100%;
                 padding: 15px;
-                color:black;
-                svg{
-                    fill:black;;
+                color: black;
+                svg {
+                    fill: black;
+                    ;
                 }
-                .icon{
+                .icon {
                     transition: padding-left .20s ease-in;
-                    float:left;
-                    width:15%;
+                    float: left;
+                    width: 15%;
                 }
-                .label{
+                .label {
                     transition: padding-left .20s ease-in;
-                    padding-top:2px;
-                    float:left;
-                    width:85%;
+                    padding-top: 2px;
+                    float: left;
+                    width: 85%;
                 }
             }
-
-            li:hover{
-                background-color:@alto;
+            li:hover {
+                background-color: @alto;
                 color: @curiousBlue;
-                svg{
-                    fill:@curiousBlue;
+                svg {
+                    fill: @curiousBlue;
                 }
-                .icon, .label{
-                    padding-left:2px;
+                .icon, .label {
+                    padding-left: 2px;
                 }
-
             }
-        };
-
+        }
+        ;
         .in-context-menu.active {
-            display:block;
+            display: block;
             pointer-events: all;
             animation: BounceHeightIn .20s forwards ease-in;
             li {
-                height:40px;
+                height: 40px;
             }
         }
-
-        .in-context-menu.inactive{
-            display:none;
+        .in-context-menu.inactive {
+            display: none;
             pointer-events: none;
             animation: BounceHeightOut .20s forwards ease-out;
         }
-
         .in-context-menu.hidden {
             visibility: hidden;
         }
     }
-
 }
 
 .dnn-persona-bar-treeview {
     font-family: inherit;
     cursor: pointer;
     padding: 15px;
-
-
     .collapse-expand {
-        transition:all .5s ease-out;
+        transition: all .5s ease-out;
         font-size: 12px;
-        font-weight:bold;
-        color:@curiousBlue;
+        font-weight: bold;
+        color: @curiousBlue;
         padding-bottom: 20px;
-        padding-left:20px;
+        padding-left: 20px;
     }
-
     .initial {
         color: @alto;
     }
-    
     .item-name {
-        position:relative;
-        top:-5px;
-        font-weight:bold;
-        margin-left:5px;
-             p{
-            display:inline;
+        position: relative;
+        top: -5px;
+        font-weight: bold;
+        margin-left: 5px;
+        p {
+            display: inline;
         }
     }
-
-    svg:hover{
-        fill:@alto;
+    svg:hover {
+        fill: @alto;
     }
-
     .selected-item {
-        svg{
-            fill:@curiousBlue;
+        svg {
+            fill: @curiousBlue;
         }
     }
-
     .list-item-highlight {
         color: @curiousBlue;
     }
-
+    .list-item-dragover {
+        color: @curiousBlue;
+        //border: 1px solid @alto;
+    }
     .parent-expand-button {
-        display:inline-block;
+        display: inline-block;
         position: relative;
         left: 15px;
-        div{
-            width:24px;
+        div {
+            width: 24px;
         }
-        svg{
-            fill:#000;
+        svg {
+            fill: #000;
         }
     }
-
     .parent-expand-icon {
-        display:inline-block;
-        width:10px;
-        margin-right:10px;
-        font-size:14px;
+        display: inline-block;
+        width: 10px;
+        margin-right: 10px;
+        font-size: 14px;
     }
-
     .selection-arrow {
-        display:inline-block;
-        position:relative;
-        width:90px;
-        z-index:9998;
-        top:2px;
-        left:5px;
-        font-size:18px;
-        font-weight:bold;
+        display: inline-block;
+        position: relative;
+        width: 90px;
+        z-index: 9998;
+        top: 2px;
+        left: 5px;
+        font-size: 18px;
+        font-weight: bold;
         color: @curiousBlue;
-
-        div{
-            float:right;
-            height:20px;
-            width:20px;
-            display:inherit;
+        div {
+            float: right;
+            height: 20px;
+            width: 20px;
+            display: inherit;
         }
-
-        .dots{
-            margin-right:10px;
-            svg{
-                circle{
+        .dots {
+            margin-right: 10px;
+            svg {
+                circle {
                     fill: @curiousBlue;
                 }
             }
         }
-
-
-        svg{
-            width:20px;
-            fill:@curiousBlue;
+        svg {
+            width: 20px;
+            fill: @curiousBlue;
         }
-
-        svg:hover{
-            fill:@curiousBlue!important;
+        svg:hover {
+            fill: @curiousBlue!important;
         }
     }
-
     .draft-pencil {
-        margin-left:3px;
-        width:20px;
-        height:20px;
-        display:inline-block;
-
-        svg:hover{
-            fill:@alto;
+        margin-left: 3px;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        svg:hover {
+            fill: @alto;
         }
-
     }
-
 }
 
 .dnn-persona-bar-treeview-ul {
-
-    span{
-        padding:0;
-        margin:0;
+    span {
+        padding: 0;
+        margin: 0;
     }
-    ul{
-        margin-left:20px;
-        padding:0;
+    ul {
+        margin-left: 20px;
+        padding: 0;
     }
-
-    ul:first-child{
-        margin-left:0px;
+    ul:first-child {
+        margin-left: 0px;
     }
-
     li {
-        width:150px;
-        list-style:none;
+        width: 150px;
+        list-style: none;
         // background-color: powderblue;
         // border: 1px solid orange;
     }
-
-
     .collapse-expand {
-        display:none;
+        display: none;
     }
-
-    .dropZoneActive{
-        margin: 5px 0;
-        padding:10px 0;
-        background-color:#fff;
-        border-bottom: 2px solid transparent;
-        transition:all .5s;
-    }
-
-    .dropZoneInactive {
-        transition: all .75s;
+    .dropZoneActive {
         margin: 0;
-        padding:0;
-        height:inherit;
-        border-bottom: 2px solid transparent;
-        transition:all .5s;
+        padding: 0;
+        background-color: #fff;
+        //border-bottom: 1px solid #000;
+        transition: all .5s;
     }
-
+    .dropZoneInactive {
+        //transition: all .75s;
+        margin: 0;
+        padding: 0;
+        height: inherit;
+        //border-bottom: 1px solid transparent;
+        transition: all .5s;
+    }
     .dropZoneArea {
-        transition: all .15s ease-out;
-        padding: 2px 0;
-        height:10px;
-        text-align:center;
-        background-color:transparent;
-        border-bottom: 2px solid transparent;
-        transition:all .5s;
+        cursor: move;
+        //transition: all .5s ease-out;
+        height: 2px;
+        width: 100%;
+        text-align: center;
+        background-color: transparent;
+        transition: all .1s;
     }
-
     .list-item-border-bottom {
-        border-bottom: 2px solid @curiousBlue;
-        background-color:#eee;
-        padding:10px 0;
+        //border-bottom: 2px solid @curiousBlue;
+        background-color: @curiousBlue;
     }
-
     .list-item-border-top {
-        border-top: 2px solid @curiousBlue;
-        background-color:#eee;
-        padding:10px 0;
+        //border-top: 2px solid @curiousBlue;
+        background-color: @curiousBlue;
     }
-
-
 }
 
 .dnn-persona-bar-treeview-icon {
-    width:20px;
-    display:inline-block;
+    width: 20px;
+    display: inline-block;
 }
 
 .dnn-persona-bar-treeview-dragged {
-    -webkit-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
-    box-shadow: 0px 2px 26px -6px rgba(0,0,0,0.75);
-
-    border: 1px solid @curiousBlue;
-
-    z-index:1000;
-    position:absolute;
-    top:200px;
-    background-color:#fff;
-    list-style:none;
-    width:200px;
+    -webkit-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+    z-index: 1000;
+    position: absolute;
+    top: 200px;
+    background-color: #fff;
+    list-style: none;
+    width: 200px;
     pointer-events: none;
-    padding:5px;
-    cursor:move;
-
+    cursor: move;
+    height: 20px;
     .item-name {
-        display:inline;
-        p{
-            display:inline;
+        display: inline;
+        p {
+            display: inline;
         }
         position:relative;
         top: -5px;
         left: 5px;
     }
-
-    ul{
-        display:none;
+    ul {
+        display: none;
     }
-
     .selection-arrow, .draft-pencil, .parent-expand-button {
-        display:none;
+        display: none;
     }
-
 }
 
 @keyframes BounceHeightIn {
-    0%{ opacity:0; height: 0px;}
-    85%{opacity: .8; height:220px;}
-    100%{ opacity: 1; height:200px;}
+    0% {
+        opacity: 0;
+        height: 0px;
+    }
+    85% {
+        opacity: .8;
+        height: 220px;
+    }
+    100% {
+        opacity: 1;
+        height: 200px;
+    }
 }
 
-@keyframes BounceHeightOut{
-    0%{ opacity:1; height: 200px;}
-    15%{opacity: .8; height:220px;}
-    100%{ opacity: 0; height:0px;}
+@keyframes BounceHeightOut {
+    0% {
+        opacity: 1;
+        height: 200px;
+    }
+    15% {
+        opacity: .8;
+        height: 220px;
+    }
+    100% {
+        opacity: 0;
+        height: 0px;
+    }
 }

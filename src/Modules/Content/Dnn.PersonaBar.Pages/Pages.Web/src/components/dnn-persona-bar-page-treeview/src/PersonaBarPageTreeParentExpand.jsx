@@ -1,15 +1,7 @@
 import React, {Component} from "react";
-import GridCell from "dnn-grid-cell";
 import { PropTypes } from "prop-types";
-import {DragSource} from 'react-dnd';
-
-
 import "./styles.less";
-
-import PersonaBarPageIcon from "./_PersonaBarPageIcon";
-import PersonaBarSelectionArrow from "./_PersonaBarSelectionArrow";
 import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
-import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeParentExpand extends Component {
 
@@ -51,7 +43,7 @@ export class PersonaBarPageTreeParentExpand extends Component {
                 <li className="list-item-menu">
                     <div
                         className={(item.selected) ? "list-item-highlight" : null}
-                        style={{height:"30px"}}>
+                        style={{height:"28px"}}>
 
                         <div className="draft-pencil">
                            {this.render_parentExpandButton(item)}

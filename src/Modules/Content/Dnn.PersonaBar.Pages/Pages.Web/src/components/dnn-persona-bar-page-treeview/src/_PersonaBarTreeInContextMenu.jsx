@@ -33,7 +33,7 @@ export class PersonaBarTreeInContextMenu extends Component {
                 >
 
                 <ul>
-                    <li>
+                    <li onClick={()=>this.props.onAddPage(item)}>
                         <div className="icon" dangerouslySetInnerHTML={{__html:TreeAddPage}}/>
                         <div className="label">Add Page</div>
                     </li>
@@ -70,6 +70,7 @@ export class PersonaBarTreeInContextMenu extends Component {
 
 PersonaBarTreeInContextMenu.propTypes = {
     onViewPage: PropTypes.func.isRequired,
+    onAddPage: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired
 };

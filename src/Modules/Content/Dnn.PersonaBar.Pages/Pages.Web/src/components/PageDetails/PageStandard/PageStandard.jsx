@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import InputGroup from "dnn-input-group";
@@ -15,37 +15,37 @@ import Utils from "../../../utils";
 class PageDetails extends Component {
     constructor() {
         super();
-        this.state={};
+        this.state = {};
     }
 
     onChangeField(key, event) {
-        const {onChangeField} = this.props;
+        const { onChangeField } = this.props;
         onChangeField(key, event.target.value);
     }
 
     onChangeTags(tags) {
-        const {onChangeField} = this.props;
+        const { onChangeField } = this.props;
         onChangeField("tags", tags.join(","));
     }
 
     onChangeParentId(value) {
-        const {onChangeField} = this.props;
+        const { onChangeField } = this.props;
         onChangeField("parentId", value);
     }
 
     onSelect(parentPageId, parentPageName) {
-        const {page} = this.props;
+        const { page } = this.props;
         this.props.onSelectParentPageId(parentPageId, parentPageName);
         this.onChangeParentId(parentPageId);
     }
 
 
     render() {
-        const {page, errors} = this.props;
+        const { page, errors } = this.props;
 
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
-            portalId:  -2,
+            portalId: -2,
             cultureCode: "",
             isMultiLanguage: false,
             excludeAdminTabs: false,
@@ -53,22 +53,20 @@ class PageDetails extends Component {
             sortOrder: 0
         };
 
-         let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
-         const sf = Utils.getServiceFramework();
+        let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
+        const sf = Utils.getServiceFramework();
 
-         const defaultLabel =   page.hierarchy || Localization.get("NoneSpecified");
-         const selectedTabId =  page.parentId || -1;
-
-
+        const defaultLabel = page.hierarchy || Localization.get("NoneSpecified");
+        const selectedTabId = page.parentId || -1;
         return (
             <div className={styles.pageStandard}>
                 <GridSystem>
                     <GridCell className="left-column">
                         <SingleLineInputWithError
-                            style={{marginBottom:"0px"}}
+                            style={{ marginBottom: "0px" }}
                             label={Localization.get("Name") + "*"}
-                            labelStyle={{paddingBottom:"10px"}}
-                            inputStyle={{marginBottom:"32px"}}
+                            labelStyle={{ paddingBottom: "10px" }}
+                            inputStyle={{ marginBottom: "32px" }}
                             tooltipMessage={Localization.get("NameTooltip")}
                             error={!!errors.name}
                             errorMessage={errors.name}
@@ -79,47 +77,46 @@ class PageDetails extends Component {
                     <GridCell className="right-column">
                         <SingleLineInputWithError
                             label={Localization.get("Title")}
-                            labelStyle={{paddingBottom:"10px"}}
-                            inputStyle={{marginBottom:"32px"}}
+                            labelStyle={{ paddingBottom: "10px" }}
+                            inputStyle={{ marginBottom: "32px" }}
                             tooltipMessage={Localization.get("TitleTooltip")}
                             value={page.title}
                             onChange={this.onChangeField.bind(this, "title")}
                             maxLength="200" />
                     </GridCell>
                 </GridSystem>
-                <InputGroup style={{padding:"0px", marginBottom:"0px"}}>
+                <InputGroup style={{ padding: "0px", marginBottom: "0px" }}>
                     <MultiLineInputWithError
-                            label={Localization.get("Description")}
-                            value={page.description}
-                            onChange={this.onChangeField.bind(this, "description")}
-                            inputStyle={{height:"64px", minHeight:"64px", marginBottom:"28px", paddingBottom:"0px"}}
-                            labelStyle={{paddingTop:"0px", paddingBottom:"10px"}}
-                            maxLength="500" />
+                        label={Localization.get("Description")}
+                        value={page.description}
+                        onChange={this.onChangeField.bind(this, "description")}
+                        inputStyle={{ height: "64px", minHeight: "64px", marginBottom: "28px", paddingBottom: "0px" }}
+                        labelStyle={{ paddingTop: "0px", paddingBottom: "10px" }}
+                        maxLength="500" />
                 </InputGroup>
-                <InputGroup style={{padding:"0px", margin:"0px"}}>
+                <InputGroup style={{ padding: "0px", margin: "0px" }}>
                     <MultiLineInputWithError
-                            label={Localization.get("Keywords")}
-                            value={page.keywords}
-                            onChange={this.onChangeField.bind(this, "keywords")}
-                            inputStyle={{height: "64px", minHeight:"32px"}}
-                            labelStyle={{paddingBottom:"10px"}}
-                            style={{padding:"0px"}}
-                            maxLength="500" />
+                        label={Localization.get("Keywords")}
+                        value={page.keywords}
+                        onChange={this.onChangeField.bind(this, "keywords")}
+                        inputStyle={{ height: "64px", minHeight: "32px" }}
+                        labelStyle={{ paddingBottom: "10px" }}
+                        style={{ padding: "0px" }}
+                        maxLength="500" />
                 </InputGroup>
                 <GridSystem>
                     <GridCell className="left-column input-cell">
-                        <Label label={Localization.get("Tags")} style={{paddingBottom:"10px"}}/>
+                        <Label label={Localization.get("Tags")} style={{ paddingBottom: "10px" }} />
                         <Tags
                             tags={tags}
                             onUpdateTags={this.onChangeTags.bind(this)} />
                     </GridCell>
                     <GridCell className="right-column input-cell">
                         <InputGroup>
-                            <Label label={Localization.get("ParentPage")}  style={{paddingBottom:"10px"}}/>
+                            <Label label={Localization.get("ParentPage")} style={{ paddingBottom: "10px" }} />
                             <PagePicker
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
                                 IsMultiSelect={false}
-
                                 defaultLabel={defaultLabel}
                                 selectedTabId={selectedTabId}
                                 PortalTabsParameters={TabParameters_1}
@@ -130,7 +127,7 @@ class PageDetails extends Component {
                         </InputGroup>
                     </GridCell>
                 </GridSystem>
-                <div style={{clear: "both"}}></div>
+                <div style={{ clear: "both" }}></div>
             </div>
         );
     }

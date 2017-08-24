@@ -257,7 +257,7 @@ class App extends Component {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
-    onAddPage() {
+    onAddPage(parentPage) {
         const { props } = this;
         const { selectedPage } = props;
         let runUpdateStore = null;
@@ -272,7 +272,7 @@ class App extends Component {
         runUpdateStore(pageList);
 
         if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-            const onConfirm = () => this.props.getNewPage();
+            const onConfirm = () => this.props.getNewPage(parentPage);
             utils.confirm(
                 Localization.get("CancelWithoutSaving"),
                 Localization.get("Close"),
@@ -280,7 +280,7 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            props.getNewPage();
+            props.getNewPage(parentPage);
         }
     }
 
@@ -716,6 +716,7 @@ class App extends Component {
                                         onMovePage={this.onMovePage.bind(this)}
                                         onViewPage={ this.onViewPage.bind(this)}
                                         onDuplicatePage={this.props.onDuplicatePage}
+                                        onAddPage={this.onAddPage.bind(this)}
                                         onSelection={this.onSelection.bind(this)} />
                                     </div>
                                 </div>

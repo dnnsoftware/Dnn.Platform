@@ -28,7 +28,7 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId) {
-    
+
     if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
         dispatch({
             type: ActionTypes.LOADED_PAGE,
@@ -58,28 +58,28 @@ const loadPage = function (dispatch, pageId) {
 };
 
 const pageActions = {
-    getPageList(id){
+    getPageList(id) {
         return (dispatch) => PagesService.getPageList(id).then(pageList => {
             dispatch({
-                type:PageListActionTypes.SAVE,
-                data:{pageList}
+                type: PageListActionTypes.SAVE,
+                data: { pageList }
             });
         });
     },
 
-    getPage(id){
+    getPage(id) {
         return (dispatch) => PagesService.getPage(id);
     },
 
-    getChildPageList(id){
+    getChildPageList(id) {
         return () => PagesService.getChildPageList(id);
     },
 
-    updatePageListStore(pageList){
+    updatePageListStore(pageList) {
         return (dispatch) => {
             dispatch({
                 type: PageListActionTypes.SAVE,
-                data:{pageList}
+                data: { pageList }
             });
         };
     },
@@ -99,7 +99,7 @@ const pageActions = {
         };
     },
 
-    viewPage(id, url){
+    viewPage(id, url) {
         PagesService.openPageInEditMode(id, url);
         return (dispatch) => {
 
@@ -126,11 +126,11 @@ const pageActions = {
     },
 
 
-    getNewPage(){
-        return (dispatch) => PagesService.getNewPage().then((page) => {
+    getNewPage(parentPage) {
+        return (dispatch) => PagesService.getNewPage(parentPage).then((page) => {
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
-                data: {page}
+                data: { page }
             });
         });
     },
@@ -199,11 +199,11 @@ const pageActions = {
                     return;
                 }
 
-                if (selectedPage.tabId  > 0 && securityService.isSuperUser()) {
+                if (selectedPage.tabId > 0 && securityService.isSuperUser()) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
                 }
 
-                if (selectedPage.tabId  > 0 && !securityService.isSuperUser()) {
+                if (selectedPage.tabId > 0 && !securityService.isSuperUser()) {
                     utils.closePersonaBar();
                     return;
                 }
@@ -219,7 +219,7 @@ const pageActions = {
         };
     },
 
-    updatePage(page, callback){
+    updatePage(page, callback) {
         return (dispatch, getState) => {
 
             const { pages } = getState();
@@ -231,18 +231,18 @@ const pageActions = {
                     return;
                 }
 
-                if (page.tabId  > 0 && securityService.isSuperUser()) {
+                if (page.tabId > 0 && securityService.isSuperUser()) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
                 }
 
-                if (page.tabId  > 0 && !securityService.isSuperUser()) {
+                if (page.tabId > 0 && !securityService.isSuperUser()) {
                     utils.closePersonaBar();
                     return;
                 }
 
                 dispatch({
-                    type:ActionTypes.SAVE_PAGE,
-                    data:null
+                    type: ActionTypes.SAVE_PAGE,
+                    data: null
                 });
 
                 callback(page);
@@ -440,8 +440,8 @@ const pageActions = {
             });
         };
     },
-    movePage({Action, PageId, ParentId, RelatedPageId}){
-        return PagesService.movePage({Action, PageId, ParentId, RelatedPageId});
+    movePage({ Action, PageId, ParentId, RelatedPageId }) {
+        return PagesService.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
 };
 
