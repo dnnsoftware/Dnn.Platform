@@ -14,13 +14,14 @@ namespace Cantarus.Modules.PolyDeploy.Components
         {
             get
             {
-                return Path.Combine(SessionController.PathForSession(Session.Guid), "temp");
+                return Path.Combine(SessionManager.PathForSession(Session.Guid), "temp");
             }
         }
 
         protected string IPAddress { get; set; }
         protected Session Session { get; set; }
         protected List<string> PackageZips { get; set; }
+        protected SortedList<int, InstallJob> OrderedInstall;
 
         public Deployment(Session session, string ipAddress)
         {
@@ -32,10 +33,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
             // Create the temporary directory if it doesn't exist.
             CreateDirectoryIfNotExist(TempPath);
-        }
 
-        public void Deploy()
-        {
             // Identify package zips.
             List<string> packageZips = IdentifyPackages();
 
@@ -57,8 +55,16 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
 
             // Order jobs.
-            SortedList<int, InstallJob> orderedInstall = OrderInstallJobs(installJobs);
+            OrderedInstall = OrderInstallJobs(installJobs);
+        }
 
+        public SortedList<int, InstallJob> Summary()
+        {
+            return OrderedInstall;
+        }
+
+        public void Deploy()
+        {
             // Do the install.
             List<InstallJob> successJobs = new List<InstallJob>();
             List<InstallJob> failedJobs = new List<InstallJob>();
@@ -75,7 +81,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
             Session.Status = SessionStatus.InProgess;
             dc.Update(Session);
 
-            foreach (KeyValuePair<int, InstallJob> keyPair in orderedInstall)
+            foreach (KeyValuePair<int, InstallJob> keyPair in OrderedInstall)
             {
                 InstallJob job = keyPair.Value;
 
@@ -193,7 +199,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         protected List<string> IdentifyPackages()
         {
-            return IdentifyPackagesInDirectory(SessionController.PathForSession(Session.Guid));
+            return IdentifyPackagesInDirectory(SessionManager.PathForSession(Session.Guid));
         }
 
         protected List<string> IdentifyPackagesInDirectory(string directoryPath)

@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace Cantarus.Modules.PolyDeploy.WebAPI
+namespace Cantarus.Modules.PolyDeploy.WebAPI.ActionFilters
 {
     public class InWhitelist : ActionFilterAttribute
     {

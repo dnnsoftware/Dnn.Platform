@@ -6,33 +6,29 @@ using System.IO;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-    internal class SessionController
+    internal static class SessionManager
     {
+        private static SessionDataController SessionDC = new SessionDataController();
+
         public static Session CreateSession()
         {
-            SessionDataController dc = new SessionDataController();
-
             string directory = new DirectoryInfo(AvailableSessionDirectory()).Name;
 
             Session session = new Session(directory);
 
-            dc.Create(session);
+            SessionDC.Create(session);
 
             return session;
         }
 
         public static Session GetSession(string sessionGuid)
         {
-            SessionDataController dc = new SessionDataController();
-
-            return dc.FindByGuid(sessionGuid); ;
+            return SessionDC.FindByGuid(sessionGuid); ;
         }
 
         public static bool SessionExists(string sessionGuid)
         {
-            SessionDataController dc = new SessionDataController();
-
-            Session session = dc.FindByGuid(sessionGuid);
+            Session session = SessionDC.FindByGuid(sessionGuid);
 
             if (session == null)
             {
@@ -41,16 +37,14 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
             session.LastUsed = DateTime.Now;
 
-            dc.Update(session);
+            SessionDC.Update(session);
 
             return true;
         }
 
         public static void AddPackage(string sessionGuid, Stream packageStream, string filename)
         {
-            SessionDataController dc = new SessionDataController();
-
-            Session session = dc.FindByGuid(sessionGuid);
+            Session session = SessionDC.FindByGuid(sessionGuid);
 
             if (session == null)
             {
@@ -65,9 +59,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public static string PathForSession (string sessionGuid)
         {
-            SessionDataController dc = new SessionDataController();
-
-            Session session = dc.FindByGuid(sessionGuid);
+            Session session = SessionDC.FindByGuid(sessionGuid);
 
             if (session == null)
             {

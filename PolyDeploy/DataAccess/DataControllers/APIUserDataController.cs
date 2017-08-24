@@ -19,6 +19,16 @@ namespace Cantarus.Modules.PolyDeploy.DataAccess.DataControllers
             }
         }
 
+        public IEnumerable<APIUser> Get()
+        {
+            using (IDataContext context = DataContext.Instance())
+            {
+                var repo = context.GetRepository<APIUser>();
+
+                return repo.Get();
+            }
+        }
+
         public APIUser Get(int apiUserId)
         {
             using (IDataContext context = DataContext.Instance())

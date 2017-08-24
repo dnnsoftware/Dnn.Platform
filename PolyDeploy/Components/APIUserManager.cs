@@ -1,12 +1,13 @@
 ﻿using Cantarus.Modules.PolyDeploy.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.DataAccess.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-    internal class APIUserController
+    internal static class APIUserManager
     {
-        private static APIUserController _instance;
+        private static APIUserDataController APIUserDC = new APIUserDataController();
 
         public static APIUser Create(string name)
         {
@@ -28,11 +29,31 @@ namespace Cantarus.Modules.PolyDeploy.Components
             return newApiUser;
         }
 
+        public static IEnumerable<APIUser> GetAll()
+        {
+            return APIUserDC.Get();
+        }
+
+        public static APIUser GetById(int id)
+        {
+            return APIUserDC.Get(id);
+        }
+
         public static APIUser GetByAPIKey(string apiKey)
         {
-            APIUserDataController dc = new APIUserDataController();
+            return APIUserDC.Get(apiKey);
+        }
 
-            return dc.Get(apiKey);
+        public static APIUser Update(APIUser apiUser)
+        {
+            APIUserDC.Update(apiUser);
+
+            return APIUserDC.Get(apiUser.APIUserId);
+        }
+
+        public static void Delete(APIUser apiuser)
+        {
+            APIUserDC.Delete(apiuser);
         }
     }
 }

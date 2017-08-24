@@ -1,6 +1,7 @@
 ﻿using Cantarus.Libraries.Encryption;
 using Cantarus.Modules.PolyDeploy.Components;
 using Cantarus.Modules.PolyDeploy.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.WebAPI.ActionFilters;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
 using System;
@@ -25,7 +26,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         [HttpGet]
         public HttpResponseMessage CreateSession()
         {
-            Session session = SessionController.CreateSession();
+            Session session = SessionManager.CreateSession();
 
             return Request.CreateResponse(HttpStatusCode.OK, session);
         }
@@ -36,7 +37,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         [HttpGet]
         public HttpResponseMessage GetSession(string sessionGuid)
         {
-            Session session = SessionController.GetSession(sessionGuid);
+            Session session = SessionManager.GetSession(sessionGuid);
 
             return Request.CreateResponse(HttpStatusCode.OK, session);
         }
@@ -47,7 +48,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         [HttpPost]
         public async Task<HttpResponseMessage> AddPackages(string sessionGuid)
         {
-            if (!SessionController.SessionExists(sessionGuid))
+            if (!SessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -65,7 +66,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                 string apiKey = Request.Headers.GetValues("x-api-key").FirstOrDefault();
 
                 // Get the api user.
-                APIUser apiUser = APIUserController.GetByAPIKey(apiKey);
+                APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
 
                 // Receive files.
                 MultipartMemoryStreamProvider provider = await Request.Content.ReadAsMultipartAsync();
@@ -78,7 +79,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                     {
                         using (Stream ds = Crypto.Decrypt(ms, apiUser.EncryptionKey))
                         {
-                            SessionController.AddPackage(sessionGuid, ds, filename);
+                            SessionManager.AddPackage(sessionGuid, ds, filename);
                         }
                     }
                 }
@@ -97,7 +98,7 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
         [HttpGet]
         public HttpResponseMessage Install(string sessionGuid)
         {
-            if (!SessionController.SessionExists(sessionGuid))
+            if (!SessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -116,10 +117,10 @@ namespace Cantarus.Modules.PolyDeploy.WebAPI
                 apiKey = Request.Headers.GetValues("x-api-key").FirstOrDefault();
 
                 // Get the session.
-                Session sessionObj = SessionController.GetSession(sessionGuid);
+                Session sessionObj = SessionManager.GetSession(sessionGuid);
 
                 // Create a deploy operation.
-                CIDeploy deployOperation = new CIDeploy(sessionObj, ipAddress, apiKey);
+                RemoteDeployment deployOperation = new RemoteDeployment(sessionObj, ipAddress, apiKey);
 
                 // Deploy.
                 deployOperation.Deploy();

@@ -11,14 +11,14 @@ using System.Web;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-    internal class CIDeploy : Deployment
+    internal class RemoteDeployment : Deployment
     {
         private APIUser APIUser { get; set; }
 
-        public CIDeploy(Session session, string ipAddress, string apiKey) : base(session, ipAddress)
+        public RemoteDeployment(Session session, string ipAddress, string apiKey) : base(session, ipAddress)
         {
             // Retrieve our API user.
-            APIUser = APIUserController.GetByAPIKey(apiKey);
+            APIUser = APIUserManager.GetByAPIKey(apiKey);
 
             // Did we find an API user?
             if (APIUser == null)

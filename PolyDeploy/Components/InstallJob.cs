@@ -12,6 +12,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal class InstallJob
     {
+        public string Name { get; set; }
         public List<PackageJob> Packages { get; set; }
         public List<string> Failures { get; set; }
 
@@ -35,6 +36,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public InstallJob(string path)
         {
+            Name = Path.GetFileName(path);
             Packages = new List<PackageJob>();
             Failures = new List<string>();
             Installer = new Installer(new FileStream(path, FileMode.Open, FileAccess.Read), Globals.ApplicationMapPath, true, false);

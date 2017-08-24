@@ -17,41 +17,88 @@
         <ModuleBinPath>$(MSBuildProjectDirectory)\$(OutputPath)</ModuleBinPath>
         <PackageTempPath>$(MSBuildProjectDirectory)\Package</PackageTempPath>
         <ResourceZip>Resources.zip</ResourceZip>
+        <InstallPackage>$(PackageName)_$(Version)_Install.zip</InstallPackage>
         <DNNFileName>$(ModuleName).dnn</DNNFileName>
+
+        <TempBuildPath>$(MSBuildProjectDirectory)\msbuild-tmp</TempBuildPath>
     </PropertyGroup>
     <Target Name="BeforeBuild" >
         <!--This target is empty on purpose-->
         <Message Text="MSBUILD: running under $(Configuration)|$(Platform) configuration" Importance="high"></Message>
     </Target>
-    <Target Name="AfterBuild" DependsOnTargets="GetFiles;CopyBin;DebugProject;UpdateComponents;PackageModule;">
+    <Target Name="AfterBuild" DependsOnTargets="GetFiles;CopyAngular;CopyBin;DebugProject;UpdateComponents;PackageModule;">
         <!--This target is empty on purpose, and is just used to trigger the other targets-->
     </Target>
+
+    <!-- Get Files -->
+    <!-- Gather all the files we will need to complete our build tasks. -->
     <Target Name="GetFiles">
         <ItemGroup>
-            <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-            <SourceFiles Include="*.ascx; *.asmx;*.js;*.css" />
-            <ResourceFiles Include="App_LocalResources\*.resx" />
-            <JsFiles Include="js\*.*" />
-            <ConfigFiles Include="*.config" />
-            <Images Include="Images\*.*" />
+            <TextFiles Include="$(TempBuildPath)\*.txt" Exclude="license.txt;releasenotes.txt" />
+            <SourceFiles Include="$(TempBuildPath)\*.ascx; *.asmx;*.js;*.css" />
+            <ResourceFiles Include="$(TempBuildPath)\App_LocalResources\*.resx" />
+            <JsFiles Include="$(TempBuildPath)\js\*.*" />
+            <ConfigFiles Include="$(TempBuildPath)\*.config" />
+            <Images Include="$(TempBuildPath)\Images\*.*" />
             <BinFiles Include="bin\*.dll" />
             <Resources Include="@(ResourceFiles);@(SourceFiles);@(Images);@(ConfigFiles);@(TextFiles);@(JsFiles)" />
-            <DebugSourceFiles Include=".\**\*.*" Exclude=".\obj\**\*;.\**\_ReSharper*\**;.\bin\**;.\**\*.cs;.\**\*.csproj;.\**\*.user;.\**\packages\**;.\**\BuildScripts\**;" />
+            <DebugSourceFiles Include="$(TempBuildPath)\**\*.*" Exclude="$(TempBuildPath)\obj\**\*;$(TempBuildPath)\**\_ReSharper*\**;$(TempBuildPath)\bin\**;$(TempBuildPath)\**\*.cs;$(TempBuildPath)\**\*.csproj;$(TempBuildPath)\**\*.user;$(TempBuildPath)\**\packages\**;$(TempBuildPath)\**\BuildScripts\**;" />
+            
+            <!-- These purposfully doesn't use $(TempBuildPath) as they are used in scenarios where the temp build directory may not exist (e.g. under the 'Angular' configuration). -->
+            <CssFiles Include="$(MSBuildProjectDirectory)\css\**\*.css" />
+            <ImageFiles Include ="$(MSBuildProjectDirectory)\img\**\*.jpg;$(MSBuildProjectDirectory)\img\**\*.png" />
+            <AngularAppFiles Include="$(MSBuildProjectDirectory)\Angular\dist\**\*" />
+            <AscxFiles Include="$(MSBuildProjectDirectory)\*.ascx" />
+            <HtmlFiles Include="$(MsBuildProjectDirectory)\Angular\src\**\*.html" />
         </ItemGroup>
     </Target>
-    <Target Name="CopyBin">
+
+    <!-- Angular Quick Development -->
+    <!-- Copies client side resources. Runs when configuration is set to 'Angular' or 'Debug'. -->
+    <Target Name="CopyAngular" Condition="'$(Configuration)|$(Platform)' == 'Angular|AnyCPU' Or '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+
+      <!-- Copy Angular.  -->
+      <Message Text="MSBUILD: copying @(AngularAppFiles) to $(WebsiteModulePath)\Angular\dist\" Importance="high"></Message>
+      <Copy SourceFiles="@(AngularAppFiles)" DestinationFolder="$(WebsiteModulePath)\Angular\dist\%(RecursiveDir)" />
+
+      <!-- Copy CSS. -->
+      <Message Text="MSBUILD: copying @(CssFiles) to $(WebsiteModulePath)\css\" Importance="high"></Message>
+      <Copy SourceFiles="@(CssFiles)" DestinationFolder="$(WebsiteModulePath)\css\%(RecursiveDir)" />
+
+      <!-- Copy images. -->
+      <Message Text="MSBUILD: copying @(ImageFiles) to $(WebsiteModulePath)\img\" Importance="high"></Message>
+      <Copy SourceFiles="@(ImageFiles)" DestinationFolder="$(WebsiteModulePath)\img\%(RecursiveDir)" />
+
+      <!-- Copy Ascx -->
+      <Message Text="MSBUILD: copying @(AscxFiles) to $(WebsiteModulePath)" Importance="high"></Message>
+      <Copy SourceFiles="@(AscxFiles)" DestinationFolder="$(WebsiteModulePath)\%(RecursiveDir)" />
+
+      <!-- Copy Html -->
+      <Message Text="MSBUILD: copying @(HtmlFiles) to $(WebsiteModulePath)" Importance="high"></Message>
+      <Copy SourceFiles="@(HtmlFiles)" DestinationFolder="$(WebsiteModulePath)\Angular\src\%(RecursiveDir)" />
+
+    </Target>
+
+    <!-- Copy Binaries -->
+    <!-- Copies binaries to the DNN bin folder. -->
+    <Target Name="CopyBin" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
         <!--copy binaries to webite bin folder-->
         <Message Text="MSBUILD: copying @(BinFiles) to $(WebsitePath)\bin\" Importance="high"></Message>
         <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(WebsitePath)\bin\%(RecursiveDir)" />
         <Message Text="MSBUILD: copying $(ModuleBinPath)\$(AssemblyName).pdb to $(WebsitePath)\bin\" Importance="high"></Message>
         <Copy SourceFiles="$(ModuleBinPath)\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)\bin" />
     </Target>
+
+    <!-- Debug -->
+    <!-- Copies modules other files to module folder during development. -->
     <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <!--copy module files to module folder in website-->
+        <!-- Copy module files to module folder in website. -->
         <Message Text="MSBUILD: copying @(DebugSourceFiles) to $(WebsiteModulePath)\" Importance="high"></Message>
         <Copy SourceFiles="@(DebugSourceFiles)" DestinationFolder="$(WebsiteModulePath)\%(RecursiveDir)" />
     </Target>
-    <!-- Update DNN components -->
+
+    <!-- Update DNN Components -->
+    <!-- Not entirely sure if this does anything currently. -->
     <Target Name="UpdateComponents" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <Message Text="MSBUILD: Updating Assembly Component in Module Manifest ($(MSBuildProjectDirectory)\$(DNNFileName))" Importance="high"></Message>
         <!--Get list of all assemblies in bin folder. These are all the referenced assemblies-->
@@ -68,22 +115,26 @@
                          Path="bin" Files="@(assemblyFiles)">
         </AssemblyComponent>
     </Target>
-    <Target Name="PackageModule" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <!--Package module-->
-        <XmlRead Prefix="n"
-                        Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
-                        XPath="dotnetnuke/packages/package[1]/@version"
-                        XmlFileName="$(DNNFileName)">
-            <Output TaskParameter="Value" PropertyName="Version" />
-        </XmlRead>
-      
-        <!-- We should define InstallPackage after we read in the version, otherwise it'll always be 1.0.0.0 -->
-        <PropertyGroup>
-            <InstallPackage>$(PackageName)_$(Version)_Install.zip</InstallPackage>
-        </PropertyGroup>
-        <Message Text="MSBUILD: Creating Install Package >> $(PackagePath)\$(InstallPackage)" Importance="high"></Message>
 
-        <ItemGroup>
+    <!-- Package Module -->
+    <!-- Creates an installable module .zip file. -->
+    <Target Name="PackageModule" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+      <!--Package module-->
+      <XmlRead Prefix="n"
+                      Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+                      XPath="dotnetnuke/packages/package[1]/@version"
+                      XmlFileName="$(DNNFileName)">
+        <Output TaskParameter="Value" PropertyName="Version" />
+      </XmlRead>
+      
+      <!-- We should define InstallPackage after we read in the version, otherwise it'll always be 1.0.0.0 -->
+      <PropertyGroup>
+        <InstallPackage>$(PackageName)_$(Version)_Install.zip</InstallPackage>
+      </PropertyGroup>
+      <Message Text="MSBUILD: Creating Install Package >> $(PackagePath)\$(InstallPackage)" Importance="high"></Message>
+
+        <!-- AN: 'DefaultExclude' never referenced. Ditch it? -->
+        <!--<ItemGroup>
             <DefaultExclude Include="**\.svn\**" />
             <DefaultExclude Include="**\bin\**" />
             <DefaultExclude Include="**\obj\**" />
@@ -98,22 +149,27 @@
             <DefaultExclude Include="**\*.zip" />
             <DefaultExclude Include="**\*.txt" />
             <DefaultExclude Include="**\*ReSharper.*\**" />
-        </ItemGroup>
+        </ItemGroup>-->
 
         <ItemGroup>
-            <InstallInclude Include="**\*.ascx" />
-            <InstallInclude Include="**\*.asmx" />
-            <InstallInclude Include="**\*.css" />
-            <InstallInclude Include="**\*.html" />
-            <InstallInclude Include="**\*.htm" />
-            <InstallInclude Include="**\*.resx" />
-            <InstallInclude Include="**\*.aspx" />
-            <InstallInclude Include="**\*.js" />
-            <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;" />
-            <InstallInclude Include="**\images\**\*.*" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.ascx" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.asmx" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.css" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.html" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.htm" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.resx" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.aspx" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.js" Exclude="$(TempBuildPath)\Angular\**" />
+            <InstallInclude Include="$(TempBuildPath)\**\*.txt"  Exclude="$(TempBuildPath)\**\obj\**;$(TempBuildPath)\**\_ReSharper*\**;" />
+            <InstallInclude Include="$(TempBuildPath)\**\images\**\*.*" />
+            <InstallInclude Include="$(TempBuildPath)\**\img\*.*" />
+            <InstallInclude Include="$(TempBuildPath)\**\fonts\**\*.*" />
+
+            <InstallAngularDist Include="$(TempBuildPath)\Angular\dist\**\*" />
         </ItemGroup>
 
-        <ItemGroup>
+        <!-- AN: 'SourceInclude' never referenced. Ditch it? -->
+        <!--<ItemGroup>
             <SourceInclude Include="**\*.ascx" />
             <SourceInclude Include="**\*.asmx" />
             <SourceInclude Include="**\*.css" />
@@ -131,19 +187,17 @@
             <SourceInclude Include="**\*.csproj" />
             <SourceInclude Include="**\*.targets" />
             <SourceInclude Include="**\*.sln" />
-        </ItemGroup>
+        </ItemGroup>-->
 
-
-        <CreateItem Include="**\License.txt">
+        <CreateItem Include="$(TempBuildPath)\**\License.txt">
             <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
         </CreateItem>
 
-        <CreateItem Include="**\ReleaseNotes.txt">
+        <CreateItem Include="$(TempBuildPath)\**\ReleaseNotes.txt">
             <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
         </CreateItem>
 
-
-        <CreateItem Include="**\*.sqldataprovider">
+        <CreateItem Include="$(TempBuildPath)\**\*.sqldataprovider">
             <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
         </CreateItem>
 
@@ -154,10 +208,9 @@
         <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(PackageTempPath)\%(RecursiveDir)" />
         <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(PackageTempPath)" />
 
-
-
         <!-- create the INSTALL RESOURCES.ZIP file -->
         <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
+        <Copy SourceFiles="@(InstallAngularDist)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Angular\dist\%(RecursiveDir)" />
 
         <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
             <Output TaskParameter="Include" ItemName="ResourcesContent" />
