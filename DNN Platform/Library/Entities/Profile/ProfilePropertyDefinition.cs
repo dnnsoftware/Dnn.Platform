@@ -517,28 +517,5 @@ namespace DotNetNuke.Entities.Profile
         }
 
         #endregion
-
-        #region Obsolete
-
-        [Obsolete("Deprecated in 6.2 as profile visibility has been extended")]
-        [Browsable(false)]
-        [XmlIgnore]
-        public UserVisibilityMode Visibility
-        {
-            get
-            {
-                return ProfileVisibility.VisibilityMode;
-            }
-            set
-            {
-                if (ProfileVisibility.VisibilityMode != value)
-                {
-                    IsDirty = true;
-                }
-                ProfileVisibility.VisibilityMode = value;
-            }
-        }
-
-        #endregion
     }
 }

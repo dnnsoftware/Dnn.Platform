@@ -674,19 +674,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		private void SetupRoleProvider()
 		{
 			var mockRoleProvider = MockComponentProvider.CreateNew<RoleProvider>();
-
-			mockRoleProvider.Setup(p => p.GetRole(It.IsAny<int>(), It.IsAny<int>())).Returns<int, int>((portalId, roleId) =>
-			{
-				RoleInfo roleInfo = new RoleInfo();
-				roleInfo.RoleID = roleId;
-				roleInfo.PortalID = portalId;
-				if (roleId == 1)
-				{
-					roleInfo.RoleName = "Administrators";
-				}
-
-				return roleInfo;
-			});
 		}
 
 		private IDataReader GetRedirectionsCallBack(int portalId)

@@ -107,7 +107,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>String representing the required date for display</returns>
         public static string CalculateDateForDisplay(DateTime date)
         {
-            var utcTimeDifference = GetDatabaseTime() - date;
+            var utcTimeDifference = GetDatabaseUtcTime() - date;
 
             if (utcTimeDifference.TotalSeconds < 60)
             {

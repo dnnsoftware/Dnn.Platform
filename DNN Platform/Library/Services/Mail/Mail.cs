@@ -591,16 +591,5 @@ namespace DotNetNuke.Services.Mail
         }
 
         #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("Obsoleted in DotNetNuke 5.5. Use DotNetNuke.Common.Utilities.HtmlUtils.IsHtml()")]
-        public static bool IsHTMLMail(string Body)
-        {
-            return HtmlUtils.IsHtml(Body);
-        }
-
-        #endregion
-
     }
 }

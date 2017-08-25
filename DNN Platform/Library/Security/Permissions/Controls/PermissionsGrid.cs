@@ -1083,9 +1083,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected virtual bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             //to maintain backward compatibility the base implementation must always call the simple parameterless version of this method
-#pragma warning disable 612,618
-            return SupportsDenyPermissions();
-#pragma warning restore 612,618
+            return false;
         }
 
         /// <summary>
@@ -1324,19 +1322,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 role = RoleController.Instance.GetRoleById(PortalId, selectedRoleId);
             }
             return role;
-        }
-
-        #endregion
-
-        #region Obsolete Methods
-
-        /// <summary>
-        /// returns whether or not the derived grid supports Deny permissions
-        /// </summary>
-        [Obsolete("Deprecated in 6.2.0 use SupportsDenyPermissions(PermissionInfo) instead.")]
-        protected virtual bool SupportsDenyPermissions()
-        {
-            return false; //to support Deny permissions a derived grid typically needs to implement the new GetPermission and UpdatePermission overload methods which support StateKey
         }
 
         #endregion

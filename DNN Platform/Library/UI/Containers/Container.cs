@@ -180,15 +180,6 @@ namespace DotNetNuke.UI.Containers
         /// <returns>A String</returns>
         public string ContainerSrc { get; set; }
 
-        [Obsolete("Deprecated in 5.1. Replaced by ContainerPath")]
-        public string SkinPath
-        {
-            get
-            {
-                return ContainerPath;
-            }
-        }
-
         internal bool InjectActionMenu { get; set; }
 		
 		#endregion
@@ -553,45 +544,6 @@ namespace DotNetNuke.UI.Containers
                     listener.ActionEvent.Invoke(sender, e);
                 }
             }
-        }
-		
-		#endregion
-
-		#region Obsolete
-
-        [Obsolete("Deprecated in 5.0. Shouldn't need to be used any more.  ContainerObjects (IContainerControl implementations) have a property ModuleControl.")]
-        public static PortalModuleBase GetPortalModuleBase(UserControl control)
-        {
-            PortalModuleBase moduleControl = null;
-            Panel panel;
-            if (control is SkinObjectBase)
-            {
-                panel = (Panel) control.Parent.FindControl("ModuleContent");
-            }
-            else
-            {
-                panel = (Panel) control.FindControl("ModuleContent");
-            }
-            if (panel != null)
-            {
-                try
-                {
-                    moduleControl = (PortalModuleBase) panel.Controls[1];
-                }
-                catch
-                {
-					//check if it is nested within an UpdatePanel 
-                    try
-                    {
-                        moduleControl = (PortalModuleBase) panel.Controls[0].Controls[0].Controls[1];
-                    }
-                    catch (Exception exc)
-                    {
-                        Exceptions.LogException(exc);
-                    }
-                }
-            }
-            return moduleControl ?? (new PortalModuleBase {ModuleConfiguration = new ModuleInfo()});
         }
 		
 		#endregion

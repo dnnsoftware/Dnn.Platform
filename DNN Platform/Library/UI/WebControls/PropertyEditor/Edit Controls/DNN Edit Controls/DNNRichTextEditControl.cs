@@ -37,8 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// The DNNRichTextEditControl control provides a standard UI component for editing
     /// RichText
     /// </summary>
-    /// <remarks>This is still being used in 6.0.0 (edit a profile, biography field).</remarks>
-    [Obsolete("Deprecated in DNN 5.6.2.  Replaced by control of same name in DotNetNuke.Web assembly")]
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl
     {

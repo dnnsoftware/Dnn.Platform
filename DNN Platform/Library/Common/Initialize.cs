@@ -59,21 +59,6 @@ namespace DotNetNuke.Common
         private static bool InitializedAlready;
         private static readonly object InitializeLock = new object();
 
-        private static void CacheMappedDirectory()
-        {
-            //This code is only retained for binary compatability.
-#pragma warning disable 612,618
-            var objFolderController = new FolderController();
-            ArrayList arrPortals = PortalController.Instance.GetPortals();
-            int i;
-            for (i = 0; i <= arrPortals.Count - 1; i++)
-            {
-                var objPortalInfo = (PortalInfo)arrPortals[i];
-                objFolderController.SetMappedDirectory(objPortalInfo, HttpContext.Current);
-            }
-#pragma warning restore 612,618
-        }
-
         private static string CheckVersion(HttpApplication app)
         {
             HttpServerUtility Server = app.Server;
@@ -252,9 +237,6 @@ namespace DotNetNuke.Common
                 if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
                 {
                     Logger.Info("Application Initializing");
-
-                    //Cache Mapped Directory(s)
-                    CacheMappedDirectory();
                     //Set globals
                     Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                     Globals.OperatingSystemVersion = Environment.OSVersion.Version;

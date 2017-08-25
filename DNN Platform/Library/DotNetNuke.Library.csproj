@@ -203,7 +203,6 @@
     <Compile Include="Entities\Portals\IPortalTemplateEventHandlers.cs" />
     <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
     <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
-    <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
@@ -236,7 +235,6 @@
     <Compile Include="Collections\PagedList.cs" />
     <Compile Include="Collections\PagedSelector.cs" />
     <Compile Include="Collections\PagingExtensions.cs" />
-    <Compile Include="Common\Assembly.cs" />
     <Compile Include="Common\Controls\ActionLessForm.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -446,7 +444,6 @@
     <Compile Include="Obsolete\TestablePortalAliasController.cs" />
     <Compile Include="Obsolete\ITabController.cs" />
     <Compile Include="Obsolete\CBO.cs" />
-    <Compile Include="Obsolete\FolderPermissionController.cs" />
     <Compile Include="Obsolete\LogController.cs" />
     <Compile Include="Obsolete\PortalAliasController.cs" />
     <Compile Include="Obsolete\PortalController.cs" />
@@ -561,7 +558,6 @@
     <Compile Include="Entities\Users\Users Online\OnlineUserInfo.cs" />
     <Compile Include="Entities\Users\Users Online\PurgeUsersOnline.cs" />
     <Compile Include="Entities\Users\Users Online\UserOnlineController.cs" />
-    <Compile Include="Entities\Users\UserTime.cs" />
     <Compile Include="Entities\Users\UserVisibilityMode.cs" />
     <Compile Include="ExtensionPoints\ContextMenuItemExtensionControl.cs" />
     <Compile Include="ExtensionPoints\Filters\CompositeFilter.cs" />
@@ -627,8 +623,6 @@
     <Compile Include="Entities\Content\Common\ContentExtensions.cs" />
     <Compile Include="Entities\Host\Host.cs" />
     <Compile Include="Entities\Host\HostPropertyAccess.cs" />
-    <Compile Include="Entities\Host\HostSettings.cs" />
-    <Compile Include="Entities\Host\HostSettingsController.cs" />
     <Compile Include="Entities\Host\ServerController.cs" />
     <Compile Include="Entities\Host\ServerInfo.cs" />
     <Compile Include="Entities\Icons\IconController.cs" />
@@ -1235,10 +1229,8 @@
     <Compile Include="Services\FileSystem\Wrappers\IFile.cs" />
     <Compile Include="Services\FileSystem\Providers\DatabaseFolderProvider.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileAlreadyExistsException.cs" />
-    <Compile Include="Services\FileSystem\FileController.cs" />
     <Compile Include="Services\FileSystem\FileInfo.cs" />
     <Compile Include="Services\FileSystem\FileManager.cs" />
-    <Compile Include="Services\FileSystem\FileManagerFunctions.cs" />
     <Compile Include="Services\FileSystem\FileServerHandler.cs" />
     <Compile Include="Services\FileSystem\FolderController.cs" />
     <Compile Include="Services\FileSystem\FolderInfo.cs" />
@@ -1339,9 +1331,6 @@
     <Compile Include="Services\Localization\LocaleCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Localization\LocaleCollectionWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Localization\Localization.cs" />
     <Compile Include="Services\Localization\LocalizationExpressionBuilder.cs" />
     <Compile Include="Services\Log\EventLog\EventLogController.cs">
@@ -1363,9 +1352,6 @@
     <Compile Include="Services\Log\EventLog\LogInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Log\EventLog\LogInfoArray.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Log\EventLog\LogProperties.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1375,8 +1361,6 @@
     <Compile Include="Services\Log\EventLog\LogTypeInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Log\EventLog\LogTypeSortFriendlyName.cs" />
-    <Compile Include="Services\Log\EventLog\PortalSortTitle.cs" />
     <Compile Include="Services\Log\EventLog\PurgeLogBuffer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1391,8 +1375,6 @@
     <Compile Include="Services\Messaging\Data\MessagingDataService.cs" />
     <Compile Include="Services\Messaging\Data\IMessagingDataService.cs" />
     <Compile Include="Services\Messaging\IMessagingController.cs" />
-    <Compile Include="Services\Messaging\MessagingController.cs" />
-    <Compile Include="Services\Messaging\Scheduler\MessagingScheduler.cs" />
     <Compile Include="Services\ModuleCache\ModuleCachingProvider.cs" />
     <Compile Include="Services\ModuleCache\PurgeModuleCache.cs" />
     <Compile Include="Services\OutputCache\OutputCacheResponseFilter.cs" />
@@ -1678,7 +1660,6 @@
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNPageEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNRegionEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNRichTextEditControl.cs" />
-    <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNTimeZoneEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\EditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\EditControlFactory.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\EnumEditControl.cs" />

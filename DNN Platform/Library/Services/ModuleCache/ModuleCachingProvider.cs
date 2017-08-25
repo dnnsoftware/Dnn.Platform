@@ -86,19 +86,5 @@ namespace DotNetNuke.Services.ModuleCache
         }
 
         #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("This method was deprecated in 5.2.1")]
-        public virtual void PurgeCache()
-        {
-        }
-
-        [Obsolete("This method was deprecated in 5.2.1")]
-        public virtual void PurgeExpiredItems()
-        {
-        }
-
-        #endregion
     }
 }

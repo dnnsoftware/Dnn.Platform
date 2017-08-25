@@ -436,28 +436,6 @@ namespace DotNetNuke.Framework
 
         #region Obsolete Members
 
-        [Obsolete("Deprecated in DNN 5.1. Replaced by IsRequested.")]
-        public static bool IsRquested
-        {
-            get
-            {
-                return IsRequested;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0 Replaced by RegisterJQuery.")]
-        public static void RegisterScript(Page page)
-        {
-            RegisterScript(page, GetJQueryScriptReference());
-        }
-
-        [Obsolete("Deprecated in DNN 6.0 Replaced by RegisterJQuery.")]
-        public static void RegisterScript(Page page, string script)
-        {
-            ClientResourceManager.RegisterScript(page, script);
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
-        }
-
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
         public static void RegisterJQuery(Page page)
         {
