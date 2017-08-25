@@ -154,7 +154,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             const element = this.getListItemLI(item);
             this.clonedElement = element.cloneNode(true);
             this.clonedElement.id = "cloned";
-            this.clonedElement.style.transition = "all";
+            //this.clonedElement.style.transition = "all";
             this.clonedElement.style.top = `${e.pageY}px`;
             this.clonedElement.style.left = `${e.pageX}px`;
             this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
@@ -182,7 +182,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     onDrag(e) {
         const elm = this.clonedElement;
         elm.style.top = `${e.pageY}px`;
-        elm.style.left = `${e.pageX - 30}px`;
+        elm.style.left = `${e.pageX}px`;
     }
 
     onDragEnd(item) {
@@ -512,6 +512,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDuplicatePage={this.onDuplicatePage.bind(this)}
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
+                        pageInContextComponents={this.props.pageInContextComponents}
                     />
                     : null}
             </span>
@@ -550,7 +551,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 <GridCell columnSize={55} style={{ marginLeft: "-2px" }}>
                     <Scrollbars className="scrollArea content-horizontal"
                         autoHeight
-                        autoHeightMin={0}
+                        autoHide
+                        autoHeightMin={100}
                         autoHeightMax={9999}>
                         {this.render_treeview()}
                     </Scrollbars>
@@ -578,5 +580,6 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
-    getPageList: PropTypes.func.isRequired
+    getPageList: PropTypes.func.isRequired,
+    pageInContextComponents: PropTypes.array.isRequired
 };

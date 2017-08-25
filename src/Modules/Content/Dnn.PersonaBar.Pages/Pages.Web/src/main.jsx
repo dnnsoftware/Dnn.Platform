@@ -17,6 +17,7 @@ window.dnn.pages.setDragItemTemplate = application.setDragItemTemplate;
 window.dnn.pages.registerToolbarComponent = application.registerToolbarComponent;
 window.dnn.pages.registerPageDetailFooterComponent = application.registerPageDetailFooterComponent;
 window.dnn.pages.registerMultiplePagesComponent = application.registerMultiplePagesComponent;
+window.dnn.pages.registerInContextMenuComponent = application.registerInContextMenuComponent;
 window.dnn.pages.registerSettingsButtonComponent = application.registerSettingsButtonComponent;
 window.dnn.pages.registerPageTypeSelectorComponent = application.registerPageTypeSelectorComponent;
 window.dnn.pages.registerAdditionalPanel = application.registerAdditionalPanel;

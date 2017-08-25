@@ -136,8 +136,8 @@ export class PersonaBarPageTreeview extends Component {
             //backgroundColor: "rgb(0,1,2,.5)"
 
         };
-        let index = -1;
-        let total= listItems.length;
+        let index = 0;
+        let total = listItems.length;
         return listItems.map((item) => {
             const name = this.trimName(item);
             const shouldShowTooltip = /\.\.\./.test(name);
@@ -173,7 +173,7 @@ export class PersonaBarPageTreeview extends Component {
                             </div>
                             {false && <TextOverflowWrapperNew text={item.name} hotspotStyles={hotspotStyles} />}
                         </div>
-                        {((item.childListItems && !item.isOpen) || !item.childListItems) && index===total && this.render_dropZone("after", item)}
+                        {((item.childListItems && !item.isOpen) || !item.childListItems) && index === total && this.render_dropZone("after", item)}
                     </div>
                     {item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null}
                 </li>

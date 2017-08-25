@@ -14,7 +14,7 @@ const application = {
         // delay the styles loading after the __webpack_public_path__ is set
         // this allows the fonts associated to be loaded properly in production
         require("../less/style.less");
-        
+
         if (window.dnn.pages.itemTemplate) {
             application.dispatch(PageHierarchyActions.setItemTemplate(window.dnn.pages.itemTemplate));
         }
@@ -23,7 +23,7 @@ const application = {
         utilities.load(options);
         const viewName = utils.getViewName();
 
-        if (viewName === "edit" || !securityService.isSuperUser()) {        
+        if (viewName === "edit" || !securityService.isSuperUser()) {
             application.dispatch(PageActions.loadPage(utils.getCurrentPageId()));
         }
     },
@@ -36,12 +36,15 @@ const application = {
     setDragItemTemplate(template) {
         application.dispatch(PageHierarchyActions.setDragItemTemplate(template));
     },
-    registerToolbarComponent(component) {        
+    registerToolbarComponent(component) {
         application.dispatch(ExtensionsActions.registerToolbarComponent(component));
+    },
+    registerInContextMenuComponent(component) {
+        application.dispatch(ExtensionsActions.registerInContextMenuComponent(component));
     },
     registerPageDetailFooterComponent(component) {
         application.dispatch(ExtensionsActions.registerPageDetailFooterComponent(component));
-    },    
+    },
     registerMultiplePagesComponent(component) {
         application.dispatch(ExtensionsActions.registerMultiplePagesComponent(component));
     },

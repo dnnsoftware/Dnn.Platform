@@ -31,74 +31,71 @@
     }
     .selection-arrow {
         top: 5px;
-        .in-context-menu {
-            pointer-events: none;
-            transition: all .20s forwards ease-in-out;
-            position: absolute;
-            top: 30px;
-            right: 5px;
-            height: 0px;
-            width: 200px;
-            overflow-y: hidden;
-            background-color: #fff;
-            z-index: 1000;
-            -webkit-box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
-            -moz-box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
-            box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
-            ul {
-                clear: both;
-            }
-            li {
-                transition: all .20s ease-in;
-                clear: both;
-                display: block;
-                width: 100%;
-                padding: 15px;
-                color: black;
-                svg {
-                    fill: black;
-                    ;
-                }
-                .icon {
-                    transition: padding-left .20s ease-in;
-                    float: left;
-                    width: 15%;
-                }
-                .label {
-                    transition: padding-left .20s ease-in;
-                    padding-top: 2px;
-                    float: left;
-                    width: 85%;
-                }
-            }
-            li:hover {
-                background-color: @alto;
-                color: @curiousBlue;
-                svg {
-                    fill: @curiousBlue;
-                }
-                .icon, .label {
-                    padding-left: 2px;
-                }
-            }
-        }
-        ;
-        .in-context-menu.active {
-            display: block;
-            pointer-events: all;
-            animation: BounceHeightIn .20s forwards ease-in;
-            li {
-                height: 40px;
-            }
-        }
-        .in-context-menu.inactive {
-            display: none;
-            pointer-events: none;
-            animation: BounceHeightOut .20s forwards ease-out;
-        }
-        .in-context-menu.hidden {
-            visibility: hidden;
-        }
+        // .in-context-menu {
+        //     pointer-events: none;
+        //     transition: all .20s forwards ease-in-out;
+        //     position: absolute;
+        //     top: 30px;
+        //     right: 5px;
+        //     height: 0px;
+        //     width: 200px;
+        //     overflow-y: hidden;
+        //     background-color: #fff;
+        //     z-index: 1000;
+        //     -webkit-box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
+        //     -moz-box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
+        //     box-shadow: 2px 11px 53px -10px rgba(0, 0, 0, 0.26);
+        //     ul {
+        //         clear: both;
+        //     }
+        //     li {
+        //         transition: all .20s ease-in;
+        //         clear: both;
+        //         display: block;
+        //         width: 100%;
+        //         padding: 15px;
+        //         line-height: 8px;
+        //         color: black;
+        //         svg {
+        //             fill: black;
+        //             ;
+        //         }
+        //         .icon {
+        //             transition: padding-left .20s ease-in;
+        //             float: left;
+        //             width: 15%;
+        //         }
+        //         .label {
+        //             transition: padding-left .20s ease-in;
+        //             padding-top: 2px;
+        //             float: left;
+        //             width: 85%;
+        //         }
+        //     }
+        //     li:hover {
+        //         background-color: @alto;
+        //         color: @curiousBlue;
+        //         svg {
+        //             fill: @curiousBlue;
+        //         }
+        //     }
+        // };
+        // .in-context-menu.active {
+        //     display: block;
+        //     pointer-events: all;
+        //     animation: BounceHeightIn .20s forwards ease-in;
+        //     li {
+        //         height: 40px;
+        //     }
+        // }
+        // .in-context-menu.inactive {
+        //     display: none;
+        //     pointer-events: none;
+        //     animation: BounceHeightOut .20s forwards ease-out;
+        // }
+        // .in-context-menu.hidden {
+        //     visibility: hidden;
+        // }
     }
 }
 
@@ -244,14 +241,13 @@
         width: 100%;
         text-align: center;
         background-color: transparent;
-        transition: all .1s;
+        //transition: all .1s;
+        //border-bottom: 2px solid @curiousBlue;
     }
     .list-item-border-bottom {
-        //border-bottom: 2px solid @curiousBlue;
         background-color: @curiousBlue;
     }
     .list-item-border-top {
-        //border-top: 2px solid @curiousBlue;
         background-color: @curiousBlue;
     }
 }
@@ -298,22 +294,22 @@
     }
     85% {
         opacity: .8;
-        height: 220px;
+        height: 100px;
     }
     100% {
         opacity: 1;
-        height: 200px;
+        height: auto;
     }
 }
 
 @keyframes BounceHeightOut {
     0% {
         opacity: 1;
-        height: 200px;
+        height: auto;
     }
     15% {
         opacity: .8;
-        height: 220px;
+        height: 100px;
     }
     100% {
         opacity: 0;

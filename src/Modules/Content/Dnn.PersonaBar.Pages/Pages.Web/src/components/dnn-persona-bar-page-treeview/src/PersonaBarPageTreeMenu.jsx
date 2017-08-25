@@ -65,6 +65,7 @@ export class PersonaBarPageTreeMenu extends Component {
                                 onViewPage={this.props.onViewPage}
                                 onDuplicatePage={this.props.onDuplicatePage}
                                 item={item}
+                                pageInContextComponents={this.props.pageInContextComponents}
                                 _traverse={_traverse} />
                         </div>
                     </div>
@@ -90,5 +91,6 @@ PersonaBarPageTreeMenu.propTypes = {
     onViewPage: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
     _traverse: PropTypes.func.isRequired,
-    listItems: PropTypes.array.isRequired
+    listItems: PropTypes.array.isRequired,
+    pageInContextComponents: PropTypes.array.isRequired
 };

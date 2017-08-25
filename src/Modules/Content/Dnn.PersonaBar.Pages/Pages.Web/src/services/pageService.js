@@ -63,7 +63,6 @@ const PageService = function () {
     };
 
     const getNewPage = function (parentPage) {
-        console.log("getNewPage parentPage", parentPage);
         const api = getOverridablePagesApi();
         return api.get("GetDefaultSettings")
             .then(settings => {

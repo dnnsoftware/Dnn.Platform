@@ -54,7 +54,7 @@ class App extends Component {
         this.state = {
             referral: "",
             referralText: "",
-            busy:false
+            busy: false
         };
 
     }
@@ -166,12 +166,12 @@ class App extends Component {
 
             const removeFromOldParent = () => {
                 const left = () => {
-                    const {pageList} = this.props;
+                    const { pageList } = this.props;
                     pageList.forEach((item, index) => {
-                        if(item.id == update.tabId) {
+                        if (item.id == update.tabId) {
                             cachedItem = item;
                             const arr1 = pageList.slice(0, index);
-                            const arr2 = pageList.slice(index+1);
+                            const arr2 = pageList.slice(index + 1);
                             const newPageList = [...arr1, ...arr2];
                             this.props.updatePageListStore(newPageList);
                         }
@@ -179,14 +179,14 @@ class App extends Component {
                 };
 
 
-               const right = () => {
+                const right = () => {
                     this._traverse((item, list, updateStore) => {
-                        if(item.id == update.oldParentId){
-                            item.childListItems.forEach((child, index)=>{
-                                if(child.id === update.tabId){
+                        if (item.id == update.oldParentId) {
+                            item.childListItems.forEach((child, index) => {
+                                if (child.id === update.tabId) {
                                     cachedItem = child;
                                     const arr1 = item.childListItems.slice(0, index);
-                                    const arr2 = item.childListItems.slice(index+2);
+                                    const arr2 = item.childListItems.slice(index + 2);
                                     item.childListItems = [...arr1, ...arr2];
                                     item.childCount--;
                                     updateStore(list);
@@ -194,39 +194,39 @@ class App extends Component {
                             });
                         }
                     });
-               };
+                };
 
                 (update.oldParentId == -1 || update.parentId == -1) ? left() : right();
             };
 
             const addToNewParent = () => {
 
-                this._traverse((item, list, updateStore)=>{
-                    if(item.id == update.parentId){
+                this._traverse((item, list, updateStore) => {
+                    if (item.id == update.parentId) {
                         (cachedItem) ? cachedItem.parentId = item.id : null;
 
-                        switch(true){
+                        switch (true) {
                             case item.childCount > 0 && !item.childListItems:
                                 this.props.getChildPageList(item.id).then((data) => {
-                                    item.isOpen=true;
+                                    item.isOpen = true;
                                     item.childListItems = data;
                                     updateStore(list);
                                 });
-                            break;
+                                break;
                             case item.childCount == 0 && !item.childListItems:
                                 item.childCount++;
-                                item.childListItems=[];
+                                item.childListItems = [];
                                 item.childListItems.push(cachedItem);
-                            break;
+                                break;
                             case Array.isArray(item.childListItems) === true:
                                 item.childCount++;
                                 item.childListItems.push(cachedItem);
                                 this.props.onLoadPage(cachedItem.id);
-                            break;
+                                break;
 
 
                         }
-                        item.isOpen=true;
+                        item.isOpen = true;
                         updateStore(list);
                     }
 
@@ -234,13 +234,13 @@ class App extends Component {
             };
 
             this.props.onUpdatePage(update, (page) => {
-                if(update.oldParentId){
+                if (update.oldParentId) {
                     removeFromOldParent();
                     addToNewParent();
                 }
 
                 this._traverse((item, list, updateStore) => {
-                    if(item.id == update.tabId){
+                    if (item.id == update.tabId) {
                         item.name = update.name;
                         item.pageType = update.pageType;
                         updateStore(list);
@@ -253,7 +253,7 @@ class App extends Component {
         });
     }
 
-    onChangeParentId(newParentId){
+    onChangeParentId(newParentId) {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
@@ -263,8 +263,8 @@ class App extends Component {
         let runUpdateStore = null;
         let pageList = null;
 
-        this._traverse((item, list, updateStore)=>{
-            item.selected=false;
+        this._traverse((item, list, updateStore) => {
+            item.selected = false;
             pageList = list;
             runUpdateStore = updateStore;
         });
@@ -295,26 +295,26 @@ class App extends Component {
 
     onDeleteSettings() {
         const { props } = this;
-        const {selectedPage} = props;
-       
+        const { selectedPage } = props;
+
         const left = () => {
             return () => {
                 this.props.onDeletePage(props.selectedPage);
                 this._traverse((item, list, updateStore) => {
-                    if(item.id === props.selectedPage.parentId){
+                    if (item.id === props.selectedPage.parentId) {
                         let itemIndex = null;
                         item.childCount--;
-                       (item.childCount===0) ? item.isOpen=false : null;
+                        (item.childCount === 0) ? item.isOpen = false : null;
 
-                        item.childListItems.forEach((child, index)=>{
-                            if(child.id===props.selectedPage.tabId){
-                                itemIndex=index;
+                        item.childListItems.forEach((child, index) => {
+                            if (child.id === props.selectedPage.tabId) {
+                                itemIndex = index;
                             }
                         });
-                        const arr1 = item.childListItems.slice(0,itemIndex);
-                        const arr2 = item.childListItems.slice(itemIndex+1);
+                        const arr1 = item.childListItems.slice(0, itemIndex);
+                        const arr2 = item.childListItems.slice(itemIndex + 1);
                         item.childListItems = [...arr1, ...arr2];
-                        updateStore(list); 
+                        updateStore(list);
                         props.onCancelPage();
                     }
                 });
@@ -326,13 +326,13 @@ class App extends Component {
                 let itemIndex;
                 const pageList = JSON.parse(JSON.stringify(this.props.pageList));
                 pageList.forEach((item, index) => {
-                    if(item.id === selectedPage.tabId){
+                    if (item.id === selectedPage.tabId) {
                         itemIndex = index;
                     }
                 });
-             
+
                 const arr1 = pageList.slice(0, itemIndex);
-                const arr2 = pageList.slice(itemIndex+1);
+                const arr2 = pageList.slice(itemIndex + 1);
                 const update = [...arr1, ...arr2];
                 this.props.onDeletePage(props.selectedPage);
                 this.props.updatePageListStore(update);
@@ -342,7 +342,7 @@ class App extends Component {
         };
 
         const onDelete = (selectedPage.parentId !== -1) ? left() : right();
-        
+
         utils.confirm(
             Localization.get("DeletePageConfirm"),
             Localization.get("Delete"),
@@ -374,10 +374,10 @@ class App extends Component {
 
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(id).then((data)=>{
-                    this._traverse((item, list, updateStore)=>{
-                        if(item.id === id){
-                            Object.keys(this.props.selectedPage).forEach((key) => item[key]=this.props.selectedPage[key]);
+                this.props.onLoadPage(id).then((data) => {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id === id) {
+                            Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
                             this.props.updatePageListStore(list);
                             this.selectPageSettingTab(0);
                         }
@@ -525,7 +525,7 @@ class App extends Component {
         const loop = () => {
             const childItem = cachedChildListItems.length ? cachedChildListItems.shift() : null;
             const left = () => childItem.forEach(item => {
-                comparator(item, listItems, (pageList) => this.props.updatePageListStore(pageList) );
+                comparator(item, listItems, (pageList) => this.props.updatePageListStore(pageList));
                 Array.isArray(item.childListItems) ? cachedChildListItems.push(item.childListItems) : null;
                 condition ? loop() : exit();
             });
@@ -566,8 +566,8 @@ class App extends Component {
         (!selectedPageDirty) ? left() : right();
     }
 
-    onChangePageField(key, value){
-        this.props.onChangePageField(key,value);
+    onChangePageField(key, value) {
+        this.props.onChangePageField(key, value);
 
     }
 
@@ -575,7 +575,7 @@ class App extends Component {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
 
-    onViewPage(id, url){
+    onViewPage(id, url) {
         return PageActions.viewPage(id, url);
     }
 
@@ -685,7 +685,7 @@ class App extends Component {
 
 
     render() {
-        
+
         const { props } = this;
         const { selectedPage } = props;
         const additionalPanels = this.getAdditionalPanels();
@@ -704,20 +704,21 @@ class App extends Component {
                             <GridCell columnSize={100} className="page-container">
                                 <div className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
                                     <div>
-                                    <PersonaBarPageTreeviewInteractor
-                                        pageList={this.props.pageList}
-                                        getChildPageList={this.props.getChildPageList}
-                                        _traverse={this._traverse.bind(this)}
-                                        showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
-                                        selectedPageDirty={this.props.selectedPageDirty}
-                                        activePage={this.props.selectedPage}
-                                        setActivePage={this.setActivePage.bind(this)}
-                                        saveDropState={this.onUpdatePage.bind(this)}
-                                        onMovePage={this.onMovePage.bind(this)}
-                                        onViewPage={ this.onViewPage.bind(this)}
-                                        onDuplicatePage={this.props.onDuplicatePage}
-                                        onAddPage={this.onAddPage.bind(this)}
-                                        onSelection={this.onSelection.bind(this)} />
+                                        <PersonaBarPageTreeviewInteractor
+                                            pageList={this.props.pageList}
+                                            getChildPageList={this.props.getChildPageList}
+                                            _traverse={this._traverse.bind(this)}
+                                            showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
+                                            selectedPageDirty={this.props.selectedPageDirty}
+                                            activePage={this.props.selectedPage}
+                                            setActivePage={this.setActivePage.bind(this)}
+                                            saveDropState={this.onUpdatePage.bind(this)}
+                                            onMovePage={this.onMovePage.bind(this)}
+                                            onViewPage={this.onViewPage.bind(this)}
+                                            onDuplicatePage={this.props.onDuplicatePage}
+                                            onAddPage={this.onAddPage.bind(this)}
+                                            onSelection={this.onSelection.bind(this)}
+                                            pageInContextComponents={props.pageInContextComponents} />
                                     </div>
                                 </div>
 
@@ -780,6 +781,7 @@ App.propTypes = {
     pageDetailsFooterComponents: PropTypes.array.isRequired,
     settingsButtonComponents: PropTypes.object.isRequired,
     pageTypeSelectorComponents: PropTypes.array.isRequired,
+    pageInContextComponents: PropTypes.array.isRequired,
     selectedPageSettingTab: PropTypes.number,
     selectPageSettingTab: PropTypes.func,
     additionalPanels: PropTypes.array.isRequired,
@@ -805,6 +807,7 @@ function mapStateToProps(state) {
         error: state.errors.error,
         multiplePagesComponents: state.extensions.multiplePagesComponents,
         pageDetailsFooterComponents: state.extensions.pageDetailsFooterComponents,
+        pageInContextComponents: state.extensions.pageInContextComponents,
         settingsButtonComponents: state.extensions.settingsButtonComponents,
         pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents,
         selectedPageSettingTab: state.pages.selectedPageSettingTab,
