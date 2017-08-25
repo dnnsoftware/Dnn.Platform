@@ -257,11 +257,6 @@ namespace DotNetNuke.Web.Mvp
 
         #region Public Methods
 
-        [Obsolete("Deprecated in DotNetNuke 6.1. Base Class Method deprecated in WebFormsMVP 1.2")]
-        public override void ReleaseView()
-        {
-        }
-
         public virtual void RestoreState(StateBag stateBag)
         {
             AttributeBasedViewStateSerializer.DeSerialize(this, stateBag);

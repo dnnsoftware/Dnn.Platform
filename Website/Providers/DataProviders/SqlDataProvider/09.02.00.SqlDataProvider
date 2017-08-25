@@ -97,6 +97,12 @@ BEGIN
 END
 GO
 
+/***** DNN-10042 *****/
+UPDATE {databaseOwner}[{objectQualifier}Lists] 
+    SET Text = 'DotNetNuke.Web.UI.WebControls.DnnTimeZoneEditControl, DotNetNuke.Web'
+    WHERE ListName = N'DataType' and Value = N'TimeZone'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

@@ -448,21 +448,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        // CONVERSION: Obsolete pre 5.0 => Remove in 5.0
-        [ObsoleteAttribute(
-            "The HelpFile() property was deprecated in version 2.2. Help files are now stored in the /App_LocalResources folder beneath the module with the following resource key naming convention: ModuleHelp.Text"
-            )]
-        public string HelpFile { get; set; }
-
-        [Obsolete("ModulePath was renamed to ControlPath and moved to IModuleControl in version 5.0")]
-        public string ModulePath
-        {
-            get
-            {
-                return ControlPath;
-            }
-        }
-
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID)")]
         public string GetCacheFileName(int tabModuleId)
         {
@@ -479,12 +464,6 @@ namespace DotNetNuke.Entities.Modules
             strCacheKey += tabModuleId + ":";
             strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
             return strCacheKey;
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Please use ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, PermissionKey) ")]
-        public bool HasModulePermission(string PermissionKey)
-        {
-            return ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, PermissionKey);
         }
 
         [Obsolete("This method is deprecated.  Plaese use ModuleController.SynchronizeModule(ModuleId)")]

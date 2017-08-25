@@ -115,21 +115,5 @@ namespace DotNetNuke.Framework
                 return result;
             }
         }
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DotNetNuke 6.0.  Replaced by RegisterStyleSheet")]
-        public void AddStyleSheet(string id, string href, bool isFirst)
-        {
-            RegisterStyleSheet(this, href, isFirst);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.0.  Replaced by RegisterStyleSheet")]
-        public void AddStyleSheet(string id, string href)
-        {
-            RegisterStyleSheet(this, href, false);
-        }
-
-        #endregion
     }
 }

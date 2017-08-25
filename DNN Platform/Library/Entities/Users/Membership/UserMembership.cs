@@ -45,8 +45,11 @@ namespace DotNetNuke.Entities.Users
     public class UserMembership
     {
         private readonly UserInfo _user;
-        private bool _objectHydrated;
         private bool _approved;
+
+        public UserMembership() : this(new UserInfo())
+        {
+        }
 
         public UserMembership(UserInfo user)
         {
@@ -173,54 +176,5 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool UpdatePassword { get; set; }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        public UserMembership()
-        {
-            Approved = true;
-            _user = new UserInfo();
-        }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        [Browsable(false)]
-        public string Email
-        {
-            get
-            {
-                return _user.Email;
-            }
-            set
-            {
-                _user.Email = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        [Browsable(false)]
-        public bool ObjectHydrated
-        {
-            get
-            {
-                return _objectHydrated;
-            }
-            set
-            {
-                _objectHydrated = true;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        [Browsable(false)]
-        public string Username
-        {
-            get
-            {
-                return _user.Username;
-            }
-            set
-            {
-                _user.Username = value;
-            }
-        }
     }
 }

@@ -241,30 +241,12 @@ namespace DotNetNuke.Security.Permissions
 		
 		#endregion
 
-        [Obsolete("Deprecated in DNN 5.0.1. Replaced by GetPermissionsByFolder()")]
-        public ArrayList GetPermissionsByFolder(int portalID, string folder)
-        {
-            return GetPermissionsByFolder();
-        }
-
         [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int)")]
         public ArrayList GetPermissionsByModuleID(int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 
             return GetPermissionsByModuleDefID(module.ModuleDefID);
-        }
-
-        [Obsolete("Deprecated in DNN 5.0.1. Replaced by GetPermissionsByTab()")]
-        public ArrayList GetPermissionsByTabID(int tabID)
-        {
-            return GetPermissionsByTab();
-        }
-
-        [Obsolete("Deprecated in DNN 5.0.1. Replaced by GetPermissionsByPortalDesktopModule()")]
-        public ArrayList GetPermissionsByPortalDesktopModuleID()
-        {
-            return GetPermissionsByPortalDesktopModule();
         }
     }
 }

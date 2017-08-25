@@ -379,30 +379,6 @@ namespace DotNetNuke.Web.UI.WebControls
 			}
 		}
 
-		/// <summary>
-		///   Gets or sets whether to Show Database Folders
-		/// </summary>
-		/// <remarks>
-		///   Defaults to false
-		/// </remarks>
-		/// <value>A Boolean</value>
-		[Obsolete("Deprecated in DNN 6.0")]
-		public bool ShowDatabase
-		{
-			get
-			{
-			    if (ViewState["ShowDatabase"] == null)
-				{
-					return false;
-				}
-			    return Convert.ToBoolean(ViewState["ShowDatabase"]);
-			}
-		    set
-			{
-				ViewState["ShowDatabase"] = value;
-			}
-		}
-
 		public bool ShowFolders
 		{
 			get
@@ -412,26 +388,6 @@ namespace DotNetNuke.Web.UI.WebControls
 			set
 			{
 				ViewState["ShowFolders"] = value;
-			}
-		}
-
-		/// <summary>
-		///   Gets or sets whether to Show Secure Folders
-		/// </summary>
-		/// <remarks>
-		///   Defaults to false
-		/// </remarks>
-		/// <value>A Boolean</value>
-		[Obsolete("Deprecated in DNN 6.0")]
-		public bool ShowSecure
-		{
-			get
-			{
-				return ViewState["ShowSecure"] != null && Convert.ToBoolean(ViewState["ShowSecure"]);
-			}
-			set
-			{
-				ViewState["ShowSecure"] = value;
 			}
 		}
 

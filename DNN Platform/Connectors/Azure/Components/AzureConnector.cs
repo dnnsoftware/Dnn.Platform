@@ -310,7 +310,6 @@ namespace Dnn.AzureConnector.Components
                 throw new ConnectorArgumentException(Localization.GetString("InvalidAccountKey.ErrorMessage",
                     Constants.LocalResourceFile));
             }
-            return false;
         }
 
         private string GetSetting(Hashtable settings, string name, bool encrypt = false)

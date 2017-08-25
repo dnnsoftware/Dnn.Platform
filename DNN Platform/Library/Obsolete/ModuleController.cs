@@ -62,73 +62,6 @@ namespace DotNetNuke.Entities.Modules
     public partial class ModuleController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("The module caching feature has been updated in version 5.2.0.  This method is no longer used.")]
-        public static string CacheDirectory()
-        {
-            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache";
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("The module caching feature has been updated in version 5.2.0.  This method is no longer used.")]
-        public static string CacheFileName(int TabModuleID)
-        {
-            string strCacheKey = "TabModule:";
-            strCacheKey += TabModuleID + ":";
-            strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("The module caching feature has been updated in version 5.2.0.  This method is no longer used.")]
-        public static string CacheKey(int TabModuleID)
-        {
-            string strCacheKey = "TabModule:";
-            strCacheKey += TabModuleID + ":";
-            strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return strCacheKey;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.0.  Replaced by CopyModule(ModuleInfo, TabInfo, String, Boolean)")]
-        public void CopyModule(int moduleId, int fromTabId, List<TabInfo> toTabs, bool includeSettings)
-        {
-            ModuleInfo objModule = GetModule(moduleId, fromTabId, false);
-            //Iterate through collection copying the module to each Tab (except the source)
-            foreach (TabInfo objTab in toTabs)
-            {
-                if (objTab.TabID != fromTabId)
-                {
-                    CopyModule(objModule, objTab, "", includeSettings);
-                }
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.5.  Replaced by CopyModule(ModuleInfo, TabInfo, String, Boolean)")]
-        public void CopyModule(int moduleId, int fromTabId, int toTabId, string toPaneName, bool includeSettings)
-        {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            ModuleInfo objModule = GetModule(moduleId, fromTabId, false);
-            TabInfo objTab = TabController.Instance.GetTab(toTabId, _portalSettings.PortalId, false);
-            CopyModule(objModule, objTab, toPaneName, includeSettings);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Replaced in DotNetNuke 5.0 by CopyModule(Integer, integer, List(Of TabInfo), Boolean)")]
-        public void CopyModule(int moduleId, int fromTabId, ArrayList toTabs, bool includeSettings)
-        {
-            ModuleInfo objModule = GetModule(moduleId, fromTabId, false);
-            //Iterate through collection copying the module to each Tab (except the source)
-            foreach (TabInfo objTab in toTabs)
-            {
-                if (objTab.TabID != fromTabId)
-                {
-                    CopyModule(objModule, objTab, "", includeSettings);
-                }
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.  No longer neccessary.")]
         public void CopyTabModuleSettings(ModuleInfo fromModule, ModuleInfo toModule)
         {
@@ -143,21 +76,6 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.1.  Use an alternate overload")]
-        public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool includeCurrent, bool deleteBaseModule)
-        {
-            DeleteAllModules(moduleId, tabId, fromTabs, true, includeCurrent, deleteBaseModule);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.1.  Use an alternate overload")]
-        public void DeleteAllModules(int moduleId, int tabId, ArrayList fromTabs, bool includeCurrent, bool deleteBaseModule)
-        {
-            var listTabs = fromTabs.Cast<TabInfo>().ToList();
-            DeleteAllModules(moduleId, tabId, listTabs, true, includeCurrent, deleteBaseModule);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3.")]
         public void DeleteModuleSettings(int moduleId)
         {
@@ -167,13 +85,6 @@ namespace DotNetNuke.Entities.Modules
             LogController.Instance.AddLog(log);
             UpdateTabModuleVersionsByModuleID(moduleId);
             ClearModuleSettingsCache(moduleId);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.1. Replaced by DeleteTabModule(Integer, integer, boolean)")]
-        public void DeleteTabModule(int tabId, int moduleId)
-        {
-            DeleteTabModule(tabId, moduleId, true);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -224,25 +135,6 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Replaced in DotNetNuke 5.0 by GetTabModules(Integer)")]
-        public ArrayList GetPortalTabModules(int portalID, int tabID)
-        {
-            var arr = new ArrayList();
-            foreach (KeyValuePair<int, ModuleInfo> kvp in GetTabModules(tabID))
-            {
-                arr.Add(kvp.Value);
-            }
-            return arr;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Replaced in DotNetNuke 5.0 by GetModules(Integer)")]
-        public ArrayList GetModules(int portalID, bool includePermissions)
-        {
-            return CBO.FillCollection(dataProvider.GetModules(portalID), typeof(ModuleInfo));
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Replaced by GetTabModulesByModule(moduleID)")]
         public ArrayList GetModuleTabs(int moduleID)
         {
@@ -286,13 +178,6 @@ namespace DotNetNuke.Entities.Modules
                 CBO.CloseDataReader(dr, true);
             }
             return settings;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Replaced in DotNetNuke 5.0 by UpdateTabModuleOrder(Integer)")]
-        public void UpdateTabModuleOrder(int tabId, int portalId)
-        {
-            UpdateTabModuleOrder(tabId);
         }
     }
 }
