@@ -68,13 +68,17 @@ const ImageIcon = require(`!raw!./svg/image.svg`);
 const HourglassIcon = require(`!raw!./svg/hourglass.svg`);
 const CollapseTree = require(`!raw!./svg/collapse_tree.svg`);
 const ExpandTree = require(`!raw!./svg/expand_tree.svg`);
-const TreeLinkIcon = require (`!raw!./svg/tree_link.svg`);
+const TreeLinkIcon = require(`!raw!./svg/tree_link.svg`);
 const TreeDraftIcon = require(`!raw!./svg/draft.svg`);
 const TreeMoreIcon = require(`!raw!./svg/tree_more.svg`);
 const TreePaperClip = require(`!raw!./svg/paperclip.svg`);
-
+const TreeAddPage = require(`!raw!./svg/tree_add_page.svg`);
+const TreeEye = require(`!raw!./svg/tree_eye.svg`);
+const TreeEdit = require(`!raw!./svg/tree_edit.svg`);
+const TreeCopy = require(`!raw!./svg/tree_copy.svg`);
+const TreeAnalytics = require(`!raw!./svg/tree_analytics.svg`);
 export {
-    ActivityIcon, 
+    ActivityIcon,
     AddIcon,
     AddCircleIcon,
     EditIcon,
@@ -136,7 +140,7 @@ export {
     ArrowMoveUpIcon,
     ArrowMoveDownIcon,
     TableEmptyState,
-    ArrowBack, 
+    ArrowBack,
     ArrowForward,
     DownloadIcon,
     ImageIcon,
@@ -146,5 +150,10 @@ export {
     TreeLinkIcon,
     TreeDraftIcon,
     TreeMoreIcon,
-    TreePaperClip
+    TreePaperClip,
+    TreeAddPage,
+    TreeEye,
+    TreeEdit,
+    TreeCopy,
+    TreeAnalytics
 };
