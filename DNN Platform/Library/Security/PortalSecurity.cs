@@ -87,6 +87,7 @@ namespace DotNetNuke.Security
             new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
             new Regex(@"eval*.\(", RxOptions),
             new Regex("onload", RxOptions),
+            new Regex("onreadystatechange", RxOptions),
         };
 
         #region FilterFlag enum
