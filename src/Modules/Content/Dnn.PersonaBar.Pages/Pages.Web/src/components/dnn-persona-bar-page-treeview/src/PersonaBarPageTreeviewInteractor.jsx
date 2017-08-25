@@ -182,7 +182,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     onDrag(e) {
         const elm = this.clonedElement;
         elm.style.top = `${e.pageY}px`;
-        elm.style.left = `${e.pageX - 5}px`;
+        elm.style.left = `${e.pageX}px`;
     }
 
     onDragEnd(item) {
@@ -512,6 +512,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDuplicatePage={this.onDuplicatePage.bind(this)}
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
+                        pageInContextComponents={this.props.pageInContextComponents}
                     />
                     : null}
             </span>
@@ -579,5 +580,6 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
-    getPageList: PropTypes.func.isRequired
+    getPageList: PropTypes.func.isRequired,
+    pageInContextComponents: PropTypes.array.isRequired
 };
