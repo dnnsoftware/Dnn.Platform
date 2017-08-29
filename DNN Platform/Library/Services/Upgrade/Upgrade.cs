@@ -5350,6 +5350,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.1.0":
                             UpgradeToVersion910();
                             break;
+                        case "9.2.0":
+                            UpgradeToVersion920();
+                            break;
                     }
                 }
                 else
@@ -5539,6 +5542,12 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Taxonomy", "Module");
 
             UninstallPackage("UrlManagement", "Library", false);
+        }
+
+        private static void UpgradeToVersion920()
+        {
+            DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "SharpZipLib.dll");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)

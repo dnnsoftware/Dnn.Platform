@@ -304,6 +304,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA
 		DNN Platform\Website\Install\Cleanup\08.00.00.16.txt = DNN Platform\Website\Install\Cleanup\08.00.00.16.txt
 		DNN Platform\Website\Install\Cleanup\09.01.00.txt = DNN Platform\Website\Install\Cleanup\09.01.00.txt
 		DNN Platform\Website\Install\Cleanup\09.01.01.txt = DNN Platform\Website\Install\Cleanup\09.01.01.txt
+		DNN Platform\Website\Install\Cleanup\09.02.00.txt = DNN Platform\Website\Install\Cleanup\09.02.00.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE268D-2073-4489-9BB2-26E34D65A8DC}"

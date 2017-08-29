@@ -113,8 +113,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
-    <Reference Include="SharpZipLib">
-      <HintPath>..\DNN Platform\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
