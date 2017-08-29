@@ -13,6 +13,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Common.Utilities;
+using ICSharpCode.SharpZipLib;
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
@@ -79,7 +80,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         DeleteTempInstallFiles(installer);
                     }
                 }
-                catch (ICSharpCode.SharpZipLib.ZipException)
+                catch (SharpZipBaseException)
                 {
                     parseResult.Failed("ZipCriticalError");
                 }
@@ -144,7 +145,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         DeleteTempInstallFiles(installer);
                     }
                 }
-                catch (ICSharpCode.SharpZipLib.ZipException)
+                catch (SharpZipBaseException)
                 {
                     installResult.Failed("ZipCriticalError");
                 }
