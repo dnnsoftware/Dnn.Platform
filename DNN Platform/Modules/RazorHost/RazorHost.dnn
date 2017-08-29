@@ -13,7 +13,7 @@
       <releaseNotes src="releaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="coreversion">06.00.00</dependency>
+        <dependency type="coreversion">07.00.00</dependency>
         <dependency type="type">System.Tuple</dependency>
       </dependencies>
       <components>
