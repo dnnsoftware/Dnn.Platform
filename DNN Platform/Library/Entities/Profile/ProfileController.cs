@@ -550,10 +550,6 @@ namespace DotNetNuke.Entities.Profile
                         {
                             photoChanged = true;
                         }
-                        else if (propertyName.Equals(UserProfile.USERPROFILE_Biography, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            propertyValue = RemoveUnsafeAttributes(propertyValue);
-                        }
 
                         user.Profile.SetProfileProperty(propertyName, propertyValue);
                     }
@@ -579,33 +575,6 @@ namespace DotNetNuke.Entities.Profile
                 UserController.UpdateUser(portalId, user);
             }
             return user;
-        }
-
-        private static string RemoveUnsafeAttributes(string content)
-        {
-            var cleanContent = content;
-
-            var needEncode = false;
-            if (cleanContent.Contains("&lt;"))
-            {
-                cleanContent = HttpUtility.HtmlDecode(cleanContent);
-                needEncode = true;
-            }
-
-            var tagMatches = Regex.Matches(cleanContent, @"(<[^>]*?) on.*?\=(['""]?)[\s\S]*?(\2)( *)([^>]*?>)", RegexOptions.IgnoreCase);
-            foreach (Match match in tagMatches)
-            {
-                var tagContent = match.Value;
-                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""]?)[\s\S]*?(\1)( *)", string.Empty, RegexOptions.IgnoreCase);
-                cleanContent = cleanContent.Replace(tagContent, cleanTagContent);
-            }
-
-            if (needEncode)
-            {
-                cleanContent = HttpUtility.HtmlEncode(cleanContent);
-            }
-
-            return cleanContent;
         }
 
         private static void CreateThumbnails(int fileId)
