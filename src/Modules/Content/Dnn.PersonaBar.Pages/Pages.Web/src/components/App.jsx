@@ -558,7 +558,6 @@ class App extends Component {
                     this.getToRootParent();
                 });
                 this.selectPageSettingTab(0);
-
             }
         };
         const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
@@ -645,7 +644,8 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-        this.selectPageSettingTab(0);
+        if (!props.selectedPageSettingTab || props.selectedPageSettingTab <= 0)
+            this.selectPageSettingTab(0);
         return (
             <GridCell columnSize={70} className="treeview-page-details" >
                 <PageSettings selectedPage={props.selectedPage || {}}

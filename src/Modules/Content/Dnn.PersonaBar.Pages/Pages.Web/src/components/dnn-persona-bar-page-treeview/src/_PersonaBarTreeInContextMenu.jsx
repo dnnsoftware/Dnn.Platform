@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import Localization from "localization";
-import { TreeAddPage, TreeAnalytics, TreeCopy, TreeEdit, TreeEye } from "dnn-svg-icons";
+import { TreeAddPage, TreeAnalytics, TreeCopy, TreeEdit, EyeIcon } from "dnn-svg-icons";
 import Menu from "./InContextMenu/Menu";
 import MenuItem from "./InContextMenu/MenuItem";
 import ReactDOM from "react-dom";
@@ -66,7 +66,7 @@ export class PersonaBarTreeInContextMenu extends Component {
                 this.props.onClose();
                 break;
             case "Duplicate":
-                this.props.onDuplicatePage(item);
+                this.props.onDuplicatePage();
                 this.props.onClose();
                 break;
             default:
@@ -88,7 +88,7 @@ export class PersonaBarTreeInContextMenu extends Component {
     render_actionable(item) {
         let visibleMenus = [
             { key: "Add", title: Localization.get("AddPage"), index: 10, icon: TreeAddPage, onClick: this.onItemClick },
-            { key: "View", title: Localization.get("View"), index: 20, icon: TreeEye, onClick: this.onItemClick },
+            { key: "View", title: Localization.get("View"), index: 20, icon: EyeIcon, onClick: this.onItemClick },
             { key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick },
             { key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }
         ];

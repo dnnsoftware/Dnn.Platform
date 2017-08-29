@@ -10,15 +10,28 @@
                 //transition: padding-left .20s ease-in;
                 float: left;
                 width: 15%;
+                svg {
+                    fill: @alto;
+                }
+                svg:hover {
+                    fill: @curiousBlue;
+                }
             }
             .label {
                 //transition: padding-left .20s ease-in;
                 float: left;
                 width: 85%;
+                line-height: 22px;
             }
             &:hover {
                 background-color: @gallery;
                 color: @curiousBlue;
+                svg {
+                    fill: @curiousBlue;
+                }
+                svg:hover {
+                    fill: @curiousBlue;
+                }
             }
         }
         &.menu {
