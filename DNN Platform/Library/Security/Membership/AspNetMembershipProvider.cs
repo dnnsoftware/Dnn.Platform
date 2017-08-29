@@ -1661,7 +1661,16 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            
+
+            if (!user.FirstName.Equals(firstName))
+            {
+                user.FirstName = firstName;
+            }
+
+            if (!user.LastName.Equals(lastName))
+            {
+                user.LastName = lastName;
+            }
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
