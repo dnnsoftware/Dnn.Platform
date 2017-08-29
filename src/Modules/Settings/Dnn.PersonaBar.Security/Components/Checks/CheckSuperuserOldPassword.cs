@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 var totalRecords = 0;
 
-                var superUsers = UserController.GetUsers(-1, 1, int.MaxValue, ref totalRecords, true, true);
+                var superUsers = UserController.GetUsers(-1, 1, int.MaxValue, ref totalRecords, false, true);
                 result.Severity = SeverityEnum.Pass;
                 foreach (UserInfo user  in superUsers)
                 {
