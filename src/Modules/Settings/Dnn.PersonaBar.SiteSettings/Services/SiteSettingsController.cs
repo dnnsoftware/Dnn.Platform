@@ -3306,7 +3306,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 return InternalSearchController.Instance.GetSearchStatistics();
             }
-            catch (SearchIndexEmptyException ex)
+            catch (SearchIndexEmptyException)
             {
                 return null;
             }
