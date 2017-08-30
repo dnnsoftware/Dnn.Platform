@@ -25,6 +25,19 @@ const MultiLineInputWithError = (props) => {
         );
     };
 
+    const getInputRightPadding = (props) => {
+        const counter = props.counter;
+        let padding = 0;
+        if (counter || counter === 0) {
+            padding += counter.toString().length * 8;
+        }
+        if (props.error) {
+            padding += 32;
+        }
+
+        return padding;
+    };
+
     const errorMessages = props.errorMessage instanceof Array ? props.errorMessage : [props.errorMessage];
     return (
         <div className={getClass(props)} style={props.style}>
@@ -52,7 +65,7 @@ const MultiLineInputWithError = (props) => {
                     onKeyUp={props.onKeyUp}
                     value={props.value}
                     tabIndex={props.tabIndex}
-                    style={Object.assign({ marginBottom: 32 }, props.inputStyle) }
+                    style={Object.assign({ marginBottom: 32, paddingRight: getInputRightPadding(props) }, props.inputStyle) }
                     placeholder={props.placeholder}
                     enabled={props.enabled}
                     maxLength={props.maxLength}
