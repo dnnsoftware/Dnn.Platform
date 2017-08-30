@@ -30,10 +30,22 @@
         input {
             border-bottom: 2px solid @alizarinCrimson;
         }
+        .input-tooltip-container {
+            .dnn-inline-counter {
+                color: @alizarinCrimson;
+                right: 26px;
+            }
+        }
     }
     &.warning {
         input {
             border-bottom: 2px solid #EA9C00;
+        }
+        .input-tooltip-container {
+            .dnn-inline-counter {
+                color: #EA9C00;
+                right: 26px;
+            }
         }
     }
     .input-tooltip-container {
@@ -46,6 +58,12 @@
         }
         &.inline {
             width: auto;
+        }
+        .dnn-inline-counter {
+            position: absolute;
+            color: @curiousBlue;
+            top: 9px;
+            right: 7px;
         }
         .dnn-ui-common-tooltip {
             position: absolute;

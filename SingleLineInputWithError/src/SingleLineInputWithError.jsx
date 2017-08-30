@@ -21,6 +21,31 @@ const SingleLineInputWithError = (props) => {
         }
     };
 
+    const getCounter = (counter) => {
+        if (!counter && counter !== 0) {
+            return null;
+        }
+
+        return (
+            <div className="dnn-inline-counter">
+                {counter}
+            </div>
+        );
+    };
+
+    const getInputRightPadding = (props) => {
+        const counter = props.counter;
+        let padding = 0;
+        if (counter || counter === 0) {
+            padding += counter.toString().length * 8;
+        }
+        if (props.error) {
+            padding += 32;
+        }
+
+        return padding;
+    };
+
     return (
         <div className={getClass(props)} style={props.style}>
             {props.label &&
@@ -48,13 +73,14 @@ const SingleLineInputWithError = (props) => {
                     onKeyUp={props.onKeyUp}
                     value={props.value}
                     tabIndex={props.tabIndex}
-                    style={Object.assign({ marginBottom: 32 }, props.inputStyle)}
+                    style={Object.assign({ marginBottom: 32, paddingRight: getInputRightPadding(props)}, props.inputStyle)}
                     placeholder={props.placeholder}
                     enabled={props.enabled}
                     size={props.inputSize}
                     autoComplete={props.autoComplete}
                     maxLength={props.maxLength}
                 />
+                {getCounter(props.counter)}
                 <Tooltip
                     messages={errorMessages}
                     type={props.errorSeverity}
@@ -78,6 +104,7 @@ SingleLineInputWithError.propTypes = {
     error: PropTypes.bool,
     errorMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     errorSeverity: PropTypes.oneOf(["error", "warning"]),
+    counter: PropTypes.number,
     tooltipPlace: PropTypes.string,
     placement: PropTypes.oneOf(["outside", "inside"]),
     onChange: PropTypes.func,
