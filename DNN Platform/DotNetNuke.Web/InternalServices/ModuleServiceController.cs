@@ -20,6 +20,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -28,6 +29,7 @@ using System.Web.Http;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 
@@ -61,6 +63,17 @@ namespace DotNetNuke.Web.InternalServices
             {
                 var portalDict = PortalController.GetPortalDictionary();
                 portalId = portalDict[tabId];
+            }
+            else
+            {
+                if (portalId > -1)
+                {
+                    if (!IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                }
+                else
+                {
+                    portalId = PortalSettings.PortalId;
+                }
             }
 
             DesktopModuleInfo desktopModule;
@@ -126,6 +139,28 @@ namespace DotNetNuke.Web.InternalServices
             ModuleController.Instance.DeleteTabModule(deleteModuleDto.TabId, deleteModuleDto.ModuleId, deleteModuleDto.SoftDelete);
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private bool IsPortalIdValid(int portalId)
+        {
+            if (UserInfo.IsSuperUser) return true;
+            if (PortalSettings.PortalId == portalId) return true;
+
+            var isAdminUser = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+            if (!isAdminUser) return false;
+
+            var mygroup = GetMyPortalGroup();
+            return (mygroup != null && mygroup.Any(p => p.PortalID == portalId));
+        }
+        private static IEnumerable<PortalInfo> GetMyPortalGroup()
+        {
+            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
+            var mygroup = (from @group in groups
+                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                into portals
+                where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                select portals.ToArray()).FirstOrDefault();
+            return mygroup;
         }
     }
 }
