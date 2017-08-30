@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Social.Messaging
             }
 
             //Cannot have attachments if it's not enabled
-            if (fileIDs != null && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
+            if (fileIDs != null && fileIDs.Count > 0 && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
             {
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
