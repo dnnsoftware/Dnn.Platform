@@ -26,7 +26,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     componentDidMount() {
         this.init();
-
     }
 
     componentWillReceiveProps(newProps) {
@@ -72,22 +71,17 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             xhr.send();
         });
     }
-    // http://auto.engage64-454.com/API/PersonaBar/EvoqPages/GetPageDetails?pageId=21
-    // http://auto.engage64-454.com/API/PersonaBar/EvoqPages/GetPageDetails?pageId=26
 
     getPageInfo(id) {
         return new Promise((resolve) => {
-            const { setActivePage } = this.props;
+            const { setActivePage, getPage } = this.props;
             const origin = window.location.origin;
-            console.log(origin);
 
-            const url = `${ origin }/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
-            this.GET(url)
-                .then((data) => {
-                    this.setState({ activePage: data });
-                    return setActivePage(data);
-                })
-                .then(() => resolve());
+            getPage(id)
+            .then((data) => {
+                this.setState({ activePage: data });
+                return setActivePage(data);
+            }).then(() => resolve());
         });
     }
 
@@ -150,19 +144,20 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragEnter(e){
-
         e.preventDefault();
     }
 
     onDragStart(e, item) {
         //this._fadeOutTooltips();
-        e.dataTransfer.setData ? e.dataTransfer.setData('text/plain', 'hmm') : null;
+        e.dataTransfer.setData ? e.dataTransfer.setData('text/plain', 'node') : null;
 
         const left = () => {
             const img = new Image();
+            if(e.dataTransfer.setDragImage)
             e.dataTransfer.setDragImage(img, 0, 0);
 
             const element = this.getListItemLI(item);
+
             this.clonedElement = element.cloneNode(true);
             this.clonedElement.id = "cloned";
             //this.clonedElement.style.transition = "all";
@@ -191,7 +186,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDrag(e) {
-
         const elm = this.clonedElement;
         elm.style.top = `${e.pageY}px`;
         elm.style.left = `${e.pageX}px`;
@@ -199,7 +193,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDragEnd(item, e) {
         //this._fadeInTooltips();
-
         e.preventDefault();
 
         let pageList = null;
@@ -226,7 +219,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDragOver(e, item) {
         e.target.classList.add("list-item-dragover");
-
         e.preventDefault();
         let pageList = null;
         this.props._traverse((pageListItem, list, updateStore) => {
@@ -240,9 +232,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDrop(item, e) {
-
         e.preventDefault();
-
         e.target.classList.remove("list-item-dragover");
         //this._fadeInTooltips();
         this.removeClone();
@@ -595,6 +585,7 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     showCancelDialog: PropTypes.func.showCancelDialog,
     selectedPageDirty: PropTypes.bool.isRequired,
     activePage: PropTypes.object.isRequired,
+    getPage: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,

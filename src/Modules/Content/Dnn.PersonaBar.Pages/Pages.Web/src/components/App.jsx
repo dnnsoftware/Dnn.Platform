@@ -707,6 +707,7 @@ class App extends Component {
                                         <PersonaBarPageTreeviewInteractor
                                             pageList={this.props.pageList}
                                             getChildPageList={this.props.getChildPageList}
+                                            getPage={this.props.getPage.bind(this)}
                                             _traverse={this._traverse.bind(this)}
                                             showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                             selectedPageDirty={this.props.selectedPageDirty}
