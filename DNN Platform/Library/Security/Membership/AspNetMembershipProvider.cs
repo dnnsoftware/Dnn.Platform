@@ -1662,12 +1662,12 @@ namespace DotNetNuke.Security.Membership
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
 
-            if (!user.FirstName.Equals(firstName))
+            if (!firstName.Equals(user.FirstName))
             {
                 user.FirstName = firstName;
             }
 
-            if (!user.LastName.Equals(lastName))
+            if (!lastName.Equals(user.LastName))
             {
                 user.LastName = lastName;
             }

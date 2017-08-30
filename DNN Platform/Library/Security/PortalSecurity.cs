@@ -332,13 +332,9 @@ namespace DotNetNuke.Security
         ///-----------------------------------------------------------------------------
         private string FormatDisableScripting(string strInput)
         {
-            var tempInput = strInput;
-            if (strInput==" " || String.IsNullOrEmpty(strInput))
-            {
-                return tempInput; 
-            }
-            tempInput = FilterStrings(tempInput); 
-            return tempInput;
+            return String.IsNullOrWhiteSpace(strInput)
+                ? strInput
+                : FilterStrings(strInput);
         }
 
         ///-----------------------------------------------------------------------------
