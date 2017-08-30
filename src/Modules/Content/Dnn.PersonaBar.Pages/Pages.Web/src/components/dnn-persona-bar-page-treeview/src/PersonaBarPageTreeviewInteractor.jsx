@@ -265,10 +265,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onMovePage({ e, Action, PageId, ParentId, RelatedPageId }) {
-        console.log(Action, PageId, ParentId, RelatedPageId);
 
         e.preventDefault();
-
         const { onMovePage } = this.props;
 
         onMovePage({ Action, PageId, ParentId, RelatedPageId })
@@ -488,7 +486,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className="dnn-persona-bar-treeview-ul">
+            <span className="dnn-persona-bar-treeview-ul tree">
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={this.state.draggedItem}
@@ -507,7 +505,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDrop={this.onDrop.bind(this)}
                         onMovePage={this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
-
                     />
 
                     : null}

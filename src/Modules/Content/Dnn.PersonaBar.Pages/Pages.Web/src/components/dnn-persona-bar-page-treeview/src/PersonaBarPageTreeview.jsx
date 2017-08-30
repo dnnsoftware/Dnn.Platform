@@ -30,7 +30,7 @@ export class PersonaBarPageTreeview extends Component {
 
     render_tree(childListItems) {
         const {
-                draggedItem,
+            draggedItem,
             droppedItem,
             dragOverItem,
             getChildListItems,
@@ -156,10 +156,10 @@ export class PersonaBarPageTreeview extends Component {
                         <div
                             id={`list-item-title-${item.name}-${item.id}`}
                             className={(item.selected) ? "list-item-highlight" : null}
-                            style={{ height: "28px" }}
+                            style={{ height: "28px", marginLeft:"15px" }}
                             draggable="true"
                             onDrop={(e) => { onDrop(item, e); }}
-                            onDrag={(e) => { console.log('is this fired'); onDrag(e); }}
+                            onDrag={(e) => { onDrag(e); }}
                             onDragOver={(e) => { onDragOver(e, item); }}
                             onDragEnter={(e)=> onDragEnter(e)}
                             onDragStart={(e) => { onDragStart(e, item); }}
