@@ -138,28 +138,39 @@
 }
 
 .dnn-persona-bar-treeview-ul.tree {
-    li{
-        margin-left:10px;
-    }
+    ul:not(:first-child){
+        li{
+            margin-left:10px;
+        }
 
-    li::before, li::after{
-        content: '';
-        position: absolute;
-        left:0;
-    }
+        li::before, li::after{
+            content: '';
+            position: absolute;
+            left:0;
+        }
 
-    li::before {
-        border-top: 1px solid @alto;
-        top: 10px;
-        width: 10px;
-        height:0;
-    }
+        li::before {
+            border-top: 1px solid @alto;
+            top: 10px;
+            width: 10px;
+            height:0;
+            left:-5px;
+        }
 
-    li::after {
-        border-left: 1px solid @alto;
-        height: 100%;
-        width: 0px;
-        top: -10px;
+        li::after {
+            border-left: 1px solid @alto;
+            height: 100%;
+            width: 0px;
+            top: -10px;
+            left: -5px;
+        }
+
+        li:last-child::after {
+            border-left: 1px solid @alto;
+            height: 75%;
+            width: 0px;
+            top: -10px;
+        }
     }
 }
 
@@ -181,9 +192,7 @@
     li {
         width: 150px;
         list-style: none;
-        // background-color: powderblue;
         position:relative;
-        // border: 1px solid orange;
     }
 
 
