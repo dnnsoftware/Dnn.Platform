@@ -34,11 +34,11 @@ using DotNetNuke.Web.Validators;
 
 using WebFormsMvp;
 
-
 #endregion
 
 namespace DotNetNuke.Web.Mvp
 {
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public abstract class ModulePresenterBase<TView> : Presenter<TView> where TView : class, IModuleViewBase
     {
         #region Constructors

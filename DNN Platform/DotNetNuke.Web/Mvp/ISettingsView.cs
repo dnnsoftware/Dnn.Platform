@@ -22,6 +22,7 @@ using System;
 
 namespace DotNetNuke.Web.Mvp
 {
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public interface ISettingsView : IModuleViewBase
     {
         event EventHandler OnLoadSettings;
