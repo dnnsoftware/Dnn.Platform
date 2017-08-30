@@ -76,7 +76,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     getPageInfo(id) {
         return new Promise((resolve) => {
             const { setActivePage } = this.props;
-            const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
+            const url = `${window.origin || window.location }/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
             this.GET(url)
                 .then((data) => {
                     this.setState({ activePage: data });
@@ -144,8 +144,14 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         setTimeout(() => run(), 1000);
     }
 
+    onDragEnter(e){
+
+        e.preventDefault();
+    }
+
     onDragStart(e, item) {
         //this._fadeOutTooltips();
+        e.dataTransfer.setData ? e.dataTransfer.setData('text/plain', 'hmm') : null;
 
         const left = () => {
             const img = new Image();
@@ -180,13 +186,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDrag(e) {
+
         const elm = this.clonedElement;
         elm.style.top = `${e.pageY}px`;
         elm.style.left = `${e.pageX}px`;
     }
 
-    onDragEnd(item) {
+    onDragEnd(item, e) {
         //this._fadeInTooltips();
+
+        e.preventDefault();
 
         let pageList = null;
         let runUpdateStore = null;
@@ -212,6 +221,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDragOver(e, item) {
         e.target.classList.add("list-item-dragover");
+
         e.preventDefault();
         let pageList = null;
         this.props._traverse((pageListItem, list, updateStore) => {
@@ -225,6 +235,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDrop(item, e) {
+
+        e.preventDefault();
+
         e.target.classList.remove("list-item-dragover");
         //this._fadeInTooltips();
         this.removeClone();
@@ -257,6 +270,10 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onMovePage({ e, Action, PageId, ParentId, RelatedPageId }) {
+        console.log(Action, PageId, ParentId, RelatedPageId);
+
+        e.preventDefault();
+
         const { onMovePage } = this.props;
 
         onMovePage({ Action, PageId, ParentId, RelatedPageId })
@@ -486,6 +503,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         listItems={this.state.pageList}
                         getChildListItems={this.getChildListItems.bind(this)}
                         onSelection={this.onSelection.bind(this)}
+                        onDragEnter={this.onDragEnter.bind(this)}
                         onDrag={this.onDrag.bind(this)}
                         onDragStart={this.onDragStart.bind(this)}
                         onDragOver={this.onDragOver.bind(this)}
