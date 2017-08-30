@@ -72,11 +72,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             xhr.send();
         });
     }
+    // http://auto.engage64-454.com/API/PersonaBar/EvoqPages/GetPageDetails?pageId=21
+    // http://auto.engage64-454.com/API/PersonaBar/EvoqPages/GetPageDetails?pageId=26
 
     getPageInfo(id) {
         return new Promise((resolve) => {
             const { setActivePage } = this.props;
-            const url = `${window.origin || window.location }/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
+            const origin = window.location.origin;
+            console.log(origin);
+
+            const url = `${ origin }/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
             this.GET(url)
                 .then((data) => {
                     this.setState({ activePage: data });
