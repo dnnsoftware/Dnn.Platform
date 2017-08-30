@@ -1,60 +1,73 @@
-import React, {Component, PropTypes } from "react";
+import React, {PropTypes} from "react";
 import Tooltip from "dnn-tooltip";
 import TextArea from "dnn-multi-line-input";
 import Label from "dnn-label";
 import "./style.less";
 
-class MultiLineInputWithError extends Component {
-    constructor() {
-        super();
-    }
+const MultiLineInputWithError = (props) => {
 
-    render() {
-        const {props} = this;
-        const className = "dnn-multi-line-input-with-error" + (props.error ? " error" : "") + (" " + props.className) + (props.enabled ? "" : " disabled");
-        const errorMessages = props.errorMessage instanceof Array ? props.errorMessage : [props.errorMessage];
+    const getClass = (props) => {
+        const errorClass = props.error ? " " + props.errorSeverity : "";
+        const enabledClass = props.enabled ? "" : " disabled";
+        const customClass = " " + props.className;
+        return "dnn-multi-line-input-with-error" + errorClass + customClass + enabledClass;
+    };
+
+    const getCounter = (counter) => {
+        if (!counter && counter !== 0) {
+            return null;
+        }
+
         return (
-            <div className={className} style={props.style}>
-                {props.label &&
-                    <Label
-                        labelFor={props.inputId}
-                        label={props.label}
-                        tooltipMessage={props.tooltipMessage}
-                        tooltipPlace={props.infoTooltipPlace}
-                        tooltipActive={props.tooltipMessage}
-                        labelType={props.labelType}
-                        className={props.infoTooltipClassName}
-                        style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
-                        />
-                }
-                {props.extraToolTips}
-                <div className={"input-tooltip-container " + props.labelType}>
-                    <TextArea
-                        id={props.inputId}
-                        onChange={props.onChange}
-                        onBlur={props.onBlur}
-                        onFocus={props.onFocus}
-                        onKeyDown={props.onKeyDown}
-                        onKeyPress={props.onKeyPress}
-                        onKeyUp={props.onKeyUp}
-                        value={props.value}
-                        tabIndex={props.tabIndex}
-                        style={Object.assign({ marginBottom: 32 }, props.inputStyle) }
-                        placeholder={props.placeholder}
-                        enabled={props.enabled}
-                        maxLength={props.maxLength}
-                        />
-                    <Tooltip
-                        messages={errorMessages}
-                        type="error"
-                        className={props.placement}
-                        tooltipPlace={props.tooltipPlace}
-                        rendered={props.error}/>
-                </div>
+            <div className="dnn-inline-counter">
+                {counter}
             </div>
         );
-    }
-}
+    };
+
+    const errorMessages = props.errorMessage instanceof Array ? props.errorMessage : [props.errorMessage];
+    return (
+        <div className={getClass(props)} style={props.style}>
+            {props.label &&
+                <Label
+                    labelFor={props.inputId}
+                    label={props.label}
+                    tooltipMessage={props.tooltipMessage}
+                    tooltipPlace={props.infoTooltipPlace}
+                    tooltipActive={props.tooltipMessage}
+                    labelType={props.labelType}
+                    className={props.infoTooltipClassName}
+                    style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
+                    />
+            }
+            {props.extraToolTips}
+            <div className={"input-tooltip-container " + props.labelType}>
+                <TextArea
+                    id={props.inputId}
+                    onChange={props.onChange}
+                    onBlur={props.onBlur}
+                    onFocus={props.onFocus}
+                    onKeyDown={props.onKeyDown}
+                    onKeyPress={props.onKeyPress}
+                    onKeyUp={props.onKeyUp}
+                    value={props.value}
+                    tabIndex={props.tabIndex}
+                    style={Object.assign({ marginBottom: 32 }, props.inputStyle) }
+                    placeholder={props.placeholder}
+                    enabled={props.enabled}
+                    maxLength={props.maxLength}
+                    />
+                {getCounter(props.counter)}
+                <Tooltip
+                    messages={errorMessages}
+                    type={props.errorSeverity}
+                    className={props.placement}
+                    tooltipPlace={props.tooltipPlace}
+                    rendered={props.error}/>
+            </div>
+        </div>
+    );
+};
 
 MultiLineInputWithError.propTypes = {
     inputId: PropTypes.string,
@@ -67,6 +80,8 @@ MultiLineInputWithError.propTypes = {
     inputSize: PropTypes.oneOf(["large", "small"]),
     error: PropTypes.bool,
     errorMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    errorSeverity: PropTypes.oneOf(["error", "warning"]),
+    counter: PropTypes.number,
     tooltipPlace: PropTypes.string,
     placement: PropTypes.oneOf(["outside", "inside"]),
     onChange: PropTypes.func,
@@ -91,6 +106,7 @@ MultiLineInputWithError.defaultProps = {
     className: "",
     placement: "inside",
     labelType: "block",
-    errorMessage: ["This field has an error."]
+    errorMessage: ["This field has an error."],
+    errorSeverity: "error"
 };
 export default MultiLineInputWithError;
