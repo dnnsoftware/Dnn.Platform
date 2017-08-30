@@ -75,7 +75,6 @@
     }
     .list-item-dragover {
         color: @curiousBlue;
-        //border: 1px solid @alto;
     }
     .parent-expand-button {
         display: inline-block;
@@ -167,7 +166,7 @@
 
         li:last-child::after {
             border-left: 1px solid @alto;
-            height: 75%;
+            height: 20px;
             width: 0px;
             top: -10px;
         }
@@ -195,8 +194,6 @@
         position:relative;
     }
 
-
-
     .collapse-expand {
         display: none;
     }
@@ -205,27 +202,22 @@
         margin: 0;
         padding: 0;
         background-color: #fff;
-        //border-bottom: 1px solid #000;
         transition: all .5s;
     }
     .dropZoneInactive {
-        //transition: all .75s;
         margin: 0;
         padding: 0;
         height: inherit;
-        //border-bottom: 1px solid transparent;
         transition: all .5s;
     }
     .dropZoneArea {
         cursor: move;
-        //transition: all .5s ease-out;
         height: 2px;
         width: 100%;
         text-align: center;
         background-color: transparent;
-        //transition: all .1s;
-        //border-bottom: 2px solid @curiousBlue;
     }
+
     .list-item-border-bottom {
         background-color: @curiousBlue;
     }
