@@ -555,6 +555,7 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
+                    
                     this.getToRootParent();
                 });
                 this.selectPageSettingTab(0);

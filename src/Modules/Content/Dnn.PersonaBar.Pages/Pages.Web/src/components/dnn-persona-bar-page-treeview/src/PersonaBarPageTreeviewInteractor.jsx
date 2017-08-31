@@ -35,7 +35,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             dragDebounce: false,
             dragOverDebounce:false,
             setMouseCoordDebounce: false,
-
             pageX: 0,
             pageY: 0
         };
@@ -240,7 +239,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDrag(e) {
         const move = () => {
-            //console.log('move');
             this.setState({ dragDebounce: true});
             const {pageX, pageY} = this.state;
             const elm = this.clonedElement;
@@ -255,7 +253,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragEnd(item, e) {
-        //this._fadeInTooltips();
         e.preventDefault();
 
         let pageList = null;
@@ -606,189 +603,102 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     render_treeview() {
-        return ( <
-            span className = "dnn-persona-bar-treeview-ul tree" > {
-                this.state.rootLoaded ?
-                <
-                PersonaBarPageTreeview
-                draggedItem = {
-                    this.state.draggedItem
-                }
-                droppedItem = {
-                    this.state.droppedItem
-                }
-                dragOverItem = {
-                    this.state.dragOverItem
-                }
-
-                listItems = {
-                    this.state.pageList
-                }
-                getChildListItems = {
-                    this.getChildListItems.bind(this)
-                }
-                onSelection = {
-                    this.onSelection.bind(this)
-                }
-                onDragEnter = {
-                    this.onDragEnter.bind(this)
-                }
-                onDrag = {
-                    this.onDrag.bind(this)
-                }
-                onDragStart = {
-                    this.onDragStart.bind(this)
-                }
-                onDragOver = {
-                    this.onDragOver.bind(this)
-                }
-                onDragLeave = {
-                    this.onDragLeave.bind(this)
-                }
-                onDragEnd = {
-                    this.onDragEnd.bind(this)
-                }
-                onDrop = {
-                    this.onDrop.bind(this)
-                }
-                onMovePage = {
-                    this.onMovePage.bind(this)
-                }
-                getPageInfo = {
-                    this.getPageInfo.bind(this)
-                }
-                />
-
-                :
-                    null
-            } <
-            /span>
+        return (
+            <span className = "dnn-persona-bar-treeview-ul tree" >
+                { this.state.rootLoaded ?
+                    <PersonaBarPageTreeview
+                        draggedItem={ this.state.draggedItem }
+                        droppedItem={ this.state.droppedItem }
+                        dragOverItem={ this.state.dragOverItem }
+                        listItems={ this.state.pageList }
+                        getChildListItems={ this.getChildListItems.bind(this) }
+                        onSelection={this.onSelection.bind(this) }
+                        onDragEnter={ this.onDragEnter.bind(this) }
+                        onDrag={ this.onDrag.bind(this) }
+                        onDragStart={ this.onDragStart.bind(this) }
+                        onDragOver={ this.onDragOver.bind(this) }
+                        onDragLeave={ this.onDragLeave.bind(this) }
+                        onDragEnd={ this.onDragEnd.bind(this) }
+                        onDrop={ this.onDrop.bind(this) }
+                        onMovePage={ this.onMovePage.bind(this) }
+                        getPageInfo={ this.getPageInfo.bind(this) }
+                    />
+                    : null }
+            </span>
         );
     }
 
     render_treemenu() {
-        return ( <
-            span className = "dnn-persona-bar-treeview-ul" > {
-                this.state.rootLoaded ?
-                <
-                PersonaBarPageTreeMenu
-                onAddPage = {
-                    this.props.onAddPage
-                }
-                onViewPage = {
-                    this.props.onViewPage
-                }
-                onDuplicatePage = {
-                    this.onDuplicatePage.bind(this)
-                }
-                listItems = {
-                    this.state.pageList
-                }
-                _traverse = {
-                    this.props._traverse.bind(this)
-                }
-                pageInContextComponents = {
-                    this.props.pageInContextComponents
-                }
-                /> :
-                    null
-            } <
-            /span>
+        return (
+            <span className = "dnn-persona-bar-treeview-ul" >
+                { this.state.rootLoaded ?
+                    <PersonaBarPageTreeMenu
+                        onAddPage={this.props.onAddPage}
+                        onViewPage={this.props.onViewPage}
+                        onDuplicatePage={this.onDuplicatePage.bind(this)}
+                        listItems={this.state.pageList}
+                        _traverse={this.props._traverse.bind(this)}
+                        pageInContextComponents={this.props.pageInContextComponents}
+                    /> : null }
+
+            </span>
         );
     }
 
     render_tree_parent_expand() {
-        return ( <
-            span className = "dnn-persona-bar-treeview-ul" > {
-                this.state.rootLoaded ?
-                <
-                PersonaBarPageTreeParentExpand listItems = {
-                    this.state.pageList
-                }
-                getChildListItems = {
-                    this.getChildListItems.bind(this)
-                }
-                />
-
-                :
-                    null
-            } <
-            /span>
+        return (
+            <span
+                className = "dnn-persona-bar-treeview-ul" >
+                    { this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.state.pageList} getChildListItems={this.getChildListItems.bind(this)}/> : null }
+            </span>
         );
     }
 
     render_collapseExpand() {
-        return ( <
-            div onClick = {
-                this.toggleExpandAll.bind(this)
-            }
-            className = {
-                (this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"
-            } > [{
-                this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL"
-            }] <
-            /div>
+        return (
+            <div
+                onClick = { this.toggleExpandAll.bind(this)}
+                className = {(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
+                [{this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL" }]
+            </div>
         );
     }
 
     render() {
+        return (
+            <GridCell
+                columnSize = { 30 }
+                className = "dnn-persona-bar-treeview"
+                style = { {"zIndex": 1000 }} >
 
-        return ( <
-            GridCell columnSize = {
-                30
-            }
-            className = "dnn-persona-bar-treeview"
-            style = {
-                {
-                    "zIndex": 1000
-                }
-            } > {
-                this.render_collapseExpand()
-            } <
-            GridCell columnSize = {
-                15
-            } >
-            <
-            div className = "dnn-persona-bar-treeview-menu" > {
-                this.render_tree_parent_expand()
-            } <
-            /div> <
-            /GridCell> <
-            GridCell columnSize = {
-                55
-            }
-            style = {
-                {
-                    marginLeft: "-2px"
-                }
-            } >
-            <
-            Scrollbars className = "scrollArea content-horizontal"
-            autoHeight autoHide autoHeightMin = {
-                100
-            }
-            autoHeightMax = {
-                9999
-            } > {
-                this.render_treeview()
-            } <
-            /Scrollbars> <
-            /GridCell> <
-            GridCell columnSize = {
-                30
-            } >
-            <
-            div className = "dnn-persona-bar-treeview-menu selection-arrows"
-            style = {
-                {
-                    float: "right"
-                }
-            } > {
-                this.render_treemenu()
-            } <
-            /div> <
-            /GridCell> <
-            /GridCell>
+                { this.render_collapseExpand()}
+
+                <GridCell columnSize = { 15 } >
+                    <div className = "dnn-persona-bar-treeview-menu" >
+                        { this.render_tree_parent_expand() }
+                    </div>
+                </GridCell>
+
+                <GridCell
+                    columnSize = { 55 }
+                    style = { {marginLeft: "-2px"}} >
+                    <Scrollbars
+                        className = "scrollArea content-horizontal"
+                        autoHeight autoHide autoHeightMin = { 100 }
+                        autoHeightMax = { 9999 } >
+                            { this.render_treeview() }
+                    </Scrollbars>
+                </GridCell>
+
+                <GridCell columnSize = { 30 } >
+                    <div
+                        className = "dnn-persona-bar-treeview-menu selection-arrows"
+                        style = { { float: "right" } } >
+                        { this.render_treemenu()}
+                        </div>
+                </GridCell>
+
+            </GridCell>
         );
     }
 }
