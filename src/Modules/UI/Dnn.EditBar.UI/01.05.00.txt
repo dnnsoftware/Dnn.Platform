@@ -1,0 +1,3 @@
+﻿DesktopModules\Admin\Dnn.EditBar\scripts\contrib\jquery-ui.min.js
+DesktopModules\Admin\Dnn.EditBar\scripts\contrib\jqeury-ui-1.10.03-patched.js
+DesktopModules\Admin\Dnn.EditBar\scripts\contrib\jquery.iframe-transport.js

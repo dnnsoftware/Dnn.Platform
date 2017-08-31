@@ -170,6 +170,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="01.05.00.txt" />
     <Content Include="editBar\css\AddModule.css" />
     <Content Include="editBar\css\PageSettings.css" />
     <Content Include="editBar\css\ExitEditMode.css" />
@@ -227,9 +228,6 @@
     <Content Include="editBar\scripts\bootstrap.js" />
     <Content Include="editBar\scripts\config.js" />
     <Content Include="editBar\scripts\contrib\domReady.js" />
-    <Content Include="editBar\scripts\contrib\jqeury-ui-1.10.03-patched.js" />
-    <Content Include="editBar\scripts\contrib\jquery-ui.min.js" />
-    <Content Include="editBar\scripts\contrib\jquery.iframe-transport.js" />
     <Content Include="editBar\scripts\contrib\jquery.js" />
     <Content Include="editBar\scripts\contrib\knockout.js" />
     <Content Include="editBar\scripts\contrib\knockout.mapping.js" />
