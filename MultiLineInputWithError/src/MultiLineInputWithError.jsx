@@ -1,20 +1,43 @@
-import React, {PropTypes} from "react";
+import React, {Component, PropTypes} from "react";
 import Tooltip from "dnn-tooltip";
 import TextArea from "dnn-multi-line-input";
 import Label from "dnn-label";
 import "./style.less";
 
-const MultiLineInputWithError = (props) => {
+class MultiLineInputWithError extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isFocused: false
+        };
+    }
 
-    const getClass = (props) => {
+    onBlur(e) {
+        const {props} = this;
+        if (props.hasOwnProperty("onChange")) {
+            props.onChange(e);
+        }
+        this.setState({isFocused: false});
+    }
+
+    onFocus(e) {
+        const {props} = this;
+        if (props.hasOwnProperty("onFocus")) {
+            props.onFocus(e);
+        }
+        this.setState({isFocused: true});
+    }
+
+    getClass() {
+        const {props} = this;
         const errorClass = props.error ? " " + props.errorSeverity : "";
         const enabledClass = props.enabled ? "" : " disabled";
         const customClass = " " + props.className;
         return "dnn-multi-line-input-with-error" + errorClass + customClass + enabledClass;
-    };
+    }
 
-    const getCounter = (counter) => {
-        if (!counter && counter !== 0) {
+    getCounter(counter) {
+        if (!this.state.isFocused || !counter && counter !== 0) {
             return null;
         }
 
@@ -23,64 +46,67 @@ const MultiLineInputWithError = (props) => {
                 {counter}
             </div>
         );
-    };
+    }
 
-    const getInputRightPadding = (props) => {
-        const counter = props.counter;
+    getInputRightPadding(counter, error) {
+        
         let padding = 0;
         if (counter || counter === 0) {
             padding += counter.toString().length * 8;
         }
-        if (props.error) {
+        if (error) {
             padding += 32;
         }
 
         return padding;
-    };
+    }
 
-    const errorMessages = props.errorMessage instanceof Array ? props.errorMessage : [props.errorMessage];
-    return (
-        <div className={getClass(props)} style={props.style}>
-            {props.label &&
-                <Label
-                    labelFor={props.inputId}
-                    label={props.label}
-                    tooltipMessage={props.tooltipMessage}
-                    tooltipPlace={props.infoTooltipPlace}
-                    tooltipActive={props.tooltipMessage}
-                    labelType={props.labelType}
-                    className={props.infoTooltipClassName}
-                    style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
-                    />
-            }
-            {props.extraToolTips}
-            <div className={"input-tooltip-container " + props.labelType}>
-                <TextArea
-                    id={props.inputId}
-                    onChange={props.onChange}
-                    onBlur={props.onBlur}
-                    onFocus={props.onFocus}
-                    onKeyDown={props.onKeyDown}
-                    onKeyPress={props.onKeyPress}
-                    onKeyUp={props.onKeyUp}
-                    value={props.value}
-                    tabIndex={props.tabIndex}
-                    style={Object.assign({ marginBottom: 32, paddingRight: getInputRightPadding(props) }, props.inputStyle) }
-                    placeholder={props.placeholder}
-                    enabled={props.enabled}
-                    maxLength={props.maxLength}
-                    />
-                {getCounter(props.counter)}
-                <Tooltip
-                    messages={errorMessages}
-                    type={props.errorSeverity}
-                    className={props.placement}
-                    tooltipPlace={props.tooltipPlace}
-                    rendered={props.error}/>
+    render() {
+        const {props} = this;
+        const errorMessages = props.errorMessage instanceof Array ? props.errorMessage : [props.errorMessage];
+        return (
+            <div className={this.getClass()} style={props.style}>
+                {props.label &&
+                    <Label
+                        labelFor={props.inputId}
+                        label={props.label}
+                        tooltipMessage={props.tooltipMessage}
+                        tooltipPlace={props.infoTooltipPlace}
+                        tooltipActive={props.tooltipMessage}
+                        labelType={props.labelType}
+                        className={props.infoTooltipClassName}
+                        style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
+                        />
+                }
+                {props.extraToolTips}
+                <div className={"input-tooltip-container " + props.labelType}>
+                    <TextArea
+                        id={props.inputId}
+                        onChange={props.onChange}
+                        onBlur={this.onBlur.bind(this)}
+                        onFocus={this.onFocus.bind(this)}
+                        onKeyDown={props.onKeyDown}
+                        onKeyPress={props.onKeyPress}
+                        onKeyUp={props.onKeyUp}
+                        value={props.value}
+                        tabIndex={props.tabIndex}
+                        style={Object.assign({ marginBottom: 32, paddingRight: this.getInputRightPadding(props.counter, props.error) }, props.inputStyle) }
+                        placeholder={props.placeholder}
+                        enabled={props.enabled}
+                        maxLength={props.maxLength}
+                        />
+                    {this.getCounter(props.counter)}
+                    <Tooltip
+                        messages={errorMessages}
+                        type={props.errorSeverity}
+                        className={props.placement}
+                        tooltipPlace={props.tooltipPlace}
+                        rendered={props.error}/>
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 MultiLineInputWithError.propTypes = {
     inputId: PropTypes.string,
