@@ -1296,8 +1296,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void WaitTimeForNextMessage_Returns_Zero_When_MessagingThrottlingInterval_Is_Zero()
         {
+            _mockInternalMessagingController.Setup(m => m.GetLastSentMessage(It.IsAny<UserInfo>())).Returns((Message)null);
             _user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
-            _mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), _user12UserInfo.PortalID, Null.NullInteger)).Returns(0);
+            _mockMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, 0.5)).Returns(0.5);
 
             var result = _mockInternalMessagingController.Object.WaitTimeForNextMessage(_user12UserInfo);
 

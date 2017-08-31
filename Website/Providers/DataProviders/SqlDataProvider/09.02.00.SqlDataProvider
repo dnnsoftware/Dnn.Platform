@@ -103,6 +103,12 @@ UPDATE {databaseOwner}[{objectQualifier}Lists]
     WHERE ListName = N'DataType' and Value = N'TimeZone'
 GO
 
+/***** CONTENT-8440: update default MessagingThrottlingInterval value to 30 seconds. *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = '0.5' 
+    WHERE SettingName = 'MessagingThrottlingInterval' and SettingValue = '0'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
