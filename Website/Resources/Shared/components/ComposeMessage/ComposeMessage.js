@@ -224,9 +224,9 @@
                             var params = {
                                 subject: encodeURIComponent(composeMessageDialog.find('#subject').val()),
                                 body: encodeURIComponent(composeMessageDialog.find('#bodytext').val()),
-                                roleIds: (roles.length > 0 ? JSON.stringify(roles) : {}),
-                                userIds: (users.length > 0 ? JSON.stringify(users) : {}),
-                                fileIds: (attachments.length > 0 ? JSON.stringify(attachments) : {})
+                                roleIds: JSON.stringify(roles),
+                                userIds: JSON.stringify(users),
+                                fileIds: JSON.stringify(attachments)
                             };
                             $.ajax(
                                 {   
