@@ -14,8 +14,8 @@ class MultiLineInputWithError extends Component {
 
     onBlur(e) {
         const {props} = this;
-        if (props.hasOwnProperty("onChange")) {
-            props.onChange(e);
+        if (props.hasOwnProperty("onBlur")) {
+            props.onBlur(e);
         }
         this.setState({isFocused: false});
     }
@@ -37,7 +37,7 @@ class MultiLineInputWithError extends Component {
     }
 
     getCounter(counter) {
-        if (!this.state.isFocused || !counter && counter !== 0) {
+        if (!this.state.isFocused || counter > 0) {
             return null;
         }
 

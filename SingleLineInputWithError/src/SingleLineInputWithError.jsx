@@ -38,7 +38,7 @@ class SingleLineInputWithError extends Component {
     }
 
     getCounter(counter) {
-        if (!this.state.isFocused || !counter && counter !== 0) {
+        if (!this.state.isFocused || counter > 0) {
             return null;
         }
 
