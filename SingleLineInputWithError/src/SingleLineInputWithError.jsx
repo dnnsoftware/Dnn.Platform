@@ -22,7 +22,9 @@ class SingleLineInputWithError extends Component {
 
     onBlur(e) {
         const {props} = this;
-        props.onChange(e);
+        if (props.hasOwnProperty("onChange")) {
+            props.onChange(e);
+        }
         if (props.hasOwnProperty("onBlur")) {
             props.onBlur(e);
         }
