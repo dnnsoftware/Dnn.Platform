@@ -103,6 +103,7 @@ UPDATE {databaseOwner}[{objectQualifier}Lists]
     WHERE ListName = N'DataType' and Value = N'TimeZone'
 GO
 
+
 /***** DNN-10200: update newtonsoft.json assembly to 10.0.3. *****/
 IF NOT EXISTS(SELECT 1 FROM {databaseOwner}[{objectQualifier}Assemblies] WHERE AssemblyName = 'Newtonsoft.Json.dll' AND PackageID IS NULL)
 BEGIN
@@ -115,6 +116,12 @@ BEGIN
         SET Version = '10.0.3'
         WHERE AssemblyName = 'Newtonsoft.Json.dll' AND PackageID IS NULL
 END
+
+/***** CONTENT-8440: update default MessagingThrottlingInterval value to 30 seconds. *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = '0.5' 
+    WHERE SettingName = 'MessagingThrottlingInterval' and SettingValue = '0'
+
 GO
 
 /************************************************************/

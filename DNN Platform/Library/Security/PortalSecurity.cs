@@ -81,13 +81,18 @@ namespace DotNetNuke.Security
             new Regex("</form[^><]*>", RxOptions),
             new Regex("onerror", RxOptions),
             new Regex("onmouseover", RxOptions),
+            new Regex("onload", RxOptions),
+            new Regex("onreadystatechange", RxOptions),
+            new Regex("onfinish", RxOptions),
             new Regex("javascript:", RxOptions),
             new Regex("vbscript:", RxOptions),
             new Regex("unescape", RxOptions),
             new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
             new Regex(@"eval*.\(", RxOptions),
-            new Regex("onload", RxOptions),
         };
+        
+        private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
+        private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
 
         #region FilterFlag enum
 
@@ -279,8 +284,21 @@ namespace DotNetNuke.Security
         {
 			//setup up list of search terms as items may be used twice
             var tempInput = strInput;
+            if (string.IsNullOrEmpty(tempInput))
+            {
+                return tempInput;
+            }
 
             const string replacement = " ";
+
+            //remove the js event from html tags
+            var tagMatches = DangerElementsRegex.Matches(tempInput);
+            foreach (Match match in tagMatches)
+            {
+                var tagContent = match.Value;
+                var cleanTagContent = DangerElementContentRegex.Replace(tagContent, string.Empty);
+                tempInput = tempInput.Replace(tagContent, cleanTagContent);
+            }
 
             //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
             if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
@@ -296,6 +314,7 @@ namespace DotNetNuke.Security
             {
                 tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
             }
+
             return tempInput;
         }
 
@@ -313,13 +332,9 @@ namespace DotNetNuke.Security
         ///-----------------------------------------------------------------------------
         private string FormatDisableScripting(string strInput)
         {
-            var tempInput = strInput;
-            if (strInput==" " || String.IsNullOrEmpty(strInput))
-            {
-                return tempInput; 
-            }
-            tempInput = FilterStrings(tempInput); 
-            return tempInput;
+            return String.IsNullOrWhiteSpace(strInput)
+                ? strInput
+                : FilterStrings(strInput);
         }
 
         ///-----------------------------------------------------------------------------

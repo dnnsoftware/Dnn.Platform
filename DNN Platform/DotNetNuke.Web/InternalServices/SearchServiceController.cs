@@ -28,6 +28,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
 
@@ -308,7 +309,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     var detail = new DetailedView
                     {
-                        Title = result.Title,
+                        Title = result.Title.Contains("<") ? HttpUtility.HtmlEncode(result.Title) : result.Title,
                         DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                         DocumentUrl = result.Url,
                         Snippet = result.Snippet,
@@ -355,7 +356,7 @@ namespace DotNetNuke.Web.InternalServices
                     if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
                         groupedResult.Results.Add(new BasicView
                         {
-                            Title = preview.Title,
+                            Title = preview.Title.Contains("<") ? HttpUtility.HtmlEncode(preview.Title) : preview.Title,
                             Snippet = preview.Snippet,
                             DocumentUrl = preview.DocumentUrl,
                             Attributes = preview.Attributes
