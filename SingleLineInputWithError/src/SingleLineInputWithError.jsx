@@ -7,22 +7,68 @@ import "./style.less";
 class SingleLineInputWithError extends Component {
     constructor() {
         super();
+        this.state = {
+            isFocused: false
+        };
+    }
+
+    getClass() {
+        const {props} = this;
+        const errorClass = props.error ? " " + props.errorSeverity : "";
+        const enabledClass = props.enabled ? "" : " disabled";
+        const customClass = " " + props.className;
+        return "dnn-single-line-input-with-error" + errorClass + customClass + enabledClass;
+    }
+
+    onBlur(e) {
+        const {props} = this;
+        if (props.hasOwnProperty("onChange")) {
+            props.onChange(e);
+        }
+        if (props.hasOwnProperty("onBlur")) {
+            props.onBlur(e);
+        }
+        this.setState({isFocused: false});
+    }
+
+    onFocus(e) {
+        const {props} = this;
+        if (props.hasOwnProperty("onFocus")) {
+            props.onFocus(e);
+        }
+        this.setState({isFocused: true});
+    }
+
+    getCounter(counter) {
+        if (!this.state.isFocused || counter > 0) {
+            return null;
+        }
+
+        return (
+            <div className="dnn-inline-counter">
+                {counter}
+            </div>
+        );
+    }
+
+    getInputRightPadding(counter, error) {
+        let padding = 0;
+        if (counter || counter === 0) {
+            padding += counter.toString().length * 8;
+        }
+        if (error) {
+            padding += 32;
+        }
+
+        return padding;
     }
 
     render() {
-        const { props } = this;
-        const className = "dnn-single-line-input-with-error" + (props.error ? " error" : "") + (" " + props.className) + (props.enabled ? "" : " disabled");
+        const {props} = this;
         const errorMessages = props.errorMessage instanceof Array ? props.errorMessage : [props.errorMessage];
 
-        const onBlur = (e) => {
-            props.onChange(e);
-            if (props.hasOwnProperty('onBlur')) {
-                props.onBlur(e);
-            }
-        };
-
         return (
-            <div className={className} style={props.style}>
+            <div className={this.getClass()} style={props.style}>
                 {props.label &&
                     <Label
                         labelFor={props.inputId}
@@ -41,23 +87,24 @@ class SingleLineInputWithError extends Component {
                         id={props.inputId}
                         type={props.type}
                         onChange={props.onChange}
-                        onBlur={onBlur}
-                        onFocus={props.onFocus}
+                        onBlur={this.onBlur.bind(this)}
+                        onFocus={this.onFocus.bind(this)}
                         onKeyDown={props.onKeyDown}
                         onKeyPress={props.onKeyPress}
                         onKeyUp={props.onKeyUp}
                         value={props.value}
                         tabIndex={props.tabIndex}
-                        style={Object.assign({ marginBottom: 32 }, props.inputStyle)}
+                        style={Object.assign({ marginBottom: 32, paddingRight: this.getInputRightPadding(props.counter, props.error)}, props.inputStyle)}
                         placeholder={props.placeholder}
                         enabled={props.enabled}
                         size={props.inputSize}
                         autoComplete={props.autoComplete}
                         maxLength={props.maxLength}
                     />
+                    {this.getCounter(props.counter)}
                     <Tooltip
                         messages={errorMessages}
-                        type="error"
+                        type={props.errorSeverity}
                         className={props.placement}
                         tooltipPlace={props.tooltipPlace}
                         rendered={props.error} />
@@ -78,6 +125,8 @@ SingleLineInputWithError.propTypes = {
     inputSize: PropTypes.oneOf(["large", "small"]),
     error: PropTypes.bool,
     errorMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    errorSeverity: PropTypes.oneOf(["error", "warning"]),
+    counter: PropTypes.number,
     tooltipPlace: PropTypes.string,
     placement: PropTypes.oneOf(["outside", "inside"]),
     onChange: PropTypes.func,
@@ -106,6 +155,8 @@ SingleLineInputWithError.defaultProps = {
     inputSize: "small",
     labelType: "block",
     errorMessage: ["This field has an error."],
+    errorSeverity: "error",
     autoComplete: "on"
 };
+
 export default SingleLineInputWithError;

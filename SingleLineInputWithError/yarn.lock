@@ -194,7 +194,7 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
+babel-code-frame@^6.26.0, babel-code-frame@^6.8.0:
   version "6.26.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
   dependencies:
@@ -202,27 +202,29 @@ babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-core@6.24.0:
-  version "6.24.0"
-  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-core/-/babel-core-6.24.0.tgz#8f36a0a77f5c155aed6f920b844d23ba56742a02"
+babel-core@6.8.0:
+  version "6.8.0"
+  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-core/-/babel-core-6.8.0.tgz#52fde0b4c05d9eb7f60ada3c75666238f14d1420"
   dependencies:
-    babel-code-frame "^6.22.0"
-    babel-generator "^6.24.0"
-    babel-helpers "^6.23.0"
-    babel-messages "^6.23.0"
-    babel-register "^6.24.0"
-    babel-runtime "^6.22.0"
-    babel-template "^6.23.0"
-    babel-traverse "^6.23.1"
-    babel-types "^6.23.0"
-    babylon "^6.11.0"
+    babel-code-frame "^6.8.0"
+    babel-generator "^6.8.0"
+    babel-helpers "^6.8.0"
+    babel-messages "^6.8.0"
+    babel-register "^6.8.0"
+    babel-runtime "^6.0.0"
+    babel-template "^6.8.0"
+    babel-traverse "^6.8.0"
+    babel-types "^6.8.0"
+    babylon "^6.7.0"
     convert-source-map "^1.1.0"
     debug "^2.1.1"
-    json5 "^0.5.0"
-    lodash "^4.2.0"
-    minimatch "^3.0.2"
+    json5 "^0.4.0"
+    lodash "^3.10.0"
+    minimatch "^2.0.3"
+    path-exists "^1.0.0"
     path-is-absolute "^1.0.0"
     private "^0.1.6"
+    shebang-regex "^1.0.0"
     slash "^1.0.0"
     source-map "^0.5.0"
 
@@ -250,7 +252,7 @@ babel-core@^6.26.0:
     slash "^1.0.0"
     source-map "^0.5.6"
 
-babel-generator@^6.24.0, babel-generator@^6.26.0:
+babel-generator@^6.26.0, babel-generator@^6.8.0:
   version "6.26.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-generator/-/babel-generator-6.26.0.tgz#ac1ae20070b79f6e3ca1d3269613053774f20dc5"
   dependencies:
@@ -339,7 +341,7 @@ babel-helper-replace-supers@^6.24.1:
     babel-traverse "^6.24.1"
     babel-types "^6.24.1"
 
-babel-helpers@^6.23.0, babel-helpers@^6.24.1:
+babel-helpers@^6.24.1, babel-helpers@^6.8.0:
   version "6.24.1"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-helpers/-/babel-helpers-6.24.1.tgz#3471de9caec388e5c850e597e58a26ddf37602b2"
   dependencies:
@@ -354,7 +356,7 @@ babel-loader@6.2.4:
     mkdirp "^0.5.1"
     object-assign "^4.0.1"
 
-babel-messages@^6.23.0:
+babel-messages@^6.23.0, babel-messages@^6.8.0:
   version "6.23.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-messages/-/babel-messages-6.23.0.tgz#f3cdf4703858035b2a2951c6ec5edf6c62f2630e"
   dependencies:
@@ -596,7 +598,7 @@ babel-preset-react@6.5.0:
     babel-plugin-transform-react-jsx "^6.3.13"
     babel-plugin-transform-react-jsx-source "^6.3.13"
 
-babel-register@^6.24.0, babel-register@^6.26.0:
+babel-register@^6.26.0, babel-register@^6.8.0:
   version "6.26.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-register/-/babel-register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
   dependencies:
@@ -608,14 +610,14 @@ babel-register@^6.24.0, babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.0.0, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.11.0"
 
-babel-template@^6.23.0, babel-template@^6.24.1, babel-template@^6.26.0:
+babel-template@^6.24.1, babel-template@^6.26.0, babel-template@^6.8.0:
   version "6.26.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-template/-/babel-template-6.26.0.tgz#de03e2d16396b069f46dd9fff8521fb1a0e35e02"
   dependencies:
@@ -625,7 +627,7 @@ babel-template@^6.23.0, babel-template@^6.24.1, babel-template@^6.26.0:
     babylon "^6.18.0"
     lodash "^4.17.4"
 
-babel-traverse@^6.23.1, babel-traverse@^6.24.1, babel-traverse@^6.26.0:
+babel-traverse@^6.24.1, babel-traverse@^6.26.0, babel-traverse@^6.8.0:
   version "6.26.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-traverse/-/babel-traverse-6.26.0.tgz#46a9cbd7edcc62c8e5c064e2d2d8d0f4035766ee"
   dependencies:
@@ -639,7 +641,7 @@ babel-traverse@^6.23.1, babel-traverse@^6.24.1, babel-traverse@^6.26.0:
     invariant "^2.2.2"
     lodash "^4.17.4"
 
-babel-types@^6.19.0, babel-types@^6.23.0, babel-types@^6.24.1, babel-types@^6.26.0:
+babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.26.0, babel-types@^6.8.0:
   version "6.26.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babel-types/-/babel-types-6.26.0.tgz#a3b073f94ab49eb6fa55cd65227a334380632497"
   dependencies:
@@ -648,7 +650,7 @@ babel-types@^6.19.0, babel-types@^6.23.0, babel-types@^6.24.1, babel-types@^6.26
     lodash "^4.17.4"
     to-fast-properties "^1.0.3"
 
-babylon@^6.11.0, babylon@^6.18.0:
+babylon@^6.18.0, babylon@^6.7.0:
   version "6.18.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
@@ -694,7 +696,7 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-brace-expansion@^1.1.7:
+brace-expansion@^1.0.0, brace-expansion@^1.1.7:
   version "1.1.8"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/brace-expansion/-/brace-expansion-1.1.8.tgz#c07b211c7c952ec1f8efd51a77ef0d1d3990a292"
   dependencies:
@@ -1225,9 +1227,16 @@ dnn-global-styles@0.0.5:
   version "0.0.5"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/dnn-global-styles/-/dnn-global-styles-0.0.5.tgz#f83d873d9ff0351930af55b49a0ae3b614c1ceae"
 
-doctrine@1.3.x, doctrine@^1.2.1:
+doctrine@1.3.x:
   version "1.3.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/doctrine/-/doctrine-1.3.0.tgz#13e75682b55518424276f7c173783456ef913d26"
+  dependencies:
+    esutils "^2.0.2"
+    isarray "^1.0.0"
+
+doctrine@^1.2.1:
+  version "1.5.0"
+  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
   dependencies:
     esutils "^2.0.2"
     isarray "^1.0.0"
@@ -2125,6 +2134,10 @@ json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
+json5@^0.4.0:
+  version "0.4.0"
+  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/json5/-/json5-0.4.0.tgz#054352e4c4c80c86c0923877d449de176a732c8d"
+
 json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
@@ -2287,11 +2300,11 @@ lodash.words@^3.0.0:
   dependencies:
     lodash._root "^3.0.0"
 
-lodash@^3.3.1:
+lodash@^3.10.0, lodash@^3.3.1:
   version "3.10.1"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0:
+lodash@^4.0.0, lodash@^4.17.4, lodash@^4.3.0:
   version "4.17.4"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -2377,6 +2390,12 @@ minimalistic-assert@^1.0.0:
 minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
   version "1.0.1"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/minimalistic-crypto-utils/-/minimalistic-crypto-utils-1.0.1.tgz#f6c00c1c0b082246e5c4d99dfb8c7c083b2b582a"
+
+minimatch@^2.0.3:
+  version "2.0.10"
+  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/minimatch/-/minimatch-2.0.10.tgz#8d087c39c6b38c001b97fca7ce6d0e1e80afbac7"
+  dependencies:
+    brace-expansion "^1.0.0"
 
 minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.3, minimatch@^3.0.4:
   version "3.0.4"
@@ -2615,6 +2634,10 @@ parse-glob@^3.0.4:
 path-browserify@0.0.0:
   version "0.0.0"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/path-browserify/-/path-browserify-0.0.0.tgz#a0b870729aae214005b7d5032ec2cbbb0fb4451a"
+
+path-exists@^1.0.0:
+  version "1.0.0"
+  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/path-exists/-/path-exists-1.0.0.tgz#d5a8998eb71ef37a74c34eb0d9eba6e878eea081"
 
 path-exists@^2.0.0:
   version "2.1.0"
@@ -3029,12 +3052,6 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-portal-tooltip@1.1.5:
-  version "1.1.5"
-  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/react-portal-tooltip/-/react-portal-tooltip-1.1.5.tgz#d65ab9d168c5a6eeee9109c7fbc99a50ce16802f"
-  dependencies:
-    object-assign "^4.0.1"
-
 readable-stream@^1.0.27-1, readable-stream@^1.1.13:
   version "1.1.14"
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
@@ -3267,6 +3284,10 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/sha.js/-/sha.js-2.4.8.tgz#37068c2c476b6baf402d14a49c67f597921f634f"
   dependencies:
     inherits "^2.0.1"
+
+shebang-regex@^1.0.0:
+  version "1.0.0"
+  resolved "https://www.myget.org/F/dnn-software-private/auth/507985e1-96ae-4b7b-999d-1f75e68d8d87/npm/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
 shelljs@^0.6.0:
   version "0.6.1"

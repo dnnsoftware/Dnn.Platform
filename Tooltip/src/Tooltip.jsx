@@ -9,6 +9,7 @@ import "./style.less";
 
 const colors = {
     error: "#EA2134",
+    warning: "#EA9C00",
     info: "#4b4e4f",
     global: "#21A3DA"
 };
@@ -46,7 +47,7 @@ const getTooltipText = function (messages) {
 function getIconComponent(type) {
     switch (type) {
         case "info": return InfoIcon;
-        case "error": return ErrorIcon;
+        case "error": case "warning": return ErrorIcon;
         case "global": return GlobalIcon;
     }
 }
@@ -99,7 +100,7 @@ class Tooltip extends Component {
 
 Tooltip.propTypes = {
     messages: PropTypes.array.isRequired,
-    type: PropTypes.oneOf(["error", "info", "global"]).isRequired,
+    type: PropTypes.oneOf(["error", "warning", "info", "global"]).isRequired,
     rendered: PropTypes.bool,
     tooltipPlace: PropTypes.oneOf(["top", "bottom"]).isRequired,
     style: PropTypes.object,

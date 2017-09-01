@@ -17,6 +17,21 @@
             .dnn-ui-common-multi-line-input {
                 border-bottom: 2px solid @alizarinCrimson;
             }
+            .dnn-inline-counter {
+                color: @alizarinCrimson;
+                right: 26px;
+            }
+        }
+    }
+    &.warning {
+        .input-tooltip-container {
+            .dnn-ui-common-multi-line-input {
+                border-bottom: 2px solid #EA9C00;
+            }
+            .dnn-inline-counter {
+                color: #EA9C00;
+                right: 26px;
+            }
         }
     }
     &.disabled {
@@ -41,12 +56,19 @@
             width: 100%;
             border-radius: 0px;
         }
+        .dnn-inline-counter {
+            position: absolute;
+            color: @curiousBlue;
+            bottom: 13px;
+            right: 7px;
+        }
         &.inline {
             width: auto;
         }
         .dnn-ui-common-tooltip {
             position: absolute;
-            top: 7px;
+            bottom: 7px;
+            top: unset;
             right: 7px;
             .tooltip-text {
                 max-width: 255px;

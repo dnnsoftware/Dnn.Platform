@@ -53,6 +53,26 @@
             }
         }
     }
+    &.warning {
+        .icon svg {
+            color: #EA9C00;
+            fill: #EA9C00;
+        }
+        .tooltip-text {
+            background-color: #EA9C00 !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: #EA9C00 !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color: #EA9C00 !important;
+                }
+            }
+        }
+    }
     &.info {
         .icon svg {
             color: @alto;
