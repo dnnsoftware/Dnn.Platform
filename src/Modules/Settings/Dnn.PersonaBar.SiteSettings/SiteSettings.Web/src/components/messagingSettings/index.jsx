@@ -66,6 +66,7 @@ class MessagingSettingsPanelBody extends Component {
 
         timeIntervalOptions = [];
         timeIntervalOptions.push({ "value": 0, "label": "0" });
+        timeIntervalOptions.push({ "value": 0.5, "label": "0.5" });
         timeIntervalOptions.push({ "value": 1, "label": "1" });
         timeIntervalOptions.push({ "value": 2, "label": "2" });
         timeIntervalOptions.push({ "value": 3, "label": "3" });
