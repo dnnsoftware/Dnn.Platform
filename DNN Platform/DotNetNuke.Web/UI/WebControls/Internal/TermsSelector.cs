@@ -39,8 +39,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class TermsSelector : DnnComboBox
     {
-        private IList<ListItem> _initOptions = new List<ListItem>();
-
         #region Public Properties
 
         public int PortalId { get; set; }
@@ -54,11 +52,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             get
             {
                 var terms = new List<Term>();
-                if (!string.IsNullOrEmpty(Text))
+                if (!string.IsNullOrEmpty(Value))
                 {
                     var termRep = Util.GetTermController();
 
-                    var termIds = Text.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                    var termIds = Value.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var i in termIds)
                     {
                         if (!string.IsNullOrEmpty(i.Trim()))
@@ -77,8 +75,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
             set
             {
-                Text = string.Join(",", value.Select(t => t.TermId.ToString()));
-                _initOptions = value.Select(t => new ListItem(t.Name, t.TermId.ToString())).ToList();
+                Value = string.Join(",", value.Select(t => t.TermId.ToString()));
+
+                Items.Clear();
+                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) {Selected = true}).ToList().ForEach(Items.Add);
             }
         }
 
@@ -125,7 +125,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                                 }});
                             }}
 ";
-            Options.Items = _initOptions;
         }
 
         #endregion
