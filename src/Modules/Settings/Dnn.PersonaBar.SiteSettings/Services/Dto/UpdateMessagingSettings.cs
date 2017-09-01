@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         public bool DisablePrivateMessage { get; set; }
 
-        public int ThrottlingInterval { get; set; }
+        public double ThrottlingInterval { get; set; }
 
         public int RecipientLimit { get; set; }
 

@@ -83,6 +83,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchDescriptionBoostSetting = "Search_Description_Boost";
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
+        private const double DefaultMessagingThrottlingInterval = 0.5; // set default MessagingThrottlingInterval value to 30 seconds.
+
         #region Site Info API
 
         /// GET: api/SiteSettings/GetPortalSettings
@@ -419,7 +421,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         PortalId = portal.PortalID,
                         portal.CultureCode,
                         portalSettings.DisablePrivateMessage,
-                        ThrottlingInterval = PortalController.GetPortalSettingAsInteger("MessagingThrottlingInterval", pid, 0),
+                        ThrottlingInterval = PortalController.GetPortalSettingAsDouble("MessagingThrottlingInterval", pid, DefaultMessagingThrottlingInterval),
                         RecipientLimit = PortalController.GetPortalSettingAsInteger("MessagingRecipientLimit", pid, 5),
                         AllowAttachments = PortalController.GetPortalSettingAsBoolean("MessagingAllowAttachments", pid, false),
                         ProfanityFilters = PortalController.GetPortalSettingAsBoolean("MessagingProfanityFilters", pid, false),
@@ -454,7 +456,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString("F1"), false);
                 PortalController.UpdatePortalSetting(pid, "MessagingRecipientLimit", request.RecipientLimit.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "MessagingAllowAttachments", request.AllowAttachments ? "YES" : "NO", false);
                 PortalController.UpdatePortalSetting(pid, "MessagingIncludeAttachments", request.IncludeAttachments ? "YES" : "NO", false);
