@@ -14,6 +14,10 @@
     .dnn-persona-bar-treeview-ul {
         margin-left: 0px;
         padding: 0;
+
+        li::before, li::after {
+            display:none;
+        }
     }
     .list-item-menu {
         width: 90px;
@@ -71,7 +75,6 @@
     }
     .list-item-dragover {
         color: @curiousBlue;
-        //border: 1px solid @alto;
     }
     .parent-expand-button {
         display: inline-block;
@@ -133,52 +136,88 @@
     }
 }
 
+.dnn-persona-bar-treeview-ul.tree {
+    ul:not(:first-child){
+        li{
+            margin-left:10px;
+        }
+
+        li::before, li::after{
+            content: '';
+            position: absolute;
+            left:0;
+        }
+
+        li::before {
+            border-top: 1px solid @alto;
+            top: 10px;
+            width: 10px;
+            height:0;
+            left:-5px;
+        }
+
+        li::after {
+            border-left: 1px solid @alto;
+            height: 100%;
+            width: 0px;
+            top: -10px;
+            left: -5px;
+        }
+
+        li:last-child::after {
+            border-left: 1px solid @alto;
+            height: 20px;
+            width: 0px;
+            top: -10px;
+        }
+    }
+}
+
 .dnn-persona-bar-treeview-ul {
     span {
         padding: 0;
         margin: 0;
     }
+
     ul {
         margin-left: 20px;
         padding: 0;
     }
+
     ul:first-child {
         margin-left: 0px;
     }
+
     li {
         width: 150px;
         list-style: none;
-        // background-color: powderblue;
-        // border: 1px solid orange;
+        position:relative;
     }
+
     .collapse-expand {
         display: none;
     }
+
     .dropZoneActive {
         margin: 0;
         padding: 0;
         background-color: #fff;
-        //border-bottom: 1px solid #000;
         transition: all .5s;
     }
     .dropZoneInactive {
-        //transition: all .75s;
         margin: 0;
         padding: 0;
         height: inherit;
-        //border-bottom: 1px solid transparent;
         transition: all .5s;
     }
     .dropZoneArea {
         cursor: move;
-        //transition: all .5s ease-out;
         height: 2px;
         width: 100%;
         text-align: center;
         background-color: transparent;
-        //transition: all .1s;
-        //border-bottom: 2px solid @curiousBlue;
     }
+
     .list-item-border-bottom {
         background-color: @curiousBlue;
     }

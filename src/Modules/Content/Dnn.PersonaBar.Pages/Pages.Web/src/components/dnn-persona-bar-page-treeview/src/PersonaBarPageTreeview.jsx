@@ -30,7 +30,7 @@ export class PersonaBarPageTreeview extends Component {
 
     render_tree(childListItems) {
         const {
-                draggedItem,
+            draggedItem,
             droppedItem,
             dragOverItem,
             getChildListItems,
@@ -38,6 +38,7 @@ export class PersonaBarPageTreeview extends Component {
             onDrop,
             onDrag,
             onDragStart,
+            onDragEnter,
             onDragOver,
             onDragLeave,
             onDragEnd,
@@ -56,6 +57,7 @@ export class PersonaBarPageTreeview extends Component {
                 onDrop={onDrop}
                 onDrag={onDrag}
                 onDragStart={onDragStart}
+                onDragEnter={onDragEnter}
                 onDragOver={onDragOver}
                 onDragLeave={onDragLeave}
                 onDragEnd={onDragEnd}
@@ -120,6 +122,7 @@ export class PersonaBarPageTreeview extends Component {
             onDrop,
             onDrag,
             onDragStart,
+            onDragEnter,
             onDragOver,
             onDragEnd,
             draggedItem } = this.props;
@@ -153,14 +156,15 @@ export class PersonaBarPageTreeview extends Component {
                         <div
                             id={`list-item-title-${item.name}-${item.id}`}
                             className={(item.selected) ? "list-item-highlight" : null}
-                            style={{ height: "28px" }}
+                            style={{ height: "28px", marginLeft:"15px" }}
                             draggable="true"
                             onDrop={(e) => { onDrop(item, e); }}
                             onDrag={(e) => { onDrag(e); }}
                             onDragOver={(e) => { onDragOver(e, item); }}
+                            onDragEnter={(e)=> onDragEnter(e)}
                             onDragStart={(e) => { onDragStart(e, item); }}
                             onDragLeave={(e) => onDragLeave(e, item)}
-                            onDragEnd={(e) => { onDragEnd(item); }}
+                            onDragEnd={(e) => { onDragEnd(item, e); }}
                             onClick={() => { onSelection(item.id); }}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
@@ -200,6 +204,7 @@ PersonaBarPageTreeview.propTypes = {
     onDrag: PropTypes.func.isRequired,
     onDragOver: PropTypes.func.isRequired,
     onDragLeave: PropTypes.func.isRequired,
+    onDragEnter: PropTypes.func.isRequired,
     onDragStart: PropTypes.func.isRequired,
     onDragEnd: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,

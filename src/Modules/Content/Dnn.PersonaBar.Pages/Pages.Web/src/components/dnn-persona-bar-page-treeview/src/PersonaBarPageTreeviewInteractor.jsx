@@ -1,15 +1,26 @@
-import React, { Component } from "react";
+import React, {
+    Component
+} from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { PersonaBarPageTreeview } from "./PersonaBarPageTreeview";
-import { PersonaBarPageTreeMenu } from "./PersonaBarPageTreeMenu";
-import { PersonaBarPageTreeParentExpand } from "./PersonaBarPageTreeParentExpand";
+import {
+    PersonaBarPageTreeview
+} from "./PersonaBarPageTreeview";
+import {
+    PersonaBarPageTreeMenu
+} from "./PersonaBarPageTreeMenu";
+import {
+    PersonaBarPageTreeParentExpand
+} from "./PersonaBarPageTreeParentExpand";
 import responseStatus from "../../../constants/responseStatus";
 import utils from "../../../utils";
 
-import { PropTypes } from "prop-types";
+import {
+    PropTypes
+} from "prop-types";
 import Promise from "promise";
 import GridCell from "dnn-grid-cell";
 import "./styles.less";
+import _ from "lodash";
 
 
 export class PersonaBarPageTreeviewInteractor extends Component {
@@ -19,7 +30,13 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         this.state = {
             rootLoaded: false,
             isTreeviewExpanded: true,
-            initialCollapse: true
+            initialCollapse: true,
+            debounceAmount: 200,
+            dragDebounce: false,
+            dragOverDebounce:false,
+            setMouseCoordDebounce: false,
+            pageX: 0,
+            pageY: 0
         };
         this.origin = window.origin;
     }
@@ -31,16 +48,23 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     componentWillReceiveProps(newProps) {
         let setTreeViewExpanded = null;
-        const { activePage } = newProps;
+        const {
+            activePage
+        } = newProps;
         const pageList = JSON.parse(JSON.stringify(newProps.pageList));
-        this.setState({ pageList: pageList, rootLoaded: true });
+        this.setState({
+            pageList: pageList,
+            rootLoaded: true
+        });
 
         if (activePage) {
             this.props._traverse((item, list, updateStore) => {
                 item.selected = false;
                 if (item.id === activePage.tabId) {
                     item.selected = true;
-                    this.setState({ pageList: list });
+                    this.setState({
+                        pageList: list
+                    });
                 }
             });
         }
@@ -52,12 +76,18 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 }
             });
 
-            (setTreeViewExpanded) ? this.setState({ isTreeviewExpanded: true }) : this.setState({ isTreeviewExpanded: false });
+            (setTreeViewExpanded) ? this.setState({
+                isTreeviewExpanded: true
+            }): this.setState({
+                isTreeviewExpanded: false
+            });
         }
     }
 
     init() {
-        this.setState({ activePage: this.props.activePage });
+        this.setState({
+            activePage: this.props.activePage
+        });
     }
 
     GET(url, setState) {
@@ -75,29 +105,36 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     getPageInfo(id) {
         return new Promise((resolve) => {
-            const { setActivePage } = this.props;
-            const url = `${window.origin}/API/PersonaBar/${window.dnn.pages.apiController}/GetPageDetails?pageId=${id}`;
-            this.GET(url)
+            const {
+                setActivePage,
+                getPage
+            } = this.props;
+            const origin = window.location.origin;
+
+            getPage(id)
                 .then((data) => {
-                    this.setState({ activePage: data });
+                    this.setState({
+                        activePage: data
+                    });
                     return setActivePage(data);
-                })
-                .then(() => resolve());
+                }).then(() => resolve());
         });
     }
 
     toggleParentCollapsedState(id) {
-        this.setState({ initialCollapse: false });
+        this.setState({
+            initialCollapse: false
+        });
         let setTreeViewExpanded = null;
         this.props._traverse((item, listItem, updateStore) => {
-            (item.id === id) ? item.isOpen = !item.isOpen : null;
+            (item.id === id) ? item.isOpen = !item.isOpen: null;
             updateStore(listItem);
         });
     }
 
     onSelection(id) {
         this.props._traverse((item, listItem, updateStore) => {
-            (item.id === id && item.canViewPage) ? item.selected = true : item.selected = false;
+            (item.id === id && item.canViewPage) ? item.selected = true: item.selected = false;
             item.selected ? this.props.onSelection(id) : null;
             delete item.showInContextMenu;
             updateStore(listItem);
@@ -144,14 +181,31 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         setTimeout(() => run(), 1000);
     }
 
+    setMouseCoordinates(e){
+        const capture  = () => {
+            this.setState({setMouseCoordDebounce:true, pageX:e.pageX, pageY:e.pageY});
+            setTimeout(()=>this.setState({setMouseCoordDebounce:false}), this.state.debounceAmount);
+        };
+
+        const nothing = () => {};
+
+        !this.state.dragOverDebounce ? capture() : nothing();
+    }
+
+    onDragEnter(e) {
+        e.preventDefault();
+    }
+
     onDragStart(e, item) {
         //this._fadeOutTooltips();
-
+        e.dataTransfer.setData ? e.dataTransfer.setData('text/plain', 'node') : null;
         const left = () => {
             const img = new Image();
-            e.dataTransfer.setDragImage(img, 0, 0);
+            if (e.dataTransfer.setDragImage)
+                e.dataTransfer.setDragImage(img, 0, 0);
 
             const element = this.getListItemLI(item);
+
             this.clonedElement = element.cloneNode(true);
             this.clonedElement.id = "cloned";
             //this.clonedElement.style.transition = "all";
@@ -167,7 +221,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 if (li.id === item.id) {
                     li.selected = true;
                     li.isOpen = false;
-                    this.setState({ draggedItem: li, pageList: list, activePage: item }, () => updateStore(list));
+                    this.setState({
+                        draggedItem: li,
+                        pageList: list,
+                        activePage: item
+                    }, () => updateStore(list));
                 }
             });
         };
@@ -176,17 +234,26 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             this.props.showCancelDialog(item.id);
         };
 
-        (!this.props.selectedPageDirty) ? left() : right();
+        (!this.props.selectedPageDirty) ? left(): right();
     }
 
     onDrag(e) {
-        const elm = this.clonedElement;
-        elm.style.top = `${e.pageY}px`;
-        elm.style.left = `${e.pageX}px`;
+        const move = () => {
+            this.setState({ dragDebounce: true});
+            const {pageX, pageY} = this.state;
+            const elm = this.clonedElement;
+            e = e.pageX ?  e : {pageX, pageY};
+            elm.style.top = `${e.pageY}px`;
+            elm.style.left = `${e.pageX}px`;
+            setTimeout(() => this.setState({ dragDebounce: false}), this.state.debounceAmount);
+        };
+
+        const nothing = () => {};
+        !this.state.dragDebounce ? move() : nothing();
     }
 
-    onDragEnd(item) {
-        //this._fadeInTooltips();
+    onDragEnd(item, e) {
+        e.preventDefault();
 
         let pageList = null;
         let runUpdateStore = null;
@@ -196,7 +263,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             pageList = list;
             runUpdateStore = updateStore;
         });
-        this.setState({ pageList }, () => runUpdateStore(pageList));
+        this.setState({
+            pageList
+        }, () => runUpdateStore(pageList));
     }
 
     onDragLeave(e, item) {
@@ -205,26 +274,41 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             if (pageListItem.id === item.id) {
                 pageListItem.onDragOverState = false;
                 pageList = list;
-                this.setState({ pageList: pageList }, () => updateStore(pageList));
+                this.setState({
+                    pageList: pageList
+                }, () => updateStore(pageList));
             }
         });
     }
 
     onDragOver(e, item) {
-        e.target.classList.add("list-item-dragover");
         e.preventDefault();
+        e.target.classList.add("list-item-dragover");
+        this.setMouseCoordinates(e);
         let pageList = null;
-        this.props._traverse((pageListItem, list, updateStore) => {
-            pageListItem.onDragOverState = false;
-            if (pageListItem.id === item.id) {
-                pageListItem.onDragOverState = true;
-                pageList = list;
-                this.setState({ pageList: pageList, dragOverItem: item }, () => updateStore(pageList));
-            }
-        });
+
+        const action = () => {
+            this.setState({dragOverDebounce:true});
+            this.props._traverse((pageListItem, list, updateStore) => {
+                pageListItem.onDragOverState = false;
+                if (pageListItem.id === item.id) {
+                    pageListItem.onDragOverState = true;
+                    pageList = list;
+                    this.setState({
+                        pageList: pageList,
+                        dragOverItem: item
+                    }, () => updateStore(pageList));
+                }
+            });
+            setTimeout(()=>this.setState({dragOverDebounce:false}), this.state.debounceAmount);
+        };
+
+        const noaction = () => {};
+        !this.state.dragOverDebounce ? action() : noaction();
     }
 
     onDrop(item, e) {
+        e.preventDefault();
         e.target.classList.remove("list-item-dragover");
         //this._fadeInTooltips();
         this.removeClone();
@@ -238,7 +322,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 pageList = list;
                 runUpdateStore = updateStore;
             });
-            this.setState({ pageList }, () => runUpdateStore(pageList));
+            this.setState({
+                pageList
+            }, () => runUpdateStore(pageList));
 
             this.getPageInfo(activePage.id)
                 .then((data) => {
@@ -248,18 +334,36 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     return this.props.saveDropState(activePage);
                 })
                 .then(this.getPageInfo.bind(this, activePage.id))
-                .then(() => this.setState({ activePage: activePage, droppedItem: item }));
+                .then(() => this.setState({
+                    activePage: activePage,
+                    droppedItem: item
+                }));
         };
 
         const right = () => null;
 
-        (item.id !== this.state.draggedItem.id) ? left() : right();
+        (item.id !== this.state.draggedItem.id) ? left(): right();
     }
 
-    onMovePage({ e, Action, PageId, ParentId, RelatedPageId }) {
-        const { onMovePage } = this.props;
+    onMovePage({
+        e,
+        Action,
+        PageId,
+        ParentId,
+        RelatedPageId
+    }) {
 
-        onMovePage({ Action, PageId, ParentId, RelatedPageId })
+        e.preventDefault();
+        const {
+            onMovePage
+        } = this.props;
+
+        onMovePage({
+                Action,
+                PageId,
+                ParentId,
+                RelatedPageId
+            })
             .then((response) => {
                 this.removeDropZones();
                 if (response.Status === responseStatus.ERROR) {
@@ -267,7 +371,14 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     return 0;
                 }
                 return 1;
-            }).then((response) => { response === 1 && this.reOrderPage({ Action, PageId, ParentId, RelatedPageId }); });
+            }).then((response) => {
+                response === 1 && this.reOrderPage({
+                    Action,
+                    PageId,
+                    ParentId,
+                    RelatedPageId
+                });
+            });
     }
 
     removeClone() {
@@ -285,14 +396,21 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 runUpdateStore = updateStore;
             });
 
-            this.setState({ pageList }, () => {
+            this.setState({
+                pageList
+            }, () => {
                 runUpdateStore(pageList);
                 resolve();
             });
         });
     }
 
-    reOrderPage({ Action, PageId, ParentId, RelatedPageId }) {
+    reOrderPage({
+        Action,
+        PageId,
+        ParentId,
+        RelatedPageId
+    }) {
         return new Promise((resolve, reject) => {
 
             let cachedItem = null;
@@ -357,7 +475,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     }
                 });
 
-                this.setState({ pageList: pageList }, () => {
+                this.setState({
+                    pageList: pageList
+                }, () => {
                     this.getPageInfo(cachedItem.id).then(() => {
                         cachedItem.url = `${window.origin}/${this.state.activePage.url}`;
                         runUpdateStore(pageList);
@@ -415,7 +535,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                             });
                     }
                 });
-                this.setState({ pageList }, () => {
+                this.setState({
+                    pageList
+                }, () => {
                     runUpdateStore(pageList);
                     rez();
                 });
@@ -436,8 +558,10 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         this.props._traverse((item, listItems, updateStore) => {
                             const left = () => item.childListItems = childListItems;
                             const right = () => null;
-                            (item.id === id) ? left() : right();
-                            this.setState({ pageList: listItems }, () => {
+                            (item.id === id) ? left(): right();
+                            this.setState({
+                                pageList: listItems
+                            }, () => {
                                 updateStore(listItems);
                                 resolve();
                             });
@@ -463,49 +587,51 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     toggleExpandAll() {
         let pageList = null;
         let runUpdateStore = null;
-        const { isTreeviewExpanded } = this.state;
+        const {
+            isTreeviewExpanded
+        } = this.state;
 
         this.props._traverse((item, list, updateStore) => {
             if (item.hasOwnProperty("childListItems") && item.childListItems.length > 0) {
                 item.isOpen = (isTreeviewExpanded) ? false : true;
                 updateStore(list);
-                this.setState({ isTreeviewExpanded: !this.state.isTreeviewExpanded });
+                this.setState({
+                    isTreeviewExpanded: !this.state.isTreeviewExpanded
+                });
             }
         });
     }
 
     render_treeview() {
         return (
-            <span className="dnn-persona-bar-treeview-ul">
-                {this.state.rootLoaded ?
+            <span className = "dnn-persona-bar-treeview-ul tree" >
+                { this.state.rootLoaded ?
                     <PersonaBarPageTreeview
-                        draggedItem={this.state.draggedItem}
-                        droppedItem={this.state.droppedItem}
-                        dragOverItem={this.state.dragOverItem}
-
-                        listItems={this.state.pageList}
-                        getChildListItems={this.getChildListItems.bind(this)}
-                        onSelection={this.onSelection.bind(this)}
-                        onDrag={this.onDrag.bind(this)}
-                        onDragStart={this.onDragStart.bind(this)}
-                        onDragOver={this.onDragOver.bind(this)}
-                        onDragLeave={this.onDragLeave.bind(this)}
-                        onDragEnd={this.onDragEnd.bind(this)}
-                        onDrop={this.onDrop.bind(this)}
-                        onMovePage={this.onMovePage.bind(this)}
-                        getPageInfo={this.getPageInfo.bind(this)}
-
+                        draggedItem={ this.state.draggedItem }
+                        droppedItem={ this.state.droppedItem }
+                        dragOverItem={ this.state.dragOverItem }
+                        listItems={ this.state.pageList }
+                        getChildListItems={ this.getChildListItems.bind(this) }
+                        onSelection={this.onSelection.bind(this) }
+                        onDragEnter={ this.onDragEnter.bind(this) }
+                        onDrag={ this.onDrag.bind(this) }
+                        onDragStart={ this.onDragStart.bind(this) }
+                        onDragOver={ this.onDragOver.bind(this) }
+                        onDragLeave={ this.onDragLeave.bind(this) }
+                        onDragEnd={ this.onDragEnd.bind(this) }
+                        onDrop={ this.onDrop.bind(this) }
+                        onMovePage={ this.onMovePage.bind(this) }
+                        getPageInfo={ this.getPageInfo.bind(this) }
                     />
-
-                    : null}
+                    : null }
             </span>
         );
     }
 
     render_treemenu() {
         return (
-            <span className="dnn-persona-bar-treeview-ul">
-                {this.state.rootLoaded ?
+            <span className = "dnn-persona-bar-treeview-ul" >
+                { this.state.rootLoaded ?
                     <PersonaBarPageTreeMenu
                         onAddPage={this.props.onAddPage}
                         onViewPage={this.props.onViewPage}
@@ -513,55 +639,65 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
                         pageInContextComponents={this.props.pageInContextComponents}
-                    />
-                    : null}
+                    /> : null }
+
             </span>
         );
     }
 
     render_tree_parent_expand() {
         return (
-            <span className="dnn-persona-bar-treeview-ul">
-                {this.state.rootLoaded ?
-                    <PersonaBarPageTreeParentExpand listItems={this.state.pageList} getChildListItems={this.getChildListItems.bind(this)} />
-
-                    : null}
+            <span
+                className = "dnn-persona-bar-treeview-ul" >
+                    { this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.state.pageList} getChildListItems={this.getChildListItems.bind(this)}/> : null }
             </span>
         );
     }
 
     render_collapseExpand() {
         return (
-            <div onClick={this.toggleExpandAll.bind(this)} className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"}>
-                [{this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL"}]
+            <div
+                onClick = { this.toggleExpandAll.bind(this)}
+                className = {(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
+                [{this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL" }]
             </div>
         );
     }
 
     render() {
-
         return (
-            <GridCell columnSize={30} className="dnn-persona-bar-treeview" style={{ "zIndex": 1000 }}>
-                {this.render_collapseExpand()}
-                <GridCell columnSize={15}>
-                    <div className="dnn-persona-bar-treeview-menu">
-                        {this.render_tree_parent_expand()}
+            <GridCell
+                columnSize = { 30 }
+                className = "dnn-persona-bar-treeview"
+                style = { {"zIndex": 1000 }} >
+
+                { this.render_collapseExpand()}
+
+                <GridCell columnSize = { 15 } >
+                    <div className = "dnn-persona-bar-treeview-menu" >
+                        { this.render_tree_parent_expand() }
                     </div>
                 </GridCell>
-                <GridCell columnSize={55} style={{ marginLeft: "-2px" }}>
-                    <Scrollbars className="scrollArea content-horizontal"
-                        autoHeight
-                        autoHide
-                        autoHeightMin={100}
-                        autoHeightMax={9999}>
-                        {this.render_treeview()}
+
+                <GridCell
+                    columnSize = { 55 }
+                    style = { {marginLeft: "-2px"}} >
+                    <Scrollbars
+                        className = "scrollArea content-horizontal"
+                        autoHeight autoHide autoHeightMin = { 100 }
+                        autoHeightMax = { 9999 } >
+                            { this.render_treeview() }
                     </Scrollbars>
                 </GridCell>
-                <GridCell columnSize={30}>
-                    <div className="dnn-persona-bar-treeview-menu selection-arrows" style={{ float: "right" }}>
-                        {this.render_treemenu()}
-                    </div>
+
+                <GridCell columnSize = { 30 } >
+                    <div
+                        className = "dnn-persona-bar-treeview-menu selection-arrows"
+                        style = { { float: "right" } } >
+                        { this.render_treemenu()}
+                        </div>
                 </GridCell>
+
             </GridCell>
         );
     }
@@ -572,6 +708,7 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     showCancelDialog: PropTypes.func.showCancelDialog,
     selectedPageDirty: PropTypes.bool.isRequired,
     activePage: PropTypes.object.isRequired,
+    getPage: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,
     onMovePage: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,

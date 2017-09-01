@@ -120,24 +120,17 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
-
-
     }
 
     componentWillUnmount() {
         document.removeEventListener("viewPageSettings");
-
     }
 
 
-
-
     componentWillReceiveProps(newProps) {
-
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
-
     }
 
 
@@ -555,6 +548,7 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
+                    
                     this.getToRootParent();
                 });
                 this.selectPageSettingTab(0);
@@ -567,7 +561,6 @@ class App extends Component {
 
     onChangePageField(key, value) {
         this.props.onChangePageField(key, value);
-
     }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
@@ -707,6 +700,7 @@ class App extends Component {
                                         <PersonaBarPageTreeviewInteractor
                                             pageList={this.props.pageList}
                                             getChildPageList={this.props.getChildPageList}
+                                            getPage={this.props.getPage.bind(this)}
                                             _traverse={this._traverse.bind(this)}
                                             showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                             selectedPageDirty={this.props.selectedPageDirty}
@@ -721,7 +715,6 @@ class App extends Component {
                                             pageInContextComponents={props.pageInContextComponents} />
                                     </div>
                                 </div>
-
                                 {(selectedPage && selectedPage.tabId === 0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
                             </GridCell>
                         </GridCell>

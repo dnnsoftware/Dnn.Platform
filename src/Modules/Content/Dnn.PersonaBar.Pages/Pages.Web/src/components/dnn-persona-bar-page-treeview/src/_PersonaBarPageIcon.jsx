@@ -15,7 +15,11 @@ export default class PersonaBarPageIcon extends Component {
             case "file":
                 return (<div dangerouslySetInnerHTML={{ __html: FolderIcon }} />);
 
+            case "tab":
             case "url":
+                return ( <div dangerouslySetInnerHTML={{ __html: TreeLinkIcon }} /> );
+
+            case "existing":
                 return ( <div dangerouslySetInnerHTML={{ __html: TreeLinkIcon }} /> );
 
             default:
