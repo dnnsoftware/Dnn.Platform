@@ -90,19 +90,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    GET(url, setState) {
-        return new Promise((resolve, reject) => {
-            function reqListener() {
-                const data = JSON.parse(this.responseText);
-                resolve(data);
-            }
-            const xhr = new XMLHttpRequest();
-            xhr.addEventListener("load", reqListener);
-            xhr.open("GET", url);
-            xhr.send();
-        });
-    }
-
     getPageInfo(id) {
         return new Promise((resolve) => {
             const {
@@ -186,14 +173,26 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             this.setState({setMouseCoordDebounce:true, pageX:e.pageX, pageY:e.pageY});
             setTimeout(()=>this.setState({setMouseCoordDebounce:false}), this.state.debounceAmount);
         };
-
         const nothing = () => {};
 
         !this.state.dragOverDebounce ? capture() : nothing();
     }
 
+
+    createClonedElement(e, item){
+        const element = this.getListItemLI(item);
+        this.clonedElement = element.cloneNode(true);
+        this.clonedElement.id = "cloned";
+        //this.clonedElement.style.transition = "all";
+        this.clonedElement.style.top = `${e.pageY}px`;
+        this.clonedElement.style.left = `${e.pageX}px`;
+        this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
+        document.body.appendChild(this.clonedElement);
+    }
+
     onDragEnter(e) {
         e.preventDefault();
+
     }
 
     onDragStart(e, item) {
@@ -204,16 +203,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             if (e.dataTransfer.setDragImage)
                 e.dataTransfer.setDragImage(img, 0, 0);
 
-            const element = this.getListItemLI(item);
-
-            this.clonedElement = element.cloneNode(true);
-            this.clonedElement.id = "cloned";
-            //this.clonedElement.style.transition = "all";
-            this.clonedElement.style.top = `${e.pageY}px`;
-            this.clonedElement.style.left = `${e.pageX}px`;
-            this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
-
-            document.body.appendChild(this.clonedElement);
+            this.createClonedElement(e, item);
 
             this.props._traverse((li, list, updateStore) => {
                 li.selected = false;
@@ -252,7 +242,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         !this.state.dragDebounce ? move() : nothing();
     }
 
-    onDragEnd(item, e) {
+    onDragEnd(e, item) {
         e.preventDefault();
 
         let pageList = null;
@@ -612,6 +602,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         droppedItem={ this.state.droppedItem }
                         dragOverItem={ this.state.dragOverItem }
                         listItems={ this.state.pageList }
+                        setEmptyPageMessage={this.props.setEmptyPageMessage}
                         getChildListItems={ this.getChildListItems.bind(this) }
                         onSelection={this.onSelection.bind(this) }
                         onDragEnter={ this.onDragEnter.bind(this) }
@@ -623,6 +614,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDrop={ this.onDrop.bind(this) }
                         onMovePage={ this.onMovePage.bind(this) }
                         getPageInfo={ this.getPageInfo.bind(this) }
+                        Localization={this.props.Localization}
                     />
                     : null }
             </span>
@@ -708,6 +700,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 PersonaBarPageTreeviewInteractor.propTypes = {
     _traverse: PropTypes.func.isRequired,
     showCancelDialog: PropTypes.func.showCancelDialog,
+    setEmptyPageMessage: PropTypes.func.setEmptyPageMessage,
     selectedPageDirty: PropTypes.bool.isRequired,
     activePage: PropTypes.object.isRequired,
     getPage: PropTypes.func.isRequired,
@@ -721,5 +714,6 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     saveDropState: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
     getPageList: PropTypes.func.isRequired,
-    pageInContextComponents: PropTypes.array.isRequired
+    pageInContextComponents: PropTypes.array.isRequired,
+    Localization: PropTypes.func.isRequired
 };

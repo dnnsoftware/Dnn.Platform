@@ -42,8 +42,9 @@ export class PersonaBarPageTreeview extends Component {
             onDragOver,
             onDragLeave,
             onDragEnd,
-            onMovePage
-
+            onMovePage,
+            setEmptyPageMessage,
+            Localization
         } = this.props;
 
         return (
@@ -62,7 +63,8 @@ export class PersonaBarPageTreeview extends Component {
                 onDragLeave={onDragLeave}
                 onDragEnd={onDragEnd}
                 onMovePage={onMovePage}
-
+                setEmptyPageMessage={setEmptyPageMessage}
+                Localization={Localization}
             />
         );
     }
@@ -125,7 +127,8 @@ export class PersonaBarPageTreeview extends Component {
             onDragEnter,
             onDragOver,
             onDragEnd,
-            draggedItem } = this.props;
+            draggedItem,
+            Localization} = this.props;
 
         const hotspotStyles = {
 
@@ -144,11 +147,17 @@ export class PersonaBarPageTreeview extends Component {
         return listItems.map((item) => {
             const name = this.trimName(item);
             const shouldShowTooltip = /\.\.\./.test(name);
+            const canManagePage = (e, item, fn) => {
+                const message = Localization.get("NoPermissionManagePage");
+                item.canManagePage ? fn(e, item) : this.props.setEmptyPageMessage(message);
+            };
+
             let activate = false;
             const onDragLeave = (e, item) => {
                 e.target.classList.remove("list-item-dragover");
             };
             index++;
+
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
@@ -158,13 +167,13 @@ export class PersonaBarPageTreeview extends Component {
                             className={(item.selected) ? "list-item-highlight" : null}
                             style={{ height: "28px", marginLeft:"15px" }}
                             draggable="true"
-                            onDrop={(e) => { onDrop(item, e); }}
-                            onDrag={(e) => { onDrag(e); }}
-                            onDragOver={(e) => { onDragOver(e, item); }}
-                            onDragEnter={(e)=> onDragEnter(e)}
-                            onDragStart={(e) => { onDragStart(e, item); }}
-                            onDragLeave={(e) => onDragLeave(e, item)}
-                            onDragEnd={(e) => { onDragEnd(item, e); }}
+                            onDrop={(e) => { canManagePage(e, item, onDrop); }}
+                            onDrag={(e) => { canManagePage(e, item, onDrag); }}
+                            onDragOver={(e) => { canManagePage(e, item, onDragOver); }}
+                            onDragEnter={(e)=> canManagePage(e, item, onDragEnter) }
+                            onDragStart={(e) => { canManagePage(e, item, onDragStart); }}
+                            onDragLeave={(e) => canManagePage(e, item, onDragLeave) }
+                            onDragEnd={(e) => { canManagePage(e, item, onDragEnd); }}
                             onClick={() => { onSelection(item.id); }}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
@@ -212,5 +221,7 @@ PersonaBarPageTreeview.propTypes = {
     getChildListItems: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,
     icons: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired
+    onSelect: PropTypes.func.isRequired,
+    setEmptyPageMessage: PropTypes.func.isRequired,
+    Localization: PropTypes.func.isRequired
 };

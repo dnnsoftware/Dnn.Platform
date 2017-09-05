@@ -572,15 +572,17 @@ class App extends Component {
     }
 
     onDuplicatePage(item){
+        const message = Localization.get("NoPermissionCopyPage");
         const duplicate = () => this.props.onDuplicatePage();
-        const noPermission = () => this.setEmptyStateMessage("You do not have permission to copy this page");
+        const noPermission = () => this.setEmptyStateMessage(message);
         item.canCopyPage ? duplicate() : noPermission();
     }
 
     onViewEditPage(item) {
         this.clearEmptyStateMessage();
+        const message = Localization.get("NoPermissionEditPage");
         const viewPage = () => PageActions.viewPage(item.id, item.url);
-        const noPermission = () => this.setEmptyStateMessage("You do not have permission to manage this page");
+        const noPermission = () => this.setEmptyStateMessage(message);
         item.canManagePage ? viewPage() : noPermission();
     }
 
@@ -590,7 +592,8 @@ class App extends Component {
             window.dnn.PersonaBar.closePanel();
             window.parent.location=item.url;
         };
-        const noPermission = () => this.setEmptyStateMessage("You do not have permission to view this page");
+        const message = Localization.get("NoPermissionViewPage");
+        const noPermission = () => this.setEmptyStateMessage(message);
         item.canViewPage ? view() : noPermission();
     }
 
@@ -614,10 +617,11 @@ class App extends Component {
     render_PagesDetailEditor() {
 
         const render_emptyState = () => {
+            const DefaultMessage = Localization.get("NoPageSelected");
             return (
                 <div className="empty-page-state">
                     <div className="empty-page-state-message">
-                        <h1>{ this.state.emptyStateMessage || "No page is currently selected" }</h1>
+                        <h1>{ this.state.emptyStateMessage || DefaultMessage }</h1>
                         <p>Select a page in the tree to manage its settings here.</p>
                     </div>
                 </div>
@@ -730,6 +734,7 @@ class App extends Component {
                                 <div className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
+                                            Localization={Localization}
                                             pageList={this.props.pageList}
                                             getChildPageList={this.props.getChildPageList}
                                             getPage={this.props.getPage.bind(this)}
@@ -737,6 +742,7 @@ class App extends Component {
                                             showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                             selectedPageDirty={this.props.selectedPageDirty}
                                             activePage={this.props.selectedPage}
+                                            setEmptyPageMessage={this.setEmptyStateMessage.bind(this)}
                                             setActivePage={this.setActivePage.bind(this)}
                                             saveDropState={this.onUpdatePage.bind(this)}
                                             onMovePage={this.onMovePage.bind(this)}
