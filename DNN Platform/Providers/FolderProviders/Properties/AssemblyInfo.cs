@@ -26,4 +26,4 @@ using System.Reflection;
 
 [assembly: AssemblyTitle("DotNetNuke")]
 
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]

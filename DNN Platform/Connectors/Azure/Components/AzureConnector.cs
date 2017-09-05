@@ -14,8 +14,9 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Localization;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
 
 namespace Dnn.AzureConnector.Components
 {
@@ -243,19 +244,11 @@ namespace Dnn.AzureConnector.Components
                     throw new ConnectorArgumentException(Localization.GetString("AccountKeyCannotBeEmpty.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
-                StorageCredentialsAccountAndKey sc = new StorageCredentialsAccountAndKey(azureAccountName,
-                    azureAccountKey);
+                StorageCredentials sc = new StorageCredentials(azureAccountName, azureAccountKey);
                 var csa = new CloudStorageAccount(sc, true);
                 var blobClient = csa.CreateCloudBlobClient();
 
-                blobClient.RetryPolicy = () =>
-                {
-                    return (int currentRetryCount, Exception lastException, out TimeSpan retryInterval) =>
-                    {
-                        retryInterval = TimeSpan.Zero;
-                        return false;
-                    };
-                };
+                blobClient.DefaultRequestOptions.RetryPolicy = new NoRetry();
 
                 var containers = blobClient.ListContainers();
                 if (containers.Any())
@@ -285,20 +278,25 @@ namespace Dnn.AzureConnector.Components
             }
             catch (StorageException ex)
             {
-                if (ex.ErrorCode == StorageErrorCode.AccountNotFound)
+                if (ex.RequestInformation.ExtendedErrorInformation != null)
                 {
-                    throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
-                        Constants.LocalResourceFile));
+                    if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccountNotFound")
+                    {
+                        throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
+                            Constants.LocalResourceFile));
+                    }
+                    else if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccessDenied")
+                    {
+                        throw new Exception(Localization.GetString("AccessDenied.ErrorMessage",
+                            Constants.LocalResourceFile));
+                    }
+                    else
+                    {
+                        throw new Exception(ex.RequestInformation.HttpStatusMessage);
+                    }
                 }
-                else if (ex.ErrorCode == StorageErrorCode.AccessDenied)
-                {
-                    throw new Exception(Localization.GetString("AccessDenied.ErrorMessage", Constants.LocalResourceFile));
-                }
-                else
-                {
-                    throw new Exception(Localization.GetString("AuthenticationFailure.ErrorMessage",
-                        Constants.LocalResourceFile));
-                }
+
+                throw new Exception(ex.RequestInformation.HttpStatusMessage ?? ex.Message);
             }
             catch (FormatException ex)
             {

@@ -23,7 +23,8 @@
             </assembly>
             <assembly>
               <path>bin\Providers</path>
-              <name>Microsoft.WindowsAzure.StorageClient.dll</name>
+              <name>Microsoft.WindowsAzure.Storage.dll</name>
+              <version>8.3.0</version>
             </assembly>
           </assemblies>
         </component>
@@ -58,7 +59,24 @@
             </uninstall>
           </config>
         </component>
+        <component type="Cleanup" version="09.02.00" fileName ="09.02.00.txt" />
+        <component type="File">
+          <files>
+            <basePath>Providers\FolderProviders\AzureFolderProvider</basePath>
+            <file>
+              <name>09.02.00.txt</name>
+            </file>
+          </files>
+        </component>
       </components>
+      <eventMessage>
+        <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+        <processorCommand>UpgradeModule</processorCommand>
+        <attributes>
+          <businessControllerClass>DotNetNuke.Providers.FolderProviders.Components.BusinessController, DotNetNuke.Providers.FolderProviders</businessControllerClass>
+          <upgradeVersionsList>09.02.00</upgradeVersionsList>
+        </attributes>
+      </eventMessage>
     </package>
   </packages>
 </dotnetnuke>
