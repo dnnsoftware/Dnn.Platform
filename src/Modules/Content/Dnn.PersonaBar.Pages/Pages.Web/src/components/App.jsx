@@ -133,8 +133,6 @@ class App extends Component {
         window.dnn.utility.expandPersonaBarPage();
     }
 
-
-
     notifyErrorIfNeeded(newProps) {
         if (newProps.error !== this.props.error) {
             const errorMessage = (newProps.error && newProps.error.message) || Localization.get("AnErrorOccurred");
@@ -222,7 +220,6 @@ class App extends Component {
                         item.isOpen = true;
                         updateStore(list);
                     }
-
                 });
             };
 
