@@ -40,7 +40,7 @@ class SingleLineInputWithError extends Component {
     }
 
     getCounter(counter) {
-        if (!this.state.isFocused || counter > 0) {
+        if (!this.shouldRenderCounter(counter)) {
             return null;
         }
 
@@ -49,6 +49,11 @@ class SingleLineInputWithError extends Component {
                 {counter}
             </div>
         );
+    }
+
+    shouldRenderCounter(counter) {
+        const counterIsDefined = !!counter || counter === 0;
+        return this.state.isFocused && counterIsDefined;
     }
 
     getInputRightPadding(counter, error) {
