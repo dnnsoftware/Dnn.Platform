@@ -1118,7 +1118,7 @@
     <value>Show Copyright Credits</value>
   </data>
   <data name="CheckTelerikVulnerabilityFailure.Text" xml:space="preserve">
-    <value>The Telerik component vulnerability has not been patched, please go to http://www.dnnsoftware.com/services/customer-support/success-network/security-fix-june-2017 for detailed information. You also can download a patch from that page or directly from http://dnn.ly/SecurityFix201701 and apply it.</value>
+    <value>The Telerik component vulnerability has not been patched, please go to http://www.dnnsoftware.com/services/customer-support/success-network/security-fix-june-2017 for detailed information and to download the patch.</value>
   </data>
   <data name="CheckTelerikVulnerabilityName.Text" xml:space="preserve">
     <value>Check if Telerik component has vulnerability.</value>
