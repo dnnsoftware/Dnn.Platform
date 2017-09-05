@@ -268,7 +268,6 @@ const pageActions = {
                 value
             });
 
-
             if (key === "name" &&
                 pages.selectedPage.tabId === 0 &&
                 !pages.urlChanged &&
@@ -440,6 +439,16 @@ const pageActions = {
             });
         };
     },
+
+    clearSelectedPage(){
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CLEAR_SELECTED_PAGE,
+                data:{}
+            });
+        };
+    },
+
     movePage({ Action, PageId, ParentId, RelatedPageId }) {
         return PagesService.movePage({ Action, PageId, ParentId, RelatedPageId });
     }

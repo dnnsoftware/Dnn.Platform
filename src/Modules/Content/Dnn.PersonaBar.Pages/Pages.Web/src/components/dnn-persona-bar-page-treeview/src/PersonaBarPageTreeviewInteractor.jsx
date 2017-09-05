@@ -141,7 +141,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    onDuplicatePage() {
+    onDuplicatePage(listItem) {
         let updateReduxStore = null;
         let pageList = null;
         this.props._traverse((item, list, updateStore) => {
@@ -151,7 +151,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
 
         updateReduxStore(pageList);
-        this.props.onDuplicatePage();
+        this.props.onDuplicatePage(listItem);
     }
 
     getListItemLI(item) {
@@ -343,6 +343,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const right = () => null;
 
         (item.id !== this.state.draggedItem.id) ? left(): right();
+    }
+
+
+    cantManagePage(){
+        this.props
     }
 
     onMovePage({
@@ -635,6 +640,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     <PersonaBarPageTreeMenu
                         onAddPage={this.props.onAddPage}
                         onViewPage={this.props.onViewPage}
+                        onViewEditPage={this.props.onViewEditPage}
                         onDuplicatePage={this.onDuplicatePage.bind(this)}
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
@@ -713,6 +719,7 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     onMovePage: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,
     onViewPage: PropTypes.func.isRequired,
+    onViewEditPage: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired,
