@@ -346,10 +346,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
 
-    cantManagePage(){
-        this.props
-    }
-
     onMovePage({
         e,
         Action,
