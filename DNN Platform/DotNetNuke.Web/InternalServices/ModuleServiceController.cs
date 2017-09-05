@@ -137,7 +137,7 @@ namespace DotNetNuke.Web.InternalServices
         private int FixPortalId(int portalId)
         {
             return UserInfo.IsSuperUser && PortalSettings.PortalId != portalId && PortalController.Instance.GetPortals()
-                       .Cast<PortalInfo>().Any(x => x.PortalID == portalId)
+                       .OfType<PortalInfo>().Any(x => x.PortalID == portalId)
                 ? portalId
                 : PortalSettings.PortalId;
         }
