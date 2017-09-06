@@ -197,7 +197,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDragStart(e, item) {
         //this._fadeOutTooltips();
-        console.log("starting drag");
+
         const userAgent = window.navigator.userAgent;
         let type = "text/plain";
 
@@ -411,7 +411,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         RelatedPageId
     }) {
         return new Promise((resolve, reject) => {
-            console.log("in reorder page");
 
             let cachedItem = null;
             let itemIndex = null;
@@ -715,7 +714,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     <Scrollbars
                         className = "scrollArea content-horizontal"
                         autoHeight autoHide autoHeightMin = { 100 }
-                        autoHeightMax = { 9999 } >
+                        autoHeightMax = { 9999 }
+                        renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{display:"none"}}/>}
+                        >
                             { this.render_treeview() }
                     </Scrollbars>
                 </GridCell>
