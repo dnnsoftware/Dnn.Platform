@@ -197,7 +197,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDragStart(e, item) {
         //this._fadeOutTooltips();
-        e.dataTransfer.setData ? e.dataTransfer.setData('text/plain', 'node') : null;
+        console.log("starting drag");
+        const userAgent = window.navigator.userAgent;
+        let type = "text/plain";
+
+        if(userAgent.indexOf('Trident')){
+            type = 'Text';
+        }
+
+        e.dataTransfer.setData ? e.dataTransfer.setData(type, 'node') : null;
         const left = () => {
             const img = new Image();
             if (e.dataTransfer.setDragImage)
