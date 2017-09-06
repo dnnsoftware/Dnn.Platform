@@ -76,7 +76,12 @@ namespace DotNetNuke.Modules.Journal
 
         private static bool IsImageFile(string relativePath)
         {
-	        if (relativePath.Contains("?"))
+            if (relativePath == null)
+            {
+                return false;
+            }
+
+            if (relativePath.Contains("?"))
 	        {
 		        relativePath = relativePath.Substring(0,
 			        relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
