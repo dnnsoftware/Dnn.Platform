@@ -361,6 +361,12 @@ namespace DotNetNuke.Services.Install
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            if (Upgrade.Upgrade.UpdateNewtonsoftBindingRedirect())
+            {
+                Response.Redirect(Request.RawUrl, true);
+            }
+
             SslRequiredCheck();
             GetInstallerLocales();
         }

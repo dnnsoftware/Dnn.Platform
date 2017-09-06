@@ -5905,6 +5905,49 @@ namespace DotNetNuke.Services.Upgrade
             return LocaleController.Instance.GetLocales(portalid).TryGetValue(code, out enabledLanguage);
         }
 
+        public static bool UpdateNewtonsoftBindingRedirect()
+        {
+            try
+            {
+                //check whether current binding already specific to correct version.
+                var currentConfig = Config.Load();
+                var nsmgr = new XmlNamespaceManager(currentConfig.NameTable);
+                nsmgr.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+                var bindingNode = currentConfig.SelectSingleNode(
+                    "/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect", nsmgr);
+                if (bindingNode != null)
+                {
+                    var oldVersion = bindingNode.Attributes?["oldVersion"].Value;
+
+                    if (oldVersion == "0.0.0.0-32767.32767.32767.32767")
+                    {
+                        return false;
+                    }
+                }
+
+                const string bindingRedirectConfig = @"
+<configuration>
+  <nodes configfile=""Web.config"">
+    <node path=""/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect"" action=""updateattribute""
+      collision=""overwrite"" nameSpace=""urn:schemas-microsoft-com:asm.v1"" nameSpacePrefix=""ab"" name=""oldVersion"" value=""0.0.0.0-32767.32767.32767.32767"">
+    </node>
+  </nodes>
+</configuration>
+";
+                var xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(bindingRedirectConfig);
+                var merge = new XmlMerge(xmlDocument, DotNetNukeContext.Current.Application.Version.ToString(3), "Newtonsoft Binding Update");
+                merge.UpdateConfigs();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return false;
+            }
+        } 
+
         public static string ActivateLicense()
         {
             var isLicensable = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
