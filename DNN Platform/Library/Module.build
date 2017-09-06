@@ -115,6 +115,21 @@
     </CreateItem>
     <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
+      
+    <XmlRead Prefix="n"
+            Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+            XPath="dotnetnuke/packages/package/@version"
+            XmlFileName="..\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn">
+      <Output TaskParameter="Value" PropertyName="NewtonsoftVersion" />
+    </XmlRead>
+    <Copy SourceFiles="bin\Newtonsoft.Json.dll" DestinationFolder="..\Components\Newtonsoft\Package\bin" />
+    <Copy SourceFiles="..\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn" DestinationFolder="..\Components\Newtonsoft\Package" />
+    <Copy SourceFiles="..\Components\Newtonsoft\License.txt" DestinationFolder="..\Components\Newtonsoft\Package" />
+    <CreateItem Include="..\Components\Newtonsoft\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="NewtonsoftContent" />
+    </CreateItem>
+    <Zip Files="@(NewtonsoftContent)" WorkingDirectory="..\Components\Newtonsoft\Package" ZipFileName="$(WebsiteInstallPath)\Module\Newtonsoft.Json_$(NewtonsoftVersion)_Install.zip" />
+    <RemoveDir Directories ="..\Components\Newtonsoft\Package" />
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
