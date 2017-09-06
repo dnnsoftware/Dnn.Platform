@@ -403,6 +403,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         RelatedPageId
     }) {
         return new Promise((resolve, reject) => {
+            console.log("in reorder page");
 
             let cachedItem = null;
             let itemIndex = null;
@@ -415,9 +416,35 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 this.props._traverse((item, list, updateStore) => { // remove item from pagelist and cache
                     runUpdateStore = updateStore;
                     switch (true) {
-                        case item.id === RelatedPageId:
+                        case item.id === RelatedPageId && Action==="before":
                             newParentId = item.parentId;
-                            break;
+                            this.props._traverse((child, list, updateStore) => {
+                                if(child.id === PageId){
+                                    const parentId = child.parentId;
+                                    this.props._traverse((parent, list) => {
+                                        if(parent.id == parentId){
+                                           parent.childListItems.forEach((elm, index)=>{
+                                                if(elm.id === child.id){
+                                                    cachedItem=child;
+                                                    const arr1 = parent.childListItems.slice(0,index);
+                                                    const arr2 = parent.childListItems.slice(index+1);
+                                                    const copy = [...arr1, ...arr2];
+                                                    parent.childCount--;
+                                                    parent.childListItems = copy;
+                                                    pageList = list;
+                                                }
+                                           });
+                                        }
+                                    });
+                                }
+
+                            });
+
+                        break;
+
+                        case item.id === RelatedPageId:
+                             newParentId = item.parentId;
+                            return;
 
                         case ParentId === -1 && item.parentId === -1:
                             list.forEach((child, index) => {
@@ -471,6 +498,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 }, () => {
                     this.getPageInfo(cachedItem.id).then(() => {
                         cachedItem.url = `${window.origin}/${this.state.activePage.url}`;
+                        if(pageList)
                         runUpdateStore(pageList);
                         rez();
                     });
