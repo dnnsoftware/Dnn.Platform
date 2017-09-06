@@ -121,7 +121,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onSelection(id) {
         this.props._traverse((item, listItem, updateStore) => {
-            (item.id === id && item.canViewPage) ? item.selected = true: item.selected = false;
+            (item.id === id && item.canManagePage) ? item.selected = true: item.selected = false;
             item.selected ? this.props.onSelection(id) : null;
             delete item.showInContextMenu;
             updateStore(listItem);
@@ -297,7 +297,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         !this.state.dragOverDebounce ? action() : noaction();
     }
 
-    onDrop(item, e) {
+    onDrop (e, item) {
         e.preventDefault();
         e.target.classList.remove("list-item-dragover");
         //this._fadeInTooltips();

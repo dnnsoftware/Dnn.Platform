@@ -278,7 +278,7 @@ class App extends Component {
         };
 
         const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
-        parentPage.canAddPage ? addPage() : noPermission();
+        !parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
@@ -552,14 +552,12 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
-                    
                     this.getToRootParent();
                 });
                 this.selectPageSettingTab(0);
             }
         };
         const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
-
         (!selectedPageDirty) ? left() : right();
     }
 

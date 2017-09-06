@@ -131,7 +131,6 @@ export class PersonaBarPageTreeview extends Component {
             Localization} = this.props;
 
         const hotspotStyles = {
-
             position: "relative",
             zIndex: 9997,
             wordWrap: "break-word",
@@ -140,8 +139,8 @@ export class PersonaBarPageTreeview extends Component {
             height: "20px",
             marginTop: "-20px"
             //backgroundColor: "rgb(0,1,2,.5)"
-
         };
+
         let index = 0;
         let total = listItems.length;
         return listItems.map((item) => {
@@ -158,6 +157,8 @@ export class PersonaBarPageTreeview extends Component {
             };
             index++;
 
+            const style = item.canManagePage ? { height: "28px", marginLeft:"15px" } : { height: "28px", marginLeft:"15px", cursor: "not-allowed" };
+            
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
@@ -165,7 +166,7 @@ export class PersonaBarPageTreeview extends Component {
                         <div
                             id={`list-item-title-${item.name}-${item.id}`}
                             className={(item.selected) ? "list-item-highlight" : null}
-                            style={{ height: "28px", marginLeft:"15px" }}
+                            style={style}
                             draggable="true"
                             onDrop={(e) => { canManagePage(e, item, onDrop); }}
                             onDrag={(e) => { canManagePage(e, item, onDrag); }}
@@ -174,7 +175,7 @@ export class PersonaBarPageTreeview extends Component {
                             onDragStart={(e) => { canManagePage(e, item, onDragStart); }}
                             onDragLeave={(e) => canManagePage(e, item, onDragLeave) }
                             onDragEnd={(e) => { canManagePage(e, item, onDragEnd); }}
-                            onClick={() => { onSelection(item.id); }}>
+                            onClick={() => { item.canManagePage ? onSelection(item.id) : null; }}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
                                 className={`item-name`}
