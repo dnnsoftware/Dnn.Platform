@@ -158,7 +158,7 @@ export class PersonaBarPageTreeview extends Component {
             index++;
 
             const style = item.canManagePage ? { height: "28px", marginLeft:"15px" } : { height: "28px", marginLeft:"15px", cursor: "not-allowed" };
-            
+
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
@@ -167,7 +167,7 @@ export class PersonaBarPageTreeview extends Component {
                             id={`list-item-title-${item.name}-${item.id}`}
                             className={(item.selected) ? "list-item-highlight" : null}
                             style={style}
-                            draggable="true"
+                            draggable={ item.canManagePage ? "true" : "false"}
                             onDrop={(e) => { canManagePage(e, item, onDrop); }}
                             onDrag={(e) => { canManagePage(e, item, onDrag); }}
                             onDragOver={(e) => { canManagePage(e, item, onDragOver); }}

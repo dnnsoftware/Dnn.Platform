@@ -710,7 +710,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
                 <GridCell
                     columnSize = { 55 }
-                    style = { {marginLeft: "-2px"}} >
+                    style = {{marginLeft: "-2px"}} >
                     <Scrollbars
                         className = "scrollArea content-horizontal"
                         autoHeight autoHide autoHeightMin = { 100 }
