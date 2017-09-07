@@ -156,7 +156,6 @@ export class PersonaBarPageTreeview extends Component {
                 e.target.classList.remove("list-item-dragover");
             };
             index++;
-
             const style = item.canManagePage ? { height: "28px", marginLeft:"15px" } : { height: "28px", marginLeft:"15px", cursor: "not-allowed" };
 
             return (
