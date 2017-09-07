@@ -698,9 +698,12 @@ class App extends Component {
     }
 
     render_searchResults(){
+        const {searchList} = this.props;
         return(
             <GridCell columnSize={70} className="fade-in">
-                <h1>Here is some search results</h1>
+                {searchList.map((item)=>{
+                    return(<p>{item.name}</p>);
+                })}
             </GridCell>
         );
     }
@@ -808,6 +811,7 @@ class App extends Component {
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     pageList: PropTypes.array.isRequired,
+    searchList: PropTypes.array.isRequired,
     searchPageList: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
