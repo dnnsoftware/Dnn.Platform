@@ -77,6 +77,9 @@ const TreeEye = require(`!raw!./svg/tree_eye.svg`);
 const TreeEdit = require(`!raw!./svg/tree_edit.svg`);
 const TreeCopy = require(`!raw!./svg/tree_copy.svg`);
 const TreeAnalytics = require(`!raw!./svg/tree_analytics.svg`);
+const PagesSearchIcon = require(`!raw!./svg/pages_search.svg`);
+const PagesVerticalMore = require(`!raw!./svg/pages_more_vertical.svg`);
+
 export {
     ActivityIcon,
     AddIcon,
@@ -155,5 +158,7 @@ export {
     TreeEye,
     TreeEdit,
     TreeCopy,
-    TreeAnalytics
+    TreeAnalytics,
+    PagesSearchIcon,
+    PagesVerticalMore
 };
