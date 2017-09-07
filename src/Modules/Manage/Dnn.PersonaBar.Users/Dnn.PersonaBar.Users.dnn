@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.PersonaBar.Users" type="PersonaBar" version="01.05.00">
+    <package name="Dnn.PersonaBar.Users" type="PersonaBar" version="01.06.00">
       <friendlyName>Dnn.PersonaBar.Users</friendlyName>
       <description></description>
       <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
@@ -56,6 +56,11 @@
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>01.05.00.SqlDataProvider</name>
               <version>01.05.00</version>
+            </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>01.06.00.SqlDataProvider</name>
+              <version>01.06.00</version>
             </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
