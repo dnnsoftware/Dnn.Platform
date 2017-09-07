@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.FileSystem
                     //verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
-                        Exceptions.Exceptions.ProcessHttpException();
+                        UrlUtils.Handle404Exception(context.Response, _portalSettings);
                     }
                 }
                 if (UrlType != TabType.File)
