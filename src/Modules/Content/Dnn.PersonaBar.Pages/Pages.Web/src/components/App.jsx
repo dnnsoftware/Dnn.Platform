@@ -252,6 +252,12 @@ class App extends Component {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
+    onSearchClick(){
+        console.log('wtfwtf');
+        const {searchTerm} = this.state;
+        this.props.searchPageList(searchTerm);
+    }
+
     onSearchFocus(){
         this.setState({inSearch:true});
     }
@@ -691,6 +697,31 @@ class App extends Component {
         );
     }
 
+    render_searchResults(){
+        return(
+            <GridCell columnSize={70} className="fade-in">
+                <h1>Here is some search results</h1>
+            </GridCell>
+        );
+    }
+
+    render_details(){
+        const {selectedPage} = this.props;
+        const {inSearch} = this.state;
+
+        switch(true){
+            case inSearch:
+                console.log("in serach");
+                return this.render_searchResults();
+            case selectedPage && selectedPage.tabId === 0:
+                console.log("why here");
+                return this.render_addPageEditor();
+            case !selectedPage:
+              console.log("why here then");
+                return this.render_PagesDetailEditor();
+
+        }
+    }
 
     render() {
 
@@ -721,7 +752,13 @@ class App extends Component {
                                             onBlur={this.onSearchBlur.bind(this)}
                                             placeholder="Search"/>
                                     </div>
-                                    <div  className="btn search-btn"  dangerouslySetInnerHTML={{ __html: PagesSearchIcon }} />
+                                    <div
+                                        className="btn search-btn"
+                                        dangerouslySetInnerHTML={{ __html: PagesSearchIcon }}
+                                        onClick={this.onSearchClick.bind(this)}
+                                        >
+                                    </div>
+
                                     <div className="btn search-btn"  dangerouslySetInnerHTML={{ __html: PagesVerticalMore }} />
                                 </div>
                             </div>
@@ -748,7 +785,7 @@ class App extends Component {
                                             pageInContextComponents={props.pageInContextComponents} />
                                     </div>
                                 </div>
-                                {(selectedPage && selectedPage.tabId === 0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
+                                {this.render_details()}
                             </GridCell>
                         </GridCell>
                     </PersonaBarPage>
@@ -771,6 +808,7 @@ class App extends Component {
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     pageList: PropTypes.array.isRequired,
+    searchPageList: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
@@ -822,8 +860,10 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
+    console.log(state);
     return {
         pageList: state.pageList.pageList,
+        searchList: state.searchList.searchList,
         selectedView: state.visiblePanel.selectedPage,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
@@ -847,6 +887,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
+        searchPageList: PageActions.searchPageList,
         getPage: PageActions.getPage,
         viewPage: PageActions.viewPage,
         getChildPageList: PageActions.getChildPageList,

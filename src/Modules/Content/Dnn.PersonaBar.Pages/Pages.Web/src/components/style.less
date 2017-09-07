@@ -43,6 +43,11 @@
         background-color:#fff;
         border: 1px solid @alto;
 
+        .fade-in{
+           transition: all .15s forwards ease-in;
+           animation: fadeIn .15s;
+        }
+
         .tree-container{
             transition: all .5s;
             opacity:1;
@@ -81,4 +86,13 @@
         padding:20px;
     }
 
+}
+
+@keyframes fadeIn {
+    0%{
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
 }

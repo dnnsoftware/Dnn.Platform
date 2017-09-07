@@ -1,5 +1,6 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
 import PageListActionTypes from "../constants/actionTypes/pageListActionTypes";
+import SearchListActionTypes from "../constants/actionTypes/searchListActionTypes";
 import responseStatus from "../constants/responseStatus";
 import PagesService from "../services/pageService";
 import utils from "../utils";
@@ -9,6 +10,8 @@ import cloneDeep from "lodash/cloneDeep";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import Promise from "promise";
+
+console.log(SearchListActionTypes);
 
 function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
@@ -63,6 +66,15 @@ const pageActions = {
             dispatch({
                 type: PageListActionTypes.SAVE,
                 data: { pageList }
+            });
+        });
+    },
+
+    searchPageList(searchKey){
+        return (dispatch) => PagesService.searchPageList(searchKey).then((searchList)=>{
+            dispatch({
+                type: SearchListActionTypes.SAVE_SEARCH_LIST,
+                data: {searchList}
             });
         });
     },
