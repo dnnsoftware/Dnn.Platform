@@ -106,6 +106,6 @@ namespace DotNetNuke.Entities.Users
         /// <remarks>IMPORTANT NOTE: this overloaded method does not depend on the current portal setting so it can be used
         /// in background threads or scheduler jobs. 
         /// </remarks>
-        string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
+        string GetUserProfilePictureUrl(int portalId, int userId, int width, int height);
     }
 }
