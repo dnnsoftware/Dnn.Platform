@@ -30,6 +30,8 @@ import GridCell from "dnn-grid-cell";
 import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
+import { PagesSearchIcon, PagesVerticalMore } from "dnn-svg-icons";
+
 import "./style.less";
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
@@ -54,7 +56,9 @@ class App extends Component {
         this.state = {
             referral: "",
             referralText: "",
-            busy: false
+            busy: false,
+            inSearch: false,
+            searchTerm: false
         };
 
     }
@@ -132,8 +136,6 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
     }
-
-
 
     notifyErrorIfNeeded(newProps) {
         if (newProps.error !== this.props.error) {
@@ -248,6 +250,19 @@ class App extends Component {
 
     onChangeParentId(newParentId) {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
+    }
+
+    onSearchFocus(){
+        this.setState({inSearch:true});
+    }
+
+    onSearchFieldChange(e){
+        this.setState({searchTerm:e.target.value});
+    }
+
+    onSearchBlur(){
+        const {searchTerm} = this.state;
+        searchTerm ? this.setState({inSearch:true}) : this.setState({inSearch:false});
     }
 
     onAddPage(parentPage) {
@@ -681,6 +696,8 @@ class App extends Component {
 
         const { props } = this;
         const { selectedPage } = props;
+        const {inSearch} = this.state;
+
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
 
@@ -693,9 +710,25 @@ class App extends Component {
                             <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
-                        <GridCell columnSize={100} style={{ padding: "20px" }} >
+                        <GridCell columnSize={100} style={{padding:"20px"}}>
+                            <div className="search-container">
+                                <div className="search-box">
+                                    <div className="search-input">
+                                        <input
+                                            type="text"
+                                            onFocus={this.onSearchFocus.bind(this)}
+                                            onChange={this.onSearchFieldChange.bind(this)}
+                                            onBlur={this.onSearchBlur.bind(this)}
+                                            placeholder="Search"/>
+                                    </div>
+                                    <div  className="btn search-btn"  dangerouslySetInnerHTML={{ __html: PagesSearchIcon }} />
+                                    <div className="btn search-btn"  dangerouslySetInnerHTML={{ __html: PagesVerticalMore }} />
+                                </div>
+                            </div>
+                        </GridCell>
+                        <GridCell columnSize={100} style={{ padding: "0px 20px 20px 20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
+                                <div className={(selectedPage && selectedPage.tabId === 0 || inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
                                             pageList={this.props.pageList}

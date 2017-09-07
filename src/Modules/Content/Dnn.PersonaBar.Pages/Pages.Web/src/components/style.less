@@ -1,9 +1,45 @@
 @import "~dnn-global-styles/index";
 
-
 .pages-app {
+    .search-container{
+        border-bottom: 1px solid @alto;
+        height:40px;
+        margin-top: 110px;
+
+        .btn{
+            cursor: pointer;
+            svg{
+                fill:#000;
+            }
+        }
+
+        div{
+            display:inline-block;
+        }
+
+        .search-box{
+            float:right;
+            border-left: 1px solid @alto;
+            width: 300px;
+            .search-input {
+                width:230px;
+                input{
+                    border:none;
+                    background-color:transparent;
+                    width:100%;
+                    outline:none;
+                }
+            }
+        }
+
+        .search-btn {
+            padding: 0 5px;
+            width: 30px;
+
+        }
+    }
+
     .page-container {
-        margin-top: 105px;
         background-color:#fff;
         border: 1px solid @alto;
 
@@ -22,7 +58,6 @@
                 li{pointer-events:none;}
             }
         }
-
     }
 
     .empty-page-state {
@@ -45,7 +80,5 @@
     .treeview-page-details {
         padding:20px;
     }
-
-
 
 }
