@@ -39,7 +39,7 @@ namespace Dnn.AuthServices.Jwt.Services
         [HttpGet]
         public IHttpActionResult Logout()
         {
-            return JwtController.Instance.LogoutUser(Request) ? (IHttpActionResult)Ok() : Unauthorized();
+            return JwtController.Instance.LogoutUser(Request) ? (IHttpActionResult)Ok(new { success = true}) : Unauthorized();
         }
 
         /// <summary>
