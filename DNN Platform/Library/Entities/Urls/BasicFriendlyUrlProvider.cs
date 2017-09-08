@@ -125,9 +125,9 @@ namespace DotNetNuke.Entities.Urls
             string matchString = "";
             if (string.IsNullOrEmpty(portalAlias) == false)
             {
-                if (HttpContext.Current.Items["UrlRewrite:OriginalUrl"] != null)
+                string httpAlias = Globals.AddHTTP(portalAlias).ToLowerInvariant();
+                if (HttpContext.Current?.Items["UrlRewrite:OriginalUrl"] != null)
                 {
-                    string httpAlias = Globals.AddHTTP(portalAlias).ToLowerInvariant();
                     string originalUrl =
                         HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString().ToLowerInvariant();
                     httpAlias = Globals.AddPort(httpAlias, originalUrl);
@@ -167,6 +167,10 @@ namespace DotNetNuke.Entities.Urls
                             matchString = wwwHttpAlias;
                         }
                     }
+                }
+                else
+                {
+                    matchString = httpAlias;
                 }
             }
             if ((!String.IsNullOrEmpty(matchString)))
@@ -322,10 +326,15 @@ namespace DotNetNuke.Entities.Urls
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
-            return FriendlyUrl(tab, path, pageName, settings.PortalAlias.HTTPAlias);
+            return FriendlyUrl(tab, path, pageName, settings.PortalAlias.HTTPAlias, settings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
+        {
+            return FriendlyUrl(tab, path, pageName, portalAlias, null);
+        }
+
+        private string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
         {
             string friendlyPath = path;
             bool isPagePath = (tab != null);
@@ -401,8 +410,8 @@ namespace DotNetNuke.Entities.Urls
 
             // Replace http:// by https:// if SSL is enabled and site is marked as secure
             // (i.e. requests to http://... will be redirected to https://...)
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
+            portalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+            if (tab != null && portalSettings != null && portalSettings.SSLEnabled && tab.IsSecure &&
                 friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
                 friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
