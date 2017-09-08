@@ -142,11 +142,13 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     getListItemLI(item) {
-        return document.getElementById(`list-item-${item.name}-${item.id}`);
+        const element = document.getElementById(`list-item-${item.name}-${item.id}`);
+        return element;
     }
 
     getListItemTitle(item) {
-        return document.getElementById(`list-item-title-${item.name}-${item.id}`);
+        const element = document.getElementById(`list-item-title-${item.name}-${item.id}`);
+        return element;
     }
 
     _fadeOutTooltips() {
@@ -240,7 +242,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             this.setState({ dragDebounce: true});
             const {pageX, pageY} = this.state;
             const elm = this.clonedElement;
-            e = e.pageX ?  e : {pageX, pageY};
+    
+            e = {pageX, pageY};
             elm.style.top = `${e.pageY}px`;
             elm.style.left = `${e.pageX}px`;
             setTimeout(() => this.setState({ dragDebounce: false}), this.state.debounceAmount);
@@ -281,7 +284,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     onDragOver(e, item) {
         e.preventDefault();
-        e.target.classList.add("list-item-dragover");
         this.setMouseCoordinates(e);
         let pageList = null;
 

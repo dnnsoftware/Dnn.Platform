@@ -174,15 +174,11 @@ export class PersonaBarPageTreeview extends Component {
                             onDragStart={(e) => { canManagePage(e, item, onDragStart); }}
                             onDragLeave={(e) => canManagePage(e, item, onDragLeave) }
                             onDragEnd={(e) => { canManagePage(e, item, onDragEnd); }}
+                            onClick={() => { item.canManagePage ? onSelection(item.id) : null; }}
                             >
-                            <p></p>
+                            </div>
 
-                        </div>
-
-                        <div
-                            style={style}
-                            className={(item.selected) ? "list-item-highlight" : null}
-                            onClick={() => { item.canManagePage ? onSelection(item.id) : null; }}>
+                        <div style={style} className={(item.selected || item.onDragOverState) ? "list-item-highlight list-item-dragover": null}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
                                 className={`item-name`}
