@@ -21,6 +21,10 @@ export default class TagInput extends Component {
             return;
         }   
 
+        if (this.props.newTagText) {
+            this.props.addTag(this.props.newTagText);
+        }
+        
         this.close();
     }
 
