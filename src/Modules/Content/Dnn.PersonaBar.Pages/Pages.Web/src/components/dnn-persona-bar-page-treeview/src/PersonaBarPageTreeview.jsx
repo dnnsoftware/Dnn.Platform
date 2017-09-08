@@ -148,7 +148,7 @@ export class PersonaBarPageTreeview extends Component {
             const shouldShowTooltip = /\.\.\./.test(name);
             const canManagePage = (e, item, fn) => {
                 const message = Localization.get("NoPermissionManagePage");
-                item.canManagePage ? fn(e, item) : this.props.setEmptyPageMessage(message);
+                item.canAdminPage ? fn(e, item) : this.props.setEmptyPageMessage(message);
             };
 
             let activate = false;
