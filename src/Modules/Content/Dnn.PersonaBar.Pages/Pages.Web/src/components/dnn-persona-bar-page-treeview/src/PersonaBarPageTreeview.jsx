@@ -162,12 +162,11 @@ export class PersonaBarPageTreeview extends Component {
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
-                        <div id={`list-item-title-${item.name}-${item.id}`} draggable="true" style={{width:"100%", height:"20px", backgroundColor:"blue"}}><p></p></div>
                         <div
-                            id={`list-item-title-${item.name}-${item.id}`}
-                            className={(item.selected) ? "list-item-highlight" : null}
                             style={style}
-                            draggable={ item.canManagePage ? "false" : "false"}
+                            id={`list-item-title-${item.name}-${item.id}`}
+                            className="dragged-proxy"
+                            draggable={ item.canManagePage ? "true" : "true"}
                             onDrop={(e) => { canManagePage(e, item, onDrop); }}
                             onDrag={(e) => { canManagePage(e, item, onDrag); }}
                             onDragOver={(e) => { canManagePage(e, item, onDragOver); }}
@@ -175,6 +174,14 @@ export class PersonaBarPageTreeview extends Component {
                             onDragStart={(e) => { canManagePage(e, item, onDragStart); }}
                             onDragLeave={(e) => canManagePage(e, item, onDragLeave) }
                             onDragEnd={(e) => { canManagePage(e, item, onDragEnd); }}
+                            >
+                            <p></p>
+
+                        </div>
+
+                        <div
+                            style={style}
+                            className={(item.selected) ? "list-item-highlight" : null}
                             onClick={() => { item.canManagePage ? onSelection(item.id) : null; }}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
