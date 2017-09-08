@@ -1,6 +1,51 @@
 @import "~dnn-global-styles/index";
 
 .pages-app {
+    .search-item-card {
+        margin: 10px 0;
+        padding: 0;
+        border: 1px solid @alto;
+        height:107px;
+
+        .search-item-thumbnail{
+            float:left;
+        }
+
+        .search-item-details {
+            float:left;
+            height:40px;
+            padding-left: 35px;
+        }
+
+        .search-item-details-list {
+            padding:10px 0px;
+            
+            ul{
+                list-style: none;
+                padding:0;
+                margin:0;
+            }
+
+            li{
+                float:left;
+                p{
+                    display:inline;
+                    font-weight:bold;
+                }
+
+                p:first-child{
+
+                }
+                p:not(:first-child) {
+                    margin: 0px 10px;
+                    color: @curiousBlue
+                }
+            }
+
+
+        }
+    }
+
     .search-container{
         border-bottom: 1px solid @alto;
         height:40px;
@@ -95,7 +140,6 @@
     .treeview-page-details {
         padding:20px;
     }
-
 }
 
 @keyframes fadeIn {

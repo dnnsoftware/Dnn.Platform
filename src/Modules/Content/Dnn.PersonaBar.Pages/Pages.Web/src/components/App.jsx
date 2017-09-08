@@ -734,11 +734,70 @@ class App extends Component {
 
     render_searchResults(){
         const {searchList} = this.props;
+
+        const render_card = (item) => {
+            console.log(item);
+            return (
+                <div className="search-item-card">
+                    <div className="search-item-thumbnail">
+                        <img src={item.thumbnail} />
+                    </div>
+                    <div className="search-item-details">
+                    
+                        <h1>{item.name}</h1>
+                        <h2>{item.tabpath}</h2>
+                        <div className="search-item-details-list">
+                            <ul>
+                                <li>
+                                    <p>Page Type:</p>
+                                    <p>{item.pageType}</p>
+                                </li>
+                                <li>
+                                    <p>Publish Status:</p>
+                                    <p>{item.status}</p>
+                                </li>
+                                <li>
+                                    <p>Publish Date:</p>
+                                    <p>{item.publishDate}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="search-item-details-list">
+                            <ul>
+                                <li>
+                                    <p>Workflow:</p>
+                                    <p>{item.workflowName}</p>
+                                </li>
+                                <li>
+                                    <p>Tags:</p>
+                                    <p>{
+                                        item.tags.map((tag)=>{
+                                        return(
+                                            <span>
+                                                {tag},
+                                            </span>
+                                            );
+                                    })}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         return(
             <GridCell columnSize={70} className="fade-in">
-                {searchList.map((item)=>{
-                    return(<p>{item.name}</p>);
-                })}
+                <GridCell columnSize={100} style={{padding:"20px"}}>
+                    <GridCell columnSize={100} style={{textAlign:"right", padding:"10px", fontWeight:"bold"}}>
+                        <p>53 PAGES FOUND</p>
+                    </GridCell>
+                    <GridCell columnSize={100}>
+                        {searchList.map((item)=>{
+                            return render_card(item);
+                        })}
+                    </GridCell>
+                </GridCell>
             </GridCell>
         );
     }
