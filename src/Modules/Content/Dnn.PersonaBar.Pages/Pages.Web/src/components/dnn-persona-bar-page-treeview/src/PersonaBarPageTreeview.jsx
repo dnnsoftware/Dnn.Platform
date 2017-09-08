@@ -162,11 +162,12 @@ export class PersonaBarPageTreeview extends Component {
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
+                        <div id={`list-item-title-${item.name}-${item.id}`} draggable="true" style={{width:"100%", height:"20px", backgroundColor:"blue"}}><p></p></div>
                         <div
                             id={`list-item-title-${item.name}-${item.id}`}
                             className={(item.selected) ? "list-item-highlight" : null}
                             style={style}
-                            draggable={ item.canManagePage ? "true" : "false"}
+                            draggable={ item.canManagePage ? "false" : "false"}
                             onDrop={(e) => { canManagePage(e, item, onDrop); }}
                             onDrag={(e) => { canManagePage(e, item, onDrag); }}
                             onDragOver={(e) => { canManagePage(e, item, onDragOver); }}
