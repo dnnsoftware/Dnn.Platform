@@ -41,10 +41,6 @@ export class PersonaBarTreeInContextMenu extends Component {
     //         this.showMenu = true;
     //     }
     // }
-    onViewPage(item) {
-        window.dnn.PersonaBar.closePanel();
-        window.parent.location = item.url;
-    }
 
     render_default(item) {
         return (
@@ -58,15 +54,15 @@ export class PersonaBarTreeInContextMenu extends Component {
                 this.props.onClose();
                 break;
             case "View":
-                this.onViewPage(item);
+                this.props.onViewPage(item);
                 this.props.onClose();
                 break;
             case "Edit":
-                this.props.onViewPage(item.id, item.url);
+                this.props.onViewEditPage(item);
                 this.props.onClose();
                 break;
             case "Duplicate":
-                this.props.onDuplicatePage();
+                this.props.onDuplicatePage(item);
                 this.props.onClose();
                 break;
             default:
@@ -128,6 +124,7 @@ export class PersonaBarTreeInContextMenu extends Component {
 
 PersonaBarTreeInContextMenu.propTypes = {
     onViewPage: PropTypes.func.isRequired,
+    onViewEditPage: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired,

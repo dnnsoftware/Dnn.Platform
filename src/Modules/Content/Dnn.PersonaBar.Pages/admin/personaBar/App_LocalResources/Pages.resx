@@ -1483,4 +1483,25 @@
   <data name="Prompt_PagesCategory.Text" xml:space="preserve">
     <value>Page Commands</value>
   </data>
+  <data name="NoPermissionAddPage.Text" xml:space="preserve">
+    <value>You do not have permission to add a page.</value>
+  </data>
+  <data name="NoPermissionEditPage.Text" xml:space="preserve">
+    <value>You do not have permission to edit this page.</value>
+  </data>
+  <data name="NoPermissionCopyPage.Text" xml:space="preserve">
+    <value>You do not have permission to copy this page.</value>
+  </data>
+  <data name="NoPermissionManagePage.Text" xml:space="preserve">
+    <value>You do not have permission to manage this page.</value>
+  </data>
+  <data name="NoPermissionEditPage.Text" xml:space="preserve">
+    <value>You do not have permission to edit this page</value>
+  </data>
+  <data name="NoPermissionViewPage.Text" xml:space="preserve">
+    <value>You do not have permission to view this page</value>
+  </data>
+    <data name="NoPermissionViewPage.Text" xml:space="preserve">
+    <value>You do not have permission to view this page</value>
+  </data>
 </root>

@@ -7,35 +7,45 @@
         margin-top: 110px;
 
         .btn{
+            float:left;
             cursor: pointer;
+            width:30px;
+            height:30px;
+            padding-top:5px;
+
             svg{
+                width:100%;
                 fill:#000;
             }
         }
 
         div{
-            display:inline-block;
+            display:block;
         }
 
         .search-box{
             float:right;
             border-left: 1px solid @alto;
             width: 300px;
+
             .search-input {
                 width:230px;
+                float:left;
                 input{
                     border:none;
                     background-color:transparent;
                     width:100%;
                     outline:none;
                 }
+
+                input::-ms-clear {
+                    display: none;
+                }
             }
         }
 
         .search-btn {
             padding: 0 5px;
-            width: 30px;
-
         }
     }
 

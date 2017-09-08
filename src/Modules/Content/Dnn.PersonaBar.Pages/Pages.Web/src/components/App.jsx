@@ -224,7 +224,6 @@ class App extends Component {
                         item.isOpen = true;
                         updateStore(list);
                     }
-
                 });
             };
 
@@ -271,30 +270,37 @@ class App extends Component {
     }
 
     onAddPage(parentPage) {
-        const { props } = this;
-        const { selectedPage } = props;
-        let runUpdateStore = null;
-        let pageList = null;
+        this.clearEmptyStateMessage();
 
-        this._traverse((item, list, updateStore) => {
-            item.selected = false;
-            pageList = list;
-            runUpdateStore = updateStore;
-        });
+        const addPage = () => {
+            const { props } = this;
+            const { selectedPage } = props;
+            let runUpdateStore = null;
+            let pageList = null;
 
-        runUpdateStore(pageList);
+            this._traverse((item, list, updateStore) => {
+                item.selected = false;
+                pageList = list;
+                runUpdateStore = updateStore;
+            });
 
-        if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-            const onConfirm = () => this.props.getNewPage(parentPage);
-            utils.confirm(
-                Localization.get("CancelWithoutSaving"),
-                Localization.get("Close"),
-                Localization.get("Cancel"),
-                onConfirm);
+            runUpdateStore(pageList);
 
-        } else {
-            props.getNewPage(parentPage);
-        }
+            if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+                const onConfirm = () => this.props.getNewPage(parentPage);
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
+
+            } else {
+                props.getNewPage(parentPage);
+            }
+        };
+
+        const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
+        !parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
@@ -568,14 +574,12 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
-                    
                     this.getToRootParent();
                 });
                 this.selectPageSettingTab(0);
             }
         };
         const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
-
         (!selectedPageDirty) ? left() : right();
     }
 
@@ -587,8 +591,39 @@ class App extends Component {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
 
-    onViewPage(id, url) {
-        return PageActions.viewPage(id, url);
+    onDuplicatePage(item){
+        const message = Localization.get("NoPermissionCopyPage");
+        const duplicate = () => this.props.onDuplicatePage();
+        const noPermission = () => this.setEmptyStateMessage(message);
+        item.canCopyPage ? duplicate() : noPermission();
+    }
+
+    onViewEditPage(item) {
+        this.clearEmptyStateMessage();
+        const message = Localization.get("NoPermissionEditPage");
+        const viewPage = () => PageActions.viewPage(item.id, item.url);
+        const noPermission = () => this.setEmptyStateMessage(message);
+        item.canManagePage ? viewPage() : noPermission();
+    }
+
+    onViewPage(item) {
+        this.clearEmptyStateMessage();
+        const view = () => {
+            window.dnn.PersonaBar.closePanel();
+            window.parent.location=item.url;
+        };
+        const message = Localization.get("NoPermissionViewPage");
+        const noPermission = () => this.setEmptyStateMessage(message);
+        item.canViewPage ? view() : noPermission();
+    }
+
+    setEmptyStateMessage(emptyStateMessage) {
+        this.setState({emptyStateMessage});
+        this.props.clearSelectedPage();
+    }
+
+    clearEmptyStateMessage(){
+        this.setState({emptyStateMessage:null});
     }
 
     render_PagesTreeViewEditor() {
@@ -602,10 +637,11 @@ class App extends Component {
     render_PagesDetailEditor() {
 
         const render_emptyState = () => {
+            const DefaultMessage = Localization.get("NoPageSelected");
             return (
                 <div className="empty-page-state">
                     <div className="empty-page-state-message">
-                        <h1>No page is currently selected</h1>
+                        <h1>{ this.state.emptyStateMessage || DefaultMessage }</h1>
                         <p>Select a page in the tree to manage its settings here.</p>
                     </div>
                 </div>
@@ -717,6 +753,7 @@ class App extends Component {
             case selectedPage && selectedPage.tabId === 0:
                 return this.render_addPageEditor();
             case !selectedPage:
+            default:
                 return this.render_PagesDetailEditor();
         }
     }
@@ -765,6 +802,7 @@ class App extends Component {
                                 <div className={(selectedPage && selectedPage.tabId === 0 || inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
+                                            Localization={Localization}
                                             pageList={this.props.pageList}
                                             getChildPageList={this.props.getChildPageList}
                                             getPage={this.props.getPage.bind(this)}
@@ -772,11 +810,13 @@ class App extends Component {
                                             showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                             selectedPageDirty={this.props.selectedPageDirty}
                                             activePage={this.props.selectedPage}
+                                            setEmptyPageMessage={this.setEmptyStateMessage.bind(this)}
                                             setActivePage={this.setActivePage.bind(this)}
                                             saveDropState={this.onUpdatePage.bind(this)}
                                             onMovePage={this.onMovePage.bind(this)}
                                             onViewPage={this.onViewPage.bind(this)}
-                                            onDuplicatePage={this.props.onDuplicatePage}
+                                            onViewEditPage={this.onViewEditPage.bind(this)}
+                                            onDuplicatePage={this.onDuplicatePage.bind(this)}
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
@@ -854,7 +894,8 @@ App.propTypes = {
     selectPage: PropTypes.func.isRequired,
     selectedPagePath: PropTypes.array.isRequired,
     onGetCachedPageCount: PropTypes.array.isRequired,
-    onClearCache: PropTypes.func.isRequired
+    onClearCache: PropTypes.func.isRequired,
+    clearSelectedPage: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -916,7 +957,9 @@ function mapDispatchToProps(dispatch) {
         getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
         selectPage: PageHierarchyActions.selectPage,
         onGetCachedPageCount: PageActions.getCachedPageCount,
-        onClearCache: PageActions.clearCache
+        onClearCache: PageActions.clearCache,
+        clearSelectedPage: PageActions.clearSelectedPage
+
     }, dispatch);
 }
 
