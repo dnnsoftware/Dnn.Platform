@@ -31,7 +31,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             rootLoaded: false,
             isTreeviewExpanded: true,
             initialCollapse: true,
-            debounceAmount: 200,
+            debounceAmount: 50,
             dragDebounce: false,
             dragOverDebounce:false,
             setMouseCoordDebounce: false,

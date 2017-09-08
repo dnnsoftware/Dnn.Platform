@@ -253,7 +253,6 @@ class App extends Component {
     }
 
     onSearchClick(){
-        console.log('wtfwtf');
         const {searchTerm} = this.state;
         this.props.searchPageList(searchTerm);
     }
@@ -714,15 +713,11 @@ class App extends Component {
 
         switch(true){
             case inSearch:
-                console.log("in serach");
                 return this.render_searchResults();
             case selectedPage && selectedPage.tabId === 0:
-                console.log("why here");
                 return this.render_addPageEditor();
             case !selectedPage:
-              console.log("why here then");
                 return this.render_PagesDetailEditor();
-
         }
     }
 
@@ -734,7 +729,7 @@ class App extends Component {
 
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
-
+         /* eslint-disable react/no-danger */
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
@@ -761,7 +756,6 @@ class App extends Component {
                                         onClick={this.onSearchClick.bind(this)}
                                         >
                                     </div>
-
                                     <div className="btn search-btn"  dangerouslySetInnerHTML={{ __html: PagesVerticalMore }} />
                                 </div>
                             </div>
@@ -864,7 +858,7 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
-    console.log(state);
+ 
     return {
         pageList: state.pageList.pageList,
         searchList: state.searchList.searchList,
