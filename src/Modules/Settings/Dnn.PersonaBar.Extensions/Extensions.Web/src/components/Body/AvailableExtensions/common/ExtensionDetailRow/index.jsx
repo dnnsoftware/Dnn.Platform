@@ -4,6 +4,7 @@ import Button from "dnn-button";
 import styles from "./style.less";
 import Localization from "localization";
 import ColumnSizes from "../ExtensionColumnSizes";
+import util from "utils";
 
 /* eslint-disable react/no-danger */
 const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation}) => (
@@ -19,12 +20,12 @@ const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation
             <p>{_package.version}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[3]} style={{ paddingRight: 0 }}>
-            {_package.fileName && <form action="/API/PersonaBar/Extensions/DownloadPackage" method="GET" target="_blank">
+            {_package.fileName && <form action={util.siteRoot + "API/PersonaBar/Extensions/DownloadPackage"} method="GET" target="_blank">
                 <input type="hidden" name="FileName" value={_package.fileName} />
                 <input type="hidden" name="PackageType" value={type} />
                 <button className="dnn-ui-common-button download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
             </form>}
-            {!_package.fileName && <form action="/API/PersonaBar/Extensions/DownloadLanguagePackage" method="GET" target="_blank">
+            {!_package.fileName && <form action={util.siteRoot + "API/PersonaBar/Extensions/DownloadLanguagePackage"} method="GET" target="_blank">
                 <input type="hidden" name="CultureCode" value={_package.description} />
                 <button className="dnn-ui-common-button download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
             </form>}

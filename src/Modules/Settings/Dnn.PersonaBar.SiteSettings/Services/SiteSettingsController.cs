@@ -2451,8 +2451,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         c.Name,
                         Icon = Globals.ResolveUrl(
                             string.IsNullOrEmpty(c.Name)
-                                ? "/images/Flags/none.gif"
-                                : $"/images/Flags/{c.Name}.gif")
+                                ? "~/images/Flags/none.gif"
+                                : $"~/images/Flags/{c.Name}.gif")
                     })
                 });
             }
