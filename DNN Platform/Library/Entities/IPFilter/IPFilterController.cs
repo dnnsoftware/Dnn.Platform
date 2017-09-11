@@ -36,6 +36,7 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -267,13 +268,13 @@ namespace DotNetNuke.Entities.Host
             IPAddress parsed;
             if (IPAddress.TryParse(ipFilter.IPAddress, out parsed) == false)
             {
-                throw new ArgumentException("IP address is not in correct format");
+                throw new ArgumentException(Localization.GetExceptionMessage("IPAddressIncorrect", "IP address is not in correct format"));
             }
 
             bool isIPRange = string.IsNullOrEmpty(ipFilter.SubnetMask);
             if (isIPRange && IPAddress.TryParse(ipFilter.SubnetMask, out parsed) == false)
             {
-                throw new ArgumentException("Subnet mask is not in correct format");
+                throw new ArgumentException(Localization.GetExceptionMessage("SubnetMaskIncorrect", "Subnet mask is not in correct format"));
             }
         }
     }
