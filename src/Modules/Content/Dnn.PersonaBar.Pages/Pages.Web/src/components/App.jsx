@@ -164,6 +164,7 @@ class App extends Component {
                     const { pageList } = this.props;
                     pageList.forEach((item, index) => {
                         if (item.id == update.tabId) {
+                            console.log("removing", item);
                             cachedItem = item;
                             const arr1 = pageList.slice(0, index);
                             const arr2 = pageList.slice(index + 1);
@@ -175,13 +176,14 @@ class App extends Component {
 
 
                 const right = () => {
+                    console.log("in remove right");
                     this._traverse((item, list, updateStore) => {
                         if (item.id == update.oldParentId) {
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === update.tabId) {
                                     cachedItem = child;
                                     const arr1 = item.childListItems.slice(0, index);
-                                    const arr2 = item.childListItems.slice(index + 2);
+                                    const arr2 = item.childListItems.slice(index + 1);
                                     item.childListItems = [...arr1, ...arr2];
                                     item.childCount--;
                                     updateStore(list);
@@ -743,7 +745,6 @@ class App extends Component {
                         <img src={item.thumbnail} />
                     </div>
                     <div className="search-item-details">
-                    
                         <h1>{item.name}</h1>
                         <h2>{item.tabpath}</h2>
                         <div className="search-item-details-list">
