@@ -104,9 +104,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 		        lblLogin.AssociatedControlID = string.Empty;
 		    }
 
-            if (!string.IsNullOrEmpty(Response.Cookies["USERNAME_CHANGED"].Value))
+            if (Request.QueryString["usernameChanged"] == "true")
             {
-                txtUsername.Text = Response.Cookies["USERNAME_CHANGED"].Value;
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
@@ -292,9 +291,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                     if (objUser.Username.ToLower() != objUser.Email.ToLower())
                     {
                         UserController.ChangeUsername(objUser.UserID, objUser.Email);
+                        userName = objUser.Username = objUser.Email;
                     }
-
-                    Response.Cookies.Remove("USERNAME_CHANGED");
                 }
 				
 				//Raise UserAuthenticated Event
