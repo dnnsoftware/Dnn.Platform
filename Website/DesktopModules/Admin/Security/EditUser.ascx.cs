@@ -485,8 +485,11 @@ namespace DotNetNuke.Modules.Admin.Users
                         {
                             UserController.ChangeUsername(User.UserID, User.Email);
 
-                            //note that this effectively will cause a signout due to the cookie not matching anymore.
-                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                            //after username changed, should redirect to login page to let user authenticate again.
+                            var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(Request.RawUrl), false);
+                            var spliter = loginUrl.Contains("?") ? "&" : "?";
+                            loginUrl = $"{loginUrl}{spliter}username={User.Email}&usernameChanged=true";
+                            Response.Redirect(loginUrl, true);
                         }
                     }
 
