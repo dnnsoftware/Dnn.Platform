@@ -746,9 +746,45 @@ class App extends Component {
         );
     }
 
+    render_more_flyout(){
+        const options = [{value:true, label:"test"}];
+        return(
+            <div className="search-more-flyout">
+                <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
+                    <h1>GENERAL FILTERS</h1>
+                </GridCell>
+                <GridCell columnSize={30} style={{paddingLeft: "10px"}}>
+                    <h1>TAB FILTERS</h1>
+                </GridCell>
+                <GridCell columnSize={70} style={{padding: "5px"}}>
+                    <GridCell columnSize={100} >
+                        <GridCell columnSize={50} style={{padding: "5px"}}>
+                             <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                        </GridCell>
+                        <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
+                            <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                        </GridCell>
+                    </GridCell>
+                    <GridCell columnSize={100}>
+                        <GridCell columnSize={50} style={{padding: "5px"}}>
+                            <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                        </GridCell>
+                        <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
+                            <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                        </GridCell>
+                    </GridCell>
+                </GridCell>
+                <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
+                        <textarea></textarea>
+                </GridCell>
+                <GridCell columnSize={100} style={{textAlign:"right"}}>
+                     <Button type="primary"   onClick={()=>{}}>Save</Button>
+                </GridCell>
+            </div>);
+    }
+
     render_searchResults(){
         const {searchList} = this.props;
-
         const render_card = (item) => {
 
             return (
@@ -806,6 +842,9 @@ class App extends Component {
                         <p>{`${searchList.length} PAGES FOUND` }</p>
                     </GridCell>
                     <GridCell columnSize={100}>
+
+                        {this.render_more_flyout()}
+
                         {searchList.map((item)=>{
                             return render_card(item);
                         })}
