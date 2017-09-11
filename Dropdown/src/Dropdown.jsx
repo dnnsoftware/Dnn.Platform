@@ -58,6 +58,17 @@ class Dropdown extends Component {
 
         return itemHeight < 140 ? itemHeight + 20 : 160;
     }
+    needScroll(){
+        const {props} = this;
+
+        if (props.options && props.options.length > 0) {
+            let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
+            let itemHeight = (props.size === "large" ? 38 : 28) * props.options.length;
+            return itemHeight > fixedHeight;
+        }
+
+        return false;
+    }
     componentWillMount() {
         const {props} = this;
         if (props.options && props.options.length > 0) {
@@ -258,17 +269,26 @@ class Dropdown extends Component {
                         fixedHeight={state.fixedHeight}
                         keepCollapsedContent={true}
                         isOpened={state.dropDownOpen}>
-                        <Scrollbars
-                            autoHide={this.props.autoHide}
-                            style={props.scrollAreaStyle}
-                            ref="dropdownScrollContainer"
-                            onUpdate={this.props.onScrollUpdate}>
+                        {this.needScroll() && 
+                            <Scrollbars
+                                autoHide={this.props.autoHide}
+                                style={props.scrollAreaStyle}
+                                ref="dropdownScrollContainer"
+                                onUpdate={this.props.onScrollUpdate}>
+                                <div>
+                                    <ul>
+                                        {options}
+                                    </ul>
+                                </div>
+                            </Scrollbars>
+                        }
+                        {!this.needScroll() && 
                             <div>
                                 <ul>
                                     {options}
                                 </ul>
                             </div>
-                        </Scrollbars>
+                        }
                         {!props.fixedHeight &&
                             <ul>
                                 {options}
@@ -312,7 +332,7 @@ Dropdown.defaultProps = {
     size: "small",
     closeOnClick: true,
     enabled: true,
-    autoHide: true,
+    autoHide: false,
     className: "",
     isDropDownOpen: false
 };

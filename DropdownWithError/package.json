@@ -1,6 +1,6 @@
 {
   "name": "dnn-dropdown-with-error",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "DNN Dropdown With Error",
   "main": "index.js",
   "scripts": {
