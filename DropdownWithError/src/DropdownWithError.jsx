@@ -47,6 +47,7 @@ class DropdownWithError extends Component {
                         labelIsMultiLine={props.labelIsMultiLine}
                         prependWith={props.prependWith}
                         title={props.title}
+                        autoHide={props.autoHide}
                         />
                     <Tooltip
                         messages={errorMessages}
@@ -92,11 +93,13 @@ DropdownWithError.propTypes = {
     extraToolTips: PropTypes.node,
     prependWith: PropTypes.string,
     labelIsMultiLine: PropTypes.bool,
-    title: PropTypes.string
+    title: PropTypes.string,
+    autoHide: PropTypes.bool
 };
 DropdownWithError.defaultProps = {
     error: false,
     enabled: true,
+    autoHide: false,
     className: "",
     placement: "outside",
     inputSize: "small",
