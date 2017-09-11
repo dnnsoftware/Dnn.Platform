@@ -467,6 +467,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(accessToken);
             var result = _httpClient.GetAsync(LogoutQuery).Result;
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            var content = result.Content.ReadAsStringAsync().Result;
+            dynamic response = !string.IsNullOrEmpty(content) ? JsonConvert.DeserializeObject(content) : null;
+            Assert.IsTrue(Convert.ToBoolean(response?.success));
         }
 
         private void SetAuthHeaderToken(string token, string scheme = "Bearer")
