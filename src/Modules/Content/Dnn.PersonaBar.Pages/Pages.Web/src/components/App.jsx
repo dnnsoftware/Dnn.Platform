@@ -164,7 +164,6 @@ class App extends Component {
                     const { pageList } = this.props;
                     pageList.forEach((item, index) => {
                         if (item.id == update.tabId) {
-                            console.log("removing", item);
                             cachedItem = item;
                             const arr1 = pageList.slice(0, index);
                             const arr2 = pageList.slice(index + 1);
@@ -176,7 +175,6 @@ class App extends Component {
 
 
                 const right = () => {
-                    console.log("in remove right");
                     this._traverse((item, list, updateStore) => {
                         if (item.id == update.oldParentId) {
                             item.childListItems.forEach((child, index) => {
@@ -738,7 +736,7 @@ class App extends Component {
         const {searchList} = this.props;
 
         const render_card = (item) => {
-            console.log(item);
+      
             return (
                 <div className="search-item-card">
                     <div className="search-item-thumbnail">

@@ -11,7 +11,6 @@ import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import Promise from "promise";
 
-console.log(SearchListActionTypes);
 
 function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
