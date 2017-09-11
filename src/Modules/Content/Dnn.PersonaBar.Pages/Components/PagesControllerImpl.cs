@@ -429,6 +429,14 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     errorMessage = Localization.GetString("EmptyTabName");
                 }
+                else if (errorMessage.Equals("InvalidTabName", StringComparison.OrdinalIgnoreCase))
+                {
+                    errorMessage = string.Format(Localization.GetString("InvalidTabName"), pageSettings.Name);
+                }
+                else
+                {
+                    errorMessage = Localization.GetString(errorMessage);
+                }
                 return false;
             }
 
