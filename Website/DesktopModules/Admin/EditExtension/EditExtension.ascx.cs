@@ -290,6 +290,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             switch (DisplayMode)
             {
                 case "editor":
+                    cmdCancel.Visible = cmdCancel.Enabled = false;
+                    cmdUpdate.Visible = cmdUpdate.Enabled = false;
+                    cmdPackage.Visible = cmdPackage.Enabled = false;
+                    cmdDelete.Visible = cmdDelete.Enabled = false;
+                    break;
                 case "settings":
                     cmdCancel.Visible = cmdCancel.Enabled = false;
                     break;

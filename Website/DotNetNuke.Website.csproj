@@ -3351,6 +3351,10 @@
       <Name>DotNetNuke.Modules.DDRMenu</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\AuthenticationEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\EditExtension.ascx.resx" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
