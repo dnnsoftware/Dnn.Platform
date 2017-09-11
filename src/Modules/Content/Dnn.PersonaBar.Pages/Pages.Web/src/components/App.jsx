@@ -32,6 +32,7 @@ import Promise from "promise";
 
 import { PagesSearchIcon, PagesVerticalMore } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
+import DatePicker from "dnn-date-picker";
 
 import "./style.less";
 
@@ -753,6 +754,7 @@ class App extends Component {
 
     render_more_flyout(){
         const options = [{value:true, label:"test"}];
+        const date = Date.now();
         return(
             <div className="search-more-flyout">
                 <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
@@ -772,7 +774,16 @@ class App extends Component {
                     </GridCell>
                     <GridCell columnSize={100}>
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                            <Dropdown className="more-dropdown" options={options} label="Date" onSelect={(data) => console.log(data) } withBorder={true} />
+                            <div className="date-picker">
+                                <GridCell columnSize={100} style={{padding: "0px 5px"}}>
+                                    <GridCell className="selected-date" columnSize={90}>
+                                        <p>Filter by Published Date Range</p>
+                                    </GridCell>
+                                    <GridCell columnSize={10}>
+                                        <DatePicker date={date} secondDate={date} updateDate={(date) => console.log(date)} showInput={false} isDateRange={false} hasTimePicker={true} showClearDateButton={false} />
+                                    </GridCell>
+                                </GridCell>
+                            </div>
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown className="more-dropdown" options={options} label="Filter by Workflow" onSelect={(data) => console.log(data) } withBorder={true} />
