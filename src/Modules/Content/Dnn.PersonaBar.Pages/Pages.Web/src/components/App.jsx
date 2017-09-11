@@ -59,6 +59,7 @@ class App extends Component {
             referralText: "",
             busy: false,
             headerDropdownSelection: "Save Page Template",
+            toggleSearchMoreFlyout:false,
             inSearch: false,
             searchTerm: false
         };
@@ -640,6 +641,10 @@ class App extends Component {
         this.setState({emptyStateMessage:null});
     }
 
+    onSearchMoreFlyoutClick() {
+        this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout});
+    }
+
     render_PagesTreeViewEditor() {
         return (
             <GridCell columnSize={30} style={{ marginTop: "120px", backgroundColor: "#aaa" }} >
@@ -754,23 +759,23 @@ class App extends Component {
                     <h1>GENERAL FILTERS</h1>
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px"}}>
-                    <h1>TAB FILTERS</h1>
+                    <h1>TAG FILTERS</h1>
                 </GridCell>
                 <GridCell columnSize={70} style={{padding: "5px"}}>
                     <GridCell columnSize={100} >
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                             <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                             <Dropdown className="more-dropdown" options={options} label="Filter by Page Type" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                            <Dropdown className="more-dropdown" options={options} label="Filter by Publish Status" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                     </GridCell>
                     <GridCell columnSize={100}>
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                            <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                            <Dropdown className="more-dropdown" options={options} label="Date" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <Dropdown className="more-dropdown" options={options} label="test" onSelect={(data) => console.log(data) } withBorder={true} />
+                            <Dropdown className="more-dropdown" options={options} label="Filter by Workflow" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                     </GridCell>
                 </GridCell>
@@ -778,7 +783,8 @@ class App extends Component {
                         <textarea></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
-                     <Button type="primary"   onClick={()=>{}}>Save</Button>
+                        <Button style={{marginRight: "5px"}} onClick={()=>{}}>Cancel</Button>
+                        <Button type="primary" onClick={()=>{}}>Save</Button>
                 </GridCell>
             </div>);
     }
@@ -843,8 +849,6 @@ class App extends Component {
                     </GridCell>
                     <GridCell columnSize={100}>
 
-                        {this.render_more_flyout()}
-
                         {searchList.map((item)=>{
                             return render_card(item);
                         })}
@@ -873,7 +877,7 @@ class App extends Component {
 
         const { props } = this;
         const { selectedPage } = props;
-        const {inSearch, headerDropdownSelection} = this.state;
+        const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
 
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
@@ -894,6 +898,7 @@ class App extends Component {
                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
+                         { toggleSearchMoreFlyout ?  this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{padding:"20px"}}>
                             <div className="search-container">
                                 <div className="search-box">
@@ -912,7 +917,11 @@ class App extends Component {
                                         onClick={this.onSearchClick.bind(this)}
                                         >
                                     </div>
-                                    <div className="btn search-btn"  dangerouslySetInnerHTML={{ __html: PagesVerticalMore }} />
+                                    <div
+                                        className="btn search-btn"
+                                        dangerouslySetInnerHTML={{ __html: PagesVerticalMore }}
+                                        onClick={()=>{this.onSearchMoreFlyoutClick(); }}
+                                        />
                                 </div>
                             </div>
                         </GridCell>
