@@ -31,6 +31,7 @@ import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
 import { PagesSearchIcon, PagesVerticalMore } from "dnn-svg-icons";
+import Dropdown from "dnn-dropdown";
 
 import "./style.less";
 
@@ -57,6 +58,7 @@ class App extends Component {
             referral: "",
             referralText: "",
             busy: false,
+            headerDropdownSelection: "Save Page Template",
             inSearch: false,
             searchTerm: false
         };
@@ -257,11 +259,23 @@ class App extends Component {
     }
 
     onSearchFocus(){
-        this.setState({inSearch:true});
+
     }
 
     onSearchFieldChange(e){
-        this.setState({searchTerm:e.target.value});
+        this.setState({searchTerm:e.target.value}, ()=>{
+            const {searchTerm} = this.state;
+            switch(true){
+                case searchTerm.length > 3:
+                    this.onSearchClick();
+                    this.setState({inSearch:true});
+                return;
+                case searchTerm.length === 0:
+                    this.setState({inSearch:false});
+                return;
+
+            }
+        });
     }
 
     onSearchBlur(){
@@ -736,7 +750,7 @@ class App extends Component {
         const {searchList} = this.props;
 
         const render_card = (item) => {
-      
+
             return (
                 <div className="search-item-card">
                     <div className="search-item-thumbnail">
@@ -788,8 +802,8 @@ class App extends Component {
         return(
             <GridCell columnSize={70} className="fade-in">
                 <GridCell columnSize={100} style={{padding:"20px"}}>
-                    <GridCell columnSize={100} style={{textAlign:"right", padding:"10px", fontWeight:"bold"}}>
-                        <p>53 PAGES FOUND</p>
+                    <GridCell columnSize={100} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
+                        <p>{`${searchList.length} PAGES FOUND` }</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item)=>{
@@ -820,18 +834,25 @@ class App extends Component {
 
         const { props } = this;
         const { selectedPage } = props;
-        const {inSearch} = this.state;
+        const {inSearch, headerDropdownSelection} = this.state;
 
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
+        let defaultLabel = "Save Page Template";
+        const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
+        const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});
+
+
          /* eslint-disable react/no-danger */
+
+
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                            <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
+                            <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{padding:"20px"}}>
@@ -843,6 +864,7 @@ class App extends Component {
                                             onFocus={this.onSearchFocus.bind(this)}
                                             onChange={this.onSearchFieldChange.bind(this)}
                                             onBlur={this.onSearchBlur.bind(this)}
+                                            onKeyPress={(e)=>{e.key ==="Enter" ? this.onSearchClick() : null; }}
                                             placeholder="Search"/>
                                     </div>
                                     <div

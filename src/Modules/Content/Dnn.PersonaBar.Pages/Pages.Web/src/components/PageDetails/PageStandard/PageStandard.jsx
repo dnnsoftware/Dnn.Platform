@@ -120,7 +120,6 @@ class PageDetails extends Component {
                                 defaultLabel={defaultLabel}
                                 selectedTabId={selectedTabId}
                                 PortalTabsParameters={TabParameters_1}
-
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
                                 serviceFramework={sf} />
