@@ -9,7 +9,6 @@ using ClientDependency.Core.FileRegistration.Providers;
 using ClientDependency.Core.CompositeFiles.Providers;
 using ClientDependency.Core.Logging;
 using System.IO;
-using System.Security.Cryptography;
 
 namespace ClientDependency.Core.Config
 {
@@ -134,9 +133,9 @@ namespace ClientDependency.Core.Config
         public List<string> FileBasedDependencyExtensionList
         {
             get
-			{
+            {
 #pragma warning disable 618
-				if (_fileBasedDependencyExtensionList == null)
+                if (_fileBasedDependencyExtensionList == null)
                 {
                     //Here we are checking for backwards compatibility config sections.
                     if (ConfigSection.FileRegistrationElement.FileBasedDependencyExtensions != ".js,.css"
@@ -153,9 +152,9 @@ namespace ClientDependency.Core.Config
 
                     //always force uppercase
                     _fileBasedDependencyExtensionList = _fileBasedDependencyExtensionList.Select(x => x.ToUpper()).Distinct().ToList();
-				}
+                }
 #pragma warning restore 618
-				return _fileBasedDependencyExtensionList;
+                return _fileBasedDependencyExtensionList;
             }
             set
             {
@@ -169,13 +168,14 @@ namespace ClientDependency.Core.Config
         /// <summary>
         /// Indicates whether CDF should enforce the policy to create only Federal Information Processing Standard (FIPS) certified algorithms.
         /// </summary>
+        [Obsolete("Use the built in .Net CryptoConfig.AllowOnlyFipsAlgorithms")]
         public bool AllowOnlyFipsAlgorithms
         {
             get
             {
                 if (!_allowOnlyFipsAlgorithms.HasValue)
                 {
-					_allowOnlyFipsAlgorithms = CryptoConfig.AllowOnlyFipsAlgorithms;
+                    _allowOnlyFipsAlgorithms = ConfigSection.AllowOnlyFipsAlgorithms;
                 }
                 return _allowOnlyFipsAlgorithms.Value;
             }

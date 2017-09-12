@@ -232,6 +232,24 @@ namespace ClientDependency.Core.Controls
 		}
 
         /// <summary>
+		/// Registers a file dependency
+		/// </summary>
+        public ClientDependencyLoader RegisterDependency(int group, int priority, string filePath, string pathNameAlias, ClientDependencyType type, string provider, bool forceBundle)
+        {
+            _base.RegisterDependency(group, priority, filePath, pathNameAlias, type, provider, forceBundle);
+            return this;
+        }
+
+        /// <summary>
+		/// Registers a file dependency
+		/// </summary>
+        public ClientDependencyLoader RegisterDependency(int group, int priority, string filePath, string pathNameAlias, ClientDependencyType type, object htmlAttributes, string provider, bool forceBundle)
+        {
+            _base.RegisterDependency(group, priority, filePath, pathNameAlias, type, htmlAttributes, provider, forceBundle);
+            return this;
+        }
+
+        /// <summary>
         /// Registers a file dependency
         /// </summary>
         /// <param name="group"></param>
@@ -248,13 +266,13 @@ namespace ClientDependency.Core.Controls
             return this;
         }
 
-		/// <summary>
-		/// Registers a file dependency 
-		/// </summary>
-		/// <param name="filePath"></param>
-		/// <param name="pathNameAlias"></param>
-		/// <param name="type"></param>
-		public ClientDependencyLoader RegisterDependency(string filePath, string pathNameAlias, ClientDependencyType type)
+        /// <summary>
+        /// Registers a file dependency 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="pathNameAlias"></param>
+        /// <param name="type"></param>
+        public ClientDependencyLoader RegisterDependency(string filePath, string pathNameAlias, ClientDependencyType type)
 		{
             _base.RegisterDependency(Constants.DefaultGroup, Constants.DefaultPriority, filePath, pathNameAlias, type);
 			return this;
@@ -339,12 +357,12 @@ namespace ClientDependency.Core.Controls
 			var iClientDependency = typeof(IClientDependencyFile);
             foreach (var ctl in ctls)
 			{
-       //         // find dependencies
-       //         var controlType = ctl.GetType();
+                //// find dependencies
+                //var controlType = ctl.GetType();
 
-	   //         dependencies.AddRange(Attribute.GetCustomAttributes(controlType)
-       //             .OfType<ClientDependencyAttribute>()
-       //             .Cast<IClientDependencyFile>());
+			    //dependencies.AddRange(Attribute.GetCustomAttributes(controlType)
+                //    .OfType<ClientDependencyAttribute>()
+                //    .Cast<IClientDependencyFile>());
 
 			    if (iClientDependency.IsInstanceOfType(ctl))
                 {

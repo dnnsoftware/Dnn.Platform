@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web;
 
 namespace ClientDependency.Core
@@ -37,10 +34,12 @@ namespace ClientDependency.Core
             if (cType == CompressionType.deflate)
             {
                 context.Response.AddHeader("Content-encoding", "deflate");
+                context.Response.AddHeader("Vary", "Accept-Encoding");
             }
             else if (cType == CompressionType.gzip)
             {
                 context.Response.AddHeader("Content-encoding", "gzip");
+                context.Response.AddHeader("Vary", "Accept-Encoding");
             }            
         }
 

@@ -10,30 +10,6 @@ namespace ClientDependency.Core
     /// </summary>
     internal static class DependencySorter
     {
-
-        public static IList<IClientDependencyFile> FilterDependencies(IList<IClientDependencyFile> dependencies)
-        {
-            if (dependencies.Any(f => f.Name != ""))
-            {
-                var newList = dependencies.Where(f => f.Name == "").ToList();
-                var frameworks = dependencies.Where(f => f.Name != "").GroupBy(f => f.Name.ToLower());
-                foreach (var framework in frameworks)
-                {
-                    var topPriority = framework.FirstOrDefault(d => d.ForceVersion);
-                    if (topPriority == null)
-                    {
-                        newList.Add(framework.OrderByDescending(f => f.Version).First());
-                    }
-                    else
-                    {
-                        newList.Add(topPriority);
-                    }
-                }
-                dependencies = newList;
-            }
-            return dependencies;
-        }
-
         /// <summary>
         /// Sort the items by their priority and their index they currently exist in the collection
         /// </summary>
@@ -63,7 +39,7 @@ namespace ClientDependency.Core
             //they are all the same so we can really just return the original list since it will already be in the 
             //order that they were added.
             return files;
-        }
+        } 
 
     }
 }

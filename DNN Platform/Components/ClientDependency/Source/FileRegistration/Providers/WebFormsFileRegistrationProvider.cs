@@ -12,6 +12,68 @@ namespace ClientDependency.Core.FileRegistration.Providers
 {
     public abstract class WebFormsFileRegistrationProvider : BaseFileRegistrationProvider
     {
+        protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
+        {
+            var asArray = jsDependencies.ToArray();
+
+            if (!asArray.Any())
+                return string.Empty;
+
+            var sb = new StringBuilder();
+
+            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
+            {
+                foreach (var dependency in asArray)
+                {
+                    sb.Append(RenderSingleJsFile(dependency.FilePath, htmlAttributes));
+                }
+            }
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in asArray)
+                {
+                    RenderJsComposites(http, htmlAttributes, sb, Enumerable.Repeat(dependency, 1));
+                }
+            }
+            else
+            {
+                RenderJsComposites(http, htmlAttributes, sb, asArray);
+            }
+
+            return sb.ToString();
+        }
+
+        protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
+        {
+            var asArray = cssDependencies.ToArray();
+
+            if (!asArray.Any())
+                return string.Empty;
+
+            var sb = new StringBuilder();
+
+            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
+            {
+                foreach (var dependency in asArray)
+                {
+                    sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
+                }
+            }
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in asArray)
+                {
+                    RenderCssComposites(http, htmlAttributes, sb, Enumerable.Repeat(dependency, 1));
+                }
+            }
+            else
+            {
+                RenderCssComposites(http, htmlAttributes, sb, asArray);
+            }
+
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Called to register the js and css into the page/control/output.
         /// </summary>

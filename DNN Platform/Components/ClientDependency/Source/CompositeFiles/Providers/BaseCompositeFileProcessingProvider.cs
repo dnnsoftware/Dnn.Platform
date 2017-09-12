@@ -38,6 +38,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             UrlType = UrlTypeDefault;
             PathBasedUrlFormat = "{dependencyId}/{version}/{type}";
             CompositeFilePathAsString = DefaultDependencyPath;
+            BundleDomains = new List<string>();
         }
 
         #region Public Properties
@@ -199,7 +200,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                                 }
                                 catch (Exception ex1)
                                 {
-                                    ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. EXCEPTION: {1}", path, ex1.Message), ex1);
+                                    ClientDependencySettings.Instance.Logger.Error($"Could not load file contents from {path}. EXCEPTION: {ex1.Message}", ex1);
                                 }
                             }
                         }
@@ -209,7 +210,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                     else
                     {
                         //if this fails, log the exception, but continue
-                        ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. EXCEPTION: {1}", path, ex.Message), ex);
+                        ClientDependencySettings.Instance.Logger.Error($"Could not load file contents from {path}. EXCEPTION: {ex.Message}", ex);
                     }
                 }
             }
@@ -587,6 +588,37 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                     return EnableJsMinify ? JSMin.CompressJS(fileContents) : fileContents;
                 default:
                     return fileContents;
+            }
+        }
+
+        /// <summary>
+        /// Minifies the file
+        /// </summary>
+        /// <param name="fileStream"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public virtual string MinifyFile(Stream fileStream, ClientDependencyType type)
+        {
+            Func<Stream, string> streamToString = stream =>
+            {
+                if (!stream.CanRead)
+                    throw new InvalidOperationException("Cannot read input stream");
+
+                if (stream.CanSeek)
+                    stream.Position = 0;
+
+                var reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            };
+
+            switch (type)
+            {
+                case ClientDependencyType.Css:
+                    return EnableCssMinify ? CssHelper.MinifyCss(fileStream) : streamToString(fileStream);
+                case ClientDependencyType.Javascript:
+                    return EnableJsMinify ? JSMin.CompressJS(fileStream) : streamToString(fileStream);
+                default:
+                    return streamToString(fileStream);
             }
         }
 
