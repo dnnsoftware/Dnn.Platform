@@ -38,14 +38,45 @@
             border: 1px solid #959695;
             height:33px;
         }
+
+        .calendar-dropdown-container{
+            position:relative;
+        }
         .calendar-icon{
             margin-top: 7px;
             width:15px;
+            margin-left:5px;
+            cursor:pointer;
+        }
+
+        .calendar-dropdown{
+            position:absolute;
+            top:33px;
+            left:0px;
+            width:550px;
+            height:0;
+            border-left: 1px solid @alto;
+            border-right: 1px solid @alto;
+            border-top: 1px solid transparent;
+            overflow:hidden;
+        }
+
+        .calendar-dropdown-content{
+            background-color:white;
+            overflow:auto;
+            padding-bottom:100px;
+            margin-top:0px;
+            height:100%;
         }
 
         .selected-date{
             margin-top: 2px;
             padding:5px;
+        }
+
+        .calendar {
+            height: 270px;
+            width: 300px;
         }
     }
     .search-item-card {
@@ -197,11 +228,35 @@
     }
 }
 
-@keyFrames ExpandDown {
+
+.expand-down{
+     animation: ExpandDown .25s ease-in forwards;
+}
+
+.expand-up {
+    overflow:hidden;
+    animation: ExpandUp .25s ease-in forwards;
+}
+
+@keyframes ExpandDown {
     0%{
         height:0px;
     }
     100%{
-        height:200px;
+        height:350px;
+        background-color:white;
+        border-bottom: 1px solid @alto;
+    }
+}
+
+@keyframes ExpandUp {
+    0%{
+        height:350px;
+        background-color:white;
+    }
+    100%{
+        height:0px;
+        border: 1px solid transparent;
+        background-color:transparent;
     }
 }

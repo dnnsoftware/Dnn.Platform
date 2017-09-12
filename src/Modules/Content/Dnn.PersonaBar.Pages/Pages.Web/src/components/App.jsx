@@ -30,11 +30,12 @@ import GridCell from "dnn-grid-cell";
 import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
-import { PagesSearchIcon, PagesVerticalMore } from "dnn-svg-icons";
+import { PagesSearchIcon, PagesVerticalMore, CalendarIcon } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
-import DatePicker from "dnn-date-picker";
+import DayPicker from "./DayPicker/src/DayPicker";
 
 import "./style.less";
+
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
@@ -61,10 +62,10 @@ class App extends Component {
             busy: false,
             headerDropdownSelection: "Save Page Template",
             toggleSearchMoreFlyout:false,
+            toggleDropdownCalendar:null,
             inSearch: false,
             searchTerm: false
         };
-
     }
 
     componentDidMount() {
@@ -646,6 +647,10 @@ class App extends Component {
         this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout});
     }
 
+    toggleDropdownCalendar(){
+        this.setState({toggleDropdownCalendar:!this.state.toggleDropdownCalendar});
+    }
+
     render_PagesTreeViewEditor() {
         return (
             <GridCell columnSize={30} style={{ marginTop: "120px", backgroundColor: "#aaa" }} >
@@ -775,13 +780,27 @@ class App extends Component {
                     <GridCell columnSize={100}>
                         <GridCell columnSize={50} style={{padding: "5px"}}>
                             <div className="date-picker">
-                                <GridCell columnSize={100} style={{padding: "0px 5px"}}>
+                                <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
                                     <GridCell className="selected-date" columnSize={90}>
                                         <p>Filter by Published Date Range</p>
                                     </GridCell>
                                     <GridCell columnSize={10}>
-                                        <DatePicker date={date} secondDate={date} updateDate={(date) => console.log(date)} showInput={false} isDateRange={false} hasTimePicker={true} showClearDateButton={false} />
+                                        <div className="calendar-icon" dangerouslySetInnerHTML={{__html:CalendarIcon}} onClick={()=>this.toggleDropdownCalendar()}/>
                                     </GridCell>
+
+                                    <div className={this.state.toggleDropdownCalendar ? "calendar-dropdown expand-down" : `calendar-dropdown ${this.state.toggleDropdownCalendar != null ? 'expand-up' : ''} ` }>
+                                        <GridCell columnSize={100} style={{padding:"20px"}}>
+                                            <GridCell columnSize={50}  className="calendar">
+                                                 <DayPicker/>
+                                            </GridCell>
+                                            <GridCell columnSize={50} className="calendar">
+                                                 <DayPicker/>
+                                            </GridCell>
+                                            <GridCell columnSize={100}>
+                                                <Button type="primary" onClick={()=>{}}>Apply</Button>
+                                            </GridCell>
+                                        </GridCell>
+                                    </div>
                                 </GridCell>
                             </div>
                         </GridCell>
