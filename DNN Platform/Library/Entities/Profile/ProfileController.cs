@@ -288,6 +288,7 @@ namespace DotNetNuke.Entities.Profile
                                                                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUserProfilesCache();
             return intDefinition;
         }
 
@@ -313,6 +314,30 @@ namespace DotNetNuke.Entities.Profile
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUserProfilesCache();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Clear profiles of all users 
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void ClearAllUserProfilesCache()
+        {
+            DataCache.ClearCache(GetUserInfoPrefix());
+            DataCache.ClearCache(GetUserProfilePrefix());
+        }
+
+        private static string GetUserInfoPrefix()
+        {
+            var prefixTokens = DataCache.UserCacheKey.Split('|');
+            return prefixTokens.Length > 0 ? prefixTokens[0] : "UserInfo";
+        }
+
+        private static string GetUserProfilePrefix()
+        {
+            var prefixTokens = DataCache.UserProfileCacheKey.Split('|');
+            return prefixTokens.Length > 0 ? prefixTokens[0] : "UserProfile";
         }
 
         /// -----------------------------------------------------------------------------
