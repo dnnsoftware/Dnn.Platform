@@ -11,9 +11,11 @@ import extensions from "./extensionsReducer";
 import template from "./templateReducer";
 import languages from "./languagesReducer";
 import pageList from "./pageListReducer";
+import searchList from "./searchListReducer";
 
 const rootReducer = combineReducers({
     pageList,
+    searchList,
     pagination,
     visiblePanel,
     pages,

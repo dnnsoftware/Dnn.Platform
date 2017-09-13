@@ -18,7 +18,6 @@ export class PersonaBarPageTreeParentExpand extends Component {
         );
     }
 
-
     render_parentExpandIcon(item){
         return (
             <PersonaBarExpandCollapseIcon isOpen={item.isOpen} item={item}/>
@@ -37,7 +36,7 @@ export class PersonaBarPageTreeParentExpand extends Component {
 
     render_li() {
         const {listItems} = this.props;
-
+        if(listItems && listItems.length > 0)
         return listItems.map((item)=>{
             return (
                 <li className="list-item-menu">

@@ -42,8 +42,9 @@ export class PersonaBarPageTreeview extends Component {
             onDragOver,
             onDragLeave,
             onDragEnd,
-            onMovePage
-
+            onMovePage,
+            setEmptyPageMessage,
+            Localization
         } = this.props;
 
         return (
@@ -62,7 +63,8 @@ export class PersonaBarPageTreeview extends Component {
                 onDragLeave={onDragLeave}
                 onDragEnd={onDragEnd}
                 onMovePage={onMovePage}
-
+                setEmptyPageMessage={setEmptyPageMessage}
+                Localization={Localization}
             />
         );
     }
@@ -125,10 +127,10 @@ export class PersonaBarPageTreeview extends Component {
             onDragEnter,
             onDragOver,
             onDragEnd,
-            draggedItem } = this.props;
+            draggedItem,
+            Localization} = this.props;
 
         const hotspotStyles = {
-
             position: "relative",
             zIndex: 9997,
             wordWrap: "break-word",
@@ -137,35 +139,46 @@ export class PersonaBarPageTreeview extends Component {
             height: "20px",
             marginTop: "-20px"
             //backgroundColor: "rgb(0,1,2,.5)"
-
         };
+
         let index = 0;
         let total = listItems.length;
         return listItems.map((item) => {
             const name = this.trimName(item);
             const shouldShowTooltip = /\.\.\./.test(name);
+            const canManagePage = (e, item, fn) => {
+                const message = Localization.get("NoPermissionManagePage");
+                item.canAdminPage ? fn(e, item) : this.props.setEmptyPageMessage(message);
+            };
+
             let activate = false;
             const onDragLeave = (e, item) => {
                 e.target.classList.remove("list-item-dragover");
             };
             index++;
+            const style = item.canManagePage ? { height: "28px", marginLeft:"15px" } : { height: "28px", marginLeft:"15px", cursor: "not-allowed" };
+
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.render_dropZone("before", item)}
                         <div
+                            style={style}
                             id={`list-item-title-${item.name}-${item.id}`}
-                            className={(item.selected) ? "list-item-highlight" : null}
-                            style={{ height: "28px", marginLeft:"15px" }}
-                            draggable="true"
-                            onDrop={(e) => { onDrop(item, e); }}
-                            onDrag={(e) => { onDrag(e); }}
-                            onDragOver={(e) => { onDragOver(e, item); }}
-                            onDragEnter={(e)=> onDragEnter(e)}
-                            onDragStart={(e) => { onDragStart(e, item); }}
-                            onDragLeave={(e) => onDragLeave(e, item)}
-                            onDragEnd={(e) => { onDragEnd(item, e); }}
-                            onClick={() => { onSelection(item.id); }}>
+                            className="dragged-proxy"
+                            draggable={ item.canManagePage ? "true" : "true"}
+                            onDrop={(e) => { canManagePage(e, item, onDrop); }}
+                            onDrag={(e) => { canManagePage(e, item, onDrag); }}
+                            onDragOver={(e) => { canManagePage(e, item, onDragOver); }}
+                            onDragEnter={(e)=> canManagePage(e, item, onDragEnter) }
+                            onDragStart={(e) => { canManagePage(e, item, onDragStart); }}
+                            onDragLeave={(e) => canManagePage(e, item, onDragLeave) }
+                            onDragEnd={(e) => { canManagePage(e, item, onDragEnd); }}
+                            onClick={() => { item.canManagePage ? onSelection(item.id) : null; }}
+                            >
+                            </div>
+
+                        <div style={style} className={(item.selected || item.onDragOverState) ? "list-item-highlight list-item-dragover": null}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
                                 className={`item-name`}
@@ -212,5 +225,7 @@ PersonaBarPageTreeview.propTypes = {
     getChildListItems: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,
     icons: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired
+    onSelect: PropTypes.func.isRequired,
+    setEmptyPageMessage: PropTypes.func.isRequired,
+    Localization: PropTypes.func.isRequired
 };

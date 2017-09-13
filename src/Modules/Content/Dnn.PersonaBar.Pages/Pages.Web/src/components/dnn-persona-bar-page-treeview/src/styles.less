@@ -8,6 +8,7 @@
             text-align: left;
         }
         .treeview-parent-expand-button, .treeview-parent-collapse-button {
+            height:28px;
             margin-top: -2px;
         }
     }
@@ -42,6 +43,15 @@
     font-family: inherit;
     cursor: pointer;
     padding: 15px;
+
+    img {
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
+    }
+
     .collapse-expand {
         transition: all .5s ease-out;
         font-size: 12px;
@@ -50,9 +60,11 @@
         padding-bottom: 20px;
         padding-left: 20px;
     }
+
     .initial {
         color: @alto;
     }
+
     .item-name {
         position: relative;
         top: -5px;
@@ -62,6 +74,7 @@
             display: inline;
         }
     }
+
     svg:hover {
         fill: @alto;
     }
@@ -79,7 +92,10 @@
     .parent-expand-button {
         display: inline-block;
         position: relative;
+        height:28px;
         left: 15px;
+        height:28px;
+
         div {
             width: 24px;
         }
@@ -90,8 +106,10 @@
     .parent-expand-icon {
         display: inline-block;
         width: 10px;
+        height:28px;
         margin-right: 10px;
         font-size: 14px;
+
     }
     .selection-arrow {
         display: inline-block;
@@ -103,6 +121,7 @@
         font-size: 18px;
         font-weight: bold;
         color: @curiousBlue;
+
         div {
             float: right;
             height: 20px;
@@ -137,6 +156,13 @@
 }
 
 .dnn-persona-bar-treeview-ul.tree {
+        img {
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
+    }
     ul:not(:first-child){
         li{
             margin-left:10px;
@@ -198,6 +224,14 @@
         display: none;
     }
 
+    .dragged-proxy{
+        position:absolute;
+        width:100%;
+        height:28px;
+        z-index:9998;
+        background-color: transparent;
+    }
+
     .dropZoneActive {
         margin: 0;
         padding: 0;
@@ -211,7 +245,7 @@
         transition: all .5s;
     }
     .dropZoneArea {
-        cursor: move;
+        cursor: pointer;
         height: 2px;
         width: 100%;
         text-align: center;
@@ -228,13 +262,19 @@
 
 .dnn-persona-bar-treeview-icon {
     width: 20px;
+    height:28px;
     display: inline-block;
+
+    div{
+        height:28px;
+    }
 }
 
 .dnn-persona-bar-treeview-dragged {
     -webkit-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+    border: 1px solid @curiousBlue;
     z-index: 1000;
     position: absolute;
     top: 200px;
@@ -242,8 +282,9 @@
     list-style: none;
     width: 200px;
     pointer-events: none;
-    cursor: move;
+    cursor: pointer;
     height: 20px;
+
     .item-name {
         display: inline;
         p {
@@ -256,7 +297,7 @@
     ul {
         display: none;
     }
-    .selection-arrow, .draft-pencil, .parent-expand-button {
+    .selection-arrow, .draft-pencil, .parent-expand-button, .dragged-proxy {
         display: none;
     }
 }

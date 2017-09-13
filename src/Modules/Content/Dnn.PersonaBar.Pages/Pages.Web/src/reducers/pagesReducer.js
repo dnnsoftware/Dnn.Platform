@@ -131,6 +131,12 @@ export default function pagesReducer(state = {
                 cachedPageCount: 0
             };
 
+        case ActionTypes.CLEAR_SELECTED_PAGE:
+            return {
+                ...state,
+                selectedPage: null
+            };
+
         default:
             return state;
     }

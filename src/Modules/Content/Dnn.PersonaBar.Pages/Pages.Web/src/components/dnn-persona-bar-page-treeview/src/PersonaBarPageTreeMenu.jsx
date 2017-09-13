@@ -25,6 +25,7 @@ export class PersonaBarPageTreeMenu extends Component {
             <PersonaBarPageTreeMenu
                 onAddPage={this.props.onAddPage}
                 onViewPage={this.props.onViewPage}
+                onViewEditPage={this.props.onViewEditPage}
                 onDuplicatePage={this.props.onDuplicatePage}
                 listItems={childListItems}
                 _traverse={this.props._traverse}
@@ -58,11 +59,11 @@ export class PersonaBarPageTreeMenu extends Component {
                     <div
                         className={(item.selected) ? "list-item-highlight" : null}
                         style={{ height: "28px" }}>
-
                         <div className="draft-pencil">
                             <PersonaBarSelectionArrow
                                 onAddPage={this.props.onAddPage}
                                 onViewPage={this.props.onViewPage}
+                                onViewEditPage={this.props.onViewEditPage}
                                 onDuplicatePage={this.props.onDuplicatePage}
                                 item={item}
                                 pageInContextComponents={this.props.pageInContextComponents}
@@ -89,6 +90,7 @@ export class PersonaBarPageTreeMenu extends Component {
 PersonaBarPageTreeMenu.propTypes = {
     onAddPage: PropTypes.func.isRequired,
     onViewPage: PropTypes.func.isRequired,
+    onViewEditPage: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
     _traverse: PropTypes.func.isRequired,
     listItems: PropTypes.array.isRequired,

@@ -30,7 +30,12 @@ import GridCell from "dnn-grid-cell";
 import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
+import { PagesSearchIcon, PagesVerticalMore, CalendarIcon } from "dnn-svg-icons";
+import Dropdown from "dnn-dropdown";
+import DayPicker from "./DayPicker/src/DayPicker";
+
 import "./style.less";
+
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
@@ -54,9 +59,13 @@ class App extends Component {
         this.state = {
             referral: "",
             referralText: "",
-            busy: false
+            busy: false,
+            headerDropdownSelection: "Save Page Template",
+            toggleSearchMoreFlyout:false,
+            toggleDropdownCalendar:null,
+            inSearch: false,
+            searchTerm: false
         };
-
     }
 
     componentDidMount() {
@@ -133,8 +142,6 @@ class App extends Component {
         window.dnn.utility.expandPersonaBarPage();
     }
 
-
-
     notifyErrorIfNeeded(newProps) {
         if (newProps.error !== this.props.error) {
             const errorMessage = (newProps.error && newProps.error.message) || Localization.get("AnErrorOccurred");
@@ -179,7 +186,7 @@ class App extends Component {
                                 if (child.id === update.tabId) {
                                     cachedItem = child;
                                     const arr1 = item.childListItems.slice(0, index);
-                                    const arr2 = item.childListItems.slice(index + 2);
+                                    const arr2 = item.childListItems.slice(index + 1);
                                     item.childListItems = [...arr1, ...arr2];
                                     item.childCount--;
                                     updateStore(list);
@@ -222,7 +229,6 @@ class App extends Component {
                         item.isOpen = true;
                         updateStore(list);
                     }
-
                 });
             };
 
@@ -250,31 +256,68 @@ class App extends Component {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
-    onAddPage(parentPage) {
-        const { props } = this;
-        const { selectedPage } = props;
-        let runUpdateStore = null;
-        let pageList = null;
+    onSearchClick(){
+        const {searchTerm} = this.state;
+        this.props.searchPageList(searchTerm);
+    }
 
-        this._traverse((item, list, updateStore) => {
-            item.selected = false;
-            pageList = list;
-            runUpdateStore = updateStore;
+    onSearchFocus(){
+
+    }
+
+    onSearchFieldChange(e){
+        this.setState({searchTerm:e.target.value}, ()=>{
+            const {searchTerm} = this.state;
+            switch(true){
+                case searchTerm.length > 3:
+                    this.onSearchClick();
+                    this.setState({inSearch:true});
+                return;
+                case searchTerm.length === 0:
+                    this.setState({inSearch:false});
+                return;
+
+            }
         });
+    }
 
-        runUpdateStore(pageList);
+    onSearchBlur(){
+        const {searchTerm} = this.state;
+        searchTerm ? this.setState({inSearch:true}) : this.setState({inSearch:false});
+    }
 
-        if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-            const onConfirm = () => this.props.getNewPage(parentPage);
-            utils.confirm(
-                Localization.get("CancelWithoutSaving"),
-                Localization.get("Close"),
-                Localization.get("Cancel"),
-                onConfirm);
+    onAddPage(parentPage) {
+        this.clearEmptyStateMessage();
 
-        } else {
-            props.getNewPage(parentPage);
-        }
+        const addPage = () => {
+            const { props } = this;
+            const { selectedPage } = props;
+            let runUpdateStore = null;
+            let pageList = null;
+
+            this._traverse((item, list, updateStore) => {
+                item.selected = false;
+                pageList = list;
+                runUpdateStore = updateStore;
+            });
+
+            runUpdateStore(pageList);
+
+            if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+                const onConfirm = () => this.props.getNewPage(parentPage);
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
+
+            } else {
+                props.getNewPage(parentPage);
+            }
+        };
+
+        const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
+        !parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
@@ -548,14 +591,12 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
-                    
                     this.getToRootParent();
                 });
                 this.selectPageSettingTab(0);
             }
         };
         const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
-
         (!selectedPageDirty) ? left() : right();
     }
 
@@ -567,8 +608,47 @@ class App extends Component {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
 
-    onViewPage(id, url) {
-        return PageActions.viewPage(id, url);
+    onDuplicatePage(item){
+        const message = Localization.get("NoPermissionCopyPage");
+        const duplicate = () => this.props.onDuplicatePage();
+        const noPermission = () => this.setEmptyStateMessage(message);
+        item.canCopyPage ? duplicate() : noPermission();
+    }
+
+    onViewEditPage(item) {
+        this.clearEmptyStateMessage();
+        const message = Localization.get("NoPermissionEditPage");
+        const viewPage = () => PageActions.viewPage(item.id, item.url);
+        const noPermission = () => this.setEmptyStateMessage(message);
+        item.canManagePage ? viewPage() : noPermission();
+    }
+
+    onViewPage(item) {
+        this.clearEmptyStateMessage();
+        const view = () => {
+            window.dnn.PersonaBar.closePanel();
+            window.parent.location=item.url;
+        };
+        const message = Localization.get("NoPermissionViewPage");
+        const noPermission = () => this.setEmptyStateMessage(message);
+        item.canViewPage ? view() : noPermission();
+    }
+
+    setEmptyStateMessage(emptyStateMessage) {
+        this.setState({emptyStateMessage});
+        this.props.clearSelectedPage();
+    }
+
+    clearEmptyStateMessage(){
+        this.setState({emptyStateMessage:null});
+    }
+
+    onSearchMoreFlyoutClick() {
+        this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout});
+    }
+
+    toggleDropdownCalendar(){
+        this.setState({toggleDropdownCalendar:!this.state.toggleDropdownCalendar});
     }
 
     render_PagesTreeViewEditor() {
@@ -582,10 +662,11 @@ class App extends Component {
     render_PagesDetailEditor() {
 
         const render_emptyState = () => {
+            const DefaultMessage = Localization.get("NoPageSelected");
             return (
                 <div className="empty-page-state">
                     <div className="empty-page-state-message">
-                        <h1>No page is currently selected</h1>
+                        <h1>{ this.state.emptyStateMessage || DefaultMessage }</h1>
                         <p>Select a page in the tree to manage its settings here.</p>
                     </div>
                 </div>
@@ -676,13 +757,167 @@ class App extends Component {
         );
     }
 
+    render_more_flyout(){
+        const options = [{value:true, label:"test"}];
+        const date = Date.now();
+        return(
+            <div className="search-more-flyout">
+                <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
+                    <h1>GENERAL FILTERS</h1>
+                </GridCell>
+                <GridCell columnSize={30} style={{paddingLeft: "10px"}}>
+                    <h1>TAG FILTERS</h1>
+                </GridCell>
+                <GridCell columnSize={70} style={{padding: "5px"}}>
+                    <GridCell columnSize={100} >
+                        <GridCell columnSize={50} style={{padding: "5px"}}>
+                             <Dropdown className="more-dropdown" options={options} label="Filter by Page Type" onSelect={(data) => console.log(data) } withBorder={true} />
+                        </GridCell>
+                        <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
+                            <Dropdown className="more-dropdown" options={options} label="Filter by Publish Status" onSelect={(data) => console.log(data) } withBorder={true} />
+                        </GridCell>
+                    </GridCell>
+                    <GridCell columnSize={100}>
+                        <GridCell columnSize={50} style={{padding: "5px"}}>
+                            <div className="date-picker">
+                                <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
+                                    <GridCell className="selected-date" columnSize={90}>
+                                        <p>Filter by Published Date Range</p>
+                                    </GridCell>
+                                    <GridCell columnSize={10}>
+                                        <div className="calendar-icon" dangerouslySetInnerHTML={{__html:CalendarIcon}} onClick={()=>this.toggleDropdownCalendar()}/>
+                                    </GridCell>
+
+                                    <div className={this.state.toggleDropdownCalendar ? "calendar-dropdown expand-down" : `calendar-dropdown ${this.state.toggleDropdownCalendar != null ? 'expand-up' : ''} ` }>
+                                        <GridCell columnSize={100} style={{padding:"20px"}}>
+                                            <GridCell columnSize={50}  className="calendar">
+                                                 <DayPicker/>
+                                            </GridCell>
+                                            <GridCell columnSize={50} className="calendar">
+                                                 <DayPicker/>
+                                            </GridCell>
+                                            <GridCell columnSize={100}>
+                                                <Button type="primary" onClick={()=>{}}>Apply</Button>
+                                            </GridCell>
+                                        </GridCell>
+                                    </div>
+                                </GridCell>
+                            </div>
+                        </GridCell>
+                        <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
+                            <Dropdown className="more-dropdown" options={options} label="Filter by Workflow" onSelect={(data) => console.log(data) } withBorder={true} />
+                        </GridCell>
+                    </GridCell>
+                </GridCell>
+                <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
+                        <textarea></textarea>
+                </GridCell>
+                <GridCell columnSize={100} style={{textAlign:"right"}}>
+                        <Button style={{marginRight: "5px"}} onClick={()=>{}}>Cancel</Button>
+                        <Button type="primary" onClick={()=>{}}>Save</Button>
+                </GridCell>
+            </div>);
+    }
+
+    render_searchResults(){
+        const {searchList} = this.props;
+        const render_card = (item) => {
+
+            return (
+                <div className="search-item-card">
+                    <div className="search-item-thumbnail">
+                        <img src={item.thumbnail} />
+                    </div>
+                    <div className="search-item-details">
+                        <h1>{item.name}</h1>
+                        <h2>{item.tabpath}</h2>
+                        <div className="search-item-details-list">
+                            <ul>
+                                <li>
+                                    <p>Page Type:</p>
+                                    <p>{item.pageType}</p>
+                                </li>
+                                <li>
+                                    <p>Publish Status:</p>
+                                    <p>{item.status}</p>
+                                </li>
+                                <li>
+                                    <p>Publish Date:</p>
+                                    <p>{item.publishDate}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="search-item-details-list">
+                            <ul>
+                                <li>
+                                    <p>Workflow:</p>
+                                    <p>{item.workflowName}</p>
+                                </li>
+                                <li>
+                                    <p>Tags:</p>
+                                    <p>{
+                                        item.tags.map((tag)=>{
+                                        return(
+                                            <span>
+                                                {tag},
+                                            </span>
+                                            );
+                                    })}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        return(
+            <GridCell columnSize={70} className="fade-in">
+                <GridCell columnSize={100} style={{padding:"20px"}}>
+                    <GridCell columnSize={100} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
+                        <p>{`${searchList.length} PAGES FOUND` }</p>
+                    </GridCell>
+                    <GridCell columnSize={100}>
+
+                        {searchList.map((item)=>{
+                            return render_card(item);
+                        })}
+                    </GridCell>
+                </GridCell>
+            </GridCell>
+        );
+    }
+
+    render_details(){
+        const {selectedPage} = this.props;
+        const {inSearch} = this.state;
+
+        switch(true){
+            case inSearch:
+                return this.render_searchResults();
+            case selectedPage && selectedPage.tabId === 0:
+                return this.render_addPageEditor();
+            case !selectedPage:
+            default:
+                return this.render_PagesDetailEditor();
+        }
+    }
 
     render() {
 
         const { props } = this;
         const { selectedPage } = props;
+        const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
+
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.isSuperUser();
+        let defaultLabel = "Save Page Template";
+        const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
+        const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});
+
+
+         /* eslint-disable react/no-danger */
+
 
         return (
             <div className="pages-app personaBar-mainContainer">
@@ -690,14 +925,42 @@ class App extends Component {
                     <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                            <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
+                            <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
-                        <GridCell columnSize={100} style={{ padding: "20px" }} >
+                         { toggleSearchMoreFlyout ?  this.render_more_flyout() : null}
+                        <GridCell columnSize={100} style={{padding:"20px"}}>
+                            <div className="search-container">
+                                <div className="search-box">
+                                    <div className="search-input">
+                                        <input
+                                            type="text"
+                                            onFocus={this.onSearchFocus.bind(this)}
+                                            onChange={this.onSearchFieldChange.bind(this)}
+                                            onBlur={this.onSearchBlur.bind(this)}
+                                            onKeyPress={(e)=>{e.key ==="Enter" ? this.onSearchClick() : null; }}
+                                            placeholder="Search"/>
+                                    </div>
+                                    <div
+                                        className="btn search-btn"
+                                        dangerouslySetInnerHTML={{ __html: PagesSearchIcon }}
+                                        onClick={this.onSearchClick.bind(this)}
+                                        >
+                                    </div>
+                                    <div
+                                        className="btn search-btn"
+                                        dangerouslySetInnerHTML={{ __html: PagesVerticalMore }}
+                                        onClick={()=>{this.onSearchMoreFlyoutClick(); }}
+                                        />
+                                </div>
+                            </div>
+                        </GridCell>
+                        <GridCell columnSize={100} style={{ padding: "0px 20px 20px 20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className={(selectedPage && selectedPage.tabId === 0) ? "tree-container disabled" : "tree-container"}>
+                                <div className={(selectedPage && selectedPage.tabId === 0 || inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
+                                            Localization={Localization}
                                             pageList={this.props.pageList}
                                             getChildPageList={this.props.getChildPageList}
                                             getPage={this.props.getPage.bind(this)}
@@ -705,17 +968,19 @@ class App extends Component {
                                             showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                             selectedPageDirty={this.props.selectedPageDirty}
                                             activePage={this.props.selectedPage}
+                                            setEmptyPageMessage={this.setEmptyStateMessage.bind(this)}
                                             setActivePage={this.setActivePage.bind(this)}
                                             saveDropState={this.onUpdatePage.bind(this)}
                                             onMovePage={this.onMovePage.bind(this)}
                                             onViewPage={this.onViewPage.bind(this)}
-                                            onDuplicatePage={this.props.onDuplicatePage}
+                                            onViewEditPage={this.onViewEditPage.bind(this)}
+                                            onDuplicatePage={this.onDuplicatePage.bind(this)}
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
                                     </div>
                                 </div>
-                                {(selectedPage && selectedPage.tabId === 0) ? this.render_addPageEditor() : this.render_PagesDetailEditor()}
+                                {this.render_details()}
                             </GridCell>
                         </GridCell>
                     </PersonaBarPage>
@@ -738,6 +1003,8 @@ class App extends Component {
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     pageList: PropTypes.array.isRequired,
+    searchList: PropTypes.array.isRequired,
+    searchPageList: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
@@ -785,12 +1052,15 @@ App.propTypes = {
     selectPage: PropTypes.func.isRequired,
     selectedPagePath: PropTypes.array.isRequired,
     onGetCachedPageCount: PropTypes.array.isRequired,
-    onClearCache: PropTypes.func.isRequired
+    onClearCache: PropTypes.func.isRequired,
+    clearSelectedPage: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
+ 
     return {
         pageList: state.pageList.pageList,
+        searchList: state.searchList.searchList,
         selectedView: state.visiblePanel.selectedPage,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
@@ -814,6 +1084,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
+        searchPageList: PageActions.searchPageList,
         getPage: PageActions.getPage,
         viewPage: PageActions.viewPage,
         getChildPageList: PageActions.getChildPageList,
@@ -844,7 +1115,9 @@ function mapDispatchToProps(dispatch) {
         getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
         selectPage: PageHierarchyActions.selectPage,
         onGetCachedPageCount: PageActions.getCachedPageCount,
-        onClearCache: PageActions.clearCache
+        onClearCache: PageActions.clearCache,
+        clearSelectedPage: PageActions.clearSelectedPage
+
     }, dispatch);
 }
 
