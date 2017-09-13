@@ -31,7 +31,7 @@ export default class TagInput extends Component {
     componentDidMount() {
         this.focusInput();
         document.addEventListener("keypress", this.onKeyDown, false);
-        document.addEventListener("click", this.handleClick, false);
+        document.addEventListener("click", this.handleClick, true);
     }
 
     componentWillUnmount() {
