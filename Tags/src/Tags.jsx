@@ -111,8 +111,9 @@ class Tags extends Component {
         const typingText = this.props.autoSuggest ? this.props.searchTagsPlaceholder : this.props.addTagsPlaceholder;
         return (
             <div className={className} 
-                onClick={this.onClick.bind(this) }
-                ref="tagsField" style={this.props.style}>
+                onClick={this.onClick.bind(this) }                
+                style={this.props.style}
+                ref={ref => this.containerRef = ref}>
                 <div type="text">
                     {Tags.length > 0 && Tags}
                     {!this.state.isInputVisible && Tags.length === 0 &&
@@ -126,9 +127,9 @@ class Tags extends Component {
                         opts={opts}
                         onFocus={this.props.onInputFocus}
                         newTagText={this.state.newTagText}
-                        suggestions={this.props.suggestions}
                         removeLastTag={this.removeLastTag.bind(this)}
-                        addTagsPlaceholder={this.props.addTagsPlaceholder} />}
+                        addTagsPlaceholder={this.props.addTagsPlaceholder}
+                        container={this.containerRef} />}
                 </div>
                 {this.state.isInputVisible && 
                     this.props.autoSuggest && 

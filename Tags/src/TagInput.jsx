@@ -10,14 +10,11 @@ const KEY = {
 export default class TagInput extends Component {
     constructor(props) {
         super(props);
-        this.onKeyDown = this.onKeyDown.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(e) {
-        if (!this.node) { return; }
-        
-        if (this.node.contains(e.target)) {
+        if (!this.props.container || this.props.container.contains(e.target)) {
             return;
         }   
 
@@ -30,30 +27,23 @@ export default class TagInput extends Component {
 
     componentDidMount() {
         this.focusInput();
-        document.addEventListener("keypress", this.onKeyDown, false);
         document.addEventListener("click", this.handleClick, true);
     }
 
     componentWillUnmount() {
-        document.removeEventListener("keypress", this.onKeyDown, false);
         this.close();
-        document.removeEventListener("click", this.handleClick, false);
-        this.node = null;
+        document.removeEventListener("click", this.handleClick, true);
     }
 
     addTag(tag) {
-        if (typeof (this.props.addTag) === "function") {
-            this.props.addTag(tag);    
-        }
+        this.props.addTag(tag);
         
         const inputField = this.refs.inputField;
         setTimeout(() => { inputField.focus(); }, 0);
     }
 
     onChange(event) {
-        if (typeof(this.props.onAddingNewTagChange) === "function") {
-            this.props.onAddingNewTagChange(event.target.value);
-        }
+        this.props.onAddingNewTagChange(event.target.value);        
     }
 
     close() {
@@ -94,8 +84,7 @@ export default class TagInput extends Component {
         const {opts} = this.props;
 
         return (
-            <div
-                ref={node => this.node = node}>
+            <div>
                 <div className="input-container">
                     <input
                         ref="inputField"
@@ -121,5 +110,6 @@ TagInput.propTypes = {
     onClose: PropTypes.func.isRequired,
     removeLastTag: PropTypes.func.isRequired,
     addTagsPlaceholder: PropTypes.string.isRequired,
-    onFocus: PropTypes.func
+    onFocus: PropTypes.func,
+    container: PropTypes.object
 };
