@@ -917,8 +917,7 @@ class App extends Component {
         let defaultLabel = "Save Page Template";
         const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
         const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});
-
-
+        
          /* eslint-disable react/no-danger */
 
 
