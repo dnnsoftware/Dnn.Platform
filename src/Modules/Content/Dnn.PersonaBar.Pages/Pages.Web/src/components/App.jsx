@@ -129,6 +129,7 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
+        window.dnn.utility.setConfirmationDialogPosition();
     }
 
     componentWillUnmount() {
@@ -140,7 +141,7 @@ class App extends Component {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
-        window.dnn.utility.setConfirmationDialogPosition();
+
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -719,7 +720,7 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-        console.log(props);
+
 
         if (!props.selectedPageSettingTab || props.selectedPageSettingTab <= 0)
             this.selectPageSettingTab(0);
@@ -797,7 +798,7 @@ class App extends Component {
                                                  <DayPicker/>
                                             </GridCell>
                                             <GridCell columnSize={50} className="calendar">
-                                                 <DayPicker/>
+                                                 <DayPicker onDayClick={(data) => console.log(data) } />
                                             </GridCell>
                                             <GridCell columnSize={100}>
                                                 <Button type="primary" onClick={()=>{}}>Apply</Button>
@@ -917,9 +918,10 @@ class App extends Component {
         let defaultLabel = "Save Page Template";
         const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
         const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});
-        
+
          /* eslint-disable react/no-danger */
 
+         console.log(utils);
 
         return (
             <div className="pages-app personaBar-mainContainer">
