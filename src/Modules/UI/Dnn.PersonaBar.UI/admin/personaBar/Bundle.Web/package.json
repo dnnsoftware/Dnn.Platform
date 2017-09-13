@@ -26,6 +26,7 @@
     "dnn-collapsible-row": "0.0.5",
     "dnn-content-load-wrapper": "0.0.2",
     "dnn-date-picker": "0.8.2",
+    "dnn-day-picker": "0.1.1",
     "dnn-dropdown": "1.0.14",
     "dnn-dropdown-with-error": "0.0.6",
     "dnn-editable-field": "0.0.14",
@@ -53,7 +54,7 @@
     "dnn-single-line-input-with-error": "0.0.15",
     "dnn-slider": "0.0.1",
     "dnn-sortable": "0.0.4",
-    "dnn-svg-icons": "0.1.15",
+    "dnn-svg-icons": "0.1.19",
     "dnn-switch": "0.1.3",
     "dnn-tabs": "0.0.6",
     "dnn-tags": "0.0.26",
@@ -97,5 +98,8 @@
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "dnn-day-picker": "^0.1.1"
   }
 }
