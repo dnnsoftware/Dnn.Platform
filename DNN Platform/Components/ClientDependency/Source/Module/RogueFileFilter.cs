@@ -101,6 +101,7 @@ namespace ClientDependency.Core.Module
                 .CompositeFileElement
                 .RogueFileCompression;
 
+           //*** DNN related change *** begin
             return (from m in rogueFiles.Cast<RogueFileCompressionElement>()
                     let reg = m.FilePath == "*" ? ".*" : m.FilePath
                     let matched = Regex.IsMatch(rawUrl, reg, RegexOptions.IgnoreCase)
@@ -108,6 +109,7 @@ namespace ClientDependency.Core.Module
                     let isGood = m.ExcludePaths.Cast<RogueFileCompressionExcludeElement>().Select(e => Regex.IsMatch(rawUrl, e.FilePath, RegexOptions.IgnoreCase)).All(excluded => !excluded)
                     where isGood
                     select m).FirstOrDefault();
+            //*** DNN related change *** end
         }
 
         /// <summary>
@@ -202,7 +204,9 @@ namespace ClientDependency.Core.Module
                         return m.ToString();
                     }
 
+                //*** DNN related change *** begin
                 });
+                //*** DNN related change *** begin
 
             return html;
         }

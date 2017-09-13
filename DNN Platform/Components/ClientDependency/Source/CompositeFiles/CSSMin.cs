@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ClientDependency.Core.CompositeFiles
@@ -11,4 +14,5 @@ namespace ClientDependency.Core.CompositeFiles
             return CssHelper.MinifyCss(body);
         }
     }
+
 }
