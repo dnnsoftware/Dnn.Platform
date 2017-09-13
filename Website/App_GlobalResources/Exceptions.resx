@@ -498,4 +498,10 @@
   <data name="AlreadyFollowingUser.Text" xml:space="preserve">
     <value>You are already following this user.</value>
   </data>
+  <data name="IPAddressIncorrect.Text" xml:space="preserve">
+    <value>IP address is not in correct format</value>
+  </data>
+  <data name="SubnetMaskIncorrect.Text" xml:space="preserve">
+    <value>Subnet mask is not in correct format</value>
+  </data>
 </root>
