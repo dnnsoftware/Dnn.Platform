@@ -10,7 +10,6 @@ const KEY = {
 export default class TagInput extends Component {
     constructor(props) {
         super(props);
-        this.onKeyDown = this.onKeyDown.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -28,29 +27,23 @@ export default class TagInput extends Component {
 
     componentDidMount() {
         this.focusInput();
-        document.addEventListener("keypress", this.onKeyDown, false);
         document.addEventListener("click", this.handleClick, true);
     }
 
     componentWillUnmount() {
-        document.removeEventListener("keypress", this.onKeyDown, false);
         this.close();
         document.removeEventListener("click", this.handleClick, true);
     }
 
     addTag(tag) {
-        if (typeof (this.props.addTag) === "function") {
-            this.props.addTag(tag);    
-        }
+        this.props.addTag(tag);
         
         const inputField = this.refs.inputField;
         setTimeout(() => { inputField.focus(); }, 0);
     }
 
     onChange(event) {
-        if (typeof(this.props.onAddingNewTagChange) === "function") {
-            this.props.onAddingNewTagChange(event.target.value);
-        }
+        this.props.onAddingNewTagChange(event.target.value);        
     }
 
     close() {
