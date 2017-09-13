@@ -357,6 +357,7 @@ namespace ClientDependency.Core.Controls
 			var iClientDependency = typeof(IClientDependencyFile);
             foreach (var ctl in ctls)
 			{
+                //*** DNN related change *** begin
                 //// find dependencies
                 //var controlType = ctl.GetType();
 
@@ -369,6 +370,7 @@ namespace ClientDependency.Core.Controls
                     var include = (IClientDependencyFile)ctl;
                     dependencies.Add(include);
                 }
+                //*** DNN related change *** end
                 
 			}
 

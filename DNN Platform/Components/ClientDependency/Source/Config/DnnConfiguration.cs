@@ -1,4 +1,4 @@
-﻿
+﻿//*** DNN related change *** the whole file
 namespace ClientDependency.Core.Config
 {
     using System;

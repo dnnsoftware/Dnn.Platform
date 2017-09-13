@@ -13,7 +13,11 @@ namespace ClientDependency.Core.CompositeFiles
 
 
         private readonly static object Lock = new object();
+
+        //*** DNN related change *** begin
         private static DnnConfiguration dnnConfig = new DnnConfiguration();
+        //*** DNN related change *** end
+
         /// <summary>
         /// When building composite includes, it creates a Base64 encoded string of all of the combined dependency file paths
         /// for a given composite group. If this group contains too many files, then the file path with the query string will be very long.
@@ -72,12 +76,14 @@ namespace ClientDependency.Core.CompositeFiles
                 //parse using the parser
                 if (!PathBasedUrlFormatter.Parse(pathFormat, path, out fileKey, out type, out version))
                 {
+                    //*** DNN related change *** begin
                     if (context.IsDebuggingEnabled || dnnConfig.IsDebugMode())
                     {
                         throw new FormatException("Could not parse the URL path: " + path + " with the format specified: " + pathFormat);
                     }
 
                     throw new HttpException(404, "Path not found");
+                    //*** DNN related change *** end
                 }
             }
 
@@ -172,6 +178,7 @@ namespace ClientDependency.Core.CompositeFiles
 
                             if (filePaths == null)
                             {
+                                //*** DNN related change *** begin
                                 if (context.IsDebuggingEnabled || dnnConfig.IsDebugMode())
                                 {
                                     throw new KeyNotFoundException("no map was found for the dependency key: " + fileset +
@@ -179,6 +186,7 @@ namespace ClientDependency.Core.CompositeFiles
                                 }
 
                                 throw new HttpException(404, "Path not found");
+                                //*** DNN related change *** end
                             }
 
                             var filePathArray = filePaths.ToArray();

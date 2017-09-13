@@ -8,7 +8,9 @@ using ClientDependency.Core.CompositeFiles;
 
 namespace ClientDependency.Core
 {
+    //*** DNN related change *** begin
     public static class CssHelper
+    //*** DNN related change *** end
     {
         private static readonly Regex ImportCssRegex = new Regex(@"@import url\((.+?)\);?", RegexOptions.Compiled);
         private static readonly Regex CssUrlRegex = new Regex(@"url\(((?![""']?data:|[""']?#).+?)\)", RegexOptions.Compiled);

@@ -11,6 +11,7 @@ namespace ClientDependency.Core
     internal static class DependencySorter
     {
 
+       //*** DNN related change *** begin
         public static IList<IClientDependencyFile> FilterDependencies(IList<IClientDependencyFile> dependencies)
         {
             if (dependencies.Any(f => f.Name != ""))
@@ -33,6 +34,7 @@ namespace ClientDependency.Core
             }
             return dependencies;
         }
+        //*** DNN related change *** end
 
         /// <summary>
         /// Sort the items by their priority and their index they currently exist in the collection

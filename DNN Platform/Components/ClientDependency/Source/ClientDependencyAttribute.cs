@@ -18,7 +18,9 @@ namespace ClientDependency.Core
             Group = Constants.DefaultGroup;
 			PathNameAlias = "";
             HtmlAttributes = new Dictionary<string, string>();
+            //*** DNN related change *** begin
             ForceVersion = false;
+            //*** DNN related change *** end
         }
 
         public ClientDependencyAttribute(ClientDependencyType dependencyType, string fullFilePath)
@@ -77,9 +79,11 @@ namespace ClientDependency.Core
 
             HtmlAttributes = new Dictionary<string, string>();
 
+            //*** DNN related change *** begin
             Name = "";
             Version = "";
             ForceVersion = false;
+            //*** DNN related change *** end
         }
 
 
@@ -138,6 +142,7 @@ namespace ClientDependency.Core
         /// <value>The type of the dependency.</value>
         public ClientDependencyType DependencyType { get; set; }
 
+        //*** DNN related change *** begin
         /// <summary>
         /// Name of a framework such as jQuery, Bootstrap, Angular, etc.
         /// </summary>
@@ -154,6 +159,7 @@ namespace ClientDependency.Core
         /// choices made by module developers or the framework.
         /// </summary>
         public bool ForceVersion { get; set; }
+        //*** DNN related change *** end
 
         protected bool Equals(ClientDependencyAttribute other)
         {

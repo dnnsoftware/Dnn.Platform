@@ -23,7 +23,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
         }
 
         /// <summary>
-        /// Override because we need to ensure the & is replaced with &amp; This is only required for this one w3c compliancy, the URL itself is a valid URL.
+        /// Override because we need to ensure the &amp; is replaced with &amp;amp; This is only required for this one w3c compliancy, the URL itself is a valid URL.
         /// </summary>
         /// <param name="allDependencies"></param>
         /// <param name="paths"></param>
@@ -96,7 +96,9 @@ namespace ClientDependency.Core.FileRegistration.Providers
             return sb.ToString();
         }
 
-        private void RenderCssComposites(HttpContextBase http, IDictionary<string, string> htmlAttributes, StringBuilder sb, IEnumerable<IClientDependencyFile> cssDependencies)
+        //*** DNN related change *** begin
+        protected override void RenderCssComposites(HttpContextBase http, IDictionary<string, string> htmlAttributes, StringBuilder sb, IEnumerable<IClientDependencyFile> cssDependencies)
+        //*** DNN related change *** end
         {
             var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
                 cssDependencies,

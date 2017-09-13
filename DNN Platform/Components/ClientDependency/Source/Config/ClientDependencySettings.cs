@@ -134,7 +134,6 @@ namespace ClientDependency.Core.Config
         {
             get
             {
-#pragma warning disable 618
                 if (_fileBasedDependencyExtensionList == null)
                 {
                     //Here we are checking for backwards compatibility config sections.
@@ -152,8 +151,8 @@ namespace ClientDependency.Core.Config
 
                     //always force uppercase
                     _fileBasedDependencyExtensionList = _fileBasedDependencyExtensionList.Select(x => x.ToUpper()).Distinct().ToList();
+
                 }
-#pragma warning restore 618
                 return _fileBasedDependencyExtensionList;
             }
             set
@@ -196,11 +195,13 @@ namespace ClientDependency.Core.Config
                     _version = ConfigSection.Version;
                 }
 
+                //*** DNN related change *** begin
                 //grab any settings from dnn
                 var dnnConfig = new DnnConfiguration();
                 var dnnVersion = dnnConfig.GetVersion();
 
                 return dnnVersion == null ? _version.Value : dnnVersion.Value;
+                //*** DNN related change *** end
             }
             set { _version = value; }
         }

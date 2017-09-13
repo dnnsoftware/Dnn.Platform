@@ -61,7 +61,9 @@ namespace ClientDependency.Core
                     
                     return m.ToString();
 
+                //*** DNN related change *** begin
                 });
+                //*** DNN related change *** end
 
             html = Regex.Replace(html, cssMarkupRegex,
                 (m) =>
@@ -88,7 +90,9 @@ namespace ClientDependency.Core
 
                     return m.ToString();
 
+                //*** DNN related change *** begin
                 });
+                //*** DNN related change *** end
 
 
             var replacedArgs = new PlaceholdersReplacedEventArgs(currentContext, html);

@@ -32,7 +32,9 @@ namespace ClientDependency.Core.FileRegistration.Providers
         /// By default this is true but can be overriden (in either config or code). 
         /// Composite files are never enabled with compilation debug="true" however.
         /// </summary>
+        //*** DNN related change *** begin
         public virtual bool EnableCompositeFiles { get; set; }
+        //*** DNN related change *** end
 
         /// <summary>
         /// By default this is false. Enabling this setting will output each dependeny as its own file in the markup instead of bundling them
@@ -490,11 +492,13 @@ namespace ClientDependency.Core.FileRegistration.Providers
             {
                 //sort both the js and css dependencies properly
 
+                //*** DNN related change *** begin
                 var jsDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
                     group.Where(x => x.DependencyType == ClientDependencyType.Javascript).ToList()));
 
                 var cssDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
                     group.Where(x => x.DependencyType == ClientDependencyType.Css).ToList()));
+                //*** DNN related change *** end
 
                 //render
                 WriteStaggeredDependencies(cssDependencies, http, cssBuilder, RenderCssDependencies, RenderSingleCssFile);
