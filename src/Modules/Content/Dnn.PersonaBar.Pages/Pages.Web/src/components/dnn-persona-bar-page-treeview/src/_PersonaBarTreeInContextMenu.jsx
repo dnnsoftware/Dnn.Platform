@@ -88,6 +88,9 @@ export class PersonaBarTreeInContextMenu extends Component {
             { key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick },
             { key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }
         ];
+
+        console.log(item);
+
         if (this.props.pageInContextComponents) {
             visibleMenus = visibleMenus.concat(this.props.pageInContextComponents && this.props.pageInContextComponents || []);
         }

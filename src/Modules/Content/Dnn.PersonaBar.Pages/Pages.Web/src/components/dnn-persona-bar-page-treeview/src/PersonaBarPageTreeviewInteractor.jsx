@@ -185,9 +185,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const element = this.getListItemLI(item);
         this.clonedElement = element.cloneNode(true);
         this.clonedElement.id = "cloned";
-        //this.clonedElement.style.transition = "all";
-        this.clonedElement.style.top = `${e.pageY}px`;
-        this.clonedElement.style.left = `${e.pageX}px`;
+        this.clonedElement.style.transition = "all";
+        this.clonedElement.style.top = `${this.state.pageY}px`;
+        this.clonedElement.style.left = `${this.state.pageX}px`;
         this.clonedElement.classList.add("dnn-persona-bar-treeview-dragged");
         document.body.appendChild(this.clonedElement);
     }
@@ -244,8 +244,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             const elm = this.clonedElement;
     
             e = {pageX, pageY};
-            elm.style.top = `${e.pageY}px`;
-            elm.style.left = `${e.pageX}px`;
+            elm.style.top = `${e.pageY-10}px`;
+            elm.style.left = `${e.pageX-10}px`;
             setTimeout(() => this.setState({ dragDebounce: false}), this.state.debounceAmount);
         };
 
@@ -341,7 +341,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         };
 
         const right = () => null;
-
         (item.id !== this.state.draggedItem.id) ? left(): right();
     }
 
@@ -632,7 +631,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className = "dnn-persona-bar-treeview-ul tree" >
+            <span className = "dnn-persona-bar-treeview-ul tree" onMouseOver={(e)=> this.setState({pageX:e.pageX, pageY:e.pageY})} >
                 { this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={ this.state.draggedItem }

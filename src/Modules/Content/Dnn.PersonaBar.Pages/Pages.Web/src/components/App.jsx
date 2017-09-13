@@ -140,6 +140,7 @@ class App extends Component {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
+        window.dnn.utility.setConfirmationDialogPosition();
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -676,11 +677,11 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const { props, state } = this;
-
+            const {isContentLocalizationEnabled} = props;
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
-                    AllowContentLocalization={(d) => { }}
+                    AllowContentLocalization={isContentLocalizationEnabled}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
@@ -718,6 +719,8 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
+        console.log(props);
+
         if (!props.selectedPageSettingTab || props.selectedPageSettingTab <= 0)
             this.selectPageSettingTab(0);
         return (
@@ -922,7 +925,7 @@ class App extends Component {
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
-                    <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
+                    <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
