@@ -227,6 +227,10 @@ a.plainbtn {
     display: none;
 }
 
+.confirmation-dialog-full-width-center{
+    left:400px!important;
+}
+
 #confirmation-dialog {
     left: 265px;
     box-sizing: border-box;
@@ -1231,7 +1235,7 @@ only screen and (min-width: 768px) and (max-width: 1024px)   {
 
 .socialpanelbody {
     z-index: 1000;
-	margin-top: 103px;
+    margin-top: 103px;
 }
 
 .ie .socialpanelbody {
@@ -1440,7 +1444,7 @@ ul.tabControl {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.65);
-	z-index: 9999;
+    z-index: 9999;
 }
 .dnnFormPopup {
     position: absolute;
@@ -1450,7 +1454,7 @@ ul.tabControl {
     box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.75);
     border-radius: 7px;
     outline: none;
-	z-index: 100000;
+    z-index: 100000;
 }
     /* Popup header */
 .dnnFormPopup .ui-dialog-titlebar {
@@ -1478,21 +1482,21 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
     background-position: 4px 4px;
     border: 3px solid #fff;
     text-indent: -9999em;
-	min-width: 0 !important;
+    min-width: 0 !important;
     top: 20px;
-	right: 22px;
-	background: #092836 url('../images/icon-close-dialog.png') no-repeat;
-	border: none;
-	width: 20px;
-	height: 20px;
+    right: 22px;
+    background: #092836 url('../images/icon-close-dialog.png') no-repeat;
+    border: none;
+    width: 20px;
+    height: 20px;
     outline: none;
 }
 div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
-	background-color: #092836;
-	cursor: pointer;
+    background-color: #092836;
+    cursor: pointer;
 }
 .dnnFormPopup .ui-resizable-se {
-	display: none !important;
+    display: none !important;
 }
 .dnnFormPopup .ui-dialog-content {
     position: relative;
@@ -1502,8 +1506,8 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     background: #fff;
     zoom: 1;
     margin: 0 -18px -18px -18px;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .dnnFormPopup .ui-dialog-buttonpane {
@@ -1630,19 +1634,19 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 
 
 /* BREADCRUMB STYLES */
-.breadcrumbs-container {	
-	font-size: 0;
-	line-height: 0;
+.breadcrumbs-container {    
+    font-size: 0;
+    line-height: 0;
     text-transform: uppercase;
     font-weight: bold;
 }
 .breadcrumbs-container div {
-	display: inline-block;	
-	height: 32px;
-	line-height: 32px;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	text-decoration: none;
-	font-size: 14px;
+    display: inline-block;    
+    height: 32px;
+    line-height: 32px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    font-size: 14px;
     max-width: 20%;
     color: #4B4E4F;
 }
@@ -1660,15 +1664,15 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 .breadcrumbs-container .more:hover {
     background-image: url(../images/more_hover.svg); 
 }
-.breadcrumbs-container > div:first-child:last-child {	
-	width: 150px;
-	margin-left: 0;
+.breadcrumbs-container > div:first-child:last-child {    
+    width: 150px;
+    margin-left: 0;
 }
 .breadcrumbs-container > div:first-child:not(:last-child) {
-	padding-right: 10px;
-	position: relative;
-	display: inline-block;
-	cursor: default;
+    padding-right: 10px;
+    position: relative;
+    display: inline-block;
+    cursor: default;
 }
 
 .breadcrumbs-container > div:not(:last-child)::after {
@@ -1684,21 +1688,21 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 }
 
 .breadcrumbs-container > div:not(:first-child):not(:last-child) {
-	padding-right: 10px;
-	position: relative;
-	margin-left: 18px;
-	box-sizing: border-box;
-	cursor: default;
+    padding-right: 10px;
+    position: relative;
+    margin-left: 18px;
+    box-sizing: border-box;
+    cursor: default;
 }
 
 .breadcrumbs-container > div:last-child {
     color: #1E88C3;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	text-decoration: none;
-	font-size: 14px;
-	padding-right: 10px;
-	position: relative;
-	margin-left: 18px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    font-size: 14px;
+    padding-right: 10px;
+    position: relative;
+    margin-left: 18px;
 }
 
 .breadcrumbs-container div > span {
