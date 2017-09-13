@@ -490,11 +490,11 @@ namespace ClientDependency.Core.FileRegistration.Providers
             {
                 //sort both the js and css dependencies properly
 
-                var jsDependencies = DependencySorter.SortItems(
-                    group.Where(x => x.DependencyType == ClientDependencyType.Javascript).ToList());
+                var jsDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
+                    group.Where(x => x.DependencyType == ClientDependencyType.Javascript).ToList()));
 
-                var cssDependencies = DependencySorter.SortItems(
-                    group.Where(x => x.DependencyType == ClientDependencyType.Css).ToList());
+                var cssDependencies = DependencySorter.SortItems(DependencySorter.FilterDependencies(
+                    group.Where(x => x.DependencyType == ClientDependencyType.Css).ToList()));
 
                 //render
                 WriteStaggeredDependencies(cssDependencies, http, cssBuilder, RenderCssDependencies, RenderSingleCssFile);

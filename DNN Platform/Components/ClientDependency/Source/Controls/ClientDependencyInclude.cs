@@ -83,6 +83,16 @@ namespace ClientDependency.Core.Controls
                 throw new NullReferenceException("Both File and Type properties must be set");
         }
 
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (AddTag || this.Context.IsDebuggingEnabled)
+            {
+                writer.Write("<!--CDF({0}|{1})-->", DependencyType, FilePath);
+            }
+
+            base.Render(writer);
+        }
+
         protected bool Equals(ClientDependencyInclude other)
         {
             return string.Equals(FilePath, other.FilePath, StringComparison.InvariantCultureIgnoreCase) && DependencyType == other.DependencyType && Priority == other.Priority && Group == other.Group && string.Equals(PathNameAlias, other.PathNameAlias, StringComparison.InvariantCultureIgnoreCase) && string.Equals(ForceProvider, other.ForceProvider) && Equals(HtmlAttributes, other.HtmlAttributes);
