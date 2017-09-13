@@ -4,7 +4,7 @@ import "./style.less";
 
 
 const DayPicker = (props) => {
-    console.log(props);
+ 
     const {onDayClick} = props;
     return(
         <div className="dnn-day-picker">

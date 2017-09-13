@@ -72,6 +72,7 @@ class App extends Component {
         const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
+        window.dnn.utility.setConfirmationDialogPosition();
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
@@ -129,7 +130,7 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
-        window.dnn.utility.setConfirmationDialogPosition();
+
     }
 
     componentWillUnmount() {
@@ -798,7 +799,7 @@ class App extends Component {
                                                  <DayPicker/>
                                             </GridCell>
                                             <GridCell columnSize={50} className="calendar">
-                                                 <DayPicker onDayClick={(data) => console.log(data) } />
+                                                 <DayPicker onDayClick={(data) => {}} />
                                             </GridCell>
                                             <GridCell columnSize={100}>
                                                 <Button type="primary" onClick={()=>{}}>Apply</Button>
@@ -921,7 +922,7 @@ class App extends Component {
 
          /* eslint-disable react/no-danger */
 
-         console.log(utils);
+
 
         return (
             <div className="pages-app personaBar-mainContainer">
