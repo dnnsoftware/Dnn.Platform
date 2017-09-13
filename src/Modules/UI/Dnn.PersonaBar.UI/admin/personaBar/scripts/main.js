@@ -475,16 +475,16 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             return config.siteRoot || "/";
         }
 
-        function saveBtnEditSettings() {
+        function saveBtnEditSettings(success, error) {
             saveUserSetting({
                 expandPersonaBar: false,
                 activePath: null,
                 activeIdentifier: null
-            });
+            }, success, error);
         }
 
-        function saveUserSetting(settings) {
-            util.persistent.save(settings);
+        function saveUserSetting(settings, success, error) {
+            util.persistent.save(settings, success, error);
         }
 
         function inLockEditMode() {
@@ -870,16 +870,18 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                                 if (config.userMode !== 'Edit') {
                                     $btnEdit.on('click', function handleEdit() {
-                                        function toogleUserMode(mode) {
+                                        function toogleUserMode(mode, successCallback) {
                                             util.sf.moduleRoot = 'internalservices';
                                             util.sf.controller = "controlBar";
-                                            util.sf.post('ToggleUserMode', { UserMode: mode }, function handleToggleUserMode() {
-                                                window.parent.location.reload();
-                                            });
+                                            util.sf.post('ToggleUserMode', { UserMode: mode }, successCallback);
                                         };
                                         util.closePersonaBar(function () {
-                                            toogleUserMode('EDIT');
-                                            saveBtnEditSettings();
+                                            toogleUserMode('EDIT', function() {
+                                                function reloadPage() {
+                                                    window.parent.location.reload();
+                                                }
+                                                saveBtnEditSettings(reloadPage, reloadPage);
+                                            });
                                         });
                                     });
                                 } else {
