@@ -149,51 +149,44 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 parentBody.style.overflow = "auto";
                 body.style.overflow = "hidden";
 
-                function closeCallback() {
-                    inAnimation = true;
-                    $personaBarPlaceholder.hide();
-                    self.leaveCustomModules();
-                    var $activePanel = $('#' + utility.getPanelIdFromPath(activePath));
-                    $activePanel.animate({ left: -860 }, 189, 'linear', function () {
-                        $('.socialpanel').css({ left: -860 }).hide();
-                        $mask.animate({
-                            opacity: 0.0
-                        }, 200, function () {
-                            $iframe.width(personaBarMenuWidth);
+                inAnimation = true;
+                $personaBarPlaceholder.hide();
+                self.leaveCustomModules();
+                var $activePanel = $('#' + utility.getPanelIdFromPath(activePath));
+                $activePanel.animate({ left: -860 }, 189, 'linear', function () {
+                    $('.socialpanel').css({ left: -860 }).hide();
+                    $mask.animate({
+                        opacity: 0.0
+                    }, 200, function () {
+                        $iframe.width(personaBarMenuWidth);
 
-                            // for mobile pad device...
-                            if (onTouch) {
-                                iframe.style["min-width"] = "0";
-                                iframe.style.position = "fixed";
-                            }
+                        // for mobile pad device...
+                        if (onTouch) {
+                            iframe.style["min-width"] = "0";
+                            iframe.style.position = "fixed";
+                        }
 
-                            $mask.css("display", "none");
-                            $showSiteButton.hide();
-                            activePath = null;
-                            inAnimation = false;
-                            $(document).unbind('keyup');
+                        $mask.css("display", "none");
+                        $showSiteButton.hide();
+                        activePath = null;
+                        inAnimation = false;
+                        $(document).unbind('keyup');
 
-                            eventEmitter.emitClosePanelEvent();
+                        eventEmitter.emitClosePanelEvent();
 
-                            if (typeof callback === 'function') {
-                                callback();
-                            }
-                        });
+                        if (typeof callback === 'function') {
+                            callback();
+                        }
                     });
-                };
+                });
 
-                if (keepSelection) {
-                    closeCallback();
-                } else {
-                    self.persistent.save({
+                if (!keepSelection) {
+                    saveUserSetting({
                         expandPersonaBar: false
-                    }, closeCallback);
+                    });
                 }
             },
             loadPanel: function handleLoadPanel(identifier, params) {
-                var savePersistentCallback;
-                this.openSocialTasks();
-
                 if (inAnimation) return;
 
                 var $menuItem = $('ul.personabarnav').find('[id="' + identifier + '"]');
@@ -233,7 +226,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 if (activePath === path && activemodule === moduleName) {
                     return;
                 }
-
+                $showSiteButton.hide();
                 var $menuItems = $(".btn_panel");
                 var $hoverMenuItems = $(".hovermenu > ul > li");
                 
@@ -262,49 +255,46 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var template = path;
 
                 if ($mask.css("display") === 'none') {
-                    savePersistentCallback = function () {
-                        activePath = path;
-                        activemodule = moduleName;
-                        $showSiteButton.show();
-                        eventEmitter.emitOpenPanelEvent();
+                    activePath = path;
+                    activemodule = moduleName;
+                    eventEmitter.emitOpenPanelEvent();
 
-                        iframe.style.width = "100%";
-                        parentBody.style.overflow = "hidden";
-                        body.style.overflow = 'auto';
+                    iframe.style.width = "100%";
+                    parentBody.style.overflow = "hidden";
+                    body.style.overflow = 'auto';
 
-                        // for mobile pad device...
-                        if (onTouch) {
-                            iframe.style["min-width"] = "1245px";
-                            iframe.style.position = "fixed";
-                        }
+                    // for mobile pad device...
+                    if (onTouch) {
+                        iframe.style["min-width"] = "1245px";
+                        iframe.style.position = "fixed";
+                    }
 
-                        $mask.css("display", "block");
-                        inAnimation = true;
-                        $mask.animate({
-                            opacity: 0.85
-                        }, 200, function () {
-                            $panel.show().delay(100).animate({ left: personaBarMenuWidth }, 189, 'linear', function () {
-                                inAnimation = false;
-                                $personaBarPlaceholder.show();
-                                self.loadTemplate(folderName, template, $panel, params, function () {
-                                    self.panelLoaded(params);
-                                });
-                                $(document).keyup(function (e) {
-                                    if (e.keyCode === 27) {
-                                        e.preventDefault();
-                                        if (!window.dnn.stopEscapeFromClosingPB) {
-                                            util.closePersonaBar(null, true);
-                                        }
+                    $mask.css("display", "block");
+                    inAnimation = true;
+                    $mask.animate({
+                        opacity: 0.85
+                    }, 200, function () {
+                        $panel.show().delay(100).animate({ left: personaBarMenuWidth }, 189, 'linear', function () {
+                            inAnimation = false;
+                            $personaBarPlaceholder.show();
+                            self.loadTemplate(folderName, template, $panel, params, function () {
+                                self.panelLoaded(params);
+                            });
+                            $(document).keyup(function (e) {
+                                if (e.keyCode === 27) {
+                                    e.preventDefault();
+                                    if (!window.dnn.stopEscapeFromClosingPB) {
+                                        util.closePersonaBar(null, true);
                                     }
-                                });
+                                }
                             });
                         });
-                    };
+                    });
 
-                    self.persistent.save({
+                    saveUserSetting({
                         expandPersonaBar: true,
                         activeIdentifier: identifier
-                    }, savePersistentCallback);
+                    });
 
                 } else {
                     if (activePath !== path) {
@@ -313,18 +303,17 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         $activePanel.fadeOut("fast", function handleHideCurrentPanel() {
                             $panel.css({ left: personaBarMenuWidth }).fadeIn("fast", function handleShowSelectedPanel() {
 
-                                savePersistentCallback = function () {
-                                    activePath = path;
-                                    activemodule = moduleName;
-                                    inAnimation = false;
-                                    self.loadTemplate(folderName, template, $panel, params, function () {
-                                        self.panelLoaded(params);
-                                    });
-                                };
-                                self.persistent.save({
+                                activePath = path;
+                                activemodule = moduleName;
+                                inAnimation = false;
+                                self.loadTemplate(folderName, template, $panel, params, function () {
+                                    self.panelLoaded(params);
+                                });
+
+                                saveUserSetting({
                                     expandPersonaBar: true,
                                     activeIdentifier: identifier
-                                }, savePersistentCallback);
+                                });
                             });
                         });
                     } else if (activemodule !== moduleName) {
@@ -334,6 +323,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         });
                     }
                 }
+                setCloseButtonClass(panelId);
             },
             panelLoaded: function (params) {
                 extension.load(util, params);
@@ -421,6 +411,26 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         };
         util = $.extend(util, utility);
         // end define util
+
+        function setCloseButtonClass(id) {
+            var panel = document.querySelector('#' + id + '>div');
+            if (panel != null && panel.innerHTML !== "") {
+                var page = panel.querySelector('.dnn-persona-bar-page');
+                if (page != null && page.classList.contains('full-width')) {
+                    $showSiteButton.addClass('full-width-mode');
+                }
+                else {
+                    $showSiteButton.removeClass();
+                }
+                $showSiteButton.show();
+                return;
+            }
+            else {
+                setTimeout(function () {
+                    setCloseButtonClass(id);
+                }, 100);
+            }
+        }
         
         function onShownPersonaBar() {
             (function handleResizeWindow() {
@@ -465,12 +475,16 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             return config.siteRoot || "/";
         }
 
-        function saveBtnEditSettings(callback) {
-            util.persistent.save({
+        function saveBtnEditSettings(success, error) {
+            saveUserSetting({
                 expandPersonaBar: false,
                 activePath: null,
                 activeIdentifier: null
-            }, callback);
+            }, success, error);
+        }
+
+        function saveUserSetting(settings, success, error) {
+            util.persistent.save(settings, success, error);
         }
 
         function inLockEditMode() {
@@ -856,16 +870,17 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                                 if (config.userMode !== 'Edit') {
                                     $btnEdit.on('click', function handleEdit() {
-                                        function toogleUserMode(mode) {
+                                        function toogleUserMode(mode, successCallback) {
                                             util.sf.moduleRoot = 'internalservices';
                                             util.sf.controller = "controlBar";
-                                            util.sf.post('ToggleUserMode', { UserMode: mode }, function handleToggleUserMode() {
-                                                window.parent.location.reload();
-                                            });
+                                            util.sf.post('ToggleUserMode', { UserMode: mode }, successCallback);
                                         };
-                                        util.closePersonaBar(function() {
-                                            saveBtnEditSettings(function() {
-                                                toogleUserMode('EDIT');
+                                        util.closePersonaBar(function () {
+                                            toogleUserMode('EDIT', function() {
+                                                function reloadPage() {
+                                                    window.parent.location.reload();
+                                                }
+                                                saveBtnEditSettings(reloadPage, reloadPage);
                                             });
                                         });
                                     });

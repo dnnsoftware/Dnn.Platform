@@ -5,9 +5,11 @@ namespace Dnn.PersonaBar.Library.Prompt
 {
     public interface IConsoleCommand
     {
-        void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, UserInfo userInfo, int activeTabId);
+        void Initialize(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, UserInfo userInfo, int activeTabId);
         ConsoleResultModel Run();
         bool IsValid();
         string ValidationMessage { get; }
+        string LocalResourceFile { get; }
+        string ResultHtml { get; }
     }
 }

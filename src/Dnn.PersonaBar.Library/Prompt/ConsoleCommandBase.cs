@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Library.Prompt
 {
     public abstract class ConsoleCommandBase : IConsoleCommand
     {
-        protected abstract string LocalResourceFile { get; }
+        public abstract string LocalResourceFile { get; }
         protected PortalSettings PortalSettings { get; private set; }
         protected UserInfo User { get; private set; }
         protected int PortalId { get; private set; }
@@ -32,13 +32,26 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         protected string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            var localizedText = Localization.GetString(key, LocalResourceFile);
+            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
         protected void AddMessage(string message)
         {
             ValidationMessage += message;
         }
-        protected virtual T GetFlagValue<T>(string flag, string fieldName, T defaultVal, bool required = false,
+
+        /// <summary>
+        /// Get the flag value
+        /// </summary>
+        /// <typeparam name="T">Type of the output expected</typeparam>
+        /// <param name="flag">Flag name to look</param>
+        /// <param name="fieldName">Filed name to show in message</param>
+        /// <param name="defaultVal">Default value of the flag, if any.</param>
+        /// <param name="required">Is this a required flag or not.</param>
+        /// <param name="checkmain">Try to find the flag value in first args or not.</param>
+        /// <param name="checkpositive">This would be applicable only if the output is of type int or double and value should be positive.</param>
+        /// <returns></returns>
+        public virtual T GetFlagValue<T>(string flag, string fieldName, T defaultVal, bool required = false,
             bool checkmain = false, bool checkpositive = false)
         {
             const string resourceFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx";
@@ -86,7 +99,13 @@ namespace Dnn.PersonaBar.Library.Prompt
         #endregion
 
         #region Public Methods
+
         public virtual void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        {
+
+        }
+
+        public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             Args = args;
             PortalSettings = portalSettings;
@@ -95,6 +114,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             TabId = activeTabId;
             ValidationMessage = "";
             ParseFlags();
+            Init(args, portalSettings, userInfo, activeTabId);
         }
 
         public abstract ConsoleResultModel Run();
@@ -150,7 +170,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             return tc.ConvertFrom(retVal);
         }
 
-       
+
         #endregion
 
         #region Helper Methods
@@ -168,6 +188,10 @@ namespace Dnn.PersonaBar.Library.Prompt
             {
                 return "Boolean";
             }
+            if (type.FullName.ToLowerInvariant().Contains("datetime"))
+            {
+                return "DateTime";
+            }
             return "";
         }
         private static string NormalizeFlagName(string flagName)
@@ -181,5 +205,10 @@ namespace Dnn.PersonaBar.Library.Prompt
         #endregion
 
         public string ValidationMessage { get; private set; }
+
+        /// <summary>
+        /// Resource key for the result html.
+        /// </summary>
+        public virtual string ResultHtml => LocalizeString($"Prompt_{GetType().Name}_ResultHtml");
     }
 }
