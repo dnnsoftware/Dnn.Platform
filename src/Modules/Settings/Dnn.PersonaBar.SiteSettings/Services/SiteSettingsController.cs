@@ -317,22 +317,22 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         PortalId = portal.PortalID,
                         portal.CultureCode,
-                        SplashTabId = TabController.Instance.GetTab(portal.SplashTabId, pid)?.TabID,
-                        SplashTabName = TabController.Instance.GetTab(portal.SplashTabId, pid)?.TabName,
-                        HomeTabId = TabController.Instance.GetTab(portal.HomeTabId, pid)?.TabID,
-                        HomeTabName = TabController.Instance.GetTab(portal.HomeTabId, pid)?.TabName,
-                        LoginTabId = TabController.Instance.GetTab(portal.LoginTabId, pid)?.TabID,
-                        LoginTabName = TabController.Instance.GetTab(portal.LoginTabId, pid)?.TabName,
-                        RegisterTabId = TabController.Instance.GetTab(portal.RegisterTabId, pid)?.TabID,
-                        RegisterTabName = TabController.Instance.GetTab(portal.RegisterTabId, pid)?.TabName,
-                        UserTabId = TabController.Instance.GetTab(portal.UserTabId, pid)?.TabID,
-                        UserTabName = TabController.Instance.GetTab(portal.UserTabId, pid)?.TabName,
-                        SearchTabId = TabController.Instance.GetTab(portal.SearchTabId, pid)?.TabID,
-                        SearchTabName = TabController.Instance.GetTab(portal.SearchTabId, pid)?.TabName,
-                        Custom404TabId = TabController.Instance.GetTab(portal.Custom404TabId, pid)?.TabID,
-                        Custom404TabName = TabController.Instance.GetTab(portal.Custom404TabId, pid)?.TabName,
-                        Custom500TabId = TabController.Instance.GetTab(portal.Custom500TabId, pid)?.TabID,
-                        Custom500TabName = TabController.Instance.GetTab(portal.Custom500TabId, pid)?.TabName,
+                        SplashTabId = TabSanitizer(portal.SplashTabId, pid)?.TabID,
+                        SplashTabName = TabSanitizer(portal.SplashTabId, pid)?.TabName,
+                        HomeTabId = TabSanitizer(portal.HomeTabId, pid)?.TabID,
+                        HomeTabName = TabSanitizer(portal.HomeTabId, pid)?.TabName,
+                        LoginTabId = TabSanitizer(portal.LoginTabId, pid)?.TabID,
+                        LoginTabName = TabSanitizer(portal.LoginTabId, pid)?.TabName,
+                        RegisterTabId = TabSanitizer(portal.RegisterTabId, pid)?.TabID,
+                        RegisterTabName = TabSanitizer(portal.RegisterTabId, pid)?.TabName,
+                        UserTabId = TabSanitizer(portal.UserTabId, pid)?.TabID,
+                        UserTabName = TabSanitizer(portal.UserTabId, pid)?.TabName,
+                        SearchTabId = TabSanitizer(portal.SearchTabId, pid)?.TabID,
+                        SearchTabName = TabSanitizer(portal.SearchTabId, pid)?.TabName,
+                        Custom404TabId = TabSanitizer(portal.Custom404TabId, pid)?.TabID,
+                        Custom404TabName = TabSanitizer(portal.Custom404TabId, pid)?.TabName,
+                        Custom500TabId = TabSanitizer(portal.Custom500TabId, pid)?.TabID,
+                        Custom500TabName = TabSanitizer(portal.Custom500TabId, pid)?.TabName,
                         portalSettings.PageHeadText
                     }
                 });
@@ -3318,6 +3318,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
             DataCache.RemoveCache(cacheKey);
+        }
+
+        private TabInfo TabSanitizer(int tabId, int portalId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, portalId);
+            if (tab != null && !tab.IsDeleted)
+            {
+                return tab;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #endregion
