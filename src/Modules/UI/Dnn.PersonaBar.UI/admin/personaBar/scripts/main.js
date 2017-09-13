@@ -98,7 +98,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         }
         
         var menuViewModel = utility.buildMenuViewModel(config.menuStructure);
-         var cachedPersonaBarPageWidth = 860;
+        var cachedPersonaBarPageWidth = 860;
 
         // define util -- very important
         var util = {
@@ -107,6 +107,14 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             moment: moment,
             persistent: persistent.init(config, sf),
             inAnimation: inAnimation,
+
+            setConfirmationDialogPosition: function () {
+                var confirmation = document.getElementById('confirmation-dialog');
+                var personaBarPage = document.getElementsByClassName('dnn-persona-bar-page')[0];
+                var condition = personaBarPage.classList.contains('full-width')
+                confirmation.classList.toggle("confirmation-dialog-full-width-center", condition);
+            },
+
 
             openSocialTasks: function openTaskWindow(){
                  var taskWindow = $('.socialtasks');
