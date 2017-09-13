@@ -15,9 +15,7 @@ export default class TagInput extends Component {
     }
 
     handleClick(e) {
-        if (!this.node) { return; }
-        
-        if (this.node.contains(e.target)) {
+        if (!this.props.container || this.props.container.contains(e.target)) {
             return;
         }   
 
@@ -37,8 +35,7 @@ export default class TagInput extends Component {
     componentWillUnmount() {
         document.removeEventListener("keypress", this.onKeyDown, false);
         this.close();
-        document.removeEventListener("click", this.handleClick, false);
-        this.node = null;
+        document.removeEventListener("click", this.handleClick, true);
     }
 
     addTag(tag) {
@@ -94,8 +91,7 @@ export default class TagInput extends Component {
         const {opts} = this.props;
 
         return (
-            <div
-                ref={node => this.node = node}>
+            <div>
                 <div className="input-container">
                     <input
                         ref="inputField"
@@ -121,5 +117,6 @@ TagInput.propTypes = {
     onClose: PropTypes.func.isRequired,
     removeLastTag: PropTypes.func.isRequired,
     addTagsPlaceholder: PropTypes.string.isRequired,
-    onFocus: PropTypes.func
+    onFocus: PropTypes.func,
+    container: PropTypes.object
 };
