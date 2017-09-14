@@ -486,6 +486,9 @@
   <data name="PathDuplicateWithAlias.Text" xml:space="preserve">
     <value>There is already a page with the same name, {0} at the same URL path {1}.</value>
   </data>
+  <data name="PathDuplicateWithPage.Text" xml:space="preserve">
+    <value>There is already a page with the same URL path {0}.</value>
+  </data>
   <data name="TabExists.Text" xml:space="preserve">
     <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
   </data>
