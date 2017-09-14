@@ -288,6 +288,7 @@ namespace DotNetNuke.Entities.Profile
                                                                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
         }
 
@@ -313,6 +314,18 @@ namespace DotNetNuke.Entities.Profile
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Clear profiles of all users by portal Id
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
+        {
+            DataCache.ClearCache(string.Format(DataCache.UserCacheKey, portalId, string.Empty));
+            DataCache.ClearCache(string.Format(DataCache.UserProfileCacheKey, portalId, string.Empty));
         }
 
         /// -----------------------------------------------------------------------------
@@ -491,6 +504,7 @@ namespace DotNetNuke.Entities.Profile
                                               UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
         /// -----------------------------------------------------------------------------
