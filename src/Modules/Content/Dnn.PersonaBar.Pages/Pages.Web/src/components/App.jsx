@@ -74,7 +74,7 @@ class App extends Component {
             filterByPublishStatus: null,
             filterByWorkflow: null,
 
-            tags:[],
+            tags:"",
             filters:[]
         };
     }
@@ -681,11 +681,11 @@ class App extends Component {
 
     generateFilters(){
         const {filterByPageType, filterByPublishStatus, filterByWorkflow} = this.state;
-        const filters = this.state.tags.concat();
+        const filters = this.state.tags.split(",");
         filterByPageType ? filters.push(`Page Type: ${filterByPageType}`) : null;
         filterByPublishStatus ? filters.push(`Published Status: ${filterByPublishStatus}`) : null;
         filterByWorkflow ? filters.push(`Workflow: ${filterByWorkflow}`) : null;
-        this.setState({filters});
+        this.setState({filters, toggleDropdownCalendar:null, toggleSearchMoreFlyout:false});
     }
 
     render_PagesTreeViewEditor() {
@@ -818,8 +818,7 @@ class App extends Component {
         ];
 
         const generateTags = (e) => {
-            const list = e.target.value.split(",");
-            this.setState({tags:list});
+            this.setState({tags:e.target.value});
         };
 
         const date = Date.now();
@@ -885,10 +884,10 @@ class App extends Component {
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
-                        <textarea onChange={(e)=>generateTags(e)}></textarea>
+                        <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
-                        <Button style={{marginRight: "5px"}} onClick={()=>{}}>Cancel</Button>
+                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({toggleDropdownCalendar:null, toggleSearchMoreFlyout:false})}>Cancel</Button>
                         <Button type="primary" onClick={()=>this.generateFilters() }>Save</Button>
                 </GridCell>
             </div>);
@@ -953,7 +952,7 @@ class App extends Component {
                 <GridCell columnSize={100} style={{padding:"20px"}}>
                     <GridCell columnSize={80} style={{padding: "0px"}}>
                         <div className="tags-container">
-                            {this.render_filters()}
+                            {this.state.filters ? this.render_filters() : null}
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
@@ -987,7 +986,9 @@ class App extends Component {
 
     render_filters(){
         const {filters} = this.state;
-        return filters.map((filter)=>{
+        return filters
+        .filter(filter => !!filter)
+        .map((filter)=>{
             return (
                 <div className="filter-by-tags">
                      <p>{filter}</p>
