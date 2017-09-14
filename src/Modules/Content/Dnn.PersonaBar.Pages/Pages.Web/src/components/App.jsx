@@ -682,9 +682,9 @@ class App extends Component {
     generateFilters(){
         const {filterByPageType, filterByPublishStatus, filterByWorkflow} = this.state;
         const filters = this.state.tags.concat();
-        filterByPageType ? filters.push(filterByPageType) : null;
-        filterByPublishStatus ? filters.push(filterByPublishStatus) : null;
-        filterByWorkflow ? filters.push(filterByWorkflow) : null;
+        filterByPageType ? filters.push(`Page Type: ${filterByPageType}`) : null;
+        filterByPublishStatus ? filters.push(`Published Status: ${filterByPublishStatus}`) : null;
+        filterByWorkflow ? filters.push(`Workflow: ${filterByWorkflow}`) : null;
         this.setState({filters});
     }
 
@@ -744,7 +744,7 @@ class App extends Component {
         };
         const { selectedPage } = this.props;
         return (
-            <GridCell columnSize={70} className="treeview-page-details" >
+            <GridCell columnSize={100} className="treeview-page-details" >
                 {(selectedPage && selectedPage.tabId) ? render_pageDetails() : render_emptyState()}
             </GridCell>
         );
@@ -760,7 +760,7 @@ class App extends Component {
         if (!props.selectedPageSettingTab || props.selectedPageSettingTab <= 0)
             this.selectPageSettingTab(0);
         return (
-            <GridCell columnSize={70} className="treeview-page-details" >
+            <GridCell columnSize={100} className="treeview-page-details" >
                 <PageSettings selectedPage={props.selectedPage || {}}
                     AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
@@ -806,9 +806,10 @@ class App extends Component {
         const selectedMonth = (endMonth > startMonth) ? endDate : startDate;
 
         const filterByPageTypeOptions = [
-            {value: true, label: "Page"},
-            {value: true, label: "URL"},
-            {value: true, label: "File"}
+            {value: null, label:  "None"},
+            {value: "Page", label: "Page"},
+            {value: "URL", label: "URL"},
+            {value: "File", label: "File"}
         ];
 
         const filterByPageStatusOptions = [
@@ -834,7 +835,12 @@ class App extends Component {
                 <GridCell columnSize={70} style={{padding: "5px"}}>
                     <GridCell columnSize={100} >
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                             <Dropdown className="more-dropdown" options={filterByPageTypeOptions} label="Filter by Page Type" onSelect={(data) => console.log(data) } withBorder={true} />
+                             <Dropdown
+                                className="more-dropdown"
+                                options={filterByPageTypeOptions}
+                                label={this.state.filterByPageType ? this.state.filterByPageType : "Filter by Page Type"}
+                                onSelect={(data) => this.setState({filterByPageType:data.value}) }
+                                withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown className="more-dropdown" options={filterByPageStatusOptions} label="Filter by Publish Status" onSelect={(data) => console.log(data) } withBorder={true} />
@@ -893,57 +899,64 @@ class App extends Component {
         const render_card = (item) => {
 
             return (
-                <div className="search-item-card">
-                    <div className="search-item-thumbnail">
-                        <img src={item.thumbnail} />
-                    </div>
-                    <div className="search-item-details">
-                        <h1>{item.name}</h1>
-                        <h2>{item.tabpath}</h2>
-                        <div className="search-item-details-list">
-                            <ul>
-                                <li>
-                                    <p>Page Type:</p>
-                                    <p>{item.pageType}</p>
-                                </li>
-                                <li>
-                                    <p>Publish Status:</p>
-                                    <p>{item.status}</p>
-                                </li>
-                                <li>
-                                    <p>Publish Date:</p>
-                                    <p>{item.publishDate}</p>
-                                </li>
-                            </ul>
+                    <GridCell columnSize={100}>
+                        <div className="search-item-card">
+                            <div className="search-item-thumbnail">
+                                <img src={item.thumbnail} />
+                            </div>
+                            <div className="search-item-details">
+                                <h1>{item.name}</h1>
+                                <h2>{item.tabpath}</h2>
+                                <div className="search-item-details-list">
+                                    <ul>
+                                        <li>
+                                            <p>Page Type:</p>
+                                            <p>{item.pageType}</p>
+                                        </li>
+                                        <li>
+                                            <p>Publish Status:</p>
+                                            <p>{item.status}</p>
+                                        </li>
+                                        <li>
+                                            <p>Publish Date:</p>
+                                            <p>{item.publishDate}</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className="search-item-details-list">
+                                    <ul>
+                                        <li>
+                                            <p>Workflow:</p>
+                                            <p>{item.workflowName}</p>
+                                        </li>
+                                        <li>
+                                            <p>Tags:</p>
+                                            <p>{
+                                                item.tags.map((tag)=>{
+                                                return(
+                                                    <span>
+                                                        {tag},
+                                                    </span>
+                                                    );
+                                            })}</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div className="search-item-details-list">
-                            <ul>
-                                <li>
-                                    <p>Workflow:</p>
-                                    <p>{item.workflowName}</p>
-                                </li>
-                                <li>
-                                    <p>Tags:</p>
-                                    <p>{
-                                        item.tags.map((tag)=>{
-                                        return(
-                                            <span>
-                                                {tag},
-                                            </span>
-                                            );
-                                    })}</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                    </GridCell>
             );
         };
 
         return(
-            <GridCell columnSize={70} className="fade-in">
+            <GridCell columnSize={100} className="fade-in">
                 <GridCell columnSize={100} style={{padding:"20px"}}>
-                    <GridCell columnSize={100} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
+                    <GridCell columnSize={80} style={{padding: "0px"}}>
+                        <div className="tags-container">
+                            {this.render_filters()}
+                        </div>
+                    </GridCell>
+                    <GridCell columnSize={20} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
                         <p>{`${searchList.length} PAGES FOUND` }</p>
                     </GridCell>
                     <GridCell columnSize={100}>
@@ -1057,11 +1070,10 @@ class App extends Component {
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
                                         </div>
-                                    <div className="tags-container">
-                                        {this.render_filters()}
-                                    </div>
                                 </div>
-                                { this.render_details() }
+                                <GridCell columnSize={70}>
+                                  { this.render_details() }
+                                </GridCell>
                             </GridCell>
                         </GridCell>
                     </PersonaBarPage>
