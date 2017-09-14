@@ -60,6 +60,17 @@ export default class FileUpload extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.selectedFile) {
+            this.setState({ fileExist: null, selectedFile: null, selectedFolder: null }, () => {});
+            return;
+        }
+        if (nextProps.selectedFile.fileId !== this.state.selectedFile.fileId) {
+            const file = nextProps.selectedFile;
+            this.updateFileState(file);
+        }
+    }
+
     componentDidMount() {
         window.addEventListener("dragover", this.prevent);
         window.addEventListener("drop", this.prevent);
@@ -235,6 +246,15 @@ export default class FileUpload extends Component {
         }
         sf.postfile(`UploadFromLocal${this.props.portalId === -1 ? "" : "?portalId=" + this.props.portalId}` , formData, this.uploadComplete.bind(this), this.handleError.bind(this));
         this.setState({ uploading: true, uploadComplete: false });
+
+        this.clearFileUploaderValue(this.refs.fileInput1);
+        this.clearFileUploaderValue(this.refs.fileInput2);
+    }
+
+    clearFileUploaderValue(fileInput){
+        if(fileInput){
+            fileInput.value = '';
+        }
     }
 
     uploadComplete(res) {
@@ -307,8 +327,8 @@ export default class FileUpload extends Component {
                 onClick={this.onButtonClick.bind(this, button.name) }
                 key={button.name}>
                 <div dangerouslySetInnerHTML={{ __html: svg }} />
-                {isUpload && accept && <input type="file" accept={accept} onChange={this.onFileUpload.bind(this) } aria-label="File" />}
-                {isUpload && !accept && <input type="file" onChange={this.onFileUpload.bind(this) } aria-label="File" />}
+                {isUpload && accept && <input type="file" ref="fileInput1" accept={accept} onChange={this.onFileUpload.bind(this) } aria-label="File" />}
+                {isUpload && !accept && <input type="file" ref="fileInput2" onChange={this.onFileUpload.bind(this) } aria-label="File" />}
             </div>;
         });
 
