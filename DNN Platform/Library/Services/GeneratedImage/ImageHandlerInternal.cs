@@ -237,28 +237,38 @@ namespace DotNetNuke.Services.GeneratedImage
             var profilepic = context.Request.QueryString["mode"];
             if (profilepic != null && profilepic == "profilepic")
             {
-                var LogUserID = PortalSettings.Current.UserId;
-                var LogPortalID = PortalSettings.Current.PortalId;
-                var currentUser = UserController.GetUserById(LogPortalID, LogUserID);
-
-                ProfileController.GetUserProfile(ref currentUser);
-
-                //Get last update date for profile photo
-                //21 is definiton Id for profile photo 
-                var lastModifiedDateOfProfilePhoto = currentUser.Profile.ProfileProperties.GetById(21).LastModifiedDate;
-                DateTime? lastModifiedDateOfCurrentContext = null;
-
-                if (!string.IsNullOrWhiteSpace(context.Request.Headers["If-Modified-Since"]))
+                var LogUserID = context.Request.QueryString["userId"];
+                if (!string.IsNullOrWhiteSpace(LogUserID))
                 {
-                    lastModifiedDateOfCurrentContext = DateTime.Parse(context.Request.Headers["If-Modified-Since"]);
-                }
+                    var LogPortalID = PortalSettings.Current.PortalId;
+                    int currentUserId;
+                    if (int.TryParse(LogUserID, out currentUserId))
+                    {
+                        var currentUser = UserController.GetUserById(LogPortalID, currentUserId);
 
-                //check if profile photo changed during last caching period.
-                //if yes then remove client caching and also prevent server from caching image on server side
-                if (lastModifiedDateOfCurrentContext != null && lastModifiedDateOfCurrentContext < lastModifiedDateOfProfilePhoto)
-                {
-                    context.Request.Headers.Remove("If-None-Match");
-                    hasprofileChanged = true;
+                        if (currentUser != null)
+                        {
+                            ProfileController.GetUserProfile(ref currentUser);
+
+                            //Get last update date for profile photo
+                            //21 is definiton Id for profile photo 
+                            var lastModifiedDateOfProfilePhoto = currentUser.Profile.ProfileProperties.GetById(21).LastModifiedDate;
+                            DateTime? lastModifiedDateOfCurrentContext = null;
+
+                            if (!string.IsNullOrWhiteSpace(context.Request.Headers["If-Modified-Since"]))
+                            {
+                                lastModifiedDateOfCurrentContext = DateTime.Parse(context.Request.Headers["If-Modified-Since"]);
+                            }
+
+                            //check if profile photo changed during last caching period.
+                            //if yes then remove client caching and also prevent server from caching image on server side
+                            if (lastModifiedDateOfCurrentContext != null && lastModifiedDateOfCurrentContext < lastModifiedDateOfProfilePhoto)
+                            {
+                                context.Request.Headers.Remove("If-None-Match");
+                                hasprofileChanged = true;
+                            }
+                        }
+                    }
                 }
             }
 
