@@ -61,10 +61,17 @@ class App extends Component {
             referralText: "",
             busy: false,
             headerDropdownSelection: "Save Page Template",
+
             toggleSearchMoreFlyout:false,
             toggleDropdownCalendar:null,
+
             inSearch: false,
-            searchTerm: false
+            searchTerm: false,
+
+            startDate: new Date(),
+            endDate: new Date(),
+
+            filters:[]
         };
     }
 
@@ -654,6 +661,24 @@ class App extends Component {
         this.setState({toggleDropdownCalendar:!this.state.toggleDropdownCalendar});
     }
 
+
+    onDayClick(newDay, isEndDate){
+        const right = () => {
+            const condition = newDay.getTime() < this.state.endDate.getTime();
+            condition ? this.setState({startDate:newDay}) : this.setState({startDate:newDay, endDate: newDay});
+        };
+
+        const left = () => {
+            const condition =  newDay.getTime() >= this.state.startDate.getTime();
+            condition ? this.setState({endDate:newDay}) : null;
+        };
+        isEndDate ? left() : right();
+    }
+
+    appendToFilter(filter){
+
+    }
+
     render_PagesTreeViewEditor() {
         return (
             <GridCell columnSize={30} style={{ marginTop: "120px", backgroundColor: "#aaa" }} >
@@ -764,7 +789,31 @@ class App extends Component {
 
     render_more_flyout(){
         const options = [{value:true, label:"test"}];
+
+        const {startDate, endDate} = this.state;
+        const startMonth = startDate.getMonth()+1;
+
+        const endMonth =  endDate.getMonth()+1;
+        const selectedMonth = (endMonth > startMonth) ? endDate : startDate;
+
+        const filterByPageTypeOptions = [
+            {value: true, label: "Page"},
+            {value: true, label: "URL"},
+            {value: true, label: "File"}
+        ];
+
+        const filterByPageStatusOptions = [
+            {value: true, label: "Published"},
+            {value: true, label: "Draft"}
+        ];
+
+        const generateTags = (e) => {
+            const list = e.target.value.split(",");
+            this.appendToFilters(list);
+        };
+
         const date = Date.now();
+
         return(
             <div className="search-more-flyout">
                 <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
@@ -776,10 +825,10 @@ class App extends Component {
                 <GridCell columnSize={70} style={{padding: "5px"}}>
                     <GridCell columnSize={100} >
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                             <Dropdown className="more-dropdown" options={options} label="Filter by Page Type" onSelect={(data) => console.log(data) } withBorder={true} />
+                             <Dropdown className="more-dropdown" options={filterByPageTypeOptions} label="Filter by Page Type" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <Dropdown className="more-dropdown" options={options} label="Filter by Publish Status" onSelect={(data) => console.log(data) } withBorder={true} />
+                            <Dropdown className="more-dropdown" options={filterByPageStatusOptions} label="Filter by Publish Status" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                     </GridCell>
                     <GridCell columnSize={100}>
@@ -796,10 +845,16 @@ class App extends Component {
                                     <div className={this.state.toggleDropdownCalendar ? "calendar-dropdown expand-down" : `calendar-dropdown ${this.state.toggleDropdownCalendar != null ? 'expand-up' : ''} ` }>
                                         <GridCell columnSize={100} style={{padding:"20px"}}>
                                             <GridCell columnSize={50}  className="calendar">
-                                                 <DayPicker/>
+                                                 <DayPicker
+                                                    selectedDays={this.state.startDate}
+                                                    onDayClick={(data) => this.onDayClick(data, false) }/>
                                             </GridCell>
                                             <GridCell columnSize={50} className="calendar">
-                                                 <DayPicker onDayClick={(data) => {}} />
+                                                 <DayPicker
+                                                    month={this.state.endDate}
+                                                    selectedDays={this.state.endDate}
+                                                    fromMonth={this.state.startDate}
+                                                    onDayClick={(data) => this.onDayClick(data, true) }/>
                                             </GridCell>
                                             <GridCell columnSize={100}>
                                                 <Button type="primary" onClick={()=>{}}>Apply</Button>
@@ -815,7 +870,7 @@ class App extends Component {
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
-                        <textarea></textarea>
+                        <textarea onChange={(e)=>generateTags(e)}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
                         <Button style={{marginRight: "5px"}} onClick={()=>{}}>Cancel</Button>
@@ -908,6 +963,17 @@ class App extends Component {
         }
     }
 
+    render_tags(){
+        const {tags} = this.state;
+        return tags.map((tag)=>{
+            return (
+                <div className="filter-by-tags">
+                     <p>{tag}</p>
+                </div>
+            );
+        });
+    }
+
     render() {
 
         const { props } = this;
@@ -918,11 +984,9 @@ class App extends Component {
         const isListPagesAllowed = securityService.isSuperUser();
         let defaultLabel = "Save Page Template";
         const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
-        const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});
+        const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
 
          /* eslint-disable react/no-danger */
-
-
 
         return (
             <div className="pages-app personaBar-mainContainer">
@@ -983,9 +1047,12 @@ class App extends Component {
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
+                                        </div>
+                                    <div className="tags-container">
+                                        {this.render_tags()}
                                     </div>
                                 </div>
-                                {this.render_details()}
+                                { this.render_details() }
                             </GridCell>
                         </GridCell>
                     </PersonaBarPage>
