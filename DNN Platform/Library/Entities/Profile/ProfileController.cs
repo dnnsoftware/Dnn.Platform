@@ -288,6 +288,7 @@ namespace DotNetNuke.Entities.Profile
                                                                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
         }
 
@@ -313,6 +314,31 @@ namespace DotNetNuke.Entities.Profile
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
+
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Clear profiles of all users by portal Id
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
+        {
+            DataCache.ClearCache(GetUserInfoPrefix(portalId));
+            DataCache.ClearCache(GetUserProfilePrefix(portalId));
+        }
+
+        private static string GetUserInfoPrefix(int portalId)
+        {
+            var prefix = DataCache.UserCacheKey.Remove(DataCache.UserCacheKey.LastIndexOf('|') + 1);
+            return string.Format(prefix, portalId);
+        }
+
+        private static string GetUserProfilePrefix(int portalId)
+        {
+            var prefix = DataCache.UserProfileCacheKey.Remove(DataCache.UserProfileCacheKey.LastIndexOf('|') + 1);
+            return string.Format(prefix, portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -491,6 +517,7 @@ namespace DotNetNuke.Entities.Profile
                                               UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
         /// -----------------------------------------------------------------------------
