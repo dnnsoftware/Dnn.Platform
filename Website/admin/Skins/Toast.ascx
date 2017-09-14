@@ -9,7 +9,7 @@
         dnn.toast.refreshUser = function () {
             $.ajax({
                 type: "GET",
-                url: sf.getServiceRoot('InternalServices') + 'NotificationsService/' + 'GetToasts',
+                url: sf.getServiceRoot('<%=ServiceModuleName%>') + '<%=ServiceAction%>',
                 contentType: "application/json",
                 dataType: "json",
                 cache: false,
@@ -23,6 +23,8 @@
                     if (!data || !data.Success) {
                         return;
                     }
+
+                    $(document).trigger('dnn.toastupdate', data);
 
                     var toastMessages = [];
 
@@ -66,3 +68,4 @@
     });
 
 </script>
+<asp:Literal runat="server" ID="addtionalScripts" Visible="False"></asp:Literal>
