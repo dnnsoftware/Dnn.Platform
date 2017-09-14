@@ -70,7 +70,11 @@ class App extends Component {
 
             startDate: new Date(),
             endDate: new Date(),
+            filterByPageType: null,
+            filterByPublishStatus: null,
+            filterByWorkflow: null,
 
+            tags:[],
             filters:[]
         };
     }
@@ -675,8 +679,13 @@ class App extends Component {
         isEndDate ? left() : right();
     }
 
-    appendToFilter(filter){
-
+    generateFilters(){
+        const {filterByPageType, filterByPublishStatus, filterByWorkflow} = this.state;
+        const filters = this.state.tags.concat();
+        filterByPageType ? filters.push(filterByPageType) : null;
+        filterByPublishStatus ? filters.push(filterByPublishStatus) : null;
+        filterByWorkflow ? filters.push(filterByWorkflow) : null;
+        this.setState({filters});
     }
 
     render_PagesTreeViewEditor() {
@@ -809,7 +818,7 @@ class App extends Component {
 
         const generateTags = (e) => {
             const list = e.target.value.split(",");
-            this.appendToFilters(list);
+            this.setState({tags:list});
         };
 
         const date = Date.now();
@@ -874,7 +883,7 @@ class App extends Component {
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
                         <Button style={{marginRight: "5px"}} onClick={()=>{}}>Cancel</Button>
-                        <Button type="primary" onClick={()=>{}}>Save</Button>
+                        <Button type="primary" onClick={()=>this.generateFilters() }>Save</Button>
                 </GridCell>
             </div>);
     }
@@ -963,12 +972,12 @@ class App extends Component {
         }
     }
 
-    render_tags(){
-        const {tags} = this.state;
-        return tags.map((tag)=>{
+    render_filters(){
+        const {filters} = this.state;
+        return filters.map((filter)=>{
             return (
                 <div className="filter-by-tags">
-                     <p>{tag}</p>
+                     <p>{filter}</p>
                 </div>
             );
         });
@@ -1049,7 +1058,7 @@ class App extends Component {
                                             pageInContextComponents={props.pageInContextComponents} />
                                         </div>
                                     <div className="tags-container">
-                                        {this.render_tags()}
+                                        {this.render_filters()}
                                     </div>
                                 </div>
                                 { this.render_details() }
