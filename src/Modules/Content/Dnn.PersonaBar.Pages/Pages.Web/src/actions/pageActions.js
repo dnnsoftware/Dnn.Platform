@@ -78,6 +78,15 @@ const pageActions = {
         });
     },
 
+    searchAndFilterPageList(params) {
+        return (dispatch) => PagesService.searchAndFilterPageList(params).then((searchList)=>{
+            dispatch({
+                type: SearchListActionTypes.SAVE_SEARCH_LIST,
+                data: {searchList}
+            });
+        });
+    },
+
     getPage(id) {
         return (dispatch) => PagesService.getPage(id);
     },

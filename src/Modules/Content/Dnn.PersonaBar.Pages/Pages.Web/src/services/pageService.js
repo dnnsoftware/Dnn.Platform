@@ -170,6 +170,10 @@ const PageService = function () {
         return api.get("GetPageList", {searchKey});
     };
 
+    const searchAndFilterPageList = (params) => {
+        const api = getOverridablePagesApi();
+        return api.get("GetPageList", params);
+    };
     const getChildPageList = (id = "") => {
         const api = getOverridablePagesApi();
         return api.get("GetPageList", { parentId: id });
@@ -179,6 +183,7 @@ const PageService = function () {
         getPageList,
         getChildPageList,
         searchPageList,
+        searchAndFilterPageList,
         getPage,
         savePage,
         deletePage,
