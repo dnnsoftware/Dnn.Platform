@@ -586,6 +586,9 @@ namespace DotNetNuke.Entities.Profile
 
                 }
 
+                //Remove the UserInfo from the Cache, as it has been modified
+                DataCache.ClearUserCache(user.PortalID, user.Username);
+
                 UserController.UpdateUser(portalId, user);
             }
             return user;
