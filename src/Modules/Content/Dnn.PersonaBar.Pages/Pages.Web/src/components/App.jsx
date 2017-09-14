@@ -77,7 +77,7 @@ class App extends Component {
         window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
 
-        if (viewName === "edit" || !securityService.isSuperUser()) {
+        if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
         }
 
@@ -761,7 +761,7 @@ class App extends Component {
             <PageList onPageSettings={this.onPageSettings.bind(this)} />
         );
     }
-
+    /* eslint-disable react/no-danger */
     render_more_flyout(){
         const options = [{value:true, label:"test"}];
         const date = Date.now();
@@ -915,7 +915,7 @@ class App extends Component {
         const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
 
         const additionalPanels = this.getAdditionalPanels();
-        const isListPagesAllowed = securityService.isSuperUser();
+        const isListPagesAllowed = securityService.canSeePagesList();
         let defaultLabel = "Save Page Template";
         const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
         const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});

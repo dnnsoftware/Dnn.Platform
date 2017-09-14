@@ -69,11 +69,11 @@ const pageActions = {
         });
     },
 
-    searchPageList(searchKey){
-        return (dispatch) => PagesService.searchPageList(searchKey).then((searchList)=>{
+    searchPageList(searchKey) {
+        return (dispatch) => PagesService.searchPageList(searchKey).then((searchList) => {
             dispatch({
                 type: SearchListActionTypes.SAVE_SEARCH_LIST,
-                data: {searchList}
+                data: { searchList }
             });
         });
     },
@@ -148,13 +148,6 @@ const pageActions = {
 
     cancelPage() {
         return (dispatch) => {
-            if (!securityService.isSuperUser()) {
-                utils.getUtilities().closePersonaBar(function () {
-                    loadPage(dispatch, utils.getCurrentPageId());
-                });
-                return;
-            }
-
             dispatch({
                 type: ActionTypes.CANCEL_PAGE,
                 data: {}
@@ -173,10 +166,6 @@ const pageActions = {
                 if (response.Status === responseStatus.ERROR) {
                     utils.notifyError(response.Message, 3000);
                     return;
-                }
-
-                if (page.tabId === 0 && !securityService.isSuperUser()) {
-                    utils.getUtilities().closePersonaBar();
                 }
 
                 dispatch({
@@ -210,15 +199,9 @@ const pageActions = {
                     return;
                 }
 
-                if (selectedPage.tabId > 0 && securityService.isSuperUser()) {
+                if (selectedPage.tabId > 0) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
                 }
-
-                if (selectedPage.tabId > 0 && !securityService.isSuperUser()) {
-                    utils.closePersonaBar();
-                    return;
-                }
-
                 PagesService.openPageInEditMode(response.Page.id, response.Page.url);
 
             }).catch((error) => {
@@ -242,13 +225,8 @@ const pageActions = {
                     return;
                 }
 
-                if (page.tabId > 0 && securityService.isSuperUser()) {
+                if (page.tabId > 0) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
-                }
-
-                if (page.tabId > 0 && !securityService.isSuperUser()) {
-                    utils.closePersonaBar();
-                    return;
                 }
 
                 dispatch({
@@ -451,11 +429,11 @@ const pageActions = {
         };
     },
 
-    clearSelectedPage(){
+    clearSelectedPage() {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CLEAR_SELECTED_PAGE,
-                data:{}
+                data: {}
             });
         };
     },
