@@ -79,7 +79,7 @@ namespace Dnn.PersonaBar.Users.Components
             return !string.IsNullOrEmpty(usersContract.SearchText)
                         && usersContract.Filter == UserFilters.Authorized
                         && !HostController.Instance.GetBoolean("DisableUserCrawling", false)
-                ? GetUsersFromLucene(usersContract, out totalRecords)
+                ? GetUsersFromLucene(usersContract, isSuperUser, out totalRecords)
                 : GetUsersFromDb(usersContract, isSuperUser, out totalRecords);
         }
 
@@ -409,11 +409,11 @@ namespace Dnn.PersonaBar.Users.Components
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-                    users = GetUsers(usersContract, true, true, out totalRecords);
+                    users = GetUsers(usersContract, true, true, isSuperUser, out totalRecords);
                     paged = true;
                     break;
                 case UserFilters.Authorized:
-                    users = GetUsers(usersContract, false, false, out totalRecords);
+                    users = GetUsers(usersContract, false, false, isSuperUser, out totalRecords);
                     paged = true;
                     break;
                 case UserFilters.SuperUsers:
@@ -495,7 +495,7 @@ namespace Dnn.PersonaBar.Users.Components
                 users.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        private static IList<UserBasicDto> GetUsersFromLucene(GetUsersContract usersContract, out int totalRecords)
+        private static IList<UserBasicDto> GetUsersFromLucene(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             var query = new SearchQuery
             {
@@ -505,9 +505,12 @@ namespace Dnn.PersonaBar.Users.Components
                 SearchTypeIds = new List<int> { SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId },
                 PageSize = SearchPageSize,
                 WildCardSearch = true,
-                CultureCode = null,
-                NumericKeys = new Dictionary<string, int> { { "superuser", 0 } }
+                CultureCode = null
             };
+            if (!isSuperUser)
+            {
+                query.NumericKeys.Add("superuser", 0);
+            }
 
             var searchResults = SearchController.Instance.SiteSearch(query);
             var userIds = searchResults.Results.Distinct(new UserSearchResultComparer()).Take(SearchPageSize).Select(r =>
@@ -566,7 +569,7 @@ namespace Dnn.PersonaBar.Users.Components
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
 
-        private static List<UserBasicDto> GetUsers(GetUsersContract usersContract, bool includeUnauthorized, bool includeDeleted, out int totalRecords)
+        private static List<UserBasicDto> GetUsers(GetUsersContract usersContract, bool includeUnauthorized, bool includeDeleted, bool includeSuperUsers, out int totalRecords)
         {
             totalRecords = 0;
             var reader = DataProvider.Instance()
@@ -577,7 +580,8 @@ namespace Dnn.PersonaBar.Users.Components
                                 usersContract.PageSize,
                                 string.IsNullOrEmpty(usersContract.SearchText) ? "" : usersContract.SearchText.TrimEnd('%') + "%",
                                 includeUnauthorized,
-                                includeDeleted);
+                                includeDeleted,
+                                includeSuperUsers);
             if (reader.Read())
             {
                 totalRecords = reader.GetInt32(0);
