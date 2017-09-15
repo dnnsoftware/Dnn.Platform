@@ -4,7 +4,7 @@ import "./style.less";
 
 
 const DayPicker = () => {
-    return(<div className="dnn-day-picker"> <Picker /></div>)
+    return(<div className="dnn-day-picker"> <Picker /></div>);
 };
 
 

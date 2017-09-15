@@ -1507,4 +1507,10 @@
     <data name="NoPermissionViewPage.Text" xml:space="preserve">
     <value>You do not have permission to view this page</value>
   </data>
+  <data name="NoPermissionDeletePage.Text" xml:space="preserve">
+    <value>You do not have permission to delete this page.</value>
+  </data>
+  <data name="CannotDeleteSpecialPage.Text" xml:space="preserve">
+    <value>You cannot delete a special page.</value>
+  </data>
 </root>

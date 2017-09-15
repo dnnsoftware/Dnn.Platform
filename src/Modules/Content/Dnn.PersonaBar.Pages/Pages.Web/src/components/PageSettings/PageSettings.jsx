@@ -46,6 +46,7 @@ class PageSettings extends Component {
         </Button>];
 
         if (selectedPage.tabId !== 0
+            && !selectedPage.isspecial 
             && securityService.userHasPermission(permissionTypes.DELETE_PAGE)) {
             buttons.unshift(<Button
                 type="secondary"

@@ -757,6 +757,7 @@ class App extends Component {
         );
     }
 
+    /* eslint-disable react/no-danger */
     render_more_flyout(){
         const options = [{value:true, label:"test"}];
         const date = Date.now();

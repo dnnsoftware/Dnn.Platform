@@ -168,5 +168,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "parentId")]
         public int? ParentId { get; set; }
+
+        [DataMember(Name = "isspecial")]
+        public bool IsSpecial { get; set; }
     }
 }
