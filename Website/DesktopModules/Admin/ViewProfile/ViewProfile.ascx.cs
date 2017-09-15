@@ -239,15 +239,15 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			}
 		}
 
-        private void AddEmptyProperty(string emptyPropertyName, StringBuilder sb, string propertyValue)
-        {
-            sb.AppendFormat("self.{0} = ko.observable('{1}');\n",emptyPropertyName, propertyValue);
-            sb.AppendFormat("self['{0}Text'] = '{1}';\n",emptyPropertyName,emptyPropertyName);
-        }
-
         #endregion
 
         #region Private Methods
+        
+        private void AddEmptyProperty(string emptyPropertyName, StringBuilder sb, string propertyValue)
+        {
+            sb.AppendFormat("self.{0} = ko.observable('{1}');\n", emptyPropertyName, propertyValue);
+            sb.AppendFormat("self['{0}Text'] = '{1}';\n", emptyPropertyName, emptyPropertyName);
+        }
 
         private string GetRedirectUrl()
 		{
