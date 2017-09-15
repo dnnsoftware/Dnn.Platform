@@ -2708,7 +2708,7 @@ namespace DotNetNuke.Entities.Urls
                                                                                                     Guid.Empty);
                             }
 
-                            //if the incomign request doesn't match the 'most friendly' url, a 301 Moved Permanently status is returned, along with the friendly url 
+                            //if the incoming request doesn't match the 'most friendly' url, a 301 Moved Permanently status is returned, along with the friendly url 
                             //check the bestFriendlyUrl against either the url, or rawUrl (with and without host) 
                             //in each case, the aumdebug parameter will be searched for and replaced
                             var urlDecode = HttpUtility.UrlDecode(requestedUrl);
@@ -2757,6 +2757,7 @@ namespace DotNetNuke.Entities.Urls
                                       || bestFriendlyNoScheme == rawUrlWithHost
                                       || bestFriendlyNoScheme == rawUrlWithHostNoScheme
                                       || bestFriendlyNoScheme == HttpUtility.UrlDecode(requestedPathNoScheme)
+                                      || HttpUtility.UrlDecode(bestFriendlyNoScheme) == HttpUtility.UrlDecode(requestedPathNoScheme)
                                       || bestFriendlyNoScheme == rawUrlLowerCase))
                                 {
                                     redirected = true;
