@@ -169,6 +169,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			    var propertyAccess = new ProfilePropertyAccess(ProfileUser);
                 StringBuilder sb = new StringBuilder();
                 bool propertyNotFound = false;
+                bool isBiographpyExists = false;
 
                 foreach (ProfilePropertyDefinition property in ProfileUser.Profile.ProfileProperties)
                 {
@@ -200,6 +201,11 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     sb.Append("self['" + clientName + "Text'] = '");
                     sb.Append(clientName + "';");
                     sb.Append('\n');
+
+                    if (!isBiographpyExists && clientName.IndexOf("Biography") > -1)
+                    {
+                        isBiographpyExists = true;
+                    }
                 }
 
 			    string email = (ProfileUserId == ModuleContext.PortalSettings.UserId
@@ -216,9 +222,14 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 sb.Append(LocalizeString("Email") + "';");
                 sb.Append('\n');
 
+                // DNN-10243 KO templates relying on Biography field
+                // Need to insert dummy biography field 
+                if (!isBiographpyExists)
+                {
+                    AddEmptyProperty("Biography", sb, ModuleContext.PortalSettings.UserId == ProfileUserId  || ModuleContext.PortalSettings.UserInfo.IsInRole(ModuleContext.PortalSettings.AdministratorRoleName) ? string.Empty : PropertyAccess.ContentLocked);                    
+                }
 
                 ProfileProperties = sb.ToString();
-
 
 			}
 			catch (Exception exc)
@@ -228,11 +239,17 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			}
 		}
 
-		#endregion
+        private void AddEmptyProperty(string emptyPropertyName, StringBuilder sb, string propertyValue)
+        {
+            sb.AppendFormat("self.{0} = ko.observable('{1}');\n",emptyPropertyName, propertyValue);
+            sb.AppendFormat("self['{0}Text'] = '{1}';\n",emptyPropertyName,emptyPropertyName);
+        }
 
-		#region Private Methods
+        #endregion
 
-		private string GetRedirectUrl()
+        #region Private Methods
+
+        private string GetRedirectUrl()
 		{
 			//redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
 			var homeTabId = ModuleContext.PortalSettings.HomeTabId;
