@@ -27,6 +27,7 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -185,6 +186,11 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 profilePicture.ImageUrl = AvatarImageUrl;
                 profilePicture.AlternateText = Localization.GetString("ProfilePicture", Localization.GetResourceFile(this, MyFileName));
+
+                if (AlwaysShowCount())
+                {
+                    messageCount.Visible = notificationCount.Visible = true;
+                }
             }
 
             if (UsePopUp)
@@ -248,6 +254,26 @@ namespace DotNetNuke.UI.Skins.Controls
                                   : !string.IsNullOrEmpty(a.LoginControlSrc) && (LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase).Enabled
                     where a.AuthenticationType != "DNN" && enabled
                     select a).Any();
+        }
+
+        private bool AlwaysShowCount()
+        {
+            const string SettingKey = "UserAndLogin_AlwaysShowCount";
+            var alwaysShowCount = false;
+
+            var portalSetting = PortalController.GetPortalSetting(SettingKey, PortalSettings.PortalId, string.Empty);
+            if (!string.IsNullOrEmpty(portalSetting) && bool.TryParse(portalSetting, out alwaysShowCount))
+            {
+                return alwaysShowCount;
+            }
+
+            var hostSetting = HostController.Instance.GetString(SettingKey, string.Empty);
+            if (!string.IsNullOrEmpty(hostSetting) && bool.TryParse(hostSetting, out alwaysShowCount))
+            {
+                return alwaysShowCount;
+            }
+
+            return false;
         }
     }
 }
