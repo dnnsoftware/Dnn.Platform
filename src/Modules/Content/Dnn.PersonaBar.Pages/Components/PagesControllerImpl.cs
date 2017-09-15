@@ -209,9 +209,19 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (TabPermissionController.CanDeletePage(tab))
             {
-                TabController.Instance.SoftDeleteTab(tab.TabID, portalSettings);
+                if (TabController.IsSpecialTab(tab.TabID, portalSettings.PortalId))
+                {
+                    throw new PageException(Localization.GetString("CannotDeleteSpecialPage"));
+                }
+                else
+                {
+                    TabController.Instance.SoftDeleteTab(tab.TabID, portalSettings);
+                }
             }
-
+            else
+            {
+                throw new PageException(Localization.GetString("NoPermissionDeletePage"));
+            }
         }
 
         public void EditModeForPage(int pageId, int userId)

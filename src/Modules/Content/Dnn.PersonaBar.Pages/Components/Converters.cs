@@ -125,7 +125,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 SkinSrc = tab.SkinSrc,
                 ContainerSrc = tab.ContainerSrc,
                 HasChild = pageManagementController.TabHasChildren(tab),
-                ParentId = tab.ParentId
+                ParentId = tab.ParentId,
+                IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current)
             };
         }
         
