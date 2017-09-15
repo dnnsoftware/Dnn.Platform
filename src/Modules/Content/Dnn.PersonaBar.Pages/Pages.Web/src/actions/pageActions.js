@@ -87,6 +87,10 @@ const pageActions = {
         });
     },
 
+    getWorkflowsList(){
+        return (dispatch) => PagesService.getWorkflowsList();
+    },
+
     getPage(id) {
         return (dispatch) => PagesService.getPage(id);
     },

@@ -74,6 +74,8 @@ class App extends Component {
             filterByPublishStatus: null,
             filterByWorkflow: null,
 
+            workflowList: [],
+
             tags:"",
             filters:[]
         };
@@ -87,6 +89,11 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
+        this.props.getWorkflowsList().then((list)=>{
+            const workflowList = list.map((item => { return {value:item.workflowName, label:item.workflowName}; }));
+            console.log(workflowList);
+            this.setState({workflowList});
+        });
 
         if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
@@ -813,9 +820,14 @@ class App extends Component {
         ];
 
         const filterByPageStatusOptions = [
-            {value: true, label: "Published"},
-            {value: true, label: "Draft"}
+            {value: null, label:  "None"},
+            {value: "Published", label: "Published"},
+            {value: "Draft", label: "Draft"}
         ];
+
+        const filterByWorkflowOptions = [{value: null, label:  "None"}].concat(this.state.workflowList);
+   
+
 
         const generateTags = (e) => {
             this.setState({tags:e.target.value});
@@ -842,7 +854,12 @@ class App extends Component {
                                 withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <Dropdown className="more-dropdown" options={filterByPageStatusOptions} label="Filter by Publish Status" onSelect={(data) => console.log(data) } withBorder={true} />
+                            <Dropdown
+                                className="more-dropdown" 
+                                options={filterByPageStatusOptions}
+                                label={ this.state.filterByPublishStatus ? this.state.filterByPublishStatus : "Filter by Publish Status"}
+                                onSelect={(data) => this.setState({filterByPublishStatus:data.value}) }
+                                withBorder={true} />
                         </GridCell>
                     </GridCell>
                     <GridCell columnSize={100}>
@@ -871,7 +888,7 @@ class App extends Component {
                                                     onDayClick={(data) => this.onDayClick(data, true) }/>
                                             </GridCell>
                                             <GridCell columnSize={100}>
-                                                <Button type="primary" onClick={()=>{}}>Apply</Button>
+                                                <Button type="primary" onClick={()=>this.setState({toggleDropdownCalendar: null})}>Apply</Button>
                                             </GridCell>
                                         </GridCell>
                                     </div>
@@ -879,7 +896,12 @@ class App extends Component {
                             </div>
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <Dropdown className="more-dropdown" options={options} label="Filter by Workflow" onSelect={(data) => console.log(data) } withBorder={true} />
+                            <Dropdown
+                                className="more-dropdown"
+                                options={filterByWorkflowOptions}
+                                label={ this.state.filterByWorkflow ? this.state.filterByWorkflow :"Filter by Workflow"}
+                                onSelect={(data) => this.setState({filterByWorkflow: data.value}) }
+                                withBorder={true} />
                         </GridCell>
                     </GridCell>
                 </GridCell>
@@ -1101,6 +1123,7 @@ App.propTypes = {
     searchPageList: PropTypes.func.isRequired,
     searchAndFilterPageList: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
+    getWorkflowsList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
@@ -1181,6 +1204,7 @@ function mapDispatchToProps(dispatch) {
         getPageList: PageActions.getPageList,
         searchPageList: PageActions.searchPageList,
         searchAndFilterPageList: PageActions.searchAndFilterPageList,
+        getWorkflowsList: PageActions.getWorkflowsList,
         getPage: PageActions.getPage,
         viewPage: PageActions.viewPage,
         getChildPageList: PageActions.getChildPageList,

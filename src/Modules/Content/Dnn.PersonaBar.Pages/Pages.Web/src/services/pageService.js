@@ -179,6 +179,11 @@ const PageService = function () {
         return api.get("GetPageList", { parentId: id });
     };
 
+    const getWorkflowsList = () => {
+        const api = getOverridablePagesApi();
+        return api.get("GetWorkflows");
+    };
+
     return {
         getPageList,
         getChildPageList,
@@ -197,7 +202,8 @@ const PageService = function () {
         openPageInEditMode,
         getCachedPageCount,
         clearCache,
-        movePage
+        movePage,
+        getWorkflowsList
     };
 };
 
