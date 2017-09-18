@@ -221,8 +221,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 // DNN-10243 KO template relying on template properties 
                 // Need to insert dummy biography field 
-                string[] templateProperties = new string[] { "Biography", "Photo", "Street", "City", "Country", "PostalCode", "Telephone", "Website", "IM" };
-                templateProperties.Where(existingPropertiesNames.Contains);
+                HashSet<string> templateProperties = new HashSet<string>(new string[] { "Biography", "Photo", "Street", "City", "Country", "PostalCode", "Telephone", "Website", "IM" });
+                templateProperties.RemoveWhere(existingPropertiesNames.Contains);
                 templateProperties.ToList()
                 .ForEach(pn =>
                         AddEmptyProperty(
