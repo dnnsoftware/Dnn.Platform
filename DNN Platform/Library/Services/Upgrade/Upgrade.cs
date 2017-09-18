@@ -105,6 +105,7 @@ namespace DotNetNuke.Services.Upgrade
     public class Upgrade
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
+        private static readonly object _threadLocker = new object();
 
         #region Private Shared Field
 
@@ -5911,34 +5912,27 @@ namespace DotNetNuke.Services.Upgrade
             try
             {
                 //check whether current binding already specific to correct version.
-                var currentConfig = Config.Load();
-                var nsmgr = new XmlNamespaceManager(currentConfig.NameTable);
-                nsmgr.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
-                var bindingNode = currentConfig.SelectSingleNode(
-                    "/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect", nsmgr);
-
-                var newVersion = bindingNode?.Attributes?["newVersion"].Value;
-                if (!string.IsNullOrEmpty(newVersion) && new Version(newVersion) >= new Version(10, 0, 0, 0))
+                if (NewtonsoftNeedUpdate())
                 {
-                    return false;
+                    lock (_threadLocker)
+                    {
+                        if (NewtonsoftNeedUpdate())
+                        {
+                            var matchedFiles =Directory.GetFiles(Path.Combine(Globals.ApplicationMapPath, "Install\\Module"), "Newtonsoft.Json_*_Install.zip");
+                            if (matchedFiles.Length > 0)
+                            {
+                                return InstallPackage(matchedFiles[0], "Library", false);
+                            }
+                        }
+                    }
                 }
-
-                var matchedFiles = Directory.GetFiles(Path.Combine(Globals.ApplicationMapPath, "Install\\Module"), "Newtonsoft.Json_*_Install.zip");
-                if (matchedFiles.Length == 0)
-                {
-                    return false;
-                }
-
-                var packagePath = matchedFiles[0];
-                var success = InstallPackage(packagePath, "Library", false);
-
-                return success;
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return false;
             }
+
+            return false;
         } 
 
         public static string ActivateLicense()
@@ -6114,6 +6108,23 @@ namespace DotNetNuke.Services.Upgrade
 
                 return null;
             }
+        }
+
+        private static bool NewtonsoftNeedUpdate()
+        {
+            var currentConfig = Config.Load();
+            var nsmgr = new XmlNamespaceManager(currentConfig.NameTable);
+            nsmgr.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+            var bindingNode = currentConfig.SelectSingleNode(
+                "/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect", nsmgr);
+
+            var newVersion = bindingNode?.Attributes?["newVersion"].Value;
+            if (!string.IsNullOrEmpty(newVersion) && new Version(newVersion) >= new Version(10, 0, 0, 0))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion
