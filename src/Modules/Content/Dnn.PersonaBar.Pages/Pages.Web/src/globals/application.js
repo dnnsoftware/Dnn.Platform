@@ -59,6 +59,9 @@ const application = {
     },
     isSuperUserForPages() {
         return utilities.getIsSuperUser();
+    },
+    getProductSKU() {
+        return utilities.getProductSKU();
     }
 };
 

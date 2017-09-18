@@ -24,6 +24,7 @@ using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Pages.Components.Security;
+using DotNetNuke.Application;
 using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Pages.MenuControllers
@@ -53,7 +54,8 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
                 {"canSeePagesList", _securityService.CanViewPageList(menuItem.MenuId)},
                 {"portalName", PortalSettings.Current.PortalName},
                 {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
-                {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName}
+                {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName},
+                {"productSKU", DotNetNukeContext.Current.Application.SKU}
             };
 
             return settings;
