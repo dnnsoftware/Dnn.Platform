@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug(ex);
+                    Logger.Error(ex);
                     visible = false;
                 }
                 
@@ -147,7 +147,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex);
+                Logger.Error(ex);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex);
+                Logger.Error(ex);
                 settings = new Dictionary<string, object>();
             }
 
