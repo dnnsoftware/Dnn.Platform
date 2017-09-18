@@ -41,7 +41,6 @@ export default function pagesReducer(state = {
             };
 
         case ActionTypes.LOADED_PAGE:
-            console.log(action);
             return { ...state,
                 selectedPage: action.data.page,
                 errors: {},

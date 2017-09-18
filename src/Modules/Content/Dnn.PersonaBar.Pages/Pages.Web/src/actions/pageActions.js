@@ -84,6 +84,7 @@ const pageActions = {
 
     searchAndFilterPageList(params) {
         return (dispatch) => PagesService.searchAndFilterPageList(params).then((searchList)=>{
+            searchList= searchList.Results;
             dispatch({
                 type: SearchListActionTypes.SAVE_SEARCH_LIST,
                 data: {searchList}

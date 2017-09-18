@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -70,6 +71,8 @@ class App extends Component {
 
             startDate: new Date(),
             endDate: new Date(),
+            startAndEndDateDirty:false,
+
             filterByPageType: null,
             filterByPublishStatus: null,
             filterByWorkflow: null,
@@ -77,7 +80,9 @@ class App extends Component {
             workflowList: [],
 
             tags:"",
-            filters:[]
+            filters:[],
+            searchFields:{}
+
         };
     }
 
@@ -277,8 +282,13 @@ class App extends Component {
     }
 
     onSearchClick(){
-        const {searchTerm} = this.state;
-        this.props.searchPageList(searchTerm);
+        const {searchFields, searchTerm} = this.state;
+        const search = Object.keys(searchFields).length ? searchFields : {searchKey:searchTerm};
+        this.props.searchAndFilterPageList(search);
+    }
+    onSearchWhileTyping(searchKey){
+        const searchFields = Object.keys(this.state.searchFields).length ? this.state.searchFields : {searchKey};
+        this.props.searchAndFilterPageList(searchFields);
     }
 
     onSearchFocus(){
@@ -290,13 +300,12 @@ class App extends Component {
             const {searchTerm} = this.state;
             switch(true){
                 case searchTerm.length > 3:
-                    this.onSearchClick();
+                    this.onSearchWhileTyping(searchTerm);
                     this.setState({inSearch:true});
                 return;
                 case searchTerm.length === 0:
                     this.setState({inSearch:false});
                 return;
-
             }
         });
     }
@@ -677,6 +686,7 @@ class App extends Component {
 
 
     onDayClick(newDay, isEndDate){
+        this.setState({startAndEndDateDirty:true});
         const right = () => {
             const condition = newDay.getTime() < this.state.endDate.getTime();
             condition ? this.setState({startDate:newDay}) : this.setState({startDate:newDay, endDate: newDay});
@@ -696,6 +706,10 @@ class App extends Component {
         filterByPublishStatus ? filters.push(`Published Status: ${filterByPublishStatus}`) : null;
         filterByWorkflow ? filters.push(`Workflow: ${filterByWorkflow}`) : null;
         this.setState({filters, toggleDropdownCalendar:null, toggleSearchMoreFlyout:false});
+    }
+
+    saveSearchFilters(searchFields){
+        return new Promise((resolve) => this.setState({searchFields}, ()=> resolve()));
     }
 
     render_PagesTreeViewEditor() {
@@ -817,7 +831,7 @@ class App extends Component {
 
         const filterByPageTypeOptions = [
             {value: null, label:  "None"},
-            {value: "Page", label: "Page"},
+            {value: "Normal", label: "Normal"},
             {value: "URL", label: "URL"},
             {value: "File", label: "File"}
         ];
@@ -828,10 +842,38 @@ class App extends Component {
             {value: "Draft", label: "Draft"}
         ];
 
-        const filterByWorkflowOptions = [{value: null, label:  "None"}].concat(this.state.workflowList);
+        const filterByWorkflowOptions = [{value: null, label:"None"}].concat(this.state.workflowList);
 
         const generateTags = (e) => {
             this.setState({tags:e.target.value});
+        };
+
+        const onSave = () => {
+            const {searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty} = this.state;
+            const searchDateRange = startAndEndDateDirty ? {publishDateStart: startDate, publishDateEnd:endDate} : {};
+
+            let search = {searchKey:searchTerm, pageType:filterByPageType, publishStatus:filterByPublishStatus, workflowId:filterByWorkflow};
+
+            search = Object.assign({}, search, searchDateRange);
+            for(let prop in search){
+                if(!search[prop]){
+                    delete search[prop];
+                }
+            }
+
+            this.generateFilters();
+            this.saveSearchFilters(search).then(()=>{
+                this.props.searchAndFilterPageList(search);
+            });
+
+        };
+
+        const onMouseLeaveCalendarDropdown = ()=> {
+            this.setState({toggleDropdownCalendar:false}, ()=>{
+                setTimeout(()=>{
+                    this.setState({toggleDropdownCalendar: null});
+                }, 2000);
+            });
         };
 
         const date = Date.now();
@@ -856,7 +898,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown
-                                className="more-dropdown" 
+                                className="more-dropdown"
                                 options={filterByPageStatusOptions}
                                 label={ this.state.filterByPublishStatus ? this.state.filterByPublishStatus : "Filter by Publish Status"}
                                 onSelect={(data) => this.setState({filterByPublishStatus:data.value}) }
@@ -874,7 +916,11 @@ class App extends Component {
                                         <div className="calendar-icon" dangerouslySetInnerHTML={{__html:CalendarIcon}} onClick={()=>this.toggleDropdownCalendar()}/>
                                     </GridCell>
 
-                                    <div className={this.state.toggleDropdownCalendar ? "calendar-dropdown expand-down" : `calendar-dropdown ${this.state.toggleDropdownCalendar != null ? 'expand-up' : ''} ` }>
+                                    <div
+                                        className={this.state.toggleDropdownCalendar ? "calendar-dropdown expand-down" : `calendar-dropdown ${this.state.toggleDropdownCalendar != null ? 'expand-up' : ''} ` }
+                                        onBlur={()=>console.log('blurred')}
+                                        >
+
                                         <GridCell columnSize={100} style={{padding:"20px"}}>
                                             <GridCell columnSize={50}  className="calendar">
                                                  <DayPicker
@@ -911,7 +957,7 @@ class App extends Component {
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
                         <Button style={{marginRight: "5px"}} onClick={()=>this.setState({toggleDropdownCalendar:null, toggleSearchMoreFlyout:false})}>Cancel</Button>
-                        <Button type="primary" onClick={()=>this.generateFilters() }>Save</Button>
+                        <Button type="primary" onClick={()=>onSave()}>Save</Button>
                 </GridCell>
             </div>);
     }
@@ -1033,7 +1079,6 @@ class App extends Component {
         const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
 
          /* eslint-disable react/no-danger */
-       console.log('selectedPath: ', this.props.selectedPagePath );
 
         return (
             <div className="pages-app personaBar-mainContainer">

@@ -30,7 +30,6 @@ const pageHierarchyActions = {
     },
 
     changeSelectedPagePath(path) {
-        console.log(path);
         return {
             type: ActionTypes.CHANGE_SELECTED_PAGE_PATH,
             path
