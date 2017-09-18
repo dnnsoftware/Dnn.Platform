@@ -91,7 +91,6 @@ class App extends Component {
         this.props.getPageList();
         this.props.getWorkflowsList().then((list)=>{
             const workflowList = list.map((item => { return {value:item.workflowName, label:item.workflowName}; }));
-            console.log(workflowList);
             this.setState({workflowList});
         });
 
@@ -612,7 +611,11 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
-                    this.getToRootParent();
+                    const selectedPath = data.hierarchy.split(">").map((d)=> {
+                        return {name: d, tabId:data.tabId};
+                    });
+                    this.props.changeSelectedPagePath(selectedPath);
+
                 });
                 this.selectPageSettingTab(0);
             }
@@ -826,8 +829,6 @@ class App extends Component {
         ];
 
         const filterByWorkflowOptions = [{value: null, label:  "None"}].concat(this.state.workflowList);
-   
-
 
         const generateTags = (e) => {
             this.setState({tags:e.target.value});
@@ -1032,6 +1033,7 @@ class App extends Component {
         const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
 
          /* eslint-disable react/no-danger */
+       console.log('selectedPath: ', this.props.selectedPagePath );
 
         return (
             <div className="pages-app personaBar-mainContainer">
@@ -1040,7 +1042,7 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
-                            <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
+                            <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
                          { toggleSearchMoreFlyout ?  this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{padding:"20px"}}>
@@ -1169,6 +1171,7 @@ App.propTypes = {
     getContentLocalizationEnabled: PropTypes.func.isRequired,
     selectPage: PropTypes.func.isRequired,
     selectedPagePath: PropTypes.array.isRequired,
+    changeSelectedPagePath: PropTypes.func.isRequired,
     onGetCachedPageCount: PropTypes.array.isRequired,
     onClearCache: PropTypes.func.isRequired,
     clearSelectedPage: PropTypes.func.isRequired
@@ -1234,9 +1237,12 @@ function mapDispatchToProps(dispatch) {
         onHidePanel: VisiblePanelActions.hidePanel,
         getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
         selectPage: PageHierarchyActions.selectPage,
+        changeSelectedPagePath: PageHierarchyActions.changeSelectedPagePath,
         onGetCachedPageCount: PageActions.getCachedPageCount,
         onClearCache: PageActions.clearCache,
         clearSelectedPage: PageActions.clearSelectedPage
+
+
 
     }, dispatch);
 }

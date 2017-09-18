@@ -30,32 +30,37 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId) {
-
-    if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
-        dispatch({
-            type: ActionTypes.LOADED_PAGE,
-            data: {
-                page: {
-                    tabId: utils.getCurrentPageId(),
-                    name: utils.getCurrentPageName()
+    return new Promise((resolve)=>{
+            if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
+            dispatch({
+                type: ActionTypes.LOADED_PAGE,
+                data: {
+                    page: {
+                        tabId: utils.getCurrentPageId(),
+                        name: utils.getCurrentPageName()
+                    }
                 }
-            }
-        });
-        return;
-    }
+            });
+            resolve();
+            return;
+        }
 
-    return PagesService.getPage(pageId).then(response => {
-        dispatch({
-            type: ActionTypes.LOADED_PAGE,
-            data: {
-                page: response
-            }
+        PagesService.getPage(pageId).then(response => {
+            dispatch({
+                type: ActionTypes.LOADED_PAGE,
+                data: {
+                    page: response
+                }
+            });
+            resolve(response);
+        }).catch((error) => {
+            dispatch({
+                type: ActionTypes.ERROR_LOADING_PAGE,
+                data: { error }
+            });
+            resolve();
         });
-    }).catch((error) => {
-        dispatch({
-            type: ActionTypes.ERROR_LOADING_PAGE,
-            data: { error }
-        });
+
     });
 };
 
@@ -68,7 +73,6 @@ const pageActions = {
             });
         });
     },
-
     searchPageList(searchKey){
         return (dispatch) => PagesService.searchPageList(searchKey).then((searchList)=>{
             dispatch({
@@ -95,6 +99,12 @@ const pageActions = {
         return (dispatch) => PagesService.getPage(id);
     },
 
+    getCurrentSelectedPage(){
+        return (dispatch) => dispatch({
+            type: ActionTypes.GET_CURRENT_SELECTED_PAGE,
+            data:{}
+        });
+    },
     getChildPageList(id) {
         return () => PagesService.getChildPageList(id);
     },
