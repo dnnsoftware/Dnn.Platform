@@ -109,7 +109,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             bool modified;
-            FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), -1, portalSettings, out modified);
+            FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
             if (modified)
             {
                 errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
