@@ -9,7 +9,7 @@ const DayPicker = (newProps) => {
         <div className="dnn-day-picker">
             <Picker onDayClick={onDayClick} />
         </div>);
-
+};
 DayPicker.PropTypes = {
     onDayClick: PropTypes.func.isRequired
 };
