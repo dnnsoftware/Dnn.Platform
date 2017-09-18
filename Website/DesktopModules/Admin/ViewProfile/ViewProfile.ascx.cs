@@ -37,6 +37,7 @@ using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Services.Social.Notifications;
+using System.Collections.Generic;
 
 #endregion
 
@@ -169,7 +170,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			    var propertyAccess = new ProfilePropertyAccess(ProfileUser);
                 StringBuilder sb = new StringBuilder();
                 bool propertyNotFound = false;
-                bool isBiographpyExists = false;
+                HashSet<string> existingPropertiesNames = new HashSet<string>();
 
                 foreach (ProfilePropertyDefinition property in ProfileUser.Profile.ProfileProperties)
                 {
@@ -201,11 +202,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     sb.Append("self['" + clientName + "Text'] = '");
                     sb.Append(clientName + "';");
                     sb.Append('\n');
-
-                    if (!isBiographpyExists && clientName.IndexOf("Biography") > -1)
-                    {
-                        isBiographpyExists = true;
-                    }
+                    existingPropertiesNames.Add(property.PropertyName);
                 }
 
 			    string email = (ProfileUserId == ModuleContext.PortalSettings.UserId
@@ -222,12 +219,24 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 sb.Append(LocalizeString("Email") + "';");
                 sb.Append('\n');
 
-                // DNN-10243 KO templates relying on Biography field
+                // DNN-10243 KO template relying on template properties 
                 // Need to insert dummy biography field 
-                if (!isBiographpyExists)
-                {
-                    AddEmptyProperty("Biography", sb, ModuleContext.PortalSettings.UserId == ProfileUserId  || ModuleContext.PortalSettings.UserInfo.IsInRole(ModuleContext.PortalSettings.AdministratorRoleName) ? string.Empty : PropertyAccess.ContentLocked);                    
-                }
+                string[] templateProperties = new string[] { "Biography", "Photo", "Street", "City", "Country", "PostalCode", "Telephone", "Website", "IM" };
+                templateProperties.Where(existingPropertiesNames.Contains);
+                templateProperties.ToList()
+                .ForEach(pn =>
+                        AddEmptyProperty(
+                                pn,
+                                sb,
+                                pn.ToLowerInvariant() == "photo"
+                                    ? "/images/no_avatar.gif"
+                                    : (
+                                        ModuleContext.PortalSettings.UserId == ProfileUserId || ModuleContext.PortalSettings.UserInfo.IsInRole(ModuleContext.PortalSettings.AdministratorRoleName)
+                                        ? string.Empty
+                                        : PropertyAccess.ContentLocked
+                                      )
+                       )
+                );
 
                 ProfileProperties = sb.ToString();
 
