@@ -5906,7 +5906,7 @@ namespace DotNetNuke.Services.Upgrade
             return LocaleController.Instance.GetLocales(portalid).TryGetValue(code, out enabledLanguage);
         }
 
-        public static bool UpdateNewtonsoftBindingRedirect()
+        public static bool UpdateNewtonsoftVersion()
         {
             try
             {
@@ -5916,56 +5916,23 @@ namespace DotNetNuke.Services.Upgrade
                 nsmgr.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
                 var bindingNode = currentConfig.SelectSingleNode(
                     "/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect", nsmgr);
-                if (bindingNode != null)
-                {
-                    var oldVersion = bindingNode.Attributes?["oldVersion"].Value;
 
-                    if (oldVersion == "0.0.0.0-32767.32767.32767.32767")
-                    {
-                        return false;
-                    }
-                }
-
-                var assemblyFile = Path.Combine(Globals.ApplicationMapPath, "bin\\Newtonsoft.Json.dll");
-                if (!File.Exists(assemblyFile))
+                var newVersion = bindingNode?.Attributes?["newVersion"].Value;
+                if (!string.IsNullOrEmpty(newVersion) && new Version(newVersion) >= new Version(10, 0, 0, 0))
                 {
                     return false;
                 }
 
-                const string bindingRedirectUpateConfig = @"
-<configuration>
-  <nodes configfile=""Web.config"">
-    <node path=""/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect""
-      action=""updateattribute"" collision=""overwrite"" nameSpace=""urn:schemas-microsoft-com:asm.v1"" nameSpacePrefix=""ab"" 
-      name=""oldVersion"" value=""0.0.0.0-32767.32767.32767.32767"">
-    </node>
-  </nodes>
-</configuration>
-";
-                const string bindingRedirectAddConfig = @"
-<configuration>
-  <nodes configfile=""Web.config"">
-    <node path=""/configuration/runtime/ab:assemblyBinding"" action=""update"" 
-          targetpath=""/configuration/runtime/ab:assemblyBinding[ab:dependentAssembly/ab:assemblyIdentity/@name='Newtonsoft.Json']"" 
-          collision=""ignore"" nameSpace=""urn:schemas-microsoft-com:asm.v1"" nameSpacePrefix=""ab"">
-      <dependentAssembly xmlns=""urn:schemas-microsoft-com:asm.v1"">
-        <assemblyIdentity name=""Newtonsoft.Json"" publicKeyToken=""30ad4fe6b2a6aeed"" culture=""neutral"" />
-        <bindingRedirect oldVersion=""0.0.0.0-32767.32767.32767.32767"" newVersion=""{0}"" />
-      </dependentAssembly>
-    </node>
-  </nodes>
-</configuration>
-";
+                var matchedFiles = Directory.GetFiles(Path.Combine(Globals.ApplicationMapPath, "Install\\Module"), "Newtonsoft.Json_*_Install.zip");
+                if (matchedFiles.Length == 0)
+                {
+                    return false;
+                }
 
-                var mergeConfig = bindingNode != null
-                    ? bindingRedirectUpateConfig
-                    : string.Format(bindingRedirectAddConfig, AssemblyName.GetAssemblyName(assemblyFile).Version);
-                var xmlDocument = new XmlDocument();
-                xmlDocument.LoadXml(mergeConfig);
-                var merge = new XmlMerge(xmlDocument, DotNetNukeContext.Current.Application.Version.ToString(3), "Newtonsoft Binding Update");
-                merge.UpdateConfigs();
+                var packagePath = matchedFiles[0];
+                var success = InstallPackage(packagePath, "Library", false);
 
-                return true;
+                return success;
             }
             catch (Exception ex)
             {
