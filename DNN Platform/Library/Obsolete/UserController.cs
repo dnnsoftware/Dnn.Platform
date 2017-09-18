@@ -89,5 +89,70 @@ namespace DotNetNuke.Entities.Users
 		{
 			return ChangePasswordByToken(portalid, username, newPassword, string.Empty, resetToken, out errorMessage);
 		}
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 6.1, keep this method to compatible with upgrade wizard.")]
+        public static UserInfo FillUserInfo(int portalId, IDataReader dr, bool closeDataReader)
+        {
+            UserInfo objUserInfo = null;
+            try
+            {
+                //read datareader
+                var bContinue = true;
+                if (closeDataReader)
+                {
+                    bContinue = false;
+                    if (dr.Read())
+                    {
+                        //Ensure the data reader returned is valid
+                        if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            bContinue = true;
+                        }
+                    }
+                }
+                if (bContinue)
+                {
+                    objUserInfo = new UserInfo
+                    {
+                        PortalID = portalId,
+                        IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
+                        IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]),
+                        UserID = Null.SetNullInteger(dr["UserID"]),
+                        FirstName = Null.SetNullString(dr["FirstName"]),
+                        LastName = Null.SetNullString(dr["LastName"]),
+                        DisplayName = Null.SetNullString(dr["DisplayName"])
+                    };
+                    objUserInfo.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], objUserInfo.AffiliateID));
+                    objUserInfo.Username = Null.SetNullString(dr["Username"]);
+                    GetUserMembership(objUserInfo);
+                    objUserInfo.Email = Null.SetNullString(dr["Email"]);
+                    objUserInfo.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
+
+                    var schema = dr.GetSchemaTable();
+                    if (schema != null)
+                    {
+                        if (schema.Select("ColumnName = 'PasswordResetExpiration'").Length > 0)
+                        {
+                            objUserInfo.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
+                        }
+                        if (schema.Select("ColumnName = 'PasswordResetToken'").Length > 0)
+                        {
+                            objUserInfo.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
+                        }
+                    }
+
+                    if (!objUserInfo.IsSuperUser)
+                    {
+                        objUserInfo.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
+                    }
+                }
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, closeDataReader);
+            }
+            return objUserInfo;
+        }
     }
 }
