@@ -362,7 +362,7 @@ namespace DotNetNuke.Services.Install
         {
             base.OnInit(e);
 
-            if (Upgrade.Upgrade.UpdateNewtonsoftBindingRedirect())
+            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
             {
                 Response.Redirect(Request.RawUrl, true);
             }

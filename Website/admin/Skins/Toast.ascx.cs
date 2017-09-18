@@ -125,7 +125,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
             try
             {
-                var toastConfig = DataCache.GetCache<dynamic>(ToastCacheKey);
+                var toastConfig = DataCache.GetCache<IDictionary<string, string>>(ToastCacheKey);
                 if (toastConfig == null)
                 {
                     var configFile = Server.MapPath(Path.Combine(TemplateSourceDirectory, "Toast.config"));
@@ -155,24 +155,29 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                     }
 
-                    var config = new { ModuleName = ServiceModuleName, Action = ServiceAction, Scripts = addtionalScripts.Text };
+                    var config = new Dictionary<string, string>()
+                    {
+                        {"ServiceModuleName", ServiceModuleName },
+                        {"ServiceAction", ServiceAction },
+                        {"AddtionalScripts", addtionalScripts.Text },
+                    };
                     DataCache.SetCache(ToastCacheKey, config);
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(toastConfig.ModuleName))
+                    if (!string.IsNullOrEmpty(toastConfig["ServiceModuleName"]))
                     {
-                        ServiceModuleName = toastConfig.ModuleName;
+                        ServiceModuleName = toastConfig["ServiceModuleName"];
                     }
 
-                    if (!string.IsNullOrEmpty(toastConfig.Action))
+                    if (!string.IsNullOrEmpty(toastConfig["ServiceAction"]))
                     {
-                        ServiceAction = toastConfig.Action;
+                        ServiceAction = toastConfig["ServiceAction"];
                     }
 
-                    if (!string.IsNullOrEmpty(toastConfig.Scripts))
+                    if (!string.IsNullOrEmpty(toastConfig["AddtionalScripts"]))
                     {
-                        addtionalScripts.Text = toastConfig.Scripts;
+                        addtionalScripts.Text = toastConfig["AddtionalScripts"];
                         addtionalScripts.Visible = true;
                     }
                 }
