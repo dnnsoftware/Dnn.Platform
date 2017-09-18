@@ -13,6 +13,7 @@ define(['jquery',
                 window.dnn.initSiteSettings = function initializeSiteSettings() {
                     return {
                         utility: utility,
+                        siteRoot: config.siteRoot,
                         settings: params.settings,
                         moduleName: 'SiteSettings',
                         identifier: params.identifier

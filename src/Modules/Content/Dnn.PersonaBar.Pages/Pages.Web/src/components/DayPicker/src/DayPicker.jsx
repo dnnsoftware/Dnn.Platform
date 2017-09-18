@@ -4,14 +4,11 @@ import "./style.less";
 
 
 const DayPicker = (newProps) => {
-
     const { onDayClick } = newProps;
     return (
         <div className="dnn-day-picker">
             <Picker onDayClick={onDayClick} />
         </div>);
-};
-
 
 DayPicker.PropTypes = {
     onDayClick: PropTypes.func.isRequired

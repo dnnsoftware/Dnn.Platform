@@ -761,6 +761,7 @@ class App extends Component {
             <PageList onPageSettings={this.onPageSettings.bind(this)} />
         );
     }
+
     /* eslint-disable react/no-danger */
     render_more_flyout(){
         const options = [{value:true, label:"test"}];
