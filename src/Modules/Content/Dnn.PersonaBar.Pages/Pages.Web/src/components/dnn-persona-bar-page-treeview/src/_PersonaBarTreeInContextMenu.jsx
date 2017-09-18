@@ -82,19 +82,21 @@ export class PersonaBarTreeInContextMenu extends Component {
         return items;
     }
     render_actionable(item) {
-        let visibleMenus = [
-            { key: "Add", title: Localization.get("AddPage"), index: 10, icon: TreeAddPage, onClick: this.onItemClick },
-            { key: "View", title: Localization.get("View"), index: 20, icon: EyeIcon, onClick: this.onItemClick },
-            { key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick },
-            { key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }
-        ];
+        let visibleMenus = [ ];
+        
+        item.canAddPage ? visibleMenus.push({key: "Add", title: Localization.get("AddPage"), index: 10, icon: TreeAddPage, onClick: this.onItemClick }) : null;
+        item.canViewPage ? visibleMenus.push({key: "View", title: Localization.get("View"), index: 20, icon: EyeIcon, onClick: this.onItemClick}) : null;
+        item.canAddContentToPage ? visibleMenus.push({ key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick }) : null,
+        item.canCopyPage ? visibleMenus.push({ key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }) : null;
+
+
         if (this.props.pageInContextComponents) {
             visibleMenus = visibleMenus.concat(this.props.pageInContextComponents && this.props.pageInContextComponents || []);
         }
         visibleMenus = this.sort(visibleMenus, "index");
         /*eslint-disable react/no-danger*/
 
-        if (this.showMenu) {
+        if (this.showMenu && visibleMenus.length) {
             return (<Menu>
                 {
                     visibleMenus.map(menu => {

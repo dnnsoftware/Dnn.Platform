@@ -374,7 +374,6 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         [HttpPost]
-        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage EditModeForPage([FromUri]int id)
         {
             if (!_securityService.CanManagePage(id))
@@ -388,7 +387,6 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage SavePageDetails(PageSettings pageSettings)
         {
             if (!_securityService.CanSavePageDetails(pageSettings))

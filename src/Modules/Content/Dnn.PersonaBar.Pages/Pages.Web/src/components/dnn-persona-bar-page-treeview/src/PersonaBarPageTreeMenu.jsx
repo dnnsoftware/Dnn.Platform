@@ -29,7 +29,7 @@ export class PersonaBarPageTreeMenu extends Component {
                 onDuplicatePage={this.props.onDuplicatePage}
                 listItems={childListItems}
                 _traverse={this.props._traverse}
-
+                pageInContextComponents={this.props.pageInContextComponents}
             />
         );
     }

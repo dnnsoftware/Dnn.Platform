@@ -23,7 +23,7 @@ const application = {
         utilities.load(options);
         const viewName = utils.getViewName();
 
-        if (viewName === "edit" || !securityService.isSuperUser()) {
+        if (viewName === "edit") {
             application.dispatch(PageActions.loadPage(utils.getCurrentPageId()));
         }
     },

@@ -72,11 +72,12 @@ class App extends Component {
         const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
+        window.dnn.utility.setConfirmationDialogPosition();
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
 
-        if (viewName === "edit" || !securityService.isSuperUser()) {
+        if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
         }
 
@@ -129,6 +130,7 @@ class App extends Component {
 
     componentWillMount() {
         this.props.getContentLocalizationEnabled();
+
     }
 
     componentWillUnmount() {
@@ -140,6 +142,7 @@ class App extends Component {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         window.dnn.utility.expandPersonaBarPage();
+
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -317,7 +320,7 @@ class App extends Component {
         };
 
         const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
-        !parentPage.canAddPage ? addPage() : noPermission();
+        parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
@@ -676,11 +679,11 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const { props, state } = this;
-
+            const {isContentLocalizationEnabled} = props;
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
-                    AllowContentLocalization={(d) => { }}
+                    AllowContentLocalization={isContentLocalizationEnabled}
                     selectedPageErrors={{}}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
@@ -718,6 +721,8 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
+
+
         if (!props.selectedPageSettingTab || props.selectedPageSettingTab <= 0)
             this.selectPageSettingTab(0);
         return (
@@ -795,7 +800,7 @@ class App extends Component {
                                                  <DayPicker/>
                                             </GridCell>
                                             <GridCell columnSize={50} className="calendar">
-                                                 <DayPicker/>
+                                                 <DayPicker onDayClick={(data) => {}} />
                                             </GridCell>
                                             <GridCell columnSize={100}>
                                                 <Button type="primary" onClick={()=>{}}>Apply</Button>
@@ -911,21 +916,21 @@ class App extends Component {
         const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
 
         const additionalPanels = this.getAdditionalPanels();
-        const isListPagesAllowed = securityService.isSuperUser();
+        const isListPagesAllowed = securityService.canSeePagesList();
         let defaultLabel = "Save Page Template";
         const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
         const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});
 
-
          /* eslint-disable react/no-danger */
+
 
 
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
-                    <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
+                    <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
-                            <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                          {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
