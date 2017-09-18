@@ -156,7 +156,10 @@ function getDefaultPageUrl() {
     checkInit();
     return config.siteRoot;
 }
-
+function getProductSKU() {
+    checkInit();
+    return settings.productSKU;
+}
 const utils = {
     init,
     load,
@@ -182,7 +185,8 @@ const utils = {
     canSeePagesList,
     getCurrentPagePermissions,
     getCurrentPageName,
-    getDefaultPageUrl
+    getDefaultPageUrl,
+    getProductSKU
 };
 
 export default utils;
