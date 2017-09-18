@@ -320,7 +320,7 @@ class App extends Component {
         };
 
         const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
-        parentPage.canAddPage ? addPage() : noPermission();
+        parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
