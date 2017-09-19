@@ -504,7 +504,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="message">The feedback message</param>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message)
-        { 
+        {
             WriteFeedback(response, indent, message, true);
         }
 
@@ -523,21 +523,18 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                bool showInstallationMessages = true;
-                string ConfigSetting = Config.GetSetting("ShowInstallationMessages");
-                if (ConfigSetting != null)
-                {
-                    showInstallationMessages = bool.Parse(ConfigSetting);
-                }
-                if (showInstallationMessages)
+                bool showInstallationMessages;
+                string configSetting = Config.GetSetting("ShowInstallationMessages");
+                if (configSetting != null
+                   && bool.TryParse(configSetting, out showInstallationMessages)
+                   && showInstallationMessages)
                 {
                     //Get the time of the feedback
                     TimeSpan timeElapsed = Upgrade.RunTime;
                     string strMessage = "";
                     if (showtime)
                     {
-                        strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4)
-                                      + " -";
+                        strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
                     }
                     for (int i = 0; i <= indent; i++)
                     {
@@ -548,9 +545,10 @@ namespace DotNetNuke.Common.Utilities
                     response.Flush();
                 }
             }
-            catch (HttpException)
+            catch (HttpException ex)
             {
-                // Swallowing this for when requests have timed out.
+                // Swallowing this for when requests have timed out. Log in case a listener is implemented
+                System.Diagnostics.Trace.TraceError(ex.ToString());
             }
         }
 
