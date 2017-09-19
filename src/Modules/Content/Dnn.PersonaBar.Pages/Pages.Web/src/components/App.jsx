@@ -926,7 +926,7 @@ class App extends Component {
                         <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
-                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>Cancel</Button>
+                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({ toggleSearchMoreFlyout:false})}>Cancel</Button>
                         <Button type="primary" onClick={()=>onSave()}>Save</Button>
                 </GridCell>
             </div>);

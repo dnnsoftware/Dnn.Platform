@@ -12,15 +12,20 @@ class DropdownDayPicker extends Component  {
         super();
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.addEventListener('click', this.handleClick.bind(this), false);
+        this._isMounted = true;
     }
 
+
     componentWillUnmount() {
-        document.removeEventListener('click', this.handleClick(this), false);
+        document.removeEventListener('click', this.handleClick.bind(this), false);
+        this._isMounted = false;
     }
 
      handleClick(e) {
+
+        if (!this._isMounted) { return; }
         // this is the key part - ReactDOM.findDOMNode(this) gives you a reference
         // to your CalendarPopup component;
         // e.target is the element which was clicked upon.
