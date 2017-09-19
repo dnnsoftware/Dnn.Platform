@@ -37,6 +37,7 @@ import DayPicker from "./DayPicker/src/DayPicker";
 
 import "./style.less";
 
+import DropdownDayPicker from "./DropdownDayPicker/DropdownDayPicker";
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
@@ -64,7 +65,7 @@ class App extends Component {
             headerDropdownSelection: "Save Page Template",
 
             toggleSearchMoreFlyout:false,
-            toggleDropdownCalendar:null,
+            DropdownCalendarIsActive:null,
 
             inSearch: false,
             searchTerm: false,
@@ -82,7 +83,6 @@ class App extends Component {
             tags:"",
             filters:[],
             searchFields:{}
-
         };
     }
 
@@ -248,8 +248,6 @@ class App extends Component {
                                 item.childListItems.push(cachedItem);
                                 this.props.onLoadPage(cachedItem.id);
                                 break;
-
-
                         }
                         item.isOpen = true;
                         updateStore(list);
@@ -677,11 +675,14 @@ class App extends Component {
     }
 
     onSearchMoreFlyoutClick() {
-        this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout});
+        this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout}, ()=>{
+            const {toggleSearchMoreFlyout} = this.state;
+            !toggleSearchMoreFlyout ? this.setState({DropdownCalendarIsActive: null}) : null;
+        });
     }
 
     toggleDropdownCalendar(){
-        this.setState({toggleDropdownCalendar:!this.state.toggleDropdownCalendar});
+        this.setState({DropdownCalendarIsActive:!this.state.DropdownCalendarIsActive});
     }
 
 
@@ -705,7 +706,7 @@ class App extends Component {
         filterByPageType ? filters.push(`Page Type: ${filterByPageType}`) : null;
         filterByPublishStatus ? filters.push(`Published Status: ${filterByPublishStatus}`) : null;
         filterByWorkflow ? filters.push(`Workflow: ${filterByWorkflow}`) : null;
-        this.setState({filters, toggleDropdownCalendar:null, toggleSearchMoreFlyout:false});
+        this.setState({filters, DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false});
     }
 
     saveSearchFilters(searchFields){
@@ -868,14 +869,6 @@ class App extends Component {
 
         };
 
-        const onMouseLeaveCalendarDropdown = ()=> {
-            this.setState({toggleDropdownCalendar:false}, ()=>{
-                setTimeout(()=>{
-                    this.setState({toggleDropdownCalendar: null});
-                }, 2000);
-            });
-        };
-
         const date = Date.now();
 
         return(
@@ -913,32 +906,20 @@ class App extends Component {
                                         <p>Filter by Published Date Range</p>
                                     </GridCell>
                                     <GridCell columnSize={10}>
-                                        <div className="calendar-icon" dangerouslySetInnerHTML={{__html:CalendarIcon}} onClick={()=>this.toggleDropdownCalendar()}/>
+                                        <div    id="calendar-icon"
+                                                className="calendar-icon"
+                                                dangerouslySetInnerHTML={{__html:CalendarIcon}}
+                                                onClick={()=>this.toggleDropdownCalendar() }/>
                                     </GridCell>
 
-                                    <div
-                                        className={this.state.toggleDropdownCalendar ? "calendar-dropdown expand-down" : `calendar-dropdown ${this.state.toggleDropdownCalendar != null ? 'expand-up' : ''} ` }
-                                        onBlur={()=>console.log('blurred')}
-                                        >
+                                    <DropdownDayPicker
+                                        onDayClick={this.onDayClick.bind(this)}
+                                        dropdownIsActive={this.state.DropdownCalendarIsActive}
+                                        applyChanges={()=>this.setState({DropdownCalendarIsActive:null})}
+                                        startDate={this.state.startDate}
+                                        endDate={this.state.endDate}
+                                        />
 
-                                        <GridCell columnSize={100} style={{padding:"20px"}}>
-                                            <GridCell columnSize={50}  className="calendar">
-                                                 <DayPicker
-                                                    selectedDays={this.state.startDate}
-                                                    onDayClick={(data) => this.onDayClick(data, false) }/>
-                                            </GridCell>
-                                            <GridCell columnSize={50} className="calendar">
-                                                 <DayPicker
-                                                    month={this.state.endDate}
-                                                    selectedDays={this.state.endDate}
-                                                    fromMonth={this.state.startDate}
-                                                    onDayClick={(data) => this.onDayClick(data, true) }/>
-                                            </GridCell>
-                                            <GridCell columnSize={100}>
-                                                <Button type="primary" onClick={()=>this.setState({toggleDropdownCalendar: null})}>Apply</Button>
-                                            </GridCell>
-                                        </GridCell>
-                                    </div>
                                 </GridCell>
                             </div>
                         </GridCell>
@@ -956,7 +937,7 @@ class App extends Component {
                         <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
-                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({toggleDropdownCalendar:null, toggleSearchMoreFlyout:false})}>Cancel</Button>
+                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>Cancel</Button>
                         <Button type="primary" onClick={()=>onSave()}>Save</Button>
                 </GridCell>
             </div>);
