@@ -24,21 +24,11 @@ class DropdownDayPicker extends Component  {
     }
 
      handleClick(e) {
-
+        const {toggleDropdownCalendar, dropdownIsActive} = this.props;
         if (!this._isMounted) { return; }
-        // this is the key part - ReactDOM.findDOMNode(this) gives you a reference
-        // to your CalendarPopup component;
-        // e.target is the element which was clicked upon.
-        // check whether the element clicked upon is in your component - if not,
-        // then call the close logic
         if(!ReactDOM.findDOMNode(this).contains(e.target)) {
-        // the click was outside your component, so handle closing here
-           this.props.toggleDropdownCalendar(false);
+            dropdownIsActive ? toggleDropdownCalendar(false) : null;
         }
-    }
-
-    render_dropdown(){
-
     }
 
     render(){

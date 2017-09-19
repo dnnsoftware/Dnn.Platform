@@ -850,10 +850,9 @@ class App extends Component {
         };
 
         const onSave = () => {
-            const {searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty} = this.state;
+            const {searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags} = this.state;
             const searchDateRange = startAndEndDateDirty ? {publishDateStart: startDate, publishDateEnd:endDate} : {};
-
-            let search = {searchKey:searchTerm, pageType:filterByPageType, publishStatus:filterByPublishStatus, workflowId:filterByWorkflow};
+            let search = {tags:tags, searchKey:searchTerm, pageType:filterByPageType, publishStatus:filterByPublishStatus, workflowId:filterByWorkflow};
 
             search = Object.assign({}, search, searchDateRange);
             for(let prop in search){
@@ -861,12 +860,9 @@ class App extends Component {
                     delete search[prop];
                 }
             }
-
             this.generateFilters();
-            this.saveSearchFilters(search).then(()=>{
-                this.props.searchAndFilterPageList(search);
-            });
-
+            this.saveSearchFilters(search).then(()=> this.props.searchAndFilterPageList(search));
+            this.setState({inSearch:true});
         };
 
         const date = Date.now();
@@ -900,7 +896,6 @@ class App extends Component {
                     </GridCell>
                     <GridCell columnSize={100}>
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-
                             <DropdownDayPicker
                                 onDayClick={this.onDayClick.bind(this)}
                                 dropdownIsActive={this.state.DropdownCalendarIsActive}
@@ -910,7 +905,6 @@ class App extends Component {
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
                                 CalendarIcon={CalendarIcon}
                                 />
-
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown
@@ -926,7 +920,7 @@ class App extends Component {
                         <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
-                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({ toggleSearchMoreFlyout:false})}>Cancel</Button>
+                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>Cancel</Button>
                         <Button type="primary" onClick={()=>onSave()}>Save</Button>
                 </GridCell>
             </div>);
@@ -998,7 +992,6 @@ class App extends Component {
                         <p>{`${searchList.length} PAGES FOUND` }</p>
                     </GridCell>
                     <GridCell columnSize={100}>
-
                         {searchList.map((item)=>{
                             return render_card(item);
                         })}
