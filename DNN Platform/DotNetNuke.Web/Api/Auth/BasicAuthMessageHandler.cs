@@ -96,17 +96,17 @@ namespace DotNetNuke.Web.Api.Auth
 
         private UserCredentials GetCredentials(HttpRequestMessage request)
         {
-            if (request.Headers.Authorization == null)
+            if (request?.Headers.Authorization == null)
             {
                 return null;
             }
 
-            if (request.Headers.Authorization.Scheme.ToLower() != AuthScheme.ToLower())
+            if (request?.Headers.Authorization.Scheme.ToLower() != AuthScheme.ToLower())
             {
                 return null;
             }
 
-            string authorization = request.Headers.Authorization.Parameter;
+            string authorization = request?.Headers.Authorization.Parameter;
             if (String.IsNullOrEmpty(authorization))
             {
                 return null;

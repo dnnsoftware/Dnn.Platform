@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using DotNetNuke.Web.Api.Auth;
-using DotNetNuke.Web.ConfigSection;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Web.Api
@@ -40,6 +39,37 @@ namespace DotNetNuke.Tests.Web.Api
 
             //Assert
             CollectionAssert.IsEmpty(response.Headers.WwwAuthenticate);
+        }
+
+        [Test]
+        public void MissingXmlHttpRequestValueDoesntThrowNullException()
+        {
+            //Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
+            response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "");
+
+            //Act
+            var handler = new BasicAuthMessageHandler(true, false);
+            handler.OnOutboundResponse(response, new CancellationToken());
+
+            //Assert
+            Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);
+            Assert.AreEqual("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+        }
+
+        [Test]
+        public void ResponseWithNullRequestReturnsUnauthorized()
+        {
+            //Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = null };
+
+            //Act
+            var handler = new BasicAuthMessageHandler(true, false);
+            handler.OnOutboundResponse(response, new CancellationToken());
+
+            //Assert
+            Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);
+            Assert.AreEqual("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
         }
 
         //todo unit test actual authentication code
