@@ -681,8 +681,8 @@ class App extends Component {
         });
     }
 
-    toggleDropdownCalendar(){
-        this.setState({DropdownCalendarIsActive:!this.state.DropdownCalendarIsActive});
+    toggleDropdownCalendar(bool){
+        typeof(bool) == "boolean" ? this.setState({DropdownCalendarIsActive:bool}) : this.setState({DropdownCalendarIsActive:!this.state.DropdownCalendarIsActive});
     }
 
 
@@ -900,28 +900,17 @@ class App extends Component {
                     </GridCell>
                     <GridCell columnSize={100}>
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                            <div className="date-picker">
-                                <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
-                                    <GridCell className="selected-date" columnSize={90}>
-                                        <p>Filter by Published Date Range</p>
-                                    </GridCell>
-                                    <GridCell columnSize={10}>
-                                        <div    id="calendar-icon"
-                                                className="calendar-icon"
-                                                dangerouslySetInnerHTML={{__html:CalendarIcon}}
-                                                onClick={()=>this.toggleDropdownCalendar() }/>
-                                    </GridCell>
 
-                                    <DropdownDayPicker
-                                        onDayClick={this.onDayClick.bind(this)}
-                                        dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                        applyChanges={()=>this.setState({DropdownCalendarIsActive:null})}
-                                        startDate={this.state.startDate}
-                                        endDate={this.state.endDate}
-                                        />
+                            <DropdownDayPicker
+                                onDayClick={this.onDayClick.bind(this)}
+                                dropdownIsActive={this.state.DropdownCalendarIsActive}
+                                applyChanges={()=>this.setState({DropdownCalendarIsActive:null})}
+                                startDate={this.state.startDate}
+                                endDate={this.state.endDate}
+                                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
+                                CalendarIcon={CalendarIcon}
+                                />
 
-                                </GridCell>
-                            </div>
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown
