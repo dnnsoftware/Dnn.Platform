@@ -647,22 +647,51 @@ class App extends Component {
     }
 
     onViewEditPage(item) {
+        const {selectedPageDirty} = this.props;
+        const viewPage = () => PageActions.viewPage(item.id, item.url);
+
+        const left = () => {
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                viewPage);
+        };
+
+        const right = () => viewPage();
+        const proceed = () => selectedPageDirty ? left() : right();
+
         this.clearEmptyStateMessage();
         const message = Localization.get("NoPermissionEditPage");
-        const viewPage = () => PageActions.viewPage(item.id, item.url);
         const noPermission = () => this.setEmptyStateMessage(message);
-        item.canManagePage ? viewPage() : noPermission();
+        item.canManagePage ? proceed() : noPermission();
+
     }
 
     onViewPage(item) {
-        this.clearEmptyStateMessage();
+        const {selectedPageDirty} = this.props;
         const view = () => {
+            this.props.onLoadPage(item.id);
             window.dnn.PersonaBar.closePanel();
-            window.parent.location=item.url;
+            window.open(item.url);
         };
+
+        const left = () => {
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                view);
+        };
+
+        const right = () => view();
+        const proceed = () => selectedPageDirty ? left() : right();
+
+        this.clearEmptyStateMessage();
         const message = Localization.get("NoPermissionViewPage");
         const noPermission = () => this.setEmptyStateMessage(message);
-        item.canViewPage ? view() : noPermission();
+        item.canViewPage ? proceed() : noPermission();
+
     }
 
     setEmptyStateMessage(emptyStateMessage) {
