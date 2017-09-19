@@ -13,6 +13,7 @@
 <asp:Panel runat="server" ID="pnlScripts">
     <script language="javascript" type="text/javascript">
         jQuery(document).ready(function($) {
+            var $container = $('#<%= profileOutput.ClientID %>');
             function ProfileViewModelModule<%=ModuleContext.ModuleId.ToString(CultureInfo.InvariantCulture) %>() {
                 var self = this;
                 self.AboutMeText = '<%=Localization.GetSafeJSString(LocalizeString("AboutMe")) %>';
@@ -25,8 +26,8 @@
                 <% = ProfileProperties %>
 
                 self.Location = ko.computed(function() {
-                    var city = self.City();
-                    var region = self.Region();
+                    var city = typeof self.City === "function" ? self.City() : "";
+                    var region = typeof self.Region === "function" ? self.Region() : "";
                     var location = (city != null) ? city : '';
                     if (location != '' && region != null && region != '') {
                         location += ', ';
@@ -38,13 +39,36 @@
                     return location;
                 });
 
+                //process all binded functions to apply empty values on not exist properties.
+                $container.find('*[data-bind]').each(function() {
+                    var binding = $(this).attr('data-bind');
+
+                    $.each(binding.match(/\w+?\(\)/gi), function (index, name) {
+                        name = name.replace('()', '');
+                        if (typeof self[name] === "undefined") {
+                            self[name] = ko.observable('');
+                        }
+                    });
+
+                    $.each(binding.split(','), function (index, part) {
+                        var parts = part ? part.split(':') : [];
+                        if (parts.length === 2) {
+                            var name = parts[1].trim().replace('()', '');
+                            if (name && name.length > 4 && name.substr(name.length - 4, 4) === "Text" && typeof self[name] === "undefined") {
+                                console.log(name);
+                                self[name] = '';
+                            }
+                        }
+                    });
+                });
+
                 self.Visible = true;
             };
 
             try {
-                ko.applyBindings(new ProfileViewModelModule<%=ModuleContext.ModuleId.ToString(CultureInfo.InvariantCulture) %>(), document.getElementById($('#<%= profileOutput.ClientID %>').attr("id")));
+                ko.applyBindings(new ProfileViewModelModule<%=ModuleContext.ModuleId.ToString(CultureInfo.InvariantCulture) %>(), $container[0]);
             } catch (e) {
-    
+
             }
         });
     </script>
