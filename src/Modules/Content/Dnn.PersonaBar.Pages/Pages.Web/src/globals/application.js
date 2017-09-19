@@ -23,7 +23,7 @@ const application = {
         utilities.load(options);
         const viewName = utils.getViewName();
 
-        if (viewName === "edit" || !securityService.isSuperUser()) {
+        if (viewName === "edit") {
             application.dispatch(PageActions.loadPage(utils.getCurrentPageId()));
         }
     },
@@ -59,6 +59,9 @@ const application = {
     },
     isSuperUserForPages() {
         return utilities.getIsSuperUser();
+    },
+    getProductSKU() {
+        return utilities.getProductSKU();
     }
 };
 

@@ -108,6 +108,14 @@ namespace Dnn.PersonaBar.Pages.Components
                 valid = false;
             }
 
+            bool modified;
+            FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
+            if (modified)
+            {
+                errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
+                valid = false;
+            }
+
             return valid;
         }
 
@@ -201,9 +209,19 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (TabPermissionController.CanDeletePage(tab))
             {
-                TabController.Instance.SoftDeleteTab(tab.TabID, portalSettings);
+                if (TabController.IsSpecialTab(tab.TabID, portalSettings.PortalId))
+                {
+                    throw new PageException(Localization.GetString("CannotDeleteSpecialPage"));
+                }
+                else
+                {
+                    TabController.Instance.SoftDeleteTab(tab.TabID, portalSettings);
+                }
             }
-
+            else
+            {
+                throw new PageException(Localization.GetString("NoPermissionDeletePage"));
+            }
         }
 
         public void EditModeForPage(int pageId, int userId)
@@ -428,6 +446,14 @@ namespace Dnn.PersonaBar.Pages.Components
                 if (string.IsNullOrEmpty(errorMessage))
                 {
                     errorMessage = Localization.GetString("EmptyTabName");
+                }
+                else if (errorMessage.Equals("InvalidTabName", StringComparison.OrdinalIgnoreCase))
+                {
+                    errorMessage = string.Format(Localization.GetString("InvalidTabName"), pageSettings.Name);
+                }
+                else
+                {
+                    errorMessage = Localization.GetString(errorMessage);
                 }
                 return false;
             }

@@ -19,12 +19,12 @@ function init(options) {
     if (!options.moduleName) {
         throw new Error("This method needs to have an options.moduleName string as an input parameter");
     }
-    utilities = options.utilities;  
-    config = options.config; 
+    utilities = options.utilities;
+    config = options.config;
     moduleName = options.moduleName;
     viewName = options.viewName;
     viewParams = options.viewParams;
-    initialized = true;   
+    initialized = true;
     settings = options.settings;
 }
 
@@ -134,6 +134,11 @@ function getTemplateFolder() {
 
 function getIsSuperUser() {
     checkInit();
+    return settings.isHost || settings.isAdmin;
+}
+
+function canSeePagesList() {
+    checkInit();
     return settings.isHost || settings.isAdmin || settings.canSeePagesList;
 }
 
@@ -151,7 +156,10 @@ function getDefaultPageUrl() {
     checkInit();
     return config.siteRoot;
 }
-
+function getProductSKU() {
+    checkInit();
+    return settings.productSKU;
+}
 const utils = {
     init,
     load,
@@ -174,9 +182,11 @@ const utils = {
     getPortalName,
     getTemplateFolder,
     getIsSuperUser,
+    canSeePagesList,
     getCurrentPagePermissions,
     getCurrentPageName,
-    getDefaultPageUrl
+    getDefaultPageUrl,
+    getProductSKU
 };
 
 export default utils;

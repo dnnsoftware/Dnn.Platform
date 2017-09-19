@@ -13,6 +13,7 @@ define(['jquery',
                 window.dnn.initExtensions = function initializeExtensions() {
                     return {
                         utility: utility,
+                        siteRoot: config.siteRoot,
                         settings: params.settings,
                         moduleName: 'Extensions'
                     };

@@ -99,7 +99,7 @@ class App extends Component {
             this.setState({workflowList});
         });
 
-        if (viewName === "edit" || !securityService.isSuperUser()) {
+        if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
         }
 
@@ -344,7 +344,7 @@ class App extends Component {
         };
 
         const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
-        !parentPage.canAddPage ? addPage() : noPermission();
+        parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
@@ -821,6 +821,7 @@ class App extends Component {
         );
     }
 
+    /* eslint-disable react/no-danger */
     render_more_flyout(){
         const options = [{value:true, label:"test"}];
 
@@ -1036,7 +1037,7 @@ class App extends Component {
         const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
 
         const additionalPanels = this.getAdditionalPanels();
-        const isListPagesAllowed = securityService.isSuperUser();
+        const isListPagesAllowed = securityService.canSeePagesList();
         let defaultLabel = "Save Page Template";
         const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
         const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
@@ -1048,7 +1049,7 @@ class App extends Component {
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
-                            <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                          {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>

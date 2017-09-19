@@ -15,7 +15,7 @@ import resx from "../../../resources";
 
 let specificityOptions = [];
 let typeOptions = [];
-const re = /([0-9]{1,3}\.|\*\.){3}([0-9]{1,3}|\*){1}/;
+const re = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
 class IpFilterEditor extends Component {
     constructor() {

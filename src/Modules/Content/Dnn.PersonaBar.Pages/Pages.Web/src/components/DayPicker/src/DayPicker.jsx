@@ -1,21 +1,17 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import Picker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import "./style.less";
 
 
-const DayPicker = (props) => {
-
-    const {onDayClick} = props;
-    return(
+const DayPicker = (newProps) => {
+    const { onDayClick } = newProps;
+    return (
         <div className="dnn-day-picker">
-            <Picker {...props} />
+            <Picker onDayClick={onDayClick} />
         </div>);
 };
-
-
-DayPicker.propTypes = {
-    onDayClick: PropTypes.func.isRequired,
-    selectedDays: PropTypes.func.isRequired
+DayPicker.PropTypes = {
+    onDayClick: PropTypes.func.isRequired
 };
 
 export default DayPicker;

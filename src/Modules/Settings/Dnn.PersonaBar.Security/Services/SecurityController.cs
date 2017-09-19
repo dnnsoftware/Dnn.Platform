@@ -279,7 +279,12 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     IPFilterController.Instance.AddIPFilter(ipf);
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+            }
+            catch (ArgumentException exc)
+            {
+                Logger.Info(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
