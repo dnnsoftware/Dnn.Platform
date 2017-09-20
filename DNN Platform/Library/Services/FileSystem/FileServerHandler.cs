@@ -99,7 +99,6 @@ namespace DotNetNuke.Services.FileSystem
             //get the URL
             string URL = "";
             bool blnClientCache = true;
-            bool blnForceDownload = false;
             if (context.Request.QueryString["fileticket"] != null)
             {
 
@@ -152,6 +151,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 //get optional parameters
+                bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
                      bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
