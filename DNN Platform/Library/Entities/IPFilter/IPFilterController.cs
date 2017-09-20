@@ -271,7 +271,7 @@ namespace DotNetNuke.Entities.Host
                 throw new ArgumentException(Localization.GetExceptionMessage("IPAddressIncorrect", "IP address is not in correct format"));
             }
 
-            bool isIPRange = string.IsNullOrEmpty(ipFilter.SubnetMask);
+            bool isIPRange = string.IsNullOrEmpty(ipFilter.SubnetMask) == false;
             if (isIPRange && IPAddress.TryParse(ipFilter.SubnetMask, out parsed) == false)
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("SubnetMaskIncorrect", "Subnet mask is not in correct format"));
