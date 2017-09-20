@@ -534,28 +534,32 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message, bool showtime)
         {
-            bool showInstallationMessages = true;
-            string ConfigSetting = Config.GetSetting("ShowInstallationMessages");
-            if (ConfigSetting != null)
+            try
             {
-                showInstallationMessages = bool.Parse(ConfigSetting);
+                bool showInstallationMessages;
+                string configSetting = Config.GetSetting("ShowInstallationMessages") ?? "true";
+                if (bool.TryParse(configSetting, out showInstallationMessages) && showInstallationMessages)
+                {
+                    //Get the time of the feedback
+                    TimeSpan timeElapsed = Upgrade.RunTime;
+                    string strMessage = "";
+                    if (showtime)
+                    {
+                        strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
+                    }
+                    for (int i = 0; i <= indent; i++)
+                    {
+                        strMessage += "&nbsp;";
+                    }
+                    strMessage += message;
+                    response.Write(strMessage);
+                    response.Flush();
+                }
             }
-            if (showInstallationMessages)
+            catch (HttpException ex)
             {
-                //Get the time of the feedback
-                TimeSpan timeElapsed = Upgrade.RunTime;
-                string strMessage = "";
-                if (showtime)
-                {
-                    strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
-                }
-                for (int i = 0; i <= indent; i++)
-                {
-                    strMessage += "&nbsp;";
-                }
-                strMessage += message;
-                response.Write(strMessage);
-                response.Flush();
+                // Swallowing this for when requests have timed out. Log in case a listener is implemented
+                System.Diagnostics.Trace.TraceError(ex.ToString());
             }
         }
 
