@@ -3283,7 +3283,7 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 }
 
 /* used to collapse panes without any content in them */
-.DNNEmptyPane {
+body:not(.dnnEditState) .DNNEmptyPane {
     width: 0px;
 }
 
