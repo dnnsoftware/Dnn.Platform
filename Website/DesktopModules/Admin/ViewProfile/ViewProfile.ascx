@@ -55,7 +55,6 @@
                         if (parts.length === 2) {
                             var name = parts[1].trim().replace('()', '');
                             if (name && name.length > 4 && name.substr(name.length - 4, 4) === "Text" && typeof self[name] === "undefined") {
-                                console.log(name);
                                 self[name] = '';
                             }
                         }
