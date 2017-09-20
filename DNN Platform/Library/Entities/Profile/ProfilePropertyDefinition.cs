@@ -449,7 +449,7 @@ namespace DotNetNuke.Entities.Profile
                 _visible = value;
             }
         }
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the property is visible

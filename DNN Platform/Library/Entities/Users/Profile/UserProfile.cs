@@ -104,7 +104,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         #region Public Properties
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Cell/Mobile Phone
