@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public TabDto GetPortalTabs(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true,
             string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,
-            int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false)
+            int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
         {
             var portalInfo = PortalController.Instance.GetPortal(portalId);
 
@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                         isMultiLanguage
                             ? TabController.GetTabsBySortOrder(portalId, portalInfo.DefaultLanguage, true)
                             : TabController.GetTabsBySortOrder(portalId, cultureCode, true), Null.NullInteger, false,
-                        "<" + Localization.GetString("None_Specified") + ">", true, false, true, true, false)
+                        "<" + Localization.GetString("None_Specified") + ">", true, includeDeleted, true, true, false)
                         .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                         .ToList();
 
