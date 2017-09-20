@@ -1963,7 +1963,10 @@ namespace DotNetNuke.Entities.Users
             portalId = GetEffectivePortalId(portalId);
             user.PortalID = portalId;
 
-            var oldUser = Instance.GetUser(user.PortalID, user.UserID);
+            //clear the cache so that can get original info from database.
+            DataCache.RemoveCache(String.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
+            var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
+            var oldProfile = oldUser.Profile; //access the profile property to reload data from database.
 
             //Update the User
             MembershipProvider.Instance().UpdateUser(user);
