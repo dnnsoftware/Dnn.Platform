@@ -133,7 +133,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 : rootNode;
         }
 
-        public TabDto SearchPortalTabs(UserInfo userInfo, string searchText, int portalId, string roles="", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false)
+        public TabDto SearchPortalTabs(UserInfo userInfo, string searchText, int portalId, string roles="", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
         {
             var rootNode = new TabDto
             {
@@ -161,6 +161,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                         .Where(
                             tab =>
                                 (includeDisabled || !tab.Value.DisableLink) &&
+                                (includeDeleted || !tab.Value.IsDeleted) &&
                                 (tab.Value.TabType == TabType.Normal) &&
                                 searchFunc(tab.Value) &&
                                 !tab.Value.IsSystem

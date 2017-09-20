@@ -94,9 +94,10 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="validateTab"></param>
         /// <param name="includeHostPages"></param>
         /// <param name="includeDisabled"></param>
+        /// <param name="includeDeleted"></param>
         /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false)
+        public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
         {
             try
             {
@@ -104,7 +105,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.SearchPortalTabs(UserInfo, searchText, portalId < 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled)
+                        _controller.SearchPortalTabs(UserInfo, searchText, portalId < 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeleted)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
