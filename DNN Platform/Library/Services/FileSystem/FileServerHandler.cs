@@ -98,7 +98,6 @@ namespace DotNetNuke.Services.FileSystem
 
             //get the URL
             string URL = "";
-            bool blnClientCache = true;
             if (context.Request.QueryString["fileticket"] != null)
             {
 
