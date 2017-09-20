@@ -524,10 +524,8 @@ namespace DotNetNuke.Common.Utilities
             try
             {
                 bool showInstallationMessages;
-                string configSetting = Config.GetSetting("ShowInstallationMessages");
-                if (configSetting != null
-                   && bool.TryParse(configSetting, out showInstallationMessages)
-                   && showInstallationMessages)
+                string configSetting = Config.GetSetting("ShowInstallationMessages") ?? "true";
+                if (bool.TryParse(configSetting, out showInstallationMessages) && showInstallationMessages)
                 {
                     //Get the time of the feedback
                     TimeSpan timeElapsed = Upgrade.RunTime;
