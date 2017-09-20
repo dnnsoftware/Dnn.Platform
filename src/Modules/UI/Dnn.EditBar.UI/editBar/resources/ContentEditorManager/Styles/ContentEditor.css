@@ -871,7 +871,6 @@ div.module-motion {
     z-index: 1110;
 }
 .EditBarEmptyPane { display: block !important;}
-.DnnAjaxPanel > .EditBarEmptyPane{width: auto !important;}
 .module-drag-tip {
     position: fixed;
     background-color: #000;
