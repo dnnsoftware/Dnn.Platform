@@ -543,7 +543,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (pageSettings.TemplateTabId > 0)
             {
-                CopyContentFromSourceTab(tab, pageSettings.TemplateTabId);
+                CopyContentFromSourceTab(tab, pageSettings.TemplateTabId, pageSettings.Modules);
             }
 
             if (pageSettings.TemplateId > 0)
@@ -1188,7 +1188,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
 
-        public void CopyContentFromSourceTab(TabInfo tab, int sourceTabId)
+        public void CopyContentFromSourceTab(TabInfo tab, int sourceTabId, IEnumerable<ModuleItem> includedModules)
         {
             var sourceTab = _tabController.GetTab(sourceTabId, tab.PortalID);
             if (sourceTab == null || sourceTab.IsDeleted)
@@ -1199,7 +1199,7 @@ namespace Dnn.PersonaBar.Pages.Components
             CopySourceTabProperties(tab, sourceTab);
 
             //Copy Modules
-            CopyModulesFromSourceTab(tab, sourceTab);
+            CopyModulesFromSourceTab(tab, sourceTab, includedModules);
         }
 
         private void CopySourceTabProperties(TabInfo tab, TabInfo sourceTab)
@@ -1224,67 +1224,83 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        private void CopyModulesFromSourceTab(TabInfo tab, TabInfo sourceTab)
+        private void CopyModulesFromSourceTab(TabInfo tab, TabInfo sourceTab, IEnumerable<ModuleItem> includedModules)
         {
-            foreach (var module in sourceTab.ChildModules.Values)
+            foreach (var module in includedModules)
             {
-                if (module.IsDeleted || module.AllTabs)
+                var includedInCopy = module.IncludedInCopy ?? true;
+                if (!includedInCopy || !sourceTab.ChildModules.Values.Any(m => !m.IsDeleted && !m.AllTabs && m.ModuleID == module.Id))
                 {
                     continue;
                 }
 
-                var newModule = module.Clone();
-
-                newModule.TabID = tab.TabID;
-                newModule.DefaultLanguageGuid = Null.NullGuid;
-                newModule.CultureCode = tab.CultureCode;
-                newModule.VersionGuid = Guid.NewGuid();
-                newModule.LocalizedVersionGuid = Guid.NewGuid();
-
-                newModule.ModuleID = Null.NullInteger;
-                _moduleController.InitialModulePermission(newModule, newModule.TabID, 0);
-                newModule.InheritViewPermissions = module.InheritViewPermissions;
-
-                newModule.ModuleID = _moduleController.AddModule(newModule);
-
-                //Copy each setting to the new TabModule instance
-                foreach (DictionaryEntry setting in module.ModuleSettings)
+                var copyType = module.CopyType ?? ModuleCopyType.Copy;
+                var objModule = ModuleController.Instance.GetModule(module.Id, sourceTab.TabID, false);
+                ModuleInfo newModule = null;
+                if (objModule != null)
                 {
-                    _moduleController.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
-                }
+                    //Clone module as it exists in the cache and changes we make will update the cached object
+                    newModule = objModule.Clone();
+                    newModule.TabID = tab.TabID;
+                    newModule.DefaultLanguageGuid = Null.NullGuid;
+                    newModule.CultureCode = tab.CultureCode;
+                    newModule.ModuleTitle = module.Title;
 
-                foreach (DictionaryEntry setting in module.TabModuleSettings)
-                {
-                    _moduleController.UpdateTabModuleSetting(newModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
-                }
-
-                //copy permissions from source module
-                foreach (ModulePermissionInfo permission in module.ModulePermissions)
-                {
-                    newModule.ModulePermissions.Add(new ModulePermissionInfo
+                    if (copyType != ModuleCopyType.Reference)
                     {
-                        ModuleID = newModule.ModuleID,
-                        PermissionID = permission.PermissionID,
-                        RoleID = permission.RoleID,
-                        UserID = permission.UserID,
-                        PermissionKey = permission.PermissionKey,
-                        AllowAccess = permission.AllowAccess
-                    }, true);
-                }
+                        newModule.ModuleID = Null.NullInteger;
+                        ModuleController.Instance.InitialModulePermission(newModule, newModule.TabID, 0);
+                        newModule.InheritViewPermissions = objModule.InheritViewPermissions;
+                    }
 
-                ModulePermissionController.SaveModulePermissions(newModule);
+                    newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
-                if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
-                {
-                    var moduleBizClass = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass) as IPortable;
-                    if (moduleBizClass != null)
+                    //copy permissions from source module
+                    foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
                     {
-                        var content = Convert.ToString(moduleBizClass.ExportModule(module.ModuleID));
-                        if (!string.IsNullOrEmpty(content))
+                        newModule.ModulePermissions.Add(new ModulePermissionInfo
                         {
-                            content = XmlUtils.RemoveInvalidXmlCharacters(content);
-                            moduleBizClass.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
+                            ModuleID = newModule.ModuleID,
+                            PermissionID = permission.PermissionID,
+                            RoleID = permission.RoleID,
+                            UserID = permission.UserID,
+                            PermissionKey = permission.PermissionKey,
+                            AllowAccess = permission.AllowAccess
+                        }, true);
+                    }
+
+                    ModulePermissionController.SaveModulePermissions(newModule);
+
+                    if (copyType == ModuleCopyType.Copy)
+                    {
+                        if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
+                        {
+                            var objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
+                            var o = objObject as IPortable;
+                            if (o != null)
+                            {
+                                var content = Convert.ToString(o.ExportModule(module.Id));
+                                if (!string.IsNullOrEmpty(content))
+                                {
+                                    o.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
+                                }
+                            }
                         }
+                    }
+                }
+
+                if (copyType != ModuleCopyType.Reference && objModule != null)
+                {
+                    //Make reference copies on secondary language
+                    foreach (var m in objModule.LocalizedModules.Values)
+                    {
+                        var newLocalizedModule = m.Clone();
+                        var localizedTab = tab.LocalizedTabs[m.CultureCode];
+                        newLocalizedModule.TabID = localizedTab.TabID;
+                        newLocalizedModule.CultureCode = localizedTab.CultureCode;
+                        newLocalizedModule.ModuleTitle = module.Title;
+                        newLocalizedModule.DefaultLanguageGuid = newModule.UniqueId;
+                        newLocalizedModule.ModuleID = ModuleController.Instance.AddModule(newLocalizedModule);
                     }
                 }
             }

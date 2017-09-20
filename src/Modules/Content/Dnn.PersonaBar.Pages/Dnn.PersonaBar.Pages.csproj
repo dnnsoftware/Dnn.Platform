@@ -154,6 +154,7 @@
     <Compile Include="Services\Dto\DnnPageDto.cs" />
     <Compile Include="Services\Dto\DnnPagesRequest.cs" />
     <Compile Include="Services\Dto\DnnPagesDto.cs" />
+    <Compile Include="Services\Dto\ModuleCopyType.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />
     <Compile Include="Services\Dto\PageFolderTemplate.cs" />
     <Compile Include="Services\Dto\PageItem.cs" />
