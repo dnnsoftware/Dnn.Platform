@@ -502,6 +502,12 @@ namespace DotNetNuke.Security.Permissions
             return true;
         }
 
+        public virtual bool IsPortalEditor()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
+        }
+
         #region FolderPermission Methods
 
         /// <summary>
