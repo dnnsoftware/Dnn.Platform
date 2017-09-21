@@ -33,6 +33,7 @@ class DropdownDayPicker extends Component  {
 
     render(){
         const {dropdownIsActive, onDayClick, applyChanges, startDate, endDate, CalendarIcon, toggleDropdownCalendar} = this.props;
+
         return(
             <div className="date-picker">
                 <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
@@ -51,16 +52,16 @@ class DropdownDayPicker extends Component  {
                             <GridCell columnSize={100} style={{padding:"20px"}}>
                                 <GridCell columnSize={50}  className="calendar">
                                         <DayPicker
-                                        id="try-this"
-                                        selectedDays={startDate}
-                                        onDayClick={(data) => onDayClick(data, false) }/>
+                                            id="try-this"
+                                            selectedDays={startDate}
+                                            onDayClick={(data) => onDayClick(data, false) }/>
                                 </GridCell>
                                 <GridCell columnSize={50} className="calendar">
                                         <DayPicker
-                                        month={endDate}
-                                        selectedDays={endDate}
-                                        fromMonth={startDate}
-                                        onDayClick={(data) => onDayClick(data, true) }/>
+                                            month={endDate}
+                                            selectedDays={endDate}
+                                            fromMonth={startDate}
+                                            onDayClick={(data) => onDayClick(data, true) }/>
                                 </GridCell>
                                 <GridCell columnSize={100}>
                                     <Button type="primary" onClick={()=>applyChanges()}>Apply</Button>

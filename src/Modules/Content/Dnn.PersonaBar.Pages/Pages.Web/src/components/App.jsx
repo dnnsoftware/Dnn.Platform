@@ -1,3 +1,4 @@
+
 import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
@@ -34,6 +35,7 @@ import Promise from "promise";
 import { PagesSearchIcon, PagesVerticalMore, CalendarIcon } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
 import DayPicker from "./DayPicker/src/DayPicker";
+import {XIcon} from "dnn-svg-icons";
 
 import "./style.less";
 
@@ -58,6 +60,7 @@ function getSelectedTabBeingViewed(viewTab) {
 class App extends Component {
     constructor() {
         super();
+        const date = new Date();
         this.state = {
             referral: "",
             referralText: "",
@@ -70,8 +73,9 @@ class App extends Component {
             inSearch: false,
             searchTerm: false,
 
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: date,
+            endDate: date,
+            defaultDate: date,
             startAndEndDateDirty:false,
 
             filterByPageType: null,
@@ -730,11 +734,22 @@ class App extends Component {
     }
 
     generateFilters(){
-        const {filterByPageType, filterByPublishStatus, filterByWorkflow} = this.state;
+        const {filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty} = this.state;
         const filters = this.state.tags.split(",");
         filterByPageType ? filters.push(`Page Type: ${filterByPageType}`) : null;
         filterByPublishStatus ? filters.push(`Published Status: ${filterByPublishStatus}`) : null;
         filterByWorkflow ? filters.push(`Workflow: ${filterByWorkflow}`) : null;
+
+        if(startAndEndDateDirty){
+            const fullStartDate = `${startDate.getDay()}/${startDate.getMonth()+1}/${startDate.getFullYear()}`;
+            const fullEndDate = `${endDate.getDay()}/${endDate.getMonth()+1}/${endDate.getFullYear()}`;
+
+            const left = () => filters.push(`Date Range: ${fullStartDate} - ${fullEndDate} `);
+            const right = () => filters.push(`From Date: ${fullStartDate}`);
+
+            fullStartDate != fullEndDate ? left() : right();
+        }
+
         this.setState({filters, DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false});
     }
 
@@ -839,7 +854,6 @@ class App extends Component {
                     onGetCachedPageCount={props.onGetCachedPageCount}
                     onClearCache={props.onClearCache} />
             </GridCell>
-
         );
     }
 
@@ -897,6 +911,16 @@ class App extends Component {
 
         const date = Date.now();
 
+        const onApplyChangesDropdownDayPicker = () => {
+            const {startAndEndDateDirty, startDate, endDate, defaultDate} = this.state;
+            const fullStartDate = startDate.getDay()+startDate.getMonth()+startDate.getFullYear();
+            const fullEndDate = endDate.getDay()+endDate.getMonth()+endDate.getFullYear();
+
+            const condition = !startAndEndDateDirty && fullStartDate == fullEndDate;
+            console.log(condition);
+            condition ? this.setState({startAndEndDateDirty:true, DropdownCalendarIsActive:null}) : this.setState({ DropdownCalendarIsActive:null});
+        };
+
         return(
             <div className="search-more-flyout">
                 <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
@@ -929,7 +953,7 @@ class App extends Component {
                             <DropdownDayPicker
                                 onDayClick={this.onDayClick.bind(this)}
                                 dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                applyChanges={()=>this.setState({DropdownCalendarIsActive:null})}
+                                applyChanges={()=>onApplyChangesDropdownDayPicker()}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
@@ -1053,7 +1077,8 @@ class App extends Component {
         .map((filter)=>{
             return (
                 <div className="filter-by-tags">
-                     <p>{filter}</p>
+                     <div>{filter}</div>
+                     <div className="xIcon" dangerouslySetInnerHTML={{__html: XIcon}} ></div>
                 </div>
             );
         });

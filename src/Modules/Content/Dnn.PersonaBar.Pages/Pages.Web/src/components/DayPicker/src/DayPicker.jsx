@@ -7,11 +7,14 @@ const DayPicker = (newProps) => {
     const { onDayClick } = newProps;
     return (
         <div className="dnn-day-picker">
-            <Picker onDayClick={onDayClick} />
+            <Picker {...newProps} />
         </div>);
 };
 DayPicker.PropTypes = {
-    onDayClick: PropTypes.func.isRequired
+    onDayClick: PropTypes.func.isRequired,
+    month: PropTypes.instanceOf(Date),
+    selectedDays: PropTypes.instanceOf(Date),
+    fromMonth: PropTypes.instanceOf(Date)
 };
 
 export default DayPicker;
