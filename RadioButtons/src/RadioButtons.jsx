@@ -23,7 +23,7 @@ class RadioButtons extends Component {
         const {props, state} = this;
         const tooltipMessages = props.tooltipMessage instanceof Array ? props.tooltipMessage : [props.tooltipMessage];
         const buttons = props.options.map((button) => {
-            const uniqueKey = "radio-button-" + button.label + "-" + button.value;
+            const uniqueKey = "radio-button-" + (props.id ? props.id + "-" : "") + button.label + "-" + button.value;
             const checked = (button.value && button.value.toString()) === (state.value && state.value.toString());
             const radioButtonClass = (props.disabled ? "disabled" : "") + (checked ? " checked" : "");
             return (
@@ -61,7 +61,8 @@ RadioButtons.PropTypes = {
     tooltipMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     placement: PropTypes.string,
     tooltipPlace: PropTypes.string,
-    float: PropTypes.string
+    float: PropTypes.string,
+    id: PropTypes.string
 };
 
 RadioButtons.defaultProps = {
