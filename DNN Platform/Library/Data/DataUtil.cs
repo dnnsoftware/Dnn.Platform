@@ -46,6 +46,10 @@ namespace DotNetNuke.Data
                 {
                     // intentionally adding an extra @ before parameter name, so PetaPoco won't try to match it to a passed-in arg
                     parameterFormat = " @{1}=@{0}";
+                    if (param.Direction == ParameterDirection.Output)
+                    { // Add output for output params
+                        parameterFormat += " output";
+                    }
                     parameterName = param.ParameterName;
                 }
 
