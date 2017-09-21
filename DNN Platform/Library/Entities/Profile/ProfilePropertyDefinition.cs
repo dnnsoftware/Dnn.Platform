@@ -449,7 +449,17 @@ namespace DotNetNuke.Entities.Profile
                 _visible = value;
             }
         }
-        
+
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public DateTime LastModifiedDate
+        {
+            get;
+            set;
+            
+        } 
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the property is visible

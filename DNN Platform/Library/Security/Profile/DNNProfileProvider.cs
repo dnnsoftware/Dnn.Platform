@@ -156,6 +156,8 @@ namespace DotNetNuke.Security.Profile
                                 {
                                     VisibilityMode = (UserVisibilityMode)dr["Visibility"]
                                 };
+
+                                profProperty.LastModifiedDate = Convert.ToDateTime(dr["LastUpdatedDate"]);
                             }
                         }
 

@@ -176,7 +176,6 @@
     <Compile Include="Providers\Folder\StandardFolderProviderTests.cs" />
     <Compile Include="EscapedStringTest.cs" />
     <Compile Include="Providers\Permissions\PermissionTests.cs" />
-    <Compile Include="Providers\Security\PortalSecurityTests.cs" />
     <Compile Include="RetryableActionTests.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
     <Compile Include="Services\ClientCapability\TestClientCapability.cs" />

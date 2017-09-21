@@ -190,7 +190,6 @@ namespace DesktopModules.Admin.Security
             }
 
             ProfileProperties.LocalResourceFile = LocalResourceFile;
-            //base.ProfileUpdated += new DotNetNuke.Services.GeneratedImage.ProfileEventHandler().ProfileUpdated;
         }
 
         /// -----------------------------------------------------------------------------
@@ -241,9 +240,10 @@ namespace DesktopModules.Admin.Security
                     }
                 }
 
-                var properties = (ProfilePropertyDefinitionCollection)ProfileProperties.DataSource;                var oldUser = new UserInfo { UserID = User.UserID, PortalID = User.PortalID };
+                var properties = (ProfilePropertyDefinitionCollection)ProfileProperties.DataSource;
+                var oldUser = new UserInfo { UserID = User.UserID, PortalID = User.PortalID };
                 ProfileController.GetUserProfile(ref oldUser);
-                
+ 
                 //Update User's profile
                 User = ProfileController.UpdateUserProfile(User, properties);
 
