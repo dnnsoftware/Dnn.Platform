@@ -502,6 +502,10 @@ namespace DotNetNuke.Security.Permissions
             return true;
         }
 
+        /// <summary>
+        /// The portal editor can edit whole site's content, it should be only administrators by default.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool IsPortalEditor()
         {
             var settings = PortalController.Instance.GetCurrentPortalSettings();
