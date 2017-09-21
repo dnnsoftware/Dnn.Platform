@@ -233,49 +233,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
             string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
 
-            #region clearing client caching
-
-            //var hasprofileChanged = false;
-            //var profilepic = context.Request.QueryString["mode"];
-            //if (profilepic != null && profilepic == "profilepic")
-            //{
-            //    var LogUserID = context.Request.QueryString["userId"];
-            //    if (!string.IsNullOrWhiteSpace(LogUserID))
-            //    {
-            //        var LogPortalID = PortalSettings.Current.PortalId;
-            //        int currentUserId;
-            //        if (int.TryParse(LogUserID, out currentUserId))
-            //        {
-            //            var currentUser = UserController.GetUserById(LogPortalID, currentUserId);
-
-            //            if (currentUser != null)
-            //            {
-            //                ProfileController.GetUserProfile(ref currentUser);
-
-            //                //Get last update date for profile photo
-            //                //21 is definiton Id for profile photo 
-            //                var lastModifiedDateOfProfilePhoto = currentUser.Profile.ProfileProperties.GetById(21).LastModifiedDate;
-            //                DateTime? lastModifiedDateOfCurrentContext = null;
-
-            //                if (!string.IsNullOrWhiteSpace(context.Request.Headers["If-Modified-Since"]))
-            //                {
-            //                    lastModifiedDateOfCurrentContext = DateTime.Parse(context.Request.Headers["If-Modified-Since"]);
-            //                }
-
-            //                //check if profile photo changed during last caching period.
-            //                //if yes then remove client caching and also prevent server from caching image on server side
-            //                if (lastModifiedDateOfCurrentContext != null && lastModifiedDateOfCurrentContext < lastModifiedDateOfProfilePhoto)
-            //                {
-            //                    context.Request.Headers.Remove("If-None-Match");
-            //                    hasprofileChanged = true;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            #endregion
-
+            //store thisCacheId into Session variable to access on subsequent requests
+            context.Session["DnnImageHandlerClientCacheId"] = cacheId;
             // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);

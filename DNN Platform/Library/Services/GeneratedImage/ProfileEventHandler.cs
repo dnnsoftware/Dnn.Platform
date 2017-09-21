@@ -9,7 +9,6 @@ using System.Web;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
-
     /// <summary>
     /// this class handles profile changes
     /// </summary>
@@ -37,7 +36,8 @@ namespace DotNetNuke.Services.GeneratedImage
         private void ClearCurrentContextImageCache()
         {
             var context = HttpContext.Current;
-            
+
+            string cacheId = HttpContext.Current.Session["DnnImageHandlerClientCacheId"] != null ? HttpContext.Current.Session["DnnImageHandlerClientCacheId"].ToString() : null;
             //delete client-side caching
             if (!string.IsNullOrWhiteSpace(context.Request.Headers["If-None-Match"]))
             {
@@ -45,7 +45,10 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             //delete server side caching
-            DiskImageStore.ForcePurgeFromServerCache();
+            if (!string.IsNullOrWhiteSpace(cacheId))
+            {
+                DiskImageStore.ForcePurgeFromServerCache(cacheId);
+            }
         }
     }
 }
