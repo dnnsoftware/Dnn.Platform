@@ -188,7 +188,9 @@ namespace DesktopModules.Admin.Security
 				//Check if culture is RTL
                 ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
             }
+
             ProfileProperties.LocalResourceFile = LocalResourceFile;
+            //base.ProfileUpdated += new DotNetNuke.Services.GeneratedImage.ProfileEventHandler().ProfileUpdated;
         }
 
         /// -----------------------------------------------------------------------------
@@ -239,13 +241,14 @@ namespace DesktopModules.Admin.Security
                     }
                 }
 
-                var properties = (ProfilePropertyDefinitionCollection)ProfileProperties.DataSource;
-
+                var properties = (ProfilePropertyDefinitionCollection)ProfileProperties.DataSource;                var oldUser = new UserInfo { UserID = User.UserID, PortalID = User.PortalID };
+                ProfileController.GetUserProfile(ref oldUser);
+                
                 //Update User's profile
                 User = ProfileController.UpdateUserProfile(User, properties);
 
-                OnProfileUpdated(EventArgs.Empty);
-                OnProfileUpdateCompleted(EventArgs.Empty);
+                OnProfileUpdated(new ProfileEventArgs { User = User, OldProfile = oldUser.Profile });
+                OnProfileUpdateCompleted(new ProfileEventArgs { User = User, OldProfile = oldUser.Profile });
             }
         }
 

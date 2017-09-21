@@ -18,7 +18,7 @@ using Assembly = System.Reflection.Assembly;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
-    public class DnnImageHandler : ImageHandler
+    public class DnnImageHandler : ImageHandler, System.Web.SessionState.IRequiresSessionState
     {
         /// <summary>
         /// While list of server folders where the system allow the dnn image handler to 
