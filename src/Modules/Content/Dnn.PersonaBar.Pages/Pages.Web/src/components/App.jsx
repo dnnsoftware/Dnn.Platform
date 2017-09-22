@@ -736,16 +736,16 @@ class App extends Component {
     generateFilters(){
         const {filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty} = this.state;
         const filters = this.state.tags.split(",");
-        filterByPageType ? filters.push(`Page Type: ${filterByPageType}`) : null;
-        filterByPublishStatus ? filters.push(`Published Status: ${filterByPublishStatus}`) : null;
-        filterByWorkflow ? filters.push(`Workflow: ${filterByWorkflow}`) : null;
+        filterByPageType ? filters.push({ref: "filterByPageType", tag:`Page Type: ${filterByPageType}`}) : null;
+        filterByPublishStatus ? filters.push({ref:"filterByPublishStatus", tag:`Published Status: ${filterByPublishStatus}`}) : null;
+        filterByWorkflow ? filters.push({ref:"filterByWorkflow", tag:`Workflow: ${filterByWorkflow}`}) : null;
 
         if(startAndEndDateDirty){
             const fullStartDate = `${startDate.getDay()}/${startDate.getMonth()+1}/${startDate.getFullYear()}`;
             const fullEndDate = `${endDate.getDay()}/${endDate.getMonth()+1}/${endDate.getFullYear()}`;
 
-            const left = () => filters.push(`Date Range: ${fullStartDate} - ${fullEndDate} `);
-            const right = () => filters.push(`From Date: ${fullStartDate}`);
+            const left = () => filters.push({ref: "startAndEndDateDirty", tag:`Date Range: ${fullStartDate} - ${fullEndDate} `});
+            const right = () => filters.push({ref: "startAndEndDateDirty", tag:`From Date: ${fullStartDate}`});
 
             fullStartDate != fullEndDate ? left() : right();
         }
@@ -755,6 +755,22 @@ class App extends Component {
 
     saveSearchFilters(searchFields){
         return new Promise((resolve) => this.setState({searchFields}, ()=> resolve()));
+    }
+
+    onSave () {
+        const {searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags} = this.state;
+        const searchDateRange = startAndEndDateDirty ? {publishDateStart: startDate, publishDateEnd:endDate} : {};
+        let search = {tags:tags, searchKey:searchTerm, pageType:filterByPageType, publishStatus:filterByPublishStatus, workflowId:filterByWorkflow};
+
+        search = Object.assign({}, search, searchDateRange);
+        for(let prop in search){
+            if(!search[prop]){
+                delete search[prop];
+            }
+        }
+        this.generateFilters();
+        this.saveSearchFilters(search).then(()=> this.props.searchAndFilterPageList(search));
+        this.setState({inSearch:true});
     }
 
     render_PagesTreeViewEditor() {
@@ -893,21 +909,7 @@ class App extends Component {
             this.setState({tags:e.target.value});
         };
 
-        const onSave = () => {
-            const {searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags} = this.state;
-            const searchDateRange = startAndEndDateDirty ? {publishDateStart: startDate, publishDateEnd:endDate} : {};
-            let search = {tags:tags, searchKey:searchTerm, pageType:filterByPageType, publishStatus:filterByPublishStatus, workflowId:filterByWorkflow};
 
-            search = Object.assign({}, search, searchDateRange);
-            for(let prop in search){
-                if(!search[prop]){
-                    delete search[prop];
-                }
-            }
-            this.generateFilters();
-            this.saveSearchFilters(search).then(()=> this.props.searchAndFilterPageList(search));
-            this.setState({inSearch:true});
-        };
 
         const date = Date.now();
 
@@ -917,7 +919,6 @@ class App extends Component {
             const fullEndDate = endDate.getDay()+endDate.getMonth()+endDate.getFullYear();
 
             const condition = !startAndEndDateDirty && fullStartDate == fullEndDate;
-            console.log(condition);
             condition ? this.setState({startAndEndDateDirty:true, DropdownCalendarIsActive:null}) : this.setState({ DropdownCalendarIsActive:null});
         };
 
@@ -975,7 +976,7 @@ class App extends Component {
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
                         <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>Cancel</Button>
-                        <Button type="primary" onClick={()=>onSave()}>Save</Button>
+                        <Button type="primary" onClick={()=>this.onSave()}>Save</Button>
                 </GridCell>
             </div>);
     }
@@ -1075,10 +1076,20 @@ class App extends Component {
         return filters
         .filter(filter => !!filter)
         .map((filter)=>{
+
+        const deleteFilter = (prop) => {
+            const update = {};
+                update[prop] = null;
+                this.setState(update,()=>this.onSave());
+            };
             return (
                 <div className="filter-by-tags">
-                     <div>{filter}</div>
-                     <div className="xIcon" dangerouslySetInnerHTML={{__html: XIcon}} ></div>
+                    <div>{filter.tag}</div>
+                    <div className="xIcon"
+                            dangerouslySetInnerHTML={{__html: XIcon}}
+                            onClick={(e)=>{ deleteFilter(filter.ref); } }>
+
+                    </div>
                 </div>
             );
         });
