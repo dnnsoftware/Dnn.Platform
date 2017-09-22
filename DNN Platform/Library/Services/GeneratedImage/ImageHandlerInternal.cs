@@ -385,7 +385,7 @@ namespace DotNetNuke.Services.GeneratedImage
         //Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
         private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
         {
-            var cacheKey = Constants.UserIdListToClearDiskImageCacheKey + portalId;
+            var cacheKey = string.Format(Constants.UserIdListToClearDiskImageCacheKey, portalId);
             Dictionary<int, DateTime> userIds;
             if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
             ImageStore.ForcePurgeFromServerCache(cacheId);

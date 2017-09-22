@@ -2,6 +2,6 @@
 {
     class Constants
     {
-        internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_";
+        internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_{0}";
     }
 }
