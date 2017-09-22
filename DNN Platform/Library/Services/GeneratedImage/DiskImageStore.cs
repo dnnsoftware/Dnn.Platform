@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.GeneratedImage
         private const string CacheAppRelativePath = @"~\App_Data\_imagecache\";
         private static DiskImageStore _diskImageStore;
         private static readonly object InstanceLock = new object();
+        private static readonly object cachedFilePurgelock = new object();
         private static string _cachePath;
         private DateTime _lastPurge;
         private readonly object _purgeQueuedLock = new object();
@@ -120,6 +121,50 @@ namespace DotNetNuke.Services.GeneratedImage
                     }
                 }
                 return _diskImageStore;
+            }
+        }
+
+        /// <summary>
+        /// clears image server caching (deletes the .tmp files stored in directory under application folder)
+        /// </summary>
+        public static void ForcePurgeFromServerCache(string cacheId)
+        {
+            var files = new DirectoryInfo(CachePath).GetFiles();
+            var toTryDeleteAgain = new List<FileInfo>();
+            foreach (var fileinfo in files)
+            {
+                if (fileinfo.Name.Contains(cacheId))
+                {
+                    lock (cachedFilePurgelock)
+                    {
+                        try
+                        {
+                            fileinfo.Delete();
+                        }
+                        catch (Exception)
+                        {
+                            toTryDeleteAgain.Add(fileinfo);
+                        }
+                    }
+                }
+            }
+            Thread.Sleep(0);
+            foreach (var fileinfo in toTryDeleteAgain)
+            {
+                if (fileinfo.Name.Contains(cacheId))
+                {
+                    lock (cachedFilePurgelock)
+                    {
+                        try
+                        {
+                            fileinfo.Delete();
+                        }
+                        catch (Exception)
+                        {
+                            // do nothing at this point, try to delete file during next purge
+                        }
+                    }
+                }
             }
         }
 
@@ -248,7 +293,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
             }
         }
-        
+
         private object GetFileLockObject(string id)
         {
 #if INDIVIDUAL_LOCKS

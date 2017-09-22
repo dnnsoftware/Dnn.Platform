@@ -13,6 +13,8 @@ using System.Web;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.GeneratedImage.ImageQuantization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Entities.Profile;
+using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
@@ -231,6 +233,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
             string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
 
+            //store thisCacheId into Session variable to access on subsequent requests
+            context.Session["DnnImageHandlerClientCacheId"] = cacheId;
             // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);
@@ -254,7 +258,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 cachePolicy.SetExpires(DateTime_Now + ClientCacheExpiration);
                 cachePolicy.SetETag(cacheId);
             }
-            
+
             // Handle Server cache
             if (EnableServerCache)
             {
@@ -291,7 +295,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     return;
                 }
             }
-            
+
             if (imageMethodData.HttpStatusCode != null)
             {
                 context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;
@@ -397,7 +401,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var eps = new EncoderParameters(1)
                     {
-                        Param = {[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression)}
+                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression) }
                     };
                     var ici = GetEncoderInfo(GetImageMimeType(ContentType));
                     image.Save(outStream, ici, eps);
