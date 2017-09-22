@@ -824,6 +824,7 @@ class App extends Component {
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents}
                     onGetCachedPageCount={props.onGetCachedPageCount}
                     onClearCache={props.onClearCache}
+                    onModuleCopyChange={props.onModuleCopyChange}
                 />
             );
         };
@@ -868,7 +869,8 @@ class App extends Component {
                     pageDetailsFooterComponents={props.pageDetailsFooterComponents}
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents}
                     onGetCachedPageCount={props.onGetCachedPageCount}
-                    onClearCache={props.onClearCache} />
+                    onClearCache={props.onClearCache} 
+                    onModuleCopyChange={props.onModuleCopyChange}/>
             </GridCell>
         );
     }
@@ -1248,7 +1250,8 @@ App.propTypes = {
     changeSelectedPagePath: PropTypes.func.isRequired,
     onGetCachedPageCount: PropTypes.array.isRequired,
     onClearCache: PropTypes.func.isRequired,
-    clearSelectedPage: PropTypes.func.isRequired
+    clearSelectedPage: PropTypes.func.isRequired,
+    onModuleCopyChange: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -1314,7 +1317,8 @@ function mapDispatchToProps(dispatch) {
         changeSelectedPagePath: PageHierarchyActions.changeSelectedPagePath,
         onGetCachedPageCount: PageActions.getCachedPageCount,
         onClearCache: PageActions.clearCache,
-        clearSelectedPage: PageActions.clearSelectedPage
+        clearSelectedPage: PageActions.clearSelectedPage,
+        onModuleCopyChange: PageActions.updatePageModuleCopy
 
 
 

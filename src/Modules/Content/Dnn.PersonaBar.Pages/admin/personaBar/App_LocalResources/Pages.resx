@@ -1513,4 +1513,13 @@
   <data name="CannotDeleteSpecialPage.Text" xml:space="preserve">
     <value>You cannot delete a special page.</value>
   </data>
+  <data name="ModuleCopyType.New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ModuleCopyType.Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="ModuleCopyType.Reference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
 </root>

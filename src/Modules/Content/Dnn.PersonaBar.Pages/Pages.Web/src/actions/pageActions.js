@@ -356,6 +356,13 @@ const pageActions = {
         };
     },
 
+    updatePageModuleCopy(id, key, event) {
+        return {
+            type: ActionTypes.UPDATED_PAGE_MODULE_COPY,
+            data: { id, key, event }
+        };
+    },
+
     editingPageModule(module) {
         return {
             type: ActionTypes.EDITING_PAGE_MODULE,
