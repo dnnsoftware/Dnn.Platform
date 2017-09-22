@@ -1,6 +1,6 @@
 {
   "name": "dnn-tags",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "Tags Input",
   "main": "index.js",
   "scripts": {
