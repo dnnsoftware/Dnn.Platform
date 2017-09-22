@@ -136,7 +136,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
             catch (Exception)
             {
-                // do nothing at this point, try to delete file during next purge
+                // do nothing at this point.
             }
         }
 
