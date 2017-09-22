@@ -91,6 +91,10 @@
         box-sizing: content-box !important;
         outline: none !important;
         max-width: calc(100% - 24px);
+
+        &::-ms-clear, &::-ms-reveal {
+            display: none; width : 0; height: 0;
+        }
     }
     .dnn-uicommon-tag-input {
         float: left;
