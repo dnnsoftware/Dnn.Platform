@@ -107,7 +107,8 @@ class PageSettings extends Component {
             pageTypeSelectorComponents,
             AllowContentLocalization,
             onGetCachedPageCount,
-            onClearCache
+            onClearCache,
+            onModuleCopyChange
         } = this.props;
 
         const buttons = this.getButtons();
@@ -156,7 +157,7 @@ class PageSettings extends Component {
             }
         ];
 
-        if (isEditingExistingPage && selectedPage.pageType === "normal") {
+        if ((isEditingExistingPage || selectedPage.templateTabId) && selectedPage.pageType === "normal") {
             advancedTabs.unshift({
                 label: Localization.get("Modules"),
                 component: <div className="dnn-simple-tab-item dnn-simple-tab-item-modules">
@@ -165,7 +166,10 @@ class PageSettings extends Component {
                         onDeleteModule={onDeletePageModule}
                         onEditingModule={onEditingPageModule}
                         onCancelEditingModule={onCancelEditingPageModule}
-                        editingSettingModuleId={editingSettingModuleId} />
+                        editingSettingModuleId={editingSettingModuleId} 
+                        onModuleCopyChange={onModuleCopyChange}
+                        showCopySettings={!isEditingExistingPage && selectedPage.templateTabId} />
+                    {footer}
                 </div>
             });
         }
@@ -258,7 +262,8 @@ PageSettings.propTypes = {
     AllowContentLocalization: PropTypes.bool,
     selectPageSettingTab: PropTypes.func,
     onGetCachedPageCount: PropTypes.func.isRequired,
-    onClearCache: PropTypes.func.isRequired
+    onClearCache: PropTypes.func.isRequired,
+    onModuleCopyChange: PropTypes.func
 };
 
 export default PageSettings;
