@@ -460,7 +460,7 @@
     <value>Bulk pages to add</value>
   </data>
   <data name="AddPages.Text" xml:space="preserve">
-    <value>Add Pages</value>
+    <value>Add Page(s)</value>
   </data>
   <data name="NoContainers.Text" xml:space="preserve">
     <value>This Theme does not have any Containers</value>

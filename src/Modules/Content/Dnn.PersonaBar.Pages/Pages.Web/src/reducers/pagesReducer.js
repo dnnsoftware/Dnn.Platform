@@ -161,6 +161,7 @@ export default function pagesReducer(state = {
                 selectedPage: null
             };
 
+        case ActionTypes.GET_CURRENT_SELECTED_PAGE:
         default:
             return state;
     }

@@ -13,13 +13,16 @@ const Breadcrumbs = ({items, onSelectedItem}) => {
     return (
         <div className="breadcrumbs-container">
             { items.length > maxItems && 
-                <span className="more" 
+                <span className="more"
                     title={items.map(i => i.name).join(" > ")}
                     onClick={() => onClick(0)} /> }
-            { items.slice(Math.max(items.length - maxItems, 0)).map((item, i) =>
-                <div key={item.id} onClick={() => onClick(i)}>
+
+            { items.slice(Math.max(items.length - maxItems, 0)).map((item, i) =>{
+
+                return (
+                <div key={item.id} onClick={() => onClick(item.tabId)}>
                     <span>{item.name}</span>
-                </div>)
+                </div>); } )
             }
         </div>
     );
