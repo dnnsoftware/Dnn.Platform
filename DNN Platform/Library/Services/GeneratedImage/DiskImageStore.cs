@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
@@ -16,6 +17,8 @@ namespace DotNetNuke.Services.GeneratedImage
         void Add(string id, byte[] data);
 
         bool TryTransmitIfContains(string id, HttpResponseBase response);
+
+        void ForcePurgeFromServerCache(string cacheId);
     }
 
     public class DiskImageStore : IImageStore
@@ -120,6 +123,20 @@ namespace DotNetNuke.Services.GeneratedImage
                     }
                 }
                 return _diskImageStore;
+            }
+        }
+
+        public void ForcePurgeFromServerCache(string cacheId)
+        {
+            var files = new DirectoryInfo(CachePath).GetFiles();
+            var fileInfo = files.FirstOrDefault(file => file.Name.Contains(cacheId));
+            try
+            {
+                fileInfo?.Delete();
+            }
+            catch (Exception)
+            {
+                // do nothing at this point, try to delete file during next purge
             }
         }
 

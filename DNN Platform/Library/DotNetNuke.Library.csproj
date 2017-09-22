@@ -724,6 +724,7 @@
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Services\GeneratedImage\Constants.cs" />
     <Compile Include="Services\GeneratedImage\IPCount.cs" />
     <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
     <Compile Include="Services\GeneratedImage\DnnImageHandler.cs" />
@@ -745,6 +746,7 @@
     <Compile Include="Services\GeneratedImage\ImageQuantization\Quantizer.cs" />
     <Compile Include="Services\GeneratedImage\ImageResizeMode.cs" />
     <Compile Include="Services\GeneratedImage\ImageTransform.cs" />
+    <Compile Include="Services\GeneratedImage\ProfileEventHandler.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\ImageFileTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />

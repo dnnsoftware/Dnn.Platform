@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.GeneratedImage.ImageQuantization;
 using DotNetNuke.Services.Log.EventLog;
@@ -231,12 +233,19 @@ namespace DotNetNuke.Services.GeneratedImage
 
             string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
 
+            var cacheCleared = false;
+            var profilepic = context.Request.QueryString["mode"];
+            if (profilepic != null && profilepic == "profilepic")
+            {
+                if (int.TryParse(context.Request.QueryString["userId"], out int userId))
+                    cacheCleared = ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
+            }
             // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);
             if (EnableClientCache)
             {
-                if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]))
+                if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]) && !cacheCleared)
                 {
                     var provider = CultureInfo.InvariantCulture;
                     var lastMod = DateTime.ParseExact(context.Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
@@ -371,6 +380,21 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 image?.Dispose();
             }
+        }
+
+        //Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
+        private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
+        {
+            var cacheKey = Constants.UserIdListToClearDiskImageCacheKey + portalId;
+            Dictionary<int, DateTime> userIds;
+            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
+            ImageStore.ForcePurgeFromServerCache(cacheId);
+            //The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
+            if (!userIds.TryGetValue(userId, out DateTime expiry) || DateTime.UtcNow <= expiry.Add(ClientCacheExpiration)) return true;
+            //Remove the userId from the clear list when timespan is > ClientCacheExpiration.
+            userIds.Remove(userId);
+            DataCache.SetCache(cacheKey, userIds);
+            return true;
         }
 
         private Image GetImageThroughTransforms(byte[] buffer)
