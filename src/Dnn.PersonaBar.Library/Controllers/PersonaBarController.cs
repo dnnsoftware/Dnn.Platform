@@ -73,8 +73,17 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             if (visible)
             {
-                var menuController = GetMenuItemController(menuItem);
-                visible = menuController == null || menuController.Visible(menuItem);
+                try
+                {
+                    var menuController = GetMenuItemController(menuItem);
+                    visible = menuController == null || menuController.Visible(menuItem);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    visible = false;
+                }
+                
             }
 
             return visible;
@@ -132,14 +141,31 @@ namespace Dnn.PersonaBar.Library.Controllers
         private void UpdateParamters(MenuItem menuItem)
         {
             var menuController = GetMenuItemController(menuItem);
-            menuController?.UpdateParameters(menuItem);
+            try
+            {
+                menuController?.UpdateParameters(menuItem);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         private string GetMenuSettings(MenuItem menuItem)
         {
-            var menuController = GetMenuItemController(menuItem);
-            var settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
-            AddPermissions(menuItem, settings);
+            IDictionary<string, object> settings;
+            try
+            {
+                var menuController = GetMenuItemController(menuItem);
+                settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
+                AddPermissions(menuItem, settings);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                settings = new Dictionary<string, object>();
+            }
+
             return JsonConvert.SerializeObject(settings);
         }
 
