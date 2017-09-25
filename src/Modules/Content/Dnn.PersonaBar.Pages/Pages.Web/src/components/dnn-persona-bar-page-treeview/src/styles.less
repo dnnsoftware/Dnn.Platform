@@ -8,16 +8,15 @@
             text-align: left;
         }
         .treeview-parent-expand-button, .treeview-parent-collapse-button {
-            height:28px;
+            height: 28px;
             margin-top: -2px;
         }
     }
     .dnn-persona-bar-treeview-ul {
         margin-left: 0px;
         padding: 0;
-
         li::before, li::after {
-            display:none;
+            display: none;
         }
     }
     .list-item-menu {
@@ -43,7 +42,6 @@
     font-family: inherit;
     cursor: auto;
     padding: 15px;
-
     img {
         -webkit-user-drag: none;
         -khtml-user-drag: none;
@@ -51,7 +49,6 @@
         -o-user-drag: none;
         user-drag: none;
     }
-
     .collapse-expand {
         transition: all .5s ease-out;
         font-size: 12px;
@@ -60,11 +57,9 @@
         padding-bottom: 20px;
         padding-left: 20px;
     }
-
     .initial {
         color: @alto;
     }
-
     .item-name {
         position: relative;
         top: -5px;
@@ -74,7 +69,6 @@
             display: inline;
         }
     }
-
     svg:hover {
         fill: @alto;
     }
@@ -92,10 +86,9 @@
     .parent-expand-button {
         display: inline-block;
         position: relative;
-        height:28px;
+        height: 28px;
         left: 15px;
-        height:28px;
-
+        height: 28px;
         div {
             width: 24px;
         }
@@ -106,10 +99,9 @@
     .parent-expand-icon {
         display: inline-block;
         width: 10px;
-        height:28px;
+        height: 28px;
         margin-right: 10px;
         font-size: 14px;
-
     }
     .selection-arrow {
         display: inline-block;
@@ -121,7 +113,6 @@
         font-size: 18px;
         font-weight: bold;
         color: @curiousBlue;
-
         div {
             float: right;
             height: 20px;
@@ -156,32 +147,29 @@
 }
 
 .dnn-persona-bar-treeview-ul.tree {
-        img {
+    img {
         -webkit-user-drag: none;
         -khtml-user-drag: none;
         -moz-user-drag: none;
         -o-user-drag: none;
         user-drag: none;
     }
-    ul:not(:first-child){
-        li{
-            margin-left:10px;
+    ul:not(:first-child) {
+        li {
+            margin-left: 10px;
         }
-
-        li::before, li::after{
+        li::before, li::after {
             content: '';
             position: absolute;
-            left:0;
+            left: 0;
         }
-
         li::before {
             border-top: 1px solid @alto;
             top: 10px;
             width: 10px;
-            height:0;
-            left:-5px;
+            height: 0;
+            left: -5px;
         }
-
         li::after {
             border-left: 1px solid @alto;
             height: 100%;
@@ -189,7 +177,6 @@
             top: -10px;
             left: -5px;
         }
-
         li:last-child::after {
             border-left: 1px solid @alto;
             height: 20px;
@@ -197,6 +184,8 @@
             top: -10px;
         }
     }
+    padding-bottom: 10px;
+    float: left;
 }
 
 .dnn-persona-bar-treeview-ul {
@@ -204,49 +193,41 @@
         padding: 0;
         margin: 0;
     }
-
     ul {
         margin-left: 20px;
         padding: 0;
     }
-
     ul:first-child {
         margin-left: 0px;
     }
-
     li {
-        width: 150px;
+        width: 175px;
         list-style: none;
-        position:relative;
+        position: relative;
     }
-
     .collapse-expand {
         display: none;
     }
-
-    .dragged-proxy{
-        position:absolute;
-        width:100%;
-        height:28px;
-        z-index:9998;
+    .dragged-proxy {
+        position: absolute;
+        width: 100%;
+        height: 28px;
+        z-index: 9998;
         background-color: transparent;
     }
-
     .dropZoneActive {
         margin: 0;
         padding: 0;
         background-color: #fff;
         transition: all .5s;
     }
-
     .dropZoneInactive {
-        cursor:auto;
+        cursor: auto;
         margin: 0;
         padding: 0;
         height: inherit;
         transition: all .5s;
     }
-
     .dropZoneArea {
         cursor: auto;
         height: 2px;
@@ -254,7 +235,6 @@
         text-align: center;
         background-color: transparent;
     }
-
     .list-item-border-bottom {
         background-color: @curiousBlue;
     }
@@ -265,11 +245,10 @@
 
 .dnn-persona-bar-treeview-icon {
     width: 20px;
-    height:28px;
+    height: 28px;
     display: inline-block;
-
-    div{
-        height:28px;
+    div {
+        height: 28px;
     }
 }
 
@@ -287,7 +266,6 @@
     pointer-events: none;
     cursor: auto;
     height: 28px;
-
     .item-name {
         display: inline;
         p {

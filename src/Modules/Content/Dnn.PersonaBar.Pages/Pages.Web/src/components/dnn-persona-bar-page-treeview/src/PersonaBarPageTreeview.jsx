@@ -166,7 +166,7 @@ export class PersonaBarPageTreeview extends Component {
                             style={style}
                             id={`list-item-title-${item.name}-${item.id}`}
                             className="dragged-proxy"
-                            draggable={ item.canManagePage ? "true" : "true"}
+                            draggable={ item.canManagePage ? "true" : "false"}
                             onDrop={(e) => { canManagePage(e, item, onDrop); }}
                             onDrag={(e) => { canManagePage(e, item, onDrag); }}
                             onDragOver={(e) => { canManagePage(e, item, onDragOver); }}
