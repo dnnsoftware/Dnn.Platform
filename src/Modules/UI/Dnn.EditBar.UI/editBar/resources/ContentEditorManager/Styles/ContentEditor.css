@@ -699,7 +699,7 @@ div.DnnModule.highlight.animate {
     -o-transition: background 0.5s ease-out;
     transition: background 0.5s ease-out;
 }
-.dnnModuleManager .DnnModule.floating {
+.dnnModuleManager .DnnModule.floating, .dnnModuleSorting .DnnModule.floating {
     position: fixed;
     z-index: 1000 !important;
     filter: alpha(opacity=100);
@@ -724,7 +724,7 @@ div.DnnModule.highlight.animate {
     -o-animation:      driftModule 4s linear infinite;
     animation:         driftModule 4s linear infinite;
 }
-.dnnModuleManager .DnnModule.floating * {
+.dnnModuleManager .DnnModule.floating *, .dnnModuleSorting .DnnModule.floating * {
     -webkit-box-sizing: content-box !important;
     -moz-box-sizing: content-box !important;
     box-sizing: content-box !important;
@@ -775,7 +775,7 @@ div.DnnModule.highlight.animate {
     100% { transform: translate(0, 0); }
 }
 
-.dnnModuleManager .DnnModule.forDrag {
+.dnnModuleManager .DnnModule.forDrag, .dnnModuleSorting .DnnModule.forDrag {
     position: absolute;
     -webkit-animation: none !important;
     -moz-animation:    none !important;
@@ -785,7 +785,10 @@ div.DnnModule.highlight.animate {
 
     border: 2px solid #06a7e3;
 }
-.dnnModuleManager .DnnModule.forDrag:before, .dnnModuleManager .DnnModule.forDrag:after {
+.dnnModuleManager .DnnModule.forDrag:before, 
+.dnnModuleManager .DnnModule.forDrag:after, 
+.dnnModuleSorting .DnnModule.forDrag:before, 
+.dnnModuleSorting .DnnModule.forDrag:after {
     display: none;
 }
 .dnnModuleManager .dnnDropTarget {
@@ -796,10 +799,10 @@ div.DnnModule.highlight.animate {
     position: relative;
     z-index: 1;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint + a + * {
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint + a + *, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint + a + * {
     display: none;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint {
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint {
     height: 100% !important;
     outline: none;
 	-webkit-box-sizing: border-box !important;
@@ -811,36 +814,35 @@ div.DnnModule.highlight.animate {
 div.dnnDragHint.dnnDragDisabled {
     cursor: default;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div {
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div {
     height: 100%;
     display: block;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div {
-}
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span {
+
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span {
     display: block;
     vertical-align: top;
     white-space: nowrap;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon {
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.icon {
     margin: 25px auto 0 auto;
     width: 32px;
     height: 32px;
     background-position: center center !important;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon img {
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon img, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.icon img {
     vertical-align: top;
     width: 32px;
     height: 32px;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.title {
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.title, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.title {
     color: #3d3d3d;
     line-height: 20px;
     text-align: center;
     width: 100%;
     margin-top: 15px;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div a.cancel-module {
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div a.cancel-module, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div a.cancel-module {
     display: inline-block;
     width: 18px;
     height: 18px;
@@ -853,7 +855,7 @@ div.dnnDragHint.dnnDragDisabled {
     border-radius: 18px;
 }
 
-.dnnModuleManager .DnnModule div.dnnDragHint > div {
+.dnnModuleManager .DnnModule div.dnnDragHint > div, .dnnModuleSorting .DnnModule div.dnnDragHint > div {
     display: none;
 }
 .actionMenu .dnn_mact {
