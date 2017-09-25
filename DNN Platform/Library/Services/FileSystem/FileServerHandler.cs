@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception)
             {
                 //The TabId or ModuleId are incorrectly formatted (potential DOS)
-                Exceptions.Exceptions.ProcessHttpException(context.Request);
+                Handle404Exception(context, context.Request.RawUrl);
             }
 
             //get Language
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.FileSystem
                     //verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
-                        UrlUtils.Handle404Exception(context.Response, _portalSettings);
+                        Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
                 if (UrlType != TabType.File)
@@ -227,7 +227,7 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                Exceptions.Exceptions.ProcessHttpException(URL);
+                                Handle404Exception(context, URL);
                             }
                             break;
                         case TabType.Url:
@@ -248,12 +248,12 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    Exceptions.Exceptions.ProcessHttpException(URL);
+                    Handle404Exception(context, URL);
                 }
             }
             else
             {
-                Exceptions.Exceptions.ProcessHttpException(URL);
+                Handle404Exception(context, URL);
             }
         }
 
@@ -266,6 +266,18 @@ namespace DotNetNuke.Services.FileSystem
             //We should allow creator to see the file that is pending to be approved
             var user = UserController.Instance.GetCurrentUserInfo();
             return user != null && user.UserID == file.CreatedByUserID;
+        }
+
+        private void Handle404Exception(HttpContext context, string url)
+        {
+            try
+            {
+                Exceptions.Exceptions.ProcessHttpException(url);
+            }
+            catch (Exception)
+            {
+                UrlUtils.Handle404Exception(context.Response, PortalController.Instance.GetCurrentPortalSettings());
+            }
         }
 
         public bool IsReusable => true;
