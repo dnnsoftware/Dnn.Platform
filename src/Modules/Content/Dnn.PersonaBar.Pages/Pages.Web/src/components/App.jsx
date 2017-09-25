@@ -96,7 +96,6 @@ class App extends Component {
         const viewParams = utils.getViewParams();
         window.dnn.utility.setConfirmationDialogPosition();
         window.dnn.utility.closeSocialTasks();
-        window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
         this.props.getWorkflowsList().then((list)=>{
             const workflowList = list.map((item => { return {value:item.workflowName, label:item.workflowName}; }));
@@ -167,8 +166,6 @@ class App extends Component {
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
-        window.dnn.utility.expandPersonaBarPage();
-
     }
 
     notifyErrorIfNeeded(newProps) {
