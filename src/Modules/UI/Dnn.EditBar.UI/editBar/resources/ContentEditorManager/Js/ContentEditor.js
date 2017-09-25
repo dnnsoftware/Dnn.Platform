@@ -96,10 +96,6 @@ dnn.ContentEditorManager = $.extend({}, dnn.ContentEditorManager, {
 		        catchedPanes++;
 
 		        $(instance).sortable('option', 'helper', function(event, element) {
-			        if (element.hasClass('floating')) {
-				        return element.addClass('forDrag');
-			        }
-
 			        var helper = element.clone();
 			        helper.addClass('floating forDrag').removeClass('CatchDragState');
 
