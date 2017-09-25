@@ -33,7 +33,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             initialCollapse: true,
             debounceAmount: 50,
             dragDebounce: false,
-            dragOverDebounce:false,
+            dragOverDebounce: false,
             setMouseCoordDebounce: false,
             pageX: 0,
             pageY: 0
@@ -78,7 +78,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
             (setTreeViewExpanded) ? this.setState({
                 isTreeviewExpanded: true
-            }): this.setState({
+            }) : this.setState({
                 isTreeviewExpanded: false
             });
         }
@@ -114,14 +114,14 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
         let setTreeViewExpanded = null;
         this.props._traverse((item, listItem, updateStore) => {
-            (item.id === id) ? item.isOpen = !item.isOpen: null;
+            (item.id === id) ? item.isOpen = !item.isOpen : null;
             updateStore(listItem);
         });
     }
 
     onSelection(id) {
         this.props._traverse((item, listItem, updateStore) => {
-            (item.id === id && item.canManagePage) ? item.selected = true: item.selected = false;
+            (item.id === id && item.canManagePage) ? item.selected = true : item.selected = false;
             item.selected ? this.props.onSelection(id) : null;
             delete item.showInContextMenu;
             updateStore(listItem);
@@ -170,18 +170,18 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         setTimeout(() => run(), 1000);
     }
 
-    setMouseCoordinates(e){
-        const capture  = () => {
-            this.setState({setMouseCoordDebounce:true, pageX:e.pageX, pageY:e.pageY});
-            setTimeout(()=>this.setState({setMouseCoordDebounce:false}), this.state.debounceAmount);
+    setMouseCoordinates(e) {
+        const capture = () => {
+            this.setState({ setMouseCoordDebounce: true, pageX: e.pageX, pageY: e.pageY });
+            setTimeout(() => this.setState({ setMouseCoordDebounce: false }), this.state.debounceAmount);
         };
-        const nothing = () => {};
+        const nothing = () => { };
 
         !this.state.dragOverDebounce ? capture() : nothing();
     }
 
 
-    createClonedElement(e, item){
+    createClonedElement(e, item) {
         const element = this.getListItemLI(item);
         this.clonedElement = element.cloneNode(true);
         this.clonedElement.id = "cloned";
@@ -203,7 +203,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const userAgent = window.navigator.userAgent;
         let type = "text/plain";
 
-        if(userAgent.indexOf('Trident')){
+        if (userAgent.indexOf('Trident')) {
             type = 'Text';
         }
 
@@ -234,22 +234,22 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             this.props.showCancelDialog(item.id);
         };
 
-        (!this.props.selectedPageDirty) ? left(): right();
+        (!this.props.selectedPageDirty) ? left() : right();
     }
 
     onDrag(e) {
         const move = () => {
-            this.setState({ dragDebounce: true});
-            const {pageX, pageY} = this.state;
+            this.setState({ dragDebounce: true });
+            const { pageX, pageY } = this.state;
             const elm = this.clonedElement;
-    
-            e = {pageX, pageY};
-            elm.style.top = `${e.pageY-10}px`;
-            elm.style.left = `${e.pageX-10}px`;
-            setTimeout(() => this.setState({ dragDebounce: false}), this.state.debounceAmount);
+
+            e = { pageX, pageY };
+            elm.style.top = `${e.pageY - 10}px`;
+            elm.style.left = `${e.pageX - 10}px`;
+            setTimeout(() => this.setState({ dragDebounce: false }), this.state.debounceAmount);
         };
 
-        const nothing = () => {};
+        const nothing = () => { };
         !this.state.dragDebounce ? move() : nothing();
     }
 
@@ -288,7 +288,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         let pageList = null;
 
         const action = () => {
-            this.setState({dragOverDebounce:true});
+            this.setState({ dragOverDebounce: true });
             this.props._traverse((pageListItem, list, updateStore) => {
                 pageListItem.onDragOverState = false;
                 if (pageListItem.id === item.id) {
@@ -300,14 +300,14 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     }, () => updateStore(pageList));
                 }
             });
-            setTimeout(()=>this.setState({dragOverDebounce:false}), this.state.debounceAmount);
+            setTimeout(() => this.setState({ dragOverDebounce: false }), this.state.debounceAmount);
         };
 
-        const noaction = () => {};
+        const noaction = () => { };
         !this.state.dragOverDebounce ? action() : noaction();
     }
 
-    onDrop (e, item) {
+    onDrop(e, item) {
         e.preventDefault();
         e.target.classList.remove("list-item-dragover");
         //this._fadeInTooltips();
@@ -341,7 +341,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         };
 
         const right = () => null;
-        (item.id !== this.state.draggedItem.id) ? left(): right();
+        (item.id !== this.state.draggedItem.id) ? left() : right();
     }
 
 
@@ -359,11 +359,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         } = this.props;
 
         onMovePage({
-                Action,
-                PageId,
-                ParentId,
-                RelatedPageId
-            })
+            Action,
+            PageId,
+            ParentId,
+            RelatedPageId
+        })
             .then((response) => {
                 this.removeDropZones();
                 if (response.Status === responseStatus.ERROR) {
@@ -424,34 +424,34 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 this.props._traverse((item, list, updateStore) => { // remove item from pagelist and cache
                     runUpdateStore = updateStore;
                     switch (true) {
-                        case item.id === RelatedPageId && Action==="before":
+                        case item.id === RelatedPageId && Action === "before":
                             newParentId = item.parentId;
                             this.props._traverse((child, list, updateStore) => {
-                                if(child.id === PageId){
+                                if (child.id === PageId) {
                                     const parentId = child.parentId;
                                     this.props._traverse((parent, list) => {
-                                        if(parent.id == parentId){
-                                           parent.childListItems.forEach((elm, index)=>{
-                                                if(elm.id === child.id){
-                                                    cachedItem=child;
-                                                    const arr1 = parent.childListItems.slice(0,index);
-                                                    const arr2 = parent.childListItems.slice(index+1);
+                                        if (parent.id == parentId) {
+                                            parent.childListItems.forEach((elm, index) => {
+                                                if (elm.id === child.id) {
+                                                    cachedItem = child;
+                                                    const arr1 = parent.childListItems.slice(0, index);
+                                                    const arr2 = parent.childListItems.slice(index + 1);
                                                     const copy = [...arr1, ...arr2];
                                                     parent.childCount--;
                                                     parent.childListItems = copy;
                                                     pageList = list;
                                                 }
-                                           });
+                                            });
                                         }
                                     });
                                 }
 
                             });
 
-                        break;
+                            break;
 
                         case item.id === RelatedPageId:
-                             newParentId = item.parentId;
+                            newParentId = item.parentId;
                             return;
 
                         case ParentId === -1 && item.parentId === -1:
@@ -506,8 +506,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 }, () => {
                     this.getPageInfo(cachedItem.id).then(() => {
                         cachedItem.url = `${window.origin}/${this.state.activePage.url}`;
-                        if(pageList)
-                        runUpdateStore(pageList);
+                        if (pageList)
+                            runUpdateStore(pageList);
                         rez();
                     });
                 });
@@ -585,7 +585,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         this.props._traverse((item, listItems, updateStore) => {
                             const left = () => item.childListItems = childListItems;
                             const right = () => null;
-                            (item.id === id) ? left(): right();
+                            (item.id === id) ? left() : right();
                             this.setState({
                                 pageList: listItems
                             }, () => {
@@ -631,36 +631,36 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className = "dnn-persona-bar-treeview-ul tree" onMouseOver={(e)=> this.setState({pageX:e.pageX, pageY:e.pageY})} >
-                { this.state.rootLoaded ?
+            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.setState({ pageX: e.pageX, pageY: e.pageY })} >
+                {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
-                        draggedItem={ this.state.draggedItem }
-                        droppedItem={ this.state.droppedItem }
-                        dragOverItem={ this.state.dragOverItem }
-                        listItems={ this.state.pageList }
+                        draggedItem={this.state.draggedItem}
+                        droppedItem={this.state.droppedItem}
+                        dragOverItem={this.state.dragOverItem}
+                        listItems={this.state.pageList}
                         setEmptyPageMessage={this.props.setEmptyPageMessage}
-                        getChildListItems={ this.getChildListItems.bind(this) }
-                        onSelection={this.onSelection.bind(this) }
-                        onDragEnter={ this.onDragEnter.bind(this) }
-                        onDrag={ this.onDrag.bind(this) }
-                        onDragStart={ this.onDragStart.bind(this) }
-                        onDragOver={ this.onDragOver.bind(this) }
-                        onDragLeave={ this.onDragLeave.bind(this) }
-                        onDragEnd={ this.onDragEnd.bind(this) }
-                        onDrop={ this.onDrop.bind(this) }
-                        onMovePage={ this.onMovePage.bind(this) }
-                        getPageInfo={ this.getPageInfo.bind(this) }
+                        getChildListItems={this.getChildListItems.bind(this)}
+                        onSelection={this.onSelection.bind(this)}
+                        onDragEnter={this.onDragEnter.bind(this)}
+                        onDrag={this.onDrag.bind(this)}
+                        onDragStart={this.onDragStart.bind(this)}
+                        onDragOver={this.onDragOver.bind(this)}
+                        onDragLeave={this.onDragLeave.bind(this)}
+                        onDragEnd={this.onDragEnd.bind(this)}
+                        onDrop={this.onDrop.bind(this)}
+                        onMovePage={this.onMovePage.bind(this)}
+                        getPageInfo={this.getPageInfo.bind(this)}
                         Localization={this.props.Localization}
                     />
-                    : null }
+                    : null}
             </span>
         );
     }
 
     render_treemenu() {
         return (
-            <span className = "dnn-persona-bar-treeview-ul" >
-                { this.state.rootLoaded ?
+            <span className="dnn-persona-bar-treeview-ul" >
+                {this.state.rootLoaded ?
                     <PersonaBarPageTreeMenu
                         onAddPage={this.props.onAddPage}
                         onViewPage={this.props.onViewPage}
@@ -669,7 +669,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
                         pageInContextComponents={this.props.pageInContextComponents}
-                    /> : null }
+                    /> : null}
 
             </span>
         );
@@ -678,8 +678,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     render_tree_parent_expand() {
         return (
             <span
-                className = "dnn-persona-bar-treeview-ul" >
-                    { this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.state.pageList} getChildListItems={this.getChildListItems.bind(this)}/> : null }
+                className="dnn-persona-bar-treeview-ul" >
+                {this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.state.pageList} getChildListItems={this.getChildListItems.bind(this)} /> : null}
             </span>
         );
     }
@@ -687,9 +687,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     render_collapseExpand() {
         return (
             <div
-                onClick = { this.toggleExpandAll.bind(this)}
-                className = {(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
-                [{this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL" }]
+                onClick={this.toggleExpandAll.bind(this)}
+                className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
+                [{this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL"}]
             </div>
         );
     }
@@ -697,37 +697,36 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     render() {
         return (
             <GridCell
-                columnSize = { 30 }
-                className = "dnn-persona-bar-treeview"
-                style = { {"zIndex": 1000 }} >
+                columnSize={30}
+                className="dnn-persona-bar-treeview"
+                style={{ "zIndex": 1000 }} >
 
-                { this.render_collapseExpand()}
+                {this.render_collapseExpand()}
 
-                <GridCell columnSize = { 15 } >
-                    <div className = "dnn-persona-bar-treeview-menu" >
-                        { this.render_tree_parent_expand() }
+                <GridCell columnSize={15} >
+                    <div className="dnn-persona-bar-treeview-menu" >
+                        {this.render_tree_parent_expand()}
                     </div>
                 </GridCell>
 
                 <GridCell
-                    columnSize = { 55 }
-                    style = {{marginLeft: "-2px"}} >
+                    columnSize={55}
+                    style={{ marginLeft: "-2px" }} >
                     <Scrollbars
-                        className = "scrollArea content-horizontal"
-                        autoHeight autoHide autoHeightMin = { 100 }
-                        autoHeightMax = { 9999 }
-                        renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{display:"none"}}/>}
-                        >
-                            { this.render_treeview() }
+                        className="scrollArea content-horizontal"
+                        autoHeight autoHide={false} autoHeightMin={100}
+                        autoHeightMax={9999}
+                        renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
+                        {this.render_treeview()}
                     </Scrollbars>
                 </GridCell>
 
-                <GridCell columnSize = { 30 } >
+                <GridCell columnSize={30} >
                     <div
-                        className = "dnn-persona-bar-treeview-menu selection-arrows"
-                        style = { { float: "right" } } >
-                        { this.render_treemenu()}
-                        </div>
+                        className="dnn-persona-bar-treeview-menu selection-arrows"
+                        style={{ float: "right" }} >
+                        {this.render_treemenu()}
+                    </div>
                 </GridCell>
 
             </GridCell>
