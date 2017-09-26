@@ -59,10 +59,10 @@ class SingleLineInputWithError extends Component {
     getInputRightPadding(counter, error) {
         let padding = 0;
         if (counter || counter === 0) {
-            padding += counter.toString().length * 8;
+            padding += 10 + counter.toString().length * 8;
         }
         if (error) {
-            padding += 32;
+            padding += 22;
         }
 
         return padding;
