@@ -650,7 +650,25 @@ class App extends Component {
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
+    CallCustomAction(action) {
+        const { selectedPage, selectedPageDirty } = this.props;
+        const callAction = () => {
+            if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
+                const onConfirm = () => {
+                    action();
+                };
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
 
+            } else {
+                action();
+            }
+        };
+        callAction();
+    }
     onDuplicatePage(item) {
         const { selectedPage, selectedPageDirty } = this.props;
         const message = Localization.get("NoPermissionCopyPage");
@@ -1180,6 +1198,7 @@ class App extends Component {
                                             onViewPage={this.onViewPage.bind(this)}
                                             onViewEditPage={this.onViewEditPage.bind(this)}
                                             onDuplicatePage={this.onDuplicatePage.bind(this)}
+                                            CallCustomAction={this.CallCustomAction.bind(this)}
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
