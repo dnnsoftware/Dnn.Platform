@@ -354,7 +354,7 @@ class App extends Component {
             this.showCancelWithoutSavingDialog();
         }
         else {
-            if (props.selectedPage.tabId === 0 && props.selectedPage.templateTabId) {
+            if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
                 this.props.onCancelPage(props.selectedPage.templateTabId);
             }
             else {
@@ -428,7 +428,7 @@ class App extends Component {
     showCancelWithoutSavingDialog() {
         const { props } = this;
         const onConfirm = () => {            
-            if (props.selectedPage.tabId === 0 && props.selectedPage.templateTabId) {
+            if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
                 this.props.onCancelPage(props.selectedPage.templateTabId);
             }
             else {
@@ -656,7 +656,9 @@ class App extends Component {
         const message = Localization.get("NoPermissionCopyPage");
         const duplicate = () => {
             if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
-                const onConfirm = () => this.props.onDuplicatePage();
+                const onConfirm = () => {
+                    this.props.onDuplicatePage(true);
+                };
                 utils.confirm(
                     Localization.get("CancelWithoutSaving"),
                     Localization.get("Close"),
@@ -664,7 +666,7 @@ class App extends Component {
                     onConfirm);
 
             } else {
-                this.props.onDuplicatePage();
+                this.props.onDuplicatePage(false);
             }
         };
         const noPermission = () => this.setEmptyStateMessage(message);
