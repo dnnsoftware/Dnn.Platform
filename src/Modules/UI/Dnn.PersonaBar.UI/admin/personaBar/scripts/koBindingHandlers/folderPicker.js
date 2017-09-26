@@ -65,7 +65,9 @@ function ($, ko) {
         });
 
         koElement.subscribe(function (folder) {
-            folderPicker.selectedItem({ key: folder.FolderID, value: folder.FolderName });
+            if (folderPicker) {
+                folderPicker.selectedItem({ key: folder.FolderID, value: folder.FolderName });
+            }
         });
     };
 
