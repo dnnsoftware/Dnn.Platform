@@ -122,7 +122,8 @@ class PageDetails extends Component {
                                 PortalTabsParameters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
-                                serviceFramework={sf} />
+                                serviceFramework={sf} 
+                                ResetSelected={true} />
                         </InputGroup>
                     </GridCell>
                 </GridSystem>
