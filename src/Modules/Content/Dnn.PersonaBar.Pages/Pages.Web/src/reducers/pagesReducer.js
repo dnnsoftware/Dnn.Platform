@@ -61,7 +61,7 @@ export default function pagesReducer(state = {
                 dirtyPage: false,
                 cachedPageCount: null
             };
-        
+
         case ActionTypes.CHANGE_FIELD_VALUE:
             return { ...state,
                 selectedPage: changeField(action.field, action.value),
@@ -70,15 +70,16 @@ export default function pagesReducer(state = {
                     ...validateFields(action.field, action.value)
                 },
                 urlChanged: hasChangeUrl(action),
-                dirtyPage: true           
+                dirtyPage: true
             };
+          
 
         case ActionTypes.CHANGE_PERMISSIONS:
             return { ...state,
                 selectedPage: { ...state.selectedPage,
                     permissions: action.permissions
                 },
-                dirtyPage: true           
+                dirtyPage: true
             };
 
         case ActionTypes.FETCH_CACHE_PROVIDER_LIST:

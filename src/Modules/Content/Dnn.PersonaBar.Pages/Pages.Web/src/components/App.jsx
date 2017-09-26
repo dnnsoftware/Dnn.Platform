@@ -796,13 +796,6 @@ class App extends Component {
         this.setState({inSearch:true});
     }
 
-    render_PagesTreeViewEditor() {
-        return (
-            <GridCell columnSize={30} style={{ marginTop: "120px", backgroundColor: "#aaa" }} >
-                <p>Tree Controller</p>
-            </GridCell>
-        );
-    }
 
     render_PagesDetailEditor() {
 
@@ -864,13 +857,11 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-
-
-        if (!props.selectedPageSettingTab || props.selectedPageSettingTab <= 0)
-            this.selectPageSettingTab(0);
+        this.selectPageSettingTab(0);
+        
         return (
             <GridCell columnSize={100} className="treeview-page-details" >
-                <PageSettings selectedPage={props.selectedPage || {}}
+                <PageSettings selectedPage={props.selectedPage }
                     AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
@@ -933,8 +924,6 @@ class App extends Component {
         const generateTags = (e) => {
             this.setState({tags:e.target.value});
         };
-
-
 
         const date = Date.now();
 
@@ -1126,6 +1115,7 @@ class App extends Component {
         const { selectedPage } = props;
         const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
 
+
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.canSeePagesList();
         let defaultLabel = "Save Page Template";
@@ -1139,8 +1129,8 @@ class App extends Component {
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
-                          {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
-                            <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
+                            {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
+                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
                          { toggleSearchMoreFlyout ?  this.render_more_flyout() : null}
