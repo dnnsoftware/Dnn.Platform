@@ -171,7 +171,12 @@ const pageActions = {
         });
     },
 
-    cancelPage() {
+    cancelPage(reloadPageId) {
+        if (reloadPageId) {
+            return (dispatch) => {
+                return loadPage(dispatch, reloadPageId);
+            };
+        }
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CANCEL_PAGE,
