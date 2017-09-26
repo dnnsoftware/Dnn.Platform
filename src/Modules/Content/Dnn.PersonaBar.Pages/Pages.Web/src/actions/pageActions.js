@@ -73,7 +73,7 @@ const pageActions = {
             });
         });
     },
-    
+
     searchPageList(searchKey) {
         return (dispatch) => PagesService.searchPageList(searchKey).then((searchList) => {
             dispatch({
@@ -272,7 +272,6 @@ const pageActions = {
 
 
     changePageField(key, value) {
-
         return (dispatch, getState) => {
             const { pages } = getState();
 
