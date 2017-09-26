@@ -31,6 +31,7 @@ class DropdownDayPicker extends Component  {
         }
     }
 
+        /* eslint-disable react/no-danger */
     render(){
         const {dropdownIsActive, onDayClick, applyChanges, startDate, endDate, CalendarIcon, toggleDropdownCalendar} = this.props;
 

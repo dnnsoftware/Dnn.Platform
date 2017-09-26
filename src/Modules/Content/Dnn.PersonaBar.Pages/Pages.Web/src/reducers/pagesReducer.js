@@ -21,6 +21,19 @@ export default function pagesReducer(state = {
         return newSelectedPage;
     };
 
+    const changeModuleCopy = function changeModuleCopy(id, key, value) {
+        const modules = [...state.selectedPage.modules];
+        return modules.map((m, index) => {
+            if (m.id === id) {                
+                return {
+                    ...m,
+                    [key]: typeof(value) === "boolean" ? value : parseInt(value)
+                };
+            }
+            return m;
+        }); 
+    };
+
     const hasChangeUrl = function hasChangeUrl(action) {
         return state.urlChanged || (!action.urlPreviewChange && action.field === "url");
     };
@@ -107,7 +120,18 @@ export default function pagesReducer(state = {
                     modules
                 }
             };
-        }      
+        }
+        
+        case ActionTypes.UPDATED_PAGE_MODULE_COPY: {
+            const modules = changeModuleCopy(action.data.id, action.data.key, action.data.event) ;
+            return { ...state,
+                selectedPage: {
+                    ...state.selectedPage, 
+                    modules
+                },
+                dirtyPage: true                   
+            };
+        }
         
         case ActionTypes.ADD_CUSTOM_URL:
         case ActionTypes.REPLACE_CUSTOM_URL:

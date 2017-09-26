@@ -22,7 +22,7 @@ class Modules extends Component {
     }
 
     getModules() {
-        const {modules, onEditingModule, editingSettingModuleId} = this.props;
+        const {modules, onEditingModule, editingSettingModuleId, showCopySettings, onModuleCopyChange} = this.props;
 
         if (modules.length === 0) {
             return <GridCell className="no-modules" columnSize={100} >
@@ -38,13 +38,15 @@ class Modules extends Component {
                     module={module} 
                     onDelete={this.onDeleteModule.bind(this)}
                     onEditing={onEditingModule}
-                    isEditingModule={isEditingModule} />
+                    isEditingModule={isEditingModule} 
+                    onCopyChange={onModuleCopyChange}
+                    showCopySettings={showCopySettings} />
             );
         });
     }
 
     render() {
-        const {modules, onCancelEditingModule, editingSettingModuleId} = this.props;
+        const {modules, onCancelEditingModule, editingSettingModuleId, showCopySettings} = this.props;
         const moduleRows = this.getModules();
         const editingModule = modules.find(m => m.id === editingSettingModuleId);
         return (
@@ -56,10 +58,13 @@ class Modules extends Component {
                     </div>
                 <div className="module-table">    
                     <div className="header-row">
-                        <GridCell columnSize={45} >
+                        {showCopySettings &&
+                            <GridCell columnSize={10} />
+                        }
+                        <GridCell columnSize={showCopySettings ? 25: 45} >
                             {Localization.get("Title")}
                         </GridCell>
-                        <GridCell  columnSize={45} >
+                        <GridCell  columnSize={showCopySettings ? 25: 45} >
                             {Localization.get("Module")}
                         </GridCell>
                     </div>
@@ -79,7 +84,9 @@ Modules.propTypes = {
     onDeleteModule: PropTypes.func.isRequired,
     onEditingModule: PropTypes.func.isRequired,
     onCancelEditingModule: PropTypes.func.isRequired,
-    editingSettingModuleId: PropTypes.number
+    editingSettingModuleId: PropTypes.number,
+    onModuleCopyChange: PropTypes.func,
+    showCopySettings: PropTypes.bool
 };
 
 export default Modules;

@@ -16,5 +16,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name="editSettingUrl")]
         public string EditSettingUrl { get; set; }
+
+        [DataMember(Name = "includedInCopy")]
+        public bool? IncludedInCopy { get; set; }
+
+        [DataMember(Name = "copyType")]
+        public ModuleCopyType? CopyType { get; set; }
     }
 }
