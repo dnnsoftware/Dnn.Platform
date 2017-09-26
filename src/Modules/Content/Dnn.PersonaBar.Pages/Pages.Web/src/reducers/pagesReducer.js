@@ -63,7 +63,7 @@ export default function pagesReducer(state = {
             };
 
         case ActionTypes.CHANGE_FIELD_VALUE:
-            let update = { ...state,
+            return { ...state,
                 selectedPage: changeField(action.field, action.value),
                 errors: {
                     ...(state.errors),
@@ -72,7 +72,7 @@ export default function pagesReducer(state = {
                 urlChanged: hasChangeUrl(action),
                 dirtyPage: true
             };
-            return update;
+          
 
         case ActionTypes.CHANGE_PERMISSIONS:
             return { ...state,
