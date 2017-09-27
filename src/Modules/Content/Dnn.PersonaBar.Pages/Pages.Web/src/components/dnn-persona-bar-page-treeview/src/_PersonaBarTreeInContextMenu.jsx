@@ -5,7 +5,7 @@ import { TreeAddPage, TreeAnalytics, TreeCopy, TreeEdit, EyeIcon } from "dnn-svg
 import Menu from "./InContextMenu/Menu";
 import MenuItem from "./InContextMenu/MenuItem";
 import ReactDOM from "react-dom";
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/clonedeep';
 import "./styles.less";
 
 export class PersonaBarTreeInContextMenu extends Component {
@@ -83,16 +83,6 @@ export class PersonaBarTreeInContextMenu extends Component {
             return 0;//default return value (no sorting)
         });
         return items;
-    }
-    clone(source) {
-        let that = source;
-        let temp = function temporary() { return that.apply(this, arguments); };
-        for (let key in that) {
-            if (this.hasOwnProperty(key)) {
-                temp[key] = this[key];
-            }
-        }
-        return temp;
     }
 
     render_actionable(item) {
