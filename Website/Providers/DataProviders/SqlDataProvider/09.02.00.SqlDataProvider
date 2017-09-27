@@ -212,13 +212,14 @@ CREATE procedure {databaseOwner}[{objectQualifier}RegisterAssembly]
 	@AssemblyName   nvarchar(250),
 	@Version		nvarchar(20)
 As
+BEGIN
 	DECLARE @AssemblyID int
 	DECLARE @CurrentVersion nvarchar(20)
 	/*	@ReturnCode Values
-		0 - Assembly Does not Exist
-		1 - Older Version of Assembly Exists
-		2 - Assembly Already Registered - Version = CurrentVersion
-		3 - Assembly Already Registered - Version < CurrentVersion
+		0 - Assembly NOT Registered Before
+		1 - Assembly Already Registered - New Version > Current Version
+		2 - Assembly Already Registered - New Version = Current Version
+		3 - Assembly Already Registered - New Version < Current Version
 	*/
 	DECLARE @CompareVersion int
 
@@ -228,18 +229,18 @@ As
 							WHERE PackageID = @PackageID
 								AND AssemblyName = @AssemblyName)
 
+	-- but assembly may be registerd by other packages so check for Max unstalled version
+	SET @CurrentVersion  = (SELECT TOP 1 a.Version
+							FROM {databaseOwner}{objectQualifier}Assemblies a
+							CROSS APPLY {databaseOwner}[{objectQualifier}fn_ParseVersion](a.Version) AS v
+							WHERE a.AssemblyName = @AssemblyName
+							ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC)
+
+	SET @CompareVersion = {databaseOwner}{objectQualifier}fn_CompareVersion(@Version, @CurrentVersion)
+
 	IF @AssemblyID IS NULL
 		BEGIN
 			-- AssemblyID is null (not registered)
-			-- but assembly may be registerd by other packages so check for Max unstalled version
-			SET @CurrentVersion  = (SELECT TOP 1 a.Version
-									FROM {databaseOwner}{objectQualifier}Assemblies a
-									CROSS APPLY {databaseOwner}[{objectQualifier}fn_ParseVersion](a.Version) AS v
-									WHERE a.AssemblyName = @AssemblyName
-									ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC)
-
-			SET @CompareVersion = {databaseOwner}{objectQualifier}fn_CompareVersion(@Version, @CurrentVersion)
-
 			-- Add an assembly regsitration for this package
 			INSERT INTO {databaseOwner}{objectQualifier}Assemblies (
 				PackageID,
@@ -254,15 +255,7 @@ As
 		END
 	ELSE
 		BEGIN
-			-- AssemblyID is not null - Assembly is registered - test for version
-			SET @CurrentVersion  = (SELECT TOP 1 a.Version
-									FROM {databaseOwner}{objectQualifier}Assemblies a
-									CROSS APPLY {databaseOwner}[{objectQualifier}fn_ParseVersion](a.Version) AS v
-									WHERE a.AssemblyID = @AssemblyID
-									ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC)
-
-			SET @CompareVersion = {databaseOwner}{objectQualifier}fn_CompareVersion(@Version, @CurrentVersion)
-
+			-- AssemblyID is not null - Assembly is registered
 			IF @CompareVersion = 1
 				BEGIN
 					-- Newer version - Update Assembly registration
@@ -273,6 +266,7 @@ As
 		END
 
 	SELECT @CompareVersion
+END
 GO
 /********************/
 /* DNN-10072 -- end */
