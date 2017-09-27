@@ -1123,7 +1123,7 @@ class App extends Component {
         const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
 
          /* eslint-disable react/no-danger */
-        console.log(selectedPage);
+
         return (
 
             <div className="pages-app personaBar-mainContainer">
