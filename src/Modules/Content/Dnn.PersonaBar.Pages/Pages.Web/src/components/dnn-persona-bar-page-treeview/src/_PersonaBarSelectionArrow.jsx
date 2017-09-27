@@ -62,6 +62,7 @@ PersonaBarSelectionArrow.propTypes = {
     onViewPage: PropTypes.func.isRequired,
     onViewEditPage: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
+    CallCustomAction: PropTypes.func.isRequired,
     _traverse: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired,
     pageInContextComponents: PropTypes.array.isRequired
