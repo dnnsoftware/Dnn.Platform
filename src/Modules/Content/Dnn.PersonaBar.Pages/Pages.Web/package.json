@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "dnn-draggable": "0.0.1",
+    "lodash.clonedeep": "^4.5.0",
     "promise": "^8.0.0",
     "prop-types": "^15.5.10",
     "react-day-picker": "^6.1.0",

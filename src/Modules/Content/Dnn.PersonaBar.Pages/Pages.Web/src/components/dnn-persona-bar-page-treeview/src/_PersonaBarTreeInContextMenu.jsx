@@ -5,6 +5,7 @@ import { TreeAddPage, TreeAnalytics, TreeCopy, TreeEdit, EyeIcon } from "dnn-svg
 import Menu from "./InContextMenu/Menu";
 import MenuItem from "./InContextMenu/MenuItem";
 import ReactDOM from "react-dom";
+import cloneDeep from 'lodash.clonedeep';
 import "./styles.less";
 
 export class PersonaBarTreeInContextMenu extends Component {
@@ -83,20 +84,32 @@ export class PersonaBarTreeInContextMenu extends Component {
         });
         return items;
     }
+    clone(source) {
+        let that = source;
+        let temp = function temporary() { return that.apply(this, arguments); };
+        for (let key in that) {
+            if (this.hasOwnProperty(key)) {
+                temp[key] = this[key];
+            }
+        }
+        return temp;
+    }
+
     render_actionable(item) {
         let visibleMenus = [];
 
         item.canAddPage ? visibleMenus.push({ key: "Add", title: Localization.get("AddPage"), index: 10, icon: TreeAddPage, onClick: this.onItemClick }) : null;
         item.canViewPage ? visibleMenus.push({ key: "View", title: Localization.get("View"), index: 20, icon: EyeIcon, onClick: this.onItemClick }) : null;
-        item.canAddContentToPage ? visibleMenus.push({ key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick }) : null,
-            item.canCopyPage ? visibleMenus.push({ key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }) : null;
+        item.canAddContentToPage ? visibleMenus.push({ key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick }) : null;
+        item.canCopyPage ? visibleMenus.push({ key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }) : null;
 
         if (this.props.pageInContextComponents) {
             let { onItemClick } = this;
-            this.props.pageInContextComponents.map(item => {
+            let additionalMenus = cloneDeep(this.props.pageInContextComponents || []);
+            additionalMenus && additionalMenus.map(item => {
                 item.onClick = onItemClick;
             });
-            visibleMenus = visibleMenus.concat(this.props.pageInContextComponents && this.props.pageInContextComponents || []);
+            visibleMenus = visibleMenus.concat(additionalMenus && additionalMenus || []);
         }
         visibleMenus = this.sort(visibleMenus, "index");
         /*eslint-disable react/no-danger*/
