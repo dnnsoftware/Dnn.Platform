@@ -13,6 +13,13 @@ const extensionsActions = {
             data: { component }
         };
     },
+
+    getWorkflowList(){
+        return {
+            type: ActionTypes.REGISTER_GET_WORKFLOW_LIST,
+            data: {}
+        };
+    },
     registerMultiplePagesComponent(component) {
         return {
             type: ActionTypes.REGISTER_MULTIPLE_PAGES_COMPONENT,

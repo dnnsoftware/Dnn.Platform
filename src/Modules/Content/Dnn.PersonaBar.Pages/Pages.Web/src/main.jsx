@@ -24,6 +24,7 @@ window.dnn.pages.registerAdditionalPanel = application.registerAdditionalPanel;
 window.dnn.pages.isSuperUserForPages = application.isSuperUserForPages;
 window.dnn.pages.getProductSKU = application.getProductSKU;
 window.dnn.pages.load = application.load;
+window.dnn.pages.getWorkflowList = application.getWorkflowList;
 
 const appContainer = document.getElementById("pages-container");
 const initCallback = appContainer.getAttribute("data-init-callback");

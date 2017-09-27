@@ -94,7 +94,12 @@ const pageActions = {
     },
 
     getWorkflowsList(){
-        return (dispatch) => PagesService.getWorkflowsList();
+        return (dispatch) => PagesService.getWorkflowsList().then((workflowList)=>{
+            dispatch({
+                type: ActionTypes.GET_WORKFLOW_LIST,
+                data: {workflowList}
+            });
+        });
     },
 
     getPage(id) {

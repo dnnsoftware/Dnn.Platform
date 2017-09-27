@@ -97,10 +97,7 @@ class App extends Component {
         window.dnn.utility.setConfirmationDialogPosition();
         window.dnn.utility.closeSocialTasks();
         this.props.getPageList();
-        this.props.getWorkflowsList().then((list)=>{
-            const workflowList = list.map((item => { return {value:item.workflowName, label:item.workflowName}; }));
-            this.setState({workflowList});
-        });
+
 
         if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
@@ -166,6 +163,29 @@ class App extends Component {
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
+
+        const {selectedPage} = newProps;
+        if(selectedPage){
+            const pages = selectedPage.url
+                            .split("/")
+                            .filter(d => !!d)
+                            .map(d  => d.replace(/\-/, " "));
+
+
+            let stop = false;
+            //while(pages.length){
+                // this._traverse((item, list, updateStore) => {
+                //     if( item.parentId === -1 && item.name === pages[0]) {
+                //         item.hasChildren ? this.props.getChildPageList(item.id) : null;
+                //     }
+                    // item.name === pages[0] &&item.childListItems && pages.shift();
+                    // if(pages.length === 0) {
+                    //     console.log(item.name, item.id);
+                    // }
+                //});
+            //}
+
+        }
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -285,6 +305,7 @@ class App extends Component {
         const search = Object.keys(searchFields).length ? searchFields : {searchKey:searchTerm};
         this.props.searchAndFilterPageList(search);
     }
+
     onSearchWhileTyping(searchKey){
         const searchFields = Object.keys(this.state.searchFields).length ? this.state.searchFields : {searchKey};
         this.props.searchAndFilterPageList(searchFields);
@@ -316,6 +337,7 @@ class App extends Component {
 
     onAddPage(parentPage) {
         this.clearEmptyStateMessage();
+        this.selectPageSettingTab(0);
 
         const addPage = () => {
             const { props } = this;
@@ -401,7 +423,6 @@ class App extends Component {
                 this.props.onDeletePage(props.selectedPage);
                 this.props.updatePageListStore(update);
                 this.props.onCancelPage();
-
             };
         };
 
@@ -422,7 +443,6 @@ class App extends Component {
     showCancelWithoutSavingDialog() {
         const onConfirm = () => {
             this.props.onCancelPage();
-
         };
 
         utils.confirm(
@@ -434,13 +454,14 @@ class App extends Component {
 
 
     showCancelWithoutSavingDialogInEditMode(input) {
+
         const id = (input.hasOwnProperty('parentId')) ? input : this.props.selectedPage.tabId;
 
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(id).then((data) => {
+                this.props.onLoadPage(input).then((data) => {
                     this._traverse((item, list, updateStore) => {
-                        if (item.id === id) {
+                        if (item.id === input) {
                             Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
                             this.props.updatePageListStore(list);
                             this.selectPageSettingTab(0);
@@ -673,8 +694,9 @@ class App extends Component {
         const {selectedPageDirty} = this.props;
         const view = () => {
             this.props.onLoadPage(item.id);
-            window.dnn.PersonaBar.closePanel();
-            window.open(item.url);
+            utils.getUtilities().closePersonaBar(function () {
+                window.open(item.url);
+            });
         };
 
         const left = () => {
@@ -772,7 +794,7 @@ class App extends Component {
 
 
     onBreadcrumbSelect(name){
-        console.log(name);
+        //console.log(name);
     }
 
     render_PagesDetailEditor() {
@@ -835,8 +857,8 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-        this.selectPageSettingTab(0);
-        
+
+
         return (
             <GridCell columnSize={100} className="treeview-page-details" >
                 <PageSettings selectedPage={props.selectedPage }
@@ -897,7 +919,9 @@ class App extends Component {
             {value: "Draft", label: "Draft"}
         ];
 
-        const filterByWorkflowOptions = [{value: null, label:"None"}].concat(this.state.workflowList);
+        let workflowList = [];
+        this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return {value:item.workflowId, label:item.workflowName}; })) : null;
+        const filterByWorkflowOptions = [{value: null, label:"None"}].concat(workflowList);
 
         const generateTags = (e) => {
             this.setState({tags:e.target.value});
@@ -957,8 +981,8 @@ class App extends Component {
                             <Dropdown
                                 className="more-dropdown"
                                 options={filterByWorkflowOptions}
-                                label={ this.state.filterByWorkflow ? this.state.filterByWorkflow :"Filter by Workflow"}
-                                onSelect={(data) => this.setState({filterByWorkflow: data.value}) }
+                                label={ this.state.filterByWorkflowName ? this.state.filterByWorkflowName :"Filter by Workflow"}
+                                onSelect={(data) => this.setState({filterByWorkflow: data.value, filterByWorkflowName: data.label}) }
                                 withBorder={true} />
                         </GridCell>
                     </GridCell>
@@ -1101,7 +1125,7 @@ class App extends Component {
         const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
 
          /* eslint-disable react/no-danger */
-       
+
 
         return (
             <div className="pages-app personaBar-mainContainer">
@@ -1243,11 +1267,12 @@ App.propTypes = {
     onGetCachedPageCount: PropTypes.array.isRequired,
     onClearCache: PropTypes.func.isRequired,
     clearSelectedPage: PropTypes.func.isRequired,
-    onModuleCopyChange: PropTypes.func
+    onModuleCopyChange: PropTypes.func,
+    workflowList: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
- 
+
     return {
         pageList: state.pageList.pageList,
         searchList: state.searchList.searchList,
@@ -1266,7 +1291,9 @@ function mapStateToProps(state) {
         selectedPageSettingTab: state.pages.selectedPageSettingTab,
         additionalPanels: state.extensions.additionalPanels,
         isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled,
-        selectedPagePath: state.pageHierarchy.selectedPagePath
+        selectedPagePath: state.pageHierarchy.selectedPagePath,
+        workflowList: state.pages.workflowList
+
     };
 }
 
