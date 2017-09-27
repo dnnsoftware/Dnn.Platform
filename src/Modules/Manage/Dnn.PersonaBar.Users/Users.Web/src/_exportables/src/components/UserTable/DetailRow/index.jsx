@@ -111,7 +111,9 @@ class DetailsRow extends Component {
             {
                 index: 5,
                 content: <GridCell columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
-                    <h6>{user.displayName}</h6>
+                    <h6>
+                    <TextOverflowWrapper className="email-link" text={user.displayName} maxWidth={125}/>
+                    </h6>
                     {user.displayName !== "-" && <p>{user.userName}</p> }
                 </GridCell>
             },
@@ -189,6 +191,7 @@ DetailsRow.propTypes = {
     columnSizes: PropTypes.array,
     filter: PropTypes.number
 };
+
 DetailsRow.defaultProps = {
     isEvoq: false
 };
