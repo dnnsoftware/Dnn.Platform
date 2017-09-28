@@ -177,12 +177,18 @@ namespace DotNetNuke.Modules.Journal
                     {
                         var fileId = Convert.ToInt32(ji.ItemData.Url.Replace("fileid=", string.Empty).Trim());
                         var file = FileManager.Instance.GetFile(fileId);
-                        ji.ItemData.Title = file.FileName;
-						ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
-                        
-                        if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) && originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") && AcceptedFileExtensions.Contains(file.Extension.ToLower()))
+
+                        if (IsCurrentUserFile(file))
                         {
-                            ji.ItemData.ImageUrl = originalImageUrl;
+                            ji.ItemData.Title = file.FileName;
+                            ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
+
+                            if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) &&
+                                originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") &&
+                                AcceptedFileExtensions.Contains(file.Extension.ToLower()))
+                            {
+                                ji.ItemData.ImageUrl = originalImageUrl;
+                            }
                         }
                     }
                 }
@@ -632,6 +638,41 @@ namespace DotNetNuke.Modules.Journal
 
                 Services.Social.Notifications.NotificationsController.Instance.SendNotification(notification, PortalSettings.PortalId, null, new List<UserInfo> { mentionUser });
             }
+        }
+
+        private bool IsCurrentUserFile(IFileInfo file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            var userFolders = GetUserFolders();
+
+            return userFolders.Any(f => file.FolderId == f.FolderID);
+        }
+
+        private IList<IFolderInfo> GetUserFolders()
+        {
+            var folders = new List<IFolderInfo>();
+
+            var userFolder = FolderManager.Instance.GetUserFolder(UserInfo);
+            folders.Add(userFolder);
+            folders.AddRange(GetSubFolders(userFolder));
+
+            return folders;
+        }
+
+        private IList<IFolderInfo> GetSubFolders(IFolderInfo parentFolder)
+        {
+            var folders = new List<IFolderInfo>();
+            foreach (var folder in FolderManager.Instance.GetFolders(parentFolder))
+            {
+                folders.Add(folder);
+                folders.AddRange(GetSubFolders(folder));
+            }
+
+            return folders;
         }
 
         #endregion
