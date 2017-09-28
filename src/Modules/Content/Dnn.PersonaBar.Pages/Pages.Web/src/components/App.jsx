@@ -170,21 +170,7 @@ class App extends Component {
                             .split("/")
                             .filter(d => !!d)
                             .map(d  => d.replace(/\-/, " "));
-
-
             let stop = false;
-            //while(pages.length){
-                // this._traverse((item, list, updateStore) => {
-                //     if( item.parentId === -1 && item.name === pages[0]) {
-                //         item.hasChildren ? this.props.getChildPageList(item.id) : null;
-                //     }
-                    // item.name === pages[0] &&item.childListItems && pages.shift();
-                    // if(pages.length === 0) {
-                    //     console.log(item.name, item.id);
-                    // }
-                //});
-            //}
-
         }
     }
 
@@ -836,11 +822,6 @@ class App extends Component {
         this.generateFilters();
         this.saveSearchFilters(search).then(()=> this.props.searchAndFilterPageList(search));
         this.setState({inSearch:true});
-    }
-
-
-    onBreadcrumbSelect(name){
-        //console.log(name);
     }
 
     render_PagesDetailEditor() {
