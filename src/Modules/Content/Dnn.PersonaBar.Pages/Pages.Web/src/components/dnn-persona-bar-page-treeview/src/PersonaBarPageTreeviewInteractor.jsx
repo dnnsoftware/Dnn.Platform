@@ -202,9 +202,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
         const userAgent = window.navigator.userAgent;
         let type = "text/plain";
-
-        console.log(userAgent);
-
+        
         if (userAgent.indexOf('Trident')) {
             type = 'Text';
         }
