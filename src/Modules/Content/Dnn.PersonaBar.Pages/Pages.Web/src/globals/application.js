@@ -62,11 +62,7 @@ const application = {
     },
     getProductSKU() {
         return utilities.getProductSKU();
-    },
-    getWorkflowList(){
-        application.dispatch(PageActions.getWorkflowsList());
     }
-
 };
 
 export default application;

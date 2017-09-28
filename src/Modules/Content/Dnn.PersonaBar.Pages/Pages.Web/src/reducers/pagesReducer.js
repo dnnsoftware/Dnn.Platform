@@ -45,11 +45,12 @@ export default function pagesReducer(state = {
 
     switch (action.type) {
         case ActionTypes.GET_WORKFLOW_LIST:
+        {
             return {
                 ...state,
                 workflowList: action.data.workflowList
             };
-
+        }
         case ActionTypes.SELECT_PAGE_SETTING_TAB:
             return { ...state,
                 selectedPageSettingTab: action.selectedPageSettingTab
