@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.GeneratedImage
             if (user.Profile.Photo != oldProfile.Photo || user.Profile.GetProperty("Photo").ProfileVisibility.VisibilityMode !=
                 oldProfile.ProfileProperties["Photo"].ProfileVisibility.VisibilityMode)
             {
-                var cacheKey = string.Format(Constants.UserIdListToClearDiskImageCacheKey, user.PortalID);
+                var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, user.PortalID);
                 Dictionary<int, DateTime> userIds;
                 if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null)
                     userIds = new Dictionary<int, DateTime>();

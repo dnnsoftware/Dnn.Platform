@@ -724,7 +724,6 @@
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
-    <Compile Include="Services\GeneratedImage\Constants.cs" />
     <Compile Include="Services\GeneratedImage\IPCount.cs" />
     <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
     <Compile Include="Services\GeneratedImage\DnnImageHandler.cs" />

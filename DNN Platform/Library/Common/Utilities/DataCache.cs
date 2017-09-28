@@ -327,6 +327,8 @@ namespace DotNetNuke.Common.Utilities
         public const string VocabularyCacheKey = "Vocabularies";
         public const string TermCacheKey = "Terms_{0}";
 
+        internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_{0}";
+
         private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();
         private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
 
