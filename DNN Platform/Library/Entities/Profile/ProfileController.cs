@@ -525,7 +525,7 @@ namespace DotNetNuke.Entities.Profile
             var portalId = GetEffectivePortalId(user.PortalID);
             user.PortalID = portalId;
 
-            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID };
+            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID, IsSuperUser = user.IsSuperUser };
             _profileProvider.GetUserProfile(ref oldUser);
 
             _profileProvider.UpdateUserProfile(user);

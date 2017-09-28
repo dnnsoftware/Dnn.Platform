@@ -745,6 +745,7 @@
     <Compile Include="Services\GeneratedImage\ImageQuantization\Quantizer.cs" />
     <Compile Include="Services\GeneratedImage\ImageResizeMode.cs" />
     <Compile Include="Services\GeneratedImage\ImageTransform.cs" />
+    <Compile Include="Services\GeneratedImage\ProfileEventHandler.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\ImageFileTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
