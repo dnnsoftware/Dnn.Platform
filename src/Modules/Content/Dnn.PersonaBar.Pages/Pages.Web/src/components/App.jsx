@@ -903,8 +903,6 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-
-
         return (
             <GridCell columnSize={100} className="treeview-page-details" >
                 <PageSettings selectedPage={props.selectedPage }

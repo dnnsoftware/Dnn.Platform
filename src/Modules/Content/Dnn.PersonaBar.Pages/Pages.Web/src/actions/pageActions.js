@@ -39,7 +39,8 @@ const loadPage = function (dispatch, pageId, callback) {
                         tabId: utils.getCurrentPageId(),
                         name: utils.getCurrentPageName()
                     }
-                }
+                },
+                selectedPageSettingTab: 0
             });
             resolve();
             return;
@@ -50,7 +51,8 @@ const loadPage = function (dispatch, pageId, callback) {
                 type: ActionTypes.LOADED_PAGE,
                 data: {
                     page: response
-                }
+                },
+                selectedPageSettingTab: 0
             });
             if (callback) {
                 callback(response);
@@ -166,7 +168,8 @@ const pageActions = {
                     type: ActionTypes.LOADED_PAGE,
                     data: {
                         page: duplicatedPage
-                    }
+                    },
+                    selectedPageSettingTab: 0
                 });
             };
             if (reloadTemplate) {
@@ -185,7 +188,8 @@ const pageActions = {
         return (dispatch) => PagesService.getNewPage(parentPage).then((page) => {
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
-                data: { page }
+                data: { page },
+                selectedPageSettingTab: 0
             });
         });
     },
