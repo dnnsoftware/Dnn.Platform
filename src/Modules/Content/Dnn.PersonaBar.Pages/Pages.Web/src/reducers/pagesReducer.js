@@ -80,7 +80,6 @@ export default function pagesReducer(state = {
                 dirtyPage: true
             };
 
-
         case ActionTypes.CHANGE_PERMISSIONS:
             return { ...state,
                 selectedPage: { ...state.selectedPage,

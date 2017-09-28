@@ -29,7 +29,7 @@ function updateUrlPreview(value, dispatch) {
 
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
-const loadPage = function (dispatch, pageId) {
+const loadPage = function (dispatch, pageId, callback) {
     return new Promise((resolve)=>{
             if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
             dispatch({
@@ -52,6 +52,9 @@ const loadPage = function (dispatch, pageId) {
                     page: response
                 }
             });
+            if (callback) {
+                callback(response);
+            }
             resolve(response);
         }).catch((error) => {
             dispatch({
@@ -147,22 +150,33 @@ const pageActions = {
         };
     },
 
-    duplicatePage() {
+    duplicatePage(reloadTemplate) {
         return (dispatch, getState) => {
             const { pages } = getState();
-            const duplicatedPage = cloneDeep(pages.selectedPage);
-
-            duplicatedPage.templateTabId = duplicatedPage.tabId;
-            duplicatedPage.tabId = 0;
-            duplicatedPage.name = "";
-            duplicatedPage.url = "";
-
-            dispatch({
-                type: ActionTypes.LOADED_PAGE,
-                data: {
-                    page: duplicatedPage
-                }
-            });
+            const duplicate = (page) => {
+                const duplicatedPage = cloneDeep(page);
+                
+                duplicatedPage.templateTabId = duplicatedPage.tabId;
+                duplicatedPage.tabId = 0;
+                duplicatedPage.name = "";
+                duplicatedPage.url = "";
+                duplicatedPage.isCopy = true;
+                
+                dispatch({
+                    type: ActionTypes.LOADED_PAGE,
+                    data: {
+                        page: duplicatedPage
+                    }
+                });
+            };
+            if (reloadTemplate) {
+                loadPage(dispatch, pages.selectedPage.tabId, (page) => {
+                    duplicate(page);
+                });
+            }
+            else {
+                duplicate(pages.selectedPage);
+            }            
         };
     },
 
@@ -176,7 +190,12 @@ const pageActions = {
         });
     },
 
-    cancelPage() {
+    cancelPage(reloadPageId) {
+        if (reloadPageId) {
+            return (dispatch) => {
+                return loadPage(dispatch, reloadPageId);
+            };
+        }
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CANCEL_PAGE,

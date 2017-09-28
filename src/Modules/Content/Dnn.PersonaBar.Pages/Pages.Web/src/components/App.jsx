@@ -371,11 +371,17 @@ class App extends Component {
     }
 
     onCancelSettings() {
-        if (this.props.selectedPageDirty) {
+        const { props } = this;
+        if (props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
         }
         else {
-            this.props.onCancelPage();
+            if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
+                this.props.onCancelPage(props.selectedPage.templateTabId);
+            }
+            else {
+                this.props.onCancelPage();
+            }
         }
     }
 
@@ -441,8 +447,15 @@ class App extends Component {
     }
 
     showCancelWithoutSavingDialog() {
-        const onConfirm = () => {
-            this.props.onCancelPage();
+        const { props } = this;
+        const onConfirm = () => {            
+            if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
+                this.props.onCancelPage(props.selectedPage.templateTabId);
+            }
+            else {
+                this.props.onCancelPage();
+            }
+
         };
 
         utils.confirm(
@@ -660,10 +673,43 @@ class App extends Component {
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
+    CallCustomAction(action) {
+        const { selectedPage, selectedPageDirty } = this.props;
+        const callAction = () => {
+            if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
+                const onConfirm = () => {
+                    action();
+                };
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
 
-    onDuplicatePage(item){
+            } else {
+                action();
+            }
+        };
+        callAction();
+    }
+    onDuplicatePage(item) {
+        const { selectedPage, selectedPageDirty } = this.props;
         const message = Localization.get("NoPermissionCopyPage");
-        const duplicate = () => this.props.onDuplicatePage();
+        const duplicate = () => {
+            if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
+                const onConfirm = () => {
+                    this.props.onDuplicatePage(true);
+                };
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
+
+            } else {
+                this.props.onDuplicatePage(false);
+            }
+        };
         const noPermission = () => this.setEmptyStateMessage(message);
         item.canCopyPage ? duplicate() : noPermission();
     }
@@ -1183,6 +1229,7 @@ class App extends Component {
                                             onViewPage={this.onViewPage.bind(this)}
                                             onViewEditPage={this.onViewEditPage.bind(this)}
                                             onDuplicatePage={this.onDuplicatePage.bind(this)}
+                                            CallCustomAction={this.CallCustomAction.bind(this)}
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
