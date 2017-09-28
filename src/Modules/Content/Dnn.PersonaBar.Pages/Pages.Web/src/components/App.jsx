@@ -170,7 +170,6 @@ class App extends Component {
                             .split("/")
                             .filter(d => !!d)
                             .map(d  => d.replace(/\-/, " "));
-            let stop = false;
         }
     }
 
@@ -323,7 +322,6 @@ class App extends Component {
 
     onAddPage(parentPage) {
         this.clearEmptyStateMessage();
-        this.selectPageSettingTab(0);
 
         const addPage = () => {
             const { props } = this;
@@ -824,6 +822,10 @@ class App extends Component {
         this.setState({inSearch:true});
     }
 
+
+    onBreadcrumbSelect(name){
+    }
+
     render_PagesDetailEditor() {
 
         const render_emptyState = () => {
@@ -941,7 +943,7 @@ class App extends Component {
         ];
         let filterByDateText = "FilterByModifiedDateText";
         let workflowList = [];
-        if (utils.IsWorkflowEnabled())
+        if (!utils.isPlatform())
         {
             filterByPageStatusOptions = ([{value: null, label: Localization.get("lblNone")}]).concat(filterByPageStatusOptions.concat([{value: "Draft", label: Localization.get("lblDraft")}]));
             filterByDateText = "FilterByPublishDateText";
@@ -969,10 +971,10 @@ class App extends Component {
         return(
             <div className="search-more-flyout">
                 <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
-                    <h1>{Localization.get("lblGeneralFilters")}</h1>
+                    <h1>{Localization.get("lblGeneralFilters").toUpperCase()}</h1>
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px"}}>
-                    <h1>{Localization.get("lblTagFilters")}</h1>
+                    <h1>{Localization.get("lblTagFilters").toUpperCase()}</h1>
                 </GridCell>
                 <GridCell columnSize={70} style={{padding: "5px"}}>
                     <GridCell columnSize={100} >
@@ -1006,7 +1008,7 @@ class App extends Component {
                                 onSelect={(data) => this.setState({filterByPublishStatus:data.value}) }
                                 withBorder={true} />
                         </GridCell>
-                    {utils.IsWorkflowEnabled() &&
+                    {!utils.isPlatform() &&
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown
                                 className="more-dropdown"
@@ -1022,8 +1024,8 @@ class App extends Component {
                         <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
-                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>{Localization.get("lblCancel")}</Button>
-                        <Button type="primary" onClick={()=>this.onSave()}>{Localization.get("lblSave")}</Button>
+                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>{Localization.get("Cancel")}</Button>
+                        <Button type="primary" onClick={()=>this.onSave()}>{Localization.get("Save")}</Button>
                 </GridCell>
             </div>);
     }
@@ -1091,7 +1093,7 @@ class App extends Component {
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
-                        <p>{`${searchList.length} ` + Localization.get("lblPagesFound") }</p>
+                        <p>{`${searchList.length} ` + Localization.get("lblPagesFound").toUpperCase() }</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item)=>{

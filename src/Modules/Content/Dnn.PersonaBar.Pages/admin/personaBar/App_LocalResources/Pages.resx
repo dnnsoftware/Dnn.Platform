@@ -1525,9 +1525,6 @@
   <data name="FilterbyPublishStatusText.Text" xml:space="preserve">
     <value>Filter by Publish Status</value>
   </data>
-  <data name="lblCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
   <data name="lblDraft.Text" xml:space="preserve">
     <value>Draft</value>
   </data>
@@ -1542,9 +1539,6 @@
   </data>
   <data name="lblPublished.Text" xml:space="preserve">
     <value>Published</value>
-  </data>
-  <data name="lblSave.Text" xml:space="preserve">
-    <value>Save</value>
   </data>
   <data name="lblTagFilters.Text" xml:space="preserve">
     <value>TAG FILTERS</value>
