@@ -208,10 +208,13 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         }
 
         e.dataTransfer.setData ? e.dataTransfer.setData(type, 'node') : null;
+        e.dataTransfer.setData ? e.dataTransfer.setData('text/plain', 'node') : null;
+
         const left = () => {
             const img = new Image();
-            if (e.dataTransfer.setDragImage)
+            if (e.dataTransfer.setDragImage && !userAgent.indexOf("AppleWebkit")){
                 e.dataTransfer.setDragImage(img, 0, 0);
+            }
 
             this.createClonedElement(e, item);
 
