@@ -725,7 +725,7 @@ class App extends Component {
         const view = () => {
             this.props.onLoadPage(item.id);
             utils.getUtilities().closePersonaBar(function () {
-                window.open(item.url);
+                window.parent.location=item.url;
             });
         };
 
