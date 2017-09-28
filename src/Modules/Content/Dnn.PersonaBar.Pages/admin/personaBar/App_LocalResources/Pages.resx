@@ -7,7 +7,7 @@
     
     The primary goals of this format is to allow a simple XML format 
     that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes
+    various data types are done through the TypeConverter classes 
     associated with the data types.
     
     Example:
@@ -1490,7 +1490,7 @@
     <value>You do not have permission to add a page.</value>
   </data>
   <data name="NoPermissionEditPage.Text" xml:space="preserve">
-    <value>You do not have permission to edit this page.</value>
+    <value>You do not have permission to edit this page</value>
   </data>
   <data name="NoPermissionCopyPage.Text" xml:space="preserve">
     <value>You do not have permission to copy this page.</value>
@@ -1498,13 +1498,7 @@
   <data name="NoPermissionManagePage.Text" xml:space="preserve">
     <value>You do not have permission to manage this page.</value>
   </data>
-  <data name="NoPermissionEditPage.Text" xml:space="preserve">
-    <value>You do not have permission to edit this page</value>
-  </data>
   <data name="NoPermissionViewPage.Text" xml:space="preserve">
-    <value>You do not have permission to view this page</value>
-  </data>
-    <data name="NoPermissionViewPage.Text" xml:space="preserve">
     <value>You do not have permission to view this page</value>
   </data>
   <data name="NoPermissionDeletePage.Text" xml:space="preserve">
@@ -1521,5 +1515,38 @@
   </data>
   <data name="ModuleCopyType.Reference" xml:space="preserve">
     <value>Reference</value>
+  </data>
+  <data name="FilterByModifiedDateText.Text" xml:space="preserve">
+    <value>Filter by Modified Date Range</value>
+  </data>
+  <data name="FilterbyPageTypeText.Text" xml:space="preserve">
+    <value>Filter by Page Type</value>
+  </data>
+  <data name="FilterbyPublishStatusText.Text" xml:space="preserve">
+    <value>Filter by Publish Status</value>
+  </data>
+  <data name="lblCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="lblDraft.Text" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="lblGeneralFilters.Text" xml:space="preserve">
+    <value>GENERAL FILTERS</value>
+  </data>
+  <data name="lblNone.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="lblPagesFound.Text" xml:space="preserve">
+    <value>PAGES FOUND.</value>
+  </data>
+  <data name="lblPublished.Text" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="lblSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="lblTagFilters.Text" xml:space="preserve">
+    <value>TAG FILTERS</value>
   </data>
 </root>
