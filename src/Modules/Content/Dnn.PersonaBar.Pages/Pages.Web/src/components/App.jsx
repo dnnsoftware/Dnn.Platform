@@ -966,6 +966,9 @@ class App extends Component {
         ];
 
         let workflowList = [];
+        if (utils.IsWorkflowEnabled() && this.props.workflowList.length<=0){
+            this.props.getWorkflowsList();
+        }
         this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return {value:item.workflowId, label:item.workflowName}; })) : null;
         const filterByWorkflowOptions = [{value: null, label:"None"}].concat(workflowList);
 
@@ -1003,6 +1006,20 @@ class App extends Component {
                                 withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
+                        <DropdownDayPicker
+                            onDayClick={this.onDayClick.bind(this)}
+                            dropdownIsActive={this.state.DropdownCalendarIsActive}
+                            applyChanges={()=>onApplyChangesDropdownDayPicker()}
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate}
+                            toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
+                            CalendarIcon={CalendarIcon}
+                            />
+                    </GridCell>
+                    </GridCell>
+                    {utils.IsWorkflowEnabled() &&
+                    <GridCell columnSize={100}>
+                        <GridCell columnSize={50} style={{padding: "5px"}}>
                             <Dropdown
                                 className="more-dropdown"
                                 options={filterByPageStatusOptions}
@@ -1010,19 +1027,7 @@ class App extends Component {
                                 onSelect={(data) => this.setState({filterByPublishStatus:data.value}) }
                                 withBorder={true} />
                         </GridCell>
-                    </GridCell>
-                    <GridCell columnSize={100}>
-                        <GridCell columnSize={50} style={{padding: "5px"}}>
-                            <DropdownDayPicker
-                                onDayClick={this.onDayClick.bind(this)}
-                                dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                applyChanges={()=>onApplyChangesDropdownDayPicker()}
-                                startDate={this.state.startDate}
-                                endDate={this.state.endDate}
-                                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
-                                CalendarIcon={CalendarIcon}
-                                />
-                        </GridCell>
+                        
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown
                                 className="more-dropdown"
@@ -1032,6 +1037,7 @@ class App extends Component {
                                 withBorder={true} />
                         </GridCell>
                     </GridCell>
+                    }
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
                         <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
