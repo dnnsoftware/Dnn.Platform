@@ -235,9 +235,10 @@ namespace DotNetNuke.Services.GeneratedImage
 
             var cacheCleared = false;
             var profilepic = context.Request.QueryString["mode"];
-            if (profilepic != null && profilepic == "profilepic")
+            if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
             {
-                if (int.TryParse(context.Request.QueryString["userId"], out int userId))
+                int userId;
+                if (int.TryParse(context.Request.QueryString["userId"], out userId))
                     cacheCleared = ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
             }
             // Handle client cache
@@ -389,8 +390,9 @@ namespace DotNetNuke.Services.GeneratedImage
             Dictionary<int, DateTime> userIds;
             if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
             ImageStore.ForcePurgeFromServerCache(cacheId);
+            DateTime expiry;
             //The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
-            if (!userIds.TryGetValue(userId, out DateTime expiry) || DateTime.UtcNow <= expiry.Add(ClientCacheExpiration)) return true;
+            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(ClientCacheExpiration)) return true;
             //Remove the userId from the clear list when timespan is > ClientCacheExpiration.
             userIds.Remove(userId);
             DataCache.SetCache(cacheKey, userIds);
@@ -421,7 +423,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var eps = new EncoderParameters(1)
                     {
-                        Param = {[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression)}
+                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression) }
                     };
                     var ici = GetEncoderInfo(GetImageMimeType(ContentType));
                     image.Save(outStream, ici, eps);
