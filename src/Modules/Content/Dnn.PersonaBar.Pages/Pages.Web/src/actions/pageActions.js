@@ -98,8 +98,13 @@ const pageActions = {
         });
     },
 
-    getWorkflowsList(){
-        return (dispatch) => PagesService.getWorkflowsList();
+    getWorkflowsList() {
+        return (dispatch) => PagesService.getWorkflowsList().then(workflowList => {
+            dispatch({
+                type: ActionTypes.GET_WORKFLOW_LIST,
+                data: {workflowList}
+            });
+        });
     },
 
     getPage(id) {
