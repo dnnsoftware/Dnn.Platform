@@ -203,12 +203,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         const userAgent = window.navigator.userAgent;
         let type = "text/plain";
 
+        console.log(userAgent);
+
         if (userAgent.indexOf('Trident')) {
             type = 'Text';
         }
 
+
         e.dataTransfer.setData ? e.dataTransfer.setData(type, 'node') : null;
-        e.dataTransfer.setData ? e.dataTransfer.setData('text/plain', 'node') : null;
+
 
         const left = () => {
             const img = new Image();
