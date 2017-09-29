@@ -451,9 +451,7 @@ class App extends Component {
 
 
     showCancelWithoutSavingDialogInEditMode(input) {
-
-        const id = (input.hasOwnProperty('parentId')) ? input : this.props.selectedPage.tabId;
-
+        const id = (typeof input ==="object") ? this.props.selectedPage.tabId : input;
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
                 this.props.onLoadPage(input).then((data) => {
