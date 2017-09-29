@@ -9,6 +9,7 @@ import Label from "dnn-label";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import TranslationProgressBars from "../languageSettings/TranslationProgressBars";
 import Button from "dnn-button";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import {
     languages as LanguagesActions,
     siteInfo as SiteInfoActions,
@@ -241,27 +242,27 @@ class TranslatePageContent extends Component {
                             type="secondary"
                             disabled={!isEnabled || !localizablePages || !pagesNumber}
                             onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code) }>
-                            {resx.get("MarkAllPagesAsTranslated") }
+                            <TextOverflowWrapper text={resx.get("MarkAllPagesAsTranslated") } maxWidth={150}/>
                         </Button>
                         <Button
                             disabled={!isEnabled || !localizablePages}
                             type="secondary"
                             onClick={this.onEraseAllLocalizedPages.bind(this) }>
-                            {resx.get("EraseAllLocalizedPages") }
+                            <TextOverflowWrapper text={resx.get("EraseAllLocalizedPages") } maxWidth={150}/>
                         </Button>
                         <Button
                             disabled={!language.Active || !isEnabled || !TranslatedPages}
                             type="primary"
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, true) }>
-                            {resx.get("PublishTranslatedPages") }
+                            <TextOverflowWrapper text={resx.get("PublishTranslatedPages") } maxWidth={150}/>
                         </Button>
                         <Button
                             type="secondary"
                             disabled={!language.Active || !isEnabled || !hasPublishedPages || !TranslatedPages}
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, false) }>
-                            {resx.get("UnpublishTranslatedPages") }
+                            <TextOverflowWrapper text={resx.get("UnpublishTranslatedPages") } maxWidth={150}/>
                         </Button>
                     </div>
                 </div>}

@@ -25,9 +25,7 @@ using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Pages.Components.Security;
 using DotNetNuke.Application;
-using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
 
 namespace Dnn.PersonaBar.Pages.MenuControllers
 {
@@ -41,7 +39,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public void UpdateParameters(MenuItem menuItem)
         {
-
+            
         }
 
         public bool Visible(MenuItem menuItem)
@@ -57,10 +55,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
                 {"portalName", PortalSettings.Current.PortalName},
                 {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
                 {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName},
-                {"productSKU", DotNetNukeContext.Current.Application.SKU},
-                {
-                    "workflowEnabled", TabWorkflowSettings.Instance.IsWorkflowEnabled((int) PortalSettings.Current?.PortalId)
-                }
+                {"productSKU", DotNetNukeContext.Current.Application.SKU}
             };
 
             return settings;

@@ -160,11 +160,10 @@ function getProductSKU() {
     checkInit();
     return settings.productSKU;
 }
-function IsWorkflowEnabled() {
+function isPlatform(){
     checkInit();
-    return settings.workflowEnabled;
+    return settings.productSKU.toLowerCase() === 'dnn';
 }
-
 const utils = {
     init,
     load,
@@ -192,7 +191,7 @@ const utils = {
     getCurrentPageName,
     getDefaultPageUrl,
     getProductSKU,
-    IsWorkflowEnabled
+    isPlatform
 };
 
 export default utils;

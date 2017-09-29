@@ -9,7 +9,9 @@ import DatePicker from "dnn-date-picker";
 import {
     roleUsers as RoleUsersActions
 } from "../../../../actions";
+
 class UserRow extends Component {
+
     constructor() {
         super();
         this.state = {
@@ -125,8 +127,7 @@ class UserRow extends Component {
         const {props} = this;
         return (
             <div className="role-user-row">
-                <GridCell title={props.roleName} columnSize={25} >
-                    {props.userDetails.displayName}</GridCell>
+                <GridCell title={props.roleName} columnSize={25} >{props.userDetails.displayName}</GridCell>
                 <GridCell  columnSize={20} >
                     {this.formateDate(props.userDetails.startTime) }</GridCell>
                 <GridCell  columnSize={20} >
