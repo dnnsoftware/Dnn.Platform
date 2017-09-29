@@ -55,8 +55,8 @@ class PageDetails extends Component {
         let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
         const sf = Utils.getServiceFramework();
 
-        const defaultLabel =  Localization.get("NoneSpecified");
-        const selectedTabId = page.parentId;
+        const defaultLabel =  page.hierarchy || Localization.get("NoneSpecified");
+        const selectedTabId = page.parentId || -1;
 
         return (
             <div className={styles.pageStandard}>
