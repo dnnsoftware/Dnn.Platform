@@ -9,8 +9,7 @@ import Localization from "../../../localization";
 import styles from "./style.less";
 import Tags from "dnn-tags";
 import Label from "dnn-label";
-//import PagePicker from "dnn-page-picker";
-import PagePicker from "./PagePicker/src/PagePicker";
+import PagePicker from "dnn-page-picker";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {
