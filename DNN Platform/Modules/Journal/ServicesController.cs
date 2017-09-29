@@ -119,14 +119,31 @@ namespace DotNetNuke.Modules.Journal
                     postData.ProfileId = UserInfo.UserID;
                 }
 
+                if (postData.ProfileId != UserInfo.UserID)
+                {
+                    var profileUser = UserController.Instance.GetUser(PortalSettings.PortalId, postData.ProfileId);
+                    if (profileUser == null || (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !Utilities.AreFriends(profileUser, UserInfo)))
+                    {
+                        throw new ArgumentException("you have no permission to post journal on current profile page");
+                    }
+                }
+
                 if (postData.GroupId > 0)
                 {
                     postData.ProfileId = -1;
 
                     RoleInfo roleInfo = RoleController.Instance.GetRoleById(ActiveModule.OwnerPortalID, postData.GroupId);
-                    if (roleInfo != null && !roleInfo.IsPublic)
+                    if (roleInfo != null)
                     {
-                        postData.SecuritySet = "R";
+                        if (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !UserInfo.IsInRole(roleInfo.RoleName))
+                        {
+                            throw new ArgumentException("you have no permission to post journal on current group.");
+                        }
+
+                        if (!roleInfo.IsPublic)
+                        {
+                            postData.SecuritySet = "R";
+                        }
                     }
                 }
 
