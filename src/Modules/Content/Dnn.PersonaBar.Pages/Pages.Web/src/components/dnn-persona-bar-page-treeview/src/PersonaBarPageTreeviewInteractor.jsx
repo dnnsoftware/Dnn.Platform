@@ -199,7 +199,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragStart(e, item) {
-        //this._fadeOutTooltips();
 
         const userAgent = window.navigator.userAgent;
         let type = "text/plain";
@@ -210,7 +209,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
         e.dataTransfer.setData ? e.dataTransfer.setData(type, 'node') : null;
-
 
         const left = () => {
             const img = new Image();
@@ -346,7 +344,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         };
 
         const right = () => null;
-        (item.id !== this.state.draggedItem.id) ? left() : right();
+        (item.id !== this.state.draggedItem.id && item.id != this.state.draggedItem.parentId) ? left() : right();
     }
 
 
