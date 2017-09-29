@@ -1,6 +1,4 @@
-
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -35,11 +33,9 @@ import Promise from "promise";
 import { PagesSearchIcon, PagesVerticalMore, CalendarIcon } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
 import DayPicker from "./DayPicker/src/DayPicker";
-import {XIcon} from "dnn-svg-icons";
 
 import "./style.less";
 
-import DropdownDayPicker from "./DropdownDayPicker/DropdownDayPicker";
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
@@ -60,33 +56,15 @@ function getSelectedTabBeingViewed(viewTab) {
 class App extends Component {
     constructor() {
         super();
-        const date = new Date();
         this.state = {
             referral: "",
             referralText: "",
             busy: false,
             headerDropdownSelection: "Save Page Template",
-
             toggleSearchMoreFlyout:false,
-            DropdownCalendarIsActive:null,
-
+            toggleDropdownCalendar:null,
             inSearch: false,
-            searchTerm: false,
-
-            startDate: date,
-            endDate: date,
-            defaultDate: date,
-            startAndEndDateDirty:false,
-
-            filterByPageType: null,
-            filterByPublishStatus: null,
-            filterByWorkflow: null,
-
-            workflowList: [],
-
-            tags:"",
-            filters:[],
-            searchFields:{}
+            searchTerm: false
         };
     }
 
@@ -96,8 +74,8 @@ class App extends Component {
         const viewParams = utils.getViewParams();
         window.dnn.utility.setConfirmationDialogPosition();
         window.dnn.utility.closeSocialTasks();
+        window.dnn.utility.expandPersonaBarPage();
         this.props.getPageList();
-
 
         if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
@@ -163,6 +141,8 @@ class App extends Component {
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
+        window.dnn.utility.expandPersonaBarPage();
+
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -246,6 +226,8 @@ class App extends Component {
                                 item.childListItems.push(cachedItem);
                                 this.props.onLoadPage(cachedItem.id);
                                 break;
+
+
                         }
                         item.isOpen = true;
                         updateStore(list);
@@ -278,14 +260,8 @@ class App extends Component {
     }
 
     onSearchClick(){
-        const {searchFields, searchTerm} = this.state;
-        const search = Object.keys(searchFields).length ? searchFields : {searchKey:searchTerm};
-        this.props.searchAndFilterPageList(search);
-    }
-
-    onSearchWhileTyping(searchKey){
-        const searchFields = Object.keys(this.state.searchFields).length ? this.state.searchFields : {searchKey};
-        this.props.searchAndFilterPageList(searchFields);
+        const {searchTerm} = this.state;
+        this.props.searchPageList(searchTerm);
     }
 
     onSearchFocus(){
@@ -297,12 +273,13 @@ class App extends Component {
             const {searchTerm} = this.state;
             switch(true){
                 case searchTerm.length > 3:
-                    this.onSearchWhileTyping(searchTerm);
+                    this.onSearchClick();
                     this.setState({inSearch:true});
                 return;
                 case searchTerm.length === 0:
                     this.setState({inSearch:false});
                 return;
+
             }
         });
     }
@@ -347,17 +324,11 @@ class App extends Component {
     }
 
     onCancelSettings() {
-        const { props } = this;
-        if (props.selectedPageDirty) {
+        if (this.props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
         }
         else {
-            if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.props.onCancelPage(props.selectedPage.templateTabId);
-            }
-            else {
-                this.props.onCancelPage();
-            }
+            this.props.onCancelPage();
         }
     }
 
@@ -405,6 +376,7 @@ class App extends Component {
                 this.props.onDeletePage(props.selectedPage);
                 this.props.updatePageListStore(update);
                 this.props.onCancelPage();
+
             };
         };
 
@@ -423,14 +395,9 @@ class App extends Component {
     }
 
     showCancelWithoutSavingDialog() {
-        const { props } = this;
-        const onConfirm = () => {            
-            if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.props.onCancelPage(props.selectedPage.templateTabId);
-            }
-            else {
-                this.props.onCancelPage();
-            }
+        const onConfirm = () => {
+            this.props.onCancelPage();
+
         };
 
         utils.confirm(
@@ -442,21 +409,18 @@ class App extends Component {
 
 
     showCancelWithoutSavingDialogInEditMode(input) {
-        const id = (typeof input ==="object") ? this.props.selectedPage.tabId : input;
+        const id = (input.hasOwnProperty('parentId')) ? input : this.props.selectedPage.tabId;
+
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(id).then(()=>{
-                    this.props.onLoadPage(input).then((data) => {
-                        this._traverse((item, list, updateStore) => {
-                            if (item.id === input) {
-                                Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
-                                this.props.updatePageListStore(list);
-                                this.selectPageSettingTab(0);
-
-                            }
-                        });
+                this.props.onLoadPage(id).then((data) => {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id === id) {
+                            Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
+                            this.props.updatePageListStore(list);
+                            this.selectPageSettingTab(0);
+                        }
                     });
-
                 });
             };
 
@@ -630,11 +594,7 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
-                    const selectedPath = data.hierarchy.split(">").map((d)=> {
-                        return {name: d, tabId:data.tabId};
-                    });
-                    this.props.changeSelectedPagePath(selectedPath);
-
+                    this.getToRootParent();
                 });
                 this.selectPageSettingTab(0);
             }
@@ -650,94 +610,31 @@ class App extends Component {
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
         return PageActions.movePage({ Action, PageId, ParentId, RelatedPageId });
     }
-    CallCustomAction(action) {
-        const { selectedPage, selectedPageDirty } = this.props;
-        const callAction = () => {
-            if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
-                const onConfirm = () => {
-                    action();
-                };
-                utils.confirm(
-                    Localization.get("CancelWithoutSaving"),
-                    Localization.get("Close"),
-                    Localization.get("Cancel"),
-                    onConfirm);
 
-            } else {
-                action();
-            }
-        };
-        callAction();
-    }
-    onDuplicatePage(item) {
-        const { selectedPage, selectedPageDirty } = this.props;
+    onDuplicatePage(item){
         const message = Localization.get("NoPermissionCopyPage");
-        const duplicate = () => {
-            if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
-                const onConfirm = () => {
-                    this.props.onDuplicatePage(true);
-                };
-                utils.confirm(
-                    Localization.get("CancelWithoutSaving"),
-                    Localization.get("Close"),
-                    Localization.get("Cancel"),
-                    onConfirm);
-
-            } else {
-                this.props.onDuplicatePage(false);
-            }
-        };
+        const duplicate = () => this.props.onDuplicatePage();
         const noPermission = () => this.setEmptyStateMessage(message);
         item.canCopyPage ? duplicate() : noPermission();
     }
 
     onViewEditPage(item) {
-        const {selectedPageDirty} = this.props;
-        const viewPage = () => PageActions.viewPage(item.id, item.url);
-
-        const left = () => {
-            utils.confirm(
-                Localization.get("CancelWithoutSaving"),
-                Localization.get("Close"),
-                Localization.get("Cancel"),
-                viewPage);
-        };
-
-        const right = () => viewPage();
-        const proceed = () => selectedPageDirty ? left() : right();
-
         this.clearEmptyStateMessage();
         const message = Localization.get("NoPermissionEditPage");
+        const viewPage = () => PageActions.viewPage(item.id, item.url);
         const noPermission = () => this.setEmptyStateMessage(message);
-        item.canManagePage ? proceed() : noPermission();
-
+        item.canManagePage ? viewPage() : noPermission();
     }
 
     onViewPage(item) {
-        const {selectedPageDirty} = this.props;
-        const view = () => {
-            this.props.onLoadPage(item.id);
-            utils.getUtilities().closePersonaBar(function () {
-                window.parent.location=item.url;
-            });
-        };
-
-        const left = () => {
-            utils.confirm(
-                Localization.get("CancelWithoutSaving"),
-                Localization.get("Close"),
-                Localization.get("Cancel"),
-                view);
-        };
-
-        const right = () => view();
-        const proceed = () => selectedPageDirty ? left() : right();
-
         this.clearEmptyStateMessage();
+        const view = () => {
+            window.dnn.PersonaBar.closePanel();
+            window.parent.location=item.url;
+        };
         const message = Localization.get("NoPermissionViewPage");
         const noPermission = () => this.setEmptyStateMessage(message);
-        item.canViewPage ? proceed() : noPermission();
-
+        item.canViewPage ? view() : noPermission();
     }
 
     setEmptyStateMessage(emptyStateMessage) {
@@ -750,73 +647,19 @@ class App extends Component {
     }
 
     onSearchMoreFlyoutClick() {
-        this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout}, ()=>{
-            const {toggleSearchMoreFlyout} = this.state;
-            !toggleSearchMoreFlyout ? this.setState({DropdownCalendarIsActive: null}) : null;
-        });
+        this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout});
     }
 
-    toggleDropdownCalendar(bool){
-        typeof(bool) == "boolean" ? this.setState({DropdownCalendarIsActive:bool}) : this.setState({DropdownCalendarIsActive:!this.state.DropdownCalendarIsActive});
+    toggleDropdownCalendar(){
+        this.setState({toggleDropdownCalendar:!this.state.toggleDropdownCalendar});
     }
 
-
-    onDayClick(newDay, isEndDate){
-        this.setState({startAndEndDateDirty:true});
-        const right = () => {
-            const condition = newDay.getTime() < this.state.endDate.getTime();
-            condition ? this.setState({startDate:newDay}) : this.setState({startDate:newDay, endDate: newDay});
-        };
-
-        const left = () => {
-            const condition =  newDay.getTime() >= this.state.startDate.getTime();
-            condition ? this.setState({endDate:newDay}) : null;
-        };
-        isEndDate ? left() : right();
-    }
-
-    generateFilters(){
-        const {filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty} = this.state;
-        const filters = this.state.tags.split(",");
-        filterByPageType ? filters.push({ref: "filterByPageType", tag:`Page Type: ${filterByPageType}`}) : null;
-        filterByPublishStatus ? filters.push({ref:"filterByPublishStatus", tag:`Published Status: ${filterByPublishStatus}`}) : null;
-        filterByWorkflow ? filters.push({ref:"filterByWorkflow", tag:`Workflow: ${filterByWorkflow}`}) : null;
-
-        if(startAndEndDateDirty){
-            const fullStartDate = `${startDate.getDay()}/${startDate.getMonth()+1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDay()}/${endDate.getMonth()+1}/${endDate.getFullYear()}`;
-
-            const left = () => filters.push({ref: "startAndEndDateDirty", tag:`Date Range: ${fullStartDate} - ${fullEndDate} `});
-            const right = () => filters.push({ref: "startAndEndDateDirty", tag:`From Date: ${fullStartDate}`});
-
-            fullStartDate != fullEndDate ? left() : right();
-        }
-
-        this.setState({filters, DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false});
-    }
-
-    saveSearchFilters(searchFields){
-        return new Promise((resolve) => this.setState({searchFields}, ()=> resolve()));
-    }
-
-    onSave () {
-        const {searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags} = this.state;
-        const searchDateRange = startAndEndDateDirty ? {publishDateStart: startDate, publishDateEnd:endDate} : {};
-        let search = {tags:tags, searchKey:searchTerm, pageType:filterByPageType, publishStatus:filterByPublishStatus, workflowId:filterByWorkflow};
-
-        search = Object.assign({}, search, searchDateRange);
-        for(let prop in search){
-            if(!search[prop]){
-                delete search[prop];
-            }
-        }
-        this.generateFilters();
-        this.saveSearchFilters(search).then(()=> this.props.searchAndFilterPageList(search));
-        this.setState({inSearch:true});
-    }
-
-
-    onBreadcrumbSelect(name){
+    render_PagesTreeViewEditor() {
+        return (
+            <GridCell columnSize={30} style={{ marginTop: "120px", backgroundColor: "#aaa" }} >
+                <p>Tree Controller</p>
+            </GridCell>
+        );
     }
 
     render_PagesDetailEditor() {
@@ -837,7 +680,6 @@ class App extends Component {
         const render_pageDetails = () => {
             const { props, state } = this;
             const {isContentLocalizationEnabled} = props;
-
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
@@ -863,13 +705,12 @@ class App extends Component {
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents}
                     onGetCachedPageCount={props.onGetCachedPageCount}
                     onClearCache={props.onClearCache}
-                    onModuleCopyChange={props.onModuleCopyChange}
                 />
             );
         };
         const { selectedPage } = this.props;
         return (
-            <GridCell columnSize={100} className="treeview-page-details" >
+            <GridCell columnSize={70} className="treeview-page-details" >
                 {(selectedPage && selectedPage.tabId) ? render_pageDetails() : render_emptyState()}
             </GridCell>
         );
@@ -880,9 +721,13 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
+
+
+        if (!props.selectedPageSettingTab || props.selectedPageSettingTab <= 0)
+            this.selectPageSettingTab(0);
         return (
-            <GridCell columnSize={100} className="treeview-page-details" >
-                <PageSettings selectedPage={props.selectedPage }
+            <GridCell columnSize={70} className="treeview-page-details" >
+                <PageSettings selectedPage={props.selectedPage || {}}
                     AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
@@ -904,9 +749,9 @@ class App extends Component {
                     pageDetailsFooterComponents={props.pageDetailsFooterComponents}
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents}
                     onGetCachedPageCount={props.onGetCachedPageCount}
-                    onClearCache={props.onClearCache} 
-                    onModuleCopyChange={props.onModuleCopyChange}/>
+                    onClearCache={props.onClearCache} />
             </GridCell>
+
         );
     }
 
@@ -919,107 +764,63 @@ class App extends Component {
 
     /* eslint-disable react/no-danger */
     render_more_flyout(){
-        const {startDate, endDate} = this.state;
-        const startMonth = startDate.getMonth()+1;
-
-        const endMonth =  endDate.getMonth()+1;
-        const selectedMonth = (endMonth > startMonth) ? endDate : startDate;
-
-        const filterByPageTypeOptions = [
-            {value: null, label:  "None"},
-            {value: "Normal", label: "Normal"},
-            {value: "URL", label: "URL"},
-            {value: "File", label: "File"}
-        ];
-
-        let filterByPageStatusOptions = [
-            {value: "Published", label: Localization.get("lblPublished")}
-        ];
-        let filterByDateText = "FilterByModifiedDateText";
-        let workflowList = [];
-        if (!utils.isPlatform())
-        {
-            filterByPageStatusOptions = ([{value: null, label: Localization.get("lblNone")}]).concat(filterByPageStatusOptions.concat([{value: "Draft", label: Localization.get("lblDraft")}]));
-            filterByDateText = "FilterByPublishDateText";
-            if (this.props.workflowList.length<=0){
-                this.props.getWorkflowsList();   
-            }
-        }
-        this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return {value:item.workflowId, label:item.workflowName}; })) : null;
-        const filterByWorkflowOptions = [{value: null, label: Localization.get("lblNone")}].concat(workflowList);
-
-        const generateTags = (e) => {
-            this.setState({tags:e.target.value});
-        };
-
+        const options = [{value:true, label:"test"}];
         const date = Date.now();
-
-        const onApplyChangesDropdownDayPicker = () => {
-            const {startAndEndDateDirty, startDate, endDate, defaultDate} = this.state;
-            const fullStartDate = startDate.getDay()+startDate.getMonth()+startDate.getFullYear();
-            const fullEndDate = endDate.getDay()+endDate.getMonth()+endDate.getFullYear();
-
-            const condition = !startAndEndDateDirty && fullStartDate == fullEndDate;
-            condition ? this.setState({startAndEndDateDirty:true, DropdownCalendarIsActive:null}) : this.setState({ DropdownCalendarIsActive:null});
-        };
         return(
             <div className="search-more-flyout">
                 <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
-                    <h1>{Localization.get("lblGeneralFilters").toUpperCase()}</h1>
+                    <h1>GENERAL FILTERS</h1>
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px"}}>
-                    <h1>{Localization.get("lblTagFilters").toUpperCase()}</h1>
+                    <h1>TAG FILTERS</h1>
                 </GridCell>
                 <GridCell columnSize={70} style={{padding: "5px"}}>
                     <GridCell columnSize={100} >
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                             <Dropdown
-                                className="more-dropdown"
-                                options={filterByPageTypeOptions}
-                                label={this.state.filterByPageType ? this.state.filterByPageType : Localization.get("FilterbyPageTypeText")}
-                                onSelect={(data) => this.setState({filterByPageType:data.value}) }
-                                withBorder={true} />
+                             <Dropdown className="more-dropdown" options={options} label="Filter by Page Type" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <DropdownDayPicker
-                                onDayClick={this.onDayClick.bind(this)}
-                                dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                applyChanges={()=>onApplyChangesDropdownDayPicker()}
-                                startDate={this.state.startDate}
-                                endDate={this.state.endDate}
-                                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
-                                CalendarIcon={CalendarIcon}
-                                label={Localization.get(filterByDateText)}
-                                />
+                            <Dropdown className="more-dropdown" options={options} label="Filter by Publish Status" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
                     </GridCell>
                     <GridCell columnSize={100}>
                         <GridCell columnSize={50} style={{padding: "5px"}}>
-                            <Dropdown
-                                className="more-dropdown"
-                                options={filterByPageStatusOptions}
-                                label={ this.state.filterByPublishStatus ? this.state.filterByPublishStatus : Localization.get("FilterbyPublishStatusText")}
-                                onSelect={(data) => this.setState({filterByPublishStatus:data.value}) }
-                                withBorder={true} />
+                            <div className="date-picker">
+                                <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
+                                    <GridCell className="selected-date" columnSize={90}>
+                                        <p>Filter by Published Date Range</p>
+                                    </GridCell>
+                                    <GridCell columnSize={10}>
+                                        <div className="calendar-icon" dangerouslySetInnerHTML={{__html:CalendarIcon}} onClick={()=>this.toggleDropdownCalendar()}/>
+                                    </GridCell>
+
+                                    <div className={this.state.toggleDropdownCalendar ? "calendar-dropdown expand-down" : `calendar-dropdown ${this.state.toggleDropdownCalendar != null ? 'expand-up' : ''} ` }>
+                                        <GridCell columnSize={100} style={{padding:"20px"}}>
+                                            <GridCell columnSize={50}  className="calendar">
+                                                 <DayPicker/>
+                                            </GridCell>
+                                            <GridCell columnSize={50} className="calendar">
+                                                 <DayPicker onDayClick={(data) => {}} />
+                                            </GridCell>
+                                            <GridCell columnSize={100}>
+                                                <Button type="primary" onClick={()=>{}}>Apply</Button>
+                                            </GridCell>
+                                        </GridCell>
+                                    </div>
+                                </GridCell>
+                            </div>
                         </GridCell>
-                    {!utils.isPlatform() &&
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <Dropdown
-                                className="more-dropdown"
-                                options={filterByWorkflowOptions}
-                                label={ this.state.filterByWorkflowName ? this.state.filterByWorkflowName : Localization.get("FilterbyWorkflowText")}
-                                onSelect={(data) => this.setState({filterByWorkflow: data.value, filterByWorkflowName: data.label}) }
-                                withBorder={true} />
+                            <Dropdown className="more-dropdown" options={options} label="Filter by Workflow" onSelect={(data) => console.log(data) } withBorder={true} />
                         </GridCell>
-                    }
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
-                        <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
+                        <textarea></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{textAlign:"right"}}>
-                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>{Localization.get("Cancel")}</Button>
-                        <Button type="primary" onClick={()=>this.onSave()}>{Localization.get("Save")}</Button>
+                        <Button style={{marginRight: "5px"}} onClick={()=>{}}>Cancel</Button>
+                        <Button type="primary" onClick={()=>{}}>Save</Button>
                 </GridCell>
             </div>);
     }
@@ -1029,67 +830,61 @@ class App extends Component {
         const render_card = (item) => {
 
             return (
-                    <GridCell columnSize={100}>
-                        <div className="search-item-card">
-                            <div className="search-item-thumbnail">
-                                <img src={item.thumbnail} />
-                            </div>
-                            <div className="search-item-details">
-                                <h1>{item.name}</h1>
-                                <h2>{item.tabpath}</h2>
-                                <div className="search-item-details-list">
-                                    <ul>
-                                        <li>
-                                            <p>Page Type:</p>
-                                            <p>{item.pageType}</p>
-                                        </li>
-                                        <li>
-                                            <p>Publish Status:</p>
-                                            <p>{item.status}</p>
-                                        </li>
-                                        <li>
-                                            <p>Publish Date:</p>
-                                            <p>{item.publishDate}</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="search-item-details-list">
-                                    <ul>
-                                        <li>
-                                            <p>Workflow:</p>
-                                            <p>{item.workflowName}</p>
-                                        </li>
-                                        <li>
-                                            <p>Tags:</p>
-                                            <p>{
-                                                item.tags.map((tag)=>{
-                                                return(
-                                                    <span>
-                                                        {tag},
-                                                    </span>
-                                                    );
-                                            })}</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                <div className="search-item-card">
+                    <div className="search-item-thumbnail">
+                        <img src={item.thumbnail} />
+                    </div>
+                    <div className="search-item-details">
+                        <h1>{item.name}</h1>
+                        <h2>{item.tabpath}</h2>
+                        <div className="search-item-details-list">
+                            <ul>
+                                <li>
+                                    <p>Page Type:</p>
+                                    <p>{item.pageType}</p>
+                                </li>
+                                <li>
+                                    <p>Publish Status:</p>
+                                    <p>{item.status}</p>
+                                </li>
+                                <li>
+                                    <p>Publish Date:</p>
+                                    <p>{item.publishDate}</p>
+                                </li>
+                            </ul>
                         </div>
-                    </GridCell>
+                        <div className="search-item-details-list">
+                            <ul>
+                                <li>
+                                    <p>Workflow:</p>
+                                    <p>{item.workflowName}</p>
+                                </li>
+                                <li>
+                                    <p>Tags:</p>
+                                    <p>{
+                                        item.tags.map((tag)=>{
+                                        return(
+                                            <span>
+                                                {tag},
+                                            </span>
+                                            );
+                                    })}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             );
         };
 
         return(
-            <GridCell columnSize={100} className="fade-in">
+            <GridCell columnSize={70} className="fade-in">
                 <GridCell columnSize={100} style={{padding:"20px"}}>
-                    <GridCell columnSize={80} style={{padding: "0px"}}>
-                        <div className="tags-container">
-                            {this.state.filters ? this.render_filters() : null}
-                        </div>
-                    </GridCell>
-                    <GridCell columnSize={20} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
-                        <p>{`${searchList.length} ` + Localization.get("lblPagesFound").toUpperCase() }</p>
+                    <GridCell columnSize={100} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
+                        <p>{`${searchList.length} PAGES FOUND` }</p>
                     </GridCell>
                     <GridCell columnSize={100}>
+
                         {searchList.map((item)=>{
                             return render_card(item);
                         })}
@@ -1114,52 +909,30 @@ class App extends Component {
         }
     }
 
-    render_filters(){
-        const {filters} = this.state;
-        return filters
-        .filter(filter => !!filter)
-        .map((filter)=>{
-
-        const deleteFilter = (prop) => {
-            const update = {};
-                update[prop] = null;
-                this.setState(update,()=>this.onSave());
-            };
-            return (
-                <div className="filter-by-tags">
-                    <div>{filter.tag}</div>
-                    <div className="xIcon"
-                            dangerouslySetInnerHTML={{__html: XIcon}}
-                            onClick={(e)=>{ deleteFilter(filter.ref); } }>
-
-                    </div>
-                </div>
-            );
-        });
-    }
-
     render() {
 
         const { props } = this;
         const { selectedPage } = props;
         const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
 
-
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.canSeePagesList();
         let defaultLabel = "Save Page Template";
         const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
-        const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
+        const onSelect = (selected) => this.setState({headerDropdownSelection:selected.label});
 
          /* eslint-disable react/no-danger */
+
+
+
         return (
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
-                            {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
-                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
-                            <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onBreadcrumbSelect.bind(this)} />
+                          {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
+                            <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
+                            <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage} />
                         </PersonaBarPageHeader>
                          { toggleSearchMoreFlyout ?  this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{padding:"20px"}}>
@@ -1208,15 +981,12 @@ class App extends Component {
                                             onViewPage={this.onViewPage.bind(this)}
                                             onViewEditPage={this.onViewEditPage.bind(this)}
                                             onDuplicatePage={this.onDuplicatePage.bind(this)}
-                                            CallCustomAction={this.CallCustomAction.bind(this)}
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
-                                        </div>
+                                    </div>
                                 </div>
-                                <GridCell columnSize={70}>
-                                  { this.render_details() }
-                                </GridCell>
+                                {this.render_details()}
                             </GridCell>
                         </GridCell>
                     </PersonaBarPage>
@@ -1241,9 +1011,7 @@ App.propTypes = {
     pageList: PropTypes.array.isRequired,
     searchList: PropTypes.array.isRequired,
     searchPageList: PropTypes.func.isRequired,
-    searchAndFilterPageList: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
-    getWorkflowsList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
@@ -1289,16 +1057,13 @@ App.propTypes = {
     getContentLocalizationEnabled: PropTypes.func.isRequired,
     selectPage: PropTypes.func.isRequired,
     selectedPagePath: PropTypes.array.isRequired,
-    changeSelectedPagePath: PropTypes.func.isRequired,
     onGetCachedPageCount: PropTypes.array.isRequired,
     onClearCache: PropTypes.func.isRequired,
-    clearSelectedPage: PropTypes.func.isRequired,
-    onModuleCopyChange: PropTypes.func,
-    workflowList: PropTypes.array.isRequired
+    clearSelectedPage: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-
+ 
     return {
         pageList: state.pageList.pageList,
         searchList: state.searchList.searchList,
@@ -1317,9 +1082,7 @@ function mapStateToProps(state) {
         selectedPageSettingTab: state.pages.selectedPageSettingTab,
         additionalPanels: state.extensions.additionalPanels,
         isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled,
-        selectedPagePath: state.pageHierarchy.selectedPagePath,
-        workflowList: state.pages.workflowList
-
+        selectedPagePath: state.pageHierarchy.selectedPagePath
     };
 }
 
@@ -1328,8 +1091,6 @@ function mapDispatchToProps(dispatch) {
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
         searchPageList: PageActions.searchPageList,
-        searchAndFilterPageList: PageActions.searchAndFilterPageList,
-        getWorkflowsList: PageActions.getWorkflowsList,
         getPage: PageActions.getPage,
         viewPage: PageActions.viewPage,
         getChildPageList: PageActions.getChildPageList,
@@ -1359,13 +1120,9 @@ function mapDispatchToProps(dispatch) {
         onHidePanel: VisiblePanelActions.hidePanel,
         getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
         selectPage: PageHierarchyActions.selectPage,
-        changeSelectedPagePath: PageHierarchyActions.changeSelectedPagePath,
         onGetCachedPageCount: PageActions.getCachedPageCount,
         onClearCache: PageActions.clearCache,
-        clearSelectedPage: PageActions.clearSelectedPage,
-        onModuleCopyChange: PageActions.updatePageModuleCopy
-
-
+        clearSelectedPage: PageActions.clearSelectedPage
 
     }, dispatch);
 }
