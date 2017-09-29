@@ -1543,4 +1543,13 @@
   <data name="lblTagFilters.Text" xml:space="preserve">
     <value>TAG FILTERS</value>
   </data>
+  <data name="lblCollapseAll.Text" xml:space="preserve">
+    <value>COLLAPSE ALL</value>
+  </data>
+  <data name="lblExpandAll.Text" xml:space="preserve">
+    <value>EXPAND ALL</value>
+  </data>
+  <data name="NoPageSelected.Text" xml:space="preserve">
+    <value>No page is currently selected.</value>
+  </data>
 </root>

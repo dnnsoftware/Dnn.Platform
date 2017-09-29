@@ -21,6 +21,7 @@ import Promise from "promise";
 import GridCell from "dnn-grid-cell";
 import "./styles.less";
 import _ from "lodash";
+import Localization from "localization";
 
 
 export class PersonaBarPageTreeviewInteractor extends Component {
@@ -29,7 +30,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         super();
         this.state = {
             rootLoaded: false,
-            isTreeviewExpanded: true,
+            isTreeviewExpanded: false,
             initialCollapse: true,
             debounceAmount: 50,
             dragDebounce: false,
@@ -694,7 +695,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             <div
                 onClick={this.toggleExpandAll.bind(this)}
                 className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
-                [{this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL"}]
+                [{this.state.isTreeviewExpanded ? Localization.get("lblCollapseAll").toUpperCase() : Localization.get("lblExpandAll").toUpperCase()}]
             </div>
         );
     }
