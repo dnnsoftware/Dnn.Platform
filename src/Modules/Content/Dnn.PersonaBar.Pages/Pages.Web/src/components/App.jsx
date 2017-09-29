@@ -163,14 +163,6 @@ class App extends Component {
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
-
-        const {selectedPage} = newProps;
-        if(selectedPage){
-            const pages = selectedPage.url
-                            .split("/")
-                            .filter(d => !!d)
-                            .map(d  => d.replace(/\-/, " "));
-        }
     }
 
     notifyErrorIfNeeded(newProps) {
