@@ -120,7 +120,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    onSelection(id) {
+    onSelection({id}) {
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id && item.canManagePage) ? item.selected = true : item.selected = false;
             item.selected ? this.props.onSelection(id) : null;
