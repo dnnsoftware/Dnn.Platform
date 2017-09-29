@@ -42,6 +42,7 @@ class PageDetails extends Component {
 
     render() {
         const { page, errors } = this.props;
+
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
             portalId: -2,
@@ -55,9 +56,8 @@ class PageDetails extends Component {
         let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
         const sf = Utils.getServiceFramework();
 
-        const defaultLabel =  page.hierarchy || Localization.get("NoneSpecified");
+        const defaultLabel = page.hierarchy || Localization.get("NoneSpecified");
         const selectedTabId = page.parentId || -1;
-
         return (
             <div className={styles.pageStandard}>
                 <GridSystem>
@@ -115,7 +115,6 @@ class PageDetails extends Component {
                         <InputGroup>
                             <Label label={Localization.get("ParentPage")} style={{ paddingBottom: "10px" }} />
                             <PagePicker
-                                Reload={true}
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
                                 IsMultiSelect={false}
                                 defaultLabel={defaultLabel}
@@ -123,8 +122,7 @@ class PageDetails extends Component {
                                 PortalTabsParameters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
-                                serviceFramework={sf} 
-                                ResetSelected={true} />
+                                serviceFramework={sf} />
                         </InputGroup>
                     </GridCell>
                 </GridSystem>
