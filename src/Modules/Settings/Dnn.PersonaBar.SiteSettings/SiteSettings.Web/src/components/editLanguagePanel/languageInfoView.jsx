@@ -6,6 +6,7 @@ import Label from "dnn-label";
 import RadioButtons from "dnn-radio-buttons";
 import GridCell from "dnn-grid-cell";
 import ResourceTree from "./resourceTree";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import util from "utils";
 
 class LanguageInfoView extends Component {
@@ -53,8 +54,12 @@ class LanguageInfoView extends Component {
                         <Switch label={resx.get("HighlightPendingTranslations")} value={highlightPendingTranslations} onChange={onHighlightPendingTranslations} />
                     </GridCell>
                     <GridCell columnSize={50} className="translation-action-buttons">
-                        <Button type="secondary" onClick={onCancel}>{resx.get("Cancel")}</Button>
-                        <Button type="primary" onClick={onSaveTranslations} disabled={!resxBeingEdited}>{resx.get("SaveTranslationsToFile")}</Button>
+                        <Button type="secondary" onClick={onCancel}>
+                            <TextOverflowWrapper text={resx.get("Cancel") } maxWidth={100}/>
+                        </Button>
+                        <Button type="primary" onClick={onSaveTranslations} disabled={!resxBeingEdited}>
+                            <TextOverflowWrapper text={resx.get("SaveTranslationsToFile") } maxWidth={100}/>
+                        </Button>
                     </GridCell>
                 </GridCell>
             </GridCell>

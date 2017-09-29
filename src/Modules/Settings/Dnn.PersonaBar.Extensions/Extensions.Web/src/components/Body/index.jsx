@@ -4,6 +4,7 @@ import Tabs from "dnn-tabs";
 import { PaginationActions, VisiblePanelActions, ExtensionActions, InstallationActions } from "actions";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import Localization from "localization";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import InstalledExtensions from "./InstalledExtensions";
 import AvailableExtensions from "./AvailableExtensions";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -85,9 +86,21 @@ class Body extends Component {
         return (
             <GridCell className="extension-body">
                 <PersonaBarPageHeader title={Localization.get("ExtensionsLabel")}>
-                    {this.isHost && <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>{Localization.get("ExtensionInstall.Action")}</Button>}
-                    {this.isHost && <Button type="secondary" size="large" onClick={this.createExtension.bind(this)}>{Localization.get("CreateExtension.Action")}</Button>}
-                    {this.isHost && <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>{Localization.get("CreateModule.Action")}</Button>}
+                    {this.isHost && 
+                        <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>
+                            <TextOverflowWrapper text={Localization.get("ExtensionInstall.Action") } maxWidth={120}/>
+                        </Button>
+                    }
+                    {this.isHost && 
+                        <Button type="secondary" size="large" onClick={this.createExtension.bind(this)}>
+                            <TextOverflowWrapper text={Localization.get("CreateExtension.Action") } maxWidth={120}/>
+                        </Button>
+                    }
+                    {this.isHost && 
+                        <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>
+                            <TextOverflowWrapper text={Localization.get("CreateModule.Action") } maxWidth={120}/>
+                        </Button>
+                    }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
                     {this.isHost && <Tabs
