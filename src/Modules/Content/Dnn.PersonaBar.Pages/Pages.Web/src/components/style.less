@@ -84,14 +84,16 @@
 
         .calendar-dropdown{
             position:absolute;
-            top:33px;
-            left:0px;
+            top:31px;
+            left:-1px;
             width:550px;
             height:0;
             border-left: 1px solid @alto;
             border-right: 1px solid @alto;
-            border-top: 1px solid transparent;
+            border-top: 1px solid @alto;
             overflow:hidden;
+            display: none;
+            z-index: 1;
         }
 
         .calendar-dropdown-content{
@@ -264,6 +266,8 @@
 
 .expand-down{
      animation: ExpandDown .25s ease-in forwards;
+     z-index: 9999;
+     display: inline-block !important;
 }
 
 .expand-up {

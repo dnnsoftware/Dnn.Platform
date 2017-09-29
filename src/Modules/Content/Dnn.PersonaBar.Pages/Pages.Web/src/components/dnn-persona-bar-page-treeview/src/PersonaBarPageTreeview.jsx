@@ -199,9 +199,9 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render() {
-
+        const {listItems} = this.props;
         return (
-            <ul>
+            <ul style={!listItems.length ? {padding:"0px", height:"0px"} : null}>
                 {this.render_li()}
             </ul>
         );

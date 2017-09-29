@@ -160,6 +160,11 @@ function getProductSKU() {
     checkInit();
     return settings.productSKU;
 }
+function IsWorkflowEnabled() {
+    checkInit();
+    return settings.workflowEnabled;
+}
+
 const utils = {
     init,
     load,
@@ -186,7 +191,8 @@ const utils = {
     getCurrentPagePermissions,
     getCurrentPageName,
     getDefaultPageUrl,
-    getProductSKU
+    getProductSKU,
+    IsWorkflowEnabled
 };
 
 export default utils;

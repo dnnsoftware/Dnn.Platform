@@ -164,28 +164,6 @@ class App extends Component {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
 
-        const {selectedPage} = newProps;
-        if(selectedPage){
-            const pages = selectedPage.url
-                            .split("/")
-                            .filter(d => !!d)
-                            .map(d  => d.replace(/\-/, " "));
-
-
-            let stop = false;
-            //while(pages.length){
-                // this._traverse((item, list, updateStore) => {
-                //     if( item.parentId === -1 && item.name === pages[0]) {
-                //         item.hasChildren ? this.props.getChildPageList(item.id) : null;
-                //     }
-                    // item.name === pages[0] &&item.childListItems && pages.shift();
-                    // if(pages.length === 0) {
-                    //     console.log(item.name, item.id);
-                    // }
-                //});
-            //}
-
-        }
     }
 
     notifyErrorIfNeeded(newProps) {
@@ -455,7 +433,6 @@ class App extends Component {
             else {
                 this.props.onCancelPage();
             }
-
         };
 
         utils.confirm(
@@ -472,15 +449,21 @@ class App extends Component {
 
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(input).then((data) => {
-                    this._traverse((item, list, updateStore) => {
-                        if (item.id === input) {
-                            Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
-                            this.props.updatePageListStore(list);
-                            this.selectPageSettingTab(0);
-                        }
+                this.props.onLoadPage(id).then(()=>{
+                    this.props.onLoadPage(input).then((data) => {
+                        this._traverse((item, list, updateStore) => {
+                            if (item.id === input) {
+                                Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
+                                this.props.updatePageListStore(list);
+                                this.selectPageSettingTab(0);
+
+                            }
+                        });
                     });
+
                 });
+
+
             };
 
             utils.confirm(
@@ -861,6 +844,7 @@ class App extends Component {
         const render_pageDetails = () => {
             const { props, state } = this;
             const {isContentLocalizationEnabled} = props;
+
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
@@ -966,6 +950,9 @@ class App extends Component {
         ];
 
         let workflowList = [];
+        if (utils.IsWorkflowEnabled() && this.props.workflowList.length<=0){
+            this.props.getWorkflowsList();
+        }
         this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return {value:item.workflowId, label:item.workflowName}; })) : null;
         const filterByWorkflowOptions = [{value: null, label:"None"}].concat(workflowList);
 
@@ -1003,6 +990,20 @@ class App extends Component {
                                 withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
+                        <DropdownDayPicker
+                            onDayClick={this.onDayClick.bind(this)}
+                            dropdownIsActive={this.state.DropdownCalendarIsActive}
+                            applyChanges={()=>onApplyChangesDropdownDayPicker()}
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate}
+                            toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
+                            CalendarIcon={CalendarIcon}
+                            />
+                    </GridCell>
+                    </GridCell>
+                    {utils.IsWorkflowEnabled() &&
+                    <GridCell columnSize={100}>
+                        <GridCell columnSize={50} style={{padding: "5px"}}>
                             <Dropdown
                                 className="more-dropdown"
                                 options={filterByPageStatusOptions}
@@ -1010,19 +1011,7 @@ class App extends Component {
                                 onSelect={(data) => this.setState({filterByPublishStatus:data.value}) }
                                 withBorder={true} />
                         </GridCell>
-                    </GridCell>
-                    <GridCell columnSize={100}>
-                        <GridCell columnSize={50} style={{padding: "5px"}}>
-                            <DropdownDayPicker
-                                onDayClick={this.onDayClick.bind(this)}
-                                dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                applyChanges={()=>onApplyChangesDropdownDayPicker()}
-                                startDate={this.state.startDate}
-                                endDate={this.state.endDate}
-                                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
-                                CalendarIcon={CalendarIcon}
-                                />
-                        </GridCell>
+                        
                         <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
                             <Dropdown
                                 className="more-dropdown"
@@ -1032,6 +1021,7 @@ class App extends Component {
                                 withBorder={true} />
                         </GridCell>
                     </GridCell>
+                    }
                 </GridCell>
                 <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
                         <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>

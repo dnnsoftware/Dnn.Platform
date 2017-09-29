@@ -9,7 +9,8 @@ import Localization from "../../../localization";
 import styles from "./style.less";
 import Tags from "dnn-tags";
 import Label from "dnn-label";
-import PagePicker from "dnn-page-picker";
+//import PagePicker from "dnn-page-picker";
+import PagePicker from "./PagePicker/src/PagePicker";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {
@@ -42,7 +43,6 @@ class PageDetails extends Component {
 
     render() {
         const { page, errors } = this.props;
-
         const tags = page.tags ? page.tags.split(",") : [];
         const TabParameters = {
             portalId: -2,
@@ -56,8 +56,9 @@ class PageDetails extends Component {
         let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
         const sf = Utils.getServiceFramework();
 
-        const defaultLabel = page.hierarchy || Localization.get("NoneSpecified");
-        const selectedTabId = page.parentId || -1;
+        const defaultLabel =  Localization.get("NoneSpecified");
+        const selectedTabId = page.parentId;
+
         return (
             <div className={styles.pageStandard}>
                 <GridSystem>
@@ -115,6 +116,7 @@ class PageDetails extends Component {
                         <InputGroup>
                             <Label label={Localization.get("ParentPage")} style={{ paddingBottom: "10px" }} />
                             <PagePicker
+                                Reload={true}
                                 noneSpecifiedText={Localization.get("NoneSpecified")}
                                 IsMultiSelect={false}
                                 defaultLabel={defaultLabel}
