@@ -52,14 +52,11 @@ class PagePicker extends Component {
         else if (newProps.ResetSelected && !this.props.IsMultiSelect && newProps.IsInDropDown && this._isMounted) {
             this.setDefaultPage(newProps);
         }
-        if (newProps.selectedTabId === -1) {
-            this.setState({
-                selectedPage: newProps.defaultLabel,
-                selectedTabId: newProps.selectedTabId
-            });
-            this.loaded=false;
-        }
-
+        
+        this.setState({
+            selectedPage: newProps.defaultLabel,
+            selectedTabId: newProps.selectedTabId
+        });
     }
 
     componentDidMount() {
