@@ -314,6 +314,7 @@ class App extends Component {
 
     onAddPage(parentPage) {
         this.clearEmptyStateMessage();
+        this.selectPageSettingTab(0);
 
         const addPage = () => {
             const { props } = this;
