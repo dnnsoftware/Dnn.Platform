@@ -454,9 +454,9 @@ class App extends Component {
         const id = (typeof input ==="object") ? this.props.selectedPage.tabId : input;
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(input).then((data) => {
+                this.props.onLoadPage(id).then((data) => {
                     this._traverse((item, list, updateStore) => {
-                        if (item.id === input) {
+                        if (item.id === id) {
                             Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
                             this.props.updatePageListStore(list);
                             this.selectPageSettingTab(0);
