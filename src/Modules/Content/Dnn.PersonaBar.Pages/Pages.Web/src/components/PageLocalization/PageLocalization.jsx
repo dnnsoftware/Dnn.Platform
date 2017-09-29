@@ -4,6 +4,7 @@ import Button from "dnn-button";
 import Localization from "../../localization";
 import Scrollbars from "react-custom-scrollbars";
 import PageLanguage from "./PageLanguage";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import NotifyModal from "./NotifyModal";
 import utils from "../../utils";
 import "./style.less";
@@ -210,25 +211,25 @@ class PageLocalization extends Component {
                     type="secondary"
                     className="float-left"
                     onClick={this.makePageNeutral.bind(this) }>
-                    {Localization.get("MakePageNeutral") }
+                    <TextOverflowWrapper text={Localization.get("MakePageNeutral") } maxWidth={110}/>
                 </Button>
                 <Button
                     type="secondary"
                     className="float-left"
                     onClick={this.onAddMissingLanguages.bind(this) }>
-                    {Localization.get("AddMissingLanguages") }
+                    <TextOverflowWrapper text={Localization.get("AddMissingLanguages") } maxWidth={110}/>
                 </Button>
                 <Button
                     type="primary"
                     className="float-right"
                     onClick={this.onUpdateLocalization.bind(this) }>
-                    {Localization.get("UpdateLocalization") }
+                    <TextOverflowWrapper text={Localization.get("UpdateLocalization") } maxWidth={110}/>
                 </Button>
                 <Button
                     type="secondary"
                     className="float-right"
                     onClick={this.onOpenNotifyModal.bind(this) }>
-                    {Localization.get("NotifyTranslators") }
+                    <TextOverflowWrapper text={Localization.get("NotifyTranslators") } maxWidth={110}/>
                 </Button>
             </div>
             {this.state.showNotifyModal && <NotifyModal
