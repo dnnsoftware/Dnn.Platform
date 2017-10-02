@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         {
             try
             {
-                var fileContent= _controller.GetConfigFile(fileName);
+                var fileContent = _controller.GetConfigFile(fileName);
 
                 var response = new
                 {
@@ -87,6 +87,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (ArgumentException exc)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
@@ -109,6 +113,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             {
                 _controller.UpdateConfigFile(configFileDto.FileName, configFileDto.FileContent);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (ArgumentException exc)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
