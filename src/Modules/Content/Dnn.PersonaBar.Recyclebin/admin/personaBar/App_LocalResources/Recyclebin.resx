@@ -232,22 +232,22 @@
     <value>Yes</value>
   </data>
   <data name="Service_RemoveTabError.Text" xml:space="preserve">
-    <value>Error removing page has occurred:&lt;br/&gt;{0}</value>
+    <value>Error removing page has occurred:{0}</value>
   </data>
   <data name="Service_RemoveTabModuleError.Text" xml:space="preserve">
-    <value>Error removing page modules has occurred:&lt;br/&gt;{0}</value>
+    <value>Error removing page modules has occurred:{0}</value>
   </data>
   <data name="Service_RemoveUserError.Text" xml:space="preserve">
-    <value>Error removing user has occurred:&lt;br/&gt;{0}</value>
+    <value>Error removing user has occurred:{0}</value>
   </data>
   <data name="Service_RestoreModuleError.Text" xml:space="preserve">
     <value>Error restoring module {0} on page {1}. Page is deleted.</value>
   </data>
   <data name="Service_RestoreTabError.Text" xml:space="preserve">
-    <value>Page {0} cannot be restored until its parent is restored first.&lt;br/&gt;</value>
+    <value>Page {0} cannot be restored until its parent is restored first.</value>
   </data>
   <data name="Service_RestoreTabModuleError.Text" xml:space="preserve">
-    <value>Error restoring page has occurred:&lt;br/&gt;{0}</value>
+    <value>Error restoring page has occurred:{0}</value>
   </data>
   <data name="Service_EmptyRecycleBinError.Text" xml:space="preserve">
     <value>Some of the items were not deleted.</value>
@@ -256,10 +256,10 @@
     <value>Error restoring user.</value>
   </data>
   <data name="CanNotDeleteModule.Text" xml:space="preserve">
-    <value>You do not have permissions to delete module with id "{0}".&lt;br/&gt;</value>
+    <value>You do not have permissions to delete module with id "{0}".</value>
   </data>
   <data name="ModuleNotSoftDeleted.Text" xml:space="preserve">
-    <value>Module with id "{0}" is not soft deleted.&lt;br/&gt;</value>
+    <value>Module with id "{0}" is not soft deleted.</value>
   </data>
   <data name="Prompt_FlagNotInt.Text" xml:space="preserve">
     <value>--{0} must be an integer\n</value>
@@ -271,13 +271,13 @@
     <value>The {0} is required. Please use the --{1} flag or pass it as the first argument after the command name\n</value>
   </data>
   <data name="ModuleNotFound.Text" xml:space="preserve">
-    <value>Module with id "{0}" not found.&lt;br/&gt;</value>
+    <value>Module with id "{0}" not found.</value>
   </data>
   <data name="Prompt_ModulePurgedSuccessfully.Text" xml:space="preserve">
     <value>Module with id "{0}" purged successfully.</value>
   </data>
   <data name="Service_RemoveTabWithChildError.Text" xml:space="preserve">
-    <value>Page {0} cannot be deleted until its children have been deleted first.&lt;br/&gt;</value>
+    <value>Page {0} cannot be deleted until its children have been deleted first.</value>
   </data>
   <data name="Prompt_FlagRequired.Text" xml:space="preserve">
     <value>--{0} is required\n</value>
@@ -286,7 +286,7 @@
     <value>Module with id "{0}" restored successfully.</value>
   </data>
   <data name="CanNotDeleteTab.Text" xml:space="preserve">
-    <value>You do not have permissions to delete page with id "{0}".&lt;br/&gt;</value>
+    <value>You do not have permissions to delete page with id "{0}".</value>
   </data>
   <data name="PageNotFound.Text" xml:space="preserve">
     <value>Page with id "{0}" not found.&gt;br/&gt;</value>
@@ -298,7 +298,7 @@
     <value>Page with id "{0}" and name "{1}" restored successfully.</value>
   </data>
   <data name="TabNotSoftDeleted.Text" xml:space="preserve">
-    <value>Page with id "{0}" is not soft deleted.&lt;br/&gt;</value>
+    <value>Page with id "{0}" is not soft deleted.</value>
   </data>
   <data name="PageNotFoundWithName.Text" xml:space="preserve">
     <value>Page with name "{0}" not found.&gt;br/&gt;</value>
@@ -307,7 +307,7 @@
     <value>You must specify either a Page ID or Page Name.</value>
   </data>
   <data name="UserNotFound.Text" xml:space="preserve">
-    <value>User with id "{0}" not found.&lt;br/&gt;</value>
+    <value>User with id "{0}" not found.</value>
   </data>
   <data name="Prompt_PurgeModule_Description.Text" xml:space="preserve">
     <value>Permanently deletes a module. The module should be soft deleted first.</value>
@@ -436,5 +436,8 @@
   </data>
   <data name="Prompt_RestoreNotRequired.Text" xml:space="preserve">
     <value>User not deleted. Restore not required.</value>
+  </data>
+  <data name="Service_RemoveTabParentTabError" xml:space="preserve">
+    <value>Page {0} cannot be deleted until its children have been deleted first.</value>
   </data>
 </root>
