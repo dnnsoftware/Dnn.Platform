@@ -260,9 +260,10 @@ class App extends Component {
                 }
 
                 this._traverse((item, list, updateStore) => {
-                    if (item.id == update.tabId) {
+                    if (item.id === update.tabId) {
                         item.name = update.name;
                         item.pageType = update.pageType;
+                        item.url = update.url;
                         updateStore(list);
                     }
                 });
