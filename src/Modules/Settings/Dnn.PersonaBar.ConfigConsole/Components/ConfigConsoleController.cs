@@ -21,6 +21,7 @@
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,6 +45,8 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public string GetConfigFile(string configFile)
         {
+            ValidateFilePath(configFile);
+
             var configDoc = Config.Load(configFile);
             using (var txtWriter = new StringWriter())
             {
@@ -58,6 +61,8 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public void UpdateConfigFile(string fileName, string fileContent)
         {
+            ValidateFilePath(fileName);
+
             var configDoc = new XmlDocument();
             configDoc.LoadXml(fileContent);
             Config.Save(configDoc, fileName);
@@ -85,6 +90,16 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
             //TODO: Add more checks here
             return true;
+        }
+
+        private void ValidateFilePath(string filePath)
+        {
+            var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath);
+            var fileInfo = new FileInfo(physicalPath);
+            if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new ArgumentException("Invalid File Path");
+            }
         }
 
         #endregion
