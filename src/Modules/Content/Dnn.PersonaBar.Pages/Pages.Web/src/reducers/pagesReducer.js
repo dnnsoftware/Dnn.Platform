@@ -108,7 +108,14 @@ export default function pagesReducer(state = {
             };
         }
         case ActionTypes.CANCEL_PAGE:
-            return {};
+            return { ...state,                
+                selectedPage: null,
+                errors: {},
+                editingSettingModuleId: null,
+                urlChanged: false,
+                dirtyPage: false,
+                selectedPageSettingTab: 0
+            };
 
         case ActionTypes.SAVE_PAGE:
             return {...state, dirtyPage:false};

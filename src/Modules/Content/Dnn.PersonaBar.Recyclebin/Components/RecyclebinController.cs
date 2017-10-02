@@ -108,7 +108,21 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         public void DeleteTabs(IEnumerable<TabInfo> tabs, StringBuilder errors, bool deleteDescendants = false)
         {
-            tabs?.ForEach(mod => HardDeleteTab(mod, deleteDescendants, errors));
+            if (tabs != null)
+            {
+                foreach (var tab in tabs.OrderByDescending(t => t.Level))
+                {
+                    var tabInfo = _tabController.GetTab(tab.TabID, PortalSettings.PortalId);
+                    if (tabInfo == null)
+                    {
+                        errors.AppendFormat(LocalizeString("PageNotFound"), tab.TabID);
+                    }
+                    else
+                    {
+                        HardDeleteTab(tabInfo, deleteDescendants, errors);
+                    }
+                }
+            }
         }
 
         public void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors)
