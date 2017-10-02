@@ -327,7 +327,7 @@ define(['jquery', 'knockout',
                     }
                 });
                 if (isAnyModuleInDeletedPage && viewModel.selectAllModules())
-                    _utility.notify(_resx.recyclebin_UnableToSelectAllModules);
+                    _utility.notifyError(_resx.recyclebin_UnableToSelectAllModules);
             }
 
             restoreSelectedPagesHandler = function () {
@@ -382,7 +382,7 @@ define(['jquery', 'knockout',
                         _utility.confirm(confirmText, yesText, noText, function () {
                             var result = canBeDeleted(pagesList);
                             if (!result.value) {
-                                _utility.notify(_resx.Service_RemoveTabErrorHeader + result.errors);
+                                _utility.notifyError(_resx.Service_RemoveTabErrorHeader + result.errors);
                                 return;
                             }
                             getService().post('RemovePage', pagesList, pageRestoreRevomeOperationsCallback);
@@ -489,7 +489,7 @@ define(['jquery', 'knockout',
             userRestoreRevomeOperationsCallback = function (data) {
                 if (data.Status > 0) {
                     // Error: inform
-                    _utility.notify(data.Message);
+                    _utility.notifyError(data.Message);
                 }
                 getDeletedUserList();
                 //CONTENT-4010 - call refresh in person bar
@@ -499,7 +499,7 @@ define(['jquery', 'knockout',
             pageRestoreRevomeOperationsCallback = function (data) {
                 if (data.Status > 0) {
                     // Error: inform
-                    _utility.notify(data.Message);
+                    _utility.notifyError(data.Message);
                 }
                 getDeletedPageList();
                 //CONTENT-4010 - call refresh in person bar
@@ -549,7 +549,7 @@ define(['jquery', 'knockout',
 
                     _utility.confirm(confirmText, yesText, noText, function () {
                         if (pageData.children().length > 0) {
-                            _utility.notify(_resx.Service_RemoveTabError.replace(/\{0\}/g, pageData.name));
+                            _utility.notifyError(_resx.Service_RemoveTabParentTabError.replace(/\{0\}/g, pageData.name));
                             return;
                         }
                         var pagesList = [];
