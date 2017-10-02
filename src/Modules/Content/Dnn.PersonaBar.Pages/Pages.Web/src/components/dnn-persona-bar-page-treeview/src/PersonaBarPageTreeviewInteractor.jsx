@@ -718,7 +718,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     style={{ marginLeft: "-2px" }} >
                     <Scrollbars
                         className="scrollArea content-horizontal"
-                        autoHeight autoHide={false} autoHeightMin={100}
+                        autoHeight autoHide={true} autoHeightMin={100}
                         autoHeightMax={9999}
                         renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
                         {this.render_treeview()}
