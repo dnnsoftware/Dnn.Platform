@@ -634,7 +634,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.setState({ pageX: e.pageX, pageY: e.pageY })} >
+            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.setState({ pageX: e.pageX, pageY: e.pageY })} style={{ paddingBottom: "10px" }}>
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={this.state.draggedItem}
