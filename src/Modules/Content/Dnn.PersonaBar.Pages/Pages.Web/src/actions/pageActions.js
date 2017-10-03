@@ -208,7 +208,7 @@ const pageActions = {
         };
     },
 
-    deletePage(page) {
+    deletePage(page, redirectUrl) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.DELETE_PAGE
@@ -224,8 +224,8 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.DELETED_PAGE
                 });
-                if (page.tabId !== 0 && page.tabId === utils.getCurrentPageId()) {
-                    window.top.location.href = utils.getDefaultPageUrl();
+                if (page.tabId !== 0 && (page.tabId === utils.getCurrentPageId()) || redirectUrl) {
+                    window.top.location.href = redirectUrl ? redirectUrl : utils.getDefaultPageUrl();
                 }
 
             }).catch((error) => {
