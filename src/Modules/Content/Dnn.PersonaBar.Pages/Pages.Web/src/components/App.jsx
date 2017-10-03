@@ -466,7 +466,8 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            this.props.onLoadPage(id);
+            this.props.onCancelPage();
+            this.props.changeSelectedPagePath("");
         }
     }
 
