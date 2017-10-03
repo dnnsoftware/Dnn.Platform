@@ -49,14 +49,11 @@ class PagePicker extends Component {
                 this.initialize(newProps);
             });
         }
-        else if (newProps.ResetSelected && !this.props.IsMultiSelect && newProps.IsInDropDown && this._isMounted) {
-            this.setDefaultPage(newProps);
+        else if (!this.props.IsMultiSelect && newProps.IsInDropDown && this._isMounted) {
+            if (newProps.selectedTabId !== this.props.selectedTabId) {
+                this.setDefaultPage(newProps);
+            }
         }
-        
-        this.setState({
-            selectedPage: newProps.defaultLabel,
-            selectedTabId: newProps.selectedTabId
-        });
     }
 
     componentDidMount() {
@@ -378,6 +375,11 @@ class PagePicker extends Component {
                     this.setState({ selectedPage });
                 });
             }
+            else if (props.selectedTabId === -1) {
+                let {selectedPage} = this.state;
+                selectedPage = props.noneSpecifiedText;
+                this.setState({ selectedPage });
+            }
         }
     }
 
@@ -659,9 +661,6 @@ PagePicker.propTypes = {
     //Tells the component to reload. Use this if circumstances have changed at UI end and need the page picker to reload with new props. e.g. cultureCode code changed.
     Reload: PropTypes.bool,
 
-    //Reset the selected page to the props one.  This will work only in case of IsMultiSelect=false and IsInDropDown=true
-    ResetSelected: PropTypes.bool,
-
     //Selection mode of the tree. Default is "Single"
     IsMultiSelect: PropTypes.bool,
 
@@ -697,7 +696,6 @@ PagePicker.defaultProps = {
     ShowIcon: true,
     IsInDropDown: true,
     Reload: false,
-    ResetSelected: false,
     noneSpecifiedText: "< None Specified >",
     withIcon: true,
     withBorder: true,
