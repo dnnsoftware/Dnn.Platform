@@ -465,6 +465,8 @@ class App extends Component {
                 Localization.get("Go Back"),
                 onConfirm);
 
+        } else {
+            this.props.onCancelPage();
         }
     }
 
