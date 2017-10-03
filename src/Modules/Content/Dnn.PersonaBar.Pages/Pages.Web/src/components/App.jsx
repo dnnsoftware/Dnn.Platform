@@ -467,6 +467,7 @@ class App extends Component {
 
         } else {
             this.props.onCancelPage();
+            this.props.changeSelectedPagePath("");
         }
     }
 
