@@ -74,7 +74,7 @@ class Tags extends Component {
     }
 
     addTag(tag) {
-        if(tag) {
+        if (tag) {
             this.internalAddTag(tag);
         } else if (this.state.selectedIndex > -1) {
             let selectedTag = this.props.suggestions[this.state.selectedIndex];
@@ -92,17 +92,17 @@ class Tags extends Component {
     }
 
     onArrowDown() {
-        if(this.props.suggestions.length > 0) {
-            const maxIdx = this.props.suggestions.length - 1;
+        if (this.props.suggestions.length > 0) {
+            const maxIndex = this.props.suggestions.length - 1;
             const current = this.state.selectedIndex;
-            const selectedIndex = current < maxIdx ? current + 1 : current;
+            const selectedIndex = current < maxIndex ? current + 1 : current;
             this.setState({selectedIndex});
         }
     }
 
     onArrowUp() {
         const current = this.state.selectedIndex;
-        if(current > 0) {
+        if (current > 0) {
             const selectedIndex = current - 1;
             this.setState({selectedIndex});
         }

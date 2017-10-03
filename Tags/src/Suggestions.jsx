@@ -27,11 +27,10 @@ export default class Suggestions extends Component {
     }
 
     getSuggestions() {
-        const self = this;
         let suggestions = this.props.suggestions.map((suggestion, index) => {
-            let className = this.props.selectedIndex > -1 && index === this.props.selectedIndex ? 'selected' : '';
+            let className = this.props.selectedIndex > -1 && index === this.props.selectedIndex ? "selected" : "";
             return <div ref={(itemRef) => {
-                if(index === 0) {
+                if (index === 0) {
                     this.itemRef = itemRef;
                 }
             }} className={`suggestion ${className}`} key={index}
@@ -40,20 +39,19 @@ export default class Suggestions extends Component {
         return suggestions;
     }
 
-    keyNavHandler(sb) {
+    keySelectionHandler(scrollBars) {
         const selectedIndex = this.props.selectedIndex;
-        if (sb) {
-            const items = document.getElementsByClassName('suggestion');
+        if (scrollBars) {
             if (this.itemRef) {
-                const viewHeight = sb.getClientHeight();
+                const viewHeight = scrollBars.getClientHeight();
                 const h = this.itemRef.clientHeight;
                 const selectedItemScroll = h * selectedIndex;
-                const currentScroll = sb.getScrollTop();
+                const currentScroll = scrollBars.getScrollTop();
                 setTimeout(() => {
                     if (selectedItemScroll < currentScroll) {
-                        sb.scrollTop(currentScroll - viewHeight);
+                        scrollBars.scrollTop(currentScroll - viewHeight);
                     } else if (selectedItemScroll + h > (currentScroll + viewHeight )) {
-                        sb.scrollTop(selectedItemScroll + h + currentScroll + viewHeight);
+                        scrollBars.scrollTop(selectedItemScroll + h + currentScroll + viewHeight);
                     }
                 });
             }
@@ -62,9 +60,9 @@ export default class Suggestions extends Component {
 
     render() {
         const suggestions = this.getSuggestions();
-        const keyEvtHandler = this.keyNavHandler.bind(this);
+        const keySelectionHandler = this.keySelectionHandler.bind(this);
         return (<div className="suggestions">
-            <Scrollbars ref={keyEvtHandler}
+            <Scrollbars ref={keySelectionHandler}
                         style={style.list}
                         onUpdate={this.onScrollUpdate.bind(this)}>
                 {suggestions}
