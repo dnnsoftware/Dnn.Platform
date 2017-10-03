@@ -26,8 +26,7 @@ class RegistrationSettingsPanelBody extends Component {
             triedToSubmit: false,
             error: {
                 registrationFields: ""
-            },
-            resetPagePicker: false
+            }
         };
         canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.REGISTRATION_SETTINGS_EDIT;
     }
@@ -57,10 +56,6 @@ class RegistrationSettingsPanelBody extends Component {
 
     onSettingChange(key, event) {
         let {state, props} = this;
-
-        if (state.resetPagePicker) {
-            return;
-        }
 
         let registrationSettings = Object.assign({}, state.registrationSettings);
 
@@ -112,12 +107,6 @@ class RegistrationSettingsPanelBody extends Component {
                 let registrationSettings = Object.assign({}, data.Results.Settings);
                 this.setState({
                     registrationSettings
-                }, () => {
-                    this.setState({
-                        resetPagePicker: true
-                    }, () => {
-                        this.setState({ resetPagePicker: false });
-                    });
                 });
             }));
         });
@@ -303,7 +292,6 @@ class RegistrationSettingsPanelBody extends Component {
                                 noneSpecifiedText={noneSpecifiedText}
                                 CountText={"{0} Results"}
                                 PortalTabsParameters={RedirectAfterRegistrationParameters}
-                                ResetSelected={state.resetPagePicker}
                                 enabled={canEdit}
                                 />
                         </div>
