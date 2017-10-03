@@ -22,5 +22,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "copyType")]
         public ModuleCopyType? CopyType { get; set; }
+
+        [DataMember(Name = "isPortable")]
+        public bool? IsPortable { get; set; }
     }
 }
