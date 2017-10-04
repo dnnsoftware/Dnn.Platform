@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "set NODE_ENV=production&&webpack -p"
+    "build": "set NODE_ENV=production&&webpack -p",
+    "analyze":"set NODE_ENV=production&&webpack -p --profile --json > stats.json&&webpack-bundle-analyzer stats.json"
   },
   "license": "MIT",
   "repository": {
@@ -37,6 +38,7 @@
     "less-loader": "2.2.3",
     "loadash": "^1.0.0",
     "react": "~15.3.1",
+    "react-addons-test-utils": "~15.3.1",
     "react-collapse": "^4.0.3",
     "react-custom-scrollbars": "^4.1.2",
     "react-dom": "~15.3.1",
@@ -46,7 +48,7 @@
     "scroll": "^2.0.0",
     "style-loader": "0.13.1",
     "webpack": "1.13.0",
-    "react-addons-test-utils": "~15.3.1"
+    "webpack-bundle-analyzer": "^2.9.0"
   },
   "dependencies": {}
 }
