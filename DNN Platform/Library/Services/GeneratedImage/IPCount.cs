@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Common.Utils;
+using DotNetNuke.Services.UserRequest;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -165,32 +166,10 @@ namespace DotNetNuke.Services.GeneratedImage
         /// method to get Client ip address
         /// </summary>
         /// <returns>IP Address of visitor</returns>
+        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static string GetVisitorIPAddress(HttpContextBase context)
         {
-            var visitorIPAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-
-            if (string.IsNullOrEmpty(visitorIPAddress))
-            {
-                visitorIPAddress = context.Request.ServerVariables["REMOTE_ADDR"];
-            }
-
-            if (string.IsNullOrEmpty(visitorIPAddress))
-            {
-                visitorIPAddress = context.Request.UserHostAddress;
-            }
-
-            if (string.IsNullOrEmpty(visitorIPAddress) || visitorIPAddress.Trim() == "::1")
-            {
-                visitorIPAddress = string.Empty;
-            }
-
-            if (string.IsNullOrEmpty(visitorIPAddress))
-            {
-                //This is for Local(LAN) Connected ID Address
-                var stringHostName = Dns.GetHostName();
-                visitorIPAddress = NetworkUtils.GetAddress(stringHostName, AddressType.IPv4);
-            }
-            return visitorIPAddress;
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);            
         }
     }
 }

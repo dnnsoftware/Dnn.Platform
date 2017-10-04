@@ -7,6 +7,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.UserRequest;
 
 namespace DotNetNuke.Web.Mvc.Routing
 {
@@ -60,35 +61,12 @@ namespace DotNetNuke.Web.Mvc.Routing
             return fallback;
         }
 
+        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static string GetIPAddress(HttpRequestBase request)
         {
-            var szRemoteAddr = request.UserHostAddress;
-            var szXForwardedFor = request.ServerVariables["X_FORWARDED_FOR"];
-            var szIP = string.Empty;
-
-            if (szXForwardedFor == null)
-            {
-                szIP = szRemoteAddr;
-            }
-            else
-            {
-                szIP = szXForwardedFor;
-                if (szIP.IndexOf(",", StringComparison.Ordinal) <= 0) return szIP;
-                var arIPs = szIP.Split(',');
-                foreach (var item in arIPs.Where(item => !IsPrivateIP(item)))
-                {
-                    return item;
-                }
-            }
-            return szIP;
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
         }
-        private static bool IsPrivateIP(string address)
-        {
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
-            var ipAddress = new IPAddress(Encoding.UTF8.GetBytes(address));
-            return interfaces.Select(iface => iface.GetIPProperties()).SelectMany(properties => properties.UnicastAddresses).Any(ifAddr => ifAddr.IPv4Mask != null && ifAddr.Address.AddressFamily == AddressFamily.InterNetwork && CheckMask(ifAddr.Address, ifAddr.IPv4Mask, ipAddress));
-        }
-
+        
         private static bool CheckMask(IPAddress address, IPAddress mask, IPAddress target)
         {
             if (mask == null)
