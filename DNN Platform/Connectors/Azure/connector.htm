@@ -1,0 +1,21 @@
+﻿<div>
+    <div>
+        <label data-bind="html: configurations[0].localizedName"></label>
+        <input data-bind="value: configurations[0].value" type="text" />
+    </div>
+    <div>
+        <label data-bind="html: configurations[1].localizedName"></label>
+        <input data-bind="value: configurations[1].value" type="password" />
+    </div>
+    <!-- ko if: foldersData().length > 0 -->
+    <div class="full-row">
+        <label data-bind="html: resx.RootFolder"></label>
+        <select id="AzureFoldersDropDown" name="AzureFoldersDropDown" data-bind="value: container,  options: foldersData">
+        </select>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: loadingFolders -->
+    <div class="loading"></div>
+    <!-- /ko -->
+    <div class="clear"></div>
+</div>

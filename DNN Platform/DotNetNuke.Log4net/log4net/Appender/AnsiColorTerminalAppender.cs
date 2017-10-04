@@ -153,7 +153,12 @@ namespace log4net.Appender
 			/// <summary>
 			/// text is displayed with a strikethrough
 			/// </summary>
-			Strikethrough	= 64
+			Strikethrough		= 64,
+
+			/// <summary>
+			/// text color is light
+			/// </summary>
+			Light			= 128
 		}
 
 		/// <summary>
@@ -176,7 +181,7 @@ namespace log4net.Appender
 			/// <summary>
 			/// color is red
 			/// </summary>
-			Red		= 1,
+			Red	= 1,
 
 			/// <summary>
 			/// color is green
@@ -247,8 +252,8 @@ namespace log4net.Appender
 			set
 			{
 				string trimmedTargetName = value.Trim();
-				
-				if (string.Compare(ConsoleError, trimmedTargetName, true, CultureInfo.InvariantCulture) == 0) 
+
+				if (SystemInfo.EqualsIgnoringCase(ConsoleError, trimmedTargetName))
 				{
 					m_writeToErrorStream = true;
 				} 
@@ -280,7 +285,7 @@ namespace log4net.Appender
 		#region Override implementation of AppenderSkeleton
 
 		/// <summary>
-		/// This method is called by the <see cref="AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
+		/// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
 		/// </summary>
 		/// <param name="loggingEvent">The event to log.</param>
 		/// <remarks>
@@ -510,12 +515,14 @@ namespace log4net.Appender
 				// Reset any existing codes
 				buf.Append("\x1b[0;");
 
+				int lightAdjustment = ((m_attributes & AnsiAttributes.Light) > 0) ? 60 : 0;
+				
 				// set the foreground color
-				buf.Append(30 + (int)m_foreColor);
+				buf.Append(30 + lightAdjustment + (int)m_foreColor);
 				buf.Append(';');
 
 				// set the background color
-				buf.Append(40 + (int)m_backColor);
+				buf.Append(40 + lightAdjustment + (int)m_backColor);
 
 				// set the attributes
 				if ((m_attributes & AnsiAttributes.Bright) > 0)

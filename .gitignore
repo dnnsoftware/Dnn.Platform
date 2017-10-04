@@ -88,11 +88,14 @@ DNN [Pp]latform/[Cc]ontrols/[Cc]ountry[Ll]ist[Bb]ox/[Bb]in/*
 DNN [Pp]latform/*/[Bb]in
 DNN [Pp]latform/Tests/*/[Bb]in/*
 DNN [Pp]latform/Modules/*/[Bb]in/*
+DNN [Pp]latform/Skins/*/[Bb]in/*
 DNN [Pp]latform/Admin Modules/*/[Bb]in/*
 DNN [Pp]latform/MVC Modules/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
+DNN [Pp]latform/[Cc]onnectors/*/[Bb]in/*
+DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 
 
 [Ww]ebsite/*/[Dd]efault.aspx
@@ -161,6 +164,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Uu]ser[Dd]efined[Tt]able
 [Ww]ebsite/[Dd]esktop[Mm]odules/dnnGlimpse
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Tt]est*
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Cc]onnectors*
 
 [Ww]ebsite/[Ii]nstall/*/*.zip
 [Ww]ebsite/[Ii]nstall/*/*.resources
@@ -242,3 +246,4 @@ DNN Platform/Dnn.AuthServices.Jwt/Package/
 Website/Portals/_default/Install/Dnn.CKEditorDefaultSettings.xml
 Website/Portals/_default/Install/Dnn.CKToolbarButtons.xml
 Website/Portals/_default/Install/Dnn.CKToolbarSets.xml
+Website/DesktopModules/Admin/SiteExportImport/App_LocalResources/ExportImport.resx

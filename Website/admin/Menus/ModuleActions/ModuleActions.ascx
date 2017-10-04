@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Admin.Containers.ModuleActions" Codebehind="ModuleActions.ascx.cs" %>
-<asp:LinkButton runat="server" ID="actionButton" />
+<asp:LinkButton runat="server" ID="actionButton" aria-label="Actions" />
 
 <%
     if (SupportsQuickSettings)
@@ -137,7 +137,7 @@
 
         // Webkit based browsers (like Chrome and Safari) can access images width and height properties only after images have been fully loaded. 
         // It will cause menu action out of scope, TO fix this, use $(window).load instead of $(document).ready
-        $(window).load(function () {
+        $(window).on('load', function () {
             setUpActions();
 
             $(document).ajaxComplete(function () {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,8 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// The DNNRichTextEditControl control provides a standard UI component for editing
     /// RichText
     /// </summary>
-    /// <remarks>This is still being used in 6.0.0 (edit a profile, biography field).</remarks>
-    [Obsolete("Deprecated in DNN 5.6.2.  Replaced by control of same name in DotNetNuke.Web assembly")]
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl
     {
@@ -120,6 +118,7 @@ namespace DotNetNuke.UI.WebControls
                                              Height = ControlStyle.Height.IsEmpty ? new Unit(250) : ControlStyle.Height,
                                              TextMode = TextBoxMode.MultiLine
                                          };
+                    _defaultTextEditor.Attributes.Add("aria-label", "editor");
                 }
 
                 Controls.Clear();

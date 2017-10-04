@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -89,12 +89,6 @@ namespace DotNetNuke.Common.Utilities
             objNode.Attributes.Append(attribute);
         }
 
-        [Obsolete("Removed in DotNetNuke 5.5")]
-        public static XmlElement CreateElement(XmlDocument document, string nodeName)
-        {
-            return document.CreateElement(nodeName);
-        }
-
         public static XmlElement CreateElement(XmlDocument document, string nodeName, string nodeValue)
         {
             XmlElement element = document.CreateElement(nodeName);
@@ -107,16 +101,6 @@ namespace DotNetNuke.Common.Utilities
             XmlElement element = document.CreateElement(nodeName);
             element.AppendChild(document.CreateCDataSection(nodeValue));
             return element;
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 with CBO.DeserializeObject")]
-        public static object Deserialize(string xmlObject, Type type)
-        {
-            var ser = new XmlSerializer(type);
-            var sr = new StringReader(xmlObject);
-            object obj = ser.Deserialize(sr);
-            sr.Close();
-            return obj;
         }
 
         public static object Deserialize(Stream objStream, Type type)

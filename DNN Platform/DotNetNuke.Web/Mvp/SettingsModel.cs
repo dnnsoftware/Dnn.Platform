@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,10 +21,12 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace DotNetNuke.Web.Mvp
 {
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public class SettingsModel
     {
         public Dictionary<string, string> ModuleSettings { get; set; }

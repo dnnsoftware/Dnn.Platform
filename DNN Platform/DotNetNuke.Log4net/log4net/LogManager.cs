@@ -31,7 +31,7 @@ namespace log4net
 	/// <remarks>
 	/// <para>
 	/// This class has static methods that are used by a client to request
-	/// a logger instance. The <see cref="GetLogger(string)"/> method is 
+	/// a logger instance. The <see cref="M:GetLogger(string)"/> method is 
 	/// used to retrieve a logger.
 	/// </para>
 	/// <para>
@@ -73,6 +73,7 @@ namespace log4net
 
 		#region Type Specific Manager Methods
 
+#if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
 		/// <overloads>Returns the named logger if it exists.</overloads>
 		/// <summary>
 		/// Returns the named logger if it exists.
@@ -89,24 +90,61 @@ namespace log4net
 		{
 			return Exists(Assembly.GetCallingAssembly(), name);
 		}
-
+        
+		/// <overloads>Get the currently defined loggers.</overloads>
 		/// <summary>
-		/// Returns the named logger if it exists.
+		/// Returns all the currently defined loggers in the default repository.
+		/// </summary>
+		/// <remarks>
+		/// <para>The root logger is <b>not</b> included in the returned array.</para>
+		/// </remarks>
+		/// <returns>All the defined loggers.</returns>
+		public static ILog[] GetCurrentLoggers()
+		{
+			return GetCurrentLoggers(Assembly.GetCallingAssembly());
+		}
+        
+		/// <overloads>Get or create a logger.</overloads>
+		/// <summary>
+		/// Retrieves or creates a named logger.
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// If the named logger exists (in the specified repository) then it
-		/// returns a reference to the logger, otherwise it returns
-		/// <c>null</c>.
+		/// Retrieves a logger named as the <paramref name="name"/>
+		/// parameter. If the named logger already exists, then the
+		/// existing instance will be returned. Otherwise, a new instance is
+		/// created.
+		/// </para>
+		/// <para>By default, loggers do not have a set level but inherit
+		/// it from the hierarchy. This is one of the central features of
+		/// log4net.
 		/// </para>
 		/// </remarks>
-		/// <param name="repository">The repository to lookup in.</param>
-		/// <param name="name">The fully qualified logger name to look for.</param>
-		/// <returns>
-		/// The logger found, or <c>null</c> if the logger doesn't exist in the specified 
-		/// repository.
-		/// </returns>
-		public static ILog Exists(string repository, string name) 
+		/// <param name="name">The name of the logger to retrieve.</param>
+		/// <returns>The logger with the name specified.</returns>
+		public static ILog GetLogger(string name)
+		{
+			return GetLogger(Assembly.GetCallingAssembly(), name);
+		}
+#endif // !NETSTANDARD1_3
+
+        /// <summary>
+        /// Returns the named logger if it exists.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the named logger exists (in the specified repository) then it
+        /// returns a reference to the logger, otherwise it returns
+        /// <c>null</c>.
+        /// </para>
+        /// </remarks>
+        /// <param name="repository">The repository to lookup in.</param>
+        /// <param name="name">The fully qualified logger name to look for.</param>
+        /// <returns>
+        /// The logger found, or <c>null</c> if the logger doesn't exist in the specified 
+        /// repository.
+        /// </returns>
+        public static ILog Exists(string repository, string name) 
 		{
 			return WrapLogger(LoggerManager.Exists(repository, name));
 		}
@@ -130,19 +168,6 @@ namespace log4net
 		public static ILog Exists(Assembly repositoryAssembly, string name) 
 		{
 			return WrapLogger(LoggerManager.Exists(repositoryAssembly, name));
-		}
-
-		/// <overloads>Get the currently defined loggers.</overloads>
-		/// <summary>
-		/// Returns all the currently defined loggers in the default repository.
-		/// </summary>
-		/// <remarks>
-		/// <para>The root logger is <b>not</b> included in the returned array.</para>
-		/// </remarks>
-		/// <returns>All the defined loggers.</returns>
-		public static ILog[] GetCurrentLoggers()
-		{
-			return GetCurrentLoggers(Assembly.GetCallingAssembly());
 		}
 
 		/// <summary>
@@ -169,29 +194,6 @@ namespace log4net
 		public static ILog[] GetCurrentLoggers(Assembly repositoryAssembly)
 		{
 			return WrapLoggers(LoggerManager.GetCurrentLoggers(repositoryAssembly));
-		}
-
-		/// <overloads>Get or create a logger.</overloads>
-		/// <summary>
-		/// Retrieves or creates a named logger.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Retrieves a logger named as the <paramref name="name"/>
-		/// parameter. If the named logger already exists, then the
-		/// existing instance will be returned. Otherwise, a new instance is
-		/// created.
-		/// </para>
-		/// <para>By default, loggers do not have a set level but inherit
-		/// it from the hierarchy. This is one of the central features of
-		/// log4net.
-		/// </para>
-		/// </remarks>
-		/// <param name="name">The name of the logger to retrieve.</param>
-		/// <returns>The logger with the name specified.</returns>
-		public static ILog GetLogger(string name)
-		{
-			return GetLogger(Assembly.GetCallingAssembly(), name);
 		}
 
 		/// <summary>
@@ -243,7 +245,7 @@ namespace log4net
 		}	
 
 		/// <summary>
-		/// Shorthand for <see cref="LogManager.GetLogger(string)"/>.
+		/// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
 		/// </summary>
 		/// <remarks>
 		/// Get the logger for the fully qualified name of the type specified.
@@ -252,11 +254,15 @@ namespace log4net
 		/// <returns>The logger with the name specified.</returns>
 		public static ILog GetLogger(Type type) 
 		{
+#if NETSTANDARD1_3
+			return GetLogger(type.GetTypeInfo().Assembly, type.FullName);
+#else
 			return GetLogger(Assembly.GetCallingAssembly(), type.FullName);
+#endif
 		}
 
 		/// <summary>
-		/// Shorthand for <see cref="LogManager.GetLogger(string)"/>.
+		/// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
 		/// </summary>
 		/// <remarks>
 		/// Gets the logger for the fully qualified name of the type specified.
@@ -270,7 +276,7 @@ namespace log4net
 		}
 
 		/// <summary>
-		/// Shorthand for <see cref="LogManager.GetLogger(string)"/>.
+		/// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
 		/// </summary>
 		/// <remarks>
 		/// Gets the logger for the fully qualified name of the type specified.
@@ -311,6 +317,7 @@ namespace log4net
 			LoggerManager.Shutdown();
 		}
 
+#if !NETSTANDARD1_3
 		/// <overloads>Shutdown a logger repository.</overloads>
 		/// <summary>
 		/// Shuts down the default repository.
@@ -335,6 +342,7 @@ namespace log4net
 			ShutdownRepository(Assembly.GetCallingAssembly());
 		}
 
+#endif
 		/// <summary>
 		/// Shuts down the repository for the repository specified.
 		/// </summary>
@@ -387,6 +395,7 @@ namespace log4net
 			LoggerManager.ShutdownRepository(repositoryAssembly);
 		}
 
+#if !NETSTANDARD1_3
 		/// <overloads>Reset the configuration of a repository</overloads>
 		/// <summary>
 		/// Resets all values contained in this repository instance to their defaults.
@@ -405,6 +414,7 @@ namespace log4net
 		{
 			ResetConfiguration(Assembly.GetCallingAssembly());
 		}
+#endif
 
 		/// <summary>
 		/// Resets all values contained in this repository instance to their defaults.
@@ -444,6 +454,7 @@ namespace log4net
 			LoggerManager.ResetConfiguration(repositoryAssembly);
 		}
 
+#if !NETSTANDARD1_3
 		/// <overloads>Get the logger repository.</overloads>
 		/// <summary>
 		/// Returns the default <see cref="ILoggerRepository"/> instance.
@@ -451,7 +462,7 @@ namespace log4net
 		/// <remarks>
 		/// <para>
 		/// Gets the <see cref="ILoggerRepository"/> for the repository specified
-		/// by the callers assembly (<see cref="Assembly.GetCallingAssembly()"/>).
+		/// by the callers assembly (<see cref="M:Assembly.GetCallingAssembly()"/>).
 		/// </para>
 		/// </remarks>
 		/// <returns>The <see cref="ILoggerRepository"/> instance for the default repository.</returns>
@@ -460,6 +471,7 @@ namespace log4net
 		{
 			return GetRepository(Assembly.GetCallingAssembly());
 		}
+#endif
 
 		/// <summary>
 		/// Returns the default <see cref="ILoggerRepository"/> instance.
@@ -495,6 +507,7 @@ namespace log4net
 			return GetRepository(repositoryAssembly);
 		}
 
+#if !NETSTANDARD1_3
 		/// <overloads>Get a logger repository.</overloads>
 		/// <summary>
 		/// Returns the default <see cref="ILoggerRepository"/> instance.
@@ -502,7 +515,7 @@ namespace log4net
 		/// <remarks>
 		/// <para>
 		/// Gets the <see cref="ILoggerRepository"/> for the repository specified
-		/// by the callers assembly (<see cref="Assembly.GetCallingAssembly()"/>).
+		/// by the callers assembly (<see cref="M:Assembly.GetCallingAssembly()"/>).
 		/// </para>
 		/// </remarks>
 		/// <returns>The <see cref="ILoggerRepository"/> instance for the default repository.</returns>
@@ -510,6 +523,7 @@ namespace log4net
 		{
 			return GetRepository(Assembly.GetCallingAssembly());
 		}
+#endif
 
 		/// <summary>
 		/// Returns the default <see cref="ILoggerRepository"/> instance.
@@ -543,6 +557,7 @@ namespace log4net
 			return LoggerManager.GetRepository(repositoryAssembly);
 		}
 
+#if !NETSTANDARD1_3
 		/// <overloads>Create a domain</overloads>
 		/// <summary>
 		/// Creates a repository with the specified repository type.
@@ -553,7 +568,7 @@ namespace log4net
 		/// </para>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository()"/> will return 
+		/// specified such that a call to <see cref="M:GetRepository()"/> will return 
 		/// the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -578,7 +593,7 @@ namespace log4net
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository()"/> will return 
+		/// specified such that a call to <see cref="M:GetRepository()"/> will return 
 		/// the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -586,6 +601,7 @@ namespace log4net
 		{
 			return CreateRepository(Assembly.GetCallingAssembly(), repositoryType);
 		}
+#endif
 
 		/// <summary>
 		/// Creates a repository with the specified name.
@@ -686,7 +702,7 @@ namespace log4net
 		/// </para>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(Assembly)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(Assembly)"/> with the
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -707,7 +723,7 @@ namespace log4net
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(Assembly)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(Assembly)"/> with the
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -734,6 +750,28 @@ namespace log4net
 		{
 			return LoggerManager.GetAllRepositories();
 		}
+
+            /// <summary>
+            /// Flushes logging events buffered in all configured appenders in the default repository.
+            /// </summary>
+            /// <param name="millisecondsTimeout">The maximum time in milliseconds to wait for logging events from asycnhronous appenders to be flushed.</param>
+            /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+            public static bool Flush(int millisecondsTimeout)
+            {
+#if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
+                Appender.IFlushable flushableRepository = LoggerManager.GetRepository(Assembly.GetCallingAssembly()) as Appender.IFlushable;
+                if (flushableRepository == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return flushableRepository.Flush(millisecondsTimeout);
+                }
+#else
+                return false;
+#endif
+            }
 
 		#endregion Domain & Repository Manager Methods
 

@@ -1,7 +1,7 @@
 #region Copyright
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,24 +20,25 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
-    [DnnExceptionFilter]
     public class ModuleServiceController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleServiceController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleServiceController));
         public class MoveModuleDTO
         {
             public int ModuleId { get; set; }
@@ -54,14 +55,18 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Registered Users" )]
+        [DnnAuthorize(StaticRoles = "Registered Users")]
         public HttpResponseMessage GetModuleShareable(int moduleId, int tabId, int portalId = -1)
         {
             var requiresWarning = false;
-            if (portalId == -1)
+            if (portalId <= -1)
             {
                 var portalDict = PortalController.GetPortalDictionary();
                 portalId = portalDict[tabId];
+            }
+            else
+            {
+                portalId = FixPortalId(portalId);
             }
 
             DesktopModuleInfo desktopModule;
@@ -85,7 +90,7 @@ namespace DotNetNuke.Web.InternalServices
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new {Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning});
+            return Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning });
         }
 
         [HttpPost]
@@ -93,21 +98,21 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage MoveModule(MoveModuleDTO postData)
         {
-	        var moduleOrder = postData.ModuleOrder;
-	        if (moduleOrder > 0)
-	        {
-				//DNN-7099: the deleted modules won't show in page, so when the module index calculated from client, it will lost the 
-				//index count of deleted modules and will cause order issue.
-		        var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values.Where(m => m.IsDeleted);
-		        foreach (var module in deletedModules)
-		        {
-			        if (module.ModuleOrder < moduleOrder)
-			        {
-				        moduleOrder += 2;
-			        }
-		        }
-	        }
-			ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, moduleOrder, postData.Pane);
+            var moduleOrder = postData.ModuleOrder;
+            if (moduleOrder > 0)
+            {
+                //DNN-7099: the deleted modules won't show in page, so when the module index calculated from client, it will lost the 
+                //index count of deleted modules and will cause order issue.
+                var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values.Where(m => m.IsDeleted);
+                foreach (var module in deletedModules)
+                {
+                    if (module.ModuleOrder < moduleOrder && module.PaneName == postData.Pane)
+                    {
+                        moduleOrder += 2;
+                    }
+                }
+            }
+            ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, moduleOrder, postData.Pane);
             ModuleController.Instance.UpdateTabModuleOrder(postData.TabId);
 
             return Request.CreateResponse(HttpStatusCode.OK);
@@ -127,6 +132,14 @@ namespace DotNetNuke.Web.InternalServices
             ModuleController.Instance.DeleteTabModule(deleteModuleDto.TabId, deleteModuleDto.ModuleId, deleteModuleDto.SoftDelete);
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private int FixPortalId(int portalId)
+        {
+            return UserInfo.IsSuperUser && PortalSettings.PortalId != portalId && PortalController.Instance.GetPortals()
+                       .OfType<PortalInfo>().Any(x => x.PortalID == portalId)
+                ? portalId
+                : PortalSettings.PortalId;
         }
     }
 }

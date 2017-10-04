@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -141,8 +141,6 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
                     if (moduleTabs.Count > 0)
                         return string.Empty;
 
-                    AddClientResourceAdminHostPage();
-
                     RemoveWurflProvider();
                     break;
             }
@@ -244,30 +242,6 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
                 mappingCapabilites.Add("physical_screen_width", "ScreenMMWidth");
             }
             return mappingCapabilites;
-        }
-
-        private static void AddClientResourceAdminHostPage()
-        {
-            DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(Constants.ModuleName, Null.NullInteger);
-            ModuleDefinitionInfo moduleDefinition = desktopModule.ModuleDefinitions[Constants.ModuleDefinitionName];
-
-            // Remove the page if it already exists to ensure the page can be added.
-            // Handles cases where the page has been removed by the user.
-            try
-            {
-                Upgrade.RemoveHostPage(Localization.GetString("PageName", ResourceFileRelativePath));
-            }
-            catch
-            {
-                // Do nothing.
-            }
-
-            TabInfo hostPage = Upgrade.AddHostPage(Localization.GetString("PageName", ResourceFileRelativePath),
-                                                   Localization.GetString("PageDescription", ResourceFileRelativePath),
-                                                   Constants.ConfigIconFileThumbNail,
-                                                   Constants.ConfigIconFileLarge, true);
-
-            Upgrade.AddModuleToPage(hostPage, moduleDefinition.ModuleDefID, Localization.GetString("ModuleTitle", ResourceFileRelativePath), Constants.ConfigIconFileLarge, true);
         }
 
         #endregion

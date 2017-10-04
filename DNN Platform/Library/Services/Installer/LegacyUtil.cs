@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -214,9 +214,7 @@ namespace DotNetNuke.Services.Installer
             {
                 ParsePackageName(package, "_");
             }
-            if (package.PackageType == "Module" && AdminModules.Contains(package.Name + ",") || package.PackageType == "Module" && CoreModules.Contains(package.Name + ",") ||
-                (package.PackageType == "Container" || package.PackageType == "Skin") && KnownSkins.Contains(package.Name + ",") ||
-                package.PackageType == "SkinObject" && KnownSkinObjects.Contains(package.Name + ","))
+            if (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && AdminModules.Contains(package.Name + ",") || package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && CoreModules.Contains(package.Name + ",") || (package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)) && KnownSkins.Contains(package.Name + ",") || package.PackageType.Equals("SkinObject", StringComparison.OrdinalIgnoreCase) && KnownSkinObjects.Contains(package.Name + ","))
             {
                 if (string.IsNullOrEmpty(package.Owner))
                 {

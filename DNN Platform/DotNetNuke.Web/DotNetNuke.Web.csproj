@@ -100,13 +100,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -118,12 +116,8 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -161,7 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
+      <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Api\AuthFilterBase.cs" />
     <Compile Include="Api\AuthFilterContext.cs" />
@@ -196,8 +190,11 @@
     <Compile Include="Api\TraceWriter.cs" />
     <Compile Include="Api\UrlHelperExtensions.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Common\DotNetNukeSecurity.cs" />
+    <Compile Include="Common\DotNetNukeShutdownOverload.cs" />
     <Compile Include="Common\DynamicSharedConstants.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
+    <Compile Include="Api\WebApiException.cs" />
     <Compile Include="Components\Controllers\ControlBarController.cs" />
     <Compile Include="Components\Controllers\IControlBarController.cs" />
     <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
@@ -334,6 +331,22 @@
     <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
     <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
     <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnCheckBoxList.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnComboBoxOption.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnDatePicker.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnDateTimePicker.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnFormComboBoxItem.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnFormToggleButtonItem.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGrid.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGridBoundColumn.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGridTemplateColumn.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnModuleComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnScriptBlock.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnSkinComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\TermsSelector.cs" />
     <Compile Include="UI\WebControls\ItemListOptions.cs" />
     <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
     <Compile Include="UI\WebControls\RibbonBarToolInfo.cs" />
@@ -387,23 +400,6 @@
     <Compile Include="UI\WebControls\DnnLanguageLabel.cs" />
     <Compile Include="UI\WebControls\Tags.cs" />
     <Compile Include="UI\WebControls\TermsEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <None Include="Library.build">

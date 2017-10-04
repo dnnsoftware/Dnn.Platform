@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.Containers
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
 
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
                 var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);
                 moduleInfo.ModuleTitle = mt;
 

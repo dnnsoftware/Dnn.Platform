@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -35,6 +36,7 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -72,6 +74,8 @@ namespace DotNetNuke.Entities.Host
         public int AddIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
+            AssertValidIPFilter(ipFilter);
+
             int id = DataProvider.Instance().AddIPFilter(ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.Instance.GetCurrentUserInfo().UserID);
             return id;
         }
@@ -83,6 +87,8 @@ namespace DotNetNuke.Entities.Host
         public void UpdateIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
+            AssertValidIPFilter(ipFilter);
+
             DataProvider.Instance().UpdateIPFilter(ipFilter.IPFilterID, ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
@@ -256,5 +262,20 @@ namespace DotNetNuke.Entities.Host
         }
 
         #endregion
+
+        private static void AssertValidIPFilter(IPFilterInfo ipFilter)
+        {
+            IPAddress parsed;
+            if (IPAddress.TryParse(ipFilter.IPAddress, out parsed) == false)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("IPAddressIncorrect", "IP address is not in correct format"));
+            }
+
+            bool isIPRange = string.IsNullOrEmpty(ipFilter.SubnetMask) == false;
+            if (isIPRange && IPAddress.TryParse(ipFilter.SubnetMask, out parsed) == false)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("SubnetMaskIncorrect", "Subnet mask is not in correct format"));
+            }
+        }
     }
 }

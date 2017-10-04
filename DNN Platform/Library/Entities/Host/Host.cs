@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1624,6 +1624,7 @@ namespace DotNetNuke.Entities.Host
 		/// <remarks>
 		///   Defaults to False
 		/// </remarks>
+		[Obsolete("Not used anymore")]
 		public static bool EnableTelerikCdn
 		{
 			get
@@ -1632,10 +1633,11 @@ namespace DotNetNuke.Entities.Host
 			}
 		}
 
-		/// <summary>
-		/// Get Telerik CDN Basic Path.
-		/// </summary>
-	    public static string TelerikCdnBasicUrl
+        /// <summary>
+        /// Get Telerik CDN Basic Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnBasicUrl
 	    {
 			get
 			{
@@ -1643,10 +1645,11 @@ namespace DotNetNuke.Entities.Host
 			}
 	    }
 
-		/// <summary>
-		/// Get Telerik CDN Secure Path.
-		/// </summary>
-		public static string TelerikCdnSecureUrl
+        /// <summary>
+        /// Get Telerik CDN Secure Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnSecureUrl
 		{
 			get
 			{
@@ -1670,149 +1673,6 @@ namespace DotNetNuke.Entities.Host
 				return timeout;
 			}
 		}
-
-        #endregion
-
-        #region Obsolete Members
-
-        [Obsolete("Replaced in DotNetNuke 6.0 by AllowedExtensionWhitelist")]
-        public static string FileExtensions
-        {
-            get
-            {
-                return HostController.Instance.GetString("FileExtensions");
-            }
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSettingsDictionary()")]
-        public static Dictionary<string, string> GetHostSettingsDictionary()
-        {
-            var dicSettings = DataCache.GetCache<Dictionary<string, string>>(DataCache.UnSecureHostSettingsCacheKey);
-
-            if (dicSettings == null)
-            {
-                dicSettings = new Dictionary<string, string>();
-                IDataReader dr = DataProvider.Instance().GetHostSettings();
-                try
-                {
-                    while (dr.Read())
-                    {
-                        if (!dr.IsDBNull(1))
-                        {
-                            dicSettings.Add(dr.GetString(0), dr.GetString(1));
-                        }
-                    }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-
-                //Save settings to cache
-                DNNCacheDependency objDependency = null;
-                DataCache.SetCache(DataCache.UnSecureHostSettingsCacheKey,
-                                   dicSettings,
-                                   objDependency,
-                                   Cache.NoAbsoluteExpiration,
-                                   TimeSpan.FromMinutes(DataCache.HostSettingsCacheTimeOut),
-                                   DataCache.HostSettingsCachePriority,
-                                   null);
-            }
-
-            return dicSettings;
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSecureHostSetting()")]
-        public static string GetSecureHostSetting(string key)
-        {
-            return HostController.Instance.GetString(key);
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSecureHostSettingsDictionary()")]
-        public static Dictionary<string, string> GetSecureHostSettingsDictionary()
-        {
-            var dicSettings = DataCache.GetCache<Dictionary<string, string>>(DataCache.SecureHostSettingsCacheKey);
-
-            if (dicSettings == null)
-            {
-                dicSettings = new Dictionary<string, string>();
-                IDataReader dr = DataProvider.Instance().GetHostSettings();
-                try
-                {
-                    while (dr.Read())
-                    {
-                        if (!Convert.ToBoolean(dr[2]))
-                        {
-                            string settingName = dr.GetString(0);
-                            if (settingName.ToLower().IndexOf("password") == -1)
-                            {
-                                if (!dr.IsDBNull(1))
-                                {
-                                    dicSettings.Add(settingName, dr.GetString(1));
-                                }
-                                else
-                                {
-                                    dicSettings.Add(settingName, "");
-                                }
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-
-                //Save settings to cache
-                DNNCacheDependency objDependency = null;
-                DataCache.SetCache(DataCache.SecureHostSettingsCacheKey,
-                                   dicSettings,
-                                   objDependency,
-                                   Cache.NoAbsoluteExpiration,
-                                   TimeSpan.FromMinutes(DataCache.HostSettingsCacheTimeOut),
-                                   DataCache.HostSettingsCachePriority,
-                                   null);
-            }
-
-            return dicSettings;
-        }
-
-        [Obsolete("Deprecated in 5.5.  This setting was never used and has been replaced in 5.5 by a Portal Setting as Content Localization is Portal based.")]
-        public static bool ContentLocalization
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("ContentLocalization", false);
-            }
-        }
-
-        [Obsolete("property obsoleted in 5.4.0 - code updated to use portalcontroller method")]
-        public static string ContentLocale
-        {
-            get
-            {
-                return "en-us";
-            }
-        }
-
-        [Obsolete("MS AJax is now required for DotNetNuke 5.0 and above")]
-        public static bool EnableAJAX
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("EnableAJAX", true);
-            }
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.1")]
-        public static bool WhitespaceFilter
-        {
-            get
-            {
-                return false;
-            }
-        }
-
 
         #endregion
     }

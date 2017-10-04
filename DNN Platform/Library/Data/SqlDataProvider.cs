@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,14 +44,14 @@ namespace DotNetNuke.Data
 {
     public sealed class SqlDataProvider : DataProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SqlDataProvider));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         #region Private Members
 
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
-		private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)", 
-															RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-		private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)",
+                                                            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Data
             return connectionValid;
         }
 
-        private string ExecuteScriptInternal(string connectionString, string script)
+        private string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
         {
             string exceptions = "";
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Data
                     sql = DataUtil.ReplaceTokens(sql);
 
                     //Clean up some SQL Azure incompatabilities
-	                var query = GetAzureCompactScript(sql);
+                    var query = GetAzureCompactScript(sql);
 
                     if (query != sql)
                     {
@@ -132,8 +132,8 @@ namespace DotNetNuke.Data
                         //Create a new connection
                         using (var connection = new SqlConnection(connectionString))
                         {
-                            //Create a new command (with no timeout)
-                            using (var command = new SqlCommand(query, connection) {CommandTimeout = 0})
+                            //Create a new command
+                            using (var command = new SqlCommand(query, connection) { CommandTimeout = timeoutSec })
                             {
                                 connection.Open();
                                 command.ExecuteNonQuery();
@@ -152,33 +152,46 @@ namespace DotNetNuke.Data
             return exceptions;
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql)
+        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec = 0)
         {
             string errorMessage;
-            return ExecuteSQLInternal(connectionString, sql, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, out string errorMessage)
+
+        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
             try
             {
                 sql = DataUtil.ReplaceTokens(sql);
                 errorMessage = "";
+
+                if (string.IsNullOrEmpty(connectionString))
+                    throw new ArgumentNullException(nameof(connectionString));
+
+                if (timeoutSec > 0)
+                {
+                    var builder = GetConnectionStringBuilder();
+                    builder.ConnectionString = connectionString;
+                    builder["Connect Timeout"] = null;
+                    builder["Connection Timeout"] = timeoutSec;
+                    connectionString = builder.ConnectionString;
+                }
+
                 return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
             catch (SqlException sqlException)
             {
                 //error in SQL query
                 Logger.Error(sqlException);
-
-                errorMessage = sqlException.Message + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
-                return null;
+                errorMessage = sqlException.Message;
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                errorMessage = ex + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
-                return null;
+                errorMessage = ex.ToString();
             }
+            errorMessage += Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
+            return null;
         }
 
         private string GetConnectionStringUserID()
@@ -295,20 +308,20 @@ namespace DotNetNuke.Data
             return Exceptions;
         }
 
-		private string GetAzureCompactScript(string script)
-		{
-			if (ScriptWithRegex.IsMatch(script))
-			{
-				script = ScriptWithRegex.Replace(script, string.Empty);
-			}
+        private string GetAzureCompactScript(string script)
+        {
+            if (ScriptWithRegex.IsMatch(script))
+            {
+                script = ScriptWithRegex.Replace(script, string.Empty);
+            }
 
-			if (ScriptOnPrimaryRegex.IsMatch(script))
-			{
-				script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
-			}
+            if (ScriptOnPrimaryRegex.IsMatch(script))
+            {
+                script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
+            }
 
-			return script;
-		}
+            return script;
+        }
 
         #endregion
 
@@ -319,9 +332,29 @@ namespace DotNetNuke.Data
             PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
+        public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+        }
+
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
             PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, timeoutSec, commandParameters);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
@@ -329,14 +362,29 @@ namespace DotNetNuke.Data
             return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
+        public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+        }
+
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
+            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override string ExecuteScript(string script)
         {
-            string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script);
+            return ExecuteScript(script, 0);
+        }
+
+        public override string ExecuteScript(string script, int timeoutSec)
+        {
+            string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeoutSec);
 
             //if the upgrade connection string is specified or or db_owner setting is not set to dbo
             if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLower() != "dbo.")
@@ -377,7 +425,12 @@ namespace DotNetNuke.Data
 
         public override string ExecuteScript(string connectionString, string script)
         {
-            return ExecuteScriptInternal(connectionString, script); 
+            return ExecuteScriptInternal(connectionString, script);
+        }
+
+        public override string ExecuteScript(string connectionString, string script, int timeoutSec)
+        {
+            return ExecuteScriptInternal(connectionString, script, timeoutSec);
         }
 
         public override IDataReader ExecuteSQL(string sql)
@@ -385,18 +438,33 @@ namespace DotNetNuke.Data
             return ExecuteSQLInternal(ConnectionString, sql);
         }
 
+        public override IDataReader ExecuteSQL(string sql, int timeoutSec)
+        {
+            return ExecuteSQLInternal(ConnectionString, sql, timeoutSec);
+        }
+
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
         {
             string errorMessage;
             return ExecuteSQLTemp(connectionString, sql, out errorMessage);
         }
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
         {
-            return ExecuteSQLInternal(connectionString, sql, out errorMessage);
+            string errorMessage;
+            return ExecuteSQLTemp(connectionString, sql, timeoutSec, out errorMessage);
         }
 
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+        {
+            return ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
+        }
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
+        {
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+        }
 
         #endregion
-
     }
 }

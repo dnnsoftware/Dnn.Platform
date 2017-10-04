@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
 
@@ -177,6 +178,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             //Step 6 - Perform general application upgrades
             Details = Localization.Localization.GetString("UpgradingNormalApplication", LocalInstallResourceFile);
             Upgrade.UpgradeApplication();
+
+            //Step 7 - Save Accept DNN Terms flag
+            HostController.Instance.Update("AcceptDnnTerms", "Y");
 
             DataCache.ClearHostCache(true);
             Percentage = percentForEachStep * counter++;

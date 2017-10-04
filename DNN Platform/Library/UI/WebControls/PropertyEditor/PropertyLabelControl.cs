@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -256,7 +256,7 @@ namespace DotNetNuke.UI.WebControls
             if (!DesignMode)
             {
                 cmdHelp = new LinkButton { ID = ID + "_cmdHelp", CssClass = "dnnFormHelp", CausesValidation = false, EnableViewState = false, TabIndex = -1 };
-
+                cmdHelp.Attributes.Add("aria-label", "Help");
                 lblLabel = new Label { ID = ID + "_label", EnableViewState = false };
 
                 label.Controls.Add(lblLabel);
@@ -277,6 +277,7 @@ namespace DotNetNuke.UI.WebControls
             var aHelpPin = new HyperLink();
             aHelpPin.CssClass = "pinHelp";
             aHelpPin.Attributes.Add("href", "#");
+            aHelpPin.Attributes.Add("aria-label", "Pin");
             pnlHelp.Controls.Add(aHelpPin);
 
             //Controls.Add(label);

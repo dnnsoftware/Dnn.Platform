@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -660,62 +660,5 @@ namespace DotNetNuke.Framework
         }
 
         #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DNN 6.1. Replaced by ClientResourceManager.RegisterStyleSheet.")]
-        protected static void AddStyleSheetInternal(Page page, string id, string styleSheet, bool isFirst)
-        {
-            Control objCSS = page.FindControl("CSS");
-            if (objCSS != null)
-            {
-                Control objCtrl = page.Header.FindControl(id);
-                if (objCtrl == null)
-                {
-                    var objLink = new HtmlLink { ID = id };
-                    objLink.Attributes["rel"] = "stylesheet";
-                    objLink.Attributes["type"] = "text/css";
-                    objLink.Href = styleSheet;
-                    if (isFirst)
-                    {
-                        int iLink;
-                        for (iLink = 0; iLink <= objCSS.Controls.Count - 1; iLink++)
-                        {
-                            if (objCSS.Controls[iLink] is HtmlLink)
-                            {
-                                break;
-                            }
-                        }
-                        objCSS.Controls.AddAt(iLink, objLink);
-                    }
-                    else
-                    {
-                        objCSS.Controls.Add(objLink);
-                    }
-                }
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.1. Replaced by ClientResourceManager.RegisterStyleSheet.")]
-        public static void RegisterStyleSheet(Page page, string styleSheet)
-        {
-            RegisterStyleSheet(page, styleSheet, false);
-        }
-
-        [Obsolete("Deprecated in DNN 6.1. Replaced by ClientResourceManager.RegisterStyleSheet.")]
-        public static void RegisterStyleSheet(Page page, string styleSheet, bool isFirst)
-        {
-            if (isFirst)
-            {
-                ClientResourceManager.RegisterStyleSheet(page, styleSheet, 0);
-            }
-            else
-            {
-                ClientResourceManager.RegisterStyleSheet(page, styleSheet);
-            }
-        }
-
-        #endregion
-
     }
 }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -470,51 +470,6 @@ namespace DotNetNuke.UI.ControlPanels
 				base.OnInit(e);
 			}
 		}
-		
-		#endregion
-		
-		#region Obsolete
-
-        [Obsolete("Deprecated in 5.0. Replaced by SetMode(UserMode).")]
-        protected void SetContentMode(bool showContent)
-        {
-            Personalization.SetProfile("Usability", "ContentVisible" + PortalSettings.PortalId, showContent.ToString());
-        }
-
-        [Obsolete("Deprecated in 5.0. Replaced by SetMode(UserMode).")]
-        protected void SetPreviewMode(bool isPreview)
-        {
-            if (isPreview)
-            {
-                Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, "View");
-            }
-            else
-            {
-                Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, "Edit");
-            }
-        }
-
-        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
-        protected bool ShowContent
-        {
-            get
-            {
-                return PortalSettings.UserMode != PortalSettings.Mode.Layout;
-            }
-        }
-
-        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
-        protected bool IsPreview
-        {
-            get
-            {
-                if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
-                {
-                    return false;
-                }
-                return true;
-            }
-        }
 		
 		#endregion
 

@@ -14,6 +14,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.UI;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
 using DotNetNuke.Web.DDRMenu.Localisation;
 using DotNetNuke.Web.DDRMenu.TemplateEngine;
@@ -87,6 +88,11 @@ namespace DotNetNuke.Web.DDRMenu
 			{
 				ApplyNodeManipulator();
 			}
+
+		    if (!menuSettings.IncludeHidden)
+		    {
+		        FilterHiddenNodes();
+		    }
 
 			var imagePathOption =
 				menuSettings.ClientOptions.Find(o => o.Name.Equals("PathImage", StringComparison.InvariantCultureIgnoreCase));
@@ -209,7 +215,22 @@ namespace DotNetNuke.Web.DDRMenu
 			RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
 		}
 
-		private void ApplyNodeSelector()
+        private void FilterHiddenNodes()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var filteredNodes = new List<MenuNode>();
+            filteredNodes.AddRange(
+                RootNode.Children.FindAll(
+                    n =>
+                    {                     
+                        var tab = TabController.Instance.GetTab(n.TabId, portalSettings.PortalId);
+                        return tab == null || !tab.IsVisible;
+                    }));
+
+            RootNode.Children.RemoveAll(n => filteredNodes.Contains(n));
+        }
+
+        private void ApplyNodeSelector()
 		{
 			string selector;
 			if (!nodeSelectorAliases.TryGetValue(menuSettings.NodeSelector.ToLowerInvariant(), out selector))

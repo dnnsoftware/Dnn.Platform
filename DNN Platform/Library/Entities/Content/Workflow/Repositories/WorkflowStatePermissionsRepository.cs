@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,9 +36,9 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return CBO.FillCollection<WorkflowStatePermission>(DataProvider.Instance().GetContentWorkflowStatePermissionsByStateID(stateId));
         }
 
-        public void AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId)
+        public int AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId)
         {
-            DataProvider.Instance().AddContentWorkflowStatePermission(permission.StateID,
+            return DataProvider.Instance().AddContentWorkflowStatePermission(permission.StateID,
                                                                        permission.PermissionID,
                                                                        permission.RoleID,
                                                                        permission.AllowAccess,

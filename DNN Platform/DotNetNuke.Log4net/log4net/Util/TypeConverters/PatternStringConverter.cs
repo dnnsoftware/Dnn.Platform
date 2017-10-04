@@ -18,6 +18,9 @@
 #endregion
 
 using System;
+#if NETSTANDARD1_3
+using System.Reflection;
+#endif
 using System.Text;
 
 using log4net.Util;
@@ -69,7 +72,7 @@ namespace log4net.Util.TypeConverters
 		/// <returns>the converted object</returns>
 		/// <remarks>
 		/// <para>
-		/// Uses the <see cref="PatternString.Format()"/> method to convert the
+		/// Uses the <see cref="M:PatternString.Format()"/> method to convert the
 		/// <see cref="PatternString"/> argument to a <see cref="String"/>.
 		/// </para>
 		/// </remarks>

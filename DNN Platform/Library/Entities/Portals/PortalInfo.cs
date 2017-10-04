@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -806,8 +806,21 @@ namespace DotNetNuke.Entities.Portals
             RegisterTabId = Null.SetNullInteger(dr["RegisterTabID"]);
             UserTabId = Null.SetNullInteger(dr["UserTabID"]);
             SearchTabId = Null.SetNullInteger(dr["SearchTabID"]);
-            Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
-            Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
+
+            Custom404TabId = Custom500TabId = Null.NullInteger;
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'Custom404TabId'").Length > 0)
+                {
+                    Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
+                }
+                if (schema.Select("ColumnName = 'Custom500TabId'").Length > 0)
+                {
+                    Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
+                }
+            }
+
             DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
 #pragma warning disable 612,618 //needed for upgrades and backwards compatibility
             TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);

@@ -39,7 +39,11 @@ namespace log4net.Core
 #if !NETCF
 	[Serializable]
 #endif
+#if NETSTANDARD1_3
+	public class LogException : Exception
+#else
 	public class LogException : ApplicationException 
+#endif
 	{
 		#region Public Instance Constructors
 
@@ -88,7 +92,7 @@ namespace log4net.Core
 
 		#region Protected Instance Constructors
 
-#if !NETCF
+#if !(NETCF || NETSTANDARD1_3)
 		/// <summary>
 		/// Serialization constructor
 		/// </summary>

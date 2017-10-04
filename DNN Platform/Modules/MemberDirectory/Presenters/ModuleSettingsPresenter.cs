@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
 
 using DotNetNuke.Common.Lists;
@@ -30,13 +31,13 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Modules.MemberDirectory.ViewModels;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Web.Mvp;
 
 #endregion
 
 namespace DotNetNuke.Modules.MemberDirectory.Presenters
 {
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public class ModuleSettingsPresenter : ModuleSettingsPresenter<ISettingsView<MemberDirectorySettingsModel>, MemberDirectorySettingsModel>
     {
         public ModuleSettingsPresenter(ISettingsView<MemberDirectorySettingsModel> view)

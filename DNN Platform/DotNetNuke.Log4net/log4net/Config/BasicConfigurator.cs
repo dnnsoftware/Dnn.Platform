@@ -43,7 +43,7 @@ namespace log4net.Config
 	/// </para>
 	/// <para>
 	/// Appenders can also implement the <see cref="log4net.Core.IOptionHandler"/> interface. Therefore
-	/// they would require that the <see cref="log4net.Core.IOptionHandler.ActivateOptions()"/> method
+	/// they would require that the <see cref="M:log4net.Core.IOptionHandler.ActivateOptions()"/> method
 	/// be called after the appenders properties have been configured.
 	/// </para>
 	/// </remarks>
@@ -82,6 +82,7 @@ namespace log4net.Config
 
 		#region Public Static Methods
 
+#if !NETSTANDARD1_3
 		/// <summary>
 		/// Initializes the log4net system with a default configuration.
 		/// </summary>
@@ -96,22 +97,8 @@ namespace log4net.Config
 		/// </remarks>
         static public ICollection Configure()
 		{
-		    return BasicConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
-		}
-
-	    /// <summary>
-		/// Initializes the log4net system using the specified appender.
-		/// </summary>
-		/// <param name="appender">The appender to use to log all logging events.</param>
-		/// <remarks>
-		/// <para>
-		/// Initializes the log4net system using the specified appender.
-		/// </para>
-		/// </remarks>
-		static public ICollection Configure(IAppender appender) 
-		{
-            return Configure(new IAppender[] { appender });
-		}
+            return BasicConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
+        }
 
         /// <summary>
         /// Initializes the log4net system using the specified appenders.
@@ -137,6 +124,21 @@ namespace log4net.Config
 
             return configurationMessages;
         }
+
+	    /// <summary>
+		/// Initializes the log4net system using the specified appender.
+		/// </summary>
+		/// <param name="appender">The appender to use to log all logging events.</param>
+		/// <remarks>
+		/// <para>
+		/// Initializes the log4net system using the specified appender.
+		/// </para>
+		/// </remarks>
+		static public ICollection Configure(IAppender appender) 
+		{
+            return Configure(new IAppender[] { appender });
+		}
+#endif // !NETSTANDARD1_3
 
 		/// <summary>
 		/// Initializes the <see cref="ILoggerRepository"/> with a default configuration.

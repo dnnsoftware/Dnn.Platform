@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -312,12 +312,12 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);
             Requires.NotNullOrEmpty(nameof(settingName), settingName);
             
-            return new PortalSecurity().Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
+            return PortalSecurity.Instance.Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
         }
 
         public string EncryptValue(string settingValue)
         {
-            return new PortalSecurity().Encrypt(Host.GUID, settingValue.Trim());
+            return PortalSecurity.Instance.Encrypt(Host.GUID, settingValue.Trim());
         }
 
         public virtual string GetHashCode(IFileInfo file)

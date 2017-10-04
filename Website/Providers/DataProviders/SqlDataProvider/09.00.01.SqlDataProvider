@@ -1,0 +1,637 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version NVARCHAR(8)
+SET @version = '09.00.01'
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Registration'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ToastSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.WebServer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Database'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Host'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Modules'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Skins'
+
+GO
+
+/* DNN-8699" Update SystemRoles to set IsSystemRole field to true */
+/*************************************************/
+UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Administrators'
+UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Subscribers'
+UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Registered Users'
+GO
+
+/* DNN-8950: Performance of GetModuleByDefinition Impacts DB Server Heavily */
+/* DNN-9044: Performance issue */
+/*************************************************/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Modules]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        DM.PackageID,
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+        CASE WHEN TM.IconFile LIKE 'fileid=%' 
+			THEN (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+				  WHERE FileId = CAST(SUBSTRING(TM.IconFile, 8, 10) AS Int))
+			ELSE Coalesce(TM.IconFile,'')
+		END AS IconFile,
+        TM.Visibility,
+        TM.Header,
+        TM.Footer,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode,
+        M.AllTabs,
+        M.StartDate,
+        M.EndDate,
+        T.StartDate AS TabStartDate,
+        T.EndDate AS TabEndDate,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        M.CreatedByUserID,
+        M.CreatedOnDate,
+        M.LastModifiedByUserID,
+        M.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MD.DefinitionName,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        TM.IsDeleted AS IsDeleted,
+        M.IsDeleted  AS IsModuleDeleted,
+		T.IsDeleted  AS IsTabDeleted
+    FROM        {databaseOwner}[{objectQualifier}ModuleDefinitions] AS MD
+     INNER JOIN {databaseOwner}[{objectQualifier}Modules]           AS M  ON M.ModuleDefID = MD.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}ModuleControls]    AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules]    AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems]      AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}TabModules]        AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}Tabs]              AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+/* DNN-8950: Performance of GetModuleByDefinition Impacts DB Server Heavily */
+/****************************************************************************/
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+      @PortalId int,
+      @DefinitionName nvarchar(128)
+AS
+IF(@PortalId IS NULL)
+	SELECT M.*
+	FROM {databaseOwner}{objectQualifier}vw_Modules M
+	WHERE M.PortalId IS NULL
+	  AND M.DefinitionName = @DefinitionName
+	  AND M.IsDeleted = 0
+	  AND M.IsTabDeleted = 0
+ELSE
+	SELECT M.*
+	FROM {databaseOwner}{objectQualifier}vw_Modules M
+	WHERE M.PortalId = @PortalId
+	  AND M.DefinitionName = @DefinitionName
+	  AND M.IsDeleted = 0
+	  AND M.IsTabDeleted = 0
+GO
+
+/* DNN-9133 */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateUserProfileProperty]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserProfileProperty]
+GO
+
+CREATE PROC {databaseOwner}[{objectQualifier}UpdateUserProfileProperty] 
+
+	@ProfileID				int,
+	@UserID					int,
+	@PropertyDefinitionID	int,
+	@PropertyValue			ntext,
+	@Visibility				int,
+	@ExtendedVisibility		varchar(400),
+	@LastUpdatedDate		datetime
+
+AS
+	IF @ProfileID IS NULL OR @ProfileID = -1
+		-- Try the UserID/PropertyDefinitionID to see if the Profile property exists
+		SELECT @ProfileID = ProfileID
+			FROM   {databaseOwner}{objectQualifier}UserProfile
+			WHERE  UserID = @UserID AND PropertyDefinitionID = @PropertyDefinitionID
+	 
+	IF @ProfileID IS NOT NULL
+		-- Update Property
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}UserProfile
+				SET PropertyValue = case when (DATALENGTH(@PropertyValue) > 7500) then NULL else @PropertyValue end,
+					PropertyText = case when (DATALENGTH(@PropertyValue) > 7500) then @PropertyValue else NULL end,
+					Visibility = @Visibility,
+					ExtendedVisibility = @ExtendedVisibility,
+					LastUpdatedDate = @LastUpdatedDate
+				WHERE  ProfileID = @ProfileID
+			SELECT @ProfileID
+		END
+	ELSE
+		-- Insert New Property
+		BEGIN
+			IF @PropertyValue IS NOT NULL AND DATALENGTH(@PropertyValue) > 0
+				BEGIN
+					INSERT INTO {databaseOwner}{objectQualifier}UserProfile (
+						UserID,
+						PropertyDefinitionID,
+						PropertyValue,
+						PropertyText,
+						Visibility,
+						ExtendedVisibility,
+						LastUpdatedDate
+					  )
+					VALUES (
+						@UserID,
+						@PropertyDefinitionID,
+						case when (DATALENGTH(@PropertyValue) > 7500) then NULL else @PropertyValue end,
+						case when (DATALENGTH(@PropertyValue) > 7500) then @PropertyValue else NULL end,
+						@Visibility,
+						@ExtendedVisibility,
+						@LastUpdatedDate
+					  )
+
+					SELECT SCOPE_IDENTITY()
+				END
+			ELSE
+				SELECT @ProfileID
+		END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByPackageID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+    @PortalId  Int, -- Null for Host menu items
+    @PackageId Int, -- Not Null!
+    @ForHost   Bit  -- 0: Get pages for a specific portal (OR host pages only)
+                    -- 1: Get all host pages and portal pages
+AS
+BEGIN
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+	
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs]
+    WHERE (IsNull(PortalId, -1) = IsNull(@PortalId, -1) Or @ForHost = 1)
+		AND IsDeleted = 0
+		AND TabId IN (SELECT M.TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
+					  LEFT JOIN #TabsLatestPublished TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+                      WHERE M.PackageID = @PackageId AND (M.IsDeleted = 0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL)))
+    ORDER BY PortalID, TabName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN, @PackageId UNKNOWN, @ForHost UNKNOWN));
+END
+GO
+
+/* DNN-9044: Performance issue */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByProfileProperty]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+    @PortalID		int,
+    @PropertyName   nvarchar(256),
+    @PropertyValue  nvarchar(256),
+    @PageIndex      int,
+    @PageSize       INT,
+    @IncludeDeleted bit,
+    @SuperUsersOnly bit	
+AS
+BEGIN
+	-- Set the page bounds
+	DECLARE @PageLowerBound INT
+	DECLARE @PageUpperBound INT
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+	-- Create a temp table TO store the select results
+	CREATE TABLE #PageIndexForUsers
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		UserId int,
+		DisplayName varchar(512)
+	)
+
+	-- Insert into our temp table
+	INSERT INTO #PageIndexForUsers (UserId,DisplayName)
+		SELECT DISTINCT U.UserId, U.DisplayName 
+		FROM {databaseOwner}{objectQualifier}ProfilePropertyDefinition P
+			INNER JOIN {databaseOwner}{objectQualifier}UserProfile     UP ON P.PropertyDefinitionID = UP.PropertyDefinitionID 
+			INNER JOIN {databaseOwner}{objectQualifier}Users           U  ON UP.UserID = U.UserID
+			INNER JOIN {databaseOwner}{objectQualifier}Lists           DT ON DT.EntryID = P.DataType
+			LEFT  JOIN {databaseOwner}{objectQualifier}Lists           L  ON L.ListName = @PropertyName AND L.Value = UP.PropertyValue AND L.Text LIKE @PropertyValue
+		WHERE (PropertyName = @PropertyName)
+		  AND (PropertyValue LIKE @PropertyValue OR PropertyText LIKE @PropertyValue OR (DT.Value = 'List' AND L.EntryID IS NOT NULL ))
+		  AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				    OR IsDeleted Is NULL)
+			AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			AND (P.Portalid = @PortalID OR (@PortalID is null ))
+		ORDER BY U.DisplayName
+
+	SELECT  *
+	FROM	{databaseOwner}{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+	WHERE  u.UserId = p.UserId
+			AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				    OR IsDeleted Is NULL)
+			AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			AND ( PortalId = @PortalID OR (@PortalID is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+		ORDER BY U.DisplayName
+
+	SELECT  TotalRecords = COUNT(*)
+	FROM    #PageIndexForUsers
+END
+GO
+
+/* DNN-9044: Performance issue */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePackagesInUse]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+	@PortalID INT,
+	@ForHost BIT
+AS
+BEGIN
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+
+	IF (@ForHost = 1)
+		-- Get in use for all host pages and portal pages
+		SELECT AllPackages.*
+		FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM         {databaseOwner}{objectQualifier}Packages       P
+				  INNER JOIN {databaseOwner}{objectQualifier}vw_Modules     M   ON P.PackageID=M.PackageID
+				  INNER JOIN {databaseOwner}{objectQualifier}tabs           T   ON T.TabID=M.TabID
+				  LEFT  JOIN #TabsLatestPublished                           TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE T.IsDeleted=0 AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))
+			) AS InUsePackages
+				ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+	ELSE
+		-- Get in use for portal or host only
+		SELECT AllPackages.* FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM         {databaseOwner}{objectQualifier}Packages       P
+				  INNER JOIN {databaseOwner}{objectQualifier}vw_Modules     M   ON P.PackageID=M.PackageID
+				  INNER JOIN {databaseOwner}{objectQualifier}tabs           T   ON T.TabID=M.TabID
+				  LEFT  JOIN #TabsLatestPublished                           TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE ((@PortalID IS NULL AND T.PortalID IS NULL) OR T.PortalID = @PortalID)
+				  AND T.IsDeleted=0
+				  AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))) AS InUsePackages	
+			ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+END
+GO
+
+/* DNN-9044: Performance issue */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSearchModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetSearchModules
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchModules
+	@PortalID int
+AS
+BEGIN	
+	DECLARE @currentDate AS [DATETIME] = GETDATE();
+
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}vw_Modules
+	WHERE IsDeleted = 0  
+	  AND IsTabDeleted = 0  
+	  AND IsAdmin = 0
+	  AND (SupportedFeatures & 2) = 2
+	  AND (StartDate <= @currentDate OR StartDate IS NULL) 
+	  AND (EndDate > @currentDate OR EndDate IS NULL) 
+	  AND (TabEndDate > @currentDate OR TabEndDate IS NULL) 
+	  AND (TabStartDate <= @currentDate OR TabStartDate IS NULL) 
+	  AND (NOT (BusinessControllerClass IS NULL))
+	  AND (PortalID = @PortalID OR (PortalID IS NULL AND @PortalID Is NULL))
+	ORDER BY ModuleOrder
+END
+GO
+
+/* DNN-9141: adding temporary table for redirects with error messages */
+/**********************************************************************/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}RedirectMessages]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}RedirectMessages](
+		[MessageId] [UniqueIdentifier] CONSTRAINT Guid_Default DEFAULT NEWID(),
+		[UserId] [int],
+		[TabId] [int],
+		[MessageText] [nvarchar](max) NOT NULL,
+		[CreatedOnDate] [DateTime] NOT NULL DEFAULT GETDATE(),
+			CONSTRAINT [PK_{objectQualifier}RedirectMessages] PRIMARY KEY ([MessageId])
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}RedirectMessages]')
+				AND name = N'IX_{objectQualifier}RedirectMessages_CreatedOnDate')
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}RedirectMessages_CreatedOnDate]
+		ON {databaseOwner}[{objectQualifier}RedirectMessages] ([CreatedOnDate])
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddRedirectMessage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddRedirectMessage];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddRedirectMessage]
+	@UserId int,
+	@TabId int,
+	@Text [nvarchar](max)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}RedirectMessages
+		(UserId, TabId, MessageText)
+	OUTPUT inserted.MessageId
+	VALUES(@UserId, @TabId, @Text)
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRedirectMessage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRedirectMessage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRedirectMessage]
+	@guid [UniqueIdentifier]
+AS
+	SELECT MessageText
+	FROM {databaseOwner}{objectQualifier}RedirectMessages
+	WHERE MessageId = @guid
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteOldRedirectMessage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteOldRedirectMessage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteOldRedirectMessage]
+	@CutoffDate [DateTime]
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}RedirectMessages
+	WHERE CreatedOnDate <= @CutoffDate
+GO
+
+/* DNN-9040: replace split flag if it included in property value. */
+/*************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+    @startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS
+BEGIN
+	DECLARE @PivotSql NVARCHAR(MAX)
+
+	SELECT @PivotSql = COALESCE(@PivotSql + ',','') + '[' + PropertyName + ']'
+		FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd
+		INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON ListName = 'DataType' AND SystemList = 1 AND Value IN ( 'Text', 'RichText' ) AND l.EntryID = pd.DataType
+		WHERE ISNULL(pd.PortalID, -1) = ISNULL(@PortalId, -1)
+		AND Deleted = 0
+	ORDER BY ViewOrder
+
+	DECLARE @Sql NVARCHAR(MAX)
+
+	SELECT @Sql = '
+    WITH    ValidDataType
+                AS ( SELECT   EntryID
+                    FROM     {databaseOwner}[{objectQualifier}Lists]
+                    WHERE    ListName = ''DataType''
+                            AND SystemList = 1
+                            AND Value IN ( ''Text'', ''RichText'' )
+                    ),
+                ValidUsers AS
+                (
+                                    SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                        FROM ( SELECT DISTINCT
+                                        ( u.UserID )
+                                FROM      {databaseOwner}[{objectQualifier}Users] u
+                                        INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                        INNER JOIN {databaseOwner}[{objectQualifier}vw_Profile] p ON p.UserID = u.UserID
+                                        INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalId
+                                        INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
+                                        AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
+                                        AND ((p.PropertyValue IS NOT NULL AND p.PropertyValue <> '''') OR u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                            ) AS T WHERE UserID > @startUserId) AS T
+                            WHERE rownumber <= @numberOfUsers
+                )
+
+	SELECT *
+	FROM (
+		SELECT  u.UserID ,
+				u.DisplayName,
+				u.LastModifiedOnDate,
+				u.Username,
+				u.IsSuperUser,
+				u.Email,
+				u.CreatedOnDate,
+				p.PropertyName,
+				REPLACE(p.PropertyValue, ''$'', ''[$]'') + ''$$$'' +
+						CAST(CASE WHEN (p.Visibility IS NULL) THEN 0 ELSE p.Visibility END AS VARCHAR(10)) + ''$$$'' + p.ExtendedVisibility + ''$$$'' +
+						CONVERT(VARCHAR(20), CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate OR p.LastUpdatedDate IS NULL THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END, 20)
+					AS [PropertyValue]
+		FROM
+			{databaseOwner}[{objectQualifier}Users] u
+			INNER JOIN ValidUsers vu on vu.UserId = u.UserID
+			INNER JOIN {databaseOwner}[{objectQualifier}vw_Profile] p ON p.UserID = u.UserID
+			INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+			INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+		) AS T
+	PIVOT (MAX(PropertyValue) for PropertyName in (' + @PivotSql + ')) AS T
+	ORDER BY UserId
+	'
+	EXECUTE sp_executesql @Sql, 
+                            N'@PortalId INT, @StartDate DATETIME, @startUserId INT, @numberOfUsers INT',
+                            @PortalId, @StartDate, @startUserId, @numberOfUsers
+END
+GO
+
+/* DNN-9042 */
+/************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}ScheduleHistory
+	WHERE ScheduleHistoryID IN (
+		SELECT TOP 5000 ScheduleHistoryID FROM {databaseOwner}{objectQualifier}ScheduleHistory sh
+			INNER JOIN {databaseOwner}{objectQualifier}Schedule s ON s.ScheduleID = sh.ScheduleID
+		WHERE (
+			  SELECT COUNT(*)
+			  FROM {databaseOwner}{objectQualifier}ScheduleHistory sh2
+			  WHERE sh2.ScheduleID = sh.ScheduleID
+			  AND sh2.StartDate >= sh.StartDate
+			  ) > s.RetainHistoryNum
+		  AND s.Enabled = 1
+		  AND s.RetainHistoryNum <> -1
+		ORDER BY ScheduleHistoryID
+	)
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

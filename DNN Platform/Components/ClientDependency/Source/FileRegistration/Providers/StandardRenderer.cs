@@ -23,7 +23,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
         }
 
         /// <summary>
-        /// Override because we need to ensure the &amp; is replaced with &amp; This is only required for this one w3c compliancy, the URL itself is a valid URL.
+        /// Override because we need to ensure the &amp; is replaced with &amp;amp; This is only required for this one w3c compliancy, the URL itself is a valid URL.
         /// </summary>
         /// <param name="allDependencies"></param>
         /// <param name="paths"></param>
@@ -40,68 +40,76 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
-            var asArray = jsDependencies.ToArray();
-
-            if (!asArray.Any())
+            if (!jsDependencies.Any())
                 return string.Empty;
 
             var sb = new StringBuilder();
 
             if (http.IsDebuggingEnabled || !EnableCompositeFiles)
             {
-                foreach (var dependency in asArray)
+                foreach (var dependency in jsDependencies)
                 {
                     sb.Append(RenderSingleJsFile(dependency.FilePath, htmlAttributes));
                 }
             }
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in jsDependencies)
+                {
+                    RenderJsComposites(http, htmlAttributes, sb, Enumerable.Repeat(dependency, 1));
+                }
+            }
             else
             {
-				var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
-                    ClientDependencyType.Javascript, 
-                    http, 
-                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+                RenderJsComposites(http, htmlAttributes, sb, jsDependencies);
+            }
 
-                foreach (var s in comp)
+            return sb.ToString();
+        }        
+
+        protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
+        {
+            if (!cssDependencies.Any())
+                return string.Empty;
+
+            var sb = new StringBuilder();
+
+            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
+            {
+                foreach (var dependency in cssDependencies)
                 {
-                    sb.Append(RenderSingleJsFile(s, htmlAttributes));
-                }                
+                    sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
+                }
+            }
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in cssDependencies)
+                {
+                    RenderCssComposites(http, htmlAttributes, sb, Enumerable.Repeat(dependency, 1));
+                }
+            }
+            else
+            {
+                RenderCssComposites(http, htmlAttributes, sb, cssDependencies);
             }
 
             return sb.ToString();
         }
 
-        protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
+        //*** DNN related change *** begin
+        protected override void RenderCssComposites(HttpContextBase http, IDictionary<string, string> htmlAttributes, StringBuilder sb, IEnumerable<IClientDependencyFile> cssDependencies)
+        //*** DNN related change *** end
         {
-            var asArray = cssDependencies.ToArray();
+            var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                cssDependencies,
+                ClientDependencyType.Css,
+                http,
+                ClientDependencySettings.Instance.CompositeFileHandlerPath);
 
-            if (!asArray.Any())
-                return string.Empty;
-
-            var sb = new StringBuilder();
-
-            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
+            foreach (var s in comp)
             {
-                foreach (var dependency in asArray)
-                {
-                    sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
-                }
+                sb.Append(RenderSingleCssFile(s, htmlAttributes));
             }
-            else
-            {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
-                    ClientDependencyType.Css, 
-                    http,
-                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
-
-                foreach (var s in comp)
-                {
-                    sb.Append(RenderSingleCssFile(s, htmlAttributes));
-                }    
-            }
-
-            return sb.ToString();
         }
 
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)

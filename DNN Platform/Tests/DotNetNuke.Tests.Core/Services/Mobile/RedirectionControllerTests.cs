@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -674,19 +674,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		private void SetupRoleProvider()
 		{
 			var mockRoleProvider = MockComponentProvider.CreateNew<RoleProvider>();
-
-			mockRoleProvider.Setup(p => p.GetRole(It.IsAny<int>(), It.IsAny<int>())).Returns<int, int>((portalId, roleId) =>
-			{
-				RoleInfo roleInfo = new RoleInfo();
-				roleInfo.RoleID = roleId;
-				roleInfo.PortalID = portalId;
-				if (roleId == 1)
-				{
-					roleInfo.RoleName = "Administrators";
-				}
-
-				return roleInfo;
-			});
 		}
 
 		private IDataReader GetRedirectionsCallBack(int portalId)

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -115,21 +115,5 @@ namespace DotNetNuke.Framework
                 return result;
             }
         }
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DotNetNuke 6.0.  Replaced by RegisterStyleSheet")]
-        public void AddStyleSheet(string id, string href, bool isFirst)
-        {
-            RegisterStyleSheet(this, href, isFirst);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.0.  Replaced by RegisterStyleSheet")]
-        public void AddStyleSheet(string id, string href)
-        {
-            RegisterStyleSheet(this, href, false);
-        }
-
-        #endregion
     }
 }

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 

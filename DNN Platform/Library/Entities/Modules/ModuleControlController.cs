@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -198,30 +198,5 @@ namespace DotNetNuke.Entities.Modules
         {
             SaveModuleControl(objModuleControl, true);
         }
-
-        #region "Obsolete"
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleControlsByModuleDefinitionID(Integer)")]
-        public static ArrayList GetModuleControls(int moduleDefID)
-        {
-            var arrControls = new ArrayList();
-            arrControls.AddRange(GetModuleControlsByModuleDefinitionID(moduleDefID).Values);
-            return arrControls;
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleControlByControlKey(String, Integer)")]
-        public static ArrayList GetModuleControlsByKey(string controlKey, int moduleDefID)
-        {
-            var arrControls = new ArrayList {GetModuleControlByControlKey(controlKey, moduleDefID)};
-            return arrControls;
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleControlByControlKey(String, Integer)")]
-        public static ModuleControlInfo GetModuleControlByKeyAndSrc(int moduleDefID, string controlKey, string controlSrc)
-        {
-            return GetModuleControlByControlKey(controlKey, moduleDefID);
-        }
-
-        #endregion
     }
 }

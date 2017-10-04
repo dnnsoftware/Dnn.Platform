@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -62,6 +62,7 @@ namespace DotNetNuke.Entities
         private event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
 
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
+        private event EventHandler<PortalTemplateEventArgs> PortalTemplateCreated;
 
         private event EventHandler<ProfileEventArgs> ProfileUpdated;
 
@@ -131,6 +132,11 @@ namespace DotNetNuke.Entities
             foreach (var handler in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
             {
                 PortalCreated += handler.Value.PortalCreated;
+            }
+
+            foreach (var handler in EventHandlersContainer<IPortalTemplateEventHandlers>.Instance.EventHandlers)
+            {
+                PortalTemplateCreated += handler.Value.TemplateCreated;
             }
 
             foreach (var handler in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
@@ -344,6 +350,14 @@ namespace DotNetNuke.Entities
             if (PortalCreated != null)
             {
                 PortalCreated(this, args);
+            }
+        }
+
+        public virtual void OnPortalTemplateCreated(PortalTemplateEventArgs args)
+        {
+            if (PortalTemplateCreated != null)
+            {
+                PortalTemplateCreated(this, args);
             }
         }
 

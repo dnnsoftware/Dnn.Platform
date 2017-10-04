@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,7 +58,9 @@ namespace DotNetNuke.Entities.Modules
     /// </remarks>
     public class PortalModuleBase : UserControlBase, IModuleControl
     {
-        protected static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled);
+        protected static readonly Regex FileInfoRegex = new Regex(
+            @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private string _localResourceFile;
@@ -446,21 +448,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        // CONVERSION: Obsolete pre 5.0 => Remove in 5.0
-        [ObsoleteAttribute(
-            "The HelpFile() property was deprecated in version 2.2. Help files are now stored in the /App_LocalResources folder beneath the module with the following resource key naming convention: ModuleHelp.Text"
-            )]
-        public string HelpFile { get; set; }
-
-        [Obsolete("ModulePath was renamed to ControlPath and moved to IModuleControl in version 5.0")]
-        public string ModulePath
-        {
-            get
-            {
-                return ControlPath;
-            }
-        }
-
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID)")]
         public string GetCacheFileName(int tabModuleId)
         {
@@ -477,12 +464,6 @@ namespace DotNetNuke.Entities.Modules
             strCacheKey += tabModuleId + ":";
             strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
             return strCacheKey;
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Please use ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, PermissionKey) ")]
-        public bool HasModulePermission(string PermissionKey)
-        {
-            return ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, PermissionKey);
         }
 
         [Obsolete("This method is deprecated.  Plaese use ModuleController.SynchronizeModule(ModuleId)")]

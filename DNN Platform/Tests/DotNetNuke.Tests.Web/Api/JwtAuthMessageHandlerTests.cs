@@ -151,7 +151,7 @@ namespace DotNetNuke.Tests.Web.Api
             }
 
             const int homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright (c) 2016 DNN Corp.", null,
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright (c) 2017 DNN Corp.", null,
                 "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
                 "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
                 null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0", null,

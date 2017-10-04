@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,6 +36,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -279,7 +280,7 @@ namespace DotNetNuke.UI.Skins
                     if (controlPanel.IncludeInControlHierarchy)
                     {
                         //inject ControlPanel control into skin
-                        if (ControlPanel == null)
+                        if (ControlPanel == null || HostController.Instance.GetBoolean("IgnoreControlPanelWrapper", false))
                         {
                             if (form != null)
                             {
@@ -292,28 +293,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            if (form != null)
-                            {
-                                if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
-                                {
-                                    form.Controls.AddAt(0, controlPanel);
-                                }
-                                else
-                                {
-                                    ControlPanel.Controls.Add(controlPanel);
-                                }
-                            }
-                            else
-                            {
-                                if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
-                                {
-                                    Page.Controls.AddAt(0, controlPanel);
-                                }
-                                else
-                                {
-                                    ControlPanel.Controls.Add(controlPanel);
-                                }
-                            }
+                            ControlPanel.Controls.Add(controlPanel);
                         }
 
                         //register admin.css

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.Modules.CoreMessaging" type="Module" version="09.00.00" isSystem="true">
+    <package name="DotNetNuke.Modules.CoreMessaging" type="Module" version="09.02.00" isSystem="true">
       <friendlyName>Message Center</friendlyName>      
       <description>Core Messaging module allows users to message each other.</description>
       <iconFile>~/DesktopModules/CoreMessaging/Images/messaging_32X32.png</iconFile>
@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">06.02.00</dependency>
+        <dependency type="CoreVersion">07.00.00</dependency>
       </dependencies>
       <components>
         <component type="Module">

@@ -89,43 +89,63 @@ namespace ClientDependency.Core
         /// <returns></returns>
         public static string GenerateHash(this string str)
         {
-            try
-            {                
-                return CryptoConfig.AllowOnlyFipsAlgorithms
-                    ? str.GenerateSha256Hash()
-                    : str.GenerateMd5();
-            }
-            catch (Exception)
-            {
-                //default to MD5
-                return str.GenerateMd5();
-            }
+            return CryptoConfig.AllowOnlyFipsAlgorithms
+                ? str.GenerateSha1Hash()
+                : str.GenerateMd5();
         }
 
         /// <summary>
-        /// Generate a SHA256 hash of a string
+        /// Generate a SHA1 hash of a string
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
+        public static string GenerateSha1Hash(this string str)
+        {
+            return str.GenerateHash("SHA1");
+        }
+
+        [Obsolete("This is no longer used and will be removed in future versions")]
         public static string GenerateSha256Hash(this string str)
         {
-            using (var hasher = new SHA256CryptoServiceProvider())
-            {
-                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
-                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
-            }
+            return str.GenerateHash("SHA256");
         }
 
         /// <summary>Generate a MD5 hash of a string
         /// </summary>
         public static string GenerateMd5(this string str)
         {
-            using (var hasher = new MD5CryptoServiceProvider())
+            return str.GenerateHash("MD5");
+        }
+
+        /// <summary>Generate a MD5 hash of a string
+        /// </summary>
+        private static string GenerateHash(this string str, string hashType)
+        {
+            var hasher = HashAlgorithm.Create(hashType);
+            if (hasher == null) throw new InvalidOperationException("No hashing type found by name " + hashType);
+            using (hasher)
             {
-                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
-                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));    
+                //convert our string into byte array
+                var byteArray = Encoding.UTF8.GetBytes(str);
+
+                //get the hashed values created by our SHA1CryptoServiceProvider
+                var hashedByteArray = hasher.ComputeHash(byteArray);
+
+                //create a StringBuilder object
+                var stringBuilder = new StringBuilder();
+
+                //loop to each each byte
+                foreach (var b in hashedByteArray)
+                {
+                    //append it to our StringBuilder
+                    stringBuilder.Append(b.ToString("x2").ToLower());
+                }
+
+                //return the hashed value
+                return stringBuilder.ToString();
             }
         }
+
 
         /// <summary>
         /// checks if the string ends with one of the strings specified. This ignores case.

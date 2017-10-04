@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Journal" type="Module" version="09.00.00" isSystem="true">
+        <package name="Journal" type="Module" version="09.02.00" isSystem="true">
             <friendlyName>Journal</friendlyName>
             <description>DotNetNuke Corporation Journal module</description>
             <iconFile>DesktopModules/Journal/Images/journal_32X32.png</iconFile>
@@ -14,7 +14,7 @@
             <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
             <azureCompatible>true</azureCompatible>
             <dependencies>
-                <dependency type="CoreVersion">06.02.00</dependency>
+                <dependency type="CoreVersion">07.00.00</dependency>
             </dependencies>
             <components>
                 <component type="Module">

@@ -29,7 +29,7 @@
     background-color: #ddd;
 }
 
-    .dnnSearchResultPanel .RadComboBox {
+    .dnnSearchResultPanel .selectize-control {
         width: 100px;
     }
 
@@ -244,7 +244,7 @@
         margin-bottom: 5px;
     }
 
-    #dnnSearchResultAdvancedForm.dnnForm .dnnFormItem > .RadComboBox_Default {
+    #dnnSearchResultAdvancedForm.dnnForm .dnnFormItem > .selectize-control {
         width: 235px;
         margin-bottom: 0;
     }

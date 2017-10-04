@@ -151,7 +151,10 @@
 				},
 				onError: function (xhr, status) {
 					displayMessage(composeMessageDialog, opts.autoSuggestErrorText + status);
-				}
+				},
+	            onReady: function() {
+	                composeMessageDialog.find('input[id^=token-input]').attr('aria-label', 'Token Input');
+	            }
 			});
 
 			composeMessageDialog.find('#subject').keyup(function () {
@@ -173,6 +176,7 @@
                 resizable: false,
                 open: function () {
                     composeMessageDialog.dialog("widget").find('.ui-dialog-buttonpane :button').removeClass().addClass('dnnTertiaryAction');
+                    composeMessageDialog.dialog("widget").find('.ui-dialog-titlebar-close').attr('aria-label', 'Close');
                     messageId = -1;
 
                     canSend = false;
@@ -220,9 +224,9 @@
                             var params = {
                                 subject: encodeURIComponent(composeMessageDialog.find('#subject').val()),
                                 body: encodeURIComponent(composeMessageDialog.find('#bodytext').val()),
-                                roleIds: (roles.length > 0 ? JSON.stringify(roles) : {}),
-                                userIds: (users.length > 0 ? JSON.stringify(users) : {}),
-                                fileIds: (attachments.length > 0 ? JSON.stringify(attachments) : {})
+                                roleIds: JSON.stringify(roles),
+                                userIds: JSON.stringify(users),
+                                fileIds: JSON.stringify(attachments)
                             };
                             $.ajax(
                                 {   

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml.XPath;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Entities.Host;
@@ -186,6 +186,7 @@ namespace DotNetNuke.Services.Installer
         public static string WRITER_SavedFile = GetLocalizedString("WRITER_SavedFile");
         public static string WRITER_SaveFileError = GetLocalizedString("WRITER_SaveFileError");
         public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
+        public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
         // ReSharper restore InconsistentNaming
         #endregion
 
@@ -444,7 +445,7 @@ namespace DotNetNuke.Services.Installer
         public static string ParsePackageIconFileName(PackageInfo package)
         {
             var filename = string.Empty;
-            if ((package.IconFile != null) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
+            if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
                 filename = package.IconFile.StartsWith("~/" + package.FolderName) ? package.IconFile.Remove(0, ("~/" + package.FolderName).Length).TrimStart('/') : package.IconFile;
             }
@@ -454,7 +455,7 @@ namespace DotNetNuke.Services.Installer
         public static string ParsePackageIconFile(PackageInfo package)
         {
             var iconFile = string.Empty;
-            if ((package.IconFile != null) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
+            if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
                 iconFile = !package.IconFile.StartsWith("~/") ? "~/" + package.FolderName + "/" + package.IconFile : package.IconFile;
             }
@@ -474,6 +475,34 @@ namespace DotNetNuke.Services.Installer
         public static string ReadAttribute(XPathNavigator nav, string attributeName, bool isRequired, Logger log, string logmessage, string defaultValue)
         {
             return ValidateNode(nav.GetAttribute(attributeName, ""), isRequired, log, logmessage, defaultValue);
+        }
+
+        public static string GetPackageBackupName(PackageInfo package)
+        {
+            var packageName = package.Name;
+            var version = package.Version;
+            var packageType = package.PackageType;
+
+            var fileName = $"{packageType}_{packageName}_{version}.resources";
+            if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) > Null.NullInteger)
+            {
+                fileName = Globals.CleanFileName(fileName);
+            }
+
+            return fileName;
+        }
+
+        public static string GetPackageBackupPath(PackageInfo package)
+        {
+            var fileName = GetPackageBackupName(package);
+            var folderPath = Path.Combine(Globals.ApplicationMapPath, Util.BackupInstallPackageFolder);
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            return Path.Combine(folderPath, fileName);
         }
 
         #endregion

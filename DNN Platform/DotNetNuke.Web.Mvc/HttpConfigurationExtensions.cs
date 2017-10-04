@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace DotNetNuke.Web.Mvc
 {
-    internal static class HttpConfigurationExtensions
+    public static class HttpConfigurationExtensions
     {
         private const string Key = "MvcTabAndModuleInfoProvider";
 

@@ -31,7 +31,7 @@ namespace log4net.Layout
 	/// <remarks>
 	/// <para>
 	/// An <see cref="ILayout"/> object is used to format a <see cref="LoggingEvent"/>
-	/// as text. The <see cref="Format(TextWriter,LoggingEvent)"/> method is called by an
+	/// as text. The <see cref="M:Format(TextWriter,LoggingEvent)"/> method is called by an
 	/// appender to transform the <see cref="LoggingEvent"/> into a string.
 	/// </para>
 	/// <para>

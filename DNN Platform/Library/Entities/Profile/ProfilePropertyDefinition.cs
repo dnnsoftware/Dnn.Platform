@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -520,7 +520,7 @@ namespace DotNetNuke.Entities.Profile
 
         #region Obsolete
 
-        [Obsolete("Deprecated in 6.2 as profile visibility has been extended")]
+        [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.")]
         [Browsable(false)]
         [XmlIgnore]
         public UserVisibilityMode Visibility

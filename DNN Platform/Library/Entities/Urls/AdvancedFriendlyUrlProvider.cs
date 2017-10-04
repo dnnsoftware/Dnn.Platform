@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -579,13 +579,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        var httpAliasWithoutCulture = httpAlias.Split('/').First();
-                        var portalAliasList = primaryAliases.Where(e => e.HTTPAlias.StartsWith(httpAliasWithoutCulture, StringComparison.OrdinalIgnoreCase)).ToList();
-                        redirectAlias =
-                            // Get culture specific portal alias
-                            portalAliasList.Where(e => cultureCode.Equals(e.CultureCode, StringComparison.OrdinalIgnoreCase)).GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings) ??
-                            // Get default (none culture specific) portal alias
-                            portalAliasList.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
+                        redirectAlias =  primaryAliases.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
                     }
 
                     if (redirectAlias != null)
@@ -593,7 +587,7 @@ namespace DotNetNuke.Entities.Urls
                         if (!String.IsNullOrEmpty(redirectAlias.CultureCode)
                             && String.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) != 0)
                         {
-                            //found the primary alias alias, and it's different from the supplied portal alias
+                            //found the primary alias, and it's different from the supplied portal alias
                             //and the site is using a redirect portal alias mapping
                             //substitute in the primary Alias for the supplied alias
                             friendlyPath = friendlyPath.Replace(Globals.AddHTTP(httpAlias), String.Empty);
@@ -1369,9 +1363,9 @@ namespace DotNetNuke.Entities.Urls
             return builtInUrl;
         }
 
-        #endregion
+#endregion
 
-        #region Internal Methods
+#region Internal Methods
 
         internal static string ForceLowerCaseIfAllowed(TabInfo tab, string url, FriendlyUrlSettings settings)
         {
@@ -1405,6 +1399,6 @@ namespace DotNetNuke.Entities.Urls
             return url;
         }
 
-        #endregion
+#endregion
     }
 }

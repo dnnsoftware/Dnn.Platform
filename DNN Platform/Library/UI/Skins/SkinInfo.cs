@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -103,24 +103,6 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 _SkinSrc = value;
-            }
-        }
-
-        [Obsolete("Replaced in DNN 5.0 by SkinController.RootSkin")]
-        public static string RootSkin
-        {
-            get
-            {
-                return "Skins";
-            }
-        }
-
-        [Obsolete("Replaced in DNN 5.0 by SkinController.RootContainer")]
-        public static string RootContainer
-        {
-            get
-            {
-                return "Containers";
             }
         }
     }

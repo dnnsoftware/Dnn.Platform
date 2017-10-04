@@ -136,13 +136,46 @@ namespace ClientDependency.Core
             Bundles.AddOrUpdate(new BundleDefinition(ClientDependencyType.Javascript, name), s => OrderFiles(files), (s, enumerable) => OrderFiles(files));
         }
 
+        /// <summary>
+        /// Creates a pre-defined bundle and sets the priority for each file supplied, unless any of the files already have a priority set
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        /// <param name="files"></param>
         public static void CreateJsBundle(string name, int priority, params JavascriptFile[] files)
         {
+            //set priorities on files that don't have one set already
+            var filesToChange = files.Where(x => x.Priority == Constants.DefaultPriority);
+            foreach (var f in filesToChange)
+            {
+                f.Priority = priority;
+            }
+
             Bundles.AddOrUpdate(new BundleDefinition(ClientDependencyType.Javascript, name), s => OrderFiles(files), (s, enumerable) => OrderFiles(files));
         }
 
+        /// <summary>
+        /// Creates a pre-defined bundle and sets the priority and group for each file supplied, unless any of the files already have a priority/group set
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        /// <param name="group"></param>
+        /// <param name="files"></param>
         public static void CreateJsBundle(string name, int priority, int group, params JavascriptFile[] files)
         {
+            //set priorities on files that don't have one set already
+            var filesToChange = files.Where(x => x.Priority == Constants.DefaultPriority);
+            foreach (var f in filesToChange)
+            {
+                f.Priority = priority;
+            }
+            //set groups on files that don't have one set already
+            filesToChange = files.Where(x => x.Group == Constants.DefaultGroup);
+            foreach (var f in filesToChange)
+            {
+                f.Group = group;
+            }
+
             Bundles.AddOrUpdate(new BundleDefinition(ClientDependencyType.Javascript, name), s => OrderFiles(files), (s, enumerable) => OrderFiles(files));
         } 
         #endregion

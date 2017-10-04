@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -72,6 +72,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 imgLogo.Visible = logoVisible;
                 imgLogo.AlternateText = PortalSettings.PortalName;
                 hypLogo.ToolTip = PortalSettings.PortalName;
+
+                if (!imgLogo.Visible)
+                {
+                    hypLogo.Attributes.Add("aria-label", PortalSettings.PortalName);
+                }
                 if (PortalSettings.HomeTabId != -1)
                 {
                     hypLogo.NavigateUrl = Globals.NavigateURL(PortalSettings.HomeTabId);

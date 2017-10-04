@@ -122,7 +122,7 @@
             };			
             var dialogOpened = function () {
                 
-				$modal.bind("load", function() {
+                $modal.on("load", function () {
 					hideLoading();
 					var iframe = document.getElementById("iPopUp");
 					var currentHost = window.location.hostname.toLowerCase();
@@ -171,7 +171,7 @@
 				$modal[0].src = url;
 
                 if (typeof $.ui.dialog.prototype.options.open === 'function')
-                    $.ui.dialog.prototype.options.open();
+                    $.ui.dialog.prototype.options.open.apply(this, arguments);
             };
 			
             if (!isMobile) {

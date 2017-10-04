@@ -1,7 +1,7 @@
 #region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -98,12 +98,12 @@ namespace DotNetNuke.Web.Api.Auth
 
         private static bool TryToAuthenticate(HttpRequestMessage request, int portalId)
         {
-            if (request.Headers.Authorization == null)
+            if (request?.Headers.Authorization == null)
             {
                 return false;
             }
 
-            string authHeader = request.Headers.Authorization.ToString();
+            string authHeader = request?.Headers.Authorization.ToString();
 
             var digestAuthentication = new DigestAuthentication(new DigestAuthenticationRequest(authHeader, request.Method.Method), portalId, request.GetIPAddress());
 

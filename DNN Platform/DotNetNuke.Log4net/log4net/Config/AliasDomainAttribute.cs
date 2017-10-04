@@ -57,7 +57,7 @@ namespace log4net.Config
 		/// Initializes a new instance of the <see cref="AliasDomainAttribute" /> class with 
 		/// the specified domain to alias to this assembly's repository.
 		/// </summary>
-		/// <param name="name">The domain to alias to this assemby's repository.</param>
+		/// <param name="name">The domain to alias to this assembly's repository.</param>
 		/// <remarks>
 		/// <para>
 		/// Obsolete. Use <see cref="AliasRepositoryAttribute"/> instead of <see cref="AliasDomainAttribute"/>.

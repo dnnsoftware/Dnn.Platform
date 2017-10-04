@@ -40,7 +40,7 @@
             if (advancedEnabled) {
                 markup += '<span class="dnnSearchBox_advanced_query" /><a class="dnnSearchBoxClearAdvanced"></a>';
             }
-            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" />' +
+            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" aria-label="Search" />' +
                             '<a class="dnnSearchBoxClearText"></a>';
 
             markup += '<a class="dnnSearchButton"></a>';
@@ -71,8 +71,6 @@
                 var w2 = $('.dnnSearchBox_advanced_query', this.$wrap).width();
                 realInputRight = w + w2 + 50;
                 $('.dnnSearchBox_advanced_query', this.$wrap).hide();
-                //$('.dnnSearchBox_advanced_query', this.$wrap).hide().css({ marginRight: w + 30 });
-                //$('.dnnSearchBoxClearAdvanced', this.$wrap).css({ right: w + 38, top: 0 });
             }
             this.realInput.css({ right: realInputRight, width: wrapWidth - realInputRight - 8 });
             if (originalVal) {

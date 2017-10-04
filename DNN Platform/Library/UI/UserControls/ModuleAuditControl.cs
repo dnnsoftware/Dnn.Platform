@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,6 +44,8 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblUpdatedBy;
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
+
+        private string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         [Serializable]
 		private class EntityInfo
@@ -115,8 +117,12 @@ namespace DotNetNuke.UI.UserControls
                     Globals.NumberMatchRegex.IsMatch(CreatedByUser) && Globals.NumberMatchRegex.IsMatch(LastModifiedByUser);
 
                 _systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
-                ShowCreatedString();
-                ShowUpdatedString(isCreatorAndUpdater);
+                var displayMode = DisplayMode;
+                if (displayMode != "editor" && displayMode != "settings")
+                {
+                    ShowCreatedString();
+                    ShowUpdatedString(isCreatorAndUpdater);
+                }
             }
             catch (Exception exc) //Module failed to load
             {

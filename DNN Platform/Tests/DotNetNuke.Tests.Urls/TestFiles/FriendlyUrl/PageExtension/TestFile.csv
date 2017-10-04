@@ -1,7 +1,6 @@
 ﻿Test,								PageExtensionUsageType,		PageExtension,	Scheme,		Page Name,		Params,						Expected Url,	
 Home,								,							,				http://,	Home,			,							http://{alias}/
 About Us,							,							,				http://,	About Us,		,							http://{alias}/AboutUs
-Admin Site Settings,					,							,				http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings
 Profile Messages,					,							,				http://,	Messages,		,							http://{alias}/ActivityFeed/Messages
 Terms,								,							,				http://,	Home,			&ctl=Terms,					http://{alias}/Terms
 Login,								,							,				http://,	About Us,		&ctl=Login,					http://{alias}/Login
@@ -9,7 +8,6 @@ Edit Page Home,						,							,				http://,	Home,			&ctl=Edit&mid=100,			http://{
 Edit Page About Us,					,							,				http://,	About Us,		&ctl=Edit&mid=200,			http://{alias}/AboutUs/ctl/Edit/mid/200
 Home Never,							Never,						,				http://,	Home,			,							http://{alias}/
 About Us Never,						Never,						,				http://,	About Us,		,							http://{alias}/AboutUs
-Admin Site Settings Never,			Never,						,				http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings
 Profile Messages Never,				Never,						,				http://,	Messages,		,							http://{alias}/ActivityFeed/Messages
 Terms Never,						Never,						,				http://,	Home,			&ctl=Terms,					http://{alias}/Terms
 Login Never,						Never,						,				http://,	About Us,		&ctl=Login,					http://{alias}/Login
@@ -17,7 +15,6 @@ Edit Page Home Never,				Never,						,				http://,	Home,			&ctl=Edit&mid=100,			
 Edit Page About Us Never,			Never,						,				http://,	About Us,		&ctl=Edit&mid=200,			http://{alias}/AboutUs/ctl/Edit/mid/200
 Home Page Default,					PageOnly,					,				http://,	Home,			,							http://{alias}/
 About Us Page Default,				PageOnly,					,				http://,	About Us,		,							http://{alias}/AboutUs.aspx
-Admin Site Settings Page Default,	PageOnly,					,				http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings.aspx
 Profile Messages Page Default,		PageOnly,					,				http://,	Messages,		,							http://{alias}/ActivityFeed/Messages.aspx
 Terms Page Default,					PageOnly,					,				http://,	Home,			&ctl=Terms,					http://{alias}/Terms
 Login Page Default,					PageOnly,					,				http://,	About Us,		&ctl=Login,					http://{alias}/Login
@@ -25,7 +22,6 @@ Edit Page Home Page Default,		PageOnly,					,				http://,	Home,			&ctl=Edit&mid=
 Edit Page About Us Page Default,	PageOnly,					,				http://,	About Us,		&ctl=Edit&mid=200,			http://{alias}/AboutUs/ctl/Edit/mid/200
 Home Page aspx,						PageOnly,					.aspx,			http://,	Home,			,							http://{alias}/
 About Us aspx,						PageOnly,					.aspx,			http://,	About Us,		,							http://{alias}/AboutUs.aspx
-Admin Site Settings aspx,			PageOnly,					.aspx,			http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings.aspx
 Profile Messages aspx,				PageOnly,					.aspx,			http://,	Messages,		,							http://{alias}/ActivityFeed/Messages.aspx
 Terms aspx,							PageOnly,					.aspx,			http://,	Home,			&ctl=Terms,					http://{alias}/Terms
 Login aspx,							PageOnly,					.aspx,			http://,	About Us,		&ctl=Login,					http://{alias}/Login
@@ -33,7 +29,6 @@ Edit Page Home aspx,				PageOnly,					.aspx,			http://,	Home,			&ctl=Edit&mid=10
 Edit Page About Us aspx,			PageOnly,					.aspx,			http://,	About Us,		&ctl=Edit&mid=200,			http://{alias}/AboutUs/ctl/Edit/mid/200
 Home Page php,						PageOnly,					.php,			http://,	Home,			,							http://{alias}/
 About Us php,						PageOnly,					.php,			http://,	About Us,		,							http://{alias}/AboutUs.php
-Admin Site Settings php,				PageOnly,					.php,			http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings.php
 Profile Messages php,				PageOnly,					.php,			http://,	Messages,		,							http://{alias}/ActivityFeed/Messages.php
 Terms php,							PageOnly,					.php,			http://,	Home,			&ctl=Terms,					http://{alias}/Terms
 Login php,							PageOnly,					.php,			http://,	About Us,		&ctl=Login,					http://{alias}/Login
@@ -41,7 +36,6 @@ Edit Page Home php,					PageOnly,					.php,			http://,	Home,			&ctl=Edit&mid=100
 Edit Page About Us php,				PageOnly,					.php,			http://,	About Us,		&ctl=Edit&mid=200,			http://{alias}/AboutUs/ctl/Edit/mid/200
 Home Page Always,					AlwaysUse,					,				http://,	Home,			,							http://{alias}/
 About Us Page Always,				AlwaysUse,					,				http://,	About Us,		,							http://{alias}/AboutUs.aspx
-Admin Site Settings Page Always,		AlwaysUse,					,				http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings.aspx
 Profile Messages Page Always,		AlwaysUse,					,				http://,	Messages,		,							http://{alias}/ActivityFeed/Messages.aspx
 Terms Page Always,					AlwaysUse,					,				http://,	Home,			&ctl=Terms,					http://{alias}/Terms.aspx
 Login Page Always,					AlwaysUse,					,				http://,	About Us,		&ctl=Login,					http://{alias}/Login.aspx

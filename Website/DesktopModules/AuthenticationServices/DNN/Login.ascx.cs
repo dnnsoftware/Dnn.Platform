@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -94,17 +94,18 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 			cancelLink.NavigateUrl = GetRedirectUrl(false);
 
-			ClientAPI.RegisterKeyCapture(Parent, cmdLogin, 13);
-
             if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration)
             {
                 liRegister.Visible = false;
             }
             lblLogin.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
+		    if (string.IsNullOrEmpty(lblLogin.Text))
+		    {
+		        lblLogin.AssociatedControlID = string.Empty;
+		    }
 
-            if (!string.IsNullOrEmpty(Response.Cookies["USERNAME_CHANGED"].Value))
+            if (Request.QueryString["usernameChanged"] == "true")
             {
-                txtUsername.Text = Response.Cookies["USERNAME_CHANGED"].Value;
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
@@ -256,7 +257,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			if ((UseCaptcha && ctlCaptcha.IsValid) || !UseCaptcha)
 			{
 				var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-				string userName = new PortalSecurity().InputFilter(txtUsername.Text, 
+				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text, 
 										PortalSecurity.FilterFlag.NoScripting | 
                                         PortalSecurity.FilterFlag.NoAngleBrackets | 
                                         PortalSecurity.FilterFlag.NoMarkup);
@@ -290,9 +291,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                     if (objUser.Username.ToLower() != objUser.Email.ToLower())
                     {
                         UserController.ChangeUsername(objUser.UserID, objUser.Email);
+                        userName = objUser.Username = objUser.Email;
                     }
-
-                    Response.Cookies.Remove("USERNAME_CHANGED");
                 }
 				
 				//Raise UserAuthenticated Event

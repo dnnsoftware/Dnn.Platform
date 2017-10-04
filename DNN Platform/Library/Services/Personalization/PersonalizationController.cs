@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,10 +23,13 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Text;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Security;
 
 #endregion
 
@@ -65,7 +68,17 @@ namespace DotNetNuke.Services.Personalization
                 HttpContext context = HttpContext.Current;
                 if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
                 {
-                    profileData = context.Request.Cookies["DNNPersonalization"].Value;
+                    profileData = DecryptData(context.Request.Cookies["DNNPersonalization"].Value);
+
+                    if (string.IsNullOrEmpty(profileData))
+                    {
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", string.Empty)
+                        {
+                            Expires = DateTime.Now.AddDays(-1),
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
+                        context.Response.Cookies.Add(personalizationCookie);
+                    }
                 }
             }
             personalization.Profile = string.IsNullOrEmpty(profileData)
@@ -137,7 +150,7 @@ namespace DotNetNuke.Services.Personalization
                     var context = HttpContext.Current;
                     if (context != null)
                     {
-                        var personalizationCookie = new HttpCookie("DNNPersonalization", profileData)
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", EncryptData(profileData))
                         {
                             Expires = DateTime.Now.AddDays(30),
                             Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
@@ -146,6 +159,23 @@ namespace DotNetNuke.Services.Personalization
                     }
                 }
             }
+        }
+
+        private static string EncryptData(string profileData)
+        {
+            return PortalSecurity.Instance.Encrypt(GetDecryptionkey(), profileData);
+        }
+
+        private static string DecryptData(string profileData)
+        {
+            return PortalSecurity.Instance.Decrypt(GetDecryptionkey(), profileData);
+        }
+
+        private static string GetDecryptionkey()
+        {
+            var machineKey = Config.GetDecryptionkey();
+            var hostGuid = Host.GUID.Replace("-", string.Empty);
+            return (machineKey ?? "") + hostGuid;
         }
     }
 }

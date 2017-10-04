@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -151,9 +151,24 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        /// <summary>
+        /// Flag to indicate only edit profile.
+        /// </summary>
+        protected bool EditProfileMode
+        {
+            get
+            {
+                bool editProfile;
 
-		#region Public Properties
+                return !string.IsNullOrEmpty(Request.QueryString["editProfile"])
+                       && bool.TryParse(Request["editProfile"], out editProfile)
+                       && editProfile;
+            }
+        }
+
+        #endregion
+
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -406,14 +421,14 @@ namespace DotNetNuke.Modules.Admin.Users
                 adminTabNav.Visible = false;
                 if (Request.IsAuthenticated && MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
-					//Admin adding user
-					dnnManageUsers.Visible = false;
+                    //Admin adding user
+                    dnnManageUsers.Visible = false;
                     actionsRow.Visible = false;
                     AddModuleMessage("CannotAddUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
                 }
                 else
                 {
-					dnnManageUsers.Visible = true;
+                    dnnManageUsers.Visible = true;
                     actionsRow.Visible = true;
                 }
                 BindUser();
@@ -441,11 +456,20 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 BindUser();
                 ctlProfile.User = User;
-                ctlProfile.DataBind(); 
+                ctlProfile.DataBind();
             }
 
             dnnRoleDetails.Visible = IsEdit && !User.IsSuperUser && !AddUser;
             dnnPasswordDetails.Visible = (IsAdmin) && !AddUser;
+
+            if(EditProfileMode)
+            {
+                adminTabNav.Visible =
+                    dnnUserDetails.Visible = 
+                    dnnRoleDetails.Visible = 
+                    dnnPasswordDetails.Visible =
+                    actionsRow.Visible = false;
+            }
         }
 
 		#endregion
@@ -482,7 +506,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlMembership.MembershipDemoteFromSuperuser += MembershipDemoteFromSuperuser;
             ctlMembership.MembershipPromoteToSuperuser += MembershipPromoteToSuperuser;
 
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             //Set the Membership Control Properties
             ctlMembership.ID = "Membership";
@@ -514,12 +538,12 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (!Request.IsAuthenticated)
                 {
-					//Register
+                    //Register
                     ModuleConfiguration.ModuleTitle = Localization.GetString("Register.Title", LocalResourceFile);
                 }
                 else
                 {
-					//Add User
+                    //Add User
                     ModuleConfiguration.ModuleTitle = Localization.GetString("AddUser.Title", LocalResourceFile);
                 }
 

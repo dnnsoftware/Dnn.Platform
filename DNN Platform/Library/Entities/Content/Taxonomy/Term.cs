@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class Term : BaseEntityInfo, IHydratable
     {
-        private static readonly PortalSecurity Security = new PortalSecurity();
+        private static readonly PortalSecurity Security = PortalSecurity.Instance;
 
         private List<Term> _childTerms;
         private string _description;
@@ -102,15 +102,15 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public Term(string name, string description, int vocabularyId)
         {
-            _description = description;
-            _name = name;
+            Description = description;
+            Name = name;
             _vocabularyId = vocabularyId;
 
-            _parentTermId = null;
-            _termId = Null.NullInteger;
+            ParentTermId = null;
+            TermId = Null.NullInteger;
             _left = 0;
             _right = 0;
-            _weight = 0;
+            Weight = 0;
         }
 
         #endregion
@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
             set
             {
-                _description = value;
+                _description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -175,6 +175,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
             set
             {
+                if (HtmlUtils.ContainsEntity(value))
+                    value = System.Net.WebUtility.HtmlDecode(value);
                 _name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -325,54 +325,6 @@ namespace DotNetNuke.UI.UserControls
                 if (IsTrackingViewState)
                 {
                     _doRenderTypes = true;
-                }
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowSecure
-        {
-            get
-            {
-                if (ViewState["ShowSecure"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowSecure"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowSecure"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
-                }
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowDatabase
-        {
-            get
-            {
-                if (ViewState["ShowDatabase"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowDatabase"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowDatabase"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
                 }
             }
         }

@@ -1,0 +1,28 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>FolderProviders</DNNFileName>
+    <PackageName>DNNCE_FolderProviders</PackageName>
+    <Providers>/Providers</Providers>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Provider</WebsiteInstallPath>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\Package.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="GetFiles;DebugProject;Package">
+  </Target>
+    <Target Name="GetFiles">
+    <ItemGroup>
+      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
+      <Views Include="AzureFolderProvider/*.ascx" />
+      <ResourceFiles Include="AzureFolderProvider/App_LocalResources\*.resx" />
+      <Images Include="AzureFolderProvider/Images/*.*" />
+      <Resources Include="@(ResourceFiles);@(Views);@(Images);@(TextFiles)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/bin$(Providers)/$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/bin$(Providers)/$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/bin$(Providers)/$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
+  </Target>
+</Project>

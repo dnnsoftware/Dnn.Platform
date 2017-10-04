@@ -1,9 +1,9 @@
 <%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.UpgradeWizard" Codebehind="UpgradeWizard.aspx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head runat="server">
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
@@ -98,10 +98,14 @@
                         </div>
                     </div>
                     <hr />
-                    <ul class="dnnActions dnnClear">
+                    <ul class="dnnForm dnnActions dnnClear">
                         <li>
-                            <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction" resourcekey="Next" />
+                            <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="Next" />
                         </li>
+                        <li id="pnlAcceptTerms" runat="server" class="accept-terms">
+                        <asp:CheckBox ID="chkAcceptTerms" runat="server" />
+                        <asp:Label runat="server" ResourceKey="AcceptTerms" />
+                    </li>
                     </ul>
                 </div>
                 <div class="upgradeInstallation dnnClear" id="upgradeInstallation">
@@ -216,7 +220,7 @@
                 $("link[class=needVer]").each(function(index, item) {
                     $(item).attr("href", $(item).attr("href") + "?<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>");
                 });
-                $("#tabs").bind("tabscreate", function (event, ui) {
+                $("#tabs").on("tabscreate", function (event, ui) {
                     var index = 0, selectedIndex = 0;
                     $('.ui-tabs-nav li', $(this)).each(function () {
                         if ($(this).hasClass('ui-tabs-active'))
@@ -229,7 +233,7 @@
                         $('.dnnWizardStepArrow', $(this)).eq(selectedIndex - 1).css('background-position', '0 -201px');
                 });
 
-                $("#tabs").bind("tabsactivate", function (event, ui) {
+                $("#tabs").on("tabsactivate", function (event, ui) {
                     var index = ui.newTab.index();
                     $('.dnnWizardStepArrow', $(this)).css('background-position', '0 -401px');
                     $('.dnnWizardStepArrow', $(this)).eq(index).css('background-position', '0 -299px');
@@ -250,27 +254,43 @@
             //****************************************************************************************
             // EVENT HANDLER FUNCTIONS
             //****************************************************************************************
-            //Next Step
-            $('#<%= continueLink.ClientID %>').click(function () {
-                upgradeWizard.accountInfo = {
-                    username: $('#<%= txtUsername.ClientID %>')[0].value,
-                    password: $('#<%= txtPassword.ClientID %>')[0].value,
-                    dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N"
-                };
-
-                $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
-
-                PageMethods.ValidateInput(upgradeWizard.accountInfo, function (result) {
-                    if (result.Item1) {
-                        $('#<%= lblAccountInfoError.ClientID %>').text('');
-                        upgradeWizard.showInstallationTab();
-                        upgradeWizard.upgrade();
+            var $acceptTerms = $('#<%= chkAcceptTerms.ClientID %>');
+            if ($acceptTerms.length) {
+                $acceptTerms.click(function() {
+                    if (!$(this).is(':checked')) {
+                        $("#<%= continueLink.ClientID %>").addClass('dnnDisabledAction');
                     } else {
-                        $('#<%= lblAccountInfoError.ClientID %>').text(result.Item2);
-                        $('#<%= lblAccountInfoError.ClientID %>').css('display', 'block');
-                        setTimeout(function () { $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none') }, 3000);
+                        $("#<%= continueLink.ClientID %>").removeClass('dnnDisabledAction');
                     }
                 });
+            } else {
+                $("#<%= continueLink.ClientID %>").removeClass('dnnDisabledAction');
+            }
+            //Next Step
+            $('#<%= continueLink.ClientID %>').click(function () {
+                
+                if (!$(this).hasClass('dnnDisabledAction')) {
+                    upgradeWizard.accountInfo = {
+                        username: $('#<%= txtUsername.ClientID %>')[0].value,
+                        password: $('#<%= txtPassword.ClientID %>')[0].value,
+                        dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N",
+                        acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
+                    };
+
+                    $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
+
+                    PageMethods.ValidateInput(upgradeWizard.accountInfo, function(result) {
+                        if (result.Item1) {
+                            $('#<%= lblAccountInfoError.ClientID %>').text('');
+                            upgradeWizard.showInstallationTab();
+                            upgradeWizard.upgrade();
+                        } else {
+                            $('#<%= lblAccountInfoError.ClientID %>').text(result.Item2);
+                            $('#<%= lblAccountInfoError.ClientID %>').css('display', 'block');
+                            setTimeout(function() { $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none') }, 3000);
+                        }
+                    });
+                }
 
                 return false;
             });

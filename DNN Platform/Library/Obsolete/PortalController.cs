@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -115,32 +115,6 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetPortalSpaceUsedBytes")]
-        public int GetPortalSpaceUsed(int portalId)
-        {
-            int size;
-            try
-            {
-                size = Convert.ToInt32(GetPortalSpaceUsedBytes(portalId));
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-
-                size = int.MaxValue;
-            }
-
-            return size;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by TabController.DeserializePanes")]
-        public void ParsePanes(XmlNode nodePanes, int portalId, int TabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
-        {
-            TabController.DeserializePanes(nodePanes, portalId, TabId, mergeTabs, hModules);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
@@ -155,13 +129,6 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2.0 use ProcessResourceFileExplicit instead")]
-        public void ProcessResourceFile(string portalPath, string TemplateFile)
-        {
-            ProcessResourceFileExplicit(portalPath, TemplateFile + ".resources");
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by UpdatePortalExpiry(int, string)")]
         public void UpdatePortalExpiry(int portalId)
         {
@@ -173,90 +140,6 @@ namespace DotNetNuke.Entities.Portals
         public void UpdatePortalInfo(PortalInfo portal, bool clearCache)
         {
             UpdatePortalInternal(portal, clearCache);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 6.1. Replaced by UpdatePortalInfo(PortalInfo)")]
-        public void UpdatePortalInfo(int portalId, string portalName, string logoFile, string footerText, DateTime expiryDate, int userRegistration, int bannerAdvertising, string currency,
-                            int administratorId, double hostFee, double hostSpace, int pageQuota, int userQuota, string paymentProcessor, string processorUserId, string processorPassword,
-                            string description, string KeyWords, string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId,
-                            int searchTabId, string defaultLanguage, string homeDirectory)
-        {
-            var portal = new PortalInfo
-            {
-                PortalID = portalId,
-                PortalName = portalName,
-                LogoFile = logoFile,
-                FooterText = footerText,
-                ExpiryDate = expiryDate,
-                UserRegistration = userRegistration,
-                BannerAdvertising = bannerAdvertising,
-                Currency = currency,
-                AdministratorId = administratorId,
-                HostFee = (float)hostFee,
-                HostSpace = (int)hostSpace,
-                PageQuota = pageQuota,
-                UserQuota = userQuota,
-                PaymentProcessor = paymentProcessor,
-                ProcessorUserId = processorUserId,
-                ProcessorPassword = processorPassword,
-                Description = description,
-                KeyWords = KeyWords,
-                BackgroundFile = backgroundFile,
-                SplashTabId = splashTabId,
-                HomeTabId = homeTabId,
-                LoginTabId = loginTabId,
-                RegisterTabId = registerTabId,
-                UserTabId = userTabId,
-                SearchTabId = searchTabId,
-                DefaultLanguage = defaultLanguage,
-                HomeDirectory = homeDirectory,
-                CultureCode = GetActivePortalLanguage(portalId)
-            };
-
-            UpdatePortalInfo(portal);
-        }
-
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 6.1. Replaced by UpdatePortalInfo(PortalInfo)")]
-        public void UpdatePortalInfo(int portalId, string portalName, string logoFile, string footerText, DateTime expiryDate, int userRegistration, int bannerAdvertising, string currency,
-                            int administratorId, double hostFee, double hostSpace, int pageQuota, int userQuota, string paymentProcessor, string processorUserId, string processorPassword,
-                            string description, string keyWords, string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId,
-                            int searchTabId, string defaultLanguage, string homeDirectory, string cultureCode)
-{
-            var portal = new PortalInfo
-            {
-                PortalID = portalId,
-                PortalName = portalName,
-                LogoFile = logoFile,
-                FooterText = footerText,
-                ExpiryDate = expiryDate,
-                UserRegistration = userRegistration,
-                BannerAdvertising = bannerAdvertising,
-                Currency = currency,
-                AdministratorId = administratorId,
-                HostFee = (float)hostFee,
-                HostSpace = (int)hostSpace,
-                PageQuota = pageQuota,
-                UserQuota = userQuota,
-                PaymentProcessor = paymentProcessor,
-                ProcessorUserId = processorUserId,
-                ProcessorPassword = processorPassword,
-                Description = description,
-                KeyWords = keyWords,
-                BackgroundFile = backgroundFile,
-                SplashTabId = splashTabId,
-                HomeTabId = homeTabId,
-                LoginTabId = loginTabId,
-                RegisterTabId = registerTabId,
-                UserTabId = userTabId,
-                SearchTabId = searchTabId,
-                DefaultLanguage = defaultLanguage,
-                HomeDirectory = homeDirectory,
-                CultureCode = cultureCode
-            };
-            UpdatePortalInfo(portal);
         }
  	}
 }

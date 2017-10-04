@@ -703,7 +703,7 @@ ul.dnnAdminTabNav {
     margin-top: 5px;
     margin-left: 0;
     width: 100%;
-    height: 37px;
+    min-height: 37px;
     border-bottom: 1px solid #c2c2c2;
     padding: 0;
 }
@@ -2065,6 +2065,12 @@ ul.dnnButtonGroup {
 	z-index: 100000;
 }
     /* Popup header */
+    .dnnFormPopup, .dnnFormPopup > * {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
     .dnnFormPopup .ui-dialog-titlebar {
         position: relative;
         padding: 0 0 18px 0;
@@ -3291,7 +3297,7 @@ body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > inpu
 	min-width: 100% !important;	
 }
 
-body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > label#dnn_ctr_Login_Login_DNN_lblLogin{
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > span#dnn_ctr_Login_Login_DNN_lblLogin{
 	display: none !important;
 	width: 0;
 	margin: 0;

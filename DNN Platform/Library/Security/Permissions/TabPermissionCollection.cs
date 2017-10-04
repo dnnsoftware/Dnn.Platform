@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -150,7 +150,11 @@ namespace DotNetNuke.Security.Permissions
             objTabPermissionCollection.InnerList.Sort(new CompareTabPermissions());
             for (int i = 0; i <= Count - 1; i++)
             {
-                if (objTabPermissionCollection[i].TabPermissionID != this[i].TabPermissionID || objTabPermissionCollection[i].AllowAccess != this[i].AllowAccess)
+                if (objTabPermissionCollection[i].TabPermissionID != this[i].TabPermissionID
+                        || objTabPermissionCollection[i].PermissionID != this[i].PermissionID
+                        || objTabPermissionCollection[i].RoleID != this[i].RoleID
+                        || objTabPermissionCollection[i].UserID != this[i].UserID
+                        || objTabPermissionCollection[i].AllowAccess != this[i].AllowAccess)
                 {
                     return false;
                 }

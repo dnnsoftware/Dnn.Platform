@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.DDRMenu
 										Navigation.ToolTipSource.None,
 										-1,
 										-1,
-										DNNAbstract.GetNavNodeOptions(menuSettings.IncludeHidden))));
+										DNNAbstract.GetNavNodeOptions(true))));
 					}
 
 					menu = MenuBase.Instantiate(menuStyle);

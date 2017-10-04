@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -652,8 +652,10 @@ namespace DotNetNuke.Entities.Modules
                                              newModule.CultureCode,
                                              currentUser.UserID);
 
-				//Copy each setting to the new TabModule instance
-				foreach (DictionaryEntry setting in settings)
+                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
+
+                //Copy each setting to the new TabModule instance
+                foreach (DictionaryEntry setting in settings)
 				{
 					UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
 				}
@@ -831,7 +833,8 @@ namespace DotNetNuke.Entities.Modules
                     //hard delete the module
                     DeleteModule(moduleInfo.ModuleID);
                 }
-
+                
+                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID));
                 ClearCache(moduleInfo.TabID);
             }
         }
@@ -1274,7 +1277,10 @@ namespace DotNetNuke.Entities.Modules
             ModuleInfo moduleInfo = GetModule(moduleId, tabId, false);            
             DeleteTabModuleInternal(moduleInfo, softDelete);
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            TabChangeTracker.Instance.TrackModuleDeletion(moduleInfo, Null.NullInteger, userId);
+            if (softDelete)
+            {
+                TabChangeTracker.Instance.TrackModuleDeletion(moduleInfo, Null.NullInteger, userId);
+            }
         }
 
         /// <summary>
@@ -1344,6 +1350,13 @@ namespace DotNetNuke.Entities.Modules
                                                  newModule.LocalizedVersionGuid,
                                                  newModule.CultureCode,
                                                  UserController.Instance.GetCurrentUserInfo().UserID);
+
+                    DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
+
+                    //Update tab version details of old and new modules
+                    var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                    TabChangeTracker.Instance.TrackModuleDeletion(sourceModule, Null.NullInteger, userId);
+                    TabChangeTracker.Instance.TrackModuleCopy(newModule, Null.NullInteger, newModule.TabID, userId);
 
                     //check if all modules instances have been deleted
                     if (GetModule(sourceModule.ModuleID, Null.NullInteger, true).TabID == Null.NullInteger)
@@ -1800,7 +1813,7 @@ namespace DotNetNuke.Entities.Modules
         {
             dataProvider.RestoreTabModule(objModule.TabID, objModule.ModuleID);
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            TabChangeTracker.Instance.TrackModuleCopy(objModule, 1, objModule.TabID, userId);
+            TabChangeTracker.Instance.TrackModuleAddition(objModule, 1, userId);
             ClearCache(objModule.TabID);
         }
 
@@ -1888,6 +1901,8 @@ namespace DotNetNuke.Entities.Modules
                                              module.CultureCode,
                                              currentUser.UserID);
 
+                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, module.TabModuleID));
+
                 EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
 
                 if (hasModuleOrderOrPaneChanged)
@@ -1963,7 +1978,8 @@ namespace DotNetNuke.Entities.Modules
                                                          targetModule.CultureCode,
                                                          currentUser.UserID);
 
-							ClearCache(targetModule.TabID);
+                            DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, targetModule.TabModuleID));
+                            ClearCache(targetModule.TabID);
                         }
                     }
                 }
@@ -2052,15 +2068,18 @@ namespace DotNetNuke.Entities.Modules
                             var moduleId = Convert.ToInt32(dr2["ModuleID"]);
                             var paneName = Convert.ToString(dr["PaneName"]);
                             var isDeleted = Convert.ToBoolean(dr2["IsDeleted"]);
-                            var moduleOrder = (moduleCounter * 2) - 1;
+                            var existingOrder = Convert.ToInt32(dr2["ModuleOrder"]);
+                            var newOrder = (moduleCounter * 2) - 1;
 
-                            dataProvider.UpdateModuleOrder(tabId, moduleId, moduleOrder, paneName);
+                            if (existingOrder == newOrder) continue;
+                            dataProvider.UpdateModuleOrder(tabId, moduleId, newOrder, paneName);
 
                             if (!isDeleted)
                             {
                                 var moduleInfo = GetModule(moduleId, tabId, true);
                                 var userInfo = UserController.Instance.GetCurrentUserInfo();
-                                TabChangeTracker.Instance.TrackModuleModification(moduleInfo, Null.NullInteger, userInfo.UserID);                                
+                                TabChangeTracker.Instance.TrackModuleModification(moduleInfo, Null.NullInteger,
+                                    userInfo.UserID);
                             }
                         }
                     }

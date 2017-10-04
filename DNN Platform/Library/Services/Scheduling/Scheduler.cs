@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -149,7 +149,8 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
-                    Logger.Debug(ex);
+                    if (Logger.IsDebugEnabled)
+                        Logger.Debug(ex);
                     return false;
                 }
             }
@@ -516,7 +517,8 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
-                    Logger.Debug(ex);
+                    if (Logger.IsDebugEnabled)
+                        Logger.Debug(ex);
                     return 0;
                 }
             }
@@ -657,7 +659,8 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
-                    Logger.Debug(ex);
+                    if (Logger.IsDebugEnabled)
+                        Logger.Debug(ex);
                     return false;
                 }
             }
@@ -666,7 +669,8 @@ namespace DotNetNuke.Services.Scheduling
             {
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
-                Logger.Debug("loadqueue executingServer:" + executingServer);
+                if (Logger.IsDebugEnabled)
+                    Logger.Debug("loadqueue executingServer:" + executingServer);
                 var thisServer = GetServer(executingServer);
                 if (thisServer == null)
                 {
@@ -701,7 +705,8 @@ namespace DotNetNuke.Services.Scheduling
                 _forceReloadSchedule = false;
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
-                Logger.Debug("LoadQueueFromTimer executingServer:" + executingServer);
+                if (Logger.IsDebugEnabled)
+                    Logger.Debug("LoadQueueFromTimer executingServer:" + executingServer);
                 var thisServer = GetServer(executingServer);
                 if (thisServer == null)
                 {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -541,7 +541,7 @@ namespace DotNetNuke.Entities.Users
             _IsDirty = false;
             foreach (ProfilePropertyDefinition profProperty in ProfileProperties)
             {
-                profProperty.ClearIsDirty();
+                profProperty?.ClearIsDirty();
             }
         }
 
@@ -658,28 +658,6 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        #region Obsolete
-
-        [Obsolete("Deprecated in DNN 6.0. Replaced by PreferredTimeZone.")]
-        [Browsable(false)]
-        public int TimeZone
-        {
-            get
-            {
-                Int32 retValue = Null.NullInteger;
-                string propValue = GetPropertyValue(USERPROFILE_TimeZone);
-                if (!string.IsNullOrEmpty(propValue))
-                {
-                    retValue = int.Parse(propValue);
-                }
-                return retValue;
-            }
-            set
-            {
-                SetProfileProperty(USERPROFILE_TimeZone, value.ToString(CultureInfo.InvariantCulture));
-            }
-        }
-
         public string Biography
         {
             get
@@ -691,8 +669,6 @@ namespace DotNetNuke.Entities.Users
                 SetProfileProperty(USERPROFILE_Biography, value);
             }
         }
-
-        #endregion
 
         #region Implement IIndexable
 

@@ -139,7 +139,7 @@
             var bgColor = '';
 	        var ratingIndex = 0;
             if (rating === 0) {
-                this._$meterText.text("");
+                this._$meterText.text(this.options.emptyText);
             }
             else if (rating < 3) {
                 this._$meterText.text(this.options.weakText);
@@ -162,6 +162,8 @@
 			        $(this).css('background-color', bgColor);
 		        }
 	        });
+
+            rating === 0 ? this._$meterText.hide() : this._$meterText.show();
         },
 
         _updateTooltipState: function (strength) {
@@ -281,7 +283,9 @@
         }
     };
 
-    PasswordStrength._defaults = {};
+    PasswordStrength._defaults = {
+        emptyText: 'Empty'
+    };
 
     PasswordStrength.defaults = function (settings) {
         if (typeof settings !== "undefined") {

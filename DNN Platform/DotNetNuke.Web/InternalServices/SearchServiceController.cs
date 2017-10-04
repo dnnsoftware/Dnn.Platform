@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
 
@@ -46,7 +47,7 @@ using DotNetNuke.Web.InternalServices.Views.Search;
 
 namespace DotNetNuke.Web.InternalServices
 {
-    [AllowAnonymous]
+    [DnnAuthorize(StaticRoles = "Administrators")]
     public class SearchServiceController : DnnApiController
     {
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -308,7 +309,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     var detail = new DetailedView
                     {
-                        Title = result.Title,
+                        Title = result.Title.Contains("<") ? HttpUtility.HtmlEncode(result.Title) : result.Title,
                         DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                         DocumentUrl = result.Url,
                         Snippet = result.Snippet,
@@ -355,7 +356,7 @@ namespace DotNetNuke.Web.InternalServices
                     if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
                         groupedResult.Results.Add(new BasicView
                         {
-                            Title = preview.Title,
+                            Title = preview.Title.Contains("<") ? HttpUtility.HtmlEncode(preview.Title) : preview.Title,
                             Snippet = preview.Snippet,
                             DocumentUrl = preview.DocumentUrl,
                             Attributes = preview.Attributes
@@ -430,7 +431,7 @@ namespace DotNetNuke.Web.InternalServices
         #endregion
 
         [HttpGet]
-        [DnnExceptionFilter]
+        [AllowAnonymous]
         public HttpResponseMessage Preview(string keywords, string culture, int forceWild = 1, int portal = -1)
         {
             string cleanedKeywords;
@@ -482,7 +483,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-        [DnnExceptionFilter]
+        [AllowAnonymous]
         public HttpResponseMessage Search(string search, string culture, int pageIndex, int pageSize, int sortOption)
         {
             string cleanedKeywords;
@@ -537,9 +538,7 @@ namespace DotNetNuke.Web.InternalServices
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage AddSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
             string duplicateWord;
@@ -547,12 +546,9 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage UpdateSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
             string duplicateWord;
@@ -562,9 +558,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage DeleteSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
             SearchHelper.Instance.DeleteSynonymsGroup(synonymsGroup.Id, synonymsGroup.PortalId, synonymsGroup.Culture);
@@ -574,9 +568,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage AddStopWords(StopWordsDto stopWords)
         {
             var stopWordsId = SearchHelper.Instance.AddSearchStopWords(stopWords.Words, stopWords.PortalId, stopWords.Culture);
@@ -585,9 +577,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage UpdateStopWords(StopWordsDto stopWords)
         {
             var stopWordsId = SearchHelper.Instance.UpdateSearchStopWords(stopWords.Id, stopWords.Words, stopWords.PortalId, stopWords.Culture);
@@ -596,9 +586,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage DeleteStopWords(StopWordsDto stopWords)
         {
             SearchHelper.Instance.DeleteSearchStopWords(stopWords.Id, stopWords.PortalId, stopWords.Culture);

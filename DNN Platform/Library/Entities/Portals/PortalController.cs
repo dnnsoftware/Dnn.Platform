@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -943,8 +943,8 @@ namespace DotNetNuke.Entities.Portals
         {
             if (ComponentFactory.GetComponent<CryptographyProvider>() == null)
             {
-                ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(CoreCryptographyProvider)));
-                ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new CoreCryptographyProvider());
+                ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
+                ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new FipsCompilanceCryptographyProvider());
             }
         }
 
@@ -1037,7 +1037,7 @@ namespace DotNetNuke.Entities.Portals
             if (settingNode.Encrypt)
             {
                 return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
-                //return new PortalSecurity().Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
+                //return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
             }
             return ensuredSettingValue;
         }
@@ -1644,7 +1644,7 @@ namespace DotNetNuke.Entities.Portals
                     portal.AdminTabId = tab.TabID;
                 }
                 //when processing the template we can find: hometab, usertab, logintab
-                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", ""))
+                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", "").ToLowerInvariant())
                 {
                     case "splashtab":
                         portal.SplashTabId = tab.TabID;
@@ -1666,11 +1666,11 @@ namespace DotNetNuke.Entities.Portals
                         portal.SearchTabId = tab.TabID;
                         logType = "SearchTab";
                         break;
-                    case "404Tab":
+                    case "404tab":
                         portal.Custom404TabId = tab.TabID;
                         logType = "Custom404Tab";
                         break;
-                    case "500Tab":
+                    case "500tab":
                         portal.Custom500TabId = tab.TabID;
                         logType = "Custom500Tab";
                         break;
@@ -3155,6 +3155,36 @@ namespace DotNetNuke.Entities.Portals
                 else
                 {
                     retValue = Convert.ToInt32(setting);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+            return retValue;
+        }
+
+        /// <summary>
+		/// Gets the portal setting as double.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal Id.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
+        {
+            double retValue = Null.NullDouble;
+            try
+            {
+                string setting = Null.NullString;
+                PortalController.Instance.GetPortalSettings(portalId).TryGetValue(key, out setting);
+                if (string.IsNullOrEmpty(setting))
+                {
+                    retValue = defaultValue;
+                }
+                else
+                {
+                    retValue = Convert.ToDouble(setting);
                 }
             }
             catch (Exception exc)

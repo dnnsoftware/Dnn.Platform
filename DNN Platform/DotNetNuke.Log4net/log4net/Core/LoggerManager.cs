@@ -18,7 +18,11 @@
 #endregion
 
 using System;
+#if NETSTANDARD1_3
+using System.Runtime.InteropServices;
+#else
 using System.Configuration;
+#endif
 using System.Reflection;
 
 using log4net.Util;
@@ -100,8 +104,8 @@ namespace log4net.Core
 			// Set the default repository selector
 #if NETCF
 			s_repositorySelector = new CompactRepositorySelector(typeof(log4net.Repository.Hierarchy.Hierarchy));
-#else
-
+			return;
+#elif !NETSTANDARD1_3
 			// Look for the RepositorySelector type specified in the AppSettings 'log4net.RepositorySelector'
 			string appRepositorySelectorTypeName = SystemInfo.GetAppSetting("log4net.RepositorySelector");
 			if (appRepositorySelectorTypeName != null && appRepositorySelectorTypeName.Length > 0)
@@ -140,13 +144,12 @@ namespace log4net.Core
 					}
 				}
 			}
-
+#endif
 			// Create the DefaultRepositorySelector if not configured above 
 			if (s_repositorySelector == null)
 			{
 				s_repositorySelector = new DefaultRepositorySelector(typeof(log4net.Repository.Hierarchy.Hierarchy));
 			}
-#endif
 		}
 
 		/// <summary>
@@ -163,7 +166,7 @@ namespace log4net.Core
 		/// </remarks>
 		private static void RegisterAppDomainEvents()
 		{
-#if !NETCF
+#if !(NETCF || NETSTANDARD1_3)
 			// ProcessExit seems to be fired if we are part of the default domain
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
@@ -404,7 +407,7 @@ namespace log4net.Core
 		}	
 
 		/// <summary>
-		/// Shorthand for <see cref="LogManager.GetLogger(string)"/>.
+		/// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
 		/// </summary>
 		/// <param name="repository">The repository to lookup in.</param>
 		/// <param name="type">The <paramref name="type"/> of which the fullname will be used as the name of the logger to retrieve.</param>
@@ -428,7 +431,7 @@ namespace log4net.Core
 		}
 
 		/// <summary>
-		/// Shorthand for <see cref="LogManager.GetLogger(string)"/>.
+		/// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
 		/// </summary>
 		/// <param name="repositoryAssembly">the assembly to use to lookup the repository</param>
 		/// <param name="type">The <paramref name="type"/> of which the fullname will be used as the name of the logger to retrieve.</param>
@@ -702,7 +705,7 @@ namespace log4net.Core
 		/// </para>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(Assembly)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(Assembly)"/> with the
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -723,7 +726,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(Assembly)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(Assembly)"/> with the
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -769,7 +772,7 @@ namespace log4net.Core
 		/// <para>
 		/// The caller to <see cref="LogManager"/> supplies either a string name 
 		/// or an assembly (if not supplied the assembly is inferred using 
-		/// <see cref="Assembly.GetCallingAssembly()"/>).
+		/// <see cref="M:Assembly.GetCallingAssembly()"/>).
 		/// </para>
 		/// <para>
 		/// This context is used by the selector to lookup a specific repository.
@@ -798,17 +801,21 @@ namespace log4net.Core
 		{
 			System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-			// Grab the currently executing assembly
+#if NETSTANDARD1_3
+			Assembly myAssembly = typeof(LoggerManager).GetTypeInfo().Assembly;
+			sb.Append($"log4net assembly [{myAssembly.FullName}]. ");
+			//sb.Append($"Loaded from [{myAssembly.Location}]. "); // TODO Assembly.Location available in netstandard1.5
+			sb.Append($"(.NET Framework [{RuntimeInformation.FrameworkDescription}] on {RuntimeInformation.OSDescription}");
+#else
 			Assembly myAssembly = Assembly.GetExecutingAssembly();
-
-			// Build Up message
 			sb.Append("log4net assembly [").Append(myAssembly.FullName).Append("]. ");
 			sb.Append("Loaded from [").Append(SystemInfo.AssemblyLocationInfo(myAssembly)).Append("]. ");
 			sb.Append("(.NET Runtime [").Append(Environment.Version.ToString()).Append("]");
 #if (!SSCLI)
             sb.Append(" on ").Append(Environment.OSVersion.ToString());
 #endif
-            sb.Append(")");
+#endif // NETSTANDARD1_3
+			sb.Append(")");
 			return sb.ToString();
 		}
 
@@ -823,7 +830,7 @@ namespace log4net.Core
 		/// Called when the <see cref="AppDomain.DomainUnload"/> event fires.
 		/// </para>
 		/// <para>
-		/// When the event is triggered the log4net system is <see cref="Shutdown()"/>.
+		/// When the event is triggered the log4net system is <see cref="M:Shutdown()"/>.
 		/// </para>
 		/// </remarks>
 		private static void OnDomainUnload(object sender, EventArgs e)
@@ -841,7 +848,7 @@ namespace log4net.Core
 		/// Called when the <see cref="AppDomain.ProcessExit"/> event fires.
 		/// </para>
 		/// <para>
-		/// When the event is triggered the log4net system is <see cref="Shutdown()"/>.
+		/// When the event is triggered the log4net system is <see cref="M:Shutdown()"/>.
 		/// </para>
 		/// </remarks>
 		private static void OnProcessExit(object sender, EventArgs e)

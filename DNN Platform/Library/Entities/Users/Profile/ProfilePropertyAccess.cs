@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Users
                         }
                         break;
                     case "richtext":
-                        var objSecurity = new PortalSecurity();
+                        var objSecurity = PortalSecurity.Instance;
                         result = PropertyAccess.FormatString(objSecurity.InputFilter(HttpUtility.HtmlDecode(property.PropertyValue), PortalSecurity.FilterFlag.NoScripting), formatString);
                         break;
                     default:

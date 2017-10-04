@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -316,6 +316,20 @@ namespace DotNetNuke.Common.Utilities
             return EntityRegEx.Replace(HTML, repString);
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Checks whether the string contains any HTML Entity or not
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="html">The HTML content to clean up</param>
+        /// <returns>True if the string contains any entity</returns>
+        /// -----------------------------------------------------------------------------
+        public static bool ContainsEntity(string html)
+        {
+            return !string.IsNullOrEmpty(html) && EntityRegEx.IsMatch(html);
+        }
+
         /// <summary>
         /// Removes Inline CSS Styles
         /// </summary>
@@ -520,28 +534,32 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message, bool showtime)
         {
-            bool showInstallationMessages = true;
-            string ConfigSetting = Config.GetSetting("ShowInstallationMessages");
-            if (ConfigSetting != null)
+            try
             {
-                showInstallationMessages = bool.Parse(ConfigSetting);
+                bool showInstallationMessages;
+                string configSetting = Config.GetSetting("ShowInstallationMessages") ?? "true";
+                if (bool.TryParse(configSetting, out showInstallationMessages) && showInstallationMessages)
+                {
+                    //Get the time of the feedback
+                    TimeSpan timeElapsed = Upgrade.RunTime;
+                    string strMessage = "";
+                    if (showtime)
+                    {
+                        strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
+                    }
+                    for (int i = 0; i <= indent; i++)
+                    {
+                        strMessage += "&nbsp;";
+                    }
+                    strMessage += message;
+                    response.Write(strMessage);
+                    response.Flush();
+                }
             }
-            if (showInstallationMessages)
+            catch (HttpException ex)
             {
-                //Get the time of the feedback
-                TimeSpan timeElapsed = Upgrade.RunTime;
-                string strMessage = "";
-                if (showtime)
-                {
-                    strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
-                }
-                for (int i = 0; i <= indent; i++)
-                {
-                    strMessage += "&nbsp;";
-                }
-                strMessage += message;
-                response.Write(strMessage);
-                response.Flush();
+                // Swallowing this for when requests have timed out. Log in case a listener is implemented
+                System.Diagnostics.Trace.TraceError(ex.ToString());
             }
         }
 
@@ -607,10 +625,10 @@ namespace DotNetNuke.Common.Utilities
             switch (mode)
             {
                 case "install":
-                    response.Write("<h1>Installing DotNetNuke</h1>");
+                    response.Write("<h1>Installing DNN</h1>");
                     break;
                 case "upgrade":
-                    response.Write("<h1>Upgrading DotNetNuke</h1>");
+                    response.Write("<h1>Upgrading DNN</h1>");
                     break;
                 case "addPortal":
                     response.Write("<h1>Adding New Portal</h1>");
@@ -625,10 +643,10 @@ namespace DotNetNuke.Common.Utilities
                     response.Write("<h1>Nothing To Install At This Time</h1>");
                     break;
                 case "noDBVersion":
-                    response.Write("<h1>New DotNetNuke Database</h1>");
+                    response.Write("<h1>New DNN Database</h1>");
                     break;
                 case "error":
-                    response.Write("<h1>Error Installing DotNetNuke</h1>");
+                    response.Write("<h1>Error Installing DNN</h1>");
                     break;
                 default:
                     response.Write("<h1>" + mode + "</h1>");

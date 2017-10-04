@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -2796,6 +2796,24 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     newnode = tabXml.CreateElement("tabtype");
                     newnode.InnerXml = "logintab";
+                    tabNode.AppendChild(newnode);
+                }
+                else if (tab.TabID == portal.SearchTabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "searchtab";
+                    tabNode.AppendChild(newnode);
+                }
+                else if (tab.TabID == portal.Custom404TabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "404tab";
+                    tabNode.AppendChild(newnode);
+                }
+                else if (tab.TabID == portal.Custom500TabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "500tab";
                     tabNode.AppendChild(newnode);
                 }
             }

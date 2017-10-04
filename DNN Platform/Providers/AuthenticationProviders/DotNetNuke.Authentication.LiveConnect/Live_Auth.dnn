@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_LiveAuthentication" type="Auth_System" version="09.00.00">
+    <package name="DNN_LiveAuthentication" type="Auth_System" version="09.02.00">
       <friendlyName>DotNetNuke Live Authentication Project</friendlyName>
       <description>
         The DotNetNuke Live Authentication Project is an Authentication provider for DotNetNuke that uses
@@ -16,7 +16,7 @@
       <releaseNotes src="releasenotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">05.00.00</dependency>
+        <dependency type="CoreVersion">07.00.00</dependency>
       </dependencies>
       <components>
         <component type="AuthenticationSystem">

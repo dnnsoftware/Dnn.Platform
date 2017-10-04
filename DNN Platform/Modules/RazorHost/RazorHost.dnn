@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNCorp.RazorHost" type="Module" version="09.00.00">
+    <package name="DNNCorp.RazorHost" type="Module" version="09.02.00">
       <friendlyName>Razor Host</friendlyName>
       <description>The Razor Host module allows developers to host Razor Scripts.</description>
       <owner>
@@ -13,7 +13,7 @@
       <releaseNotes src="releaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="coreversion">06.00.00</dependency>
+        <dependency type="coreversion">07.00.00</dependency>
         <dependency type="type">System.Tuple</dependency>
       </dependencies>
       <components>

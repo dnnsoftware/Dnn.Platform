@@ -225,6 +225,17 @@
       </portalDesktopModulePermissions>
     </portalDesktopModule>
     <portalDesktopModule>
+      <friendlyname>Log Viewer</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
       <friendlyname>Search Admin</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -458,6 +469,17 @@
     </portalDesktopModule>
     <portalDesktopModule>
       <friendlyname>Social Groups</friendlyname>
+      <portalDesktopModulePermissions>
+        <portalDesktopModulePermission>
+          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
+          <permissionkey>DEPLOY</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </portalDesktopModulePermission>
+      </portalDesktopModulePermissions>
+    </portalDesktopModule>
+    <portalDesktopModule>
+      <friendlyname>Taxonomy Manager</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
           <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
@@ -719,7 +741,7 @@
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>1200</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>false</displaytitle>
@@ -779,7 +801,7 @@
     <tab>
       <content>Activity Feed</content>
       <contentKey />
-      <containersrc>[G]Containers/Gravity/Title_h3.ascx</containersrc>
+      <containersrc>[G]Containers/Xcillion/Title_h3.ascx</containersrc>
       <cultureCode />
       <description />
       <disabled>false</disabled>
@@ -825,320 +847,6 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>368</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Navigation</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>b0a82478-76ee-4a14-978d-d556f3f90288</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings>
-                <modulesetting>
-                  <settingname>Mode</settingname>
-                  <settingvalue>Profile</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>ConsoleWidth</settingname>
-                  <settingvalue>250px</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>TabVisibility-ActivityFeed-MyProfile</settingname>
-                  <settingvalue>AllUsers</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>AllowSizeChange</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>DefaultSize</settingname>
-                  <settingvalue>IconNone</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>ShowTooltip</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>DefaultView</settingname>
-                  <settingvalue>Hide</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>IncludeParent</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>TabVisibility-ActivityFeed-Friends</settingname>
-                  <settingvalue>Friends</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>AllowViewChange</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>TabVisibility-ActivityFeed-Messages</settingname>
-                  <settingvalue>User</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Console</definition>
-              <moduledefinition>Console</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>369</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>ViewProfile</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>112315bd-4b0e-4e74-9a89-c67233d8f7f3</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>ProfileTemplate</settingname>
-                  <settingvalue>
-                    &lt;div id="UserDisplayNameHeader"&gt;
-                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
-                    &lt;/div&gt;
-                  </settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>IncludeButton</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>ViewProfile</definition>
-              <moduledefinition>ViewProfile</moduledefinition>
-            </module>
-            <module>
-              <contentKey />
-              <moduleID>370</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title />
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>ba1870c9-02ea-4e87-a7d8-b93109ca43f2</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>ProfileTemplate</settingname>
-                  <settingvalue>
-                    &lt;div id="UserProfileImg"&gt;
-                    &lt;span&gt;&lt;img alt="Profile Avatar" class="ProfilePhoto" width="120" height="120" src="[PROFILE:PHOTO]" /&gt;&lt;/span&gt;
-                    &lt;/div&gt;
-                    &lt;div class="UserProfileControls"&gt;
-                    &lt;ul&gt;
-                    &lt;li&gt;[HYPERLINK:EDITPROFILE]&lt;/li&gt;
-                    &lt;li&gt;[HYPERLINK:MYACCOUNT]&lt;/li&gt;
-                    &lt;/ul&gt;
-                    &lt;/div&gt;
-                  </settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>IncludeButton</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>ViewProfile</definition>
-              <moduledefinition>ViewProfile</moduledefinition>
-            </module>
-            <module>
-              <contentKey />
-              <moduleID>371</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Journal</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>87717b03-04bf-4e27-bf3a-bfe2e1cc5625</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings>
-                <modulesetting>
-                  <settingname>Journal_AllowPhotos</settingname>
-                  <settingvalue>True</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>Journal_Filters</settingname>
-                  <settingvalue></settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>Journal_MaxCharacters</settingname>
-                  <settingvalue>250</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>Journal_AllowFiles</settingname>
-                  <settingvalue>True</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>Journal_PageSize</settingname>
-                  <settingvalue>20</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Journal</definition>
-              <moduledefinition>Journal</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>RightPane</name>
-          <modules>
-            <module>
-              <contentKey />
               <moduleID>372</moduleID>
               <alignment />
               <alltabs>false</alltabs>
@@ -1146,7 +854,7 @@
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -1282,62 +990,171 @@
               <definition>DotNetNuke.Modules.MemberDirectory</definition>
               <moduledefinition>Member Directory</moduledefinition>
             </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Website Administration</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description />
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>false</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Admin</name>
-      <title>Website Administration</title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>373</moduleID>
+              <moduleID>368</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc />
-              <displayprint>true</displayprint>
+              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>Navigation</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>b0a82478-76ee-4a14-978d-d556f3f90288</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings>
+                <modulesetting>
+                  <settingname>Mode</settingname>
+                  <settingvalue>Profile</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ConsoleWidth</settingname>
+                  <settingvalue>250px</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>TabVisibility-ActivityFeed-MyProfile</settingname>
+                  <settingvalue>AllUsers</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowSizeChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultSize</settingname>
+                  <settingvalue>IconNone</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ShowTooltip</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultView</settingname>
+                  <settingvalue>Hide</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>IncludeParent</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>TabVisibility-ActivityFeed-Friends</settingname>
+                  <settingvalue>Friends</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowViewChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>TabVisibility-ActivityFeed-Messages</settingname>
+                  <settingvalue>User</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Console</definition>
+              <moduledefinition>Console</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+        <pane>
+          <name>P1_75_1</name>
+          <modules>
+            <module>
+              <contentKey />
+              <moduleID>369</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>ViewProfile</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>112315bd-4b0e-4e74-9a89-c67233d8f7f3</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>ProfileTemplate</settingname>
+                  <settingvalue>
+                    &lt;div id="UserDisplayNameHeader"&gt;
+                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
+                    &lt;/div&gt;
+                  </settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>IncludeButton</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
+            <module>
+              <contentKey />
+              <moduleID>370</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
               <enddate>0001-01-01T00:00:00</enddate>
@@ -1351,6 +1168,12 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
                   <rolename>Administrators</rolename>
                 </permission>
                 <permission>
@@ -1360,51 +1183,121 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Basic Features</title>
+              <title />
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>127a86cb-4e26-47f4-bdff-6afc43ae9320</uniqueId>
+              <uniqueId>ba1870c9-02ea-4e87-a7d8-b93109ca43f2</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>ProfileTemplate</settingname>
+                  <settingvalue>
+                    &lt;div id="UserProfileImg"&gt;
+                    &lt;span&gt;&lt;img alt="Profile Avatar" class="ProfilePhoto" width="120" height="120" src="[PROFILE:PHOTO]" /&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="UserProfileControls"&gt;
+                    &lt;ul&gt;
+                    &lt;li&gt;[HYPERLINK:EDITPROFILE]&lt;/li&gt;
+                    &lt;li&gt;[HYPERLINK:MYACCOUNT]&lt;/li&gt;
+                    &lt;/ul&gt;
+                    &lt;/div&gt;
+                  </settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>IncludeButton</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
+            <module>
+              <contentKey />
+              <moduleID>371</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>Journal</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>87717b03-04bf-4e27-bf3a-bfe2e1cc5625</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
-                  <settingname>OrderTabsByHierarchy</settingname>
+                  <settingname>Journal_AllowPhotos</settingname>
                   <settingvalue>True</settingvalue>
                 </modulesetting>
                 <modulesetting>
-                  <settingname>ConsoleWidth</settingname>
+                  <settingname>Journal_Filters</settingname>
                   <settingvalue></settingvalue>
                 </modulesetting>
                 <modulesetting>
-                  <settingname>AllowSizeChange</settingname>
-                  <settingvalue>False</settingvalue>
+                  <settingname>Journal_MaxCharacters</settingname>
+                  <settingvalue>250</settingvalue>
                 </modulesetting>
                 <modulesetting>
-                  <settingname>DefaultSize</settingname>
-                  <settingvalue>IconFileLarge</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>ShowTooltip</settingname>
+                  <settingname>Journal_AllowFiles</settingname>
                   <settingvalue>True</settingvalue>
                 </modulesetting>
                 <modulesetting>
-                  <settingname>DefaultView</settingname>
-                  <settingvalue>Hide</settingvalue>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
                 </modulesetting>
                 <modulesetting>
-                  <settingname>AllowViewChange</settingname>
-                  <settingvalue>False</settingvalue>
+                  <settingname>Journal_PageSize</settingname>
+                  <settingvalue>20</settingvalue>
                 </modulesetting>
               </modulesettings>
               <tabmodulesettings>
                 <tabmodulesetting>
                   <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
+                  <settingvalue>False</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>Console</definition>
-              <moduledefinition>Console</moduledefinition>
+              <definition>Journal</definition>
+              <moduledefinition>Journal</moduledefinition>
             </module>
           </modules>
         </pane>
@@ -1453,6 +1346,7 @@
         </permission>
       </tabpermissions>
       <tabsettings />
+      <tabtype>searchtab</tabtype>
       <panes>
         <pane>
           <name>ContentPane</name>
@@ -1596,6 +1490,7 @@
           <settingvalue></settingvalue>
         </tabsetting>
       </tabsettings>
+      <tabtype>404tab</tabtype>
       <panes>
         <pane>
           <name>ContentPane</name>
@@ -1707,336 +1602,6 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>368</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Navigation</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>81873a98-793a-4cf5-8be4-62cf481a64fa</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings>
-                <modulesetting>
-                  <settingname>Mode</settingname>
-                  <settingvalue>Profile</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>ConsoleWidth</settingname>
-                  <settingvalue>250px</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>TabVisibility-ActivityFeed-MyProfile</settingname>
-                  <settingvalue>AllUsers</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>AllowSizeChange</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>DefaultSize</settingname>
-                  <settingvalue>IconNone</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>ShowTooltip</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>DefaultView</settingname>
-                  <settingvalue>Hide</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>IncludeParent</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>TabVisibility-ActivityFeed-Friends</settingname>
-                  <settingvalue>Friends</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>AllowViewChange</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>TabVisibility-ActivityFeed-Messages</settingname>
-                  <settingvalue>User</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings />
-              <definition>Console</definition>
-              <moduledefinition>Console</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>P1_75_1</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>376</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>ViewProfile</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>9b2dbc21-eefa-43eb-b2cf-a76e62b3f4e2</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>ProfileTemplate</settingname>
-                  <settingvalue>
-                    &lt;div id="UserDisplayNameHeader"&gt;
-                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
-                    &lt;/div&gt;
-                  </settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>IncludeButton</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>ViewProfile</definition>
-              <moduledefinition>ViewProfile</moduledefinition>
-            </module>
-            <module>
-              <contentKey />
-              <moduleID>377</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>ViewProfile</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>ccf030cf-ff0e-419c-b765-f9bfe5c3fb6f</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>ProfileTemplate</settingname>
-                  <settingvalue>
-                    &lt;div id="UserProfileImg"&gt;
-                    &lt;span&gt;&lt;img alt="Profile Avatar" class="ProfilePhoto" width="120" height="120" src="[PROFILE:PHOTO]" /&gt;&lt;/span&gt;
-                    &lt;/div&gt;
-                    &lt;div class="UserProfileControls"&gt;
-                    &lt;ul&gt;
-                    &lt;li&gt;[HYPERLINK:EDITPROFILE]&lt;/li&gt;
-                    &lt;li&gt;[HYPERLINK:MYACCOUNT]&lt;/li&gt;
-                    &lt;/ul&gt;
-                    &lt;/div&gt;
-                  </settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>IncludeButton</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>ViewProfile</definition>
-              <moduledefinition>ViewProfile</moduledefinition>
-            </module>
-            <module>
-              <contentKey />
-              <moduleID>378</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod>MemoryModuleCachingProvider</cachemethod>
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile />
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>ViewProfile</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>03d384c1-07db-4f4b-adb8-56994468c8fa</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>ProfileTemplate</settingname>
-                  <settingvalue>
-                    &lt;div class="pBio"&gt;
-                    &lt;h3 data-bind="text: AboutMeText"&gt;&lt;/h3&gt;
-                    &lt;span data-bind="text: EmptyAboutMeText, visible: Biography().length==0"&gt;&lt;/span&gt;
-          &lt;p data-bind="html: Biography"&gt;&lt;/p&gt;
-                    &lt;/div&gt;
-                    &lt;div class="pAddress"&gt;
-                    &lt;h3 data-bind="text: LocationText"&gt;&lt;/h3&gt;
-          &lt;span data-bind="text: EmptyLocationText, visible: Street().length==0 &amp;&amp; Location().length==0 &amp;&amp; Country().length==0 &amp;&amp; PostalCode().length==0"&gt;&lt;/span&gt;
-                    &lt;p&gt;&lt;span data-bind="text: Street()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Street().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
-                    &lt;span data-bind="text: Location()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Location().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
-                    &lt;span data-bind="text: Country()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Country().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
-                    &lt;span data-bind="text: PostalCode()"&gt;&lt;/span&gt;
-                    &lt;/p&gt;
-                    &lt;/div&gt;
-                    &lt;div class="pContact"&gt;
-                    &lt;h3 data-bind="text: GetInTouchText"&gt;&lt;/h3&gt;
-          &lt;span data-bind="text: EmptyGetInTouchText, visible: Telephone().length==0 &amp;&amp; Email().length==0 &amp;&amp; Website().length==0 &amp;&amp; IM().length==0"&gt;&lt;/span&gt;
-                    &lt;ul&gt;
-                    &lt;li data-bind="visible: Telephone().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: TelephoneText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Telephone()"&gt;&lt;/span&gt;&lt;/li&gt;
-                    &lt;li data-bind="visible: Email().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: EmailText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Email()"&gt;&lt;/span&gt;&lt;/li&gt;
-                    &lt;li data-bind="visible: Website().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: WebsiteText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Website()"&gt;&lt;/span&gt;&lt;/li&gt;
-                    &lt;li data-bind="visible: IM().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: IMText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: IM()"&gt;&lt;/span&gt;&lt;/li&gt;
-                    &lt;/ul&gt;
-                    &lt;/div&gt;
-                    &lt;div class="dnnClear"&gt;&lt;/div&gt;                  
-                  </settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>IncludeButton</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>ViewProfile</definition>
-              <moduledefinition>ViewProfile</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>RightPane</name>
-          <modules>
-            <module>
-              <contentKey />
               <moduleID>379</moduleID>
               <alignment />
               <alltabs>false</alltabs>
@@ -2044,7 +1609,7 @@
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2176,58 +1741,6 @@
               <definition>DotNetNuke.Modules.MemberDirectory</definition>
               <moduledefinition>Member Directory</moduledefinition>
             </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>My Friends</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description />
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Friends</name>
-      <title>My Friends</title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Activity Feed</parent>
-      <panes>
-        <pane>
-          <name>P1_25_2</name>
-          <modules>
             <module>
               <contentKey />
               <moduleID>368</moduleID>
@@ -2237,7 +1750,7 @@
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2257,7 +1770,7 @@
               </modulepermissions>
               <title>Navigation</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>b4713823-4e91-4b66-9b88-7281f3233660</uniqueId>
+              <uniqueId>81873a98-793a-4cf5-8be4-62cf481a64fa</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
@@ -2323,14 +1836,14 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>380</moduleID>
+              <moduleID>376</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2362,7 +1875,7 @@
               </modulepermissions>
               <title>ViewProfile</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>74368905-4f66-47f1-85ec-d692c5b47e93</uniqueId>
+              <uniqueId>9b2dbc21-eefa-43eb-b2cf-a76e62b3f4e2</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
@@ -2391,14 +1904,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>381</moduleID>
+              <moduleID>377</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2430,7 +1943,7 @@
               </modulepermissions>
               <title>ViewProfile</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>6a1fe60f-df22-4cbe-83e4-b8113f50be7f</uniqueId>
+              <uniqueId>ccf030cf-ff0e-419c-b765-f9bfe5c3fb6f</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
@@ -2465,14 +1978,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>382</moduleID>
+              <moduleID>378</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2502,60 +2015,108 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Member Directory</title>
+              <title>ViewProfile</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>486c9371-e321-496a-9629-d56654de297e</uniqueId>
+              <uniqueId>03d384c1-07db-4f4b-adb8-56994468c8fa</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
-              <modulesettings>
-                <modulesetting>
-                  <settingname>FilterPropertyValue</settingname>
-                  <settingvalue></settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>FilterValue</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>FilterBy</settingname>
-                  <settingvalue>Relationship</settingvalue>
-                </modulesetting>
-              </modulesettings>
+              <modulesettings />
               <tabmodulesettings>
                 <tabmodulesetting>
-                  <settingname>SearchField2</settingname>
-                  <settingvalue>Email</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>DisplaySearch</settingname>
-                  <settingvalue>None</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>SearchField3</settingname>
-                  <settingvalue>City</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>SearchField4</settingname>
-                  <settingvalue>Country</settingvalue>
+                  <settingname>ProfileTemplate</settingname>
+                  <settingvalue>
+                    &lt;div class="pBio"&gt;
+                    &lt;h3 data-bind="text: AboutMeText"&gt;&lt;/h3&gt;
+                    &lt;span data-bind="text: EmptyAboutMeText, visible: Biography().length==0"&gt;&lt;/span&gt;
+          &lt;p data-bind="html: Biography"&gt;&lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class="pAddress"&gt;
+                    &lt;h3 data-bind="text: LocationText"&gt;&lt;/h3&gt;
+          &lt;span data-bind="text: EmptyLocationText, visible: Street().length==0 &amp;&amp; Location().length==0 &amp;&amp; Country().length==0 &amp;&amp; PostalCode().length==0"&gt;&lt;/span&gt;
+                    &lt;p&gt;&lt;span data-bind="text: Street()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Street().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
+                    &lt;span data-bind="text: Location()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Location().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
+                    &lt;span data-bind="text: Country()"&gt;&lt;/span&gt;&lt;span data-bind="visible: Country().length &gt; 0"&gt;&lt;br/&gt;&lt;/span&gt;
+                    &lt;span data-bind="text: PostalCode()"&gt;&lt;/span&gt;
+                    &lt;/p&gt;
+                    &lt;/div&gt;
+                    &lt;div class="pContact"&gt;
+                    &lt;h3 data-bind="text: GetInTouchText"&gt;&lt;/h3&gt;
+          &lt;span data-bind="text: EmptyGetInTouchText, visible: Telephone().length==0 &amp;&amp; Email().length==0 &amp;&amp; Website().length==0 &amp;&amp; IM().length==0"&gt;&lt;/span&gt;
+                    &lt;ul&gt;
+                    &lt;li data-bind="visible: Telephone().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: TelephoneText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Telephone()"&gt;&lt;/span&gt;&lt;/li&gt;
+                    &lt;li data-bind="visible: Email().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: EmailText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Email()"&gt;&lt;/span&gt;&lt;/li&gt;
+                    &lt;li data-bind="visible: Website().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: WebsiteText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: Website()"&gt;&lt;/span&gt;&lt;/li&gt;
+                    &lt;li data-bind="visible: IM().length &gt; 0"&gt;&lt;strong&gt;&lt;span data-bind="text: IMText"&gt;:&lt;/span&gt;&lt;/strong&gt; &lt;span data-bind="text: IM()"&gt;&lt;/span&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                    &lt;/div&gt;
+                    &lt;div class="dnnClear"&gt;&lt;/div&gt;                  
+                  </settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>hideadminborder</settingname>
                   <settingvalue>False</settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
-                  <settingname>SearchField1</settingname>
-                  <settingvalue>DisplayName</settingvalue>
+                  <settingname>IncludeButton</settingname>
+                  <settingvalue>False</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>DotNetNuke.Modules.MemberDirectory</definition>
-              <moduledefinition>Member Directory</moduledefinition>
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
             </module>
           </modules>
         </pane>
+      </panes>
+      <tabUrls />
+    </tab>
+    <tab>
+      <content>My Friends</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>false</issecure>
+      <visible>true</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>Friends</name>
+      <title>My Friends</title>
+      <url type="Normal" />
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Activity Feed</parent>
+      <panes>
         <pane>
-          <name>RightPane</name>
+          <name>P1_25_2</name>
           <modules>
             <module>
               <contentKey />
@@ -2566,7 +2127,7 @@
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2698,58 +2259,6 @@
               <definition>DotNetNuke.Modules.MemberDirectory</definition>
               <moduledefinition>Member Directory</moduledefinition>
             </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>My Messages</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description />
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Messages</name>
-      <title>My Messages</title>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Activity Feed</parent>
-      <panes>
-        <pane>
-          <name>P1_25_2</name>
-          <modules>
             <module>
               <contentKey />
               <moduleID>368</moduleID>
@@ -2759,7 +2268,7 @@
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2779,7 +2288,7 @@
               </modulepermissions>
               <title>Navigation</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>825a402a-1395-4f10-b360-3afcc408d4a5</uniqueId>
+              <uniqueId>b4713823-4e91-4b66-9b88-7281f3233660</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
@@ -2845,14 +2354,14 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>384</moduleID>
+              <moduleID>380</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2884,7 +2393,7 @@
               </modulepermissions>
               <title>ViewProfile</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>bf74428f-d035-487c-a0ce-559f741a53c5</uniqueId>
+              <uniqueId>74368905-4f66-47f1-85ec-d692c5b47e93</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
@@ -2913,14 +2422,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>385</moduleID>
+              <moduleID>381</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -2952,7 +2461,7 @@
               </modulepermissions>
               <title>ViewProfile</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>ece23c10-c6fd-4bb0-ab51-371707b9cfee</uniqueId>
+              <uniqueId>6a1fe60f-df22-4cbe-83e4-b8113f50be7f</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
@@ -2987,14 +2496,14 @@
             </module>
             <module>
               <contentKey />
-              <moduleID>386</moduleID>
+              <moduleID>382</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -3002,9 +2511,15 @@
               <footer />
               <header />
               <iconfile />
-              <inheritviewpermissions>false</inheritviewpermissions>
+              <inheritviewpermissions>true</inheritviewpermissions>
               <iswebslice>false</iswebslice>
               <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
@@ -3017,38 +2532,108 @@
                   <allowaccess>true</allowaccess>
                   <rolename>Administrators</rolename>
                 </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Registered Users</rolename>
-                </permission>
               </modulepermissions>
-              <title>Message Center</title>
+              <title>Member Directory</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>2868b561-ffbd-47a2-a240-7a2a3faf05a9</uniqueId>
+              <uniqueId>486c9371-e321-496a-9629-d56654de297e</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
-              <modulesettings />
+              <modulesettings>
+                <modulesetting>
+                  <settingname>FilterPropertyValue</settingname>
+                  <settingvalue></settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>FilterValue</settingname>
+                  <settingvalue>1</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>FilterBy</settingname>
+                  <settingvalue>Relationship</settingvalue>
+                </modulesetting>
+              </modulesettings>
               <tabmodulesettings>
                 <tabmodulesetting>
-                  <settingname>AllowIndex</settingname>
-                  <settingvalue>True</settingvalue>
+                  <settingname>SearchField2</settingname>
+                  <settingvalue>Email</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>DisplaySearch</settingname>
+                  <settingvalue>None</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>SearchField3</settingname>
+                  <settingvalue>City</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>SearchField4</settingname>
+                  <settingvalue>Country</settingvalue>
                 </tabmodulesetting>
                 <tabmodulesetting>
                   <settingname>hideadminborder</settingname>
                   <settingvalue>False</settingvalue>
                 </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>SearchField1</settingname>
+                  <settingvalue>DisplayName</settingvalue>
+                </tabmodulesetting>
               </tabmodulesettings>
-              <definition>DotNetNuke.Modules.CoreMessaging</definition>
-              <moduledefinition>Message Center</moduledefinition>
+              <definition>DotNetNuke.Modules.MemberDirectory</definition>
+              <moduledefinition>Member Directory</moduledefinition>
             </module>
           </modules>
         </pane>
+      </panes>
+      <tabUrls />
+    </tab>
+    <tab>
+      <content>My Messages</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>false</issecure>
+      <visible>true</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>Messages</name>
+      <title>My Messages</title>
+      <url type="Normal" />
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Activity Feed</parent>
+      <panes>
         <pane>
-          <name>RightPane</name>
+          <name>P1_25_2</name>
           <modules>
             <module>
               <contentKey />
@@ -3059,7 +2644,7 @@
               <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
@@ -3191,71 +2776,23 @@
               <definition>DotNetNuke.Modules.MemberDirectory</definition>
               <moduledefinition>Member Directory</moduledefinition>
             </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Site Settings</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Manage configuration settings for the portal.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Site Settings</name>
-      <title>Site Settings</title>
-      <iconfile>~/Icons/Sigma/SiteSettings_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/SiteSettings_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
             <module>
               <contentKey />
-              <moduleID>388</moduleID>
+              <moduleID>368</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
-              <containersrc />
-              <displayprint>true</displayprint>
+              <containersrc>[G]Containers/Xcillion/Title_h4.ascx</containersrc>
+              <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
               <displaytitle>true</displaytitle>
               <enddate>0001-01-01T00:00:00</enddate>
               <footer />
               <header />
-              <iconfile>~/Icons/Sigma/SiteSettings_32X32_Standard.png</iconfile>
+              <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
               <iswebslice>false</iswebslice>
               <modulepermissions>
@@ -3266,9 +2803,114 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Site Settings</title>
+              <title>Navigation</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>65067b89-bdbf-440c-9606-af6d37f4c281</uniqueId>
+              <uniqueId>825a402a-1395-4f10-b360-3afcc408d4a5</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings>
+                <modulesetting>
+                  <settingname>Mode</settingname>
+                  <settingvalue>Profile</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ConsoleWidth</settingname>
+                  <settingvalue>250px</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>TabVisibility-ActivityFeed-MyProfile</settingname>
+                  <settingvalue>AllUsers</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowSizeChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultSize</settingname>
+                  <settingvalue>IconNone</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ShowTooltip</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultView</settingname>
+                  <settingvalue>Hide</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>IncludeParent</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>TabVisibility-ActivityFeed-Friends</settingname>
+                  <settingvalue>Friends</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowViewChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>TabVisibility-ActivityFeed-Messages</settingname>
+                  <settingvalue>User</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings />
+              <definition>Console</definition>
+              <moduledefinition>Console</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+        <pane>
+          <name>P1_75_1</name>
+          <modules>
+            <module>
+              <contentKey />
+              <moduleID>384</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>ViewProfile</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>bf74428f-d035-487c-a0ce-559f741a53c5</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
@@ -3276,12 +2918,158 @@
               <modulesettings />
               <tabmodulesettings>
                 <tabmodulesetting>
+                  <settingname>ProfileTemplate</settingname>
+                  <settingvalue>
+                    &lt;div id="UserDisplayNameHeader"&gt;
+                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
+                    &lt;/div&gt;
+                  </settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
                   <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>IncludeButton</settingname>
+                  <settingvalue>False</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>Portals</definition>
-              <moduledefinition>Site Settings</moduledefinition>
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
+            <module>
+              <contentKey />
+              <moduleID>385</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>ViewProfile</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>ece23c10-c6fd-4bb0-ab51-371707b9cfee</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>ProfileTemplate</settingname>
+                  <settingvalue>
+                    &lt;div id="UserProfileImg"&gt;
+                    &lt;span&gt;&lt;img alt="Profile Avatar" class="ProfilePhoto" width="120" height="120" src="[PROFILE:PHOTO]" /&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="UserProfileControls"&gt;
+                    &lt;ul&gt;
+                    &lt;li&gt;[HYPERLINK:EDITPROFILE]&lt;/li&gt;
+                    &lt;li&gt;[HYPERLINK:MYACCOUNT]&lt;/li&gt;
+                    &lt;/ul&gt;
+                    &lt;/div&gt;
+                  </settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>IncludeButton</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
+            <module>
+              <contentKey />
+              <moduleID>386</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>false</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Registered Users</rolename>
+                </permission>
+              </modulepermissions>
+              <title>Message Center</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>2868b561-ffbd-47a2-a240-7a2a3faf05a9</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>AllowIndex</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DotNetNuke.Modules.CoreMessaging</definition>
+              <moduledefinition>Message Center</moduledefinition>
             </module>
           </modules>
         </pane>
@@ -3289,15 +3077,15 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>Extensions</content>
+      <content>Website Administration</content>
       <contentKey />
       <containersrc />
       <cultureCode />
-      <description>Install, add, modify and delete extensions, such as modules, themes and language packs.</description>
+      <description />
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
-      <visible>true</visible>
+      <visible>false</visible>
       <issystem>false</issystem>
       <keywords />
       <pageheadtext />
@@ -3306,10 +3094,8 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Extensions</name>
-      <title>Extensions</title>
-      <iconfile>~/Icons/Sigma/Extensions_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Extensions_32X32_Standard.png</iconfilelarge>
+      <name>Admin</name>
+      <title>Website Administration</title>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -3326,14 +3112,13 @@
         </permission>
       </tabpermissions>
       <tabsettings />
-      <parent>Admin</parent>
       <panes>
         <pane>
           <name>ContentPane</name>
           <modules>
             <module>
               <contentKey />
-              <moduleID>389</moduleID>
+              <moduleID>421</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -3347,10 +3132,16 @@
               <enddate>0001-01-01T00:00:00</enddate>
               <footer />
               <header />
-              <iconfile>~/Icons/Sigma/Extensions_32X32_Standard.png</iconfile>
+              <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
               <iswebslice>false</iswebslice>
               <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>EDIT</permissionkey>
@@ -3358,206 +3149,51 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <title>Extensions</title>
+              <title>Basic Features</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>122f2d1f-2710-4323-8cdf-a8db632342c5</uniqueId>
+              <uniqueId>62592bc6-53da-4115-b97e-fb666aa14953</uniqueId>
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
-              <modulesettings />
+              <modulesettings>
+                <modulesetting>
+                  <settingname>OrderTabsByHierarchy</settingname>
+                  <settingvalue>True</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ConsoleWidth</settingname>
+                  <settingvalue></settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowSizeChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultSize</settingname>
+                  <settingvalue>IconFileLarge</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ShowTooltip</settingname>
+                  <settingvalue>True</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultView</settingname>
+                  <settingvalue>Hide</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowViewChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
               <tabmodulesettings>
                 <tabmodulesetting>
                   <settingname>hideadminborder</settingname>
                   <settingvalue>True</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>Extensions</definition>
-              <moduledefinition>Extensions</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Security Roles</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Manage security roles for the portal.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Security Roles</name>
-      <title>Security Roles</title>
-      <iconfile>~/Icons/Sigma/SecurityRoles_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/SecurityRoles_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>390</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/SecurityRoles_32X32_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Security Roles</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>5f8d6d42-4128-4386-aeda-2b60625da611</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Security</definition>
-              <moduledefinition>Security Roles</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>User Accounts</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Manage user accounts for the portal.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>User Accounts</name>
-      <title>User Accounts</title>
-      <iconfile>~/Icons/Sigma/Users_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Users_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>391</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>User Accounts</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>d1610d82-e206-441e-b4f3-ef1226908d5b</uniqueId>
-              <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Security</definition>
-              <moduledefinition>User Accounts</moduledefinition>
+              <definition>Console</definition>
+              <moduledefinition>Console</moduledefinition>
             </module>
           </modules>
         </pane>
@@ -3657,15 +3293,15 @@
       <tabUrls />
     </tab>
     <tab>
-      <content>Site Redirection Management</content>
+      <content>User Accounts</content>
       <contentKey />
       <containersrc />
       <cultureCode />
-      <description>Site Redirection Management.</description>
+      <description>Manage user accounts for the portal.</description>
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
-      <visible>true</visible>
+      <visible>false</visible>
       <issystem>false</issystem>
       <keywords />
       <pageheadtext />
@@ -3674,10 +3310,10 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>Site Redirection Management</name>
-      <title />
-      <iconfile>~/desktopmodules/MobileManagement/images/MobileManagement_Standard_16x16.png</iconfile>
-      <iconfilelarge>~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png</iconfilelarge>
+      <name>User Accounts</name>
+      <title>User Accounts</title>
+      <iconfile>~/Icons/Sigma/Users_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Users_32X32_Standard.png</iconfilelarge>
       <url type="Normal" />
       <tabpermissions>
         <permission>
@@ -3701,7 +3337,7 @@
           <modules>
             <module>
               <contentKey />
-              <moduleID>410</moduleID>
+              <moduleID>439</moduleID>
               <alignment />
               <alltabs>false</alltabs>
               <border />
@@ -3715,7 +3351,7 @@
               <enddate>0001-01-01T00:00:00</enddate>
               <footer />
               <header />
-              <iconfile>~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png</iconfile>
+              <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
               <inheritviewpermissions>true</inheritviewpermissions>
               <iswebslice>false</iswebslice>
               <modulepermissions>
@@ -3725,17 +3361,11 @@
                   <allowaccess>true</allowaccess>
                   <rolename>Administrators</rolename>
                 </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
               </modulepermissions>
-              <title>Site Redirection Management</title>
+              <title>User Accounts</title>
               <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>bd16be9a-047c-466e-8be5-87f32565a5ae</uniqueId>
-              <visibility>None</visibility>
+              <uniqueId>22bb2d49-d123-430f-8883-a9d40c1e03ec</uniqueId>
+              <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
               <cultureCode />
@@ -3746,1035 +3376,8 @@
                   <settingvalue>True</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>DotNetNuke.MobileManagement</definition>
-              <moduledefinition>DNN Site Redirection Management</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Device Preview Management</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Device Preview Management.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Device Preview Management</name>
-      <title />
-      <iconfile>~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_16X16.png</iconfile>
-      <iconfilelarge>~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_32X32.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>411</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/desktopmodules/DevicePreviewManagement/images/DevicePreview_Standard_32X32.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Device Preview Management</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>00ce8e95-44ba-4b7b-8729-6ce456962afb</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>DotNetNuke.Modules.PreviewProfileManagement</definition>
-              <moduledefinition>DNN Device Preview Management</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Search Admin</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Search Admin</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Search Admin</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Search_16x16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Search_32x32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>396</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Search_16x16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions />
-              <title>Search Admin</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>f29c1670-56c9-4fe5-a995-5d1ac044e607</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>SearchAdmin</definition>
-              <moduledefinition>Search Admin</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>GoogleAnalytics</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Configure Site Google Analytics settings.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>GoogleAnalytics</name>
-      <title />
-      <iconfile>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>397</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Configure Site Google Analytics settings.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>18e66946-e9ed-497a-9f4b-65908e638780</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>GoogleAnalytics</definition>
-              <moduledefinition>Google Analytics</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Languages</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Manage Language Resources.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Languages</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Languages_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Languages_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>398</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Languages_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Manage Language Resources.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>1a045040-6ca5-4735-b7e8-96721c1972c7</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Languages</definition>
-              <moduledefinition>Languages</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Lists</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Lists.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Lists</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Lists_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Lists_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>399</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Lists_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Lists.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>19de3aa1-c4cc-42f7-9723-53f79e2032d4</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Lists</definition>
-              <moduledefinition>Lists</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Pages</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Page Management</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Pages</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Tabs_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Tabs_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>ControlBar_CommonTab</settingname>
-          <settingvalue>Y</settingvalue>
-        </tabsetting>
-      </tabsettings>
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>401</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Tabs_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Page Management</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>083e6424-b2d0-4861-8886-77990da66333</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Tabs</definition>
-              <moduledefinition>Pages</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>RecycleBin</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Send email messages to users, security roles and specific email addresses.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>RecycleBin</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Trash_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Trash_16X16_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>ControlBar_CommonTab</settingname>
-          <settingvalue>Y</settingvalue>
-        </tabsetting>
-      </tabsettings>
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>402</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Trash_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Send email messages to users, security roles and specific email addresses.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>206c59ff-9c36-4e0f-aa6e-9adfe070453c</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>RecycleBin</definition>
-              <moduledefinition>Recycle Bin</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>SiteWizard</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Configure portal settings, page design and apply a site template using a step-by-step wizard.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>SiteWizard</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Wizard_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Wizard_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>403</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Wizard_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Configure portal settings, page design and apply a site template using a step-by-step wizard.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>487a04e9-9b86-4893-aa53-0486f9f589df</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>SiteWizard</definition>
-              <moduledefinition>Site Wizard</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>SearchEngineSiteMap</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Configure the sitemap for submission to common search engines.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>SearchEngineSiteMap</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Sitemap_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Sitemap_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>404</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Sitemap_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Configure the sitemap for submission to common search engines.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>dfee1897-3ea1-4bb4-aa64-5a82d9e75354</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>Sitemap</definition>
-              <moduledefinition>Sitemap</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-      <tabUrls />
-    </tab>
-    <tab>
-      <content>Themes</content>
-      <contentKey />
-      <containersrc />
-      <cultureCode />
-      <description>Manage the installed themes, and how they're applied on the site.</description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>true</visible>
-      <issystem>false</issystem>
-      <keywords />
-      <pageheadtext />
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc />
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Themes</name>
-      <title />
-      <iconfile>~/Icons/Sigma/Skins_16X16_Standard.png</iconfile>
-      <iconfilelarge>~/Icons/Sigma/Skins_32X32_Standard.png</iconfilelarge>
-      <url type="Normal" />
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings />
-      <parent>Admin</parent>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <contentKey />
-              <moduleID>405</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Skins_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Manage the installed themes, and how they're applied on the site.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>79f03638-fcd5-4ce0-a3b6-0af9474e6027</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>SkinManagement</definition>
-              <moduledefinition>Themes</moduledefinition>
-            </module>
-            <module>
-              <contentKey />
-              <moduleID>406</moduleID>
-              <alignment />
-              <alltabs>false</alltabs>
-              <border />
-              <cachemethod />
-              <cachetime>0</cachetime>
-              <color />
-              <containersrc />
-              <displayprint>true</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <displaytitle>true</displaytitle>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <footer />
-              <header />
-              <iconfile>~/Icons/Sigma/Skins_16X16_Standard.png</iconfile>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <title>Manage the installed themes, and how they're applied on the site.</title>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <uniqueId>a2936618-7e14-4751-a15b-d3ce60f4c563</uniqueId>
-              <visibility>None</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <cultureCode />
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>True</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>SkinManagement</definition>
-              <moduledefinition>Theme Designer</moduledefinition>
+              <definition>Security</definition>
+              <moduledefinition>User Accounts</moduledefinition>
             </module>
           </modules>
         </pane>

@@ -57,7 +57,7 @@ namespace log4net.Config
 		/// Initializes a new instance of the <see cref="AliasRepositoryAttribute" /> class with 
 		/// the specified repository to alias to this assembly's repository.
 		/// </summary>
-		/// <param name="name">The repository to alias to this assemby's repository.</param>
+		/// <param name="name">The repository to alias to this assembly's repository.</param>
 		/// <remarks>
 		/// <para>
 		/// Initializes a new instance of the <see cref="AliasRepositoryAttribute" /> class with 
@@ -74,14 +74,14 @@ namespace log4net.Config
 		#region Public Instance Properties
 
 		/// <summary>
-		/// Gets or sets the repository to alias to this assemby's repository.
+		/// Gets or sets the repository to alias to this assembly's repository.
 		/// </summary>
 		/// <value>
 		/// The repository to alias to this assemby's repository.
 		/// </value>
 		/// <remarks>
 		/// <para>
-		/// The name of the repository to alias to this assemby's repository.
+		/// The name of the repository to alias to this assembly's repository.
 		/// </para>
 		/// </remarks>
 		public string Name

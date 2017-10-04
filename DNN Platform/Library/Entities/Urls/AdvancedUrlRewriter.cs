@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,12 +30,12 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Web.Configuration;
-
+using System.Web.Security;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
@@ -472,8 +472,10 @@ namespace DotNetNuke.Entities.Urls
                     //look for a 404 result from the rewrite, because of a deleted page or rule
                     if (!finished && result.Action == ActionType.Output404)
                     {
-                        if (result.OriginalPath == result.HttpAlias && result.PortalAlias != null
-                                && result.Reason != RedirectReason.Deleted_Page && result.Reason != RedirectReason.Disabled_Page)
+                        if (result.OriginalPath.Equals(result.HttpAlias, StringComparison.InvariantCultureIgnoreCase)
+                                && result.PortalAlias != null
+                                && result.Reason != RedirectReason.Deleted_Page
+                                && result.Reason != RedirectReason.Disabled_Page)
                         {
                             //Request for domain with no page identified (and no home page set in Site Settings)
                             result.Action = ActionType.Continue;
@@ -958,7 +960,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 //944 : check the original Url in case the requested Url has been rewritten before discovering it's a 404 error
                                 string requestedUrl = request.Url.ToString();
-                                if (result != null && string.IsNullOrEmpty(result.OriginalPath) == false)
+                                if (result != null && !string.IsNullOrEmpty(result.OriginalPath))
                                 {
                                     requestedUrl = result.OriginalPath;
                                 }
@@ -1115,7 +1117,7 @@ namespace DotNetNuke.Entities.Urls
                                     //767 : object not set error on extensionless 404 errors
                                     if (context.User == null)
                                     {
-                                        context.User = Thread.CurrentPrincipal;
+                                        context.User = GetCurrentPrincipal(context);
                                     }
                                     response.TrySkipIisCustomErrors = true;
                                     //881 : spoof the basePage object so that the client dependency framework
@@ -1256,6 +1258,33 @@ namespace DotNetNuke.Entities.Urls
                     UrlRewriterUtils.LogExceptionInRequest(ex, status, result);
                 }
             }
+        }
+
+        private static IPrincipal GetCurrentPrincipal(HttpContext context)
+        {
+            // Extract the forms authentication cookie
+            var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
+            var currentPrincipal = new GenericPrincipal(new GenericIdentity(string.Empty), new string[0]);
+
+            try
+            {
+                if (authCookie != null)
+                {
+                    var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null && !authTicket.Expired)
+                    {
+                        var roles = authTicket.UserData.Split('|');
+                        var id = new FormsIdentity(authTicket);
+                        currentPrincipal = new GenericPrincipal(id, roles);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                 //do nothing here.
+            }
+
+            return currentPrincipal;
         }
 
         private static bool CheckForDebug(HttpRequest request, NameValueCollection queryStringCol, bool debugEnabled)
@@ -1844,7 +1873,17 @@ namespace DotNetNuke.Entities.Urls
             {
                 result.Action = ActionType.Redirect301;
                 result.Reason = redirectReason;
-                string destUrl = result.OriginalPath.Replace(wrongAlias, rightAlias);
+                var destUrl = result.OriginalPath;
+                if (result.OriginalPath.Contains(wrongAlias))
+                {
+                    destUrl = result.OriginalPath.Replace(wrongAlias, rightAlias);
+                }
+                else if (result.OriginalPath.ToLowerInvariant().Contains(wrongAlias))
+                {
+
+                    destUrl = result.OriginalPath.ToLowerInvariant().Replace(wrongAlias, rightAlias);
+                }
+
                 if (redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture ||
                     redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture_And_Browser)
                 {
@@ -2346,6 +2385,12 @@ namespace DotNetNuke.Entities.Urls
                 //mapped virtual url
                 return false;
             }
+            catch (ArgumentException)
+            {
+                //catch and handle this exception, caused by an invalid character in the file path based on the
+                //mapped virtual url
+                return false;
+            }
         }
 
         private static bool IgnoreRequest(UrlAction result, string requestedPath, string ignoreRegex, HttpRequest request)
@@ -2663,7 +2708,7 @@ namespace DotNetNuke.Entities.Urls
                                                                                                     Guid.Empty);
                             }
 
-                            //if the incomign request doesn't match the 'most friendly' url, a 301 Moved Permanently status is returned, along with the friendly url 
+                            //if the incoming request doesn't match the 'most friendly' url, a 301 Moved Permanently status is returned, along with the friendly url 
                             //check the bestFriendlyUrl against either the url, or rawUrl (with and without host) 
                             //in each case, the aumdebug parameter will be searched for and replaced
                             var urlDecode = HttpUtility.UrlDecode(requestedUrl);
@@ -2701,10 +2746,18 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
+
+                                //DNN-9158: prevent SSL Offloading infinite redirects
+                                if (!result.IsSecureConnection && result.IsSSLOffloaded && bestFriendlyNoScheme.StartsWith("https"))
+                                {
+                                    bestFriendlyNoScheme = bestFriendlyNoScheme.Replace("https://", "http://");
+                                }
+
                                 if (!(bestFriendlyNoScheme == requestedPathNoScheme
                                       || bestFriendlyNoScheme == rawUrlWithHost
                                       || bestFriendlyNoScheme == rawUrlWithHostNoScheme
                                       || bestFriendlyNoScheme == HttpUtility.UrlDecode(requestedPathNoScheme)
+                                      || HttpUtility.UrlDecode(bestFriendlyNoScheme) == HttpUtility.UrlDecode(requestedPathNoScheme)
                                       || bestFriendlyNoScheme == rawUrlLowerCase))
                                 {
                                     redirected = true;

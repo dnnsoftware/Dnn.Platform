@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,7 +49,28 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
+        public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec,
+            Dictionary<string, object> commandParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -59,7 +80,17 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
+        public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -69,7 +100,17 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
+        public override IDataReader ExecuteSQL(string sql, int timeoutSec)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override string ExecuteScript(string script)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string ExecuteScript(string script, int timeoutSec)
         {
             throw new System.NotImplementedException();
         }
@@ -79,12 +120,27 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
+        public override string ExecuteScript(string connectionString, string sql, int timeoutSec)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
         {
             throw new System.NotImplementedException();
         }
 
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
             throw new System.NotImplementedException();
         }

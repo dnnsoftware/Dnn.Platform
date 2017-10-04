@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,25 +41,6 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class SchedulingController
     {
-        [Obsolete("Obsoleted in 5.2.1 - use alternate overload")]
-        public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
-                                      bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers)
-        {
-            return AddSchedule(TypeFullName,
-                               TimeLapse,
-                               TimeLapseMeasurement,
-                               RetryTimeLapse,
-                               RetryTimeLapseMeasurement,
-                               RetainHistoryNum,
-                               AttachToEvent,
-                               CatchUpEnabled,
-                               Enabled,
-                               ObjectDependencies,
-                               Servers,
-                               TypeFullName,
-                               DateTime.Now);
-        }
-
         [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                               bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)

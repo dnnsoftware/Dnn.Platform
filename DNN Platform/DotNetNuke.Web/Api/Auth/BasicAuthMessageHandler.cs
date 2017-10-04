@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -96,17 +96,17 @@ namespace DotNetNuke.Web.Api.Auth
 
         private UserCredentials GetCredentials(HttpRequestMessage request)
         {
-            if (request.Headers.Authorization == null)
+            if (request?.Headers.Authorization == null)
             {
                 return null;
             }
 
-            if (request.Headers.Authorization.Scheme.ToLower() != AuthScheme.ToLower())
+            if (request?.Headers.Authorization.Scheme.ToLower() != AuthScheme.ToLower())
             {
                 return null;
             }
 
-            string authorization = request.Headers.Authorization.Parameter;
+            string authorization = request?.Headers.Authorization.Parameter;
             if (String.IsNullOrEmpty(authorization))
             {
                 return null;

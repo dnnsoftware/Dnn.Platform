@@ -210,7 +210,7 @@ ul.buttonList .windowslive a span {
 .dnnFormItem{
     width: 100%;
 }
-.dnnFormItem > label.dnnFormLabel {
+.dnnFormItem > label.dnnFormLabel, .dnnFormItem > span.dnnFormLabel {
     display: inline-block;
     margin: 6px 18px 0 0;
     width: 30%;

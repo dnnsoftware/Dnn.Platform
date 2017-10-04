@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -61,7 +61,7 @@ namespace DotNetNuke.Framework
         /// Using the hosted version increases the likelihood that the file is already
         /// cached in the users browser.
         /// </remarks>
-        public const string DefaultHostedUrl = "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js";
+        public const string DefaultHostedUrl = "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
 
         private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
@@ -435,28 +435,6 @@ namespace DotNetNuke.Framework
         #endregion
 
         #region Obsolete Members
-
-        [Obsolete("Deprecated in DNN 5.1. Replaced by IsRequested.")]
-        public static bool IsRquested
-        {
-            get
-            {
-                return IsRequested;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0 Replaced by RegisterJQuery.")]
-        public static void RegisterScript(Page page)
-        {
-            RegisterScript(page, GetJQueryScriptReference());
-        }
-
-        [Obsolete("Deprecated in DNN 6.0 Replaced by RegisterJQuery.")]
-        public static void RegisterScript(Page page, string script)
-        {
-            ClientResourceManager.RegisterScript(page, script);
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
-        }
 
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
         public static void RegisterJQuery(Page page)

@@ -1066,7 +1066,7 @@
     <value>CAPTCHA image</value>
   </data>
   <data name="PrivateConfirmationMessage.Text" xml:space="preserve">
-    <value>&lt;strong&gt;An email with your details has been sent to the Site Administrator for verification. You will be notified by email when your registration has been approved. In the meantime you can continue to browse this site by closing the popup.&lt;/strong&gt;  </value>
+    <value>&lt;strong&gt;An email with your details has been sent to the Site Administrator for verification. You will be notified by email when your registration has been approved. In the meantime you can continue to browse this site.&lt;/strong&gt;  </value>
   </data>
   <data name="DNN_ReadingComponent.Text" xml:space="preserve">
     <value>Reading Component Manifest</value>
@@ -1907,7 +1907,7 @@ the modified URL.</value>
     <value>&lt;div class="invalidFiles"&gt;&lt;p&gt;[COUNT] of [TOTAL] file(s) were not extracted because their file types are not supported:&lt;/p&gt;[FILELIST]&lt;/div&gt;</value>
   </data>
   <data name="FileUpload.UnzipFileSuccessPromptBody.Text" xml:space="preserve">
-    <value>&lt;div class="validFiles"&gt;&lt;p&gt;[TOTAL] of [TOTAL] file(s) were extracted successfully.&lt;/div&gt;</value>
+    <value>&lt;div class="validFiles"&gt;&lt;p&gt;[TOTAL] of [TOTAL] file(s) were extracted successfully.&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="AuthorizeUser.Text" xml:space="preserve">
     <value>Authorize</value>
@@ -1947,5 +1947,19 @@ the modified URL.</value>
   </data>
   <data name="NoRecords.Text" xml:space="preserve">
     <value>No records to display</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="PotentialDangerousFile.Text" xml:space="preserve">
+    <value>A potentially dangerous file has been added to your website</value>
+  </data>
+  <data name="RestrictFileMail_Body.Text" xml:space="preserve">
+    <value>&lt;p&gt;Dear Site Host,&lt;/p&gt;&lt;p&gt;The security watcher has detected that one or more &lt;b&gt;potentially dangerous files&lt;/b&gt; have been added to your website. To see all added files, check the site event logs.
+If you expect this addition, then just ignore this email; otherwise, an immediate action is recommended.&lt;/p&gt;
+&lt;p&gt;Added file(s):&lt;br/&gt;&lt;b&gt;[Path]&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Thanks,&lt;/p&gt;&lt;p&gt;[AppName] [AppVersion]&lt;/p&gt;</value>
+  </data>
+  <data name="RestrictFileMail_Subject.Text" xml:space="preserve">
+    <value>Potentially dangerous file added to your website</value>
   </data>
 </root>

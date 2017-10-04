@@ -2,7 +2,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,8 +29,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Web.Configuration;
 using System.Xml;
@@ -102,10 +105,13 @@ namespace DotNetNuke.Services.Upgrade
     public class Upgrade
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
+        private static readonly object _threadLocker = new object();
 
         #region Private Shared Field
 
         private static DateTime _startTime;
+        private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
+        private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
 
         #endregion
 
@@ -2777,7 +2783,7 @@ namespace DotNetNuke.Services.Upgrade
             try
             {
                 //the username maybe html encode when register in 7.1.2, it will caught unicode charactors changed, need use InputFilter to correct the value.
-                var portalSecurity = new PortalSecurity();
+                var portalSecurity = PortalSecurity.Instance;
                 using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserID, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
                 {
                     while (reader.Read())
@@ -3199,13 +3205,13 @@ namespace DotNetNuke.Services.Upgrade
         }
 
 
-        private static void UninstallPackage(string packageName, string packageType)
+        private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true)
         {
-            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName && p.PackageType == packageType);
+            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase) && p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase));
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
-                searchInputInstaller.UnInstall(true);
+                searchInputInstaller.UnInstall(deleteFiles);
             }
         }
 
@@ -4150,18 +4156,17 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
             }
 
+            string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
             try
             {
-                string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
-
                 if (File.Exists(listFile))
                 {
-                    exceptions = FileSystemUtils.DeleteFiles(FileSystemUtils.ReadFile(listFile).Split('\r', '\n'));
+                    exceptions = FileSystemUtils.DeleteFiles(File.ReadAllLines(listFile));
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.Error("Error cleanup file " + listFile, ex);
 
                 exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
                 // log the results
@@ -4468,6 +4473,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var scriptFiles = new ArrayList();
             string[] files = Directory.GetFiles(providerPath, "*." + DefaultProvider);
+			Array.Sort(files); // The order of the returned file names is not guaranteed on certain NAS systems; use the Sort method if a specific sort order is required.
             
             Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
 
@@ -4524,7 +4530,10 @@ namespace DotNetNuke.Services.Upgrade
                 return null;
             }
            
-            return Directory.GetFiles(providerPath, GetStringVersion(version) + ".*." + DefaultProvider);
+            var files = Directory.GetFiles(providerPath, GetStringVersion(version) + ".*." + DefaultProvider);
+			Array.Sort(files); // The order of the returned file names is not guaranteed; use the Sort method if a specific sort order is required.
+
+			return files;
             
             
         }
@@ -4910,7 +4919,7 @@ namespace DotNetNuke.Services.Upgrade
                 foreach (var package in dependentPackages)
                 {
                     if ( package.Value.Dependencies.All(
-                            d => sortedPackages.Any(p => p.Value.Name == d.PackageName && p.Value.Version >= d.Version) ) )
+                            d => sortedPackages.Any(p => p.Value.Name.Equals(d.PackageName, StringComparison.OrdinalIgnoreCase) && p.Value.Version >= d.Version) ) )
                     {
                         sortedPackages.Add(package.Key, package.Value);
                         addedPackages.Add(package.Key);
@@ -4956,9 +4965,23 @@ namespace DotNetNuke.Services.Upgrade
 	                {
 		                //check whether have version conflict and remove old version.
 		                var package = packages[file];
-		                if (packages.Values.Count(p => p.FriendlyName == package.FriendlyName) > 1)
+
+                        var installedPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, 
+                            p => p.Name.Equals(package.Name, StringComparison.OrdinalIgnoreCase) 
+                                    && p.PackageType.Equals(package.PackageType, StringComparison.OrdinalIgnoreCase));
+
+                        if (packages.Values.Count(p => p.FriendlyName.Equals(package.FriendlyName, StringComparison.OrdinalIgnoreCase)) > 1 
+                                || installedPackage != null)
 		                {
-			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName == package.FriendlyName && kvp.Value.Version < package.Version).ToList();
+			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName.Equals(package.FriendlyName, StringComparison.OrdinalIgnoreCase)
+                                                                        && kvp.Value.Version < package.Version).ToList();
+
+                            //if there already have higher version installed, remove current one from list.
+		                    if (installedPackage != null && package.Version <= installedPackage.Version)
+		                {
+		                        oldPackages.Add(new KeyValuePair<string, PackageInfo>(file, package));
+		                    }
+
 			                if (oldPackages.Any())
 			                {
 				                foreach (var oldPackage in oldPackages)
@@ -5326,6 +5349,12 @@ namespace DotNetNuke.Services.Upgrade
                         case "7.4.2":
                             UpgradeToVersion742();
                             break;
+                        case "9.1.0":
+                            UpgradeToVersion910();
+                            break;
+                        case "9.2.0":
+                            UpgradeToVersion920();
+                            break;
                     }
                 }
                 else
@@ -5462,6 +5491,65 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//DynamicContentTypeManager");
             UninstallPackage("Dnn.DynamicContentManager", "Module");
             UninstallPackage("Dnn.DynamicContentViewer", "Module");
+        }
+
+        private static void UpgradeToVersion910()
+        {
+            RemoveHostPage("Host Settings");
+            RemoveHostPage("Site Management");
+            RemoveHostPage("Schedule");
+            RemoveHostPage("Superuser Accounts");
+            RemoveHostPage("Extensions");
+            RemoveHostPage("Device Detection Management");
+
+            RemoveAdminPages("//Admin//Extensions");
+            RemoveAdminPages("//Admin//SiteSettings");
+            RemoveAdminPages("//Admin//SecurityRoles");
+            RemoveAdminPages("//Admin//Taxonomy");
+            RemoveAdminPages("//Admin//SiteRedirectionManagement");
+            RemoveAdminPages("//Admin//DevicePreviewManagement");
+            RemoveAdminPages("//Admin//SearchAdmin");
+
+            // Normal Modules
+            UninstallPackage("DotNetNuke.MobileManagement", "Module");
+            UninstallPackage("DotNetNuke.Modules.PreviewProfileManagement", "Module");
+
+            UninstallPackage("DotNetNuke.Dashboard.WebServer", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Database", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Host", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Portals", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Modules", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Skins", "DashboardControl");
+
+            // Admin Modules
+            UninstallPackage("DotNetNuke.HostSettings", "Module");
+            UninstallPackage("DotNetNuke.Languages", "Module");
+            UninstallPackage("DotNetNuke.Lists", "Module");
+            UninstallPackage("DotNetNuke.LogViewer", "Module");
+            UninstallPackage("DotNetNuke.RecycleBin", "Module");
+            UninstallPackage("DotNetNuke.Sitemap", "Module");
+            UninstallPackage("DotNetNuke.SiteWizard", "Module");
+            UninstallPackage("Dnn.Themes", "Module"); // aka. Skin Management
+            UninstallPackage("DotNetNuke.Tabs", "Module");
+
+            // at last remove "/Admin" / "/Host" pages
+            UninstallPackage("DotNetNuke.Portals", "Module");
+            UninstallPackage("DotNetNuke.Scheduler", "Module");
+            UninstallPackage("DotNetNuke.SearchAdmin", "Module");
+            UninstallPackage("DotNetNuke.SQL", "Module");
+            UninstallPackage("DotNetNuke.Extensions", "Module");
+            UninstallPackage("DotNetNuke.Configuration Manager", "Module");
+            UninstallPackage("DotNetNuke.Dashboard", "Module");
+            UninstallPackage("DotNetNuke.Google Analytics", "Module");
+            UninstallPackage("DotNetNuke.Taxonomy", "Module");
+
+            UninstallPackage("UrlManagement", "Library", false);
+        }
+
+        private static void UpgradeToVersion920()
+        {
+            DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "SharpZipLib.dll");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
@@ -5819,6 +5907,34 @@ namespace DotNetNuke.Services.Upgrade
             return LocaleController.Instance.GetLocales(portalid).TryGetValue(code, out enabledLanguage);
         }
 
+        public static bool UpdateNewtonsoftVersion()
+        {
+            try
+            {
+                //check whether current binding already specific to correct version.
+                if (NewtonsoftNeedUpdate())
+                {
+                    lock (_threadLocker)
+                    {
+                        if (NewtonsoftNeedUpdate())
+                        {
+                            var matchedFiles =Directory.GetFiles(Path.Combine(Globals.ApplicationMapPath, "Install\\Module"), "Newtonsoft.Json_*_Install.zip");
+                            if (matchedFiles.Length > 0)
+                            {
+                                return InstallPackage(matchedFiles[0], "Library", false);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+
+            return false;
+        } 
+
         public static string ActivateLicense()
         {
             var isLicensable = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
@@ -5846,6 +5962,56 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return activationResult;
+        }
+
+        internal static void CheckFipsCompilanceAssemblies()
+        {
+            var currentVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version);
+            if (CryptoConfig.AllowOnlyFipsAlgorithms && HostController.Instance.GetString(FipsCompilanceAssembliesCheckedKey) != currentVersion)
+            {
+                var assemblyFolder = Path.Combine(Globals.ApplicationMapPath, FipsCompilanceAssembliesFolder);
+                var assemblyFiles = Directory.GetFiles(assemblyFolder, "*.dll", SearchOption.TopDirectoryOnly);
+                foreach (var assemblyFile in assemblyFiles)
+                {
+                    FixFipsCompilanceAssembly(assemblyFile);
+                }
+
+                HostController.Instance.Update(FipsCompilanceAssembliesCheckedKey, currentVersion);
+
+                if (HttpContext.Current != null)
+                {
+                    Globals.Redirect(HttpContext.Current.Request.RawUrl, true);
+                }
+            }
+        }
+
+        private static void FixFipsCompilanceAssembly(string filePath)
+        {
+            try
+            {
+                var fileName = Path.GetFileName(filePath);
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    return;
+                }
+
+                var assemblyPath = Path.Combine(Globals.ApplicationMapPath, "bin", fileName);
+                if (File.Exists(assemblyPath))
+                {
+                    var backupFolder = Path.Combine(Globals.ApplicationMapPath, FipsCompilanceAssembliesFolder, "Backup");
+                    if (!Directory.Exists(backupFolder))
+                    {
+                        Directory.CreateDirectory(backupFolder);
+                    }
+
+                    File.Copy(assemblyPath, Path.Combine(backupFolder, fileName + "." + DateTime.Now.Ticks), true);
+                    File.Copy(filePath, assemblyPath, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         private static void FixTabsMissingLocalizedFields()
@@ -5942,6 +6108,23 @@ namespace DotNetNuke.Services.Upgrade
 
                 return null;
             }
+        }
+
+        private static bool NewtonsoftNeedUpdate()
+        {
+            var currentConfig = Config.Load();
+            var nsmgr = new XmlNamespaceManager(currentConfig.NameTable);
+            nsmgr.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+            var bindingNode = currentConfig.SelectSingleNode(
+                "/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect", nsmgr);
+
+            var newVersion = bindingNode?.Attributes?["newVersion"].Value;
+            if (!string.IsNullOrEmpty(newVersion) && new Version(newVersion) >= new Version(10, 0, 0, 0))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

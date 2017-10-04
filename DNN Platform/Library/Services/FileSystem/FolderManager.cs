@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -57,7 +57,8 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly Dictionary<int, SyncFolderData> SyncFoldersData = new Dictionary<int, SyncFolderData>();
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
-        
+        private static readonly object _threadLocker = new object();
+
         #region Public Properties
 
         public virtual string MyFolderName
@@ -995,6 +996,7 @@ namespace DotNetNuke.Services.FileSystem
 
             int? scriptTimeOut = null;
 
+            Monitor.Enter(_threadLocker);
             try
             {
                 if (HttpContext.Current != null)
@@ -1031,6 +1033,8 @@ namespace DotNetNuke.Services.FileSystem
             }
             finally
             {
+                Monitor.Exit(_threadLocker);
+
                 // Restore original time-out
                 if (HttpContext.Current != null && scriptTimeOut != null)
                 {

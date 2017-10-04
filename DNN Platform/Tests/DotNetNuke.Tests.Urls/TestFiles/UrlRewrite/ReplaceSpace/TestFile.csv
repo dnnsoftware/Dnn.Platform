@@ -1,18 +1,15 @@
 ﻿Test,							ReplaceSpaceWith,	Scheme,		Page Name,		Test Url,											Expected Url,										Status
 About Us Default,				,					http://,	About Us,		http://{alias}/About-Us.aspx,						{defaultPage}?TabId={tabId},						200
-Admin Default,					,					http://,	Site Settings,	http://{alias}/Admin/Site-Settings.aspx,			{defaultPage}?TabId={tabId},						200
 Profile Messages Default,		,					http://,	Messages,		http://{alias}/Activity-Feed/Messages.aspx,			{defaultPage}?TabId={tabId},						200
 Terms Default,					,					http://,	Contact Us,		http://{alias}/Terms.aspx,							{defaultPage}?PortalId={portalId}&ctl=Terms,		200
 Login Default,					,					http://,	About Us,		http://{alias}/Login.aspx,							{defaultPage}?PortalId={portalId}&ctl=Login,		200
 Edit Page About Us Default,		,					http://,	About Us,		http://{alias}/About-Us/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		200
 About Us Default,				None,				http://,	About Us,		http://{alias}/AboutUs.aspx,						{defaultPage}?TabId={tabId},						200
-Admin Default,					None,				http://,	Site Settings,	http://{alias}/Admin/SiteSettings.aspx,				{defaultPage}?TabId={tabId},						200
 Profile Messages Default,		None,				http://,	Messages,		http://{alias}/ActivityFeed/Messages.aspx,			{defaultPage}?TabId={tabId},						200
 Terms Default,					None,				http://,	Contact Us,		http://{alias}/Terms.aspx,							{defaultPage}?PortalId={portalId}&ctl=Terms,		200
 Login Default,					None,				http://,	About Us,		http://{alias}/Login.aspx,							{defaultPage}?PortalId={portalId}&ctl=Login,		200
 Edit Page About Us Default,		None,				http://,	About Us,		http://{alias}/AboutUs/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		200
 About Us Character,				_,					http://,	About Us,		http://{alias}/About_Us.aspx,						{defaultPage}?TabId={tabId},						200
-Admin Character,				_,					http://,	Site Settings,	http://{alias}/Admin/Site_Settings.aspx,			{defaultPage}?TabId={tabId},						200
 Profile Messages Character,		_,					http://,	Messages,		http://{alias}/Activity_Feed/Messages.aspx,			{defaultPage}?TabId={tabId},						200
 Terms Character,				_,					http://,	Contact Us,		http://{alias}/Terms.aspx,							{defaultPage}?PortalId={portalId}&ctl=Terms,		200
 Login Character,				_,					http://,	About Us,		http://{alias}/Login.aspx,							{defaultPage}?PortalId={portalId}&ctl=Login,		200

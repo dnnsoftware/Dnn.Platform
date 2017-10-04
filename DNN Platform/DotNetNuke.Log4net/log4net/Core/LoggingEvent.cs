@@ -22,7 +22,9 @@ using System.Collections;
 using System.IO;
 #if (!NETCF)
 using System.Runtime.Serialization;
+#if !NETSTANDARD1_3
 using System.Security.Principal;
+#endif
 #endif
 
 using log4net.Util;
@@ -86,16 +88,49 @@ namespace log4net.Core
 		public string ThreadName;
 
 		/// <summary>
-		/// The time the event was logged
+		/// Gets or sets the local time the event was logged
 		/// </summary>
 		/// <remarks>
-		/// <para>
-		/// The TimeStamp is stored in the local time zone for this computer.
+        /// <para>
+        /// Prefer using the <see cref="TimeStampUtc"/> setter, since local time can be ambiguous.
 		/// </para>
 		/// </remarks>
-		public DateTime TimeStamp;
+        [Obsolete("Prefer using TimeStampUtc, since local time can be ambiguous in time zones with daylight savings time.")]
+        public DateTime TimeStamp;
 
-		/// <summary>
+        /// <summary>
+        /// Gets or sets the UTC time the event was logged
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The TimeStamp is stored in the UTC time zone.
+        /// </para>
+        /// </remarks>
+#pragma warning disable 618 // Suppress warnings that TimeStamp field is obsolete
+        public DateTime TimeStampUtc
+        {
+            get
+            {
+                if (TimeStamp != default(DateTime) && 
+                    _timeStampUtc == default(DateTime))
+                {
+                    // TimeStamp field has been set explicitly but TimeStampUtc hasn't
+                    // => use TimeStamp
+                    return TimeStamp.ToUniversalTime();
+                }
+                return _timeStampUtc;
+            }
+            set
+            {
+                _timeStampUtc = value;
+                // For backwards compatibility
+                TimeStamp = _timeStampUtc.ToLocalTime();
+            }
+        }
+        private DateTime _timeStampUtc;
+#pragma warning restore 618
+
+        /// <summary>
 		/// Location information for the caller.
 		/// </summary>
 		/// <remarks>
@@ -278,8 +313,8 @@ namespace log4net.Core
 	/// time the event is delivered to appenders, but will not be consistent
 	/// at any time afterwards. If an event is to be stored and then processed
 	/// at a later time these volatile values must be fixed by calling
-	/// <see cref="FixVolatileData()"/>. There is a performance penalty
-	/// for incurred by calling <see cref="FixVolatileData()"/> but it
+	/// <see cref="M:FixVolatileData()"/>. There is a performance penalty
+	/// for incurred by calling <see cref="M:FixVolatileData()"/> but it
 	/// is essential to maintaining data consistency.
 	/// </para>
 	/// </remarks>
@@ -314,7 +349,7 @@ namespace log4net.Core
 		/// <para>
 		/// Except <see cref="TimeStamp"/>, <see cref="Level"/> and <see cref="LoggerName"/>, 
 		/// all fields of <c>LoggingEvent</c> are filled when actually needed. Call
-		/// <see cref="FixVolatileData()"/> to cache all data locally
+		/// <see cref="M:FixVolatileData()"/> to cache all data locally
 		/// to prevent inconsistencies.
 		/// </para>
 		/// <para>This method is called by the log4net framework
@@ -332,7 +367,7 @@ namespace log4net.Core
 			m_data.Level = level;
 
 			// Store the event creation time
-			m_data.TimeStamp = DateTime.Now;
+			m_data.TimeStampUtc = DateTime.UtcNow;
 		}
 
 		/// <summary>
@@ -351,7 +386,7 @@ namespace log4net.Core
 		/// be useful if you require a custom serialization scheme.
 		/// </para>
 		/// <para>
-		/// Use the <see cref="GetLoggingEventData(FixFlags)"/> method to obtain an 
+		/// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an 
 		/// instance of the <see cref="LoggingEventData"/> class.
 		/// </para>
 		/// <para>
@@ -384,7 +419,7 @@ namespace log4net.Core
 		/// be useful if you require a custom serialization scheme.
 		/// </para>
 		/// <para>
-		/// Use the <see cref="GetLoggingEventData(FixFlags)"/> method to obtain an 
+		/// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an 
 		/// instance of the <see cref="LoggingEventData"/> class.
 		/// </para>
 		/// <para>
@@ -409,7 +444,7 @@ namespace log4net.Core
 		/// be useful if you require a custom serialization scheme.
 		/// </para>
 		/// <para>
-		/// Use the <see cref="GetLoggingEventData(FixFlags)"/> method to obtain an 
+		/// Use the <see cref="M:GetLoggingEventData(FixFlags)"/> method to obtain an 
 		/// instance of the <see cref="LoggingEventData"/> class.
 		/// </para>
 		/// <para>
@@ -426,7 +461,7 @@ namespace log4net.Core
 
 		#region Protected Instance Constructors
 
-#if !NETCF
+#if !(NETCF || NETSTANDARD1_3)
 
 		/// <summary>
 		/// Serialization constructor
@@ -452,7 +487,7 @@ namespace log4net.Core
 
 			m_data.Message = info.GetString("Message");
 			m_data.ThreadName = info.GetString("ThreadName");
-			m_data.TimeStamp = info.GetDateTime("TimeStamp");
+			m_data.TimeStampUtc = info.GetDateTime("TimeStamp").ToUniversalTime();
 			m_data.LocationInfo = (LocationInfo) info.GetValue("LocationInfo", typeof(LocationInfo));
 			m_data.UserName = info.GetString("UserName");
 			m_data.ExceptionString = info.GetString("ExceptionString");
@@ -479,7 +514,7 @@ namespace log4net.Core
 		/// </value>
 		/// <remarks>
 		/// <para>
-		/// The TimeStamp is stored in the local time zone for this computer.
+		/// The TimeStamp is stored internally in UTC and converted to the local time zone for this computer.
 		/// </para>
 		/// <para>
 		/// Tries to get the start time for the current process.
@@ -494,7 +529,30 @@ namespace log4net.Core
 		/// </remarks>
 		public static DateTime StartTime
 		{
-			get { return SystemInfo.ProcessStartTime; }
+			get { return SystemInfo.ProcessStartTimeUtc.ToLocalTime(); }
+		}
+
+        /// <summary>
+        /// Gets the UTC time when the current process started.
+        /// </summary>
+        /// <value>
+        /// This is the UTC time when this process started.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// Tries to get the start time for the current process.
+        /// Failing that it returns the time of the first call to
+        /// this property.
+        /// </para>
+        /// <para>
+        /// Note that AppDomains may be loaded and unloaded within the
+        /// same process without the process terminating and therefore
+        /// without the process start time being reset.
+        /// </para>
+        /// </remarks>
+        public static DateTime StartTimeUtc
+        {
+            get { return SystemInfo.ProcessStartTimeUtc; }
 		}
 
 		/// <summary>
@@ -521,12 +579,23 @@ namespace log4net.Core
 		/// </value>
 		/// <remarks>
 		/// <para>
-		/// The TimeStamp is stored in the local time zone for this computer.
+		/// The TimeStamp is stored in UTC and converted to the local time zone for this computer.
 		/// </para>
 		/// </remarks>
 		public DateTime TimeStamp
 		{
-			get { return m_data.TimeStamp; }
+			get { return m_data.TimeStampUtc.ToLocalTime(); }
+		}
+
+        /// <summary>
+        /// Gets UTC the time of the logging event.
+        /// </summary>
+        /// <value>
+        /// The UTC time of the logging event.
+        /// </value>
+        public DateTime TimeStampUtc
+        {
+            get { return m_data.TimeStampUtc; }
 		}
 
 		/// <summary>
@@ -745,7 +814,7 @@ namespace log4net.Core
 			{
 				if (m_data.ThreadName == null && this.m_cacheUpdatable)
 				{
-#if NETCF
+#if NETCF || NETSTANDARD1_3
 					// Get thread ID only
 					m_data.ThreadName = SystemInfo.CurrentThreadId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
 #else
@@ -828,7 +897,7 @@ namespace log4net.Core
 			{
 				if (m_data.UserName == null  && this.m_cacheUpdatable) 
 				{
-#if (NETCF || SSCLI)
+#if (NETCF || SSCLI || NETSTANDARD1_3) // NETSTANDARD1_3 TODO requires platform-specific code
 					// On compact framework there's no notion of current Windows user
 					m_data.UserName = SystemInfo.NotAvailableText;
 #else
@@ -876,7 +945,7 @@ namespace log4net.Core
 			{
 				if (m_data.Identity == null  && this.m_cacheUpdatable)
 				{
-#if (NETCF || SSCLI)
+#if (NETCF || SSCLI || NETSTANDARD1_3)
 					// On compact framework there's no notion of current thread principals
 					m_data.Identity = SystemInfo.NotAvailableText;
 #else
@@ -893,7 +962,16 @@ namespace log4net.Core
 							m_data.Identity = "";
 						}
 					}
-					catch(System.Security.SecurityException)
+					catch (ObjectDisposedException)
+					{
+						// This exception will occur if System.Threading.Thread.CurrentPrincipal.Identity is not null but
+						// the getter of the property Name tries to access disposed objects.
+						// Seen to happen on IIS 7 or greater with windows authentication.
+						LogLog.Debug(declaringType, "Object disposed exception while trying to get current thread principal. Error Ignored. Empty identity name.");
+
+						m_data.Identity = "";
+					}
+					catch (System.Security.SecurityException)
 					{
 						// This security exception will occur if the caller does not have 
 						// some undefined set of SecurityPermission flags.
@@ -1008,12 +1086,12 @@ namespace log4net.Core
 		/// The data in this event must be fixed before it can be serialized.
 		/// </para>
 		/// <para>
-		/// The <see cref="FixVolatileData()"/> method must be called during the
+		/// The <see cref="M:FixVolatileData()"/> method must be called during the
 		/// <see cref="log4net.Appender.IAppender.DoAppend"/> method call if this event 
 		/// is to be used outside that method.
 		/// </para>
 		/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
         [System.Security.SecurityCritical]
 #else
 		[System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter=true)]
@@ -1027,8 +1105,13 @@ namespace log4net.Core
 			info.AddValue("Level", m_data.Level);
 			info.AddValue("Message", m_data.Message);
 			info.AddValue("ThreadName", m_data.ThreadName);
+            // TODO: consider serializing UTC rather than local time.  Not implemented here because it
+            // would give an unexpected result if client and server have different versions of this class.
+            // info.AddValue("TimeStamp", m_data.TimeStampUtc);
+#pragma warning disable 618
 			info.AddValue("TimeStamp", m_data.TimeStamp);
-			info.AddValue("LocationInfo", m_data.LocationInfo);
+#pragma warning restore 618
+            info.AddValue("LocationInfo", m_data.LocationInfo);
 			info.AddValue("UserName", m_data.UserName);
 			info.AddValue("ExceptionString", m_data.ExceptionString);
 			info.AddValue("Properties", m_data.Properties);
@@ -1144,17 +1227,17 @@ namespace log4net.Core
 		/// time the event is delivered to appenders, but will not be consistent
 		/// at any time afterwards. If an event is to be stored and then processed
 		/// at a later time these volatile values must be fixed by calling
-		/// <see cref="FixVolatileData()"/>. There is a performance penalty
-		/// incurred by calling <see cref="FixVolatileData()"/> but it
+		/// <see cref="M:FixVolatileData()"/>. There is a performance penalty
+		/// incurred by calling <see cref="M:FixVolatileData()"/> but it
 		/// is essential to maintaining data consistency.
 		/// </para>
 		/// <para>
-		/// Calling <see cref="FixVolatileData()"/> is equivalent to
-		/// calling <see cref="FixVolatileData(bool)"/> passing the parameter
+		/// Calling <see cref="M:FixVolatileData()"/> is equivalent to
+		/// calling <see cref="M:FixVolatileData(bool)"/> passing the parameter
 		/// <c>false</c>.
 		/// </para>
 		/// <para>
-		/// See <see cref="FixVolatileData(bool)"/> for more
+		/// See <see cref="M:FixVolatileData(bool)"/> for more
 		/// information.
 		/// </para>
 		/// </remarks>
@@ -1175,8 +1258,8 @@ namespace log4net.Core
 		/// time the event is delivered to appenders, but will not be consistent
 		/// at any time afterwards. If an event is to be stored and then processed
 		/// at a later time these volatile values must be fixed by calling
-		/// <see cref="FixVolatileData()"/>. There is a performance penalty
-		/// for incurred by calling <see cref="FixVolatileData()"/> but it
+		/// <see cref="M:FixVolatileData()"/>. There is a performance penalty
+		/// for incurred by calling <see cref="M:FixVolatileData()"/> but it
 		/// is essential to maintaining data consistency.
 		/// </para>
 		/// <para>
@@ -1305,28 +1388,35 @@ namespace log4net.Core
 
 		private void CreateCompositeProperties()
 		{
-			m_compositeProperties = new CompositeProperties();
+			CompositeProperties compositeProperties = new CompositeProperties();
 
 			if (m_eventProperties != null)
 			{
-				m_compositeProperties.Add(m_eventProperties);
+				compositeProperties.Add(m_eventProperties);
 			}
-#if !NETCF
+#if !(NETCF || NETSTANDARD1_3)
 			PropertiesDictionary logicalThreadProperties = LogicalThreadContext.Properties.GetProperties(false);
 			if (logicalThreadProperties != null)
 			{
-				m_compositeProperties.Add(logicalThreadProperties);
+				compositeProperties.Add(logicalThreadProperties);
 			}
 #endif
 			PropertiesDictionary threadProperties = ThreadContext.Properties.GetProperties(false);
 			if (threadProperties != null)
 			{
-				m_compositeProperties.Add(threadProperties);
+				compositeProperties.Add(threadProperties);
 			}
 
 			// TODO: Add Repository Properties
 
-			m_compositeProperties.Add(GlobalContext.Properties.GetReadOnlyProperties());
+			// event properties
+			PropertiesDictionary eventProperties = new PropertiesDictionary();
+			eventProperties[UserNameProperty] = UserName;
+			eventProperties[IdentityProperty] = Identity;
+			compositeProperties.Add(eventProperties);
+
+			compositeProperties.Add(GlobalContext.Properties.GetReadOnlyProperties());
+                        m_compositeProperties = compositeProperties;
 		}
 
 		private void CacheProperties()

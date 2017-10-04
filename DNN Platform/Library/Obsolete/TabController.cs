@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,80 +56,6 @@ namespace DotNetNuke.Entities.Tabs
     public partial class TabController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method has replaced in DotNetNuke 5.0 by CopyDesignToChildren(TabInfo,String, String)")]
-        public void CopyDesignToChildren(ArrayList tabs, string skinSrc, string containerSrc)
-        {
-            foreach (TabInfo tab in tabs)
-            {
-                _dataProvider.UpdateTab(tab.TabID,
-                                   tab.ContentItemId,
-                                   tab.PortalID,
-                                   tab.VersionGuid,
-                                   tab.DefaultLanguageGuid,
-                                   tab.LocalizedVersionGuid,
-                                   tab.TabName,
-                                   tab.IsVisible,
-                                   tab.DisableLink,
-                                   tab.ParentId,
-                                   tab.IconFileRaw,
-                                   tab.IconFileLargeRaw,
-                                   tab.Title,
-                                   tab.Description,
-                                   tab.KeyWords,
-                                   tab.IsDeleted,
-                                   tab.Url,
-                                   skinSrc,
-                                   containerSrc,
-                                   tab.StartDate,
-                                   tab.EndDate,
-                                   tab.RefreshInterval,
-                                   tab.PageHeadText,
-                                   tab.IsSecure,
-                                   tab.PermanentRedirect,
-                                   tab.SiteMapPriority,
-                                   UserController.Instance.GetCurrentUserInfo().UserID,
-                                   tab.CultureCode,
-                                   tab.IsSystem);
-                EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(),
-                                UserController.Instance.GetCurrentUserInfo().UserID, "",
-                                EventLogController.EventLogType.TAB_UPDATED);
-            }
-            if (tabs.Count > 0)
-            {
-                DataCache.ClearTabsCache(((TabInfo)tabs[0]).PortalID);
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 5.0. Replaced by CopyPermissionsToChildren(TabInfo, TabPermissionCollection)")]
-        public void CopyPermissionsToChildren(ArrayList tabs, TabPermissionCollection newPermissions)
-        {
-            foreach (TabInfo tab in tabs)
-            {
-                tab.TabPermissions.Clear();
-                tab.TabPermissions.AddRange(newPermissions);
-                TabPermissionController.SaveTabPermissions(tab);
-            }
-            if (tabs.Count > 0)
-            {
-                DataCache.ClearTabsCache(((TabInfo)tabs[0]).PortalID);
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 5.5.Replaced by ModuleController.CopyModules")]
-        public void CopyTab(int portalId, int fromTabId, int toTabId, bool asReference)
-        {
-            TabInfo sourceTab = GetTab(fromTabId, portalId, false);
-            TabInfo destinationTab = GetTab(fromTabId, toTabId, false);
-
-            if (sourceTab != null && destinationTab != null)
-            {
-                ModuleController.Instance.CopyModules(sourceTab, destinationTab, asReference);
-            }
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload")]
         public void CreateLocalizedCopy(List<TabInfo> tabs, Locale locale)
         {
@@ -147,47 +73,8 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2. Replaced by SoftDeleteTab(tabId, portalSettings)")]
-        public static bool DeleteTab(int tabId, PortalSettings portalSettings, int userId)
-        {
-            return Instance.SoftDeleteTab(tabId, portalSettings);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method has replaced in DotNetNuke 5.0 by DeserializeTab(ByVal nodeTab As XmlNode, ByVal objTab As TabInfo, ByVal PortalId As Integer, ByVal mergeTabs As PortalTemplateModuleAction)")]
-        public static TabInfo DeserializeTab(string tabName, XmlNode nodeTab, int portalId)
-        {
-            return DeserializeTab(nodeTab, null, new Hashtable(), portalId, false, PortalTemplateModuleAction.Ignore,
-                                  new Hashtable());
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method has replaced in DotNetNuke 5.0 by DeserializeTab(ByVal nodeTab As XmlNode, ByVal objTab As TabInfo, ByVal PortalId As Integer, ByVal mergeTabs As PortalTemplateModuleAction)")]
-        public static TabInfo DeserializeTab(XmlNode tabNode, TabInfo tab, int portalId)
-        {
-            return DeserializeTab(tabNode, tab, new Hashtable(), portalId, false, PortalTemplateModuleAction.Ignore,
-                                  new Hashtable());
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method has replaced in DotNetNuke 5.0 by DeserializeTab(ByVal nodeTab As XmlNode, ByVal objTab As TabInfo, ByVal hTabs As Hashtable, ByVal PortalId As Integer, ByVal IsAdminTemplate As Boolean, ByVal mergeTabs As PortalTemplateModuleAction, ByVal hModules As Hashtable)")]
-        public static TabInfo DeserializeTab(string tabName, XmlNode nodeTab, TabInfo objTab, Hashtable hTabs,
-                                             int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs,
-                                             Hashtable hModules)
-        {
-            return DeserializeTab(nodeTab, objTab, hTabs, portalId, isAdminTemplate, mergeTabs, hModules);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabasByPortal")]
+        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabsByPortal")]
         public ArrayList GetAllTabs()
-        {
-            return CBO.FillCollection(_dataProvider.GetAllTabs(), typeof(TabInfo));
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2. Method is not scalable. Use GetTabasByPortal")]
-        public ArrayList GetAllTabs(bool checkLegacyFields)
         {
             return CBO.FillCollection(_dataProvider.GetAllTabs(), typeof(TabInfo));
         }
@@ -221,13 +108,6 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.5. Replaced by GetTabByTabPath(portalId, tabPath, cultureCode) ")]
-        public static int GetTabByTabPath(int portalId, string tabPath)
-        {
-            return GetTabByTabPath(portalId, tabPath, Null.NullString);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Use LINQ queries on tab collections thata re cached")]
         public TabInfo GetTabByUniqueID(Guid uniqueID)
         {
@@ -242,61 +122,10 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.5. Replaced by GetTabPathDictionary(portalId, cultureCode) ")]
-        public static Dictionary<string, int> GetTabPathDictionary(int portalId)
-        {
-            return GetTabPathDictionary(portalId, Null.NullString);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method has been replaced in 5.0 by GetTabPathDictionary(ByVal portalId As Integer) As Dictionary(Of String, Integer) ")]
-        public static Dictionary<string, int> GetTabPathDictionary()
-        {
-            var tabpathDic = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
-            IDataReader dr = DataProvider.Instance().GetTabPaths(Null.NullInteger, Null.NullString);
-            try
-            {
-                while (dr.Read())
-                {
-                    string strKey = "//" + Null.SetNullInteger(dr["PortalID"]) + Null.SetNullString(dr["TabPath"]);
-                    tabpathDic[strKey] = Null.SetNullInteger(dr["TabID"]);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-            return tabpathDic;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method has replaced in DotNetNuke 5.0 by GetTabsByPortal()")]
-        public ArrayList GetTabs(int portalId)
-        {
-            return GetTabsByPortal(portalId).ToArrayList();
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This method is obsolete.  It has been replaced by GetTabsByParent(ByVal ParentId As Integer, ByVal PortalId As Integer) ")]
         public ArrayList GetTabsByParentId(int parentId)
         {
             return new ArrayList(GetTabsByParent(parentId, GetPortalId(parentId, Null.NullInteger)));
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method has replaced in DotNetNuke 5.0 by GetTabsByParent(ByVal ParentId As Integer, ByVal PortalId As Integer)")]
-        public ArrayList GetTabsByParentId(int parentId, int portalId)
-        {
-            var arrTabs = new ArrayList();
-            foreach (TabInfo objTab in GetTabsByParent(parentId, portalId))
-            {
-                arrTabs.Add(objTab);
-            }
-            return arrTabs;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -328,45 +157,6 @@ namespace DotNetNuke.Entities.Tabs
                     break;
             }
             ClearCache(tab.PortalID);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2. Replaced by RestoreTab(tabId, portalSettings)")]
-        public static void RestoreTab(TabInfo tab, PortalSettings portalSettings, int userId)
-        {
-            Instance.RestoreTab(tab, portalSettings);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 5.5. Replaced by UpdateTab(updatedTab)")]
-        public void UpdateTab(TabInfo updatedTab, string cultureCode)
-        {
-            updatedTab.CultureCode = cultureCode;
-            UpdateTab(updatedTab);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2.  Tab Ordering is handled in the DB ")]
-        public void UpdateTabOrder(int portalID, int tabId, int tabOrder, int level, int parentId)
-        {
-            TabInfo objTab = GetTab(tabId, portalID, false);
-            objTab.TabOrder = tabOrder;
-            objTab.Level = level;
-            objTab.ParentId = parentId;
-            UpdateTabOrder(objTab);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 6.2.  Tab Ordering is handled in the DB ")]
-        public void UpdateTabOrder(TabInfo objTab)
-        {
-            _dataProvider.UpdateTabOrder(objTab.TabID, objTab.TabOrder, objTab.ParentId,
-                                    UserController.Instance.GetCurrentUserInfo().UserID);
-            UpdateTabVersion(objTab.TabID);
-            EventLogController.Instance.AddLog(objTab, PortalController.Instance.GetCurrentPortalSettings(),
-                                      UserController.Instance.GetCurrentUserInfo().UserID, "",
-                                      EventLogController.EventLogType.TAB_ORDER_UPDATED);
-            ClearCache(objTab.PortalID);
         }
     }
 }

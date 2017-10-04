@@ -59,11 +59,6 @@ Used as an optional component to enable file uploads up to 2GB
 License Type: LGPL
 License Link: http://www.brettle.com/neatupload#License
 
-OpenWYSIWYG (javascript)
-Used as the text editor
-License Type: LGPL
-License Link: http://www.openwebware.com  in that page it references the  LGPL Open Source license.
-
 VideoBox (javascript)
 Used to render the lightbox effect that shows media files.
 License Type: MIT 
@@ -78,11 +73,6 @@ SwfObject (javascript)
 Used as an additional component by VideoBox
 License Type: MIT
 License Link: link to license on site: http://code.google.com/p/swfobject/ to http://www.opensource.org/licenses/mit-license.php
-
-FLV-Player (flash)
-Flash player used to play flv files
-License Type: No License Information, freely downloadable.
-Link to Site: http://oos.moxiecode.com/flvplayer/
 
 SearchSpider
 Used as the spider engine for the module.
@@ -114,11 +104,6 @@ Used to provide Instrumentation throughout the core
 License Type: Apache
 License Link: http://logging.apache.org/log4net/license.html
 
-Sharepoint Logging Library
-Used to provide logging in Sharepoint connnector
-License Type: LGPL
-License Link: http://splogginglibrary.codeplex.com/license
-
 hoverintent
 Used throughout UI
 License Type: MIT or GPL
@@ -144,7 +129,6 @@ Combining, compressing & minifying JavaScript and CSS files
 License Type: Microsoft Public License (Ms-PL)
 License Link: http://clientdependency.codeplex.com/license
 
-
 Knockout Javascript library
 Used throughout UI
 License Type: MIT
@@ -162,4 +146,9 @@ License link: https://github.com/balupton/history.js/blob/master/license.txt
 HtmlDiff
 Used for Html version comparison
 License Type: MIT
-License link: https://raw.github.com/Rohland/htmldiff.net/master/license.txt
+License link: https://github.com/Rohland/htmldiff.net/blob/master/license.txt
+
+LiteDB
+Used for Export/Import intermediate database
+License Type: MIT
+License link: https://github.com/mbdavid/LiteDB/blob/master/LICENSE

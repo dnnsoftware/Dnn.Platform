@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     public class ScopeTypeController : IScopeTypeController
     {
         private readonly IDataService _DataService;
-        private string _CacheKey = "ScopeTypes";
-
-        private int _CacheTimeOut = 20;
+        private const int _CacheTimeOut = 20;
 
         #region "Constructors"
 
@@ -76,14 +74,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             scopeType.ScopeTypeId = _DataService.AddScopeType(scopeType);
 
             //Refresh cached collection of types
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
 
             return scopeType.ScopeTypeId;
         }
 
         public void ClearScopeTypeCache()
         {
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
         public void DeleteScopeType(ScopeType scopeType)
@@ -95,12 +93,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             _DataService.DeleteScopeType(scopeType);
 
             //Refresh cached collection of types
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
         public IQueryable<ScopeType> GetScopeTypes()
         {
-            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(_CacheKey, _CacheTimeOut), GetScopeTypesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, _CacheTimeOut), GetScopeTypesCallBack).AsQueryable();
         }
 
         public void UpdateScopeType(ScopeType scopeType)
@@ -113,7 +111,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             _DataService.UpdateScopeType(scopeType);
 
             //Refresh cached collection of types
-            DataCache.RemoveCache(_CacheKey);
+            DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
         #endregion

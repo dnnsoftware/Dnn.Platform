@@ -535,7 +535,7 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
     <value>Adding FcnMode</value>
   </data>
   <data name="Email.Help" xml:space="preserve">
-    <value>Enter an emaila ddress for this user.</value>
+    <value>Enter an email address for this user.</value>
   </data>
   <data name="Email.Invalid" xml:space="preserve">
     <value>The email address entered is not valid</value>
@@ -545,5 +545,11 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   </data>
   <data name="Email.Text" xml:space="preserve">
     <value>Email address:</value>
+  </data>
+  <data name="AcceptTerms.Text" xml:space="preserve">
+    <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
+  </data>
+  <data name="AcceptTerms.Required" xml:space="preserve">
+    <value>Accept the terms of the license agreement to continue.</value>
   </data>
 </root>

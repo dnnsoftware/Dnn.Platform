@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,7 +22,7 @@
 
 using System;
 using System.Web;
-
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
@@ -33,28 +33,20 @@ namespace DotNetNuke.Modules.Admin.Security
 {
     public partial class AccessDeniedPage : PortalModuleBase
     {
-        private void InitializeComponent()
-        {
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            InitializeComponent();
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(Request.QueryString["message"]))
+            string message = null;
+            Guid messageGuid;
+            var guidText = Request.QueryString["message"];
+            if (!string.IsNullOrEmpty(guidText) && Guid.TryParse(guidText, out messageGuid))
             {
-                UI.Skins.Skin.AddModuleMessage(this, HttpUtility.HtmlEncode(HttpUtility.UrlDecode(Request.QueryString["message"])), ModuleMessage.ModuleMessageType.YellowWarning);
+                message = HttpUtility.HtmlEncode(DataProvider.Instance().GetRedirectMessage(messageGuid));
             }
-            else
-            {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("AccessDenied", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-            }
+
+            UI.Skins.Skin.AddModuleMessage(this,
+                !string.IsNullOrEmpty(message) ? message : Localization.GetString("AccessDenied", LocalResourceFile),
+                ModuleMessage.ModuleMessageType.YellowWarning);
         }
     }
 }

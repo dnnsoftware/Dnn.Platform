@@ -1,7 +1,7 @@
 ﻿#region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -467,6 +467,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(accessToken);
             var result = _httpClient.GetAsync(LogoutQuery).Result;
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            var content = result.Content.ReadAsStringAsync().Result;
+            dynamic response = !string.IsNullOrEmpty(content) ? JsonConvert.DeserializeObject(content) : null;
+            Assert.IsTrue(Convert.ToBoolean(response?.success));
         }
 
         private void SetAuthHeaderToken(string token, string scheme = "Bearer")

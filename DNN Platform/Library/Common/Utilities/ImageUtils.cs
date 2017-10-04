@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -127,9 +127,8 @@ namespace DotNetNuke.Common.Utilities
             File.Copy(sFile, tmp);
 
             using (var fileContent = File.OpenRead(tmp))
+            using(var content = CreateImage(fileContent, intHeight, intWidth, fi.Extension))
             {
-                var content = CreateImage(fileContent, intHeight, intWidth, fi.Extension);
-
                 string sFileExt = fi.Extension;
                 string sFileNoExtension = Path.GetFileNameWithoutExtension(sFile);
 
@@ -175,73 +174,72 @@ namespace DotNetNuke.Common.Utilities
 
         public static Stream CreateImage(Stream stream, int intHeight, int intWidth, string extension)
         {
-            var original = new Bitmap(stream);
-            int imgHeight, imgWidth;
-            PixelFormat format = original.PixelFormat;
-            if (format.ToString().Contains("Indexed"))
+            using (var original = new Bitmap(stream))
             {
-                format = PixelFormat.Format24bppRgb;
-            }
-
-            int newHeight = intHeight;
-            int newWidth = intWidth;
-            Size imgSize;
-            if (original.Width > newWidth || original.Height > newHeight)
-            {
-                imgSize = NewImageSize(original.Width, original.Height, newWidth, newHeight);
-                imgHeight = imgSize.Height;
-                imgWidth = imgSize.Width;
-            }
-            else
-            {
-                imgHeight = original.Height;
-                imgWidth = original.Width;
-            }
-
-            if (imgWidth < 1) imgWidth = 1;
-            if (imgHeight < 1) imgHeight = 1;
-            imgSize = new Size(imgWidth, imgHeight);
-
-            var newImg = new Bitmap(imgWidth, imgHeight, format);
-            newImg.SetResolution(original.HorizontalResolution, original.VerticalResolution);
-
-            Graphics canvas = Graphics.FromImage(newImg);
-            canvas.SmoothingMode = SmoothingMode.None;
-            canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            if (extension.ToLowerInvariant() != ".png")
-            {
-                canvas.Clear(Color.White);
-                canvas.FillRectangle(Brushes.White, 0, 0, imgSize.Width, imgSize.Height);
-            }
-
-            canvas.DrawImage(original, 0, 0, imgSize.Width, imgSize.Height);
-
-            //newImg.Save
-            using (Stream content = new MemoryStream())
-            {
-                ImageFormat imgFormat = ImageFormat.Bmp;
-                if (extension.ToLowerInvariant() == ".png")
+                int imgHeight, imgWidth;
+                PixelFormat format = original.PixelFormat;
+                if (format.ToString().Contains("Indexed"))
                 {
-                    imgFormat = ImageFormat.Png;
-                }
-                else if (extension.ToLowerInvariant() == ".gif")
-                {
-                    imgFormat = ImageFormat.Gif;
-                }
-                else if (extension.ToLowerInvariant() == ".jpg")
-                {
-                    imgFormat = ImageFormat.Jpeg;
+                    format = PixelFormat.Format24bppRgb;
                 }
 
-                newImg.Save(content, imgFormat);
+                int newHeight = intHeight;
+                int newWidth = intWidth;
+                Size imgSize;
+                if (original.Width > newWidth || original.Height > newHeight)
+                {
+                    imgSize = NewImageSize(original.Width, original.Height, newWidth, newHeight);
+                    imgHeight = imgSize.Height;
+                    imgWidth = imgSize.Width;
+                }
+                else
+                {
+                    imgHeight = original.Height;
+                    imgWidth = original.Width;
+                }
 
-                newImg.Dispose();
-                original.Dispose();
-                canvas.Dispose();
+                if (imgWidth < 1) imgWidth = 1;
+                if (imgHeight < 1) imgHeight = 1;
+                imgSize = new Size(imgWidth, imgHeight);
 
-                return content;
+                using (var newImg = new Bitmap(imgWidth, imgHeight, format))
+                {
+                    newImg.SetResolution(original.HorizontalResolution, original.VerticalResolution);
+
+                    using (Graphics canvas = Graphics.FromImage(newImg))
+                    {
+                        canvas.SmoothingMode = SmoothingMode.None;
+                        canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                        if (extension.ToLowerInvariant() != ".png")
+                        {
+                            canvas.Clear(Color.White);
+                            canvas.FillRectangle(Brushes.White, 0, 0, imgSize.Width, imgSize.Height);
+                        }
+
+                        canvas.DrawImage(original, 0, 0, imgSize.Width, imgSize.Height);
+
+                        //newImg.Save
+                        ImageFormat imgFormat = ImageFormat.Bmp;
+                        if (extension.ToLowerInvariant() == ".png")
+                        {
+                            imgFormat = ImageFormat.Png;
+                        }
+                        else if (extension.ToLowerInvariant() == ".gif")
+                        {
+                            imgFormat = ImageFormat.Gif;
+                        }
+                        else if (extension.ToLowerInvariant() == ".jpg")
+                        {
+                            imgFormat = ImageFormat.Jpeg;
+                        }
+
+                        var content = new MemoryStream();
+                        newImg.Save(content, imgFormat);
+                        return content;
+                    }
+                }
             }
         }
 

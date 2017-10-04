@@ -1,7 +1,6 @@
 ﻿Test,							ForceLowerCaseRegex,	Scheme,		Page Name,		Params,					Expected Url,	
 Home,							,						http://,	Home,			,						http://{alias}/
 About Us,						,						http://,	About Us,		,						http://{alias}/aboutus.aspx
-Admin Site Settings,			,						http://,	Site Settings,	,						http://{alias}/Admin/SiteSettings.aspx
 Profile Messages,				,						http://,	Messages,		,						http://{alias}/activityfeed/messages.aspx
 Terms,							,						http://,	Home,			&ctl=Terms,				http://{alias}/terms.aspx
 Login,							,						http://,	About Us,		&ctl=Login,				http://{alias}/login.aspx

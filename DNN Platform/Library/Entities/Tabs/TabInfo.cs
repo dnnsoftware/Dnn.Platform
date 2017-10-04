@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1013,59 +1013,6 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
             return url ?? ("");
-        }
-
-        #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DNN 5.1. All permission checks are done through Permission Collections")]
-        [XmlIgnore]
-        public string AdministratorRoles
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_administratorRoles))
-                {
-                    _administratorRoles = TabPermissions.ToString("EDIT");
-                }
-                return _administratorRoles;
-            }
-            set
-            {
-                _administratorRoles = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. All permission checks are done through Permission Collections")]
-        [XmlIgnore]
-        public string AuthorizedRoles
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_authorizedRoles))
-                {
-                    _authorizedRoles = TabPermissions.ToString("VIEW");
-                }
-                return _authorizedRoles;
-            }
-            set
-            {
-                _authorizedRoles = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. The artificial differences between Regular and Admin pages was removed.")]
-        public bool IsAdminTab
-        {
-            get
-            {
-                if (IsSuperTab)
-                {
-                    return true;
-                }
-                return false;
-            }
         }
 
         #endregion

@@ -1,12 +1,12 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke_Symbols" type="Library" version="08.00.01">
-      <friendlyName>DotNetNuke @@VER_NAME@@ Symbols</friendlyName>
-      <description>This package contains Debug Symbols and Intellisense files for DotNetNuke @@VER_NAME@@ Edition.</description>
+    <package name="DotNetNuke_Symbols" type="Library" version="09.02.00">
+      <friendlyName>DNN @@VER_NAME@@ Symbols</friendlyName>
+      <description>This package contains Debug Symbols and Intellisense files for DNN @@VER_NAME@@ Edition.</description>
       <owner>
-        <name>DotNetNuke Corporation</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com</url>
+        <name>DNN Corporation</name>
+        <organization>DNN Corporation</organization>
+        <url>http://www.dnnsoftware.com</url>
         <email>support@dotnetnuke.com</email>
       </owner>
       <license src="license.txt" />

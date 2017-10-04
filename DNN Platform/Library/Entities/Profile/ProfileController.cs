@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     public class ProfileController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ProfileController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProfileController));
 
         #region Private Members
 
@@ -79,18 +79,18 @@ namespace DotNetNuke.Entities.Profile
         {
             ListEntryInfo typeInfo = types["DataType:" + type] ?? types["DataType:Unknown"];
             var propertyDefinition = new ProfilePropertyDefinition(portalId)
-                                         {
-                                             DataType = typeInfo.EntryID,
-                                             DefaultValue = "",
-                                             ModuleDefId = Null.NullInteger,
-                                             PropertyCategory = category,
-                                             PropertyName = name,
-                                             Required = false,
-                                             ViewOrder = viewOrder,
-                                             Visible = true,
-                                             Length = length,
-                                             DefaultVisibility = defaultVisibility
-                                         };
+            {
+                DataType = typeInfo.EntryID,
+                DefaultValue = "",
+                ModuleDefId = Null.NullInteger,
+                PropertyCategory = category,
+                PropertyName = name,
+                Required = false,
+                ViewOrder = viewOrder,
+                Visible = true,
+                Length = length,
+                DefaultVisibility = defaultVisibility
+            };
             AddPropertyDefinition(propertyDefinition);
         }
 
@@ -101,10 +101,10 @@ namespace DotNetNuke.Entities.Profile
             {
                 definition = FillPropertyDefinitionInfo(dr, true);
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
             finally
             {
                 CBO.CloseDataReader(dr, true);
@@ -146,11 +146,11 @@ namespace DotNetNuke.Entities.Profile
                 definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
                 definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
                 definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible));
-                definition.DefaultVisibility = (UserVisibilityMode) Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
+                definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
                 definition.ProfileVisibility = new ProfileVisibility
-                                                   {
-                                                       VisibilityMode = definition.DefaultVisibility
-                                                   };
+                {
+                    VisibilityMode = definition.DefaultVisibility
+                };
                 definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted));
             }
             return definition;
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Profile
             }
             finally
             {
-				//close datareader
+                //close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return arr;
@@ -188,15 +188,15 @@ namespace DotNetNuke.Entities.Profile
 
         private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(int portalId)
         {
-			//Get the Cache Key
+            //Get the Cache Key
             string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);
 
             //Try fetching the List from the Cache
-            var definitions = (List<ProfilePropertyDefinition>) DataCache.GetCache(key);
+            var definitions = (List<ProfilePropertyDefinition>)DataCache.GetCache(key);
             if (definitions == null)
             {
                 //definitions caching settings
-                Int32 timeOut = DataCache.ProfileDefinitionsCacheTimeOut*Convert.ToInt32(Host.Host.PerformanceSetting);
+                Int32 timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
 
                 //Get the List from the database
                 definitions = FillPropertyDefinitionInfoCollection(_dataProvider.GetPropertyDefinitionsByPortal(portalId));
@@ -222,8 +222,8 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static void AddDefaultDefinitions(int portalId)
         {
-            portalId = GetEffectivePortalId(portalId); 
-            
+            portalId = GetEffectivePortalId(portalId);
+
             _orderCounter = 1;
             var listController = new ListController();
             Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
@@ -252,7 +252,7 @@ namespace DotNetNuke.Entities.Profile
 
             //6.0 requires the old TimeZone property to be marked as Deleted
             ProfilePropertyDefinition pdf = GetPropertyDefinitionByName(portalId, "TimeZone");
-            if(pdf != null)
+            if (pdf != null)
             {
                 DeletePropertyDefinition(pdf);
             }
@@ -284,19 +284,20 @@ namespace DotNetNuke.Entities.Profile
                                                                definition.ViewOrder,
                                                                definition.Visible,
                                                                definition.Length,
-                                                               (int) definition.DefaultVisibility,
+                                                               (int)definition.DefaultVisibility,
                                                                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Clears the Profile Definitions Cache
-		/// </summary>
-		/// <param name="portalId">Id of the Portal</param>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Clears the Profile Definitions Cache
+        /// </summary>
+        /// <param name="portalId">Id of the Portal</param>
+        /// -----------------------------------------------------------------------------
         public static void ClearProfileDefinitionCache(int portalId)
         {
             DataCache.ClearDefinitionsCache(GetEffectivePortalId(portalId));
@@ -313,6 +314,18 @@ namespace DotNetNuke.Entities.Profile
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Clear profiles of all users by portal Id
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
+        {
+            DataCache.ClearCache(string.Format(DataCache.UserCacheKey, portalId, string.Empty));
+            DataCache.ClearCache(string.Format(DataCache.UserProfileCacheKey, portalId, string.Empty));
         }
 
         /// -----------------------------------------------------------------------------
@@ -338,7 +351,7 @@ namespace DotNetNuke.Entities.Profile
             }
             if (!bFound)
             {
-				//Try Database
+                //Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinition(definitionId));
             }
             return definition;
@@ -369,7 +382,7 @@ namespace DotNetNuke.Entities.Profile
             }
             if (!bFound)
             {
-				//Try Database
+                //Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinitionByName(portalId, name));
             }
             return definition;
@@ -385,8 +398,8 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(int portalId, string category)
         {
-            portalId = GetEffectivePortalId(portalId); 
-            
+            portalId = GetEffectivePortalId(portalId);
+
             var definitions = new ProfilePropertyDefinitionCollection();
             foreach (ProfilePropertyDefinition definition in GetPropertyDefinitions(portalId))
             {
@@ -471,7 +484,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
         {
-            
+
             if (definition.Required)
             {
                 definition.Visible = true;
@@ -487,10 +500,11 @@ namespace DotNetNuke.Entities.Profile
                                               definition.ViewOrder,
                                               definition.Visible,
                                               definition.Length,
-                                              (int) definition.DefaultVisibility,
+                                              (int)definition.DefaultVisibility,
                                               UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -511,9 +525,9 @@ namespace DotNetNuke.Entities.Profile
             var portalId = GetEffectivePortalId(user.PortalID);
             user.PortalID = portalId;
 
-            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID};
+            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID, IsSuperUser = user.IsSuperUser };
             _profileProvider.GetUserProfile(ref oldUser);
-            
+
             _profileProvider.UpdateUserProfile(user);
 
             //Remove the UserInfo from the Cache, as it has been modified
@@ -535,9 +549,8 @@ namespace DotNetNuke.Entities.Profile
         {
             int portalId = GetEffectivePortalId(user.PortalID);
             user.PortalID = portalId;
-            
-            bool updateUser = Null.NullBoolean;
-	        var photoChanged = Null.NullBoolean;
+
+            var photoChanged = Null.NullBoolean;
             //Iterate through the Definitions
             if (profileProperties != null)
             {
@@ -547,91 +560,51 @@ namespace DotNetNuke.Entities.Profile
                     string propertyValue = propertyDefinition.PropertyValue;
                     if (propertyDefinition.IsDirty)
                     {
-                        if (propertyName.Equals(UserProfile.USERPROFILE_FirstName, StringComparison.InvariantCultureIgnoreCase)
-                                || propertyName.Equals(UserProfile.USERPROFILE_LastName, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            updateUser = true;
-                        }
-                        else if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.InvariantCultureIgnoreCase))
+                        if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.InvariantCultureIgnoreCase))
                         {
                             photoChanged = true;
-                        }
-                        else if (propertyName.Equals(UserProfile.USERPROFILE_Biography, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            propertyValue = RemoveUnsafeAttributes(propertyValue);
                         }
 
                         user.Profile.SetProfileProperty(propertyName, propertyValue);
                     }
                 }
-                UpdateUserProfile(user);
 
-				//if user's photo changed, then create different size thumbnails of profile pictures.
-				if (photoChanged)
-				{
-					try
-					{
-						if (!string.IsNullOrEmpty(user.Profile.Photo) && int.Parse(user.Profile.Photo) > 0)
-						{
-							CreateThumbnails(int.Parse(user.Profile.Photo));
-						}
-					}
-					catch (Exception ex)
-					{
-						Logger.Error(ex);
-					}
-
-				}
-
-                if (updateUser)
+                //if user's photo changed, then create different size thumbnails of profile pictures.
+                if (photoChanged)
                 {
-                    UserController.UpdateUser(portalId, user);
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(user.Profile.Photo) && int.Parse(user.Profile.Photo) > 0)
+                        {
+                            CreateThumbnails(int.Parse(user.Profile.Photo));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+
                 }
+
+                UserController.UpdateUser(portalId, user);
             }
             return user;
         }
 
-        private static string RemoveUnsafeAttributes(string content)
-        {
-            var cleanContent = content;
-
-            var needEncode = false;
-            if (cleanContent.Contains("&lt;"))
-            {
-                cleanContent = HttpUtility.HtmlDecode(cleanContent);
-                needEncode = true;
-            }
-
-            var tagMatches = Regex.Matches(cleanContent, @"(<[^>]*?) on.*?\=(['""]?)[\s\S]*?(\2 )([^>]*?>)", RegexOptions.IgnoreCase);
-            foreach (Match match in tagMatches)
-            {
-                var tagContent = match.Value;
-                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""]?)[\s\S]*?(\1 )", string.Empty, RegexOptions.IgnoreCase);
-                cleanContent = cleanContent.Replace(tagContent, cleanTagContent);
-            }
-
-            if (needEncode)
-            {
-                cleanContent = HttpUtility.HtmlEncode(cleanContent);
-            }
-
-            return cleanContent;
-        }
-
         private static void CreateThumbnails(int fileId)
-		{
+        {
             CreateThumbnail(fileId, "l", 64, 64);
             CreateThumbnail(fileId, "s", 50, 50);
             CreateThumbnail(fileId, "xs", 32, 32);
-		}
+        }
 
-		private static void CreateThumbnail(int fileId, string type, int width, int height)
-		{
-		    var file = FileManager.Instance.GetFile(fileId);
-		    if (file != null)
-		    {
-		        var folder = FolderManager.Instance.GetFolder(file.FolderId);
-		        var extension = "." + file.Extension;
+        private static void CreateThumbnail(int fileId, string type, int width, int height)
+        {
+            var file = FileManager.Instance.GetFile(fileId);
+            if (file != null)
+            {
+                var folder = FolderManager.Instance.GetFolder(file.FolderId);
+                var extension = "." + file.Extension;
                 var sizedPhoto = file.FileName.Replace(extension, "_" + type + extension);
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
@@ -642,8 +615,8 @@ namespace DotNetNuke.Entities.Profile
                         FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
                     }
                 }
-		    }
-		}
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -656,10 +629,10 @@ namespace DotNetNuke.Entities.Profile
         public static bool ValidateProfile(int portalId, UserProfile objProfile)
         {
             bool isValid = true;
-			var imageType = new ListController().GetListEntryInfo("DataType", "Image");
+            var imageType = new ListController().GetListEntryInfo("DataType", "Image");
             foreach (ProfilePropertyDefinition propertyDefinition in objProfile.ProfileProperties)
             {
-				if (propertyDefinition.Required && string.IsNullOrEmpty(propertyDefinition.PropertyValue) && propertyDefinition.DataType != imageType.EntryID)
+                if (propertyDefinition.Required && string.IsNullOrEmpty(propertyDefinition.PropertyValue) && propertyDefinition.DataType != imageType.EntryID)
                 {
                     isValid = false;
                     break;
@@ -677,7 +650,7 @@ namespace DotNetNuke.Entities.Profile
         /// <returns>List of matching values</returns>
         public static List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
         {
-            var res = new List<string> {};
+            var res = new List<string> { };
             var autoCompleteType = new ListController().GetListEntryInfo("DataType", "AutoComplete");
             var def = GetPropertyDefinitionByName(portalId, propertyName);
             if (def.DataType != autoCompleteType.EntryID)
@@ -696,7 +669,7 @@ namespace DotNetNuke.Entities.Profile
             return res;
         }
 
-            #endregion
+        #endregion
 
         #region Obsolete Methods
 

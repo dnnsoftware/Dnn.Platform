@@ -1,0 +1,277 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version NVARCHAR(8)
+SET @version = '09.02.00'
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Registration'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ToastSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+
+GO
+
+/***** DNN-9991: Add Connectors packages type. *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PackageTypes WHERE PackageType='Connector')
+BEGIN
+    INSERT INTO {databaseOwner}{objectQualifier}PackageTypes(PackageType, Description, SecurityAccessLevel)
+    VALUES ('Connector', 'Connector', 2)
+END
+GO
+
+/***** DNN-9963: Add svg & ico Image File Type to Lists *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='svg')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'svg', N'Scalable Vector Graphics', 0, 0, 0, -1, N'', -1, 1, -1, '2000-01-01 00:00:00.000', NULL, NULL)
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='ico')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'ico', N'Icon', 0, 0, 0, -1, N'', -1, 1, -1, '2000-01-01 00:00:00.000', NULL, NULL)
+END
+GO
+
+/***** DNN-10042 *****/
+UPDATE {databaseOwner}[{objectQualifier}Lists] 
+    SET Text = 'DotNetNuke.Web.UI.WebControls.DnnTimeZoneEditControl, DotNetNuke.Web'
+    WHERE ListName = N'DataType' and Value = N'TimeZone'
+GO
+
+
+/***** DNN-10200: update newtonsoft.json assembly to 10.0.3. *****/
+DELETE FROM {databaseOwner}[{objectQualifier}Assemblies]
+    WHERE PackageID IS NULL AND AssemblyName = 'Newtonsoft.Json.dll'
+GO
+
+/***** CONTENT-8440: update default MessagingThrottlingInterval value to 30 seconds. *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingValue = '0.5' 
+    WHERE SettingName = 'MessagingThrottlingInterval' and SettingValue = '0'
+
+GO
+
+/**********************************************/
+/* DNN-10072 Incorrect assembly version check */
+/**********************************************/
+
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}fn_ParseVersion]') IS NOT NULL)
+  DROP FUNCTION {databaseOwner}[{objectQualifier}fn_ParseVersion];
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}fn_ParseVersion]
+(
+	@Version	nvarchar(20)
+)
+RETURNS @VersionParts TABLE (Major int, Minor int, Build int)
+WITH SCHEMABINDING
+AS
+	BEGIN
+		DECLARE @Pos int;
+		DECLARE @String nvarchar(20);
+		DECLARE @Major int;
+		DECLARE @Minor int;
+		DECLARE @Build int;
+
+		SET @String = @Version;
+		SET @Pos = CHARINDEX('.' , @String);
+		SET @Major = CONVERT(int, LEFT(@String, @Pos - 1));
+		SET @String = STUFF(@String, 1, @Pos, '');
+		SET @Pos = CHARINDEX('.' , @String);
+		SET @Minor = CONVERT(int, LEFT(@String, @Pos - 1));
+		SET @String = STUFF(@String, 1, @Pos, '');
+		SET @Build = CONVERT(int, @String);
+
+		INSERT INTO @VersionParts(Major, Minor, Build)
+		VALUES (@Major, @Minor, @Build);
+
+		RETURN;
+	END
+GO
+
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}fn_CompareVersion]') IS NOT NULL)
+  DROP FUNCTION {databaseOwner}[{objectQualifier}fn_CompareVersion];
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}fn_CompareVersion]
+(
+	@Version		nvarchar(20),
+	@CurrentVersion nvarchar(20)
+)
+RETURNS int
+
+AS
+	BEGIN
+
+		DECLARE @MajorVersion int
+		DECLARE @MajorCurrentVersion int
+		DECLARE @MinorVersion int
+		DECLARE @MinorCurrentVersion int
+		DECLARE @BuildVersion int
+		DECLARE @BuildCurrentVersion int
+
+		SELECT @MajorVersion = Major, @MinorVersion = Minor, @BuildVersion = Build
+		FROM {databaseOwner}[{objectQualifier}fn_ParseVersion](@Version)
+		SELECT @MajorCurrentVersion = Major, @MinorCurrentVersion = Minor, @BuildCurrentVersion = Build
+		FROM {databaseOwner}[{objectQualifier}fn_ParseVersion](@CurrentVersion)
+
+		IF @CurrentVersion IS NULL
+			-- Assembly Not Registered -  Set ReturnCode = 0, so assembly is copied
+			RETURN 0
+		ELSE
+			IF @Version = @CurrentVersion
+				-- Same Version - Set ReturnCode = 2, so assembly is only copied on repair
+				RETURN 2
+			ELSE
+				-- Different Version
+				-- Compare Major, Minor, Revision
+				IF @MajorVersion > @MajorCurrentVersion
+					OR (@MajorVersion = @MajorCurrentVersion AND @MinorVersion > @MinorCurrentVersion)
+						OR (@MajorVersion = @MajorCurrentVersion AND @MinorVersion = @MinorCurrentVersion AND @BuildVersion > @BuildCurrentVersion)
+					-- Newer version - at least on of Major, Minor, Revision is larger - Set ReturnCode = 1, so assembly is copied
+					RETURN 1
+				ELSE
+					-- Older Version - Set ReturnCode = 3, so assembly is not copied
+					RETURN 3
+
+		RETURN 3
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}RegisterAssembly]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}RegisterAssembly]
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}RegisterAssembly]
+	@PackageID      int,
+	@AssemblyName   nvarchar(250),
+	@Version		nvarchar(20)
+As
+BEGIN
+	DECLARE @AssemblyID int
+	DECLARE @CurrentVersion nvarchar(20)
+	/*	@ReturnCode Values
+		0 - Assembly NOT Registered Before
+		1 - Assembly Already Registered - New Version > Current Version
+		2 - Assembly Already Registered - New Version = Current Version
+		3 - Assembly Already Registered - New Version < Current Version
+	*/
+	DECLARE @CompareVersion int
+
+	-- First check if this assembly is registered to this package
+	SET @AssemblyID = (SELECT AssemblyID
+							FROM {databaseOwner}{objectQualifier}Assemblies
+							WHERE PackageID = @PackageID
+								AND AssemblyName = @AssemblyName)
+
+	-- but assembly may be registerd by other packages so check for Max unstalled version
+	SET @CurrentVersion  = (SELECT TOP 1 a.Version
+							FROM {databaseOwner}{objectQualifier}Assemblies a
+							CROSS APPLY {databaseOwner}[{objectQualifier}fn_ParseVersion](a.Version) AS v
+							WHERE a.AssemblyName = @AssemblyName
+							ORDER BY v.Major DESC, v.Minor DESC, v.Build DESC)
+
+	SET @CompareVersion = {databaseOwner}{objectQualifier}fn_CompareVersion(@Version, @CurrentVersion)
+
+	IF @AssemblyID IS NULL
+		BEGIN
+			-- AssemblyID is null (not registered)
+			-- Add an assembly regsitration for this package
+			INSERT INTO {databaseOwner}{objectQualifier}Assemblies (
+				PackageID,
+				AssemblyName,
+				Version
+			)
+			VALUES (
+				@PackageID,
+				@AssemblyName,
+				@Version
+			)
+		END
+	ELSE
+		BEGIN
+			-- AssemblyID is not null - Assembly is registered
+			IF @CompareVersion = 1
+				BEGIN
+					-- Newer version - Update Assembly registration
+					UPDATE {databaseOwner}{objectQualifier}Assemblies
+					SET    Version = @Version
+					WHERE  AssemblyID = @AssemblyID
+				END
+		END
+
+	SELECT @CompareVersion
+END
+GO
+/********************/
+/* DNN-10072 -- end */
+/********************/
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

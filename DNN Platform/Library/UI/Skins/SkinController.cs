@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -582,27 +582,6 @@ namespace DotNetNuke.UI.Skins
 
             }
             return strMessage;
-        }
-		
-		#endregion
-
-		#region Obsolete
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, string path)
-        {
-            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                string strMessage = UploadLegacySkin(rootPath, skinRoot, skinName, fileStream);
-                fileStream.Close();
-                return strMessage;
-            }
-        }
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, Stream inputStream)
-        {
-            return UploadLegacySkin(rootPath, skinRoot, skinName, inputStream);
         }
 		
 		#endregion

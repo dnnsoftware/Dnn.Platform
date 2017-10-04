@@ -1,7 +1,6 @@
 ﻿Test,					Scheme,		Page Name,		Custom Page Name,		Params,					Expected Url,	
 Home,					http://,	Home,			My_Page.aspx,			,						http://{alias}/
 About Us,				http://,	About Us,		My_Page.aspx,			,						http://{alias}/AboutUs/My_Page.aspx
-Admin Site Settings,	http://,	Site Settings,	My_Page.aspx,			,						http://{alias}/Admin/SiteSettings/My_Page.aspx
 Profile Messages,		http://,	Messages,		My_Page.aspx,			,						http://{alias}/ActivityFeed/Messages/My_Page.aspx
 Terms,					http://,	Home,			My_Page.aspx,			&ctl=Terms,				http://{alias}/Terms/My_Page.aspx
 Login,					http://,	About Us,		My_Page.aspx,			&ctl=Login,				http://{alias}/Login/My_Page.aspx

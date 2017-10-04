@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -107,9 +107,11 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider),typeof(CoreCryptographyProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider),typeof(FipsCompilanceCryptographyProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            DotNetNukeShutdownOverload.InitializeFcnSettings();
+            //DotNetNukeSecurity.Initialize();
         }
         
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
@@ -138,8 +140,24 @@ namespace DotNetNuke.Web.Common.Internal
         private void Application_End(object sender, EventArgs eventArgs)
         {
             Logger.Info("Application Ending");
-            Initialize.LogEnd();
-            Initialize.StopScheduler();
+
+            try
+            {
+                Initialize.LogEnd();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
+
+            try
+            {
+                Initialize.StopScheduler();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
 
             //Shutdown Lucene, but not when we are installing
             if (Globals.Status != Globals.UpgradeStatus.Install)

@@ -66,7 +66,7 @@ namespace log4net.Layout
 		/// </remarks>
 		public virtual object Format(LoggingEvent loggingEvent)
 		{
-			return loggingEvent.TimeStamp.ToUniversalTime();
+			return loggingEvent.TimeStampUtc;
 		}
 
 		#endregion

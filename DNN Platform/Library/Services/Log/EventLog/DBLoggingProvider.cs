@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -541,74 +541,5 @@ namespace DotNetNuke.Services.Log.EventLog
             DataCache.RemoveCache(LogTypeInfoCacheKey);
             DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
         }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog()
-        {
-            var logs = new LogInfoArray();
-            int totalRecords = 0; 
-            FillLogs(DataProvider.Instance().GetLogs(Null.NullInteger, Null.NullString, 10, 0), logs, ref totalRecords);
-            return logs;
-        }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog(string logType)
-        {
-            var logs = new LogInfoArray();
-            int totalRecords = 0;
-            FillLogs(DataProvider.Instance().GetLogs(Null.NullInteger, logType, 10, 0), logs, ref totalRecords);
-            return logs;
-        }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog(int portalID)
-        {
-            var logs = new LogInfoArray();
-            int totalRecords = 0;
-            FillLogs(DataProvider.Instance().GetLogs(portalID, Null.NullString, 10, 0), logs, ref totalRecords);
-            return logs;
-        }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog(int portalID, string logType)
-        {
-            var logs = new LogInfoArray();
-            int totalRecords = 0;
-            FillLogs(DataProvider.Instance().GetLogs(portalID, logType, 10, 0), logs, ref totalRecords);
-            return logs;
-        }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog(int pageSize, int pageIndex, ref int totalRecords)
-        {
-            var logs = new LogInfoArray();
-            FillLogs(DataProvider.Instance().GetLogs(Null.NullInteger, Null.NullString, pageSize, pageIndex), logs, ref totalRecords);
-            return logs;
-        }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog(string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            var logs = new LogInfoArray();
-            FillLogs(DataProvider.Instance().GetLogs(Null.NullInteger, logType, pageSize, pageIndex), logs, ref totalRecords);
-            return logs;
-        }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog(int portalID, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            var logs = new LogInfoArray();
-            FillLogs(DataProvider.Instance().GetLogs(portalID, Null.NullString, pageSize, pageIndex), logs, ref totalRecords);
-            return logs;
-        }
-
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public override LogInfoArray GetLog(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            var logs = new LogInfoArray();
-            FillLogs(DataProvider.Instance().GetLogs(portalID, logType, pageSize, pageIndex), logs, ref totalRecords);
-            return logs;
-        }
-
     }
 }

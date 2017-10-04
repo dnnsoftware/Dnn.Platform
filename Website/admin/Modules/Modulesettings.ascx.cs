@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -67,6 +67,10 @@ namespace DotNetNuke.Modules.Admin.Modules
         private int _moduleId = -1;
         private Control _control;
         private ModuleInfo _module;
+
+        private bool HideDeleteButton => Request.QueryString["HideDelete"] == "true";
+        private bool HideCancelButton => Request.QueryString["HideCancel"] == "true";
+        private bool DoNotRedirectOnUpdate => Request.QueryString["NoRedirectOnUpdate"] == "true";
 
         private ModuleInfo Module
         {
@@ -313,7 +317,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 cboCacheProvider.TextChanged += OnCacheProviderIndexChanged;
                 cmdDelete.Click += OnDeleteClick;
                 cmdUpdate.Click += OnUpdateClick;
-                dgOnTabs.NeedDataSource += OnPagesGridNeedDataSource;
 
 			    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
@@ -392,6 +395,10 @@ namespace DotNetNuke.Modules.Admin.Modules
                     dgPermissions.TabId = PortalSettings.ActiveTab.TabID;
                     dgPermissions.ModuleID = _moduleId;
 
+                    var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
+                    tabsByModule.Remove(TabId);
+                    dgOnTabs.DataSource = tabsByModule.Values;
+                    dgOnTabs.DataBind();
 
                     cboTab.DataSource = TabController.GetPortalTabs(PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     cboTab.DataBind();
@@ -411,9 +418,14 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
 
                     //only Portal Administrators can manage the visibility on all Tabs
-                    var isAdmin = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+                    var isAdmin = PermissionProvider.Instance().IsPortalEditor();
                     rowAllTabs.Visible = isAdmin;
                     chkAllModules.Enabled = isAdmin;
+
+                    if (HideCancelButton)
+                    {
+                        cancelHyperLink.Visible = false;
+                    }
 
                     //tab administrators can only manage their own tab
                     if (!TabPermissionController.CanAdminPage())
@@ -427,7 +439,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                     if (_moduleId != -1)
                     {
                         BindData();
-                        cmdDelete.Visible = ModulePermissionController.CanDeleteModule(Module) || TabPermissionController.CanAddContentToPage();
+                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) || 
+                             TabPermissionController.CanAddContentToPage()) && !HideDeleteButton;
                     }
                     else
                     {
@@ -504,13 +517,6 @@ namespace DotNetNuke.Modules.Admin.Modules
         protected void OnInheritPermissionsChanged(Object sender, EventArgs e)
         {
             dgPermissions.InheritViewPermissionsFromTab = chkInheritPermissions.Checked;
-        }
-
-        protected void OnPagesGridNeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
-        {
-            var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
-            tabsByModule.Remove(TabId);
-            dgOnTabs.DataSource = tabsByModule.Values;
         }
 
         protected void OnUpdateClick(object sender, EventArgs e)
@@ -717,8 +723,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    //Navigate back to admin page
-                    Response.Redirect(ReturnURL, true);
+                    if (!DoNotRedirectOnUpdate)
+                    {
+                        //Navigate back to admin page
+                        Response.Redirect(ReturnURL, true);
+                    }
                 }
             }
             catch (Exception exc)

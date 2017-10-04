@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -311,7 +311,7 @@ namespace DotNetNuke.Services.Journal
             }
 
             string xml = null;
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             if (!String.IsNullOrEmpty(journalItem.Title))
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
@@ -427,7 +427,7 @@ namespace DotNetNuke.Services.Journal
                 throw new Exception("Unable to locate the current user");
             }
             string xml = null;
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             if (!String.IsNullOrEmpty(journalItem.Title))
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
@@ -695,7 +695,7 @@ namespace DotNetNuke.Services.Journal
 
         public void SaveComment(CommentInfo comment)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             if (!String.IsNullOrEmpty(comment.Comment))
             {
                 comment.Comment =

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -86,6 +86,11 @@ namespace DotNetNuke.Services.Install
             {
                 return DotNetNukeContext.Current.Application.CurrentVersion;
             }
+        }
+
+        protected bool NeedAcceptTerms
+        {
+            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
         }
 
         #endregion
@@ -356,6 +361,12 @@ namespace DotNetNuke.Services.Install
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
+            {
+                Response.Redirect(Request.RawUrl, true);
+            }
+
             SslRequiredCheck();
             GetInstallerLocales();
         }
@@ -375,6 +386,8 @@ namespace DotNetNuke.Services.Install
             }
 
             base.OnLoad(e);
+
+            pnlAcceptTerms.Visible = NeedAcceptTerms;
             LocalizePage();
 
 			if (Request.RawUrl.EndsWith("?complete"))
@@ -385,6 +398,8 @@ namespace DotNetNuke.Services.Install
             //Create Status Files
             if (!Page.IsPostBack)
             {
+                //Reset the accept terms flag
+                HostController.Instance.Update("AcceptDnnTerms", "N");
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
             }
         }
@@ -399,7 +414,7 @@ namespace DotNetNuke.Services.Install
         //Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
                                 {
-                                    {new AddFcnModeStep(), 1},
+                                    //{new AddFcnModeStep(), 1},
                                     {upgradeDatabase, 50}, 
                                     {upgradeExtensions, 49}, 
                                     {new InstallVersionStep(), 1}
@@ -436,6 +451,13 @@ namespace DotNetNuke.Services.Install
             {
                 IsAuthenticated = true;
             }
+
+            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != "Y"))
+            {
+                result = false;
+                errorMsg = LocalizeStringStatic("AcceptTerms.Required");
+            }
+
             return result;
         }
 
@@ -451,6 +473,9 @@ namespace DotNetNuke.Services.Install
                 LaunchUpgrade();
                 // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
                 HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
+
+                //DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
+                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
             }
         }
 

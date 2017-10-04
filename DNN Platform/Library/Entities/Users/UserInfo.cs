@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,7 +56,6 @@ namespace DotNetNuke.Entities.Users
         #region Private Members
 
         private string _administratorRoleName;
-        private string _fullName;
         private UserMembership _membership;
         private UserProfile _profile;
         private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
@@ -304,8 +303,8 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    var ps = new PortalSecurity();
-                    var code = ps.EncryptString(PortalID + "-" + UserID, Config.GetDecryptionkey());
+                    var ps = PortalSecurity.Instance;
+                    var code = ps.Encrypt(Config.GetDecryptionkey(), PortalID + "-" + UserID);
                     return code.Replace("+", ".").Replace("/", "-").Replace("=", "_");
                 case "affiliateid":
                     if (internScope < Scope.SystemMessages)
@@ -470,7 +469,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------        
         public DateTime LocalTime()
         {
-            return LocalTime(DateUtils.GetDatabaseTime());
+            return LocalTime(DateUtils.GetDatabaseUtcTime());
         }
 
         /// -----------------------------------------------------------------------------
@@ -503,31 +502,6 @@ namespace DotNetNuke.Entities.Users
             format = format.Replace("[USERNAME]", Username);
             DisplayName = format;
         }
-
-        #endregion
-
-        #region Obsolete
-
-        [Obsolete("Deprecated in DNN 6.2. Roles are no longer stored in a cookie")]
-        public void ClearRoles() { }
-
-        [Browsable(false), Obsolete("Deprecated in DNN 5.1. This property has been deprecated in favour of Display Name")]
-        public string FullName
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(_fullName))
-                {
-                    _fullName = FirstName + " " + LastName;
-                }
-                return _fullName;
-            }
-            set { _fullName = value; }
-        }
-
-        [Browsable(false)]
-        [Obsolete("Deprecated in DNN 6.2. Roles are no longer stored in a cookie so this property is no longer neccessary")]
-        public bool RefreshRoles { get; set; }
 
         #endregion
     }

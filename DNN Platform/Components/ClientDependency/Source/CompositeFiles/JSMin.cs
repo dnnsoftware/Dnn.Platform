@@ -2,6 +2,15 @@
 using System.IO;
 using System.Text;
 
+/* Over the years i've fixed various bugs that have come along, I've written unit
+ * tests to show that they are solved... hopefully not causing more bugs along the
+ * way. I haven't seen any other C based implementations of this with these fixes,
+ * though there is a python implementation which is still actively developed...
+ * though looks a whole lot different.
+ * Much of this has now been refactored, slightly more readable but still just as crazy.
+ * - Shannon Deminick
+ */
+
 /* Originally written in 'C', this code has been converted to the C# language.
  * The author's copyright message is reproduced below.
  * All modifications from the original to C# are placed in the public domain.
@@ -37,58 +46,88 @@ namespace ClientDependency.Core.CompositeFiles
 {
     public class JSMin
     {
-        const int EOF = -1;
+        private const int Eof = -1;
+        private TextReader _sr;
+        private TextWriter _sw;
+        private int _theA;
+        private int _theB;
+        private int _theLookahead = Eof;
+        private int _theX = Eof;
+        private int _theY = Eof;
+        private int _retStatement = -1;
+        private bool _start = false;
 
-        StringReader sr;
-        StringWriter sw;
-        int theA;
-        int theB;
-        int theLookahead = EOF;
-        static int theX = EOF;
-        static int theY = EOF;
-
+        [Obsolete("Use the overloads specifying a Stream instead")]
         public static string CompressJS(string body)
         {
             return new JSMin().Minify(body);
         }
 
+        public static string CompressJS(Stream stream)
+        {
+            var jsMin = new JSMin();
+            if (!stream.CanRead) throw new InvalidOperationException("Cannot read input stream");
+            if (stream.CanSeek)
+            {
+                stream.Position = 0;
+            }
+            return jsMin.Minify(new StreamReader(stream));
+        }
+
+        [Obsolete("Use the overloads specifying a TextReader instead")]
         public string Minify(string src)
         {
             StringBuilder sb = new StringBuilder();
-            using (sr = new StringReader(src))
-            {                
-                using (sw = new StringWriter(sb))
+            using (_sr = new StringReader(src))
+            {
+                using (_sw = new StringWriter(sb))
                 {
-                    jsmin();
+                    ExecuteJsMin();
                 }
             }
             return sb.ToString();
         }
 
-        /* jsmin -- Copy the input to the output, deleting the characters which are
-                insignificant to JavaScript. Comments will be removed. Tabs will be
-                replaced with spaces. Carriage returns will be replaced with linefeeds.
-                Most spaces and linefeeds will be removed.
-        */
-        void jsmin()
+        public string Minify(TextReader reader)
         {
-            if (peek() == 0xEF)
+            _sr = reader;
+            var sb = new StringBuilder();
+            using (_sw = new StringWriter(sb))
             {
-                get();
-                get();
-                get();
+                ExecuteJsMin();
             }
-            theA = '\n';
-            action(3);
-            while (theA != EOF)
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// jsmin -- Copy the input to the output, deleting the characters which are
+        /// insignificant to JavaScript. Comments will be removed. Tabs will be
+        /// replaced with spaces. Carriage returns will be replaced with linefeeds.
+        /// Most spaces and linefeeds will be removed.
+        /// </summary>
+        private void ExecuteJsMin()
+        {
+            _start = false;
+
+            if (Peek() == 0xEF)
             {
-                switch (theA)
+                Get();
+                Get();
+                Get();
+            }
+            _theA = '\n';
+            Action(3);
+            while (_theA != Eof)
+            {
+                switch (_theA)
                 {
                     case ' ':
-                        action(isAlphanum(theB) ? 1 : 2);
+                        Action(IsAlphanum(_theB) ? 1 : 2);
                         break;
                     case '\n':
-                        switch (theB)
+                    case '\u2028':
+                    case '\u2029':
+                        switch (_theB)
                         {
                             case '{':
                             case '[':
@@ -97,24 +136,42 @@ namespace ClientDependency.Core.CompositeFiles
                             case '-':
                             case '!':
                             case '~':
-                                action(1);
+                                if (!_start)
+                                {
+                                    //this is the first write, we don't want to write a new line to begin,
+                                    // read next
+                                    Action(2);
+                                    break;
+                                }
+                                //Maintain the line break
+                                Action(1);
                                 break;
                             case ' ':
-                                action(3);
+                                Action(3);
                                 break;
                             default:
-                                action(isAlphanum(theB) ? 1 : 2);
+                                if (!_start)
+                                {
+                                    //this is the first write, we don't want to write a new line to begin,
+                                    // read next
+                                    Action(2);
+                                    break;
+                                }
+                                Action(IsAlphanum(_theB) ? 1 : 2);
                                 break;
                         }
                         break;
                     default:
-                        switch (theB)
+                        switch (_theB)
                         {
+
                             case ' ':
-                                action(isAlphanum(theA) ? 1 : 3);
+                                Action(IsAlphanum(_theA) ? 1 : 3);
                                 break;
                             case '\n':
-                                switch (theA)
+                            case '\u2028':
+                            case '\u2029':
+                                switch (_theA)
                                 {
                                     case '}':
                                     case ']':
@@ -124,167 +181,380 @@ namespace ClientDependency.Core.CompositeFiles
                                     case '"':
                                     case '\'':
                                     case '`':
-                                        action(1);
+                                        Action(1);
                                         break;
                                     default:
-                                        action(isAlphanum(theA) ? 1 : 3);
+                                        Action(IsAlphanum(_theA) ? 1 : 3);
                                         break;
                                 }
                                 break;
                             default:
-                                action(1);
+                                Action(1);
                                 break;
                         }
                         break;
                 }
             }
         }
-        /* action -- do something! What you do is determined by the argument:
-                1   Output A. Copy B to A. Get the next B.
-                2   Copy B to A. Get the next B. (Delete A).
-                3   Get the next B. (Delete B).
-           action treats a string as a single character. Wow!
-           action recognizes a regular expression if it is preceded by ( or , or =.
-        */
-        void action(int d)
+
+        /// <summary>
+        /// action -- do something! What you do is determined by the argument:
+        ///      1   Output A.Copy B to A.Get the next B.
+        ///      2   Copy B to A. Get the next B. (Delete A).
+        ///      3   Get the next B. (Delete B).
+        /// </summary>
+        /// <param name="d"></param>
+        void Action(int d)
         {
             switch (d)
             {
                 case 1:
-                    put(theA);
-                    if (
-                        (theY == '\n' || theY == ' ') &&
-                        (theA == '+' || theA == '-' || theA == '*' || theA == '/') &&
-                        (theB == '+' || theB == '-' || theB == '*' || theB == '/')
-                        )
-                    {
-                        put(theY);
-                    }
+                    Put(_theA);
+                    _start = true;
+
+                    //process unary operator
+                    HandleUnaryOperator();
+
                     goto case 2;
                 case 2:
-                    theA = theB;
-                    if (theA == '\'' || theA == '"' || theA == '`')
-                    {
-                        for (;;)
-                        {
-                            put(theA);
-                            theA = get();
-                            if (theA == theB)
-                            {
-                                break;
-                            }
-                            if (theA == '\\')
-                            {
-                                put(theA);
-                                theA = get();
-                            }
-                            if (theA == EOF)
-                            {
-                                throw new Exception(string.Format("Error: JSMIN unterminated string literal: {0}\n", theA));
-                            }
-                        }
-                    }
+                    _theA = _theB;
+
+                    //process string literals or end of statement and track return statement
+                    if (!HandleStringLiteral())
+                        HandleEndOfStatement();
+
                     goto case 3;
                 case 3:
-                    theB = next();
-                    if (theB == '/' && (
-                                           theA == '(' || theA == ',' || theA == '=' || theA == ':' ||
-                                           theA == '[' || theA == '!' || theA == '&' || theA == '|' ||
-                                           theA == '?' || theA == '+' || theA == '-' || theA == '~' ||
-                                           theA == '*' || theA == '/' || theA == '{' || theA == '\n'
-                                       ))
-                    {
-                        put(theA);
-                        if (theA == '/' || theA == '*')
-                        {
-                            put(' ');
-                        }
-                        put(theB);
-                        for (;;)
-                        {
-                            theA = get();
-                            if (theA == '[')
-                            {
-                                for (;;)
-                                {
-                                    put(theA);
-                                    theA = get();
-                                    if (theA == ']')
-                                    {
-                                        break;
-                                    }
-                                    if (theA == '\\')
-                                    {
-                                        put(theA);
-                                        theA = get();
-                                    }
-                                    if (theA == EOF)
-                                    {
-                                        throw new Exception(string.Format("Error: JSMIN Unterminated set in Regular Expression literal: {0}\n", theA));
-                                    }
-                                }
-                            }
-                            else if (theA == '/')
-                            {
-                                switch (peek())
-                                {
-                                    case '/':
-                                    case '*':
-                                        throw new Exception(string.Format("Error: JSMIN Unterminated set in Regular Expression literal: {0}\n", theA));
-                                }
-                                break;
-                            }
-                            else if (theA == '\\')
-                            {
-                                put(theA);
-                                theA = get();
-                            }
-                            if (theA == EOF)
-                            {
-                                throw new Exception(string.Format("Error: JSMIN Unterminated Regular Expression literal: {0}\n", theA));
-                            }
-                            put(theA);
-                        }
-                        theB = next();
-                    }
+                    _theB = NextCharExcludingComments();
+
+                    //track return statement
+                    TrackReturnStatement();
+
+                    //Check for a regex literal and process it if it is found
+                    HandleRegexLiteral();
+
                     goto default;
                 default:
                     break;
             }
         }
-        /* next -- get the next character, excluding comments. peek() is used to see
-                if a '/' is followed by a '/' or '*'.
-        */
 
-        private int next()
+        private bool HandleUnaryOperator()
         {
-            int c = get();
+            const string operators = "+-*/";
+            if ((_theY == '\n' || _theY == ' ') &&
+                (operators.IndexOf((char)_theA) >= 0) && (operators.IndexOf((char)_theB) >= 0))
+            {
+                Put(_theY);
+                return true;
+            }
+            return false;
+        }
+
+        private bool TrackReturnStatement()
+        {
+            const string r = "return";
+            const string preReturn = ";){} ";
+            if (_retStatement == -1 && _theA == 'r' &&
+                (preReturn.IndexOf((char)_theY) >= 0 || char.IsWhiteSpace((char)_theY) || _theY == 'r'))
+            {
+                _retStatement = 0;
+                return true;
+            }
+
+            if (_retStatement >= (r.Length - 1))
+            {
+                //reset when there is a return statement and the next char is not whitespace
+                if (!char.IsWhiteSpace((char)_theA))
+                {
+                    _retStatement = -1;
+                    return false;
+                }
+                //currently there's only whitespace but there is a return statement so just exit
+                return true;
+            }
+            if (_retStatement < 0) return false;
+
+            _retStatement++;
+            if (r[_retStatement] == _theA) return true;
+
+            _retStatement = -1;
+            return false;
+        }
+
+        /// <summary>
+        /// If it's an end of statement char read over whitespace but not new lines
+        /// </summary>
+        private bool HandleEndOfStatement()
+        {
+            if (_theA != '}') return false;
+
+            var peek = Peek();
+            //NOTE: We don't skip over a new line, this is becase in some cases 
+            // library managers don't put a semicolon after a } when they have defined a variable as a method,
+            // in this case when minifying it might break because the next declaration won't be valid unless
+            // there's a semicolon or a line break, so we'll leave line breaks.            
+            while (peek != Eof && peek != '\n' && char.IsWhiteSpace((char)peek))
+            {
+                Get();
+                peek = Peek();
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Iterates through a string literal
+        /// </summary>
+        private bool HandleStringLiteral()
+        {
+            if (_theA != '\'' && _theA != '"' && _theA != '`')
+                return false;
+
+            //only allowed with template strings
+            var allowLineFeed = _theA == '`';
+
+            //write the start quote
+            Put(_theA);
+            _theA = Get(replaceCr: !allowLineFeed); //don't replace CR here, if we need to deal with that
+
+            for (;;)
+            {
+                //If the A matches B it means the string literal is done
+                // since at this moment B was the original A string literal (" or ')
+                if (_theA == _theB)
+                {
+                    //write the end quote
+                    Put(_theA);
+
+                    //reset, this essentially resets the process
+                    _theA = ' ';
+                    break;
+                }
+
+                var skipRead = false;
+
+                switch (_theA)
+                {
+                    case '\r':
+                    case '\n':
+                        if (!allowLineFeed)
+                            throw new Exception($"Error: JSMIN unterminated string literal: {_theA}\n");
+                        //if we're allowing line feeds, then just continue to write it
+                        break;
+                    case '\\':
+                        //check for escaped chars
+
+                        //This scenario needs to cater for backslash line escapes (i.e. multi-line JS strings)
+                        switch (Peek())
+                        {
+                            case '\n':
+                                //this is a multi-line string so we don't want to insert a line break here,
+                                // just get the next char that is not a line break/eof/or string termination
+                                do
+                                {
+                                    _theA = Get();
+                                } while (_theA == '\n' && _theA != Eof && _theA != _theB);
+                                break;
+                            default:
+                                Put(_theA);         //write the backslash
+                                _theA = Get();      //get the escaped char
+                                if (_theA == Eof)
+                                    throw new Exception($"Error: JSMIN unterminated string literal: {_theA}\n");
+                                Put(_theA);         //write the escaped char
+                                _theA = Get();
+                                skipRead = true;    //go to beginning of loop
+                                break;
+                        }
+                        break;
+                    case '$':
+                        //check for string templates (i.e. ${ } )
+                        //this must be enclosed in a backtick string
+                        if (_theB == '`' && Peek() == '{')
+                        {
+                            HandleStringTemplateBlock();
+                            skipRead = true;    //go to beginning of loop
+                        }
+                        break;
+                }
+
+                if (_theA == Eof)
+                {
+                    throw new Exception($"Error: JSMIN unterminated string literal: {_theA}\n");
+                }
+
+                if (!skipRead)
+                {
+                    Put(_theA);
+                    _theA = Get(replaceCr: !allowLineFeed); //don't replace CR here, if we need to deal with that    
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Iterates through a string template block - and caters for nested blocks
+        /// </summary>
+        private void HandleStringTemplateBlock()
+        {
+            //This is a string template block
+
+            Put(_theA);     //write the $
+            _theA = Get();  //get next (this will be { )
+
+            for (;;)
+            {
+                switch (_theA)
+                {
+                    case '}':
+                        //write the end bracket and read
+                        Put(_theA);
+                        _theA = Get();
+                        //exit!
+                        return;
+                    case '$':
+                        //check for inner string templates (i.e. ${ } )
+                        if (Peek() == '{')
+                        {
+                            //recurse
+                            HandleStringTemplateBlock();
+                        }
+                        break;
+                    case Eof:
+                        throw new Exception($"Error: JSMIN unterminated string template block: {_theA}\n");
+                }
+
+                Put(_theA);
+                _theA = Get();
+            }
+        }
+
+        /// <summary>
+        /// Used to iterate over and output the content of a Regex literal
+        /// </summary>
+        private bool HandleRegexLiteral()
+        {
+            if (_theB != '/') return false;
+            //if (_theA == '/') return false;
+
+            //The original testing for regex literals didn't actually work in many cases,
+            // for example see these bug reports: 
+            //  https://github.com/douglascrockford/JSMin/issues/11
+            //  https://github.com/Shazwazza/ClientDependency/issues/73                    
+            //  https://github.com/Shazwazza/JsMinSharp/issues/8
+            //The original logic from JSMin doesn't cater for the above issues mentioned
+            // We've now added these additional characters to be able to preceed a regex literal: +
+            // And now we also track a return statement which can preceed a regex literal.
+            // To fix the single line no-op  issue - we need to allow for a new line to precede a 
+            // regex statement too but _theA will not be a newline char here, only _theY will be.
+            const string toMatch = "(,=:[!&|?+-~*/{\n+;";
+            if (toMatch.IndexOf((char)_theA) < 0 && (char)_theY != '\n' && _retStatement != 5)
+                return false;
+
+            Put(_theA);
+            if (_theA == '/' || _theA == '*')
+            {
+                Put(' ');
+            }
+            Put(_theB);
+            for (;;)
+            {
+                _theA = Get();
+                if (_theA == '[')
+                {
+                    for (;;)
+                    {
+                        Put(_theA);
+                        _theA = Get();
+                        if (_theA == ']')
+                        {
+                            break;
+                        }
+                        if (_theA == '\\')
+                        {
+                            Put(_theA);
+                            _theA = Get();
+                        }
+                        if (_theA == Eof)
+                        {
+                            throw new Exception($"Error: JSMIN Unterminated set in Regular Expression literal: {_theA}\n");
+                        }
+                    }
+                }
+                else if (_theA == '/')
+                {
+                    switch (Peek())
+                    {
+                        case 'i':
+                        case 'g':
+                            //regex modifiers, do we care?
+                            break;
+                        case ' ':
+                            //skip the space
+                            Put(_theA);
+                            Get();
+                            _theA = Get();
+                            break;
+                        case '/':
+                        case '*':
+                            throw new Exception($"Error: JSMIN Unterminated set in Regular Expression literal: {_theA}\n");
+                    }
+                    break;
+                }
+                else if (_theA == '\\')
+                {
+                    Put(_theA);
+                    _theA = Get();
+                }
+                if (_theA == Eof)
+                {
+                    throw new Exception($"Error: JSMIN Unterminated Regular Expression literal: {_theA}\n");
+                }
+                Put(_theA);
+            }
+            _theB = NextCharExcludingComments();
+            return false;
+        }
+
+        /// <summary>
+        /// next -- get the next character, excluding comments. peek() is used to see
+        ///  if a '/' is followed by a '/' or '*'.
+        /// </summary>
+        /// <returns></returns>
+        private int NextCharExcludingComments()
+        {
+            int c = Get();
             if (c == '/')
             {
-                switch (peek())
+                switch (Peek())
                 {
                     case '/':
+                        //handle single line comments
                         for (;;)
                         {
-                            c = get();
-                            if (c <= '\n')
+                            c = Get();
+                            if (IsLineSeparator(c))
                             {
                                 break;
                             }
                         }
                         break;
                     case '*':
-                        get();
-                        while (c != ' ')
+                        //handle multi-line comments
+                        Get(); //move to *
+
+                        for (;;)
                         {
-                            switch (get())
+                            var exit = false;
+                            c = Get(); //read next
+                            switch (c)
                             {
                                 case '*':
-                                    var currPeek = peek();
+                                    var currPeek = Peek();
                                     if (currPeek == '/')
                                     {
-                                        get();
-                                        c = ' ';
+                                        //we're at the end of the comment
+
+                                        Get(); //move to /
 
                                         //In one very peculiar circumstance, if the JS value is like:
                                         // val(1 /* Calendar */.toString());
@@ -295,72 +565,101 @@ namespace ClientDependency.Core.CompositeFiles
                                         // The reason why .. works is because the JS parser cannot do 1.toString() because it 
                                         // sees the '.' as a decimal
 
-                                        if (char.IsDigit((char) theY))
+                                        if (char.IsDigit((char)_theY))
                                         {
-                                            currPeek = peek();
+                                            currPeek = Peek();
                                             if (currPeek == '.')
                                             {
                                                 //we actually want to write another '.'
                                                 return '.';
                                             }
                                         }
-                                       
+
+                                        c = Get(); //move past the comment
+                                        exit = true;
                                     }
                                     break;
-                                case EOF:
+                                case Eof:
                                     throw new Exception("Error: JSMIN Unterminated comment.\n");
                             }
+
+                            if (exit)
+                                break;
                         }
                         break;
                 }
             }
-            //return c;
-            theY = theX;
-            theX = c;
+
+            _theY = _theX;
+            _theX = c;
             return c;
         }
 
-        /* peek -- get the next character without getting it.
-        */
-        int peek()
+        /// <summary>
+        /// peek -- get the next character without getting it.
+        /// </summary>
+        /// <returns></returns>
+        private int Peek()
         {
-            theLookahead = get();
-            return theLookahead;
+            _theLookahead = Get();
+            return _theLookahead;
         }
-        /* get -- return the next character from stdin. Watch out for lookahead. If
-                the character is a control character, translate it to a space or
-                linefeed.
-        */
-        int get()
+
+        /// <summary>
+        /// get -- return the next character from stdin. Watch out for lookahead. If
+        /// the character is a control character, translate it to a space or
+        /// linefeed.
+        /// </summary>
+        /// <returns></returns>
+        private int Get(bool replaceCr = true)
         {
-            int c = theLookahead;
-            theLookahead = EOF;
-            if (c == EOF)
+            int c = _theLookahead;
+            _theLookahead = Eof;
+            if (c == Eof)
             {
-                c = sr.Read();
+                c = _sr.Read();
             }
-            if (c >= ' ' || c == '\n' || c == EOF)
+            if (c >= ' ' || c == '\n' || c == Eof)
             {
                 return c;
             }
-            if (c == '\r')
+            if (c == '\r' && !replaceCr)
+            {
+                return c;
+            }
+            if (c == '\r' && replaceCr)
+            {
+                return '\n';
+            }
+            if (c == '\u2028' || c == '\u2029')
             {
                 return '\n';
             }
             return ' ';
         }
-        void put(int c)
+
+        private void Put(int c)
         {
-            sw.Write((char)c);
+            _sw.Write((char)c);
         }
-        /* isAlphanum -- return true if the character is a letter, digit, underscore,
-                dollar sign, or non-ASCII character.
-        */
-        bool isAlphanum(int c)
+
+        /// <summary>
+        /// isAlphanum -- return true if the character is a letter, digit, underscore,
+        /// dollar sign, or non-ASCII character.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        private bool IsAlphanum(int c)
         {
             return ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
                     (c >= 'A' && c <= 'Z') || c == '_' || c == '$' || c == '\\' ||
                     c > 126);
         }
+
+        private bool IsLineSeparator(int c)
+        {
+            return c <= '\n' || c == '\u2028' || c == '\u2029';
+        }
+
     }
 }

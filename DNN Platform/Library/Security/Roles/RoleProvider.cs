@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -116,80 +116,5 @@ namespace DotNetNuke.Security.Roles
         {
 			throw new NotImplementedException();
         }
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by overload which takes a single RoleInfo object")]
-        public virtual bool CreateRole(int portalId, ref RoleInfo role)
-        {
-            return CreateRole(role);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by overload which takes a single RoleInfo object")]
-        public virtual void DeleteRole(int portalId, ref RoleInfo role)
-        {
-            DeleteRole(role);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Roles are cached in the business layer")]
-        public virtual RoleInfo GetRole(int portalId, int roleId)
-        {
-            return GetRoles(portalId).Cast<RoleInfo>().SingleOrDefault(r => r.RoleID == roleId);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Roles are cached in the business layer")]
-        public virtual RoleInfo GetRole(int portalId, string roleName)
-        {
-            return GetRoles(portalId).Cast<RoleInfo>().SingleOrDefault(r => r.RoleName == roleName);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public virtual string[] GetRoleNames(int portalId)
-        {
-            string[] roles = { };
-            var roleList = RoleController.Instance.GetRoles(portalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
-            var strRoles = roleList.Aggregate("", (current, role) => current + (role.RoleName + "|"));
-            if (strRoles.IndexOf("|", StringComparison.Ordinal) > 0)
-            {
-                roles = strRoles.Substring(0, strRoles.Length - 1).Split('|');
-            }
-            return roles;
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.")]
-        public virtual string[] GetRoleNames(int portalId, int userId)
-        {
-            return UserController.GetUserById(portalId, userId).Roles;
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Roles are cached in the business layer")]
-        public virtual ArrayList GetRolesByGroup(int portalId, int roleGroupId)
-        {
-            return new ArrayList(GetRoles(portalId).Cast<RoleInfo>().Where(r => r.RoleGroupID == roleGroupId).ToArray());
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by overload that returns IList")]
-        public virtual ArrayList GetUserRoles(int portalId, int userId, bool includePrivate)
-        {
-            UserInfo user;
-            if(userId != -1)
-            {
-                user = UserController.Instance.GetUser(portalId, userId);
-            }
-            else
-            {
-                user = new UserInfo() {UserID = -1, PortalID = portalId};
-            }
-
-            return (user == null) ? new ArrayList() : new ArrayList(GetUserRoles(user, includePrivate).ToArray());
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2. Replaced by GetUserRoles overload that returns IList")]
-        public virtual ArrayList GetUserRolesByRoleName(int portalId, string roleName)
-        {
-            return GetUserRoles(portalId, null, roleName);
-        }
-
-        #endregion
     }
 }

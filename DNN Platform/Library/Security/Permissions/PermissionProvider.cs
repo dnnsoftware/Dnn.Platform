@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -500,6 +500,16 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool SupportsFullControl()
         {
             return true;
+        }
+
+        /// <summary>
+        /// The portal editor can edit whole site's content, it should be only administrators by default.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsPortalEditor()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
         #region FolderPermission Methods
@@ -1187,20 +1197,28 @@ namespace DotNetNuke.Security.Permissions
             TabPermissionCollection objCurrentTabPermissions = GetTabPermissions(tab.TabID, tab.PortalID);
             if (!objCurrentTabPermissions.CompareTo(tab.TabPermissions))
             {
-                dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
-                if (tab.TabPermissions != null)
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+
+                if (objCurrentTabPermissions.Count > 0)
+                {
+                    dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+                }
+
+                if (tab.TabPermissions != null && tab.TabPermissions.Count > 0)
                 {
                     foreach (TabPermissionInfo objTabPermission in tab.TabPermissions)
                     {
-                        dataProvider.AddTabPermission(tab.TabID,
-                                                      objTabPermission.PermissionID,
-                                                      objTabPermission.RoleID,
-                                                      objTabPermission.AllowAccess,
-                                                      objTabPermission.UserID,
-                                                      UserController.Instance.GetCurrentUserInfo().UserID);
-                        EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
+                        objTabPermission.TabPermissionID = dataProvider.AddTabPermission(
+                            tab.TabID,
+                            objTabPermission.PermissionID,
+                            objTabPermission.RoleID,
+                            objTabPermission.AllowAccess,
+                            objTabPermission.UserID,
+                            userId);
                     }
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
                 }
             }
         }

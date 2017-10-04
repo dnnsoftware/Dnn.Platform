@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,7 +27,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Host;
 using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -56,67 +55,59 @@ namespace DotNetNuke.Framework
         {
 			if (GetScriptManager(page) == null)
             {
-                using (var scriptManager = new RadScriptManager
-	                {
-		                ID = "ScriptManager", 
-						EnableScriptGlobalization = true,
-						SupportsPartialRendering = true,
-                        EnableHandlerDetection = false
-	                })
+                if (page.Form != null)
                 {
-					if (page.Form != null)
+                    try
                     {
-                        try
+                        using (var scriptManager = new ScriptManager //RadScriptManager
+                                {
+                                    ID = "ScriptManager",
+                                    EnableScriptGlobalization = true,
+                                    SupportsPartialRendering = true
+                                })
                         {
-							if (checkCdn)
-							{
-								scriptManager.EnableCdn = Host.EnableMsAjaxCdn;
-                                scriptManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
-								if (scriptManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
-								{
-									scriptManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
-								}
-								if (scriptManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnSecureUrl))
-								{
-									scriptManager.CdnSettings.BaseSecureUrl = Host.TelerikCdnSecureUrl;
-								}
-							}
-							page.Form.Controls.AddAt(0, scriptManager);
-                        }
-                        catch
-                        {
-                            //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
+                            if (checkCdn)
+                            {
+                                scriptManager.EnableCdn = Host.EnableMsAjaxCdn;
+                                scriptManager.EnableCdnFallback = Host.EnableMsAjaxCdn;
+                            }
+                            page.Form.Controls.AddAt(0, scriptManager);
                         }
                         if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
                         {
                             HttpContext.Current.Items.Add("System.Web.UI.ScriptManager", true);
                         }
                     }
-                }
-                using (var stylesheetManager = new RadStyleSheetManager { ID = "StylesheetManager", EnableHandlerDetection = false })
-                {
-					if (page.Form != null)
+                    catch
                     {
-                        try
-                        {
-							if (checkCdn)
-							{
-								stylesheetManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
-								if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
-								{
-									stylesheetManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
-								}
-								if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnSecureUrl))
-								{
-									stylesheetManager.CdnSettings.BaseSecureUrl = Host.TelerikCdnSecureUrl;
-								}
-							}
-							page.Form.Controls.AddAt(0, stylesheetManager);
-                        }
-                        catch
-                        {
-                            //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
-                        }
+                        //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
+                    }
+                }
+                if (page.Form != null)
+                {
+                    try
+                    {
+                        //DNN-9145 TODO
+                        //using (var stylesheetManager = new RadStyleSheetManager { ID = "StylesheetManager", EnableHandlerDetection = false })
+                        //{
+                        //	if (checkCdn)
+                        //	{
+                        //		stylesheetManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
+                        //		if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
+                        //		{
+                        //			stylesheetManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
+                        //		}
+                        //		if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnSecureUrl))
+                        //		{
+                        //			stylesheetManager.CdnSettings.BaseSecureUrl = Host.TelerikCdnSecureUrl;
+                        //		}
+                        //	}
+                        //	page.Form.Controls.AddAt(0, stylesheetManager);
+                        //}
+                    }
+                    catch
+                    {
+                        //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
                     }
                 }
             }
@@ -252,75 +243,6 @@ namespace DotNetNuke.Framework
             }
 
             return updatePanel;
-        }
-
-        #endregion
-
-        #region "Obsolete Methods"
-
-        [Obsolete("Deprecated in DNN 5.4, Developers can work directly with the UpdatePanel")]
-        public static Control ContentTemplateContainerControl(object objUpdatePanel)
-        {
-            return (objUpdatePanel as UpdatePanel).ContentTemplateContainer;
-        }
-
-        [Obsolete("Deprecated in DNN 5.4, MS AJax is now required for DotNetNuke 5.0. Develoers can create the control directly")]
-        public static Control CreateUpdatePanelControl()
-        {
-            var updatePanel = new UpdatePanel();
-            updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
-            return updatePanel;
-        }
-
-        [Obsolete("Deprecated in DNN 5.4, MS AJax is now required for DotNetNuke 5.0. Developers can work directly with the UpdateProgress")]
-        public static Control CreateUpdateProgressControl(string AssociatedUpdatePanelID)
-        {
-            var updateProgress = new UpdateProgress();
-            updateProgress.ID = AssociatedUpdatePanelID + "_Prog";
-            updateProgress.AssociatedUpdatePanelID = AssociatedUpdatePanelID;
-            return updateProgress;
-        }
-
-        [Obsolete("Deprecated in DNN 5.4, MS AJax is now required for DotNetNuke 5.0. Developers can work directly with the UpdateProgress")]
-        public static Control CreateUpdateProgressControl(string AssociatedUpdatePanelID, string ProgressHTML)
-        {
-            var updateProgress = new UpdateProgress();
-            updateProgress.ID = AssociatedUpdatePanelID + "_Prog";
-            updateProgress.AssociatedUpdatePanelID = AssociatedUpdatePanelID;
-            updateProgress.ProgressTemplate = new LiteralTemplate(ProgressHTML);
-            return updateProgress;
-        }
-
-        [Obsolete("Deprecated in DNN 5.4, MS AJax is now required for DotNetNuke 5.0. Developers can work directly with the UpdateProgress")]
-        public static Control CreateUpdateProgressControl(string AssociatedUpdatePanelID, Control ProgressControl)
-        {
-            var updateProgress = new UpdateProgress();
-            updateProgress.ID = AssociatedUpdatePanelID + "_Prog";
-            updateProgress.AssociatedUpdatePanelID = AssociatedUpdatePanelID;
-            updateProgress.ProgressTemplate = new LiteralTemplate(ProgressControl);
-            return updateProgress;
-        }
-
-        [Obsolete("Deprecated in DNN 5.0, MS AJax is now required for DotNetNuke 5.0 and above - value no longer read from Host.EnableAjax")]
-        public static bool IsHostEnabled()
-        {
-            return true;
-        }
-
-        [Obsolete("Deprecated in DNN 5.4, Replaced by GetScriptManager")]
-        public static Control ScriptManagerControl(Page objPage)
-        {
-            return objPage.FindControl("ScriptManager");
-        }
-
-        [Obsolete("Deprecated in DNN 5.4, Developers can work directly with the ScriptManager")]
-        public static void SetScriptManagerProperty(Page objPage, string PropertyName, object[] Args)
-        {
-            ScriptManager scriptManager = GetScriptManager(objPage);
-            if (scriptManager != null)
-            {
-                Reflection.SetProperty(scriptManager.GetType(), PropertyName, scriptManager, Args);
-            }
         }
 
         #endregion

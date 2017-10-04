@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
 
 #endregion
 
@@ -39,6 +40,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class Vocabulary : BaseEntityInfo, IHydratable
     {
+        private static readonly PortalSecurity Security = PortalSecurity.Instance;
+
         private string _Description;
         private bool _IsSystem;
         private string _Name;
@@ -71,14 +74,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public Vocabulary(string name, string description, VocabularyType type)
         {
-            _Description = description;
-            _Name = name;
-            _Type = type;
+            Description = description;
+            Name = name;
+            Type = type;
 
-            _ScopeId = Null.NullInteger;
-            _ScopeTypeId = Null.NullInteger;
-            _VocabularyId = Null.NullInteger;
-            _Weight = 0;
+            ScopeId = Null.NullInteger;
+            ScopeTypeId = Null.NullInteger;
+            VocabularyId = Null.NullInteger;
+            Weight = 0;
         }
 
         #endregion
@@ -93,7 +96,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
             set
             {
-                _Description = value;
+                _Description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -125,7 +128,9 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
             set
             {
-                _Name = value;
+                if (HtmlUtils.ContainsEntity(value))
+                    value = System.Net.WebUtility.HtmlDecode(value);
+                _Name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 

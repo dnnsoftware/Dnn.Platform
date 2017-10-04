@@ -17,7 +17,8 @@
     <ItemGroup>
       <Templates Include="..\Website\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
-      <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
+      <RadSpell Include="..\Components\Telerik\App_Data\RadSpell\*.tdf" />
+      <ExportImport Include="..\Website\App_Data\ExportImport\PlaceHolder.txt" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <InstallFiles Include="..\Website\Install\InstallWizard*.*" />
@@ -37,6 +38,7 @@
       <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
       <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
       <KnockoutMapping Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping\*.*" />
+      <Selectize Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize\*.*" />
     </ItemGroup>
   </Target>
   
@@ -44,12 +46,12 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.xml" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\ICSharpCode.SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Controls\CountryListBox\bin\CountryListBox.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Syndication\bin\DotNetNuke.Services.Syndication.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\PetaPoco\bin\PetaPoco.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll" DestinationFolder="$(WebsiteBinPath)" />
-    <Copy SourceFiles="..\Components\SharpZipLib\bin\SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net\bin\Lucene.Net.dll" DestinationFolder="$(WebsiteBinPath)" />
@@ -60,6 +62,7 @@
 
     <Copy SourceFiles="@(Database)" DestinationFolder="$(WebsiteAppDataPath)" Condition="'@(WebsiteDatabase)' == ''" />
     <Copy SourceFiles="@(RadSpell)" DestinationFolder="$(WebsiteRadSpellPath)" Condition="'@(WebsiteRadSpell)' == ''" />
+    <Copy SourceFiles="@(ExportImport)" DestinationFolder="$(WebsiteAppDataPath)\ExportImport"/>
     <Copy SourceFiles="@(Templates)" DestinationFolder="$(WebsiteHostPortalPath)" Condition="'@(WebsiteTemplates)' == ''"/>
     <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" Condition="'@(WebsiteConfig)' == ''"/>
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />
@@ -93,6 +96,9 @@
     <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
 
+    <Zip Files="@(Selectize)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Selectize.zip" />
+
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
             XPath="dotnetnuke/packages/package/@version"
@@ -103,11 +109,27 @@
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="..\Components\Telerik\Package\bin" />
     <Copy SourceFiles="..\Components\Telerik\DotNetNuke.Telerik.Web.dnn" DestinationFolder="..\Components\Telerik\Package" />
     <Copy SourceFiles="..\Components\Telerik\Telerik_EULA.pdf" DestinationFolder="..\Components\Telerik\Package\Documentation" />
+    <Copy SourceFiles="..\Components\Telerik\App_Data\RadSpell\en-US.tdf" DestinationFolder="..\Components\Telerik\Package\App_Data\RadSpell" />
     <CreateItem Include="..\Components\Telerik\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="TelerikContent" />
     </CreateItem>
     <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
+      
+    <XmlRead Prefix="n"
+            Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+            XPath="dotnetnuke/packages/package/@version"
+            XmlFileName="..\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn">
+      <Output TaskParameter="Value" PropertyName="NewtonsoftVersion" />
+    </XmlRead>
+    <Copy SourceFiles="bin\Newtonsoft.Json.dll" DestinationFolder="..\Components\Newtonsoft\Package\bin" />
+    <Copy SourceFiles="..\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn" DestinationFolder="..\Components\Newtonsoft\Package" />
+    <Copy SourceFiles="..\Components\Newtonsoft\License.txt" DestinationFolder="..\Components\Newtonsoft\Package" />
+    <CreateItem Include="..\Components\Newtonsoft\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="NewtonsoftContent" />
+    </CreateItem>
+    <Zip Files="@(NewtonsoftContent)" WorkingDirectory="..\Components\Newtonsoft\Package" ZipFileName="$(WebsiteInstallPath)\Module\Newtonsoft.Json_$(NewtonsoftVersion)_Install.zip" />
+    <RemoveDir Directories ="..\Components\Newtonsoft\Package" />
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
