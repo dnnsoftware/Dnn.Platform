@@ -78,8 +78,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Authentication.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client Capability", "Client Capability", "{C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.FiftyOneClientCapabilityProvider", "DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\Provider.FiftyOneClientCapabilityProvider.csproj", "{0EB2D920-395F-4DB7-8525-D9712E92FC3E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{973A675B-1CF8-42E0-8566-09B4EFD3E83E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{88E649D7-1379-430F-B794-1F3B9B442C80}"
@@ -98,7 +96,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.FiftyOneClientCapabilityProvider", "DNN Platform\Tests\DotNetNuke.Tests.FiftyOneClientCapabilityProvider\DotNetNuke.Tests.FiftyOneClientCapabilityProvider.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.AspNetClientCapabilityProvider", "DNN Platform\Tests\DotNetNuke.Tests.AspNetClientCapabilityProvider\DotNetNuke.Tests.AspNetClientCapabilityProvider.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -438,6 +436,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F4AAB2C9
 		Build\Tools\NuGet\DotNetNuke.WebApi.nuspec = Build\Tools\NuGet\DotNetNuke.WebApi.nuspec
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Providers.AspNetClientCapabilityProvider", "DNN Platform\Providers\ClientCapabilityProviders\Provider.AspNetClientCapabilityProvider\DotNetNuke.Providers.AspNetClientCapabilityProvider.csproj", "{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -738,20 +738,6 @@ Global
 		{1C882AA9-2198-41EF-B325-605340FDEFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C882AA9-2198-41EF-B325-605340FDEFE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C882AA9-2198-41EF-B325-605340FDEFE5}.Release|x86.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|x86.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|x86.Build.0 = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|x86.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|x86.Build.0 = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|x86.ActiveCfg = Release|Any CPU
 		{68368906-57DD-40D1-AC10-35211A17D617}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68368906-57DD-40D1-AC10-35211A17D617}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68368906-57DD-40D1-AC10-35211A17D617}.Cloud_Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1148,6 +1134,22 @@ Global
 		{13F62719-88BE-4EAD-9740-F0787A9B0A94}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13F62719-88BE-4EAD-9740-F0787A9B0A94}.Release|x86.ActiveCfg = Release|Any CPU
 		{13F62719-88BE-4EAD-9740-F0787A9B0A94}.Release|x86.Build.0 = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|Any CPU.ActiveCfg = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|Any CPU.Build.0 = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|x86.ActiveCfg = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|x86.Build.0 = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|Any CPU.ActiveCfg = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|Any CPU.Build.0 = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|x86.ActiveCfg = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|x86.Build.0 = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|x86.Build.0 = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1178,7 +1180,6 @@ Global
 		{46924A38-CAB7-485D-9301-191E35F6255F} = {8978D97A-03F5-4BFA-A0A6-BC6E93804C88}
 		{1C882AA9-2198-41EF-B325-605340FDEFE5} = {8978D97A-03F5-4BFA-A0A6-BC6E93804C88}
 		{C3D4B15B-0AAA-494C-AAF5-5CC806B42A34} = {5D82591D-1525-40A1-ACA3-1F89D817E9AD}
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E} = {C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}
 		{973A675B-1CF8-42E0-8566-09B4EFD3E83E} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{88E649D7-1379-430F-B794-1F3B9B442C80} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{68368906-57DD-40D1-AC10-35211A17D617} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
@@ -1236,5 +1237,6 @@ Global
 		{4F538A14-38F5-473F-8386-60D81F3F530A} = {2D7DB29D-72F1-44DE-A01E-D6547D8271C2}
 		{4248BC91-5EAC-489B-929F-6494F805B24E} = {2D7DB29D-72F1-44DE-A01E-D6547D8271C2}
 		{F4AAB2C9-8B8B-441B-8623-9347B62884A1} = {4248BC91-5EAC-489B-929F-6494F805B24E}
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7} = {C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}
 	EndGlobalSection
 EndGlobal

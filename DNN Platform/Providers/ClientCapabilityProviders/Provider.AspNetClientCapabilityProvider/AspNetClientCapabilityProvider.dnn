@@ -1,0 +1,80 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="AspNetClientCapabilityProvider" type="Provider" version="09.02.00">
+      <friendlyName>DotNetNuke ASP.NET Client Capability Provider</friendlyName>
+      <description>ASP.NET Device Detection / Client Capability Provider</description>
+      <iconFile>~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/Images/mobiledevicedet_32X32.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">09.02.00</dependency>
+      </dependencies>
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider\</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <eventMessage>
+          <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+          <processorCommand>UpgradeModule</processorCommand>
+          <attributes>
+            <businessControllerClass>DotNetNuke.Providers.AspNetClientCapabilityProvider.Components.FeatureController, DotNetNuke.Providers.AspNetClientCapabilityProvider</businessControllerClass>
+            <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+            <upgradeVersionsList>08.03.00</upgradeVersionsList>
+          </attributes>
+        </eventMessage>
+        <component type="Assembly">
+          <assemblies>
+            <basePath>bin\Providers</basePath>
+            <assembly>
+              <path>bin\Providers</path>
+              <name>DotNetNuke.Providers.AspNetClientCapabilityProvider.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/configSections/sectionGroup[@name='dotnetnuke']" action="update" key="name" collision="ignore">
+                    <section name="clientcapability" requirePermission="false" type="DotNetNuke.Framework.Providers.ProviderConfigurationHandler, DotNetNuke" />
+                  </node>
+                  <node path="/configuration/dotnetnuke" action="update" targetpath="/configuration/dotnetnuke/clientcapability" collision="ignore">
+                    <clientcapability defaultProvider="AspNetClientCapabilityProvider">
+                      <providers>
+                        <clear />
+                      </providers>
+                    </clientcapability>
+                  </node>
+                  <node path="/configuration/dotnetnuke/clientcapability/providers" action="update" key="name" collision="overwrite">
+                    <add name="AspNetClientCapabilityProvider" type="DotNetNuke.Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider, DotNetNuke.Providers.AspNetClientCapabilityProvider" providerPath="~\Providers\ClientCapabilityProviders\AspNetClientCapabilityProvider\" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/clientcapability/providers/add[@name='AspNetClientCapabilityProvider']" action="remove"/>
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
