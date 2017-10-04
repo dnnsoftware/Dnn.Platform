@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public void UpdateParameters(MenuItem menuItem)
         {
-            
+
         }
 
         public bool Visible(MenuItem menuItem)
@@ -55,7 +55,8 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
                 {"portalName", PortalSettings.Current.PortalName},
                 {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
                 {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName},
-                {"productSKU", DotNetNukeContext.Current.Application.SKU}
+                {"productSKU", DotNetNukeContext.Current.Application.SKU},
+                {"isAdmin", _securityService.IsPageAdminUser() }
             };
 
             return settings;
