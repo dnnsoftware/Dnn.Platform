@@ -10,6 +10,7 @@
         .treeview-parent-expand-button, .treeview-parent-collapse-button {
             height: 28px;
             margin-top: -2px;
+            cursor: pointer;
         }
     }
     .dnn-persona-bar-treeview-ul {
@@ -55,11 +56,12 @@
         font-size: 12px;
         font-weight: bold;
         color: @curiousBlue;
-        padding-bottom: 20px;
-        padding-left: 20px;
+        margin: 0 0 20px 20px;
+        cursor: pointer;
     }
     .initial {
         color: @alto;
+        cursor: default;
     }
     .item-name {
         position: relative;
@@ -115,27 +117,38 @@
         font-size: 18px;
         font-weight: bold;
         color: @curiousBlue;
-        div {
+        >div {
             float: right;
             height: 20px;
             width: 20px;
             display: inherit;
+            svg {
+                fill: @curiousBlue;                
+            }
+            svg:hover {
+                fill: @curiousBlue !important;
+            }
         }
         .dots {
             margin-right: 10px;
+            cursor: pointer;
             svg {
+                width: 20px;                
+                circle {
+                    fill: @alto;
+                }
+            }
+            svg:hover {
                 circle {
                     fill: @curiousBlue;
                 }
             }
-        }
-        svg {
-            width: 20px;
-            fill: @curiousBlue;
-        }
-        svg:hover {
-            fill: @curiousBlue;
-        }
+            &.active {
+                circle {
+                    fill: @curiousBlue;
+                }
+            }
+        }        
     }
     .draft-pencil {
         margin-left: 3px;
