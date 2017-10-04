@@ -123,16 +123,65 @@
 
         .search-item-thumbnail{
             float:left;
+            width:16%;
         }
 
         .search-item-details {
             float:left;
+            width: 83%;
             height:40px;
-            padding-left: 35px;
+            padding: 10px 0px 10px 35px;
+
+            .search-item-details-left{
+                float:left;
+
+                h1{
+                    color: @curiousBlue;
+                }
+                h2{
+                    cursor:pointer;
+                    color:@alto;
+                }
+
+            }
+
+            .search-item-details-right{
+                float:right;
+
+                ul{
+                    float:right;
+                    transition: opacity .25s ease-in;
+                    opacity:0;
+                    padding:0;
+                    margin:0;
+                    li{
+                        list-style:none;
+                        padding: 0 10px;
+                        float:left;
+
+                        div{
+                            width: 20px;
+                            cursor:pointer;
+
+                            svg{
+                                width:100%;
+                                fill: @alto;
+                                stroke: @alto;
+                            }
+                        }
+
+                    }
+                }
+
+                ul:hover{
+                    opacity: 1
+                }
+            }
         }
 
         .search-item-details-list {
             padding:10px 0px;
+            clear:both;
             
             ul{
                 list-style: none;
@@ -142,6 +191,7 @@
 
             li{
                 float:left;
+                margin: 0 10px;
                 p{
                     display:inline;
                     font-weight:bold;
@@ -154,6 +204,11 @@
                     margin: 0px 10px;
                     color: @curiousBlue
                 }
+            }
+
+            li:first-child{
+                float:left;
+                margin:0;
             }
         }
     }
@@ -180,13 +235,33 @@
             display:block;
         }
 
+        .back-to-page {
+            float:left;
+            width: 200px;
+            cursor:pointer;
+            div {
+                float:left;
+                width: 20px;
+                margin-right: 10px;
+
+                svg{
+                    fill:#000;
+                }
+            }
+
+            p{
+                padding-top:3px;
+                text-transform: uppercase;
+            }
+        }
+
         .search-box{
             float:right;
             border-left: 1px solid @alto;
             width: 300px;
 
             .search-input {
-                width:230px;
+                width:200px;
                 float:left;
                 input{
                     border:none;
@@ -203,6 +278,14 @@
 
         .search-btn {
             padding: 0 5px;
+        }
+
+        .clear-search{
+            padding: 8px;
+
+            svg{
+                fill: @alto;
+            }
         }
     }
 

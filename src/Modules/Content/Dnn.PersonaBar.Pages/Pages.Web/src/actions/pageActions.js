@@ -72,6 +72,7 @@ const loadPage = function (dispatch, pageId, callback) {
 const pageActions = {
     getPageList(id) {
         return (dispatch) => PagesService.getPageList(id).then(pageList => {
+         
             dispatch({
                 type: PageListActionTypes.SAVE,
                 data: { pageList }
@@ -86,6 +87,11 @@ const pageActions = {
                 data: { searchList }
             });
         });
+    },
+
+
+    getPageHierarchy(id){
+        return () => PagesService.getPageHierarchy(id);
     },
 
     searchAndFilterPageList(params) {
@@ -157,7 +163,7 @@ const pageActions = {
             const { pages } = getState();
             const duplicate = (page) => {
                 const duplicatedPage = cloneDeep(page);
-                
+
                 duplicatedPage.templateTabId = duplicatedPage.tabId;
                 duplicatedPage.tabId = 0;
                 duplicatedPage.name = "";
