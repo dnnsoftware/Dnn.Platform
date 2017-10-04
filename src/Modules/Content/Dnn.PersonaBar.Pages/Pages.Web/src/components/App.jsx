@@ -265,9 +265,10 @@ class App extends Component {
                 }
 
                 this._traverse((item, list, updateStore) => {
-                    if (item.id == update.tabId) {
+                    if (item.id === update.tabId) {
                         item.name = update.name;
                         item.pageType = update.pageType;
+                        item.url = update.url;
                         updateStore(list);
                     }
                 });
@@ -372,8 +373,7 @@ class App extends Component {
         const { selectedPage } = props;
 
         const left = () => {
-            return () => {
-                this.props.onDeletePage(props.selectedPage);
+            return () => {                
                 this._traverse((item, list, updateStore) => {
                     if (item.id === props.selectedPage.parentId) {
                         let itemIndex = null;
@@ -388,6 +388,7 @@ class App extends Component {
                         const arr1 = item.childListItems.slice(0, itemIndex);
                         const arr2 = item.childListItems.slice(itemIndex + 1);
                         item.childListItems = [...arr1, ...arr2];
+                        props.onDeletePage(props.selectedPage, item.url);
                         updateStore(list);
                         props.onCancelPage();
                     }
@@ -408,7 +409,7 @@ class App extends Component {
                 const arr1 = pageList.slice(0, itemIndex);
                 const arr2 = pageList.slice(itemIndex + 1);
                 const update = [...arr1, ...arr2];
-                this.props.onDeletePage(props.selectedPage);
+                this.props.onDeletePage(props.selectedPage, utils.getDefaultPageUrl());
                 this.props.updatePageListStore(update);
                 this.props.onCancelPage();
             };
@@ -470,7 +471,8 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            this.props.onLoadPage(id);
+            this.props.onCancelPage();
+            this.props.changeSelectedPagePath("");
         }
     }
 

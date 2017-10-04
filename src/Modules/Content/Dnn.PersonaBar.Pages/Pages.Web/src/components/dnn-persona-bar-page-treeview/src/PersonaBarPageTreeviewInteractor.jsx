@@ -57,7 +57,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             pageList: pageList,
             rootLoaded: true
         });
-
         if (activePage) {
             this.props._traverse((item, list, updateStore) => {
                 item.selected = false;
@@ -67,6 +66,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         pageList: list
                     });
                 }
+            });
+        }
+        else
+        {
+            this.props._traverse((item, list, updateStore) => {
+                item.selected = false;
+                this.setState({
+                    pageList: list
+                });
             });
         }
 
