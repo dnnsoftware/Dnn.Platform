@@ -96,8 +96,6 @@
     <AllSourceExclude Include="$(checkoutDirectory)\Website\Install\Module\Telerik_Design*"/>
     <AllSourceExclude Include="$(checkoutDirectory)\Website\Install\Provider\DNNXE*"/>
     <AllSourceExclude Include="$(checkoutDirectory)\Website\Install\Provider\DNNPro*"/>
-    <AllSourceExclude Include="$(checkoutDirectory)\Website\Install\Provider\FiftyOnePremiumProvider*" />
-	<AllSourceExclude Include="$(checkoutDirectory)\Website\Install\Provider\AspNetClientCapabilityProvider*" />
   </ItemGroup>
   <ItemGroup>
     <AllSourceInclude Include="$(checkoutDirectory)\Build\BuildScripts\ExternallySourced.targets"/>
@@ -139,8 +137,6 @@
     <PEProjects Include="DotNetNuke.Professional.WebServerManager"/>
 	<PEProjects Include="DotNetNuke.Professional.DigitalAssets"/>
 	<PEProjects Include="DotNetNuke.Professional.UrlManagement"/>
-    <PEProjects Include="Provider.Professional.FiftyOnePremiumProvider"/>
-	<PEProjects Include="Provider.AspNetClientCapabilityProvider"/>
 	<PEProjects Include="DotNetNuke.Professional.Authentication.ActiveDirectory"/>
     <PEProjects Include="Provider.BigSitemapProvider"/>
     <PEProjects Include="Professional"/>
@@ -154,7 +150,7 @@
     <TestProjects Include="DotNetNuke.Tests.Core"/>
     <TestProjects Include="DotNetNuke.Tests.Instance.Utilities"/>
     <TestProjects Include="DotNetNuke.Tests.WURFLClientCapabilityProvider"/>
-    <TestProjects Include="DotNetNuke.Tests.FiftyOneClientCapabilityProvider"/>
+    <TestProjects Include="DotNetNuke.Tests.AspNetClientCapabilityProvider"/>
     <TestProjects Include="DotNetNuke.Tests.Web"/>
     <TestProjects Include="DotNetNuke.Tests.MobileManagement"/>
     <TestProjects Include="DotNetNuke.Tests.PreviewProfileManagement" />
