@@ -347,7 +347,6 @@
     <!--Community Supporting DLLs-->
     <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Tests\TestFixtures" />
     <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Tests\TestFixtures" />
-    <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\51Degrees\bin\FiftyOne.Foundation.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Tests\TestFixtures" />
     <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Log4Net\bin\DotNetNuke.log4net.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Tests\TestFixtures" />
     <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\HttpModules\bin\DotNetNuke.HttpModules.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Tests\TestFixtures" />
     <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Library\bin\DotNetNuke.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Tests\TestFixtures" />
