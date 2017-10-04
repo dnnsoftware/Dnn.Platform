@@ -65,32 +65,6 @@ namespace DotNetNuke.Web.Mvc.Routing
         public static string GetIPAddress(HttpRequestBase request)
         {
             return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
-        }
-        
-        private static bool CheckMask(IPAddress address, IPAddress mask, IPAddress target)
-        {
-            if (mask == null)
-                return false;
-
-            var ba = address.GetAddressBytes();
-            var bm = mask.GetAddressBytes();
-            var bb = target.GetAddressBytes();
-
-            if (ba.Length != bm.Length || bm.Length != bb.Length)
-                return false;
-
-            for (var i = 0; i < ba.Length; i++)
-            {
-                var m = bm[i];
-
-                var a = ba[i] & m;
-                var b = bb[i] & m;
-
-                if (a != b)
-                    return false;
-            }
-
-            return true;
-        }
+        }        
     }
 }
