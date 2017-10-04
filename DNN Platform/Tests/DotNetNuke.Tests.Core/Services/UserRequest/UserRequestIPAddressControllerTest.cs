@@ -112,7 +112,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [TestCase("abc.111.eer")]
         [TestCase("somedomain.com")]
         [TestCase("244.275.111.111")]
-        [TestCase("0.0.0.0")]
         public void UserRequestIPAddress_ShouldReturnEmptyString_IfIPAddressIsNotValid(string requestIp)
         {
             //Arrange
