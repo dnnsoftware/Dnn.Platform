@@ -29,8 +29,6 @@
     <InstallExclude Include="$(WebsitePath)\bin\DotNetNuke.Modules.*"/>
     <InstallExclude Include="$(WebsitePath)\bin\Providers\*.pdb"/>
     <InstallExclude Include="$(WebsitePath)\bin\Providers\*.xml"/>
-    <InstallExclude Include="$(WebsitePath)\bin\DotNetNuke.Provider.Professional.FiftyOnePremiumProvider.dll"/>
-    <InstallExclude Include="$(WebsitePath)\bin\FiftyOne.Foundation.dll"/>
     <InstallExclude Include="$(WebsitePath)\Install\Module\DNNCE_HTML*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Module\Telerik_Design*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\*.resources" />
