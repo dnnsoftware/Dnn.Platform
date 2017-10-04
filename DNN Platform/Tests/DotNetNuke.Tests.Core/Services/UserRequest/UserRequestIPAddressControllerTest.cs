@@ -50,27 +50,27 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         public void TearDown()
         {
             MockComponentProvider.ResetContainer();
-        }
+        }        
 
-        [Test]
-        public void UserRequestIPAddress_ShouldReturnIP_IfXForwardedHeaderIsPresent()
+        [TestCase("111.111.111.111","X-Forwarded-For")]
+        [TestCase("111.111.111.111,123.112.11.33", "X-Forwarded-For")]
+        [TestCase("111.111.111.111", "X-ProxyUser-Ip")]
+        [TestCase("111.111.111.111,23.112.11.33", "X-ProxyUser-Ip")]
+        public void UserRequestIPAddress_ShouldReturnIP_IfAnyHeaderIsPresent(string requestIp, string headerName)
         {
             //Arrange
-            var expectedIp = "111.111.111.111";
-            var headerName = "X-Forwarded-For";
-            var requestIp = "111.111.111.111";
-
-            _mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
+            var expectedIp = "111.111.111.111";                    
 
             NameValueCollection headersWithXForwardedHeaders = new NameValueCollection();
             headersWithXForwardedHeaders.Add(headerName, requestIp);
+            _mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
             _mockRequest.Setup(x => x.Headers).Returns(headersWithXForwardedHeaders);
 
             //Act
             string userRequestIPAddress = _userRequestIPAddressController.GetUserRequestIPAddress(_mockhttpContext.Object.Request);
 
             //Assert            
-            Assert.AreSame(expectedIp, userRequestIPAddress);
+            Assert.AreEqual(expectedIp, userRequestIPAddress);
         }
 
         [Test]
@@ -112,19 +112,17 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [TestCase("abc.111.eer")]
         [TestCase("somedomain.com")]
         [TestCase("244.275.111.111")]
-        [TestCase("abc.111.eer")]
+        [TestCase("0.0.0.0")]
         public void UserRequestIPAddress_ShouldReturnEmptyString_IfIPAddressIsNotValid(string requestIp)
         {
             //Arrange
-            var headerName = "X-Forwarded-For";
-
-            _mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
+            var headerName = "X-Forwarded-For";           
 
             NameValueCollection headersWithXForwardedHeaders = new NameValueCollection();
             headersWithXForwardedHeaders.Add(headerName, requestIp);
             _mockRequest.Setup(x => x.Headers).Returns(headersWithXForwardedHeaders);
-
-
+            _mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
+            
             //Act
             var userRequestIPAddress = _userRequestIPAddressController.GetUserRequestIPAddress(_mockhttpContext.Object.Request);
 
