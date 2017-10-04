@@ -49,7 +49,7 @@ export default class PersonaBarSelectionArrow extends Component {
         return (
             <div id={`menu-item-${item.name}`} className="selection-arrow">
                 {item.selected ? <div dangerouslySetInnerHTML={{ __html: ArrowForward }} /> : <div></div>}
-                {item.selected && this.hasAtLeastOnePermission(item)? <div className="dots" dangerouslySetInnerHTML={{ __html: MoreMenuIcon }} onClick={() => this.toggleInContextMenu()} /> : <div></div>}
+                {item.selected && this.hasAtLeastOnePermission(item)? <div className={this.state.showMenu ? "dots active" : "dots"} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }} onClick={() => this.toggleInContextMenu()} /> : <div></div>}
                 {this.state.showMenu && <PersonaBarTreeInContextMenu {...this.props} onClose={this.toggleInContextMenu.bind(this)} />}
             </div>
 
