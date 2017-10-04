@@ -268,7 +268,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage MovePage(PageMoveRequest request)
         {
-            if (!_securityService.IsPageAdminUser())
+
+            if (!_securityService.CanManagePage(request.PageId)
+                || !_securityService.CanManagePage(request.ParentId)
+                || !_securityService.CanManagePage(request.RelatedPageId)
+                || !_securityService.CanManagePage(TabController.Instance.GetTab(request.RelatedPageId, PortalId)?.ParentId ?? -1))
             {
                 return GetForbiddenResponse();
             }
