@@ -68,7 +68,7 @@ class Tooltip extends Component {
     }
     
     render() {
-        const {messages, type, rendered, tooltipPlace, style, className, delayHide, customIcon, tooltipClass, onClick, tooltipColor} = this.props;
+        const {messages, type, rendered, tooltipPlace, style, className, delayHide, customIcon, tooltipClass, onClick, tooltipColor, maxWidth} = this.props;
         const containerClass = "dnn-ui-common-tooltip " + type + " " + (className ? className : "");
         const message = getTooltipText(messages);
         const TooltipIcon = !customIcon ? getIconComponent(type) : CustomIcon;
@@ -91,7 +91,7 @@ class Tooltip extends Component {
                     tooltipTimeout={delayHide}
                     arrow="center"
                     parent={"#" + this.state.id}>
-                    <div dangerouslySetInnerHTML={{ __html: message }} />
+                    <div style={{maxWidth: maxWidth + "px"}} dangerouslySetInnerHTML={{ __html: message }} />
                 </ReactPortalTooltip>
             </div>
         );
@@ -110,13 +110,15 @@ Tooltip.propTypes = {
     delayHide: PropTypes.number,
     customIcon: PropTypes.node,
     tooltipClass: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    maxWidth: PropTypes.number
 };
 
 Tooltip.defaultProps = {
     tooltipPlace: "top",
     type: "info",
-    delayHide: 100
+    delayHide: 100,
+    maxWidth: 400
 };
 
 export default Tooltip;
