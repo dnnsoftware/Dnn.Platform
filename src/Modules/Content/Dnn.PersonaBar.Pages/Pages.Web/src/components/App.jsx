@@ -816,7 +816,12 @@ class App extends Component {
 
     generateFilters() {
         const { filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty } = this.state;
-        const filters = this.state.tags.split(",");
+        const filters = this.state.tags.split(",")
+                            .filter(e => !!e)
+                            .map((tag)=>{
+                                return {ref: `tag-${tag}`, tag: `${tag}`};
+                            });
+
         filterByPageType ? filters.push({ ref: "filterByPageType", tag: `Page Type: ${filterByPageType}` }) : null;
         filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `Published Status: ${filterByPublishStatus}` }) : null;
         filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `Workflow: ${filterByWorkflow}` }) : null;
@@ -848,9 +853,11 @@ class App extends Component {
                 delete search[prop];
             }
         }
+
         this.generateFilters();
         this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
         this.setState({ inSearch: true });
+
     }
 
 
@@ -1071,6 +1078,17 @@ class App extends Component {
 
             const publishedDate = new Date(item.publishDate.split(" ")[0]);
 
+            const addToTags = (newTag) => {
+               const condition =  this.state.tags.indexOf(newTag) === -1;
+               const update = () => {
+                   let tags =  this.state.tags;
+                   tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
+                   this.setState({tags}, ()=>this.onSave());
+               };
+
+               condition ? update() : null;
+            };
+
 
             return (
                 <GridCell columnSize={100}>
@@ -1110,7 +1128,7 @@ class App extends Component {
                                 <ul>
                                     <li>
                                         <p>Workflow:</p>
-                                        <p onClick={()=>{ this.setState({filterByWorkflow: item.workflowName}, ()=>this.onSave()); }}>{item.workflowName}</p>
+                                        <p onClick={()=>{ this.setState({filterByWorkflow: item.workflowName, filterByWorkflowName: item.workflowName}, ()=>this.onSave()); }}>{item.workflowName}</p>
                                     </li>
                                     <li>
                                         <p>Tags:</p>
@@ -1118,10 +1136,16 @@ class App extends Component {
                                             item.tags.map((tag) => {
                                                 return (
                                                     <span>
-                                                        {tag},
+                                                        <span style={{margin:"5px"}} onClick={()=>addToTags(tag)}>
+                                                            {tag}
+                                                        </span>
+                                                        <span style={{color:"#000"}}>
+                                                            ,
+                                                        </span>
                                                     </span>
                                                 );
-                                            })}</p>
+                                            })}
+                                        </p>
                                     </li>
                                 </ul>
                             </div>
@@ -1174,10 +1198,24 @@ class App extends Component {
             .map((filter) => {
 
                 const deleteFilter = (prop) => {
-                    const update = {};
-                    update[prop] = null;
-                    this.setState(update, () => this.onSave());
+                    const left = () => {
+                        const update = {};
+                        update[prop] = null;
+                        this.setState(update, () => this.onSave());
+                    };
+                    const right = () => {
+                        let {filters, tags} = this.state;
+                        filters = filters.filter(f => f.ref!=prop);
+                        const findTag = prop.split("-")[1];
+                        const re = new RegExp(findTag);
+                        tags = tags.indexOf(findTag) !== -1 ? tags.replace(re, "") : tags;
+                        this.setState({filters, tags}, ()=>this.onSave());
+
+                    };
+                    const condition = prop.indexOf('tag') === -1;
+                    condition ? left() : right();
                 };
+
                 return (
                     <div className="filter-by-tags">
                         <div>{filter.tag}</div>
@@ -1238,7 +1276,7 @@ class App extends Component {
                                             className="btn clear-search"
                                             style={{ fill: "#444" }}
                                             dangerouslySetInnerHTML={{ __html: XIcon }}
-                                            onClick={() => this.setState({ searchTerm: "" })}
+                                            onClick={() => this.setState({ searchTerm: "" }, ()=> this.onSave())}
                                         />
 
                                         : <div className="btn clear-search" />}
