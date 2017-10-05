@@ -66,7 +66,6 @@ class App extends Component {
             referralText: "",
             busy: false,
             headerDropdownSelection: "Save Page Template",
-
             toggleSearchMoreFlyout: false,
             DropdownCalendarIsActive: null,
 
@@ -81,7 +80,6 @@ class App extends Component {
             filterByPageType: null,
             filterByPublishStatus: null,
             filterByWorkflow: null,
-
             workflowList: [],
 
             tags: "",
@@ -105,6 +103,10 @@ class App extends Component {
 
         if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
+        }
+
+        if(!utils.isPlatform){
+            this.props.getWorkflowsList();
         }
 
         //Resolve tab being viewed, if view params are present.
@@ -815,7 +817,7 @@ class App extends Component {
     }
 
     generateFilters() {
-        const { filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty } = this.state;
+        const { filterByPageType, filterByPublishStatus, filterByWorkflow, filterByWorkflowName, startDate, endDate, startAndEndDateDirty } = this.state;
         const filters = this.state.tags.split(",")
                             .filter(e => !!e)
                             .map((tag)=>{
@@ -824,7 +826,7 @@ class App extends Component {
 
         filterByPageType ? filters.push({ ref: "filterByPageType", tag: `Page Type: ${filterByPageType}` }) : null;
         filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `Published Status: ${filterByPublishStatus}` }) : null;
-        filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `Workflow: ${filterByWorkflow}` }) : null;
+        filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `Workflow: ${filterByWorkflowName}` }) : null;
 
         if (startAndEndDateDirty) {
             const fullStartDate = `${startDate.getDay()+1}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
@@ -843,11 +845,18 @@ class App extends Component {
     }
 
     onSave() {
-        const { searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
+        let { searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
         const searchDateRange = startAndEndDateDirty ? { publishDateStart: startDate, publishDateEnd: endDate } : {};
-        let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
 
+        if(tags){
+            tags  = tags[0]=="," ? tags.replace(",", "") : tags;
+            tags  = tags[tags.length-1]=="," ? tags.split(",").filter(t => !!t).join() : tags;
+        }
+
+
+        let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
         search = Object.assign({}, search, searchDateRange);
+
         for (let prop in search) {
             if (!search[prop]) {
                 delete search[prop];
@@ -857,7 +866,6 @@ class App extends Component {
         this.generateFilters();
         this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
         this.setState({ inSearch: true });
-
     }
 
 
@@ -1128,7 +1136,7 @@ class App extends Component {
                                 <ul>
                                     <li>
                                         <p>Workflow:</p>
-                                        <p onClick={()=>{ this.setState({filterByWorkflow: item.workflowName, filterByWorkflowName: item.workflowName}, ()=>this.onSave()); }}>{item.workflowName}</p>
+                                        <p onClick={()=>{ this.setState({filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName}, ()=>this.onSave()); }}>{item.workflowName}</p>
                                     </li>
                                     <li>
                                         <p>Tags:</p>
@@ -1136,7 +1144,7 @@ class App extends Component {
                                             item.tags.map((tag) => {
                                                 return (
                                                     <span>
-                                                        <span style={{margin:"5px"}} onClick={()=>addToTags(tag)}>
+                                                        <span style={{marginLeft:"5px"}} onClick={()=>addToTags(tag)}>
                                                             {tag}
                                                         </span>
                                                         <span style={{color:"#000"}}>
@@ -1209,6 +1217,7 @@ class App extends Component {
                         const findTag = prop.split("-")[1];
                         const re = new RegExp(findTag);
                         tags = tags.indexOf(findTag) !== -1 ? tags.replace(re, "") : tags;
+
                         this.setState({filters, tags}, ()=>this.onSave());
 
                     };
