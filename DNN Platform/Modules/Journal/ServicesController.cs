@@ -93,6 +93,11 @@ namespace DotNetNuke.Modules.Journal
             return AcceptedFileExtensions.Contains(extension);
         }
 
+        private static bool IsAllowedLink(string url)
+        {
+            return !string.IsNullOrEmpty(url) && !url.Contains("//");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[DnnAuthorize(DenyRoles = "Unverified Users")]
@@ -124,7 +129,7 @@ namespace DotNetNuke.Modules.Journal
                     var profileUser = UserController.Instance.GetUser(PortalSettings.PortalId, postData.ProfileId);
                     if (profileUser == null || (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !Utilities.AreFriends(profileUser, UserInfo)))
                     {
-                        throw new ArgumentException("you have no permission to post journal on current profile page");
+                        throw new ArgumentException("you have no permission to post journal on current profile page.");
                     }
                 }
 
@@ -187,25 +192,35 @@ namespace DotNetNuke.Modules.Journal
                     ji.ItemData = postData.ItemData.FromJson<ItemData>();
                     var originalImageUrl = ji.ItemData.ImageUrl;
                     if (!IsImageFile(ji.ItemData.ImageUrl))
+                    {
                         ji.ItemData.ImageUrl = string.Empty;
+                    }
+
                     ji.ItemData.Description = HttpUtility.UrlDecode(ji.ItemData.Description);
+
+                    if (!IsAllowedLink(ji.ItemData.Url))
+                    {
+                        ji.ItemData.Url = string.Empty;
+                    }
 
                     if (!string.IsNullOrEmpty(ji.ItemData.Url) && ji.ItemData.Url.StartsWith("fileid="))
                     {
                         var fileId = Convert.ToInt32(ji.ItemData.Url.Replace("fileid=", string.Empty).Trim());
                         var file = FileManager.Instance.GetFile(fileId);
 
-                        if (IsCurrentUserFile(file))
+                        if (!IsCurrentUserFile(file))
                         {
-                            ji.ItemData.Title = file.FileName;
-                            ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
+                            throw new ArgumentException("you have no permission to attach files not belongs to you.");
+                        }
 
-                            if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) &&
-                                originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") &&
-                                AcceptedFileExtensions.Contains(file.Extension.ToLower()))
-                            {
-                                ji.ItemData.ImageUrl = originalImageUrl;
-                            }
+                        ji.ItemData.Title = file.FileName;
+                        ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
+
+                        if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) &&
+                            originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") &&
+                            AcceptedFileExtensions.Contains(file.Extension.ToLower()))
+                        {
+                            ji.ItemData.ImageUrl = originalImageUrl;
                         }
                     }
                 }
