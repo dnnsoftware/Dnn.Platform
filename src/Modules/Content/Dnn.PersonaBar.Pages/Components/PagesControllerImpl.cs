@@ -1110,12 +1110,12 @@ namespace Dnn.PersonaBar.Pages.Components
                permission.Permissions.Count != 0);
         }
 
-        public virtual PageSettings GetDefaultSettings()
+        public virtual PageSettings GetDefaultSettings(int pageId = 0)
         {
             var pageSettings = new PageSettings
             {
                 Templates = _templateController.GetTemplates(),
-                Permissions = GetPermissionsData(0)
+                Permissions = GetPermissionsData(pageId)
             };
 
             pageSettings.TemplateId = _templateController.GetDefaultTemplateId(pageSettings.Templates);
