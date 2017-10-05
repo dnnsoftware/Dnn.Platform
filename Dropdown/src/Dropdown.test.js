@@ -7,6 +7,7 @@ import Collapse from "react-collapse";
 
 import {configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15.4';
+import toJson from 'enzyme-to-json';
 
 import {shallow, mount, render} from "enzyme";
 
@@ -87,11 +88,22 @@ describe("Dnn Dropdown component", () => {
 
     });
 
-    it("Renders <Collapse /> with minimal setup", () => {
-        const props = {options, value: "second", label: "My new label", prependWith: "Prepend text:", withIcon: false};
+    it("Renders <Collapse />", () => {
+        const props = {options, value: "second", label: "My new label", prependWith: "Prepend text:", withIcon: false,isDropDownOpen:true};
         const deepRendering = mount(<Dropdown onSelect={f => f} {...props}/>);
 
-        const collapseCount = deepRendering.find(Collapse).length;
-        expect(collapseCount).toBe(1);
+        const collapse = deepRendering.find(Collapse);
+        expect(collapse).toHaveLength(1);
+
+        let collapsibleLabel = deepRendering.find(".collapsible-label").first();
+        collapsibleLabel.simulate("click");
+
+        const listItems = deepRendering.find("ul");
+        expect(listItems).toHaveLength(1);
+
+        const json = toJson(deepRendering);
+
+        expect(json).toMatchSnapshot();
     });
+
 });
