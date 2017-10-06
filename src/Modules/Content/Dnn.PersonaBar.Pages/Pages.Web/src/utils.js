@@ -160,6 +160,10 @@ function getProductSKU() {
     checkInit();
     return settings.productSKU;
 }
+function isPlatform(){
+    checkInit();
+    return settings.productSKU.toLowerCase() === 'dnn';
+}
 const utils = {
     init,
     load,
@@ -186,7 +190,8 @@ const utils = {
     getCurrentPagePermissions,
     getCurrentPageName,
     getDefaultPageUrl,
-    getProductSKU
+    getProductSKU,
+    isPlatform
 };
 
 export default utils;

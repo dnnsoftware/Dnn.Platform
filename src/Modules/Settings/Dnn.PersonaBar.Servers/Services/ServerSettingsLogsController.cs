@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsLogsController));
         private readonly LogController _logController = new LogController();
-        
+
         [HttpGet]
         public HttpResponseMessage GetLogs()
         {
@@ -63,18 +63,25 @@ namespace Dnn.PersonaBar.Servers.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-        
+
         [HttpGet]
         public HttpResponseMessage GetLogFile(string fileName)
         {
             try
             {
                 var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
+
+                ValidateFilePath(logFilePath);
+
                 using (var reader = File.OpenText(logFilePath))
                 {
                     var logText = reader.ReadToEnd();
                     return Request.CreateResponse(HttpStatusCode.OK, logText);
                 }
+            }
+            catch (ArgumentException exc)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
@@ -82,7 +89,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-       
+
         [HttpGet]
         public HttpResponseMessage GetUpgradeLogFile(string logName)
         {
@@ -91,6 +98,9 @@ namespace Dnn.PersonaBar.Servers.Services
                 var upgradeText = string.Empty;
                 var providerPath = DataProvider.Instance().GetProviderPath();
                 var logFilePath = Path.Combine(providerPath, logName + ".log.resources");
+
+                ValidateFilePath(logFilePath);
+
                 if (File.Exists(logFilePath))
                 {
                     using (var reader = File.OpenText(logFilePath))
@@ -103,10 +113,23 @@ namespace Dnn.PersonaBar.Servers.Services
 
                 return Request.CreateResponse(HttpStatusCode.OK, upgradeText);
             }
+            catch (ArgumentException exc)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+            }
             catch (Exception exc)
             {
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private void ValidateFilePath(string physicalPath)
+        {
+            var fileInfo = new FileInfo(physicalPath);
+            if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new ArgumentException("Invalid File Path");
             }
         }
     }

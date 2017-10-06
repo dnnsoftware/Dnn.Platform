@@ -23,6 +23,7 @@ export class PersonaBarPageTreeMenu extends Component {
     render_tree(childListItems) {
         return (
             <PersonaBarPageTreeMenu
+                CallCustomAction={this.props.CallCustomAction}
                 onAddPage={this.props.onAddPage}
                 onViewPage={this.props.onViewPage}
                 onViewEditPage={this.props.onViewEditPage}
@@ -61,6 +62,7 @@ export class PersonaBarPageTreeMenu extends Component {
                         style={{ height: "28px" }}>
                         <div className="draft-pencil">
                             <PersonaBarSelectionArrow
+                                CallCustomAction={this.props.CallCustomAction}
                                 onAddPage={this.props.onAddPage}
                                 onViewPage={this.props.onViewPage}
                                 onViewEditPage={this.props.onViewEditPage}
@@ -88,6 +90,7 @@ export class PersonaBarPageTreeMenu extends Component {
 }
 
 PersonaBarPageTreeMenu.propTypes = {
+    CallCustomAction: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,
     onViewPage: PropTypes.func.isRequired,
     onViewEditPage: PropTypes.func.isRequired,

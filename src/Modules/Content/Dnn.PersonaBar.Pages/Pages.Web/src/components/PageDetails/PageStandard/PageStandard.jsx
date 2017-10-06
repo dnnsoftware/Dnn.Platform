@@ -35,8 +35,10 @@ class PageDetails extends Component {
 
     onSelect(parentPageId, parentPageName) {
         const { page } = this.props;
-        this.props.onSelectParentPageId(parentPageId, parentPageName);
-        this.onChangeParentId(parentPageId);
+        if (page.parentId !== parseInt(parentPageId)) {
+            this.props.onSelectParentPageId(parentPageId, parentPageName);
+            this.onChangeParentId(parentPageId);
+        }
     }
 
 
@@ -122,8 +124,7 @@ class PageDetails extends Component {
                                 PortalTabsParameters={TabParameters_1}
                                 style={{ width: "100%", zIndex: 5 }}
                                 OnSelect={this.onSelect.bind(this)}
-                                serviceFramework={sf} 
-                                ResetSelected={true} />
+                                serviceFramework={sf} />
                         </InputGroup>
                     </GridCell>
                 </GridSystem>

@@ -21,6 +21,7 @@ import Promise from "promise";
 import GridCell from "dnn-grid-cell";
 import "./styles.less";
 import _ from "lodash";
+import Localization from "localization";
 
 
 export class PersonaBarPageTreeviewInteractor extends Component {
@@ -29,7 +30,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         super();
         this.state = {
             rootLoaded: false,
-            isTreeviewExpanded: true,
+            isTreeviewExpanded: false,
             initialCollapse: true,
             debounceAmount: 50,
             dragDebounce: false,
@@ -56,7 +57,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             pageList: pageList,
             rootLoaded: true
         });
-
         if (activePage) {
             this.props._traverse((item, list, updateStore) => {
                 item.selected = false;
@@ -66,6 +66,15 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         pageList: list
                     });
                 }
+            });
+        }
+        else
+        {
+            this.props._traverse((item, list, updateStore) => {
+                item.selected = false;
+                this.setState({
+                    pageList: list
+                });
             });
         }
 
@@ -198,7 +207,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onDragStart(e, item) {
-        //this._fadeOutTooltips();
 
         const userAgent = window.navigator.userAgent;
         let type = "text/plain";
@@ -207,11 +215,14 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             type = 'Text';
         }
 
+
         e.dataTransfer.setData ? e.dataTransfer.setData(type, 'node') : null;
+
         const left = () => {
             const img = new Image();
-            if (e.dataTransfer.setDragImage)
+            if (e.dataTransfer.setDragImage && !userAgent.indexOf("AppleWebkit")){
                 e.dataTransfer.setDragImage(img, 0, 0);
+            }
 
             this.createClonedElement(e, item);
 
@@ -341,7 +352,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         };
 
         const right = () => null;
-        (item.id !== this.state.draggedItem.id) ? left() : right();
+        (item.id !== this.state.draggedItem.id && item.id != this.state.draggedItem.parentId) ? left() : right();
     }
 
 
@@ -631,7 +642,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.setState({ pageX: e.pageX, pageY: e.pageY })} >
+            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.setState({ pageX: e.pageX, pageY: e.pageY })} style={{ paddingBottom: "10px" }}>
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={this.state.draggedItem}
@@ -662,6 +673,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             <span className="dnn-persona-bar-treeview-ul" >
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeMenu
+                        CallCustomAction={this.props.CallCustomAction}
                         onAddPage={this.props.onAddPage}
                         onViewPage={this.props.onViewPage}
                         onViewEditPage={this.props.onViewEditPage}
@@ -689,7 +701,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             <div
                 onClick={this.toggleExpandAll.bind(this)}
                 className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
-                [{this.state.isTreeviewExpanded ? "COLLAPSE ALL" : "EXPAND ALL"}]
+                [{this.state.isTreeviewExpanded ? Localization.get("lblCollapseAll").toUpperCase() : Localization.get("lblExpandAll").toUpperCase()}]
             </div>
         );
     }
@@ -714,7 +726,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     style={{ marginLeft: "-2px" }} >
                     <Scrollbars
                         className="scrollArea content-horizontal"
-                        autoHeight autoHide={false} autoHeightMin={100}
+                        autoHeight autoHide={true} autoHeightMin={100}
                         autoHeightMax={9999}
                         renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
                         {this.render_treeview()}
@@ -747,6 +759,7 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     onViewPage: PropTypes.func.isRequired,
     onViewEditPage: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
+    CallCustomAction: PropTypes.func.isRequired,
     setActivePage: PropTypes.func.isRequired,
     saveDropState: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,

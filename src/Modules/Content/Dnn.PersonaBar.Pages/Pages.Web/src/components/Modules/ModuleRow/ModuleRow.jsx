@@ -7,6 +7,17 @@ import styles from "./style.less";
 import Localization from "../../../localization";
 
 class ModuleRow extends Component {
+    getCopyOptions(isPortable) {
+        let options = [
+            { label: Localization.get("ModuleCopyType.New"), value: "0" },
+            { label: Localization.get("ModuleCopyType.Reference"), value: "2" }
+        ];
+        if (isPortable) {
+            options.splice(1, 0, { label: Localization.get("ModuleCopyType.Copy"), value: "1" });
+        }
+        return options;
+    }
+
     render() {
         const { module, onDelete, onEditing, isEditingModule, showCopySettings, onCopyChange } = this.props;
         const editClassName = "extension-action" + (isEditingModule ? " selected" : "");
@@ -36,11 +47,8 @@ class ModuleRow extends Component {
                         <RadioButtons
                             id={module.id}
                             onChange={onCopyChange.bind(this, module.id, "copyType")}
-                            options={[{ label: Localization.get("ModuleCopyType.New"), value: "0" },
-                            { label: Localization.get("ModuleCopyType.Copy"), value: "1" },
-                            { label: Localization.get("ModuleCopyType.Reference"), value: "2" }
-                            ]}
-                            value={module.copyType !== null ? module.copyType.toString() : "1"} />
+                            options={this.getCopyOptions(module.isPortable)}
+                            value={module.copyType !== null ? module.copyType.toString() : (module.isPortable ? "1" : "0")} />
                     </GridCell>
                 }
             </div>

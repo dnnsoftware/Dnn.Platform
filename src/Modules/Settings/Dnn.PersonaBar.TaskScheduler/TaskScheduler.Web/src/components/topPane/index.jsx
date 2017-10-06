@@ -5,6 +5,7 @@ import {
 } from "../../actions";
 import styles from "./style.less";
 import Button from "dnn-button";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import ModePanel from "./modePanel";
 import util from "../../utils";
 import resx from "../../resources";
@@ -59,10 +60,10 @@ class TopPane extends Component {
 
     getButtonDisplay() {
         if (this.isStopped() || this.props.schedulerMode === "2") {
-            return resx.get("StartSchedule");
+            return <TextOverflowWrapper text={resx.get("StartSchedule") } maxWidth={100}/>;
         }
         else {
-            return resx.get("StopSchedule");
+            return <TextOverflowWrapper text={resx.get("StopSchedule") } maxWidth={100}/>;
         }
     }
 

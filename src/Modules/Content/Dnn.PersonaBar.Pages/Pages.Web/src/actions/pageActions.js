@@ -39,7 +39,8 @@ const loadPage = function (dispatch, pageId, callback) {
                         tabId: utils.getCurrentPageId(),
                         name: utils.getCurrentPageName()
                     }
-                }
+                },
+                selectedPageSettingTab: 0
             });
             resolve();
             return;
@@ -50,7 +51,8 @@ const loadPage = function (dispatch, pageId, callback) {
                 type: ActionTypes.LOADED_PAGE,
                 data: {
                     page: response
-                }
+                },
+                selectedPageSettingTab: 0
             });
             if (callback) {
                 callback(response);
@@ -96,8 +98,13 @@ const pageActions = {
         });
     },
 
-    getWorkflowsList(){
-        return (dispatch) => PagesService.getWorkflowsList();
+    getWorkflowsList() {
+        return (dispatch) => PagesService.getWorkflowsList().then(workflowList => {
+            dispatch({
+                type: ActionTypes.GET_WORKFLOW_LIST,
+                data: {workflowList}
+            });
+        });
     },
 
     getPage(id) {
@@ -161,7 +168,8 @@ const pageActions = {
                     type: ActionTypes.LOADED_PAGE,
                     data: {
                         page: duplicatedPage
-                    }
+                    },
+                    selectedPageSettingTab: 0
                 });
             };
             if (reloadTemplate) {
@@ -180,7 +188,8 @@ const pageActions = {
         return (dispatch) => PagesService.getNewPage(parentPage).then((page) => {
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
-                data: { page }
+                data: { page },
+                selectedPageSettingTab: 0
             });
         });
     },
@@ -199,7 +208,7 @@ const pageActions = {
         };
     },
 
-    deletePage(page) {
+    deletePage(page, redirectUrl) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.DELETE_PAGE
@@ -215,8 +224,8 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.DELETED_PAGE
                 });
-                if (page.tabId !== 0 && page.tabId === utils.getCurrentPageId()) {
-                    window.top.location.href = utils.getDefaultPageUrl();
+                if (page.tabId !== 0 && (page.tabId === utils.getCurrentPageId()) || redirectUrl) {
+                    window.top.location.href = redirectUrl ? redirectUrl : utils.getDefaultPageUrl();
                 }
 
             }).catch((error) => {

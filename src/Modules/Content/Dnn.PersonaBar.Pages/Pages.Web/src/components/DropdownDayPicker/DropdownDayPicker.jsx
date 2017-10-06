@@ -39,7 +39,7 @@ class DropdownDayPicker extends Component  {
             <div className="date-picker">
                 <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
                     <GridCell className="selected-date" columnSize={90}>
-                        <p>Filter by Published Date Range</p>
+                        <p>{this.props.label}</p>
                     </GridCell>
                     <GridCell columnSize={10}>
                         <div    id="calendar-icon"
@@ -86,6 +86,7 @@ DropdownDayPicker.propTypes = {
     startDate: PropTypes.instanceOf(Date).isRequired,
     endDate: PropTypes.instanceOf(Date).isRequired,
     CalendarIcon: PropTypes.node.isRequired,
-    toggleDropdownCalendar: PropTypes.func.isRequired
+    toggleDropdownCalendar: PropTypes.func.isRequired,
+    label: PropTypes.string.isRequired
 };
 

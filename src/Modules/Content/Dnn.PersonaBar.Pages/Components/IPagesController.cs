@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         IEnumerable<ModuleInfo> GetModules(int pageId);
 
-        PageSettings GetDefaultSettings();
+        PageSettings GetDefaultSettings(int pageId = 0);
 
         void DeleteTabModule(int pageId, int moduleId);
 

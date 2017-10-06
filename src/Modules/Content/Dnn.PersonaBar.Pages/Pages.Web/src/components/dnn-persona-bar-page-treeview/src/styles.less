@@ -10,11 +10,12 @@
         .treeview-parent-expand-button, .treeview-parent-collapse-button {
             height: 28px;
             margin-top: -2px;
+            cursor: pointer;
         }
     }
     .dnn-persona-bar-treeview-ul {
         margin-left: 0px;
-        padding: 10px 0;
+        padding: 0 0;
 
         li::before, li::after {
             display: none;
@@ -55,11 +56,12 @@
         font-size: 12px;
         font-weight: bold;
         color: @curiousBlue;
-        padding-bottom: 20px;
-        padding-left: 20px;
+        margin: 0 0 20px 20px;
+        cursor: pointer;
     }
     .initial {
         color: @alto;
+        cursor: default;
     }
     .item-name {
         position: relative;
@@ -115,27 +117,38 @@
         font-size: 18px;
         font-weight: bold;
         color: @curiousBlue;
-        div {
+        >div {
             float: right;
             height: 20px;
             width: 20px;
             display: inherit;
+            svg {
+                fill: @curiousBlue;                
+            }
+            svg:hover {
+                fill: @curiousBlue !important;
+            }
         }
         .dots {
             margin-right: 10px;
+            cursor: pointer;
             svg {
+                width: 20px;                
+                circle {
+                    fill: @alto;
+                }
+            }
+            svg:hover {
                 circle {
                     fill: @curiousBlue;
                 }
             }
-        }
-        svg {
-            width: 20px;
-            fill: @curiousBlue;
-        }
-        svg:hover {
-            fill: @curiousBlue;
-        }
+            &.active {
+                circle {
+                    fill: @curiousBlue;
+                }
+            }
+        }        
     }
     .draft-pencil {
         margin-left: 3px;
@@ -186,7 +199,7 @@
             top: -10px;
         }
     }
-    padding-bottom: 10px;
+
     float: left;
 }
 
@@ -197,7 +210,7 @@
     }
     ul {
         margin-left: 20px;
-        padding: 10px 0;
+        padding: 0 0;
     }
     ul:first-child {
         margin-left: 0px;
@@ -216,6 +229,7 @@
         height: 28px;
         z-index: 9998;
         background-color: transparent;
+
     }
     .dropZoneActive {
         margin: 0;
@@ -234,14 +248,17 @@
         cursor: auto;
         height: 2px;
         width: 100%;
+        padding: 5px 0;
         text-align: center;
         background-color: transparent;
     }
     .list-item-border-bottom {
-        background-color: @curiousBlue;
+        margin-left: 10px;
+        border-top: 1px solid @curiousBlue;
     }
     .list-item-border-top {
-        background-color: @curiousBlue;
+        margin-left: 10px;
+        border-bottom: 1px solid @curiousBlue;
     }
 }
 

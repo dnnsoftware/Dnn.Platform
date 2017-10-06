@@ -156,7 +156,7 @@ export class PersonaBarPageTreeview extends Component {
                 e.target.classList.remove("list-item-dragover");
             };
             index++;
-            const style = item.canManagePage ? { height: "28px", marginLeft:"15px" } : { height: "28px", marginLeft:"15px", cursor: "not-allowed" };
+            const style = item.canManagePage ? { height: "28px", marginLeft:"15px", cursor: "pointer" } : { height: "28px", marginLeft:"15px", cursor: "not-allowed" };
 
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
@@ -199,9 +199,9 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render() {
-
+        const {listItems} = this.props;
         return (
-            <ul>
+            <ul style={!listItems.length ? {padding:"0px", height:"0px"} : null}>
                 {this.render_li()}
             </ul>
         );
