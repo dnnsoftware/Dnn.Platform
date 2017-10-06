@@ -55,8 +55,6 @@ export class PersonaBarPageTreeMenu extends Component {
         const { listItems, _traverse } = this.props;
 
         return listItems.map((item) => {
-            item.selected ? console.log(item) : console.log('hmm');
-            
             return (
                 <li className="list-item-menu">
                     <div
