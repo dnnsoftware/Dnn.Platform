@@ -128,13 +128,24 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    onSelection(id) {
+    onSelection({id}) {
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id && item.canManagePage) ? item.selected = true : item.selected = false;
             item.selected ? this.props.onSelection(id) : null;
             delete item.showInContextMenu;
             updateStore(listItem);
         });
+    }
+
+    onNoPermissionSelection({id}){
+        let updateTheStore = null;
+        this.props._traverse((item, list, updateStore) => {
+            delete item.showInContextMenu;
+            (item.id === id ) ? item.selected=true : item.selected = false;
+            updateStore(list);
+        });
+
+        this.props.setEmptyPageMessage(Localization.get("NoPermissionEditPage"));
     }
 
     onDuplicatePage(listItem) {
@@ -648,10 +659,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         draggedItem={this.state.draggedItem}
                         droppedItem={this.state.droppedItem}
                         dragOverItem={this.state.dragOverItem}
-                        listItems={this.state.pageList}
+                        listItems={this.props.pageList}
                         setEmptyPageMessage={this.props.setEmptyPageMessage}
                         getChildListItems={this.getChildListItems.bind(this)}
                         onSelection={this.onSelection.bind(this)}
+                        onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
                         onDragEnter={this.onDragEnter.bind(this)}
                         onDrag={this.onDrag.bind(this)}
                         onDragStart={this.onDragStart.bind(this)}
@@ -678,7 +690,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onViewPage={this.props.onViewPage}
                         onViewEditPage={this.props.onViewEditPage}
                         onDuplicatePage={this.onDuplicatePage.bind(this)}
-                        listItems={this.state.pageList}
+                        listItems={this.props.pageList}
                         _traverse={this.props._traverse.bind(this)}
                         pageInContextComponents={this.props.pageInContextComponents}
                     /> : null}
@@ -691,7 +703,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return (
             <span
                 className="dnn-persona-bar-treeview-ul" >
-                {this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.state.pageList} getChildListItems={this.getChildListItems.bind(this)} /> : null}
+                {this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.props.pageList} getChildListItems={this.getChildListItems.bind(this)} /> : null}
             </span>
         );
     }
@@ -748,6 +760,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 PersonaBarPageTreeviewInteractor.propTypes = {
     _traverse: PropTypes.func.isRequired,
+    clearSelectedPage: PropTypes.func.isRequired,
+    pageList: PropTypes.array.isRequired,
     showCancelDialog: PropTypes.func.showCancelDialog,
     setEmptyPageMessage: PropTypes.func.setEmptyPageMessage,
     selectedPageDirty: PropTypes.bool.isRequired,
