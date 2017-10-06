@@ -61,7 +61,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             return fallback;
         }
 
-        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static string GetIPAddress(HttpRequestBase request)
         {
             return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
