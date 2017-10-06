@@ -35,8 +35,10 @@ class PageDetails extends Component {
 
     onSelect(parentPageId, parentPageName) {
         const { page } = this.props;
-        this.props.onSelectParentPageId(parentPageId, parentPageName);
-        this.onChangeParentId(parentPageId);
+        if (page.parentId !== parseInt(parentPageId)) {
+            this.props.onSelectParentPageId(parentPageId, parentPageName);
+            this.onChangeParentId(parentPageId);
+        }
     }
 
 

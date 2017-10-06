@@ -1157,13 +1157,16 @@ class App extends Component {
 
          /* eslint-disable react/no-danger */
         return (
+
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
-                             <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
-                            <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onBreadcrumbSelect.bind(this)} />
+                            { 
+                                selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
+                            }                            
+                            <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
                          { toggleSearchMoreFlyout ?  this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{padding:"20px"}}>
