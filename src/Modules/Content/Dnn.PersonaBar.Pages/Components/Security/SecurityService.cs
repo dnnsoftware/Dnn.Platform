@@ -25,13 +25,13 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         {
             get
             {
-                var controller = ComponentFactory.GetComponent<ISecurityService>("SecurityService");
+                var controller = ComponentFactory.GetComponent<ISecurityService>("PagesSecurityService");
                 if (controller == null)
                 {
-                    ComponentFactory.RegisterComponent<ISecurityService, SecurityService>("SecurityService");
+                    ComponentFactory.RegisterComponent<ISecurityService, SecurityService>("PagesSecurityService");
                 }
 
-                return ComponentFactory.GetComponent<ISecurityService>("SecurityService");
+                return ComponentFactory.GetComponent<ISecurityService>("PagesSecurityService");
             }
         }
 
