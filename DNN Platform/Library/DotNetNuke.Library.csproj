@@ -1477,6 +1477,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\UserProfile\UserProfilePicHandler.cs" />
+    <Compile Include="Services\UserRequest\IUserRequestIPAddressController.cs" />
+    <Compile Include="Services\UserRequest\UserRequestIPAddressController.cs" />
     <Compile Include="UI\Containers\ActionBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -38,6 +38,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -224,11 +225,7 @@ namespace DotNetNuke.Modules.Admin.Security
             cmdSendPassword.Click += OnSendPasswordClick;
 			cancelButton.Click += cancelButton_Click;
 
-            if (Request.UserHostAddress != null)
-            {
-                _ipAddress = Request.UserHostAddress;
-            }
-
+            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));            
 
 			divEmail.Visible = ShowEmailField;
 			divUsername.Visible = !UsernameDisabled;
