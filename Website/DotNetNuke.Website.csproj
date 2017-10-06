@@ -2809,7 +2809,6 @@
     <Content Include="js\MicrosoftAjaxWebForms.js" />
     <Content Include="js\PopupCalendar.js" />
     <Content Include="KeepAlive.aspx" />
-    <Content Include="Licenses\51Degrees.mobi %28MPL%29.txt" />
     <Content Include="Licenses\Anthem %28Public Domain%29.txt" />
     <Content Include="Licenses\Brettle NeatUpload %28LGPL%29.txt" />
     <Content Include="Licenses\Client Dependency Framework%28Ms-PL%29.txt" />
