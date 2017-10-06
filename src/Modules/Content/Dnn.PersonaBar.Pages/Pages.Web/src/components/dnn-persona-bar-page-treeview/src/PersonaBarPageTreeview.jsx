@@ -157,7 +157,6 @@ export class PersonaBarPageTreeview extends Component {
                 const right = ()=>{
                     this.props.setEmptyPageMessage(message);
                 };
-
                 item.canManagePage ? left() : right();
             };
 
