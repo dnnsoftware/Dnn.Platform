@@ -41,6 +41,7 @@ using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -217,7 +218,7 @@ namespace DotNetNuke.HttpModules.Membership
                 {
                     //update LastActivityDate and IP Address for user
                     user.Membership.LastActivityDate = DateTime.Now;
-                    user.LastIPAddress = request.UserHostAddress;
+                    user.LastIPAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
                     UserController.UpdateUser(portalSettings.PortalId, user, false, false);
                 }
 
