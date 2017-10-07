@@ -216,6 +216,46 @@
     <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithTargetPathMerge.xml" />
     <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithTargetPathTarget.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithConditionTarget.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithCondition_Install_Merge.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithCondition_Upgrade_Merge.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithCondition_None_Merge.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithCondition_NotUpgrade_Merge.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithCondition_NotInstall_Merge.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithCondition_NotNone_Merge.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ProcessNodeWithCondition_Whatever_Merge.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

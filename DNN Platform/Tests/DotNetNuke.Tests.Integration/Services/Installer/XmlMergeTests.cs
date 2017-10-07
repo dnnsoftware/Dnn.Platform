@@ -23,14 +23,14 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Xml;
-
+using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Tests.Utilities;
 
 using NUnit.Framework;
+using Assembly = System.Reflection.Assembly;
 
 namespace DotNetNuke.Tests.Integration.Services.Installer
 {
@@ -454,7 +454,38 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
         }
 
-// ReSharper restore PossibleNullReferenceException
+        [TestCase("Install", "Install", true)]
+        [TestCase("Install", "Upgrade", false)]
+        [TestCase("Install", "None", false)]
+        [TestCase("Upgrade", "Install", false)]
+        [TestCase("Upgrade", "Upgrade", true)]
+        [TestCase("Upgrade", "None", false)]
+        [TestCase("None", "Install", false)]
+        [TestCase("None", "Upgrade", false)]
+        [TestCase("None", "None", true)]
+        [TestCase("!Install", "Install", false)]
+        [TestCase("!Install", "Upgrade", true)]
+        [TestCase("!Install", "None", true)]
+        [TestCase("!Upgrade", "Install", true)]
+        [TestCase("!Upgrade", "Upgrade", false)]
+        [TestCase("!Upgrade", "None", true)]
+        [TestCase("!None", "Install", true)]
+        [TestCase("!None", "Upgrade", true)]
+        [TestCase("!None", "None", false)]
+        [TestCase("Whatever", "Install", true)]
+        public void ProcessNodeWithCondition(string condition, string status, bool shouldMerge)
+        {
+            Globals.SetStatus((Globals.UpgradeStatus)Enum.Parse(typeof(Globals.UpgradeStatus), status, true));
+
+            var fileName = $"ProcessNodeWithCondition_{condition.Replace("!", "Not")}_";
+            var targetDoc = ExecuteMerge(fileName);
+
+            var node = targetDoc.SelectSingleNode("/configuration/updateme");
+            var expectedChild = shouldMerge ? 1 : 0;
+            Assert.AreEqual(expectedChild, node.ChildNodes.Count);
+        }
+
+        // ReSharper restore PossibleNullReferenceException
     }
 
 	class TestLogSource : ILoggerSource

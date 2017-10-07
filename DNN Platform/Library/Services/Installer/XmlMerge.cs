@@ -30,6 +30,7 @@ using System.Xml;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Upgrade;
 
 #endregion
@@ -45,6 +46,7 @@ namespace DotNetNuke.Services.Installer
     {
         #region Private Properties
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(XmlMerge));
         private IDictionary<string, XmlDocument> _pendingDocuments;
 
         #endregion
@@ -227,13 +229,22 @@ namespace DotNetNuke.Services.Installer
             Debug.Assert(node.Attributes != null, "node.Attributes != null");
 
             XmlNode rootNode = FindMatchingNode(targetRoot, node, "path");
-            
+
+            if (rootNode == null)
+            {
+                return; //not every TargetRoot will contain every target node
+            }
+
             string nodeAction = node.Attributes["action"].Value.ToLowerInvariant();
 
-			if (rootNode == null)
-			{
-			    return; //not every TargetRoot will contain every target node
-			}
+            //IF the execute condition doesn't matched, then ignore process the node.
+            if (node.Attributes["condition"] != null
+                && !string.IsNullOrEmpty(node.Attributes["condition"].Value)
+                && !ConditionMatched(node.Attributes["condition"].Value))
+            {
+                Logger.InfoFormat(" doesn't merged as condition doesn't matched, current status: {1}", node.OuterXml, Globals.Status);
+                return;
+            }
             
             switch (nodeAction)
             {
@@ -556,10 +567,32 @@ namespace DotNetNuke.Services.Installer
 			    commentNodes.ForEach(n => { node.RemoveChild(n); });
 		    }
 	    }
-		
-		#endregion
 
-		#region "Public Methods"
+        private bool ConditionMatched(string condition)
+        {
+            var isNotCondition = false;
+            if (condition.StartsWith("!"))
+            {
+                isNotCondition = true;
+                condition = condition.Substring(1);
+            }
+
+            try
+            {
+                var statusToCheck = (Globals.UpgradeStatus) Enum.Parse(typeof (Globals.UpgradeStatus), condition, true);
+
+                return isNotCondition ? statusToCheck != Globals.Status : statusToCheck == Globals.Status;
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("The Condition \"{0}\" Parse Failed: {1}", condition, ex.Message);
+                return true; //when condition parse failed, we should always merge the node.
+            }
+        }
+
+        #endregion
+
+        #region "Public Methods"
 
 
         /// -----------------------------------------------------------------------------
