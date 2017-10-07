@@ -35,6 +35,7 @@ export class PersonaBarPageTreeview extends Component {
             dragOverItem,
             getChildListItems,
             onSelection,
+            onNoPermissionSelection,
             onDrop,
             onDrag,
             onDragStart,
@@ -55,6 +56,7 @@ export class PersonaBarPageTreeview extends Component {
                 getChildListItems={getChildListItems}
                 listItems={childListItems}
                 onSelection={onSelection}
+                onNoPermissionSelection={onNoPermissionSelection}
                 onDrop={onDrop}
                 onDrag={onDrag}
                 onDragStart={onDragStart}
@@ -121,6 +123,7 @@ export class PersonaBarPageTreeview extends Component {
             listItems,
             getChildListItems,
             onSelection,
+            onNoPermissionSelection,
             onDrop,
             onDrag,
             onDragStart,
@@ -148,7 +151,13 @@ export class PersonaBarPageTreeview extends Component {
             const shouldShowTooltip = /\.\.\./.test(name);
             const canManagePage = (e, item, fn) => {
                 const message = Localization.get("NoPermissionManagePage");
-                item.canAdminPage ? fn(e, item) : this.props.setEmptyPageMessage(message);
+                const left = ()=>{
+                    e? fn(e, item): fn(item);
+                };
+                const right = ()=>{
+                    this.props.setEmptyPageMessage(message);
+                };
+                item.canManagePage ? left() : right();
             };
 
             let activate = false;
@@ -156,7 +165,8 @@ export class PersonaBarPageTreeview extends Component {
                 e.target.classList.remove("list-item-dragover");
             };
             index++;
-            const style = item.canManagePage ? { height: "28px", marginLeft:"15px", cursor: "pointer" } : { height: "28px", marginLeft:"15px", cursor: "not-allowed" };
+
+            const style = item.canManagePage ? { height: "28px", marginLeft:"15px" } : { height: "28px", marginLeft:"15px" };
 
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
@@ -174,7 +184,7 @@ export class PersonaBarPageTreeview extends Component {
                             onDragStart={(e) => { canManagePage(e, item, onDragStart); }}
                             onDragLeave={(e) => canManagePage(e, item, onDragLeave) }
                             onDragEnd={(e) => { canManagePage(e, item, onDragEnd); }}
-                            onClick={() => { item.canManagePage ? onSelection(item.id) : null; }}
+                            onClick={(e) => { item.canManagePage ? onSelection(item) : onNoPermissionSelection(item);  }}
                             >
                             </div>
 
@@ -224,6 +234,7 @@ PersonaBarPageTreeview.propTypes = {
     listItems: PropTypes.array.isRequired,
     getChildListItems: PropTypes.func.isRequired,
     onSelection: PropTypes.func.isRequired,
+    onNoPermissionSelection: PropTypes.func.isRequired,
     icons: PropTypes.object.isRequired,
     onSelect: PropTypes.func.isRequired,
     setEmptyPageMessage: PropTypes.func.isRequired,
