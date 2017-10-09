@@ -7,6 +7,8 @@ import scroll from "scroll";
 import debounce from "lodash/debounce";
 import "./style.less";
 
+const DNN_DROPDOWN_MINHEIGHT = 100;
+
 class Dropdown extends Component {
     constructor() {
         super();
@@ -22,18 +24,13 @@ class Dropdown extends Component {
         this.debouncedSearch = debounce(this.searchItems, 500);
     }
 
-    toggleDropdown(avoidFocusOnOpen) {
+    toggleDropdown() {
         const {props} = this;
         if (props.enabled) {
 
             //This triggers re-render, showing scrollbar on open.
             if (!this.state.dropDownOpen) {
-                setTimeout(() => {
-                    this.setState({});
-                    if (!avoidFocusOnOpen) {
-                        ReactDOM.findDOMNode(this.refs.dropdownSearch).focus();
-                    }
-                }, 250);
+                this.dropdownSearch.focus();
             } else {
                 this.setState({
                     closestValue: null
@@ -51,20 +48,18 @@ class Dropdown extends Component {
         }
     }
 
-    getDropdownHeight(length, size) {
+    // SCM-1115
+    getDropdownHeight() {
         const {props} = this;
-        if (props.fixedHeight) {
-            return props.fixedHeight;
-        }
-        let itemHeight = (size === "large" ? 38 : 28) * length;
-
-        return itemHeight < 140 ? itemHeight + 20 : 160;
+        const maxHeight = props.fixedHeight ? props.fixedHeight : DNN_DROPDOWN_MINHEIGHT;
+        console.log(`dropDownListElement: ${this.dropDownListElement}`);
+        return this.dropDownListElement ? Math.min(this.dropDownListElement.offsetHeight, maxHeight) + 20 : 0;
     }
 
     componentWillMount() {
         const {props} = this;
         if (props.options && props.options.length > 0) {
-            let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
+            let fixedHeight = DNN_DROPDOWN_MINHEIGHT; //this.getDropdownHeight();
             this.setState({
                 fixedHeight
             });
@@ -73,7 +68,7 @@ class Dropdown extends Component {
 
     componentWillReceiveProps(props) {
         if (props.options && props.options.length > 0) {
-            let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
+            let fixedHeight = DNN_DROPDOWN_MINHEIGHT; //this.getDropdownHeight();
             this.setState({
                 fixedHeight
             });
@@ -89,12 +84,19 @@ class Dropdown extends Component {
         if (props.closeOnClick) {
             document.addEventListener("mousedown", this.handleClick);
         }
+        this.updateScrollbar();
         this._isMounted = true;
     }
 
     componentWillUnmount() {
         document.removeEventListener("mousedown", this.handleClick);
         this._isMounted = false;
+    }
+
+    updateScrollbar() {
+        if (this.scrollBar) {
+            console.log(this.scrollBar);
+        }
     }
 
     handleClick(event) {
@@ -132,6 +134,13 @@ class Dropdown extends Component {
         }
     }
 
+    /**
+     * We have two types of Dropdown: small and large.
+     * More informations about it here: https://dnntracker.atlassian.net/wiki/spaces/DP/pages/45940759/EVOQ+-+COLOR+AND+STYLE+GUIDE#EVOQ-COLORANDSTYLEGUIDE-SMALLDROPDOWN
+     * PS: "small" is passed as a prop and used as a CSS class name.
+     *
+     * @returns {string}
+     */
     getClassName() {
         const {props, state} = this;
         let className = "dnn-dropdown";
@@ -214,10 +223,11 @@ class Dropdown extends Component {
         });
 
         if (closestValue !== null) {
-            const optionValue = ReactDOM.findDOMNode(this.refs[this.uniqueId + "option-" + itemIndex]);
+            // SCM-1115
+            const optionValue = this.getOption(itemIndex);
             if (optionValue) {
                 const bottom = optionValue.offsetTop - 165;
-                scroll.top(ReactDOM.findDOMNode(this.refs.dropdownScrollContainer).childNodes[0], bottom);
+                scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], bottom);
             }
         }
     }
@@ -234,21 +244,44 @@ class Dropdown extends Component {
         if (event.key === "Enter") {
             if (this.state.closestValue && this.state.closestValue.value !== null) {
                 this.onSelect(this.state.closestValue);
-                ReactDOM.findDOMNode(this.refs.dropdownSearch).blur();
+                this.dropdownSearch.blur();
             } else {
                 this.onSelect(this.state.selectedOption);
             }
         }
     }
 
+    // SCM-1115
+    initOptions(option, index) {
+        const {props, state} = this;
+        this.optionItems = [];
+        const options = props.options && props.options.map((option, index) => {
+            return <li onClick={this.onSelect.bind(this, option)} key={index}
+                       ref={this.addOptionRef.bind(this)}
+                       className={((option.value === props.value && state.closestValue === null) || option.value === (state.closestValue && state.closestValue.value)) ? "dnn-dropdown-option selected" : "dnn-dropdown-optionf"}>{option.label}</li>;
+        });
+        return options;
+    }
+
+    // SCM-1115
+    addOptionRef(option) {
+        //console.log(`OPTION REF: ${option}`);
+        if (option) {
+            this.optionItems = this.optionItems ? this.optionItems : [];
+            this.optionItems.push(option);
+        }
+    }
+
+    // SCM-1115
+    getOption(index) {
+        const options = this.optionItems;
+        return options && options[index] !== undefined ? options[index] : null;
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const options = props.options && props.options.map((option, index) => {
-            return <li onClick={this.onSelect.bind(this, option)} key={this.uniqueId + "option-" + index}
-                       ref={this.uniqueId + "option-" + index}
-                       className={((option.value === props.value && state.closestValue === null) || option.value === (state.closestValue && state.closestValue.value)) ? "selected" : ""}>{option.label}</li>;
-        });
+        const options = this.initOptions();
         return (
             <div className={this.getClassName()} style={props.style}>
                 <div className={"collapsible-label" + this.getIsMultiLineLabel()}
@@ -258,7 +291,7 @@ class Dropdown extends Component {
                 <input
                     type="text"
                     onChange={this.onDropdownSearch.bind(this)}
-                    ref="dropdownSearch"
+                    ref={(input) => this.dropdownSearch = input}
                     value={this.state.dropdownText}
                     onKeyDown={this.onKeyDown.bind(this)}
                     style={{
@@ -276,20 +309,22 @@ class Dropdown extends Component {
                                         onClick={this.toggleDropdown.bind(this)}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
-                        fixedHeight={state.fixedHeight}
                         keepCollapsedContent={true}
                         isOpened={state.dropDownOpen}>
-                        <Scrollbars
-                            autoHide={this.props.autoHide}
-                            style={props.scrollAreaStyle}
-                            ref="dropdownScrollContainer"
-                            onUpdate={this.props.onScrollUpdate}>
-                            <div>
-                                <ul>
+                        <div>
+                            <Scrollbars
+                                ref={(scrollbar) => this.scrollBar = scrollbar}
+                                autoHide={this.props.autoHide}
+                                autoHeight={true}
+                                autoHeightMin={DNN_DROPDOWN_MINHEIGHT}
+                                style={props.scrollAreaStyle}
+                                onUpdate={this.props.onScrollUpdate}
+                                renderTrackHorizontal={props => <div /> }>
+                                <ul className="dnn-dropdown-options" ref={(ul) => this.dropDownListElement = ul}>
                                     {options}
                                 </ul>
-                            </div>
-                        </Scrollbars>
+                            </Scrollbars>
+                        </div>
                     </Collapse>
                 </div>
             </div>
@@ -318,7 +353,9 @@ Dropdown.propTypes = {
     labelIsMultiLine: PropTypes.bool,
     title: PropTypes.string,
     onScrollUpdate: PropTypes.func,
-    isDropDownOpen: PropTypes.bool
+    isDropDownOpen: PropTypes.bool,
+    selectedIndex: PropTypes.number,
+    onArrowKey: PropTypes.func
 };
 
 Dropdown.defaultProps = {
@@ -328,9 +365,10 @@ Dropdown.defaultProps = {
     size: "small",
     closeOnClick: true,
     enabled: true,
-    autoHide: false,
+    autoHide: true,
     className: "",
-    isDropDownOpen: false
+    isDropDownOpen: false,
+    selectedIndex: -1
 };
 
 export default Dropdown;

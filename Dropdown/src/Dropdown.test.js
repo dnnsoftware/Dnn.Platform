@@ -106,4 +106,26 @@ describe("Dnn Dropdown component", () => {
         expect(json).toMatchSnapshot();
     });
 
+    it("Calculates correct Dropdown height", () => {
+        const props = {
+            options,
+            value: "second",
+            label: "My new label",
+            prependWith: "Prepend text:",
+            withIcon: false,
+            isDropDownOpen:true,
+            fixedHeight:600
+        };
+        const deepRendering = mount(<Dropdown onSelect={f => f} {...props}/>);
+        let collapsibleLabel = deepRendering.find(".collapsible-label").first();
+        collapsibleLabel.simulate("click");
+
+        const container = deepRendering.find("div.collapsible-content").children().first();
+
+        //expect(container.getDOMNode().style.height).toBe("600px");
+        const json = toJson(deepRendering);
+        expect(json).toMatchSnapshot();
+
+    });
+
 });
