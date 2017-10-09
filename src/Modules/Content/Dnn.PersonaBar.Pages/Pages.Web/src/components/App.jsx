@@ -1200,6 +1200,7 @@ class App extends Component {
                                 <div className={(selectedPage && selectedPage.tabId === 0 || inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
+                                            clearSelectedPage={this.props.clearSelectedPage}
                                             Localization={Localization}
                                             pageList={this.props.pageList}
                                             getChildPageList={this.props.getChildPageList}
