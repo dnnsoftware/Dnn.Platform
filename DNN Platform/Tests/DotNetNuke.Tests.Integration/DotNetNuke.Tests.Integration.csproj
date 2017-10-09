@@ -84,6 +84,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NTestDataBuilder">
+      <HintPath>..\..\..\Packages\NTestDataBuilder.1.0.2\lib\NET40\NTestDataBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -114,6 +117,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Executers\Builders\PageSettingsBuilder.cs" />
+    <Compile Include="Executers\Builders\TabPermissionsBuilder.cs" />
+    <Compile Include="Executers\Dto\CopyModuleItem.cs" />
+    <Compile Include="Executers\Dto\PageSettings.cs" />
+    <Compile Include="Executers\Dto\Permission.cs" />
+    <Compile Include="Executers\Dto\RolePermission.cs" />
+    <Compile Include="Executers\Dto\TabPermissions.cs" />
+    <Compile Include="Executers\Dto\UserPermission.cs" />
+    <Compile Include="Executers\PagesExecuter.cs" />
+    <Compile Include="Executers\WebApiExecuter.cs" />
+    <Compile Include="Modules\DDRMenu\DDRMenuTests.cs" />
     <Compile Include="Tests\DotNetNukeWeb\DotNetNukeWebTests.cs" />
     <Compile Include="Tests\Jwt\JwtAuthTest.cs" />
     <Compile Include="Data\FluentMapperTests.cs" />
@@ -179,7 +193,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
