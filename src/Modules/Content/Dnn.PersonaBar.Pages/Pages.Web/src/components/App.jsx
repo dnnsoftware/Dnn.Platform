@@ -35,7 +35,7 @@ import Promise from "promise";
 import { PagesSearchIcon, PagesVerticalMore, CalendarIcon } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
 import DayPicker from "./DayPicker/src/DayPicker";
-import {XIcon} from "dnn-svg-icons";
+import { XIcon } from "dnn-svg-icons";
 
 import "./style.less";
 
@@ -67,8 +67,8 @@ class App extends Component {
             busy: false,
             headerDropdownSelection: "Save Page Template",
 
-            toggleSearchMoreFlyout:false,
-            DropdownCalendarIsActive:null,
+            toggleSearchMoreFlyout: false,
+            DropdownCalendarIsActive: null,
 
             inSearch: false,
             searchTerm: false,
@@ -76,7 +76,7 @@ class App extends Component {
             startDate: date,
             endDate: date,
             defaultDate: date,
-            startAndEndDateDirty:false,
+            startAndEndDateDirty: false,
 
             filterByPageType: null,
             filterByPublishStatus: null,
@@ -84,9 +84,9 @@ class App extends Component {
 
             workflowList: [],
 
-            tags:"",
-            filters:[],
-            searchFields:{}
+            tags: "",
+            filters: [],
+            searchFields: {}
         };
     }
 
@@ -151,8 +151,10 @@ class App extends Component {
     }
 
     componentWillMount() {
-        this.props.getContentLocalizationEnabled();
-
+        let { selectedPage } = this.props;
+        if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage)) {
+            this.props.getContentLocalizationEnabled();
+        }
     }
 
     componentWillUnmount() {
@@ -178,7 +180,8 @@ class App extends Component {
     }
 
     onCreatePage(input) {
-        this.props.onCreatePage(input);
+        let self = this;
+        this.props.onCreatePage(() => { self.setEmptyStateMessage(); });
     }
 
     onUpdatePage(input) {
@@ -278,39 +281,39 @@ class App extends Component {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
-    onSearchClick(){
-        const {searchFields, searchTerm} = this.state;
-        const search = Object.keys(searchFields).length ? searchFields : {searchKey:searchTerm};
+    onSearchClick() {
+        const { searchFields, searchTerm } = this.state;
+        const search = Object.keys(searchFields).length ? searchFields : { searchKey: searchTerm };
         this.props.searchAndFilterPageList(search);
     }
 
-    onSearchWhileTyping(searchKey){
-        const searchFields = Object.keys(this.state.searchFields).length ? this.state.searchFields : {searchKey};
+    onSearchWhileTyping(searchKey) {
+        const searchFields = Object.keys(this.state.searchFields).length ? this.state.searchFields : { searchKey };
         this.props.searchAndFilterPageList(searchFields);
     }
 
-    onSearchFocus(){
+    onSearchFocus() {
 
     }
 
-    onSearchFieldChange(e){
-        this.setState({searchTerm:e.target.value}, ()=>{
-            const {searchTerm} = this.state;
-            switch(true){
+    onSearchFieldChange(e) {
+        this.setState({ searchTerm: e.target.value }, () => {
+            const { searchTerm } = this.state;
+            switch (true) {
                 case searchTerm.length > 3:
                     this.onSearchWhileTyping(searchTerm);
-                    this.setState({inSearch:true});
-                return;
+                    this.setState({ inSearch: true });
+                    return;
                 case searchTerm.length === 0:
-                    this.setState({inSearch:false});
-                return;
+                    this.setState({ inSearch: false });
+                    return;
             }
         });
     }
 
-    onSearchBlur(){
-        const {searchTerm} = this.state;
-        searchTerm ? this.setState({inSearch:true}) : this.setState({inSearch:false});
+    onSearchBlur() {
+        const { searchTerm } = this.state;
+        searchTerm ? this.setState({ inSearch: true }) : this.setState({ inSearch: false });
     }
 
     onAddPage(parentPage) {
@@ -368,7 +371,7 @@ class App extends Component {
         const { selectedPage } = props;
 
         const left = () => {
-            return () => {                
+            return () => {
                 this._traverse((item, list, updateStore) => {
                     if (item.id === props.selectedPage.parentId) {
                         let itemIndex = null;
@@ -426,7 +429,7 @@ class App extends Component {
 
     showCancelWithoutSavingDialog() {
         const { props } = this;
-        const onConfirm = () => {            
+        const onConfirm = () => {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
                 this.props.onCancelPage(props.selectedPage.templateTabId);
             }
@@ -445,7 +448,7 @@ class App extends Component {
 
 
     showCancelWithoutSavingDialogInEditMode(input) {
-        const id = (typeof input ==="object") ? this.props.selectedPage.tabId : input;
+        const id = (typeof input === "object") ? this.props.selectedPage.tabId : input;
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
                 this.props.onLoadPage(id).then((data) => {
@@ -484,16 +487,16 @@ class App extends Component {
     }
 
     getSettingsButtons() {
-        const { settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
+        const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
         const deleteAction = this.onDeleteSettings.bind(this);
 
         return (
             <div className="heading-buttons">
-                <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true}>
+                <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true} selectedPage={selectedPage}>
                     <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                 </Sec>
-                <Sec permission={permissionTypes.EXPORT_PAGE}>
+                <Sec permission={permissionTypes.EXPORT_PAGE} selectedPage={selectedPage}>
                     <SaveAsTemplateButton
                         type="secondary"
                         size="large"
@@ -504,7 +507,7 @@ class App extends Component {
                         {Localization.get("SaveAsTemplate")}
                     </SaveAsTemplateButton>
                 </Sec>
-                <Sec permission={permissionTypes.COPY_PAGE}>
+                <Sec permission={permissionTypes.COPY_PAGE} selectedPage={selectedPage}>
                     <Button
                         type="secondary"
                         size="large"
@@ -512,8 +515,8 @@ class App extends Component {
                         {Localization.get("DuplicatePage")}
                     </Button>
                 </Sec>
-                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE) &&
-                    <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true}>
+                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage) &&
+                    <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true} selectedPage={selectedPage}>
                         <Button
                             type="secondary"
                             size="large"
@@ -630,8 +633,8 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
-                    const selectedPath = data.hierarchy.split(">").map((d)=> {
-                        return {name: d, tabId:data.tabId};
+                    const selectedPath = data.hierarchy.split(">").map((d) => {
+                        return { name: d, tabId: data.tabId };
                     });
                     this.props.changeSelectedPagePath(selectedPath);
 
@@ -692,7 +695,7 @@ class App extends Component {
     }
 
     onViewEditPage(item) {
-        const {selectedPageDirty} = this.props;
+        const { selectedPageDirty } = this.props;
         const viewPage = () => PageActions.viewPage(item.id, item.url);
 
         const left = () => {
@@ -709,16 +712,16 @@ class App extends Component {
         this.clearEmptyStateMessage();
         const message = Localization.get("NoPermissionEditPage");
         const noPermission = () => this.setEmptyStateMessage(message);
-        item.canManagePage ? proceed() : noPermission();
+        item.canAddContentToPage ? proceed() : noPermission();
 
     }
 
     onViewPage(item) {
-        const {selectedPageDirty} = this.props;
+        const { selectedPageDirty } = this.props;
         const view = () => {
-            this.props.onLoadPage(item.id);
+            //this.props.onLoadPage(item.id);
             utils.getUtilities().closePersonaBar(function () {
-                window.parent.location=item.url;
+                window.parent.location = item.url;
             });
         };
 
@@ -741,82 +744,82 @@ class App extends Component {
     }
 
     setEmptyStateMessage(emptyStateMessage) {
-        this.setState({emptyStateMessage});
+        this.setState({ emptyStateMessage });
         this.props.clearSelectedPage();
     }
 
-    clearEmptyStateMessage(){
-        this.setState({emptyStateMessage:null});
+    clearEmptyStateMessage() {
+        this.setState({ emptyStateMessage: null });
     }
 
     onSearchMoreFlyoutClick() {
-        this.setState({toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout}, ()=>{
-            const {toggleSearchMoreFlyout} = this.state;
-            !toggleSearchMoreFlyout ? this.setState({DropdownCalendarIsActive: null}) : null;
+        this.setState({ toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout }, () => {
+            const { toggleSearchMoreFlyout } = this.state;
+            !toggleSearchMoreFlyout ? this.setState({ DropdownCalendarIsActive: null }) : null;
         });
     }
 
-    toggleDropdownCalendar(bool){
-        typeof(bool) == "boolean" ? this.setState({DropdownCalendarIsActive:bool}) : this.setState({DropdownCalendarIsActive:!this.state.DropdownCalendarIsActive});
+    toggleDropdownCalendar(bool) {
+        typeof (bool) == "boolean" ? this.setState({ DropdownCalendarIsActive: bool }) : this.setState({ DropdownCalendarIsActive: !this.state.DropdownCalendarIsActive });
     }
 
 
-    onDayClick(newDay, isEndDate){
-        this.setState({startAndEndDateDirty:true});
+    onDayClick(newDay, isEndDate) {
+        this.setState({ startAndEndDateDirty: true });
         const right = () => {
             const condition = newDay.getTime() < this.state.endDate.getTime();
-            condition ? this.setState({startDate:newDay}) : this.setState({startDate:newDay, endDate: newDay});
+            condition ? this.setState({ startDate: newDay }) : this.setState({ startDate: newDay, endDate: newDay });
         };
 
         const left = () => {
-            const condition =  newDay.getTime() >= this.state.startDate.getTime();
-            condition ? this.setState({endDate:newDay}) : null;
+            const condition = newDay.getTime() >= this.state.startDate.getTime();
+            condition ? this.setState({ endDate: newDay }) : null;
         };
         isEndDate ? left() : right();
     }
 
-    generateFilters(){
-        const {filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty} = this.state;
+    generateFilters() {
+        const { filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty } = this.state;
         const filters = this.state.tags.split(",");
-        filterByPageType ? filters.push({ref: "filterByPageType", tag:`Page Type: ${filterByPageType}`}) : null;
-        filterByPublishStatus ? filters.push({ref:"filterByPublishStatus", tag:`Published Status: ${filterByPublishStatus}`}) : null;
-        filterByWorkflow ? filters.push({ref:"filterByWorkflow", tag:`Workflow: ${filterByWorkflow}`}) : null;
+        filterByPageType ? filters.push({ ref: "filterByPageType", tag: `Page Type: ${filterByPageType}` }) : null;
+        filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `Published Status: ${filterByPublishStatus}` }) : null;
+        filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `Workflow: ${filterByWorkflow}` }) : null;
 
-        if(startAndEndDateDirty){
-            const fullStartDate = `${startDate.getDay()}/${startDate.getMonth()+1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDay()}/${endDate.getMonth()+1}/${endDate.getFullYear()}`;
+        if (startAndEndDateDirty) {
+            const fullStartDate = `${startDate.getDay()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
+            const fullEndDate = `${endDate.getDay()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
 
-            const left = () => filters.push({ref: "startAndEndDateDirty", tag:`Date Range: ${fullStartDate} - ${fullEndDate} `});
-            const right = () => filters.push({ref: "startAndEndDateDirty", tag:`From Date: ${fullStartDate}`});
+            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `Date Range: ${fullStartDate} - ${fullEndDate} ` });
+            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `From Date: ${fullStartDate}` });
 
             fullStartDate != fullEndDate ? left() : right();
         }
 
-        this.setState({filters, DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false});
+        this.setState({ filters, DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
     }
 
-    saveSearchFilters(searchFields){
-        return new Promise((resolve) => this.setState({searchFields}, ()=> resolve()));
+    saveSearchFilters(searchFields) {
+        return new Promise((resolve) => this.setState({ searchFields }, () => resolve()));
     }
 
-    onSave () {
-        const {searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags} = this.state;
-        const searchDateRange = startAndEndDateDirty ? {publishDateStart: startDate, publishDateEnd:endDate} : {};
-        let search = {tags:tags, searchKey:searchTerm, pageType:filterByPageType, publishStatus:filterByPublishStatus, workflowId:filterByWorkflow};
+    onSave() {
+        const { searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
+        const searchDateRange = startAndEndDateDirty ? { publishDateStart: startDate, publishDateEnd: endDate } : {};
+        let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
 
         search = Object.assign({}, search, searchDateRange);
-        for(let prop in search){
-            if(!search[prop]){
+        for (let prop in search) {
+            if (!search[prop]) {
                 delete search[prop];
             }
         }
         this.generateFilters();
-        this.saveSearchFilters(search).then(()=> this.props.searchAndFilterPageList(search));
-        this.setState({inSearch:true});
+        this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
+        this.setState({ inSearch: true });
     }
 
 
-    onBreadcrumbSelect(name){
+    onBreadcrumbSelect(name) {
     }
 
     render_PagesDetailEditor() {
@@ -826,7 +829,7 @@ class App extends Component {
             return (
                 <div className="empty-page-state">
                     <div className="empty-page-state-message">
-                        <h1>{ this.state.emptyStateMessage || DefaultMessage }</h1>
+                        <h1>{this.state.emptyStateMessage || DefaultMessage}</h1>
                         <p>Select a page in the tree to manage its settings here.</p>
                     </div>
                 </div>
@@ -836,7 +839,7 @@ class App extends Component {
 
         const render_pageDetails = () => {
             const { props, state } = this;
-            const {isContentLocalizationEnabled} = props;
+            const { isContentLocalizationEnabled } = props;
             return (
                 <PageSettings
                     selectedPage={this.props.selectedPage}
@@ -881,7 +884,7 @@ class App extends Component {
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
         return (
             <GridCell columnSize={100} className="treeview-page-details" >
-                <PageSettings selectedPage={props.selectedPage }
+                <PageSettings selectedPage={props.selectedPage}
                     AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
@@ -903,8 +906,8 @@ class App extends Component {
                     pageDetailsFooterComponents={props.pageDetailsFooterComponents}
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents}
                     onGetCachedPageCount={props.onGetCachedPageCount}
-                    onClearCache={props.onClearCache} 
-                    onModuleCopyChange={props.onModuleCopyChange}/>
+                    onClearCache={props.onClearCache}
+                    onModuleCopyChange={props.onModuleCopyChange} />
             </GridCell>
         );
     }
@@ -917,179 +920,178 @@ class App extends Component {
     }
 
     /* eslint-disable react/no-danger */
-    render_more_flyout(){
-        const {startDate, endDate} = this.state;
-        const startMonth = startDate.getMonth()+1;
+    render_more_flyout() {
+        const { startDate, endDate } = this.state;
+        const startMonth = startDate.getMonth() + 1;
 
-        const endMonth =  endDate.getMonth()+1;
+        const endMonth = endDate.getMonth() + 1;
         const selectedMonth = (endMonth > startMonth) ? endDate : startDate;
 
         const filterByPageTypeOptions = [
-            {value: null, label:  "None"},
-            {value: "Normal", label: "Normal"},
-            {value: "URL", label: "URL"},
-            {value: "File", label: "File"}
+            { value: null, label: "None" },
+            { value: "Normal", label: "Normal" },
+            { value: "URL", label: "URL" },
+            { value: "File", label: "File" }
         ];
 
         let filterByPageStatusOptions = [
-            {value: "Published", label: Localization.get("lblPublished")}
+            { value: "Published", label: Localization.get("lblPublished") }
         ];
         let filterByDateText = "FilterByModifiedDateText";
         let workflowList = [];
-        if (!utils.isPlatform())
-        {
-            filterByPageStatusOptions = ([{value: null, label: Localization.get("lblNone")}]).concat(filterByPageStatusOptions.concat([{value: "Draft", label: Localization.get("lblDraft")}]));
+        if (!utils.isPlatform()) {
+            filterByPageStatusOptions = ([{ value: null, label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "Draft", label: Localization.get("lblDraft") }]));
             filterByDateText = "FilterByPublishDateText";
-            if (this.props.workflowList.length<=0){
-                this.props.getWorkflowsList();   
+            if (this.props.workflowList.length <= 0) {
+                this.props.getWorkflowsList();
             }
         }
-        this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return {value:item.workflowId, label:item.workflowName}; })) : null;
-        const filterByWorkflowOptions = [{value: null, label: Localization.get("lblNone")}].concat(workflowList);
+        this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return { value: item.workflowId, label: item.workflowName }; })) : null;
+        const filterByWorkflowOptions = [{ value: null, label: Localization.get("lblNone") }].concat(workflowList);
 
         const generateTags = (e) => {
-            this.setState({tags:e.target.value});
+            this.setState({ tags: e.target.value });
         };
 
         const date = Date.now();
 
         const onApplyChangesDropdownDayPicker = () => {
-            const {startAndEndDateDirty, startDate, endDate, defaultDate} = this.state;
-            const fullStartDate = startDate.getDay()+startDate.getMonth()+startDate.getFullYear();
-            const fullEndDate = endDate.getDay()+endDate.getMonth()+endDate.getFullYear();
+            const { startAndEndDateDirty, startDate, endDate, defaultDate } = this.state;
+            const fullStartDate = startDate.getDay() + startDate.getMonth() + startDate.getFullYear();
+            const fullEndDate = endDate.getDay() + endDate.getMonth() + endDate.getFullYear();
 
             const condition = !startAndEndDateDirty && fullStartDate == fullEndDate;
-            condition ? this.setState({startAndEndDateDirty:true, DropdownCalendarIsActive:null}) : this.setState({ DropdownCalendarIsActive:null});
+            condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
         };
-        return(
+        return (
             <div className="search-more-flyout">
-                <GridCell columnSize={70} style={{padding: "5px 5px 5px 10px"}}>
+                <GridCell columnSize={70} style={{ padding: "5px 5px 5px 10px" }}>
                     <h1>{Localization.get("lblGeneralFilters").toUpperCase()}</h1>
                 </GridCell>
-                <GridCell columnSize={30} style={{paddingLeft: "10px"}}>
+                <GridCell columnSize={30} style={{ paddingLeft: "10px" }}>
                     <h1>{Localization.get("lblTagFilters").toUpperCase()}</h1>
                 </GridCell>
-                <GridCell columnSize={70} style={{padding: "5px"}}>
+                <GridCell columnSize={70} style={{ padding: "5px" }}>
                     <GridCell columnSize={100} >
-                        <GridCell columnSize={50} style={{padding: "5px"}}>
-                             <Dropdown
+                        <GridCell columnSize={50} style={{ padding: "5px" }}>
+                            <Dropdown
                                 className="more-dropdown"
                                 options={filterByPageTypeOptions}
                                 label={this.state.filterByPageType ? this.state.filterByPageType : Localization.get("FilterbyPageTypeText")}
-                                onSelect={(data) => this.setState({filterByPageType:data.value}) }
+                                onSelect={(data) => this.setState({ filterByPageType: data.value })}
                                 withBorder={true} />
                         </GridCell>
-                        <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
+                        <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
                             <DropdownDayPicker
                                 onDayClick={this.onDayClick.bind(this)}
                                 dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                applyChanges={()=>onApplyChangesDropdownDayPicker()}
+                                applyChanges={() => onApplyChangesDropdownDayPicker()}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
                                 CalendarIcon={CalendarIcon}
                                 label={Localization.get(filterByDateText)}
-                                />
+                            />
                         </GridCell>
                     </GridCell>
                     <GridCell columnSize={100}>
-                        <GridCell columnSize={50} style={{padding: "5px"}}>
+                        <GridCell columnSize={50} style={{ padding: "5px" }}>
                             <Dropdown
                                 className="more-dropdown"
                                 options={filterByPageStatusOptions}
-                                label={ this.state.filterByPublishStatus ? this.state.filterByPublishStatus : Localization.get("FilterbyPublishStatusText")}
-                                onSelect={(data) => this.setState({filterByPublishStatus:data.value}) }
+                                label={this.state.filterByPublishStatus ? this.state.filterByPublishStatus : Localization.get("FilterbyPublishStatusText")}
+                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value })}
                                 withBorder={true} />
                         </GridCell>
-                    {!utils.isPlatform() &&
-                        <GridCell columnSize={50} style={{padding: "5px 5px 5px 15px"}}>
-                            <Dropdown
-                                className="more-dropdown"
-                                options={filterByWorkflowOptions}
-                                label={ this.state.filterByWorkflowName ? this.state.filterByWorkflowName : Localization.get("FilterbyWorkflowText")}
-                                onSelect={(data) => this.setState({filterByWorkflow: data.value, filterByWorkflowName: data.label}) }
-                                withBorder={true} />
-                        </GridCell>
-                    }
+                        {!utils.isPlatform() &&
+                            <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
+                                <Dropdown
+                                    className="more-dropdown"
+                                    options={filterByWorkflowOptions}
+                                    label={this.state.filterByWorkflowName ? this.state.filterByWorkflowName : Localization.get("FilterbyWorkflowText")}
+                                    onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label })}
+                                    withBorder={true} />
+                            </GridCell>
+                        }
                     </GridCell>
                 </GridCell>
-                <GridCell columnSize={30} style={{paddingLeft: "10px", paddingTop: "10px"}}>
-                        <textarea value={this.state.tags} onChange={(e)=>generateTags(e)}></textarea>
+                <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
+                    <textarea value={this.state.tags} onChange={(e) => generateTags(e)}></textarea>
                 </GridCell>
-                <GridCell columnSize={100} style={{textAlign:"right"}}>
-                        <Button style={{marginRight: "5px"}} onClick={()=>this.setState({DropdownCalendarIsActive:null, toggleSearchMoreFlyout:false})}>{Localization.get("Cancel")}</Button>
-                        <Button type="primary" onClick={()=>this.onSave()}>{Localization.get("Save")}</Button>
+                <GridCell columnSize={100} style={{ textAlign: "right" }}>
+                    <Button style={{ marginRight: "5px" }} onClick={() => this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false })}>{Localization.get("Cancel")}</Button>
+                    <Button type="primary" onClick={() => this.onSave()}>{Localization.get("Save")}</Button>
                 </GridCell>
             </div>);
     }
 
-    render_searchResults(){
-        const {searchList} = this.props;
+    render_searchResults() {
+        const { searchList } = this.props;
         const render_card = (item) => {
 
             return (
-                    <GridCell columnSize={100}>
-                        <div className="search-item-card">
-                            <div className="search-item-thumbnail">
-                                <img src={item.thumbnail} />
+                <GridCell columnSize={100}>
+                    <div className="search-item-card">
+                        <div className="search-item-thumbnail">
+                            <img src={item.thumbnail} />
+                        </div>
+                        <div className="search-item-details">
+                            <h1>{item.name}</h1>
+                            <h2>{item.tabpath}</h2>
+                            <div className="search-item-details-list">
+                                <ul>
+                                    <li>
+                                        <p>Page Type:</p>
+                                        <p>{item.pageType}</p>
+                                    </li>
+                                    <li>
+                                        <p>Publish Status:</p>
+                                        <p>{item.status}</p>
+                                    </li>
+                                    <li>
+                                        <p>Publish Date:</p>
+                                        <p>{item.publishDate}</p>
+                                    </li>
+                                </ul>
                             </div>
-                            <div className="search-item-details">
-                                <h1>{item.name}</h1>
-                                <h2>{item.tabpath}</h2>
-                                <div className="search-item-details-list">
-                                    <ul>
-                                        <li>
-                                            <p>Page Type:</p>
-                                            <p>{item.pageType}</p>
-                                        </li>
-                                        <li>
-                                            <p>Publish Status:</p>
-                                            <p>{item.status}</p>
-                                        </li>
-                                        <li>
-                                            <p>Publish Date:</p>
-                                            <p>{item.publishDate}</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="search-item-details-list">
-                                    <ul>
-                                        <li>
-                                            <p>Workflow:</p>
-                                            <p>{item.workflowName}</p>
-                                        </li>
-                                        <li>
-                                            <p>Tags:</p>
-                                            <p>{
-                                                item.tags.map((tag)=>{
-                                                return(
+                            <div className="search-item-details-list">
+                                <ul>
+                                    <li>
+                                        <p>Workflow:</p>
+                                        <p>{item.workflowName}</p>
+                                    </li>
+                                    <li>
+                                        <p>Tags:</p>
+                                        <p>{
+                                            item.tags.map((tag) => {
+                                                return (
                                                     <span>
                                                         {tag},
                                                     </span>
-                                                    );
+                                                );
                                             })}</p>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                    </GridCell>
+                    </div>
+                </GridCell>
             );
         };
 
-        return(
+        return (
             <GridCell columnSize={100} className="fade-in">
-                <GridCell columnSize={100} style={{padding:"20px"}}>
-                    <GridCell columnSize={80} style={{padding: "0px"}}>
+                <GridCell columnSize={100} style={{ padding: "20px" }}>
+                    <GridCell columnSize={80} style={{ padding: "0px" }}>
                         <div className="tags-container">
                             {this.state.filters ? this.render_filters() : null}
                         </div>
                     </GridCell>
-                    <GridCell columnSize={20} style={{textAlign:"right", padding:"10px", fontWeight:"bold", animation: "fadeIn .15s ease-in forwards"}}>
-                        <p>{`${searchList.length} ` + Localization.get("lblPagesFound").toUpperCase() }</p>
+                    <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
+                        <p>{`${searchList.length} ` + Localization.get("lblPagesFound").toUpperCase()}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
-                        {searchList.map((item)=>{
+                        {searchList.map((item) => {
                             return render_card(item);
                         })}
                     </GridCell>
@@ -1098,11 +1100,11 @@ class App extends Component {
         );
     }
 
-    render_details(){
-        const {selectedPage} = this.props;
-        const {inSearch} = this.state;
+    render_details() {
+        const { selectedPage } = this.props;
+        const { inSearch } = this.state;
 
-        switch(true){
+        switch (true) {
             case inSearch:
                 return this.render_searchResults();
             case selectedPage && selectedPage.tabId === 0:
@@ -1113,44 +1115,44 @@ class App extends Component {
         }
     }
 
-    render_filters(){
-        const {filters} = this.state;
+    render_filters() {
+        const { filters } = this.state;
         return filters
-        .filter(filter => !!filter)
-        .map((filter)=>{
+            .filter(filter => !!filter)
+            .map((filter) => {
 
-        const deleteFilter = (prop) => {
-            const update = {};
-                update[prop] = null;
-                this.setState(update,()=>this.onSave());
-            };
-            return (
-                <div className="filter-by-tags">
-                    <div>{filter.tag}</div>
-                    <div className="xIcon"
-                            dangerouslySetInnerHTML={{__html: XIcon}}
-                            onClick={(e)=>{ deleteFilter(filter.ref); } }>
+                const deleteFilter = (prop) => {
+                    const update = {};
+                    update[prop] = null;
+                    this.setState(update, () => this.onSave());
+                };
+                return (
+                    <div className="filter-by-tags">
+                        <div>{filter.tag}</div>
+                        <div className="xIcon"
+                            dangerouslySetInnerHTML={{ __html: XIcon }}
+                            onClick={(e) => { deleteFilter(filter.ref); }}>
 
+                        </div>
                     </div>
-                </div>
-            );
-        });
+                );
+            });
     }
 
     render() {
 
         const { props } = this;
         const { selectedPage } = props;
-        const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
+        const { inSearch, headerDropdownSelection, toggleSearchMoreFlyout } = this.state;
 
 
         const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.canSeePagesList();
         let defaultLabel = "Save Page Template";
-        const options = [{value:true, label:"Evoq Page Template"}, {value:true, label:"Export as XML"}];
-        const onSelect = (selected) => this.setState({headerDropdownSelection: selected.label});
+        const options = [{ value: true, label: "Evoq Page Template" }, { value: true, label: "Export as XML" }];
+        const onSelect = (selected) => this.setState({ headerDropdownSelection: selected.label });
 
-         /* eslint-disable react/no-danger */
+        /* eslint-disable react/no-danger */
         return (
 
             <div className="pages-app personaBar-mainContainer">
@@ -1158,13 +1160,13 @@ class App extends Component {
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
-                            { 
-                                selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
-                            }                            
+                            {
+                                selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data) => onSelect(data)} withBorder={true} />
+                            }
                             <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
-                         { toggleSearchMoreFlyout ?  this.render_more_flyout() : null}
-                        <GridCell columnSize={100} style={{padding:"20px"}}>
+                        {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
+                        <GridCell columnSize={100} style={{ padding: "20px" }}>
                             <div className="search-container">
                                 <div className="search-box">
                                     <div className="search-input">
@@ -1173,20 +1175,20 @@ class App extends Component {
                                             onFocus={this.onSearchFocus.bind(this)}
                                             onChange={this.onSearchFieldChange.bind(this)}
                                             onBlur={this.onSearchBlur.bind(this)}
-                                            onKeyPress={(e)=>{e.key ==="Enter" ? this.onSearchClick() : null; }}
-                                            placeholder="Search"/>
+                                            onKeyPress={(e) => { e.key === "Enter" ? this.onSearchClick() : null; }}
+                                            placeholder="Search" />
                                     </div>
                                     <div
                                         className="btn search-btn"
                                         dangerouslySetInnerHTML={{ __html: PagesSearchIcon }}
                                         onClick={this.onSearchClick.bind(this)}
-                                        >
+                                    >
                                     </div>
                                     <div
                                         className="btn search-btn"
                                         dangerouslySetInnerHTML={{ __html: PagesVerticalMore }}
-                                        onClick={()=>{this.onSearchMoreFlyoutClick(); }}
-                                        />
+                                        onClick={() => { this.onSearchMoreFlyoutClick(); }}
+                                    />
                                 </div>
                             </div>
                         </GridCell>
@@ -1215,10 +1217,10 @@ class App extends Component {
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents} />
-                                        </div>
+                                    </div>
                                 </div>
                                 <GridCell columnSize={70}>
-                                  { this.render_details() }
+                                    {this.render_details()}
                                 </GridCell>
                             </GridCell>
                         </GridCell>

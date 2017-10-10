@@ -1,37 +1,37 @@
-import {Component, PropTypes} from "react";
+import { Component, PropTypes } from "react";
 import securityService from "../../services/securityService";
 
 class Sec extends Component {
 
     componentDidMount() {
-        
+
     }
-    
+
     isVisible() {
-        const { permission, onlySuperUsers, onlyForNotSuperUser } = this.props;
-                
+        const { selectedPage, permission, onlySuperUsers, onlyForNotSuperUser } = this.props;
+
         const isSuperUser = securityService.isSuperUser();
         if (onlyForNotSuperUser && isSuperUser) {
             return false;
         }
-        
+
         if (isSuperUser) {
             return true;
         }
-        
+
         if (onlySuperUsers) {
             return false;
         }
-        
-        return securityService.userHasPermission(permission);
+
+        return securityService.userHasPermission(permission, selectedPage);
     }
-    
-    render() {  
+
+    render() {
         const isVisible = this.isVisible();
         if (!isVisible) {
             return null;
         }
-        
+
         return this.props.children;
     }
 }
@@ -41,7 +41,8 @@ Sec.propTypes = {
     children: PropTypes.node,
     onlySuperUsers: PropTypes.bool,
     onlyForNotSuperUser: PropTypes.bool,
-    permission: PropTypes.string
+    permission: PropTypes.string,
+    selectedPage: PropTypes.object
 };
 
 export default Sec;
