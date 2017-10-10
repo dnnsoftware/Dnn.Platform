@@ -1601,7 +1601,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         }
                         if ((tab.BreadCrumbs.Count - 1 == index))
                         {
-                            var url = Globals.AddHTTP(t.PortalID == Null.NullInteger ? PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList()[0].HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
+                            var url = Globals.AddHTTP(t.PortalID == Null.NullInteger ? PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList().OrderByDescending(a => a.IsPrimary).FirstOrDefault().HTTPAlias ) + "/Default.aspx?tabId=" + t.TabID;
                             returnValue.AppendFormat("<a target=\"_blank\" href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                         }
                         else
