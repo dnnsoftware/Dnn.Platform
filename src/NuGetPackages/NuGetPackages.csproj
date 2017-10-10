@@ -97,10 +97,6 @@
       <HintPath>..\packages\DotNetNuke.Web.9.2.0.98\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FiftyOne.Foundation, Version=3.2.3.2, Culture=neutral, PublicKeyToken=e967ae578dabd98e, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.98\lib\FiftyOne.Foundation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>

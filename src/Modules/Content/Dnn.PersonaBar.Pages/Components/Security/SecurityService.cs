@@ -25,13 +25,13 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         {
             get
             {
-                var controller = ComponentFactory.GetComponent<ISecurityService>("SecurityService");
+                var controller = ComponentFactory.GetComponent<ISecurityService>("PagesSecurityService");
                 if (controller == null)
                 {
-                    ComponentFactory.RegisterComponent<ISecurityService, SecurityService>("SecurityService");
+                    ComponentFactory.RegisterComponent<ISecurityService, SecurityService>("PagesSecurityService");
                 }
 
-                return ComponentFactory.GetComponent<ISecurityService>("SecurityService");
+                return ComponentFactory.GetComponent<ISecurityService>("PagesSecurityService");
             }
         }
 
@@ -120,20 +120,30 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             var updatingPage = tabId > 0 && pageType == "normal";
             var creatingTemplate = tabId <= 0 && pageSettings.TemplateTabId > 0 && pageType == "template";
             var duplicatingPage = tabId <= 0 && pageSettings.TemplateTabId > 0 && pageType == "normal";
+            var updatingParentPage = false;
+            if (updatingPage)
+            {
+                var tab = TabController.Instance.GetTab(tabId, PortalSettings.Current.PortalId);
+                if (tab != null && tab.ParentId != parentId)
+                {
+                    updatingParentPage = true;
+                }
+            }
 
             return (
                 IsPageAdminUser() ||
                 creatingPage && CanAddPage(parentId) ||
                 creatingTemplate && CanExportPage(pageSettings.TemplateTabId) ||
-                updatingPage && CanManagePage(tabId) ||
-                duplicatingPage && CanCopyPage(pageSettings.TemplateTabId)
+                updatingPage && CanManagePage(tabId) && !updatingParentPage ||
+                updatingParentPage && CanManagePage(tabId) && CanAddPage(parentId) ||
+                duplicatingPage && CanCopyPage(pageSettings.TemplateTabId) && CanAddPage(parentId)
             );
         }
 
         private TabInfo GetTabById(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return pageId <= 0 ? null : _tabController.GetTab(pageId, portalSettings.PortalId, false);
+            return pageId <= 0 ? new TabInfo() : _tabController.GetTab(pageId, portalSettings.PortalId, false);
         }
     }
 }

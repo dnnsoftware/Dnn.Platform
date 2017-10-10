@@ -64,7 +64,11 @@ const PageService = function () {
 
     const getNewPage = function (parentPage) {
         const api = getOverridablePagesApi();
-        return api.get("GetDefaultSettings")
+        let pageId = 0;
+        if (parentPage && typeof parentPage !== "function" && parentPage.id) {
+            pageId = parentPage.id;
+        }
+        return api.get("GetDefaultSettings", { pageId: pageId })
             .then(settings => {
                 const page = toFrontEndPage(settings);
                 page.tabId = 0;
@@ -167,7 +171,7 @@ const PageService = function () {
 
     const searchPageList = (searchKey) => {
         const api = getOverridablePagesApi();
-        return api.get("GetPageList", {searchKey});
+        return api.get("GetPageList", { searchKey });
     };
 
     const searchAndFilterPageList = (params) => {

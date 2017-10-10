@@ -418,9 +418,9 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage GetDefaultSettings()
+        public HttpResponseMessage GetDefaultSettings(int pageId = 0)
         {
-            var settings = _pagesController.GetDefaultSettings();
+            var settings = _pagesController.GetDefaultSettings(pageId);
             return Request.CreateResponse(HttpStatusCode.OK, settings);
         }
 

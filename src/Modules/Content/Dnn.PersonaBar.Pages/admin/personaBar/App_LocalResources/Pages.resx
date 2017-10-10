@@ -1487,22 +1487,22 @@
     <value>Page Commands</value>
   </data>
   <data name="NoPermissionAddPage.Text" xml:space="preserve">
-    <value>You do not have permission to add a page.</value>
+    <value>You don't have permission to add a page.</value>
   </data>
   <data name="NoPermissionEditPage.Text" xml:space="preserve">
-    <value>You do not have permission to edit this page</value>
+    <value>You don't have permission to edit this page</value>
   </data>
   <data name="NoPermissionCopyPage.Text" xml:space="preserve">
-    <value>You do not have permission to copy this page.</value>
+    <value>You don't have permission to copy this page.</value>
   </data>
   <data name="NoPermissionManagePage.Text" xml:space="preserve">
-    <value>You do not have permission to manage this page.</value>
+    <value>You don't have permissions to manage the page</value>
   </data>
   <data name="NoPermissionViewPage.Text" xml:space="preserve">
-    <value>You do not have permission to view this page</value>
+    <value>You don't have permission to view the page</value>
   </data>
   <data name="NoPermissionDeletePage.Text" xml:space="preserve">
-    <value>You do not have permission to delete this page.</value>
+    <value>You don't have permission to delete the page.</value>
   </data>
   <data name="CannotDeleteSpecialPage.Text" xml:space="preserve">
     <value>You cannot delete a special page.</value>

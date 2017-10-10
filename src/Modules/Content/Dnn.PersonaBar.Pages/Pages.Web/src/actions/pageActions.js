@@ -504,7 +504,9 @@ const pageActions = {
     },
 
     movePage({ Action, PageId, ParentId, RelatedPageId }) {
-        return PagesService.movePage({ Action, PageId, ParentId, RelatedPageId });
+        return PagesService.movePage({ Action, PageId, ParentId, RelatedPageId }).catch(() => {
+            utils.notifyError(Localization.get("AnErrorOccurred"));
+        });
     }
 };
 
