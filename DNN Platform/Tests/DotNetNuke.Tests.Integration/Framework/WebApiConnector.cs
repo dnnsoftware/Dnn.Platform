@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Tests.Integration.Framework.Controllers;
 using DotNetNuke.Tests.Integration.Framework.Helpers;
 
@@ -89,6 +90,7 @@ namespace DotNetNuke.Tests.Integration.Framework
         private CookieContainer _sessionCookiesContainer;
         private Cookie _cookieVerificationToken;
         private string _inputFieldVerificationToken;
+        private string _currentTabId;
 
         public TimeSpan Timeout { get; set; }
 
@@ -271,12 +273,35 @@ namespace DotNetNuke.Tests.Integration.Framework
             return string.Empty;
         }
 
+        private static string GetCurrentTabId(string pageData)
+        {
+            if (!string.IsNullOrEmpty(pageData))
+            {
+                var match = Regex.Match(pageData, "`sf_tabId`:`(\\d+)`");
+                if (match.Success)
+                {
+                    return match.Groups[1].Value;
+                }
+            }
+
+            return string.Empty;
+        }
+
         #region file uploading
 
-        public HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true)
+        public HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1)
         {
             EnsureLoggedIn();
-            return UploadFile(fileName, "Users", waitHttpResponse);
+            
+            var folder = "Users";
+            if (userId > Null.NullInteger)
+            {
+                var rootFolder = PathUtils.Instance.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.Root);
+                var subFolder = PathUtils.Instance.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.SubFolder);
+                folder = $"Users/{rootFolder}/{subFolder}/{userId}/";
+            }
+
+            return UploadFile(fileName, folder, waitHttpResponse);
         }
 
         public HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName)
@@ -296,8 +321,7 @@ namespace DotNetNuke.Tests.Integration.Framework
         {
             using (var client = CreateHttpClient("/", false))
             {
-                client.BaseAddress = _domain;
-                
+               
                 var headers = client.DefaultRequestHeaders;
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
@@ -308,22 +332,23 @@ namespace DotNetNuke.Tests.Integration.Framework
                     var resultGet = client.GetAsync("/").Result;
                     var data = resultGet.Content.ReadAsStringAsync().Result;
                     _inputFieldVerificationToken = GetVerificationToken(data);
-                }
 
-                if (!string.IsNullOrEmpty(_inputFieldVerificationToken))
-                {
-                    client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
-                }
-                else
-                {
-                    Console.WriteLine(@"Cannot find '{0}' in the page input fields (A)", RqVerifTokenName);
+                    if (!string.IsNullOrEmpty(_inputFieldVerificationToken))
+                    {
+                        client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
+                    }
+                    else
+                    {
+                        Console.WriteLine(@"Cannot find '{0}' in the page input fields (A)", RqVerifTokenName);
+                    }
                 }
 
                 var content = new MultipartFormDataContent();
                 var values = new[]
                 {
                     new KeyValuePair<string, string>("\"folder\"", portalFolder),
-                    new KeyValuePair<string, string>("\"filter\"", FileFilters)
+                    new KeyValuePair<string, string>("\"filter\"", FileFilters),
+                    new KeyValuePair<string, string>("\"overwrite\"", "true")
                 };
 
                 foreach (var keyValuePair in values)
@@ -340,10 +365,7 @@ namespace DotNetNuke.Tests.Integration.Framework
                 };
 
                 content.Add(fileContent);
-                //var tabId = TabController.GetTabByName("Activity Feed", _portalId).TabID;
-                const int tabId = 0;
 
-                client.DefaultRequestHeaders.Add("TabID", tabId.ToString(CultureInfo.InvariantCulture));
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgentValue);
                 var result = client.PostAsync(UploadFileRequestPath, content).Result;
                 return !waitHttpResponse
@@ -425,6 +447,11 @@ namespace DotNetNuke.Tests.Integration.Framework
                 {
                     foreach (var hdr in contentHeaders)
                     {
+                        if (rqHeaders.Contains(hdr.Key))
+                        {
+                            rqHeaders.Remove(hdr.Key);
+                        }
+
                         rqHeaders.Add(hdr.Key, hdr.Value);
                     }
                 }
@@ -459,9 +486,13 @@ namespace DotNetNuke.Tests.Integration.Framework
                 var data = resultGet.Content.ReadAsStringAsync().Result;
                 _inputFieldVerificationToken = GetVerificationToken(data);
                 client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
+
+                _currentTabId = GetCurrentTabId(data);
+                client.DefaultRequestHeaders.Add("TabId", _currentTabId);
             }
             else
             {
+                client.DefaultRequestHeaders.Add("TabId", _currentTabId);
                 client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
             }
 

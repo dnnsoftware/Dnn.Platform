@@ -18,7 +18,7 @@ namespace DotNetNuke.Tests.Integration.Framework
         void Logout();
         bool Login(string password);
 
-        HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true);
+        HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1);
         HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName);
 
         bool UploadCmsFile(string fileName, string portalFolder);
