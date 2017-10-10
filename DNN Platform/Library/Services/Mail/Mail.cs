@@ -57,33 +57,40 @@ namespace DotNetNuke.Services.Mail
             mailMessage.Priority = (System.Net.Mail.MailPriority)priority;
             mailMessage.IsBodyHtml = (bodyFormat == MailFormat.Html);
 
-            //if the senderAddress is the email address of the Host then switch it smtpUsername if different
-            //if display name of senderAddress is empty, then use Host.HostTitle for it
-            if (mailMessage.Sender != null)
+
+            // Only modify senderAdress if smtpAuthentication is enabled
+            // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM. 
+            if (smtpAuthentication == "1" || smtpAuthentication == "2")
             {
-                var senderAddress = mailMessage.Sender.Address;
-                var senderDisplayName = mailMessage.Sender.DisplayName;
-                var needUpdateSender = false;
-                if (smtpUsername.Contains("@") && senderAddress == Host.HostEmail &&
-                    !senderAddress.Equals(smtpUsername, StringComparison.InvariantCultureIgnoreCase))
+                //if the senderAddress is the email address of the Host then switch it smtpUsername if different
+                //if display name of senderAddress is empty, then use Host.HostTitle for it
+                if (mailMessage.Sender != null)
                 {
-                    senderAddress = smtpUsername;
-                    needUpdateSender = true;
+                    var senderAddress = mailMessage.Sender.Address;
+                    var senderDisplayName = mailMessage.Sender.DisplayName;
+                    var needUpdateSender = false;
+                    if (smtpUsername.Contains("@") && senderAddress == Host.HostEmail &&
+                        !senderAddress.Equals(smtpUsername, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        senderAddress = smtpUsername;
+                        needUpdateSender = true;
+                    }
+                    if (string.IsNullOrEmpty(senderDisplayName))
+                    {
+                        senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
+                        needUpdateSender = true;
+                    }
+                    if (needUpdateSender)
+                    {
+                        mailMessage.Sender = new MailAddress(senderAddress, senderDisplayName);
+                    }
                 }
-                if (string.IsNullOrEmpty(senderDisplayName))
+                else if (smtpUsername.Contains("@"))
                 {
-                    senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
-                    needUpdateSender = true;
-                }
-                if (needUpdateSender)
-                {
-                    mailMessage.Sender = new MailAddress(senderAddress, senderDisplayName);
+                    mailMessage.Sender = new MailAddress(smtpUsername, Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
                 }
             }
-            else if (smtpUsername.Contains("@"))
-            {
-                mailMessage.Sender = new MailAddress(smtpUsername, Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
-            }
+
             //attachments
             foreach (var attachment in attachments)
             {
