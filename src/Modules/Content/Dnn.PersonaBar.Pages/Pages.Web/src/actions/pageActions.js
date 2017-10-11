@@ -240,11 +240,12 @@ const pageActions = {
                 if (selectedPage.tabId > 0) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
                 }
-                if (response.Page.canAddContentToPage)
+                if (response.Page.canAddContentToPage && selectedPage.pageType === "normal" && !selectedPage.disableLink) {
                     PagesService.openPageInEditMode(response.Page.id, response.Page.url);
+                }
                 else if (typeof callback === "function") {
                     utils.notify(Localization.get("PageCreatedMessage"));
-                    callback();
+                    callback(response.Page);
                 }
             }).catch((error) => {
                 dispatch({

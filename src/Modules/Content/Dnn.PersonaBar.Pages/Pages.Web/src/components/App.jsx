@@ -179,9 +179,50 @@ class App extends Component {
         props.onLoadPage(pageId);
     }
 
-    onCreatePage(input) {
-        let self = this;
-        this.props.onCreatePage(() => { self.setEmptyStateMessage(); });
+    onCreatePage() {
+        this.props.onCreatePage((page) => { 
+            page.selected = true;
+            if (page.parentId && page.parentId !== -1) {
+                this._traverse((item, list, updateStore) => {
+                    if (item.id === page.parentId) {              
+                        switch (true) {
+                            case item.childCount > 0 && !item.childListItems:
+                                this.props.getChildPageList(item.id).then((data) => {
+                                    item.isOpen = true;
+                                    item.childListItems = data;
+                                    updateStore(list);
+                                });
+                                break;
+                            case item.childCount === 0 && !item.childListItems:
+                                item.childCount++;
+                                item.childListItems = [];
+                                item.childListItems.push(page);
+                                this.props.onLoadPage(page.id);
+                                break;
+                            case Array.isArray(item.childListItems) === true:
+                                item.childCount++;
+                                item.childListItems.push(page);
+                                this.props.onLoadPage(page.id);
+                                break;
+                        }
+                        item.isOpen = true;
+                        updateStore(list);
+                    }
+                });
+            }
+            else {
+                this.props.getPageList().then(() => {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id === page.id) {              
+                            item.isOpen = true;
+                            item.selected = true;
+                            updateStore(list);
+                            this.props.onLoadPage(page.id);                                                        
+                        }
+                    });
+                });  
+            }       
+        });
     }
 
     onUpdatePage(input) {
