@@ -28,7 +28,7 @@ export class PersonaBarPageTreeview extends Component {
 
     }
 
-    render_tree(childListItems) {
+    render_tree(item, childListItems) {
         const {
             draggedItem,
             droppedItem,
@@ -67,6 +67,7 @@ export class PersonaBarPageTreeview extends Component {
                 onMovePage={onMovePage}
                 setEmptyPageMessage={setEmptyPageMessage}
                 Localization={Localization}
+                parentItem={item}
             />
         );
     }
@@ -88,7 +89,7 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render_dropZone(direction, item) {
-        const { onMovePage, onDragEnd, draggedItem, dragOverItem } = this.props;
+        const { onMovePage, onDragEnd, draggedItem, dragOverItem, parentItem } = this.props;
         const onDragOver = (e, item, direction) => {
             e.preventDefault();
             const elm = document.getElementById(`dropzone-${item.name}-${item.id}-${direction}`);
@@ -99,6 +100,10 @@ export class PersonaBarPageTreeview extends Component {
             const elm = document.getElementById(`dropzone-${item.name}-${item.id}-${direction}`);
             (direction === "before") ? elm.classList.remove("list-item-border-bottom") : elm.classList.remove("list-item-border-top");
         };
+
+        if (parentItem && !parentItem.canManagePage) {
+            return;
+        }
 
         if (item.onDragOverState) {
             return (
@@ -202,7 +207,7 @@ export class PersonaBarPageTreeview extends Component {
                         </div>
                         {((item.childListItems && !item.isOpen) || !item.childListItems) && index === total && this.render_dropZone("after", item)}
                     </div>
-                    {item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null}
+                    {item.childListItems && item.isOpen ? this.render_tree(item, item.childListItems) : null}
                 </li>
             );
         });
@@ -238,5 +243,6 @@ PersonaBarPageTreeview.propTypes = {
     icons: PropTypes.object.isRequired,
     onSelect: PropTypes.func.isRequired,
     setEmptyPageMessage: PropTypes.func.isRequired,
-    Localization: PropTypes.func.isRequired
+    Localization: PropTypes.func.isRequired,
+    parentItem: PropTypes.object
 };
