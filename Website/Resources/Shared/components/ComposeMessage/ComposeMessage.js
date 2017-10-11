@@ -169,9 +169,13 @@
                     to.tokenInput("add", value);
                 });
             }
+            
+            var minWidth = $(window).width() > 650 ? 650 : $(window).width() - 40;
+            var maxWidth = $(window).width() - minWidth > 40 ? minWidth : $(window).width() - 40; // 36px is padding around the compose box. So we decrease the max width by 40 to show full message box in smaller window, if required.
 
             composeMessageDialog.dialog({
-                minWidth: 650,
+                maxWidth: maxWidth,
+                minWidth: minWidth,
                 modal: true,
                 resizable: false,
                 open: function () {
@@ -224,9 +228,9 @@
                             var params = {
                                 subject: encodeURIComponent(composeMessageDialog.find('#subject').val()),
                                 body: encodeURIComponent(composeMessageDialog.find('#bodytext').val()),
-                                roleIds: (roles.length > 0 ? JSON.stringify(roles) : {}),
-                                userIds: (users.length > 0 ? JSON.stringify(users) : {}),
-                                fileIds: (attachments.length > 0 ? JSON.stringify(attachments) : {})
+                                roleIds: JSON.stringify(roles),
+                                userIds: JSON.stringify(users),
+                                fileIds: JSON.stringify(attachments)
                             };
                             $.ajax(
                                 {   

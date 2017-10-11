@@ -29,6 +29,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -104,6 +105,7 @@ namespace DotNetNuke.Services.Upgrade
     public class Upgrade
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
+        private static readonly object _threadLocker = new object();
 
         #region Private Shared Field
 
@@ -5350,6 +5352,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.1.0":
                             UpgradeToVersion910();
                             break;
+                        case "9.2.0":
+                            UpgradeToVersion920();
+                            break;
                     }
                 }
                 else
@@ -5539,6 +5544,12 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Taxonomy", "Module");
 
             UninstallPackage("UrlManagement", "Library", false);
+        }
+
+        private static void UpgradeToVersion920()
+        {
+            DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "SharpZipLib.dll");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
@@ -5896,6 +5907,34 @@ namespace DotNetNuke.Services.Upgrade
             return LocaleController.Instance.GetLocales(portalid).TryGetValue(code, out enabledLanguage);
         }
 
+        public static bool UpdateNewtonsoftVersion()
+        {
+            try
+            {
+                //check whether current binding already specific to correct version.
+                if (NewtonsoftNeedUpdate())
+                {
+                    lock (_threadLocker)
+                    {
+                        if (NewtonsoftNeedUpdate())
+                        {
+                            var matchedFiles =Directory.GetFiles(Path.Combine(Globals.ApplicationMapPath, "Install\\Module"), "Newtonsoft.Json_*_Install.zip");
+                            if (matchedFiles.Length > 0)
+                            {
+                                return InstallPackage(matchedFiles[0], "Library", false);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+
+            return false;
+        } 
+
         public static string ActivateLicense()
         {
             var isLicensable = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
@@ -6069,6 +6108,23 @@ namespace DotNetNuke.Services.Upgrade
 
                 return null;
             }
+        }
+
+        private static bool NewtonsoftNeedUpdate()
+        {
+            var currentConfig = Config.Load();
+            var nsmgr = new XmlNamespaceManager(currentConfig.NameTable);
+            nsmgr.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+            var bindingNode = currentConfig.SelectSingleNode(
+                "/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect", nsmgr);
+
+            var newVersion = bindingNode?.Attributes?["newVersion"].Value;
+            if (!string.IsNullOrEmpty(newVersion) && new Version(newVersion) >= new Version(10, 0, 0, 0))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

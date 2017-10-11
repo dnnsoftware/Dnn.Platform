@@ -113,8 +113,5 @@ namespace DotNetNuke.UI.WebControls
             }
             return editor;
         }
-
-        [Obsolete("Deprecated in 6.2.  Replace by ProfileVisibility")]
-        public UserVisibilityMode Visibility { get; set; }
     }
 }

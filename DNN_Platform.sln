@@ -78,8 +78,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Authentication.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client Capability", "Client Capability", "{C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.FiftyOneClientCapabilityProvider", "DNN Platform\Providers\ClientCapabilityProviders\Provider.FiftyOneClientCapabilityProvider\Provider.FiftyOneClientCapabilityProvider.csproj", "{0EB2D920-395F-4DB7-8525-D9712E92FC3E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{973A675B-1CF8-42E0-8566-09B4EFD3E83E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{88E649D7-1379-430F-B794-1F3B9B442C80}"
@@ -98,7 +96,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.FiftyOneClientCapabilityProvider", "DNN Platform\Tests\DotNetNuke.Tests.FiftyOneClientCapabilityProvider\DotNetNuke.Tests.FiftyOneClientCapabilityProvider.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.AspNetClientCapabilityProvider", "DNN Platform\Tests\DotNetNuke.Tests.AspNetClientCapabilityProvider\DotNetNuke.Tests.AspNetClientCapabilityProvider.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -151,6 +149,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryUI", "jQueryUI", "{6040AAC4-8533-4EBF-8918-2173B5400415}"
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\JavaScript Libraries\jQueryUI\01.10.03.txt = DNN Platform\JavaScript Libraries\jQueryUI\01.10.03.txt
+		DNN Platform\JavaScript Libraries\jQueryUI\01.11.03.txt = DNN Platform\JavaScript Libraries\jQueryUI\01.11.03.txt
 		DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt = DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt
 		DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js = DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js
 		DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn = DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn
@@ -304,6 +303,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA
 		DNN Platform\Website\Install\Cleanup\08.00.00.16.txt = DNN Platform\Website\Install\Cleanup\08.00.00.16.txt
 		DNN Platform\Website\Install\Cleanup\09.01.00.txt = DNN Platform\Website\Install\Cleanup\09.01.00.txt
 		DNN Platform\Website\Install\Cleanup\09.01.01.txt = DNN Platform\Website\Install\Cleanup\09.01.01.txt
+		DNN Platform\Website\Install\Cleanup\09.02.00.txt = DNN Platform\Website\Install\Cleanup\09.02.00.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE268D-2073-4489-9BB2-26E34D65A8DC}"
@@ -344,6 +344,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE26
 		DNN Platform\Website\Install\Config\09.00.01.config = DNN Platform\Website\Install\Config\09.00.01.config
 		DNN Platform\Website\Install\Config\09.01.00.config = DNN Platform\Website\Install\Config\09.01.00.config
 		DNN Platform\Website\Install\Config\09.01.01.config = DNN Platform\Website\Install\Config\09.01.01.config
+		DNN Platform\Website\Install\Config\09.02.00.config = DNN Platform\Website\Install\Config\09.02.00.config
 		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
 		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
 		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config
@@ -389,6 +390,53 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Connectors", "Connectors", "{9A986091-4238-4804-8C86-6A9A005F72C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.AzureConnector", "DNN Platform\Connectors\Azure\Dnn.AzureConnector.csproj", "{13F62719-88BE-4EAD-9740-F0787A9B0A94}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{2D7DB29D-72F1-44DE-A01E-D6547D8271C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{50D97EFD-A619-4B88-92F1-C68A4F2A1BF2}"
+	ProjectSection(SolutionItems) = preProject
+		Build\BuildScripts\CombineSymbols.ps1 = Build\BuildScripts\CombineSymbols.ps1
+		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
+		Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll = Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll
+		Build\BuildScripts\ExternallySourced.targets = Build\BuildScripts\ExternallySourced.targets
+		Build\BuildScripts\ICSharpCode.SharpZipLib.dll = Build\BuildScripts\ICSharpCode.SharpZipLib.dll
+		Build\BuildScripts\Microsoft.Build.Framework.dll = Build\BuildScripts\Microsoft.Build.Framework.dll
+		Build\BuildScripts\Microsoft.Build.Utilities.dll = Build\BuildScripts\Microsoft.Build.Utilities.dll
+		Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll = Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll
+		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
+		Build\BuildScripts\ModulePackage.targets = Build\BuildScripts\ModulePackage.targets
+		Build\BuildScripts\MSBuild.Community.Tasks.dll = Build\BuildScripts\MSBuild.Community.Tasks.dll
+		Build\BuildScripts\MSBuild.Community.Tasks.Targets = Build\BuildScripts\MSBuild.Community.Tasks.Targets
+		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
+		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
+		Build\BuildScripts\ProviderPackage.targets = Build\BuildScripts\ProviderPackage.targets
+		Build\BuildScripts\SolpartPackage.targets = Build\BuildScripts\SolpartPackage.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{4F538A14-38F5-473F-8386-60D81F3F530A}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Symbols\DotNetNuke_Symbols.dnn = Build\Symbols\DotNetNuke_Symbols.dnn
+		Build\Symbols\license.txt = Build\Symbols\license.txt
+		Build\Symbols\releaseNotes.txt = Build\Symbols\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{4248BC91-5EAC-489B-929F-6494F805B24E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F4AAB2C9-8B8B-441B-8623-9347B62884A1}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Tools\NuGet\DotNetNuke.Bundle.nuspec = Build\Tools\NuGet\DotNetNuke.Bundle.nuspec
+		Build\Tools\NuGet\DotNetNuke.Core.nuspec = Build\Tools\NuGet\DotNetNuke.Core.nuspec
+		Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec = Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec
+		Build\Tools\NuGet\DotNetNuke.Providers.FolderProviders.nuspec = Build\Tools\NuGet\DotNetNuke.Providers.FolderProviders.nuspec
+		Build\Tools\NuGet\DotNetNuke.SiteExportImport.nuspec = Build\Tools\NuGet\DotNetNuke.SiteExportImport.nuspec
+		Build\Tools\NuGet\DotNetNuke.Web.Client.nuspec = Build\Tools\NuGet\DotNetNuke.Web.Client.nuspec
+		Build\Tools\NuGet\DotNetNuke.Web.Deprecated.nuspec = Build\Tools\NuGet\DotNetNuke.Web.Deprecated.nuspec
+		Build\Tools\NuGet\DotNetNuke.Web.Mvc.nuspec = Build\Tools\NuGet\DotNetNuke.Web.Mvc.nuspec
+		Build\Tools\NuGet\DotNetNuke.Web.nuspec = Build\Tools\NuGet\DotNetNuke.Web.nuspec
+		Build\Tools\NuGet\DotNetNuke.WebApi.nuspec = Build\Tools\NuGet\DotNetNuke.WebApi.nuspec
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Providers.AspNetClientCapabilityProvider", "DNN Platform\Providers\ClientCapabilityProviders\Provider.AspNetClientCapabilityProvider\DotNetNuke.Providers.AspNetClientCapabilityProvider.csproj", "{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -690,20 +738,6 @@ Global
 		{1C882AA9-2198-41EF-B325-605340FDEFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C882AA9-2198-41EF-B325-605340FDEFE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C882AA9-2198-41EF-B325-605340FDEFE5}.Release|x86.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|x86.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Debug|x86.Build.0 = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|x86.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Cloud_Release|x86.Build.0 = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E}.Release|x86.ActiveCfg = Release|Any CPU
 		{68368906-57DD-40D1-AC10-35211A17D617}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68368906-57DD-40D1-AC10-35211A17D617}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68368906-57DD-40D1-AC10-35211A17D617}.Cloud_Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1100,6 +1134,22 @@ Global
 		{13F62719-88BE-4EAD-9740-F0787A9B0A94}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13F62719-88BE-4EAD-9740-F0787A9B0A94}.Release|x86.ActiveCfg = Release|Any CPU
 		{13F62719-88BE-4EAD-9740-F0787A9B0A94}.Release|x86.Build.0 = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|Any CPU.ActiveCfg = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|Any CPU.Build.0 = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|x86.ActiveCfg = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Debug|x86.Build.0 = Cloud_Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|Any CPU.ActiveCfg = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|Any CPU.Build.0 = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|x86.ActiveCfg = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Cloud_Release|x86.Build.0 = Cloud_Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Debug|x86.Build.0 = Debug|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1130,7 +1180,6 @@ Global
 		{46924A38-CAB7-485D-9301-191E35F6255F} = {8978D97A-03F5-4BFA-A0A6-BC6E93804C88}
 		{1C882AA9-2198-41EF-B325-605340FDEFE5} = {8978D97A-03F5-4BFA-A0A6-BC6E93804C88}
 		{C3D4B15B-0AAA-494C-AAF5-5CC806B42A34} = {5D82591D-1525-40A1-ACA3-1F89D817E9AD}
-		{0EB2D920-395F-4DB7-8525-D9712E92FC3E} = {C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}
 		{973A675B-1CF8-42E0-8566-09B4EFD3E83E} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{88E649D7-1379-430F-B794-1F3B9B442C80} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{68368906-57DD-40D1-AC10-35211A17D617} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
@@ -1183,5 +1232,11 @@ Global
 		{B267CE88-DFFC-4BD8-9962-319E79C52526} = {1842CFA7-B7DA-4D39-A42D-7B4EF8241E1C}
 		{9A986091-4238-4804-8C86-6A9A005F72C2} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{13F62719-88BE-4EAD-9740-F0787A9B0A94} = {9A986091-4238-4804-8C86-6A9A005F72C2}
+		{2D7DB29D-72F1-44DE-A01E-D6547D8271C2} = {D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}
+		{50D97EFD-A619-4B88-92F1-C68A4F2A1BF2} = {2D7DB29D-72F1-44DE-A01E-D6547D8271C2}
+		{4F538A14-38F5-473F-8386-60D81F3F530A} = {2D7DB29D-72F1-44DE-A01E-D6547D8271C2}
+		{4248BC91-5EAC-489B-929F-6494F805B24E} = {2D7DB29D-72F1-44DE-A01E-D6547D8271C2}
+		{F4AAB2C9-8B8B-441B-8623-9347B62884A1} = {4248BC91-5EAC-489B-929F-6494F805B24E}
+		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7} = {C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}
 	EndGlobalSection
 EndGlobal

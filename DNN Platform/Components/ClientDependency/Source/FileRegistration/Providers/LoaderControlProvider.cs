@@ -24,73 +24,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 name = DefaultName;
 
             base.Initialize(name, config);
-        }
-
-        protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
-        {
-            var asArray = jsDependencies.ToArray();
-
-            if (!asArray.Any())
-                return string.Empty;
-
-            var sb = new StringBuilder();
-
-            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
-            {
-                foreach (var dependency in asArray)
-                {
-                    sb.Append(RenderSingleJsFile(dependency.FilePath, htmlAttributes));
-                }
-            }
-            else
-            {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
-                    ClientDependencyType.Javascript, 
-                    http,
-                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
-
-                foreach (var s in comp)
-                {
-                    sb.Append(RenderSingleJsFile(s, htmlAttributes));
-                }
-            }
-
-            return sb.ToString();
-        }
-
-        protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
-        {
-            var asArray = cssDependencies.ToArray();
-
-            if (!asArray.Any())
-                return string.Empty;
-
-            var sb = new StringBuilder();
-
-            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
-            {
-                foreach (var dependency in asArray)
-                {
-                    sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
-                }
-            }
-            else
-            {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
-                    ClientDependencyType.Css, 
-                    http,
-                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
-
-                foreach (var s in comp)
-                {
-                    sb.Append(RenderSingleCssFile(s, htmlAttributes));
-                }
-            }
-
-            return sb.ToString();
-        }
+        }        
 
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
         {

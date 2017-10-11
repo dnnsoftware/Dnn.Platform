@@ -42,7 +42,6 @@
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Components\51Degrees\bin\FiftyOne.Foundation.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\"/>
   </files>
 </package>

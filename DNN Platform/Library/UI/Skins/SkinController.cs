@@ -585,26 +585,5 @@ namespace DotNetNuke.UI.Skins
         }
 		
 		#endregion
-
-		#region Obsolete
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, string path)
-        {
-            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                string strMessage = UploadLegacySkin(rootPath, skinRoot, skinName, fileStream);
-                fileStream.Close();
-                return strMessage;
-            }
-        }
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, Stream inputStream)
-        {
-            return UploadLegacySkin(rootPath, skinRoot, skinName, inputStream);
-        }
-		
-		#endregion
     }
 }

@@ -520,7 +520,7 @@ namespace DotNetNuke.Entities.Profile
 
         #region Obsolete
 
-        [Obsolete("Deprecated in 6.2 as profile visibility has been extended")]
+        [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.")]
         [Browsable(false)]
         [XmlIgnore]
         public UserVisibilityMode Visibility

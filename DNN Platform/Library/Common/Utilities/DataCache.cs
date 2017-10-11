@@ -327,6 +327,8 @@ namespace DotNetNuke.Common.Utilities
         public const string VocabularyCacheKey = "Vocabularies";
         public const string TermCacheKey = "Terms_{0}";
 
+        internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_{0}";
+
         private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();
         private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
 
@@ -760,98 +762,5 @@ namespace DotNetNuke.Common.Utilities
                 CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
             }
         }
-
-        #region "Obsolete Methods"
-
-        [Obsolete("Deprecated in DNN 5.0 - Replace by ClearHostCache(True)")]
-        public static void ClearModuleCache()
-        {
-            ClearHostCache(true);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static object GetPersistentCacheItem(string CacheKey, Type objType)
-        {
-            return CachingProvider.Instance().GetItem(GetDnnCacheKey(CacheKey));
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.1 - Should have been declared Friend")]
-        public static void ClearDesktopModuleCache(int PortalId)
-        {
-            RemoveCache(String.Format(DesktopModuleCacheKey, PortalId));
-            RemoveCache(ModuleDefinitionCacheKey);
-            RemoveCache(ModuleControlsCacheKey);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.1 - Should have been declared Friend")]
-        public static void ClearHostSettingsCache()
-        {
-            RemoveCache(HostSettingsCacheKey);
-            RemoveCache(SecureHostSettingsCacheKey);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void RemovePersistentCacheItem(string CacheKey)
-        {
-            CachingProvider.Instance().Remove(GetDnnCacheKey(CacheKey));
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, DateTime AbsoluteExpiration, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, AbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, TimeSpan SlidingExpiration, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - SetCache(ByVal CacheKey As String, ByVal objObject As Object, ByVal objDependency As DotNetNuke.Services.Cache.DNNCacheDependency, ByVal AbsoluteExpiration As Date, ByVal SlidingExpiration As System.TimeSpan)")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - SetCache(ByVal CacheKey As String, ByVal objObject As Object, ByVal objDependency As DotNetNuke.Services.Cache.DNNCacheDependency, ByVal AbsoluteExpiration As Date, ByVal SlidingExpiration As System.TimeSpan, ByVal Priority As CacheItemPriority, ByVal OnRemoveCallback As CacheItemRemovedCallback)")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, CacheItemPriority Priority,
-                                    CacheItemRemovedCallback OnRemoveCallback, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Use new overload that uses a DNNCacheDependency")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Use new overload that uses a DNNCacheDependency")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Use new overload that uses a DNNCacheDependency")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, CacheItemPriority Priority,
-                                    CacheItemRemovedCallback OnRemoveCallback)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
-        }
-
-        #endregion
     }
 }

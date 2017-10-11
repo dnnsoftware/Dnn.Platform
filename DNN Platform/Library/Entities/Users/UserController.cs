@@ -560,6 +560,18 @@ namespace DotNetNuke.Entities.Users
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
 
+        public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
+        {
+            var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
+
+            var childPortalAlias = Globals.ResolveUrl(GetUserProfilePictureUrl(userId, width, height));
+            var cdv = GetProfilePictureCdv(portalId, userId);
+
+            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+                ? childPortalAlias + url + cdv
+                : Globals.ApplicationPath + childPortalAlias + url + cdv;
+        }
+
         private static string GetChildPortalAlias()
         {
             var settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -573,6 +585,29 @@ namespace DotNetNuke.Entities.Users
         {
             var settings = PortalController.Instance.GetCurrentPortalSettings();
             var userInfo = GetUserById(settings.PortalId, userId);
+            if (userInfo?.Profile == null)
+            {
+                return string.Empty;
+            }
+
+            var cdv = string.Empty;
+            var photoProperty = userInfo.Profile.GetProperty("Photo");
+
+            int photoFileId;
+            if (int.TryParse(photoProperty?.PropertyValue, out photoFileId))
+            {
+                var photoFile = FileManager.Instance.GetFile(photoFileId);
+                if (photoFile != null)
+                {
+                    cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
+                }
+            }
+            return cdv;
+        }
+
+        private static string GetProfilePictureCdv(int portalId, int userId)
+        {
+            var userInfo = GetUserById(portalId, userId);
             if (userInfo?.Profile == null)
             {
                 return string.Empty;
@@ -619,8 +654,6 @@ namespace DotNetNuke.Entities.Users
         {
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
-
-
 
         #endregion
 
@@ -1930,7 +1963,10 @@ namespace DotNetNuke.Entities.Users
             portalId = GetEffectivePortalId(portalId);
             user.PortalID = portalId;
 
-            var oldUser = Instance.GetUser(user.PortalID, user.UserID);
+            //clear the cache so that can get original info from database.
+            DataCache.RemoveCache(String.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
+            var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
+            var oldProfile = oldUser.Profile; //access the profile property to reload data from database.
 
             //Update the User
             MembershipProvider.Instance().UpdateUser(user);
@@ -2219,6 +2255,50 @@ namespace DotNetNuke.Entities.Users
             user.Membership.Approved = true;
             UpdateUser(portalId, user);
             ApproveUser(user);
+        }
+
+        /// <summary>
+        /// Returns a absolute URL for the user profile image while removing that of the deleted and super users
+        /// </summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <param name="user">user info</param>
+        /// <param name="width">width in pixel</param>
+        /// <param name="height">height in pixel</param>
+        /// <param name="showSuperUsers">true if want show super users user profile picture, false otherwise</param>
+        /// <returns>absolute user profile picture url</returns>
+        /// <returns></returns>
+        public static string GetProfileAvatarAbsoluteUrl(int portalId, UserInfo user, int width = 64,
+            int height = 64, bool showSuperUsers = true)
+        {
+            var userId = user != null && user.UserID > 0 && !user.IsDeleted && (showSuperUsers || !user.IsSuperUser) ? user.UserID : 0;
+            var relativePath = Instance.GetUserProfilePictureUrl(portalId, userId, width, height);
+            return GetAbsoluteUrl(portalId, relativePath);
+        }
+
+        /// <summary>
+        /// Returns an absolute url given a relative url
+        /// </summary>
+        /// <param name="portalId">portal Id</param>
+        /// <param name="relativeUrl">relative url</param>
+        /// <returns>absolute url</returns>
+        private static string GetAbsoluteUrl(int portalId, string relativeUrl)
+        {
+            if (relativeUrl.Contains("://"))
+            {
+                return relativeUrl;
+            }
+            var portalAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).First(p => p.IsPrimary);
+            var domainName = GetDomainName(portalAlias);
+            return Globals.AddHTTP(domainName + relativeUrl);
+        }
+
+
+        private static string GetDomainName(PortalAliasInfo portalAlias)
+        {
+            var httpAlias = portalAlias.HTTPAlias;
+            return httpAlias.IndexOf("/", StringComparison.InvariantCulture) != -1 ?
+                httpAlias.Substring(0, httpAlias.IndexOf("/", StringComparison.InvariantCulture)) :
+                httpAlias;
         }
 
         #endregion

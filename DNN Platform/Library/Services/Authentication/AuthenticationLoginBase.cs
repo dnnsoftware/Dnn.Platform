@@ -19,12 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
-
 using System.Web;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-
+using DotNetNuke.Services.UserRequest;
+using System;
 #endregion
 
 namespace DotNetNuke.Services.Authentication
@@ -111,14 +110,10 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
+        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static string GetIPAddress()
         {
-            string _IPAddress = Null.NullString;
-            if (HttpContext.Current.Request.UserHostAddress != null)
-            {
-                _IPAddress = HttpContext.Current.Request.UserHostAddress;
-            }
-            return _IPAddress;
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));                        
         }
     }
 }

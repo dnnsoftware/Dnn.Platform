@@ -418,7 +418,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
 
                     //only Portal Administrators can manage the visibility on all Tabs
-                    var isAdmin = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+                    var isAdmin = PermissionProvider.Instance().IsPortalEditor();
                     rowAllTabs.Visible = isAdmin;
                     chkAllModules.Enabled = isAdmin;
 

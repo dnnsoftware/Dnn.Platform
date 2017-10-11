@@ -1661,7 +1661,16 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            
+
+            if (!firstName.Equals(user.FirstName))
+            {
+                user.FirstName = firstName;
+            }
+
+            if (!lastName.Equals(user.LastName))
+            {
+                user.LastName = lastName;
+            }
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
@@ -1858,57 +1867,5 @@ namespace DotNetNuke.Security.Membership
             }
             return arrUsers;
         }
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUnAuthorizedUsers(int portalId, bool isHydrated)
-        {
-            return GetUnAuthorizedUsers(portalId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUser(int portalId, int userId, bool isHydrated)
-        {
-            return GetUser(portalId, userId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUserByUserName(int portalId, string username, bool isHydrated)
-        {
-            return GetUserByUserName(portalId, username);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsers(int portalId, bool isHydrated, int pageIndex, int pageSize,
-                                           ref int totalRecords)
-        {
-            return GetUsers(portalId, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByEmail(int portalId, bool isHydrated, string emailToMatch, int pageIndex,
-                                                  int pageSize, ref int totalRecords)
-        {
-            return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByUserName(int portalId, bool isHydrated, string userNameToMatch,
-                                                     int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByProfileProperty(int portalId, bool isHydrated, string propertyName,
-                                                            string propertyValue, int pageIndex, int pageSize,
-                                                            ref int totalRecords)
-        {
-            return GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize,
-                                             ref totalRecords);
-        }
-
-        #endregion
     }
 }

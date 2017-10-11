@@ -1,0 +1,13 @@
+﻿<h3>DotNetNuke AspNet Client Capability Provider</h3>
+<hr/>
+<div class="License">
+	<p class="Owner">
+		<b>Version </b>8.3.0<br /><br />
+	</p>
+	<p><b>Identify mobile web traffic using a comprehensive set of device and browser specific properties from ASP.NET browser object</b></p>
+	<p>This DotNetNuke module provides seamless access to these capabilities.</p>
+	<h4>Bug Fixes</h4>
+	<ul>
+		<li>None</li>
+	</ul>
+</div>

@@ -13,7 +13,9 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
@@ -169,11 +171,11 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var accountKey = tbAccountKey.Text.Trim();
             var useHttps = chkUseHttps.Checked;
 
-            StorageCredentialsAccountAndKey sc;
+            StorageCredentials sc;
 
             try
             {
-                sc = new StorageCredentialsAccountAndKey(accountName, accountKey);
+                sc = new StorageCredentials(accountName, accountKey);
             }
             catch (Exception ex)
             {
@@ -191,7 +193,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             try
             {
-                if (container.CreateIfNotExist())
+                if (container.CreateIfNotExists())
                 {
                     var permissions = container.GetPermissions();
                     permissions.PublicAccess = BlobContainerPublicAccessType.Container;
@@ -200,25 +202,36 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
                 return true;
             }
-            catch (StorageClientException ex)
+            catch (StorageException ex)
             {
-                switch (ex.ErrorCode)
+                if (ex.RequestInformation.ExtendedErrorInformation != null)
                 {
-                    case StorageErrorCode.AccountNotFound:
-                        valContainerName.ErrorMessage = Localization.GetString("AccountNotFound.ErrorMessage", LocalResourceFile);
-                        break;
-                    case StorageErrorCode.AuthenticationFailure:
-                        valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", LocalResourceFile);
-                        break;
-                    case StorageErrorCode.AccessDenied:
-                        valContainerName.ErrorMessage = Localization.GetString("AccessDenied.ErrorMessage", LocalResourceFile);
-                        break;
-                    case StorageErrorCode.ContainerAlreadyExists:
-                        return true;
-                    default:
-                        Logger.Error(ex);
-                        valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage", LocalResourceFile);
-                        break;
+                    switch (ex.RequestInformation.ExtendedErrorInformation.ErrorCode)
+                    {
+                        case "AccountNotFound":
+                            valContainerName.ErrorMessage = Localization.GetString("AccountNotFound.ErrorMessage",
+                                LocalResourceFile);
+                            break;
+                        case "AuthenticationFailure":
+                            valContainerName.ErrorMessage = Localization.GetString(
+                                "AuthenticationFailure.ErrorMessage", LocalResourceFile);
+                            break;
+                        case "AccessDenied":
+                            valContainerName.ErrorMessage = Localization.GetString("AccessDenied.ErrorMessage",
+                                LocalResourceFile);
+                            break;
+                        case "ContainerAlreadyExists":
+                            return true;
+                        default:
+                            Logger.Error(ex);
+                            valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage",
+                                LocalResourceFile);
+                            break;
+                    }
+                }
+                else
+                {
+                    valContainerName.ErrorMessage = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
                 }
             }
             catch (Exception ex)
@@ -252,11 +265,11 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var accountKey = tbAccountKey.Text.Trim();
             var useHttps = chkUseHttps.Checked;
 
-            StorageCredentialsAccountAndKey sc;
+            StorageCredentials sc;
             
             try
             {
-                sc = new StorageCredentialsAccountAndKey(accountName, accountKey);
+                sc = new StorageCredentials(accountName, accountKey);
             }
             catch (Exception ex)
             {
@@ -278,17 +291,24 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                     ddlContainers.Items.Add(container.Name);
                 }
             }
-            catch (StorageClientException ex)
+            catch (StorageException ex)
             {
-                switch (ex.ErrorCode)
+                if(ex.RequestInformation.ExtendedErrorInformation != null)
+                { 
+                    switch (ex.RequestInformation.ExtendedErrorInformation.ErrorCode)
+                    {
+                        case "AuthenticationFailure":
+                            valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", LocalResourceFile);
+                            break;
+                        default:
+                            Logger.Error(ex);
+                            valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", LocalResourceFile);
+                            break;
+                    }
+                }
+                else
                 {
-                    case StorageErrorCode.AuthenticationFailure:
-                        valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", LocalResourceFile);
-                        break;
-                    default:
-                        Logger.Error(ex);
-                        valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", LocalResourceFile);
-                        break;
+                    valContainerName.ErrorMessage = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
                 }
 
                 valContainerName.IsValid = false;

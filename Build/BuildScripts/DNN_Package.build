@@ -13,8 +13,6 @@
     <InstallAssemblyExclude Include="$(WebsitePath)\bin\DotNetNuke.Modules.*"/>
     <InstallAssemblyExclude Include="$(WebsitePath)\bin\DotNetNuke.Enterprise.*"/>
     <InstallAssemblyExclude Include="$(WebsitePath)\bin\DotNetNuke.Professional.*"/>
-    <InstallAssemblyExclude Include="$(WebsitePath)\bin\Providers\DotNetNuke.Provider.Professional.FiftyOnePremiumProvider.dll"/>
-    <InstallAssemblyExclude Include="$(WebsitePath)\bin\Providers\FiftyOne.Foundation.dll"/>
   </ItemGroup>
   
   <ItemGroup>
@@ -31,7 +29,6 @@
     <InstallExclude Include="$(WebsitePath)\Install\Skin\*.resources"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\Facebook*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Provider\RadEditorProvider_*_Install.resources" />
-    <InstallExclude Include="$(WebsitePath)\Install\Provider\FiftyOnePremiumProvider_*_Install.zip" />
     <InstallExclude Include="$(WebsitePath)\Install\AuthSystem\DNNPro*"/>
     <InstallExclude Include="$(WebsitePath)\**\*.cs" />
     <InstallExclude Include="$(WebsitePath)\bin\**\*.*"/>

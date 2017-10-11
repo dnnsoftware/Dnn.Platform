@@ -1,0 +1,37 @@
+﻿-- Check if unique id in TabModules exists or not
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]
+	@UniqueId uniqueidentifier
+AS
+BEGIN
+SELECT TOP 1 TabId FROM {databaseOwner}[{objectQualifier}Tabs] 
+	WHERE UniqueId = @UniqueId 
+END
+GO
+
+-- Check if unique id in TabModules exists or not
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUniqueId]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUniqueId]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUniqueId]
+	@TableName			nvarchar(100),
+	@PrimaryKeyName		nvarchar(100),
+	@PrimaryKeyID		int,
+	@UniqueId			uniqueidentifier
+AS
+BEGIN
+	DECLARE @sqlCommand varchar(1000)
+
+    SET @sqlCommand =
+        N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
+        N' SET UniqueId=''' + CONVERT(NVARCHAR(50), @UniqueId) + '''' +
+        N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) + N';'
+
+    --PRINT (@sqlCommand)
+    EXEC (@sqlCommand)
+END
+GO

@@ -52,23 +52,7 @@ namespace DotNetNuke.UI.Containers
 		
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. The concept of an adminControl no longer exists.")]
-        protected bool m_adminControl;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. The concept of an adminModule no longer exists.")]
-        protected bool m_adminModule;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2 Replaced by ActionRoot Property")]
-        protected ModuleAction m_menuActionRoot;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. Replaced by Actions Property")]
-        protected ModuleActionCollection m_menuActions;
-
         protected bool m_supportsIcons = true;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. No longer neccessary as there is no concept of an Admin Page")]
-        protected bool m_tabPreview;
 		
 		#endregion
 
@@ -147,37 +131,6 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 return m_supportsIcons;
-            }
-        }
-
-        [Obsolete("Obsoleted in DotNetNuke 5.0. Use ModuleContext.Configuration")]
-        public ModuleInfo ModuleConfiguration
-        {
-            get
-            {
-                return ModuleContext.Configuration;
-            }
-        }
-
-        [Obsolete("Obsoleted in DotNetNuke 5.0. Replaced by ModuleControl")]
-        public PortalModuleBase PortalModule
-        {
-            get
-            {
-                return new PortalModuleBase();
-            }
-            set
-            {
-                ModuleControl = value;
-            }
-        }
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. Replaced by Actions Property")]
-        public ModuleActionCollection MenuActions
-        {
-            get
-            {
-                return Actions;
             }
         }
 		

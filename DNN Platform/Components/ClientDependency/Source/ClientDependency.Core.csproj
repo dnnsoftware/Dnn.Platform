@@ -62,6 +62,7 @@
     <Compile Include="BundleResult.cs" />
     <Compile Include="ClientDependencyResourceHandler.cs" />
     <Compile Include="CompositeFiles\CSSMin.cs" />
+    <Compile Include="CompositeFiles\CssMinifier.cs" />
     <Compile Include="CompositeFiles\IVirtualFile.cs" />
     <Compile Include="CompositeFiles\IVirtualFileProvider.cs" />
     <Compile Include="CompositeFiles\IVirtualFileWriter.cs" />

@@ -3165,6 +3165,36 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
+		/// Gets the portal setting as double.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal Id.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
+        {
+            double retValue = Null.NullDouble;
+            try
+            {
+                string setting = Null.NullString;
+                PortalController.Instance.GetPortalSettings(portalId).TryGetValue(key, out setting);
+                if (string.IsNullOrEmpty(setting))
+                {
+                    retValue = defaultValue;
+                }
+                else
+                {
+                    retValue = Convert.ToDouble(setting);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+            return retValue;
+        }
+
+        /// <summary>
 		/// Gets the portal setting as integer for a specific language (or neutral).
 		/// </summary>
 		/// <param name="key">The key.</param>

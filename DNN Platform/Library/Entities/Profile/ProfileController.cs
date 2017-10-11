@@ -288,6 +288,7 @@ namespace DotNetNuke.Entities.Profile
                                                                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
         }
 
@@ -313,6 +314,18 @@ namespace DotNetNuke.Entities.Profile
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Clear profiles of all users by portal Id
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
+        {
+            DataCache.ClearCache(string.Format(DataCache.UserCacheKey, portalId, string.Empty));
+            DataCache.ClearCache(string.Format(DataCache.UserProfileCacheKey, portalId, string.Empty));
         }
 
         /// -----------------------------------------------------------------------------
@@ -491,6 +504,7 @@ namespace DotNetNuke.Entities.Profile
                                               UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -511,7 +525,7 @@ namespace DotNetNuke.Entities.Profile
             var portalId = GetEffectivePortalId(user.PortalID);
             user.PortalID = portalId;
 
-            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID };
+            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID, IsSuperUser = user.IsSuperUser };
             _profileProvider.GetUserProfile(ref oldUser);
 
             _profileProvider.UpdateUserProfile(user);
@@ -550,10 +564,6 @@ namespace DotNetNuke.Entities.Profile
                         {
                             photoChanged = true;
                         }
-                        else if (propertyName.Equals(UserProfile.USERPROFILE_Biography, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            propertyValue = RemoveUnsafeAttributes(propertyValue);
-                        }
 
                         user.Profile.SetProfileProperty(propertyName, propertyValue);
                     }
@@ -579,33 +589,6 @@ namespace DotNetNuke.Entities.Profile
                 UserController.UpdateUser(portalId, user);
             }
             return user;
-        }
-
-        private static string RemoveUnsafeAttributes(string content)
-        {
-            var cleanContent = content;
-
-            var needEncode = false;
-            if (cleanContent.Contains("&lt;"))
-            {
-                cleanContent = HttpUtility.HtmlDecode(cleanContent);
-                needEncode = true;
-            }
-
-            var tagMatches = Regex.Matches(cleanContent, @"(<[^>]*?) on.*?\=(['""]?)[\s\S]*?(\2 )([^>]*?>)", RegexOptions.IgnoreCase);
-            foreach (Match match in tagMatches)
-            {
-                var tagContent = match.Value;
-                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""]?)[\s\S]*?(\1 )", string.Empty, RegexOptions.IgnoreCase);
-                cleanContent = cleanContent.Replace(tagContent, cleanTagContent);
-            }
-
-            if (needEncode)
-            {
-                cleanContent = HttpUtility.HtmlEncode(cleanContent);
-            }
-
-            return cleanContent;
         }
 
         private static void CreateThumbnails(int fileId)

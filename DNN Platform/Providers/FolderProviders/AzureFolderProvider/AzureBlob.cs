@@ -6,7 +6,7 @@
 #endregion
 
 using System;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
@@ -26,7 +26,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
 
             _relativePath = blob.RelativePath();
-            _lastModifiedUtc = blob.Properties.LastModifiedUtc;
+            _lastModifiedUtc = blob.Properties.LastModified.GetValueOrDefault(DateTimeOffset.MinValue).UtcDateTime;
             _length = blob.Properties.Length;
             _etag = blob.Properties.ETag;
         }

@@ -33,7 +33,7 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.HttpModules.Compression
 {
     
-    [Obsolete("Removed in version 6.2 - class still exists but does nothing.")]
+    [Obsolete("The http modules in web.config removed in 9.2.0, this class need to be removed in future release for upgrade compactible.")]
     public class CompressionModule : IHttpModule
     {
         #region IHttpModule Members

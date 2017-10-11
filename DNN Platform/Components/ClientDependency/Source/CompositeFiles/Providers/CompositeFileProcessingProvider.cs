@@ -52,11 +52,13 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             if (fi.Exists)
 				fi.Delete();
 
+            //*** DNN related change ***  begin
             using (var fs = fi.Create())
             {
                 fs.Write(fileContents, 0, fileContents.Length);
                 fs.Close();
             }
+            //*** DNN related change ***  end
             return fi;
 		}
 
@@ -70,6 +72,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 	    /// <returns></returns>
 	    public override byte[] CombineFiles(string[] filePaths, HttpContextBase context, ClientDependencyType type, out List<CompositeFileDefinition> fileDefs)
 		{
+            //*** DNN related change *** begin
             using (var ms = new MemoryStream(5000))
             using (var sw = new StreamWriter(ms, Encoding.UTF8))
             {
@@ -82,6 +85,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                 fileDefs = fDefs;
                 return outputBytes;
             }
+            //*** DNN related change *** end
 		}
 
 		/// <summary>

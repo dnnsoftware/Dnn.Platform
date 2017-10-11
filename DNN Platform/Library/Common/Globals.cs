@@ -1537,20 +1537,6 @@ namespace DotNetNuke.Common
             return total;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetStatus - determines whether an upgrade/install is required and sest the
-        /// Database Version and Status accordingly
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Replaced in DotNetNuke 6.0 by Globals.Status Property")]
-        public static void GetStatus()
-        {
-            //There is no need to do anything here since the backing propery (Globals.Status) is now lazy loaded.
-        }
-
         /// <summary>
         /// Sets the status.
         /// </summary>
@@ -3847,59 +3833,6 @@ namespace DotNetNuke.Common
         // Constants are inlined in code and would require a rebuild of any module or skinobject
         // that may be using these constants.
 
-        [Obsolete("Replaced in DotNetNuke 5.0 by SkinController.GetDefaultAdminSkin and SkinController.GetDefaultPortalSkin")]
-        public static SkinDefaults DefaultSkin
-        {
-            get
-            {
-                return SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
-            }
-        }
-
-        /// <summary>
-        /// Gets the default container.
-        /// </summary>
-        /// <value>Default Container</value>
-        public static SkinDefaults DefaultContainer
-        {
-            get
-            {
-                return SkinDefaults.GetSkinDefaults(SkinDefaultType.ContainerInfo);
-            }
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.0 by Host.GetHostSettingDictionary")]
-        public static Hashtable HostSettings
-        {
-            get
-            {
-                var h = new Hashtable();
-                foreach (ConfigurationSetting kvp in HostController.Instance.GetSettings().Values)
-                {
-                    h.Add(kvp.Key, kvp.Value);
-                }
-                return h;
-            }
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.0 by Host.PerformanceSetting")]
-        public static PerformanceSettings PerformanceSetting
-        {
-            get
-            {
-                return Host.PerformanceSetting;
-            }
-        }
-
-        [Obsolete("Deprecated in 5.1. Replaced by CachingProvider.Instance.IsWebFarm.")]
-        public static bool WebFarmEnabled
-        {
-            get
-            {
-                return CachingProvider.Instance().IsWebFarm();
-            }
-        }
-
         #region "Html functions moved to HtmlUtils.vb"
 
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail")]
@@ -3925,22 +3858,6 @@ namespace DotNetNuke.Common
         }
 
         #endregion
-
-        [Obsolete("This method has been deprecated.")]
-        public static void AddFile(string strFileName, string strExtension, string FolderPath, string strContentType, int Length, int imageWidth, int imageHeight)
-        {
-            // Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            int portalId = IsHostTab(portalSettings.ActiveTab.TabID) ? Null.NullInteger : portalSettings.PortalId;
-            var objFiles = new FileController();
-            var objFolders = new FolderController();
-			FolderInfo objFolder = objFolders.GetFolder(portalId, FolderPath, false);
-            if ((objFolder != null))
-            {
-				var objFile = new FileInfo(portalId, strFileName, strExtension, Length, imageWidth, imageHeight, strContentType, FolderPath, objFolder.FolderID, objFolder.StorageLocation, true);
-                objFiles.AddFile(objFile);
-            }
-        }
 
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString")]
         public static string GetDBConnectionString()
@@ -3980,12 +3897,6 @@ namespace DotNetNuke.Common
             return arrFileList;
         }
 
-        [Obsolete("This method has been replaced by DesktopModuleController.GetDesktopModuleByModuleName() in DotNetNuke 5.0")]
-        public static DesktopModuleInfo GetDesktopModuleByName(string name)
-        {
-            return DesktopModuleController.GetDesktopModuleByModuleName(name, Null.NullInteger);
-        }
-
         [Obsolete("This method has been deprecated. Replaced by GetSubFolderPath(ByVal strFileNamePath As String, ByVal portaId as Integer).")]
         public static string GetSubFolderPath(string strFileNamePath)
         {
@@ -4005,227 +3916,6 @@ namespace DotNetNuke.Common
             return strFolderpath.Substring(ParentFolderName.Length).Replace("\\", "/");
         }
 
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by the DatabaseVersion property.")]
-        public static string GetDatabaseVersion()
-        {
-            string strDatabaseVersion = "";
-            try
-            {
-                Version databaseVersion = DataProvider.Instance().GetVersion();
-                strDatabaseVersion = databaseVersion.Major.ToString("00") + databaseVersion.Minor.ToString("00") + databaseVersion.Build.ToString("00");
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                strDatabaseVersion = "ERROR:" + ex.Message;
-            }
-
-            return strDatabaseVersion;
-        }
-
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by the DatabaseVersion property.")]
-        public static string GetDatabaseVersion(string separator)
-        {
-            string strDatabaseVersion = "";
-            try
-            {
-                Version databaseVersion = DataProvider.Instance().GetVersion();
-                strDatabaseVersion = databaseVersion.Major.ToString("00") + separator + databaseVersion.Minor.ToString("00") + separator + databaseVersion.Build.ToString("00");
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                strDatabaseVersion = "ERROR:" + ex.Message;
-            }
-
-            return strDatabaseVersion;
-        }
-
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by TabController.GetPortalTabs().")]
-        public static ArrayList GetPortalTabs(int intPortalId, bool blnNoneSpecified, bool blnHidden, bool blnDeleted, bool blnURL, bool bCheckAuthorised)
-        {
-            List<TabInfo> listTabs = TabController.GetPortalTabs(intPortalId, Null.NullInteger, blnNoneSpecified, Null.NullString, blnHidden, blnDeleted, blnURL, false, bCheckAuthorised);
-            var arrTabs = new ArrayList();
-            foreach (TabInfo objTab in listTabs)
-            {
-                TabInfo tabTemp = objTab.Clone();
-                tabTemp.TabName = tabTemp.IndentedTabName;
-                arrTabs.Add(tabTemp);
-            }
-            return arrTabs;
-        }
-
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by TabController.GetPortalTabs().")]
-        public static ArrayList GetPortalTabs(int intPortalId, bool blnIncludeActiveTab, bool blnNoneSpecified, bool blnHidden, bool blnDeleted, bool blnURL, bool bCheckAuthorised)
-        {
-            // Obtain current PortalSettings from Current Context
-            int excludeTabId = Null.NullInteger;
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (!blnIncludeActiveTab)
-            {
-                excludeTabId = _portalSettings.ActiveTab.TabID;
-            }
-
-            List<TabInfo> listTabs = TabController.GetPortalTabs(intPortalId, excludeTabId, blnNoneSpecified, Null.NullString, blnHidden, blnDeleted, blnURL, false, bCheckAuthorised);
-            var arrTabs = new ArrayList();
-            foreach (TabInfo objTab in listTabs)
-            {
-                TabInfo tabTemp = objTab.Clone();
-                tabTemp.TabName = tabTemp.IndentedTabName;
-                arrTabs.Add(tabTemp);
-            }
-            return arrTabs;
-        }
-
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by TabController.GetPortalTabs().")]
-        public static ArrayList GetPortalTabs(ArrayList objDesktopTabs, bool blnNoneSpecified, bool blnHidden)
-        {
-            var arrPortalTabs = new ArrayList();
-            TabInfo objTab = default(TabInfo);
-
-            if (blnNoneSpecified)
-            {
-                objTab = new TabInfo();
-                objTab.TabID = -1;
-                objTab.TabName = "<" + Localization.GetString("None_Specified") + ">";
-                objTab.TabOrder = 0;
-                objTab.ParentId = -2;
-                arrPortalTabs.Add(objTab);
-            }
-
-            foreach (TabInfo tab in objDesktopTabs)
-            {
-                if (!tab.IsSuperTab)
-                {
-                    if ((tab.IsVisible || blnHidden) && (tab.IsDeleted == false) && (tab.TabType == TabType.Normal))
-                    {
-                        TabInfo tabTemp = tab.Clone();
-                        tabTemp.TabName = tabTemp.IndentedTabName;
-                        arrPortalTabs.Add(tabTemp);
-                    }
-                }
-            }
-
-            return arrPortalTabs;
-        }
-
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by TabController.GetPortalTabs().")]
-        public static ArrayList GetPortalTabs(ArrayList objDesktopTabs, bool blnNoneSpecified, bool blnHidden, bool blnDeleted, bool blnURL)
-        {
-            var arrPortalTabs = new ArrayList();
-            TabInfo objTab = default(TabInfo);
-
-            if (blnNoneSpecified)
-            {
-                objTab = new TabInfo();
-                objTab.TabID = -1;
-                objTab.TabName = "<" + Localization.GetString("None_Specified") + ">";
-                objTab.TabOrder = 0;
-                objTab.ParentId = -2;
-                arrPortalTabs.Add(objTab);
-            }
-
-            foreach (TabInfo tab in objDesktopTabs)
-            {
-                if (!tab.IsSuperTab)
-                {
-                    if ((tab.IsVisible || blnHidden) && (tab.IsDeleted == false || blnDeleted) && (tab.TabType == TabType.Normal || blnURL))
-                    {
-                        TabInfo tabTemp = tab.Clone();
-                        tabTemp.TabName = tabTemp.IndentedTabName;
-                        arrPortalTabs.Add(tabTemp);
-                    }
-                }
-            }
-
-            return arrPortalTabs;
-        }
-
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by TabController.GetPortalTabs().")]
-        public static ArrayList GetPortalTabs(ArrayList objDesktopTabs, int currentTab, bool blnNoneSpecified, bool blnHidden, bool blnDeleted, bool blnURL, bool bCheckAuthorised)
-        {
-            var arrPortalTabs = new ArrayList();
-            TabInfo objTab = default(TabInfo);
-
-            if (blnNoneSpecified)
-            {
-                objTab = new TabInfo();
-                objTab.TabID = -1;
-                objTab.TabName = "<" + Localization.GetString("None_Specified") + ">";
-                objTab.TabOrder = 0;
-                objTab.ParentId = -2;
-                arrPortalTabs.Add(objTab);
-            }
-
-            foreach (TabInfo tab in objDesktopTabs)
-            {
-                if (((currentTab < 0) || (tab.TabID != currentTab)) && !tab.IsSuperTab)
-                {
-                    if ((tab.IsVisible || blnHidden) && (tab.IsDeleted == false || blnDeleted) && (tab.TabType == TabType.Normal || blnURL))
-                    {
-                        TabInfo tabTemp = tab.Clone();
-                        tabTemp.TabName = tabTemp.IndentedTabName;
-                        if (bCheckAuthorised)
-                        {
-                            //Check if User has Administrator rights to this tab
-                            if (TabPermissionController.CanAdminPage(tabTemp))
-                            {
-                                arrPortalTabs.Add(tabTemp);
-                            }
-                        }
-                        else
-                        {
-                            arrPortalTabs.Add(tabTemp);
-                        }
-                    }
-                }
-            }
-
-            return arrPortalTabs;
-        }
-
-        [Obsolete("This method has been replaced in DotNetNuke 5.0 by the Status property. and the GetStatus method.")]
-        public static UpgradeStatus GetUpgradeStatus()
-        {
-            return Status;
-        }
-
-        [Obsolete("This method has been replaced by IsAdminSkin() in DotNetNuke 5.0, as there is no longer the concept of an Admin Tab/Page")]
-        public static bool IsAdminSkin(bool IsAdminTab)
-        {
-            string AdminKeys = "tab,module,importmodule,exportmodule,help";
-
-            string ControlKey = "";
-            if ((HttpContext.Current.Request.QueryString["ctl"] != null))
-            {
-                ControlKey = HttpContext.Current.Request.QueryString["ctl"].ToLower();
-            }
-
-            int ModuleID = -1;
-            if ((HttpContext.Current.Request.QueryString["mid"] != null))
-            {
-                Int32.TryParse(HttpContext.Current.Request.QueryString["mid"], out ModuleID);
-            }
-
-            return IsAdminTab || (!string.IsNullOrEmpty(ControlKey) && ControlKey != "view" && ModuleID != -1) ||
-                   (!string.IsNullOrEmpty(ControlKey) && AdminKeys.IndexOf(ControlKey) != -1 && ModuleID == -1);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Returns whether the tab being displayed is in preview mode
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in DotNetNuke 5.0")]
-        public static bool IsTabPreview()
-        {
-            return (PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.View);
-        }
-
         [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs")]
         public static string LinkClickURL(string Link)
         {
@@ -4237,30 +3927,6 @@ namespace DotNetNuke.Common
         public static string PreventSQLInjection(string strSQL)
         {
             return (PortalSecurity.Instance).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
-        }
-
-        [Obsolete("Deprecated in DNN 5.3. Replaced by UserProfileURL")]
-        public static string ProfileURL(int userID)
-        {
-            string strURL = "";
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-
-            if (_portalSettings.UserTabId != -1)
-            {
-                strURL = NavigateURL(_portalSettings.UserTabId);
-            }
-            else
-            {
-                strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Profile", "UserID=" + userID);
-            }
-
-            return strURL;
-        }
-
-        [Obsolete("This method has been deprecated. Replaced by same method in FileSystemUtils class.")]
-        public static string UploadFile(string RootPath, HttpPostedFile objHtmlInputFile, bool Unzip)
-        {
-            return FileSystemUtils.UploadFile(RootPath, objHtmlInputFile, Unzip);
         }
 
         #endregion

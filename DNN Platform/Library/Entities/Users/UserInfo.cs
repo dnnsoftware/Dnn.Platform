@@ -56,7 +56,6 @@ namespace DotNetNuke.Entities.Users
         #region Private Members
 
         private string _administratorRoleName;
-        private string _fullName;
         private UserMembership _membership;
         private UserProfile _profile;
         private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
@@ -470,7 +469,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------        
         public DateTime LocalTime()
         {
-            return LocalTime(DateUtils.GetDatabaseTime());
+            return LocalTime(DateUtils.GetDatabaseUtcTime());
         }
 
         /// -----------------------------------------------------------------------------
@@ -503,31 +502,6 @@ namespace DotNetNuke.Entities.Users
             format = format.Replace("[USERNAME]", Username);
             DisplayName = format;
         }
-
-        #endregion
-
-        #region Obsolete
-
-        [Obsolete("Deprecated in DNN 6.2. Roles are no longer stored in a cookie")]
-        public void ClearRoles() { }
-
-        [Browsable(false), Obsolete("Deprecated in DNN 5.1. This property has been deprecated in favour of Display Name")]
-        public string FullName
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(_fullName))
-                {
-                    _fullName = FirstName + " " + LastName;
-                }
-                return _fullName;
-            }
-            set { _fullName = value; }
-        }
-
-        [Browsable(false)]
-        [Obsolete("Deprecated in DNN 6.2. Roles are no longer stored in a cookie so this property is no longer neccessary")]
-        public bool RefreshRoles { get; set; }
 
         #endregion
     }

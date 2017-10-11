@@ -329,54 +329,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowSecure
-        {
-            get
-            {
-                if (ViewState["ShowSecure"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowSecure"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowSecure"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
-                }
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowDatabase
-        {
-            get
-            {
-                if (ViewState["ShowDatabase"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowDatabase"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowDatabase"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
-                }
-            }
-        }
-
         public bool ShowTabs
         {
             get

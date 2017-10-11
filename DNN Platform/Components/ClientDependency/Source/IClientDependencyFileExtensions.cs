@@ -30,16 +30,21 @@ namespace ClientDependency.Core
             {
                 return file.FilePath; 
             }
-            if (!http.IsAbsolute(file.FilePath))
+
+            var filePath = file.FilePath;
+            if (!http.IsAbsolute(filePath))
             {
                 //get the relative path
                 var path = http.Request.AppRelativeCurrentExecutionFilePath.Substring(0, http.Request.AppRelativeCurrentExecutionFilePath.LastIndexOf('/') + 1);
-                return http.ResolveUrl(path + file.FilePath);
+                filePath = http.ResolveUrl(path + filePath);
             }
-            return file.FilePath;
+            else if (filePath.StartsWith("//"))
+            {
+                return filePath;
+            }
+
+            var uri = new Uri(new Uri("https://example.com"), filePath);
+            return uri.PathAndQuery;
         }
-
-        
-
     }
 }

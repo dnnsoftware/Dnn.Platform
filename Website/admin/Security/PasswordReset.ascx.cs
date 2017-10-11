@@ -39,6 +39,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -72,9 +73,9 @@ namespace DotNetNuke.Modules.Admin.Security
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            _ipAddress = Request.UserHostAddress;
+            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
 
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");

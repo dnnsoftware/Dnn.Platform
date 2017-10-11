@@ -498,8 +498,9 @@ namespace DotNetNuke.Services.Installer.Installers
 				//Legacy Packages have no Release Notes
 				Package.ReleaseNotes = Util.PACKAGE_NoReleaseNotes;
             }
-			
+
             //Parse the Dependencies
+            var packageDependencies = Package.Dependencies;
             foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
             {
 			    var dependency = DependencyFactory.GetDependency(dependencyNav);
@@ -507,7 +508,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 if (packageDependecy != null)
                 {
-                    Package.Dependencies.Add(packageDependecy.PackageDependency);
+                    packageDependencies.Add(packageDependecy.PackageDependency);
                 }
 
                 if (!dependency.IsValid)

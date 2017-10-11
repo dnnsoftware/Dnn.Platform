@@ -329,10 +329,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (Request.IsAuthenticated != true) return;
 
-            if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
-            {
-                UserController.ResetPasswordToken(User);
-            }
             bool canSend = Mail.SendMail(User, MessageType.PasswordReminder, PortalSettings) == string.Empty;
             var message = String.Empty;
             if (canSend)

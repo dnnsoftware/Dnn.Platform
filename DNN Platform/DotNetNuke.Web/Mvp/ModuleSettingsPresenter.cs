@@ -18,11 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 using System;
 using System.Collections.Generic;
 
 namespace DotNetNuke.Web.Mvp
 {
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public class ModuleSettingsPresenterBase<TView> : ModulePresenterBase<TView> where TView : class, ISettingsView
     {
         #region Constructors
