@@ -1212,3 +1212,60 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
 .dialogNote {
     margin: 5px 0 5px 0;
 }
+
+#dnnModuleDigitalAssetsSelectionToolbar {
+    min-height:25px;
+    padding: .2em .2em;
+}
+#dnnModuleDigitalAssetsMainToolbar {
+    min-height:40px;
+    padding: 0 .2em;
+}
+#dnnModuleDigitalAssetsListViewToolbar {
+    height:auto;
+    padding:.2em .2em;
+}
+
+#dnnModuleDigitalAssetsSelectionToolbar {
+    min-height:25px;
+    padding: .2em .2em;
+}
+#dnnModuleDigitalAssetsMainToolbar {
+    min-height:40px;
+    padding: 0 .2em;
+}
+#dnnModuleDigitalAssetsListViewToolbar {
+    height:auto;
+    padding:.2em .2em;
+}
+
+@media only screen and (max-width: 573px) {
+    #dnnModuleDigitalAssetsLeftPane {
+         width:100%;
+         position:relative;
+         min-height:25px;
+         height:120px;
+    }
+    
+    .dnnModuleDigitalAssetsLeftPaneContents {
+         position:relative;
+         top:0;
+         height:120px;
+    }
+
+    #dnnModuleDigitalAssetsContentPane {
+        margin-left:0;
+        width:100%;
+        padding-top:0;
+    }
+
+    #dnnModuleDigitalAssetsSearchBox {
+        min-width:inherit;
+        float:none;
+        margin:1em .5em;
+    }
+
+    .dnnModuleDigitalAssetsMainLoading {
+        display:none !important;
+    }
+}

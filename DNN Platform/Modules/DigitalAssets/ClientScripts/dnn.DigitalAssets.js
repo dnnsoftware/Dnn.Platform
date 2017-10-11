@@ -340,11 +340,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var toggleButton = $("#DigitalAssetsToggleLeftPaneBtnId span", "#" + controls.scopeWrapperId);
         var loadingPanel = $(".dnnModuleDigitalAssetsMainLoading", "#" + controls.scopeWrapperId);
         var left;
+        var windowWidth = $(window).width();
 
         if (!leftPane.is(":visible")) {
             toggleButton.css("background-image", "url(" + settings.toggleLeftPaneHideImageUrl + ")");
             leftPane.animate({ width: 'toggle' }, 500, treeViewRefreshScrollbars);
-            left = 220;
+            left = windowWidth > 573 ? 220 : 0;
         } else {
             toggleButton.css("background-image", "url(" + settings.toggleLeftPaneShowImageUrl + ")");
             leftPane.animate({ width: 'toggle' }, 500);
