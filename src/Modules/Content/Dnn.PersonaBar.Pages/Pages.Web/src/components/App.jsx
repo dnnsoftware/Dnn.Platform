@@ -158,8 +158,10 @@ class App extends Component {
     }
 
     componentWillMount() {
-        this.props.getContentLocalizationEnabled();
-
+        let { selectedPage } = this.props;
+        if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage)) {
+            this.props.getContentLocalizationEnabled();
+        }
     }
 
     componentWillUnmount() {
@@ -217,7 +219,8 @@ class App extends Component {
     }
 
     onCreatePage(input) {
-        this.props.onCreatePage(input);
+        let self = this;
+        this.props.onCreatePage(() => { self.setEmptyStateMessage(); });
     }
 
     onUpdatePage(input) {
@@ -522,16 +525,16 @@ class App extends Component {
     }
 
     getSettingsButtons() {
-        const { settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
+        const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
         const deleteAction = this.onDeleteSettings.bind(this);
 
         return (
             <div className="heading-buttons">
-                <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true}>
+                <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true} selectedPage={selectedPage}>
                     <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                 </Sec>
-                <Sec permission={permissionTypes.EXPORT_PAGE}>
+                <Sec permission={permissionTypes.EXPORT_PAGE} selectedPage={selectedPage}>
                     <SaveAsTemplateButton
                         type="secondary"
                         size="large"
@@ -542,7 +545,7 @@ class App extends Component {
                         {Localization.get("SaveAsTemplate")}
                     </SaveAsTemplateButton>
                 </Sec>
-                <Sec permission={permissionTypes.COPY_PAGE}>
+                <Sec permission={permissionTypes.COPY_PAGE} selectedPage={selectedPage}>
                     <Button
                         type="secondary"
                         size="large"
@@ -550,8 +553,8 @@ class App extends Component {
                         {Localization.get("DuplicatePage")}
                     </Button>
                 </Sec>
-                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE) &&
-                    <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true}>
+                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage) &&
+                    <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true} selectedPage={selectedPage}>
                         <Button
                             type="secondary"
                             size="large"
@@ -750,14 +753,14 @@ class App extends Component {
         this.clearEmptyStateMessage();
         const message = Localization.get("NoPermissionEditPage");
         const noPermission = () => this.setEmptyStateMessage(message);
-        item.canManagePage ? proceed() : noPermission();
+        item.canAddContentToPage ? proceed() : noPermission();
 
     }
 
     onViewPage(item) {
         const { selectedPageDirty } = this.props;
         const view = () => {
-            this.props.onLoadPage(item.id);
+            //this.props.onLoadPage(item.id);
             utils.getUtilities().closePersonaBar(function () {
                 window.parent.location = item.url;
             });
@@ -856,7 +859,6 @@ class App extends Component {
 
         let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
         search = Object.assign({}, search, searchDateRange);
-
         for (let prop in search) {
             if (!search[prop]) {
                 delete search[prop];
@@ -1259,9 +1261,9 @@ class App extends Component {
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
-                            { 
-                                selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
-                            }                            
+                            {
+                                selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data) => onSelect(data)} withBorder={true} />
+                            }
                             <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
                         {toggleSearchMoreFlyout ? this.render_more_flyout() : null}

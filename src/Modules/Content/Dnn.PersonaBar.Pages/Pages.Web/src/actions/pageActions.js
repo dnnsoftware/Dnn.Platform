@@ -30,22 +30,7 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId, callback) {
-    return new Promise((resolve)=>{
-            if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
-            dispatch({
-                type: ActionTypes.LOADED_PAGE,
-                data: {
-                    page: {
-                        tabId: utils.getCurrentPageId(),
-                        name: utils.getCurrentPageName()
-                    }
-                },
-                selectedPageSettingTab: 0
-            });
-            resolve();
-            return;
-        }
-
+    return new Promise((resolve) => {
         PagesService.getPage(pageId).then(response => {
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
@@ -95,11 +80,11 @@ const pageActions = {
     },
 
     searchAndFilterPageList(params) {
-        return (dispatch) => PagesService.searchAndFilterPageList(params).then((searchList)=>{
-            searchList= searchList.Results;
+        return (dispatch) => PagesService.searchAndFilterPageList(params).then((searchList) => {
+            searchList = searchList.Results;
             dispatch({
                 type: SearchListActionTypes.SAVE_SEARCH_LIST,
-                data: {searchList}
+                data: { searchList }
             });
         });
     },
@@ -108,7 +93,7 @@ const pageActions = {
         return (dispatch) => PagesService.getWorkflowsList().then(workflowList => {
             dispatch({
                 type: ActionTypes.GET_WORKFLOW_LIST,
-                data: {workflowList}
+                data: { workflowList }
             });
         });
     },
@@ -117,10 +102,10 @@ const pageActions = {
         return (dispatch) => PagesService.getPage(id);
     },
 
-    getCurrentSelectedPage(){
+    getCurrentSelectedPage() {
         return (dispatch) => dispatch({
             type: ActionTypes.GET_CURRENT_SELECTED_PAGE,
-            data:{}
+            data: {}
         });
     },
     getChildPageList(id) {
@@ -169,7 +154,7 @@ const pageActions = {
                 duplicatedPage.name = "";
                 duplicatedPage.url = "";
                 duplicatedPage.isCopy = true;
-                
+
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
                     data: {
@@ -185,7 +170,7 @@ const pageActions = {
             }
             else {
                 duplicate(pages.selectedPage);
-            }            
+            }
         };
     },
 
@@ -242,7 +227,7 @@ const pageActions = {
             });
         };
     },
-    createPage() {
+    createPage(callback) {
 
         return (dispatch, getState) => {
             dispatch({
@@ -261,8 +246,12 @@ const pageActions = {
                 if (selectedPage.tabId > 0) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
                 }
-                PagesService.openPageInEditMode(response.Page.id, response.Page.url);
-
+                if (response.Page.canAddContentToPage)
+                    PagesService.openPageInEditMode(response.Page.id, response.Page.url);
+                else if (typeof callback === "function") {
+                    utils.notify(Localization.get("PageCreatedMessage"));
+                    callback();
+                }
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PAGE,

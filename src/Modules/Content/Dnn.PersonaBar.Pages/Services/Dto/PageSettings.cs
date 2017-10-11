@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Themes.Components;
+using Newtonsoft.Json.Linq;
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
@@ -75,6 +76,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "permissions")]
         public PagePermissions Permissions { get; set; }
+
+        [DataMember(Name = "pagePermissions")]
+        public JObject PagePermissions { get; set; }
 
         [DataMember(Name = "modules")]
         public IEnumerable<ModuleItem> Modules { get; set; }

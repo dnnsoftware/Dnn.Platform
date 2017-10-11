@@ -1552,4 +1552,7 @@
   <data name="NoPageSelected.Text" xml:space="preserve">
     <value>No page is currently selected.</value>
   </data>
+  <data name="PageCreatedMessage.Text" xml:space="preserve">
+    <value>Page created successfully</value>
+  </data>
 </root>
