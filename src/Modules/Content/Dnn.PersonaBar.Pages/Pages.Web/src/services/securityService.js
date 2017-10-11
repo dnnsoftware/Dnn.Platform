@@ -1,7 +1,7 @@
 import utils from "../utils";
 
 const securityService = {
-    userHasPermission(permission) {
+    userHasPermission(permission, selectedPage) {
         const isSuperUser = utils.getIsSuperUser();
         if (isSuperUser) {
             return true;
@@ -10,8 +10,7 @@ const securityService = {
         if (!permission) {
             return true;
         }
-
-        const userPermissionsOverPage = utils.getCurrentPagePermissions();
+        const userPermissionsOverPage = selectedPage && selectedPage.pagePermissions || utils.getCurrentPagePermissions();
 
         return userPermissionsOverPage[permission];
     },
