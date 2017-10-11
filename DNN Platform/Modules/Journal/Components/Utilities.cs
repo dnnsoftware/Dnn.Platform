@@ -7,6 +7,8 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
 
 namespace DotNetNuke.Modules.Journal.Components {
     public class Utilities {
@@ -268,5 +270,10 @@ namespace DotNetNuke.Modules.Journal.Components {
             return sText;
         }
 
+        public static bool AreFriends(UserInfo profileUser, UserInfo currentUser)
+        {
+            var friendsRelationShip = RelationshipController.Instance.GetFriendRelationship(profileUser, currentUser);
+            return (friendsRelationShip != null && friendsRelationShip.Status == RelationshipStatus.Accepted);
+        }
     }
 }
