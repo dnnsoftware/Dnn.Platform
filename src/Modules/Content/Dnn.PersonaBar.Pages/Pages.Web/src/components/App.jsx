@@ -319,7 +319,11 @@ class App extends Component {
 
 
     onAddMultiplePage() {
-        this.props.onLoadAddMultiplePages();       
+        this.clearEmptyStateMessage();
+        this.selectPageSettingTab(0);
+
+        this.props.onLoadAddMultiplePages();
+        
     }
 
     onAddPage(parentPage) {
@@ -820,6 +824,10 @@ class App extends Component {
     onBreadcrumbSelect(name){
     }
 
+    isOnInsertMode(){
+        return false;
+    }
+
     render_PagesDetailEditor() {
 
         const render_emptyState = () => {
@@ -1146,7 +1154,7 @@ class App extends Component {
     render() {
 
         const { props } = this;
-        const { selectedPage } = props;
+        const { selectedPage, selectedView } = props;
         const {inSearch, headerDropdownSelection, toggleSearchMoreFlyout} = this.state;
 
 
@@ -1165,12 +1173,12 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             {securityService.isSuperUser() &&
                                 <div> 
-                                    <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                                    <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                    <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0 || selectedView === 2) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0  || selectedView === 2) ? true : false} size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
                             }
                             { 
-                                selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
+                                selectedPage && <Dropdown  disabled={(selectedPage && selectedPage.tabId === 0  || selectedView === 2) ? true : false}  options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             }                            
                             <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
@@ -1203,7 +1211,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 20px 20px 20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className={(selectedPage && selectedPage.tabId === 0 || inSearch) ? "tree-container disabled" : "tree-container"}>
+                                <div className={(selectedPage && selectedPage.tabId === 0 || inSearch || selectedView === 2) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
                                             clearSelectedPage={this.props.clearSelectedPage}
@@ -1378,9 +1386,6 @@ function mapDispatchToProps(dispatch) {
         onClearCache: PageActions.clearCache,
         clearSelectedPage: PageActions.clearSelectedPage,
         onModuleCopyChange: PageActions.updatePageModuleCopy
-
-
-
     }, dispatch);
 }
 
