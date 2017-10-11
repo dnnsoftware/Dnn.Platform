@@ -191,7 +191,7 @@ class App extends Component {
                 const left = () => {
                     const { pageList } = this.props;
                     
-                    console.log('left');
+                    
                     pageList.forEach((item, index) => {
                         if (item.id == update.tabId) {
                             cachedItem = item;
@@ -228,7 +228,6 @@ class App extends Component {
             const addToNewParent = () => {
 
                 this._traverse((item, list, updateStore) => {
-                    console.log('Add new parent is running', item.id, update.parentId);
                     if (item.id == update.parentId) {
                         
                         (cachedItem) ? cachedItem.parentId = item.id : null;
@@ -316,6 +315,11 @@ class App extends Component {
     onSearchBlur(){
         const {searchTerm} = this.state;
         searchTerm ? this.setState({inSearch:true}) : this.setState({inSearch:false});
+    }
+
+
+    onAddMultiplePage() {
+        this.props.onLoadAddMultiplePages();       
     }
 
     onAddPage(parentPage) {
@@ -538,22 +542,14 @@ class App extends Component {
 
     getAddPages() {
         const { props } = this;
-
-        return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL} fullWidth={true}>
-            <PersonaBarPageHeader title={Localization.get("AddMultiplePages")}>
-            </PersonaBarPageHeader>
-            <PersonaBarPageBody backToLinkProps={{
-                text: securityService.isSuperUser() && Localization.get("BackToPages"),
-                onClick: props.onCancelAddMultiplePages
-            }}>
+        
+        return (
                 <AddPages
                     bulkPage={props.bulkPage}
                     onCancel={props.onCancelAddMultiplePages}
                     onSave={props.onSaveMultiplePages}
                     onChangeField={props.onChangeAddMultiplePagesField}
-                    components={props.multiplePagesComponents} />
-            </PersonaBarPageBody>
-        </PersonaBarPage>);
+                    components={props.multiplePagesComponents} />);
     }
 
     getSaveAsTemplatePage() {
@@ -1102,16 +1098,21 @@ class App extends Component {
             </GridCell>
         );
     }
+    render_addMultiplePages(){
+        return this.getAddPages();
+    }
 
     render_details(){
         const {selectedPage} = this.props;
         const {inSearch} = this.state;
-
+        const {selectedView} = this.props;
         switch(true){
             case inSearch:
                 return this.render_searchResults();
             case selectedPage && selectedPage.tabId === 0:
                 return this.render_addPageEditor();
+            case selectedView === panels.ADD_MULTIPLE_PAGES_PANEL:
+                return this.render_addMultiplePages();
             case !selectedPage:
             default:
                 return this.render_PagesDetailEditor();
@@ -1159,10 +1160,15 @@ class App extends Component {
         return (
 
             <div className="pages-app personaBar-mainContainer">
-                {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
-                    <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
+                { isListPagesAllowed &&
+                    <PersonaBarPage fullWidth={true} isOpen={true}>
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
-                            {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
+                            {securityService.isSuperUser() &&
+                                <div> 
+                                    <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                </div>
+                            }
                             { 
                                 selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
                             }                            
@@ -1235,7 +1241,7 @@ class App extends Component {
                 {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL &&
                     this.getAddPages()
                 }
-                {props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL &&
+                {props.selectedPage && props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL &&
                     this.getSaveAsTemplatePage()
                 }
                 {additionalPanels}
