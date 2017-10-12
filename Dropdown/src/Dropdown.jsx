@@ -52,7 +52,6 @@ class Dropdown extends Component {
     getDropdownHeight() {
         const {props} = this;
         const maxHeight = props.fixedHeight ? props.fixedHeight : DNN_DROPDOWN_MINHEIGHT;
-        console.log(`dropDownListElement: ${this.dropDownListElement}`);
         return this.dropDownListElement ? Math.min(this.dropDownListElement.offsetHeight, maxHeight) + 20 : 0;
     }
 
@@ -91,12 +90,6 @@ class Dropdown extends Component {
     componentWillUnmount() {
         document.removeEventListener("mousedown", this.handleClick);
         this._isMounted = false;
-    }
-
-    updateScrollbar() {
-        if (this.scrollBar) {
-            console.log(this.scrollBar);
-        }
     }
 
     handleClick(event) {
@@ -258,7 +251,7 @@ class Dropdown extends Component {
         const options = props.options && props.options.map((option, index) => {
             return <li onClick={this.onSelect.bind(this, option)} key={index}
                        ref={this.addOptionRef.bind(this)}
-                       className={((option.value === props.value && state.closestValue === null) || option.value === (state.closestValue && state.closestValue.value)) ? "dnn-dropdown-option selected" : "dnn-dropdown-optionf"}>{option.label}</li>;
+                       className={((option.value === props.value && state.closestValue === null) || option.value === (state.closestValue && state.closestValue.value)) ? "dnn-dropdown-option selected" : "dnn-dropdown-option"}>{option.label}</li>;
         });
         return options;
     }
@@ -319,7 +312,7 @@ class Dropdown extends Component {
                                 autoHeightMin={DNN_DROPDOWN_MINHEIGHT}
                                 style={props.scrollAreaStyle}
                                 onUpdate={this.props.onScrollUpdate}
-                                renderTrackHorizontal={props => <div /> }>
+                                renderTrackHorizontal={() => <div /> }>
                                 <ul className="dnn-dropdown-options" ref={(ul) => this.dropDownListElement = ul}>
                                     {options}
                                 </ul>

@@ -58,8 +58,11 @@ describe("Dnn Dropdown component", () => {
     it("Displays a dropdown list onClick", () => {
 
         const props = {options, value: "second", label: "My new label", prependWith: "Prepend text:"};
-        const wrapper = shallow(<Dropdown onSelect={f => f} {...props}/>);
-        expect(wrapper).toMatchSnapshot();
+
+        const wrapper = mount(<Dropdown onSelect={f => f} {...props}/>);
+
+        let json = toJson(wrapper);
+        expect(json).toMatchSnapshot();
 
         expect(wrapper.state('dropDownOpen')).toBe(false);
 
@@ -68,7 +71,9 @@ describe("Dnn Dropdown component", () => {
 
         expect(wrapper.state('dropDownOpen')).toBe(true);
 
-        expect(wrapper.update()).toMatchSnapshot();
+        json = toJson(wrapper.update());
+
+        expect(json).toMatchSnapshot();
     });
 
     it("Displays/Hides icon when withIcon is true", () => {

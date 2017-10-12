@@ -53,4 +53,10 @@ module.exports = [
     "searchbox",
 	"checkmark",
 	"filesystem",
+    "mousedown",
+    "scrollbar",
+    "gi",
+    "prepend",
+    "ul",
+    "searchable"
 ];
