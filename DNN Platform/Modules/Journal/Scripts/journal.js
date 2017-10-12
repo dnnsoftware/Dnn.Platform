@@ -59,7 +59,8 @@ function bindConfirm() {
             if (typeof $._data($this[0], "events") != "undefined") {
                 for (var i = 0; i < $._data($this[0], "events").click.length; i++) {
                     var handler = $._data($this[0], "events").click[i].handler;
-                    if (typeof handler.name != "undefined" && handler.name.length > 0) {
+                    var functionName = handler.name || handler.toString().match(/^function\s*([^\s(]+)/)[1]; 
+                    if (typeof functionName != "undefined" && functionName.length > 0) {
                         clickFuncs.push(handler);
                         break;
                     }
