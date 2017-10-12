@@ -28,7 +28,7 @@ module.exports = {
             "comments": "true",
             "strings": "true",
             "identifiers": "true",
-            "skipWords": require("../.eslintskipwords"),
+            "skipWords": require("./.eslintskipwords"),
             "skipIfMatch": [
                 "http://[^s]*",
                 "https://[^s]*",
