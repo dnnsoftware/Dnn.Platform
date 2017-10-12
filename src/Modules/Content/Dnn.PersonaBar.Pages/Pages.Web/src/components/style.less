@@ -165,9 +165,14 @@
                             cursor:pointer;
 
                             svg{
-                                width:100%;
+                                width:20px;
                                 fill: @alto;
                                 stroke: @alto;
+                            }
+                            svg:hover {
+                                width:20px;
+                                fill: @curiousBlue;
+                                stroke: @curiousBlue;
                             }
                         }
 
@@ -181,9 +186,9 @@
         }
 
         .search-item-details-list {
-            padding:10px 0px;
+            padding:3px 0px;
             clear:both;
-            
+            float: left;
             ul{
                 list-style: none;
                 padding:0;

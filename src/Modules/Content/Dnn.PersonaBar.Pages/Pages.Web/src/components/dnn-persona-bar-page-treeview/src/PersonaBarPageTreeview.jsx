@@ -136,7 +136,7 @@ export class PersonaBarPageTreeview extends Component {
             onDragOver,
             onDragEnd,
             draggedItem,
-            Localization} = this.props;
+            Localization } = this.props;
 
         const hotspotStyles = {
             position: "relative",
@@ -156,10 +156,10 @@ export class PersonaBarPageTreeview extends Component {
             const shouldShowTooltip = /\.\.\./.test(name);
             const canManagePage = (e, item, fn) => {
                 const message = Localization.get("NoPermissionManagePage");
-                const left = ()=>{
-                    e? fn(e, item): fn(item);
+                const left = () => {
+                    e ? fn(e, item) : fn(item);
                 };
-                const right = ()=>{
+                const right = () => {
                     this.props.setEmptyPageMessage(message);
                 };
                 item.canManagePage ? left() : right();
@@ -171,8 +171,7 @@ export class PersonaBarPageTreeview extends Component {
             };
             index++;
 
-            const style = item.canManagePage ? { height: "28px", marginLeft:"15px" } : { height: "28px", marginLeft:"15px" };
-
+            const style = item.canManagePage ? { height: "28px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
@@ -181,23 +180,23 @@ export class PersonaBarPageTreeview extends Component {
                             style={style}
                             id={`list-item-title-${item.name}-${item.id}`}
                             className="dragged-proxy"
-                            draggable={ item.canManagePage ? "true" : "false"}
+                            draggable={item.canManagePage ? "true" : "false"}
                             onDrop={(e) => { canManagePage(e, item, onDrop); }}
                             onDrag={(e) => { canManagePage(e, item, onDrag); }}
                             onDragOver={(e) => { canManagePage(e, item, onDragOver); }}
-                            onDragEnter={(e)=> canManagePage(e, item, onDragEnter) }
+                            onDragEnter={(e) => canManagePage(e, item, onDragEnter)}
                             onDragStart={(e) => { canManagePage(e, item, onDragStart); }}
-                            onDragLeave={(e) => canManagePage(e, item, onDragLeave) }
+                            onDragLeave={(e) => canManagePage(e, item, onDragLeave)}
                             onDragEnd={(e) => { canManagePage(e, item, onDragEnd); }}
-                            onClick={(e) => { item.canManagePage ? onSelection(item) : onNoPermissionSelection(item);  }}
-                            >
-                            </div>
+                            onClick={(e) => { item.canManagePage ? onSelection(item) : onNoPermissionSelection(item); }}
+                        >
+                        </div>
 
-                        <div style={style} className={(item.selected || item.onDragOverState) ? "list-item-highlight list-item-dragover": null}>
+                        <div style={style} className={(item.selected || item.onDragOverState) ? "list-item-highlight list-item-dragover" : null}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
                                 className={`item-name`}
-                                onClick={() => { onSelection(item.id); }}>
+                                onClick={(e) => { item.canManagePage ? onSelection(item) : onNoPermissionSelection(item); }}>
                                 <p>{name}</p>
                             </span>
                             <div className="draft-pencil">
@@ -214,9 +213,9 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     render() {
-        const {listItems} = this.props;
+        const { listItems } = this.props;
         return (
-            <ul style={!listItems.length ? {padding:"0px", height:"0px"} : null}>
+            <ul style={!listItems.length ? { padding: "0px", height: "0px" } : null}>
                 {this.render_li()}
             </ul>
         );

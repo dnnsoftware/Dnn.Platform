@@ -26,13 +26,13 @@ import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
-
+import cloneDeep from 'lodash/clonedeep';
 import GridCell from "dnn-grid-cell";
 
 import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
-import { PagesSearchIcon, PagesVerticalMore, CalendarIcon, ArrowBack, TreeEye, TreeEdit, TreeAnalytics } from "dnn-svg-icons";
+import { PagesSearchIcon, PagesVerticalMore, CalendarIcon, ArrowBack, EyeIcon, TreeEdit, TreeAnalytics } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
 import DayPicker from "./DayPicker/src/DayPicker";
 import { XIcon } from "dnn-svg-icons";
@@ -88,7 +88,7 @@ class App extends Component {
         };
 
         this.shouldRunRecursive = true;
-
+        this.noPermissionSelectionPageId = null;
     }
 
     componentDidMount() {
@@ -99,13 +99,17 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         this.props.getPageList();
         const selectedPageId = utils.getCurrentPageId();
-        selectedPageId && this.props.onLoadPage(selectedPageId).then(() => this.buildTree(selectedPageId));
+        selectedPageId && this.props.onLoadPage(selectedPageId);
+        // .then(() => {
+        //     this.shouldRunRecursive = false;
+        //     this.buildTree(selectedPageId);
+        // });
 
         if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
         }
 
-        if(!utils.isPlatform){
+        if (!utils.isPlatform()) {
             this.props.getWorkflowsList();
         }
 
@@ -181,7 +185,7 @@ class App extends Component {
     }
 
     buildTree(selectedId) {
-        const buildTree = (hierarchy) => {
+        const buildTreeInternal = (hierarchy) => {
             const callAPI = () => {
                 const parentId = hierarchy.shift();
                 parentId && setTimeout(() => execute(), 100);
@@ -204,7 +208,7 @@ class App extends Component {
             };
             callAPI();
         };
-        this.props.getPageHierarchy(selectedId).then(buildTree);
+        this.props.getPageHierarchy(selectedId).then(buildTreeInternal);
     }
     notifyErrorIfNeeded(newProps) {
         if (newProps.error !== this.props.error) {
@@ -685,6 +689,10 @@ class App extends Component {
         (!selectedPageDirty) ? left() : right();
     }
 
+    onNoPermissionSelection(pageId) {
+        this.noPermissionSelectionPageId = pageId;
+    }
+
     onChangePageField(key, value) {
         this.props.onChangePageField(key, value);
     }
@@ -822,18 +830,18 @@ class App extends Component {
     generateFilters() {
         const { filterByPageType, filterByPublishStatus, filterByWorkflow, filterByWorkflowName, startDate, endDate, startAndEndDateDirty } = this.state;
         const filters = this.state.tags.split(",")
-                            .filter(e => !!e)
-                            .map((tag)=>{
-                                return {ref: `tag-${tag}`, tag: `${tag}`};
-                            });
+            .filter(e => !!e)
+            .map((tag) => {
+                return { ref: `tag-${tag}`, tag: `${tag}` };
+            });
 
         filterByPageType ? filters.push({ ref: "filterByPageType", tag: `Page Type: ${filterByPageType}` }) : null;
         filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `Published Status: ${filterByPublishStatus}` }) : null;
         filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `Workflow: ${filterByWorkflowName}` }) : null;
 
         if (startAndEndDateDirty) {
-            const fullStartDate = `${startDate.getDay()+1}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDay()+1}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
+            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
             const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `Date Range: ${fullStartDate} ${fullEndDate} ` });
             const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `From Date: ${fullStartDate}` });
 
@@ -849,11 +857,13 @@ class App extends Component {
 
     onSave() {
         let { searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
-        const searchDateRange = startAndEndDateDirty ? { publishDateStart: startDate, publishDateEnd: endDate } : {};
+        const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()} 00:00:00`;
+        const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()} : 23:59:59`;
+        const searchDateRange = startAndEndDateDirty ? { publishDateStart: fullStartDate, publishDateEnd: fullEndDate } : {};
 
-        if(tags){
-            tags  = tags[0]=="," ? tags.replace(",", "") : tags;
-            tags  = tags[tags.length-1]=="," ? tags.split(",").filter(t => !!t).join() : tags;
+        if (tags) {
+            tags = tags[0] == "," ? tags.replace(",", "") : tags;
+            tags = tags[tags.length - 1] == "," ? tags.split(",").filter(t => !!t).join() : tags;
         }
 
 
@@ -973,12 +983,6 @@ class App extends Component {
 
     /* eslint-disable react/no-danger */
     render_more_flyout() {
-        const { startDate, endDate } = this.state;
-        const startMonth = startDate.getMonth() + 1;
-
-        const endMonth = endDate.getMonth() + 1;
-        const selectedMonth = (endMonth > startMonth) ? endDate : startDate;
-
         const filterByPageTypeOptions = [
             { value: null, label: "None" },
             { value: "Normal", label: "Normal" },
@@ -1005,14 +1009,12 @@ class App extends Component {
             this.setState({ tags: e.target.value });
         };
 
-        const date = Date.now();
-
         const onApplyChangesDropdownDayPicker = () => {
-            const { startAndEndDateDirty, startDate, endDate, defaultDate } = this.state;
-            const fullStartDate = startDate.getDay() + startDate.getMonth() + startDate.getFullYear();
-            const fullEndDate = endDate.getDay() + endDate.getMonth() + endDate.getFullYear();
+            const { startAndEndDateDirty, startDate, endDate } = this.state;
+            const fullStartDate = startDate.getDate() + startDate.getMonth() + startDate.getFullYear();
+            const fullEndDate = endDate.getDate() + endDate.getMonth() + endDate.getFullYear();
 
-            const condition = !startAndEndDateDirty && fullStartDate == fullEndDate;
+            const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
             condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
         };
         return (
@@ -1078,7 +1080,7 @@ class App extends Component {
     }
 
     render_searchResults() {
-        const { searchList } = this.props;
+        const { pageInContextComponents, searchList } = this.props;
         const render_card = (item) => {
             const onNameClick = (item) => {
                 this.setState({ inSearch: false }, () => {
@@ -1089,17 +1091,25 @@ class App extends Component {
             const publishedDate = new Date(item.publishDate.split(" ")[0]);
 
             const addToTags = (newTag) => {
-               const condition =  this.state.tags.indexOf(newTag) === -1;
-               const update = () => {
-                   let tags =  this.state.tags;
-                   tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
-                   this.setState({tags}, ()=>this.onSave());
-               };
+                const condition = this.state.tags.indexOf(newTag) === -1;
+                const update = () => {
+                    let tags = this.state.tags;
+                    tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
+                    this.setState({ tags }, () => this.onSave());
+                };
 
-               condition ? update() : null;
+                condition ? update() : null;
             };
-
-
+            let visibleMenus = [];
+            item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
+            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
+            if (pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
+                let additionalMenus = cloneDeep(pageInContextComponents || []);
+                additionalMenus && additionalMenus.map(additionalMenu => {
+                    visibleMenus.push(<li onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
+                        && this.CallCustomAction(additionalMenu.OnClickAction)}><div dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
+                });
+            }
             return (
                 <GridCell columnSize={100}>
                     <div className="search-item-card">
@@ -1113,24 +1123,22 @@ class App extends Component {
                             </div>
                             <div className="search-item-details-right">
                                 <ul>
-                                    <li onClick={() => this.onViewPage(item)}><div dangerouslySetInnerHTML={{ __html: TreeEye }} /></li>
-                                    <li onClick={() => this.onViewEditPage(item)}><div dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>
-                                    <li><div dangerouslySetInnerHTML={{ __html: TreeAnalytics }} /></li>
+                                    {visibleMenus}
                                 </ul>
                             </div>
                             <div className="search-item-details-list">
                                 <ul>
                                     <li>
                                         <p>Page Type:</p>
-                                        <p onClick={()=>{ this.setState({filterByPageType: item.pageType}, ()=>this.onSave()); }} >{item.pageType}</p>
+                                        <p onClick={() => { this.setState({ filterByPageType: item.pageType }, () => this.onSave()); }} >{item.pageType}</p>
                                     </li>
                                     <li>
                                         <p>Publish Status:</p>
-                                        <p onClick={()=>{ this.setState({filterByPublishStatus: item.status}, ()=>this.onSave()); }} >{item.status}</p>
+                                        <p onClick={() => { this.setState({ filterByPublishStatus: item.status }, () => this.onSave()); }} >{item.status}</p>
                                     </li>
                                     <li>
                                         <p >Publish Date:</p>
-                                        <p onClick={()=>{ this.setState({startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty:true}, ()=>this.onSave()); }}>{item.publishDate.split(" ")[0]}</p>
+                                        <p onClick={() => { this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true }, () => this.onSave()); }}>{item.publishDate.split(" ")[0]}</p>
                                     </li>
                                 </ul>
                             </div>
@@ -1138,7 +1146,7 @@ class App extends Component {
                                 <ul>
                                     <li>
                                         <p>Workflow:</p>
-                                        <p onClick={()=>{ this.setState({filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName}, ()=>this.onSave()); }}>{item.workflowName}</p>
+                                        <p onClick={() => { this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName }, () => this.onSave()); }}>{item.workflowName}</p>
                                     </li>
                                     <li>
                                         <p>Tags:</p>
@@ -1146,10 +1154,10 @@ class App extends Component {
                                             item.tags.map((tag) => {
                                                 return (
                                                     <span>
-                                                        <span style={{marginLeft:"5px"}} onClick={()=>addToTags(tag)}>
+                                                        <span style={{ marginLeft: "5px" }} onClick={() => addToTags(tag)}>
                                                             {tag}
                                                         </span>
-                                                        <span style={{color:"#000"}}>
+                                                        <span style={{ color: "#000" }}>
                                                             ,
                                                         </span>
                                                     </span>
@@ -1214,13 +1222,17 @@ class App extends Component {
                         this.setState(update, () => this.onSave());
                     };
                     const right = () => {
-                        let {filters, tags} = this.state;
-                        filters = filters.filter(f => f.ref!=prop);
+                        let { filters, tags } = this.state;
+                        filters = filters.filter(f => f.ref != prop);
                         const findTag = prop.split("-")[1];
-                        const re = new RegExp(findTag);
-                        tags = tags.indexOf(findTag) !== -1 ? tags.replace(re, "") : tags;
-
-                        this.setState({filters, tags}, ()=>this.onSave());
+                        let tagList = tags.split(",");
+                        tags = "";
+                        tagList.map((tag) => {
+                            if (tag !== findTag)
+                                tags += tag + ",";
+                        });
+                        tags = tags !== "" ? tags.substring(0, tags.length - 1) : "";
+                        this.setState({ filters, tags }, () => this.onSave());
 
                     };
                     const condition = prop.indexOf('tag') === -1;
@@ -1290,7 +1302,7 @@ class App extends Component {
                                             className="btn clear-search"
                                             style={{ fill: "#444" }}
                                             dangerouslySetInnerHTML={{ __html: XIcon }}
-                                            onClick={() => this.setState({ searchTerm: "" }, ()=> this.onSave())}
+                                            onClick={() => this.setState({ searchTerm: "" }, () => this.onSave())}
                                         />
 
                                         : <div className="btn clear-search" />}
@@ -1331,7 +1343,9 @@ class App extends Component {
                                             onDuplicatePage={this.onDuplicatePage.bind(this)}
                                             onAddPage={this.onAddPage.bind(this)}
                                             onSelection={this.onSelection.bind(this)}
-                                            pageInContextComponents={props.pageInContextComponents} />
+                                            onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
+                                            pageInContextComponents={props.pageInContextComponents}
+                                            NoPermissionSelectionPageId={this.noPermissionSelectionPageId} />
                                     </div>
                                 </div>
                                 <GridCell columnSize={70}>
