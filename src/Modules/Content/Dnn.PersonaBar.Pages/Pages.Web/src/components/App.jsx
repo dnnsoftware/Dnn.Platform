@@ -326,6 +326,11 @@ class App extends Component {
         
     }
 
+    onEditMode(){
+        const {selectedPage, selectedView} = this.props;
+        return (selectedPage && selectedPage.tabId === 0 || selectedView === 2 || selectedView === 3);
+    }
+
     onAddPage(parentPage) {
         this.clearEmptyStateMessage();
         this.selectPageSettingTab(0);
@@ -499,17 +504,14 @@ class App extends Component {
     getSettingsButtons() {
         const { settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
-        const deleteAction = this.onDeleteSettings.bind(this);
-
+        
         return (
             <div className="heading-buttons">
-                <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true}>
-                    <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                </Sec>
                 <Sec permission={permissionTypes.EXPORT_PAGE}>
                     <SaveAsTemplateButton
                         type="secondary"
                         size="large"
+                        disabled={this.onEditMode()}
                         onClick={onLoadSavePageAsTemplate}
                         onShowPanelCallback={onShowPanel}
                         onHidePanelCallback={onHidePanel}
@@ -517,24 +519,7 @@ class App extends Component {
                         {Localization.get("SaveAsTemplate")}
                     </SaveAsTemplateButton>
                 </Sec>
-                <Sec permission={permissionTypes.COPY_PAGE}>
-                    <Button
-                        type="secondary"
-                        size="large"
-                        onClick={onDuplicatePage}>
-                        {Localization.get("DuplicatePage")}
-                    </Button>
-                </Sec>
-                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE) &&
-                    <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true}>
-                        <Button
-                            type="secondary"
-                            size="large"
-                            onClick={deleteAction}>
-                            {Localization.get("Delete")}
-                        </Button>
-                    </Sec>
-                }
+                
             </div>
         );
     }
@@ -544,34 +529,30 @@ class App extends Component {
     }
 
 
+    onSaveMultiplePages(){
+        
+        return this.props.onSaveMultiplePages(()=>{
+            this.props.getPageList();
+        });
+    }
+
     getAddPages() {
         const { props } = this;
-        
         return (
                 <AddPages
                     bulkPage={props.bulkPage}
                     onCancel={props.onCancelAddMultiplePages}
-                    onSave={props.onSaveMultiplePages}
+                    onSave={this.onSaveMultiplePages.bind(this)}
                     onChangeField={props.onChangeAddMultiplePagesField}
                     components={props.multiplePagesComponents} />);
     }
 
     getSaveAsTemplatePage() {
         const { props } = this;
-        const pageName = props.selectedPage && props.selectedPage.name;
-        const backToLabel = Localization.get("BackToPageSettings") + ": " + pageName;
 
-        return (<PersonaBarPage isOpen={props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL}>
-            <PersonaBarPageHeader title={Localization.get("SaveAsTemplate")}>
-            </PersonaBarPageHeader>
-            <PersonaBarPageBody backToLinkProps={{
-                text: backToLabel,
-                onClick: props.onCancelSavePageAsTemplate
-            }}>
+        return (
                 <SaveAsTemplate
-                    onCancel={props.onCancelSavePageAsTemplate} />
-            </PersonaBarPageBody>
-        </PersonaBarPage>);
+                    onCancel={props.onCancelSavePageAsTemplate} />);
     }
 
     getAdditionalPanels() {
@@ -1121,6 +1102,8 @@ class App extends Component {
                 return this.render_addPageEditor();
             case selectedView === panels.ADD_MULTIPLE_PAGES_PANEL:
                 return this.render_addMultiplePages();
+            case selectedView === panels.SAVE_AS_TEMPLATE_PANEL:
+                return this.getSaveAsTemplatePage();
             case !selectedPage:
             default:
                 return this.render_PagesDetailEditor();
@@ -1173,12 +1156,12 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             {securityService.isSuperUser() &&
                                 <div> 
-                                    <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0 || selectedView === 2) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                                    <Button type="secondary" disabled={(selectedPage && selectedPage.tabId === 0  || selectedView === 2) ? true : false} size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                    <Button type="primary" disabled={this.onEditMode() ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={this.onEditMode() ? true : false} size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
                             }
                             { 
-                                selectedPage && <Dropdown  disabled={(selectedPage && selectedPage.tabId === 0  || selectedView === 2) ? true : false}  options={options} className="header-dropdown" label={defaultLabel} onSelect={(data)=> onSelect(data) } withBorder={true} />
+                                selectedPage && this.getSettingsButtons()
                             }                            
                             <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
@@ -1211,7 +1194,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 20px 20px 20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className={(selectedPage && selectedPage.tabId === 0 || inSearch || selectedView === 2) ? "tree-container disabled" : "tree-container"}>
+                                <div className={(this.onEditMode() ||inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
                                             clearSelectedPage={this.props.clearSelectedPage}
@@ -1243,9 +1226,7 @@ class App extends Component {
                         </GridCell>
                     </PersonaBarPage>
                 }
-                {props.selectedView === panels.PAGE_SETTINGS_PANEL && props.selectedPage &&
-                    this.getSettingsPage()
-                }
+               
                 {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL &&
                     this.getAddPages()
                 }

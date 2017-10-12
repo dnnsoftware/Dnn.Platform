@@ -70,7 +70,8 @@ class AddPages extends Component {
             return parseInt(value.toString());
         }
         return value;
-    }  
+    } 
+    
  
     render() {
         const {bulkPage, onCancel, onSave} = this.props;
