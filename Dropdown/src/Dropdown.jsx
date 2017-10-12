@@ -226,7 +226,7 @@ class Dropdown extends Component {
             // SCM-1115
             const optionValue = this.getOption(itemIndex);
             if (optionValue) {
-                const bottom = optionValue.offsetTop - 165;
+                const bottom = optionValue.offsetTop - this.getDropdownHeight();
                 scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], bottom);
             }
         }
