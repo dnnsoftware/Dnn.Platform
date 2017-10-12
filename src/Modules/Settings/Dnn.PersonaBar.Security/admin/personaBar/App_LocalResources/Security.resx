@@ -1129,4 +1129,10 @@
   <data name="CheckTelerikVulnerabilitySuccess.Text" xml:space="preserve">
     <value>Telerik Component already patched.</value>
   </data>
+  <data name="UserNotMemberOfRole.Text" xml:space="preserve">
+    <value>User not member of {0} role.</value>
+  </data>
+  <data name="NotValid.Text" xml:space="preserve">
+    <value>{0}  {1} is not valid.</value>
+  </data>
 </root>
