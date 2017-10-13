@@ -13,10 +13,6 @@
                     desktopIframe = document.getElementById('personaBar-iframe');
 
                 w["personaBarSettings"] = <%=PersonaBarSettings%>;
-                var mobile = x <= 640;
-                if (mobile) {
-                    return;
-                }
 
                 var src = '<%= AppPath %>/DesktopModules/admin/Dnn.PersonaBar/index.html';
                 src += '?cdv=' + '<%= BuildNumber %>';

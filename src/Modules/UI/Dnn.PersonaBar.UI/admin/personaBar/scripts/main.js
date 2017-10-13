@@ -604,12 +604,15 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             if (width <= 1024 && width > 768) {
                                 $personaBarPlaceholder.css({ 'width': '700px' });
                                 $personaBarPanels.addClass("view-ipad landscape");
+                                $personaBar.addClass("view-ipad landscape");
                             } else if (width <= 768) {
                                 $personaBarPlaceholder.css({ 'width': '500px' });
                                 $personaBarPanels.addClass("view-ipad portrait");
+                                $personaBar.addClass("view-ipad portrait");
                             }
                             else {
                                 $personaBarPanels.removeClass("view-ipad landscape portrait");
+                                $personaBar.removeClass("view-ipad landscape portrait");
                             }
 
                             if (isTouch) {
@@ -861,10 +864,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                             (function setupEditButton() {
                                 var $btnEdit = $("#Edit.btn_panel");
-                                if (width < 1024) {
-                                    $btnEdit.hide();
-                                    return;
-                                }
                                 if (!config.visible) {
                                     return;
                                 }
