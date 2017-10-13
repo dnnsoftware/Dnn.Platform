@@ -1430,10 +1430,12 @@ ul.tabControl {
 
 #personabar-panels.view-ipad.landscape > .socialpanel { width: 700px;}
 #personabar-panels.view-ipad.landscape > .socialpanel  .socialpanelheader {width: 641px;}
+#personabar.view-ipad.landscape .personabarnav > li#showsite:not(.full-width-mode) { left: 761px; }
 /* View iPad  - Portrait */
 
 #personabar-panels.view-ipad.portrait > .socialpanel { width: 500px;}
 #personabar-panels.view-ipad.portrait > .socialpanel .socialpanelheader {width: 441px;}
+#personabar.view-ipad.portrait .personabarnav > li#showsite:not(.full-width-mode) { left: 561px; }
 
 
 /* customised modal dialog style */
