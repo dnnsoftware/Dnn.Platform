@@ -27,7 +27,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
                 apiUser.EncryptionKey = string.Format("****************************{0}", apiUser.EncryptionKey.Substring(apiUser.EncryptionKey.Length - 4));
             }
 
-            return Request.CreateResponse(HttpStatusCode.Created, apiUsers);
+            return Request.CreateResponse(HttpStatusCode.OK, apiUsers);
         }
 
         // TODO: Will use DNN SF to secure.
@@ -81,10 +81,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
         [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
-            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
-
-            string json = Request.Content.ReadAsStringAsync().Result;
-
             APIUser apiUser = APIUserManager.GetById(id);
 
             if (apiUser == null)

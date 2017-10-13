@@ -42,7 +42,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                 if (!string.IsNullOrEmpty(clientIpAddress))
                 {
                     // Is it whitelisted or localhost?
-                    if (IPSpecController.IsWhitelisted(clientIpAddress) || clientIpAddress.Equals("127.0.0.1"))
+                    if (IPSpecManager.IsWhitelisted(clientIpAddress) || clientIpAddress.Equals("127.0.0.1"))
                     {
                         authenticated = true;
                     }

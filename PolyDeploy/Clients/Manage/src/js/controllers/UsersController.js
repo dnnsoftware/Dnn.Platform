@@ -1,5 +1,5 @@
-﻿module.exports = ['$scope', 'DataService',
-    function ($scope, DataService) {
+﻿module.exports = ['$scope', 'APIUserDataService',
+    function ($scope, APIUserDataService) {
 
         // Load users.
         refreshUsers();
@@ -9,7 +9,7 @@
 
             // Create the new user and append it, if you call for a refresh
             // the API key and encryption keys will be obfuscated.
-            DataService.apiUser.createUser(name).then(
+            APIUserDataService.createUser(name).then(
                 function (createdUser) {
 
                     // Push on to users.
@@ -21,12 +21,12 @@
         $scope.deleteUser = function (apiUser) {
 
             // Delete the user and then call for a refresh from the server.
-            DataService.apiUser.deleteUser(apiUser).then(refreshUsers);
+            APIUserDataService.deleteUser(apiUser).then(refreshUsers);
         };
 
         // Fetch API users.
         function refreshUsers() {
-            DataService.apiUser.getUsers().then(
+            APIUserDataService.getUsers().then(
                 function (apiUsers) {
 
                     // Pop them on the scope.

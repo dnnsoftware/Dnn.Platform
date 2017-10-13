@@ -7,15 +7,22 @@
 
             // States.
             $stateProvider
-                .state('index', {
-                    url: '/',
-                    template: require('./templates/index.html'),
-                    controller: 'IndexController'
+                .state('menu', {
+                    template: require('./templates/menu.html'),
                 })
-                .state('manage-users', {
-                    url: '/manage-users',
-                    template: require('./templates/manage-users.html'),
-                    controller: 'ManageUsersController'
+                .state('menu.welcome', {
+                    url: '/',
+                    template: require('./templates/welcome.html')
+                })
+                .state('menu.users', {
+                    url: '/users',
+                    template: require('./templates/users.html'),
+                    controller: 'UsersController'
+                })
+                .state('menu.whitelist', {
+                    url: '/whitelist',
+                    template: require('./templates/whitelist.html'),
+                    controller: 'WhitelistController'
                 });
 
             // Add $http interceptor for DNN Services Framework.

@@ -1,33 +1,25 @@
-﻿<div id="manage-users">
-    
-    <!-- Header -->
-    <div class="row">
-        <div class="col-xs-12">
-            <h2>Manage API Users</h2>
-        </div>
-    </div>
-    <!-- /Header -->
+﻿<div id="whitelist">
 
     <!-- Content -->
     <div class="row">
 
-        <!-- Create User -->
+        <!-- Create Whitelist Entry -->
         <div class="col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">New API User</h3>
+                    <h3 class="panel-title">New Whitelist Entry</h3>
                 </div>
                 <div class="panel-body">
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Name</label>
+                        <label class="col-sm-2 control-label">IPv4 Address</label>
                         <div class="col-sm-10">
-                            <input type="text" ng-model="newUserName" />
+                            <input type="text" ng-model="newIpv4Address" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" class="btn btn-success" ng-click="createUser(newUserName)">Create</button>
+                            <button type="button" class="btn btn-success" ng-click="createSpec(newIpv4Address)">Create</button>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -40,24 +32,20 @@
         <div class="col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">API Users</h3>
+                    <h3 class="panel-title">Whitelist Entries</h3>
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>API Key</th>
-                                <th>Encryption Key</th>
+                                <th>IPv4 Address</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="user in users">
-                                <td>{{ user.Name }}</td>
-                                <td>{{ user.APIKey }}</td>
-                                <td>{{ user.EncryptionKey }}</td>
-                                <td><button type="button" class="btn btn-sm btn-danger" ng-click="deleteUser(user)">Delete</button></td>
+                            <tr ng-repeat="spec in specs">
+                                <td>{{ spec.Address }}</td>
+                                <td><button type="button" class="btn btn-sm btn-danger" ng-click="deleteSpec(spec)">Delete</button></td>
                             </tr>
                         </tbody>
                     </table>

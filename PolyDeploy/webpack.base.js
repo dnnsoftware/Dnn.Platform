@@ -160,6 +160,10 @@ let baseConfig = {
                 test: /\.css$/,
                 use: 'css-loader'
             },
+            {
+                test: /\.(ttf|woff|svg|eot)/,
+                use: 'file-loader?outputPath=assets/'
+            },
 
             /*
                 To enable live-reload we also look at all *.htm files, and just
