@@ -276,7 +276,7 @@ const pageActions = {
                     data: null
                 });
 
-                callback(page);
+                callback(response.Page);
 
             }).catch((error) => {
                 dispatch({
