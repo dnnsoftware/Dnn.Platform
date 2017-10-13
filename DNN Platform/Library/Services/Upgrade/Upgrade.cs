@@ -5966,6 +5966,29 @@ namespace DotNetNuke.Services.Upgrade
             return activationResult;
         }
 
+        public static bool RemoveInvalidAntiForgeryCookie()
+        {
+            //DNN-9394: when upgrade from old version which use MVC version below than 5, it may saved antiforgery cookie
+            // with a different cookie name which join the root path even equals to "/", then it will cause API request failed.
+            // we need remove the cookie during upgrade process.
+            var appPath = HttpRuntime.AppDomainAppVirtualPath;
+            if (appPath == "/" && HttpContext.Current != null)
+            {
+                var cookieSuffix = Convert.ToBase64String(Encoding.UTF8.GetBytes(appPath)).Replace('+', '.').Replace('/', '-').Replace('=', '_');
+                var cookieName = $"__RequestVerificationToken_{cookieSuffix}";
+                var invalidCookie = HttpContext.Current.Request.Cookies[cookieName];
+                if (invalidCookie != null)
+                {
+                    invalidCookie.Expires = DateTime.Now.AddYears(-1);
+                    HttpContext.Current.Response.Cookies.Add(invalidCookie);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         internal static void CheckFipsCompilanceAssemblies()
         {
             var currentVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version);
