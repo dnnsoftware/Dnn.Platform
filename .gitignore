@@ -296,8 +296,8 @@ __pycache__/
 
 ## Project Specific
 
-# Angular Build
-**/Angular/dist
+# Client dist folders
+**/Clients/**/dist
 
 # Compiled LESS
 **/css/**/*.css

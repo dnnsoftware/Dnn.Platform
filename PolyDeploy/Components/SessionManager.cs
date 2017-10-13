@@ -1,6 +1,6 @@
 ﻿using Cantarus.Libraries.Encryption;
-using Cantarus.Modules.PolyDeploy.DataAccess.DataControllers;
-using Cantarus.Modules.PolyDeploy.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using System;
 using System.IO;
 

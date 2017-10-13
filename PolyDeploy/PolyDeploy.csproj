@@ -48,7 +48,7 @@
     </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Angular|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Clients|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>
     </DefineConstants>
@@ -129,6 +129,13 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\Manage\Manage.ascx.cs">
+      <DependentUpon>Manage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Clients\Manage\Manage.ascx.designer.cs">
+      <DependentUpon>Manage.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Components\APIUserManager.cs" />
     <Compile Include="Components\RemoteDeployment.cs" />
     <Compile Include="Components\Deployment.cs" />
@@ -139,77 +146,82 @@
     <Compile Include="Components\PackageJob.cs" />
     <Compile Include="Components\SessionManager.cs" />
     <Compile Include="Components\Utilities.cs" />
-    <Compile Include="DataAccess\DataControllers\IPSpecDataController.cs" />
-    <Compile Include="DataAccess\DataControllers\SessionDataController.cs" />
-    <Compile Include="DataAccess\Models\APIUser.cs" />
-    <Compile Include="DataAccess\DataControllers\APIUserDataController.cs" />
-    <Compile Include="DataAccess\Models\IPSpec.cs" />
-    <Compile Include="DataAccess\Models\Session.cs" />
+    <Compile Include="Components\DataAccess\DataControllers\IPSpecDataController.cs" />
+    <Compile Include="Components\DataAccess\DataControllers\SessionDataController.cs" />
+    <Compile Include="Components\DataAccess\Models\APIUser.cs" />
+    <Compile Include="Components\DataAccess\DataControllers\APIUserDataController.cs" />
+    <Compile Include="Components\DataAccess\Models\IPSpec.cs" />
+    <Compile Include="Components\DataAccess\Models\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.ascx.designer.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
+    <Compile Include="Components\PolyDeploySettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PolyDeploySettingsBase.cs">
+    <Compile Include="Clients\Deploy\Deploy.ascx.designer.cs">
+      <DependentUpon>Deploy.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Clients\Deploy\Deploy.ascx.cs">
+      <DependentUpon>Deploy.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="View.ascx.designer.cs">
-      <DependentUpon>View.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="View.ascx.cs">
-      <DependentUpon>View.ascx</DependentUpon>
+    <Compile Include="Components\PolyDeployModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PolyDeployModuleBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebAPI\ActionFilters\APIAuthentication.cs" />
-    <Compile Include="WebAPI\ActionFilters\InWhitelist.cs" />
-    <Compile Include="WebAPI\APIUserController.cs" />
-    <Compile Include="WebAPI\CIController.cs" />
-    <Compile Include="WebAPI\Routes.cs" />
-    <Compile Include="WebAPI\SessionController.cs" />
-    <Compile Include="WebAPI\WhitelistController.cs" />
+    <Compile Include="Components\WebAPI\ActionFilters\APIAuthentication.cs" />
+    <Compile Include="Components\WebAPI\ActionFilters\InWhitelist.cs" />
+    <Compile Include="Components\WebAPI\APIUserController.cs" />
+    <Compile Include="Components\WebAPI\CIController.cs" />
+    <Compile Include="Components\WebAPI\Routes.cs" />
+    <Compile Include="Components\WebAPI\SessionController.cs" />
+    <Compile Include="Components\WebAPI\WhitelistController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_LocalResources\Settings.ascx.resx">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="App_LocalResources\View.ascx.resx" />
-    <None Include="BuildScripts\ModulePackage.targets">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Angular\src\app.js" />
-    <Content Include="Angular\src\bundle.js" />
-    <Content Include="Angular\src\controllers\InstallController.js" />
-    <Content Include="Angular\src\controllers\ManageUsersController.js" />
-    <Content Include="Angular\src\controllers\ResultController.js" />
-    <Content Include="Angular\src\controllers\SummaryController.js" />
-    <Content Include="Angular\src\controllers\UploadController.js" />
-    <Content Include="Angular\src\controllers\MainController.js" />
-    <Content Include="Angular\src\services\DataService.js" />
-    <Content Include="Angular\src\services\APIUserDataService.js" />
-    <Content Include="Angular\src\services\SessionDataService.js" />
-    <Content Include="Angular\src\services\SessionService.js" />
-    <Content Include="Angular\src\templates\manage-users.html" />
-    <Content Include="Angular\src\templates\result.html" />
-    <Content Include="Angular\src\templates\upload.html" />
-    <Content Include="Angular\src\templates\summary.html" />
-    <Content Include="Angular\src\templates\install.html" />
-    <Content Include="Angular\src\templates\main.html" />
+    <Content Include="Clients\Core\src\js\app.js" />
+    <Content Include="Clients\Core\src\js\bootstrap.js" />
+    <Content Include="Clients\Core\src\js\services\DnnService.js" />
+    <Content Include="Clients\Core\src\js\services\index.js" />
+    <Content Include="Clients\Deploy\src\js\bootstrap.js" />
+    <Content Include="Clients\Deploy\src\js\config.js" />
+    <Content Include="Clients\Deploy\src\js\controllers\index.js" />
+    <Content Include="Clients\Deploy\src\js\directives\index.js" />
+    <Content Include="Clients\Deploy\src\js\services\index.js" />
+    <Content Include="Clients\Manage\Manage.ascx" />
+    <Content Include="Clients\Manage\src\js\app.js" />
+    <Content Include="Clients\Manage\src\js\bootstrap.js" />
+    <Content Include="Clients\Manage\src\js\config.js" />
+    <Content Include="Clients\Manage\src\js\controllers\index.js" />
+    <Content Include="Clients\Manage\src\js\controllers\IndexController.js" />
+    <Content Include="Clients\Manage\src\js\controllers\ManageUsersController.js" />
+    <Content Include="Clients\Manage\src\js\services\APIUserDataService.js" />
+    <Content Include="Clients\Manage\src\js\services\index.js" />
+    <Content Include="Clients\Manage\src\js\templates\index.html" />
+    <Content Include="Clients\Manage\src\js\templates\manage-users.html" />
+    <Content Include="webpack.base.js" />
+    <Content Include="Clients\Deploy\src\js\app.js" />
+    <Content Include="Clients\Deploy\src\js\controllers\InstallController.js" />
+    <Content Include="Clients\Deploy\src\js\controllers\ResultController.js" />
+    <Content Include="Clients\Deploy\src\js\controllers\SummaryController.js" />
+    <Content Include="Clients\Deploy\src\js\controllers\UploadController.js" />
+    <Content Include="Clients\Deploy\src\js\services\APIUserDataService.js" />
+    <Content Include="Clients\Deploy\src\js\services\SessionDataService.js" />
+    <Content Include="Clients\Deploy\src\js\services\SessionService.js" />
+    <Content Include="Clients\Deploy\src\js\templates\manage-users.html" />
+    <Content Include="Clients\Deploy\src\js\templates\result.html" />
+    <Content Include="Clients\Deploy\src\js\templates\upload.html" />
+    <Content Include="Clients\Deploy\src\js\templates\summary.html" />
+    <Content Include="Clients\Deploy\src\js\templates\install.html" />
+    <Content Include="Clients\Deploy\src\js\templates\main.html" />
     <Content Include="gulpfile.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="css\default.less" />
+    <Content Include="Clients\Core\src\css\main.less" />
     <None Include="PolyDeploy.dnn">
       <SubType>Designer</SubType>
     </None>
     <None Include="module.css" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
+    <Content Include="project.config.js" />
     <Content Include="SqlDataProviders\00.01.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.02.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\Uninstall.SqlDataProvider" />
@@ -218,8 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\cantarus.png" />
-    <Content Include="Settings.ascx" />
-    <Content Include="View.ascx" />
+    <Content Include="Clients\Deploy\Deploy.ascx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Encryption\Encryption.csproj">
@@ -228,7 +239,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Angular\src\directives\" />
+    <Folder Include="Clients\Deploy\src\css\" />
+    <Folder Include="Clients\Manage\src\css\" />
+    <Folder Include="Clients\Manage\src\js\directives\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Clients\Deploy\App_LocalResources\Deploy.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -252,11 +268,10 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="$(MSBuildProjectDirectory)\BuildScripts\ModulePackage.Targets" />
   <PropertyGroup>
-    <PreBuildEvent>gulp pre-msbuild-$(ConfigurationName)</PreBuildEvent>
+    <PreBuildEvent>gulp pre-build-$(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>gulp post-msbuild-$(ConfigurationName)</PostBuildEvent>
+    <PostBuildEvent>gulp post-build-$(ConfigurationName)</PostBuildEvent>
   </PropertyGroup>
 </Project>

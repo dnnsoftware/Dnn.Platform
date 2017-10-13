@@ -1,5 +1,5 @@
 ﻿using Cantarus.Libraries.Encryption;
-using Cantarus.Modules.PolyDeploy.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Log.EventLog;
 using System;

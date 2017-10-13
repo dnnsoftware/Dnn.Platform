@@ -10,13 +10,22 @@
     "bootstrap": "^3.3.7"
   },
   "devDependencies": {
-    "bluebird": "^3.5.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-es2015-spread": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
-    "gulp-browserify": "^0.5.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-clean-css": "^3.7.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-less": "^3.3.2",
-    "gulp-minify": "^1.0.0"
+    "gulp-add-src": "^0.2.0",
+    "gulp-zip": "^4.0.0",
+    "less-loader": "^4.0.5",
+    "merge-stream": "^1.0.1",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.18.2",
+    "webpack-stream": "^4.0.0"
   }
 }
