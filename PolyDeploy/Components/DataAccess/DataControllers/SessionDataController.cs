@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
 {
-    public class SessionDataController
+    internal class SessionDataController
     {
         public Session FindByGuid(string guid)
         {
