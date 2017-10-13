@@ -1,5 +1,4 @@
 ﻿using Cantarus.Libraries.Encryption;
-using Cantarus.Modules.PolyDeploy.Components;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
 using DotNetNuke.Services.Log.EventLog;

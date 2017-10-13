@@ -1,10 +1,8 @@
-﻿using Cantarus.Modules.PolyDeploy.Components;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;

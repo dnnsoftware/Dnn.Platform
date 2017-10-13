@@ -1,13 +1,7 @@
-﻿using Cantarus.Libraries.Encryption;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
-using DotNetNuke.Entities.Modules;
+﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Web;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
