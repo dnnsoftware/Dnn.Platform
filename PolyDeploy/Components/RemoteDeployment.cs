@@ -21,17 +21,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
-        //public void DecryptAndAddZip(Stream encryptedStream, string filename)
-        //{
-        //    using (Stream ds = Crypto.Decrypt(encryptedStream, APIUser.EncryptionKey))
-        //    {
-        //        using (FileStream fs = File.Create(Path.Combine(IntakePath, filename)))
-        //        {
-        //            ds.CopyTo(fs);
-        //        }
-        //    }
-        //}
-
         protected override void LogAnyFailures(List<InstallJob> jobs)
         {
             EventLogController elc = new EventLogController();
