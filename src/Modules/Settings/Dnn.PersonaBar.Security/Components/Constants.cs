@@ -13,9 +13,12 @@
         public const string RegistrationSettingsEdit = "REGISTRATION_SETTINGS_EDIT";
         public const string UserNotMemberOfRole = "UserNotMemberOfRole";
         public const string NotValid = "NotValid";
+        public const string EmptyValue = "Empty";
         public const string NoDisplayName = "NoDisplayName";
         public const string NoEmail = "NoEmail";
         public const string ContainsDuplicateAddresses = "ContainsDuplicateAddresses";
-        public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
+        public const string DeletedTab = "DeletedTab";
+        public const string DisabledTab = "DisabledTab";
+        public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";        
     }
 }

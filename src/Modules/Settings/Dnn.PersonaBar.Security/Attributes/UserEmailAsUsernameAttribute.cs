@@ -26,7 +26,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Security.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     class UserEmailAsUsernameAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -34,9 +34,9 @@ namespace Dnn.PersonaBar.Security.Attributes
             var propertyName = validationContext.DisplayName;
             bool userEmailAsUsername;
 
-            if (!bool.TryParse(value.ToString(),out userEmailAsUsername))
+            if (!bool.TryParse(value.ToString(), out userEmailAsUsername))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid + ".Text", Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
+                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
             }
 
             if (userEmailAsUsername && UserController.GetDuplicateEmailCount() > 0)

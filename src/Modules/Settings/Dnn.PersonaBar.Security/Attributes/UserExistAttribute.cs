@@ -27,7 +27,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dnn.PersonaBar.Security.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     class UserExistAttribute : ValidationAttribute
     {
         public string[] RoleNames { get; set; }
@@ -35,20 +35,20 @@ namespace Dnn.PersonaBar.Security.Attributes
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;
-            int UserId;
+            int userId;
 
-            if (Int32.TryParse(value.ToString(),out UserId))
+            if (Int32.TryParse(value.ToString(), out userId))
             {
-                var portalSetting = PortalController.Instance.GetCurrentPortalSettings();                
-                var user = UserController.Instance.GetUserById(portalSetting.PortalId, UserId);
-               
+                var portalSetting = PortalController.Instance.GetCurrentPortalSettings();
+                var user = UserController.Instance.GetUserById(portalSetting.PortalId, userId);
+
                 if (user != null)
                 {
                     foreach (var roleName in RoleNames)
                     {
                         if (!user.IsInRole(roleName))
                         {
-                            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.UserNotMemberOfRole + ".Text", Components.Constants.LocalResourcesFile), roleName));
+                            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.UserNotMemberOfRole, Components.Constants.LocalResourcesFile), roleName));
                         }
                     }
 
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Security.Attributes
                 }
             }
 
-            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid + ".Text", Components.Constants.LocalResourcesFile), propertyName,value.ToString()));            
+            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
         }
     }
 }

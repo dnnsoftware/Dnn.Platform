@@ -29,7 +29,7 @@ using DotNetNuke.Services.Registration;
 
 namespace Dnn.PersonaBar.Security.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     class RegistrationFieldsAttribute : ValidationAttribute
     {
         public string RegistrationFormTypePropertyName { get; private set; }
@@ -43,12 +43,27 @@ namespace Dnn.PersonaBar.Security.Attributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var registrationFormTypeValue = validationContext.ObjectType.GetProperty(RegistrationFormTypePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
+            var registrationFormTypeValue = string.Empty;
+
+            try
+            {
+                registrationFormTypeValue = validationContext.ObjectType.GetProperty(RegistrationFormTypePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
+            }
+            catch
+            {
+                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RegistrationFormTypePropertyName, registrationFormTypeValue));
+            }
+
+            if (string.IsNullOrWhiteSpace(registrationFormTypeValue))
+            {
+                return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), RegistrationFormTypePropertyName));
+            }
+
             int registrationFormType;
 
             if (!Int32.TryParse(registrationFormTypeValue, out registrationFormType))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid + ".Text", Constants.LocalResourcesFile), "RegistrationFormType", registrationFormTypeValue));
+                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RegistrationFormTypePropertyName, registrationFormTypeValue));
             }
 
             if (registrationFormType == 1)
@@ -58,30 +73,45 @@ namespace Dnn.PersonaBar.Security.Attributes
                 var portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
 
                 foreach (var registrationField in registrationTokens)
-                {   
-                    if (!string.IsNullOrWhiteSpace(registrationField) && RegistrationProfileController.Instance.Search(portalId,registrationField).Count() == 0)
+                {
+                    if (!string.IsNullOrWhiteSpace(registrationField) && RegistrationProfileController.Instance.Search(portalId, registrationField).Count() == 0)
                     {
-                        return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid + ".Text", Constants.LocalResourcesFile), validationContext.DisplayName, registrationField));
+                        return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), validationContext.DisplayName, registrationField));
                     }
                 }
 
                 if (!registrationFields.Contains("Email"))
                 {
-                    return new ValidationResult(Localization.GetString(Constants.NoEmail + ".Text", Constants.LocalResourcesFile));
+                    return new ValidationResult(Localization.GetString(Constants.NoEmail, Constants.LocalResourcesFile));
+                }
+
+                var requireUniqueDisplayNameValue = string.Empty;
+
+                try
+                {
+                    requireUniqueDisplayNameValue = validationContext.ObjectType.GetProperty(RequireUniqueDisplayNamePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
+                }
+                catch
+                {
+                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
+                }
+
+                if (string.IsNullOrWhiteSpace(requireUniqueDisplayNameValue))
+                {
+                    return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), RequireUniqueDisplayNamePropertyName));
                 }
 
                 bool requireUniqueDisplayName;
-                var requireUniqueDisplayNameValue = validationContext.ObjectType.GetProperty(RequireUniqueDisplayNamePropertyName).GetValue(validationContext.ObjectInstance, null).ToString();
 
                 if (!bool.TryParse(requireUniqueDisplayNameValue, out requireUniqueDisplayName))
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid + ".Text", Constants.LocalResourcesFile), "RequireUniqueDisplayName", requireUniqueDisplayNameValue));
+                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
                 }
 
                 if (!registrationFields.Contains("DisplayName") && requireUniqueDisplayName)
-                {                    
+                {
                     PortalController.UpdatePortalSetting(portalId, "Registration_RegistrationFormType", "0", false);
-                    return new ValidationResult(Localization.GetString(Constants.NoDisplayName + ".Text", Constants.LocalResourcesFile));
+                    return new ValidationResult(Localization.GetString(Constants.NoDisplayName, Constants.LocalResourcesFile));
                 }
             }
 

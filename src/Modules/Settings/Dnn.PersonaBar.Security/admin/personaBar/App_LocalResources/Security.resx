@@ -1133,6 +1133,15 @@
     <value>User not member of {0} role.</value>
   </data>
   <data name="NotValid.Text" xml:space="preserve">
-    <value>{0}  {1} is not valid.</value>
+    <value>{0} {1} is not valid.</value>
+  </data>
+  <data name="Empty.Text" xml:space="preserve">
+    <value>{0} should not be empty.</value>
+  </data>
+  <data name="DeletedTab.Text" xml:space="preserve">
+    <value>The tab with this id {0} is deleted.</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>The tab with this id {0} is disable.</value>
   </data>
 </root>

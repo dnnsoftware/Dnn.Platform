@@ -26,7 +26,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dnn.PersonaBar.Security.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     class UserRegistrationOptionAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -34,16 +34,21 @@ namespace Dnn.PersonaBar.Security.Attributes
             var propertyName = validationContext.DisplayName;
             int userRegistrationOptionId;
 
-            if (string.IsNullOrWhiteSpace(value.ToString()) || !Int32.TryParse(value.ToString(), out userRegistrationOptionId))
+            if (string.IsNullOrWhiteSpace(value.ToString()))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid + ".Text", Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
+                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.EmptyValue, Components.Constants.LocalResourcesFile), propertyName));
+            }
+
+            if (!Int32.TryParse(value.ToString(), out userRegistrationOptionId))
+            {
+                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
             }
 
             var allOptions = Helper.RegistrationSettingsHelper.GetUserRegistrationOptions();
 
-            if (!allOptions.Select(o=>o.Value).Contains(userRegistrationOptionId))
+            if (!allOptions.Select(o => o.Value).Contains(userRegistrationOptionId))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid + ".Text", Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
+                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
             }
 
             return ValidationResult.Success;
