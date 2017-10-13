@@ -2,7 +2,7 @@
 using System;
 
 namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
-{   
+{
     [TableName("Cantarus_PolyDeploy_APIUsers")]
     [PrimaryKey("APIUserID")]
     internal class APIUser
