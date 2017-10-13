@@ -11,25 +11,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployClient", "DeployClien
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Angular|Any CPU = Angular|Any CPU
+		Clients|Any CPU = Clients|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Angular|Any CPU.ActiveCfg = Angular|Any CPU
-		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Angular|Any CPU.Build.0 = Angular|Any CPU
+		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Clients|Any CPU.ActiveCfg = Clients|Any CPU
+		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Clients|Any CPU.Build.0 = Clients|Any CPU
 		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B15D41DD-2D1A-490C-977F-2F14E56447D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Angular|Any CPU.ActiveCfg = Release|Any CPU
-		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Angular|Any CPU.Build.0 = Release|Any CPU
+		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Clients|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Clients|Any CPU.Build.0 = Release|Any CPU
 		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB5A3320-F260-42EE-8F19-CCF7546CA511}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6122CCD-75F9-4DEF-8DAA-E11789D6D6D8}.Angular|Any CPU.ActiveCfg = Release|Any CPU
-		{B6122CCD-75F9-4DEF-8DAA-E11789D6D6D8}.Angular|Any CPU.Build.0 = Release|Any CPU
+		{B6122CCD-75F9-4DEF-8DAA-E11789D6D6D8}.Clients|Any CPU.ActiveCfg = Release|Any CPU
+		{B6122CCD-75F9-4DEF-8DAA-E11789D6D6D8}.Clients|Any CPU.Build.0 = Release|Any CPU
 		{B6122CCD-75F9-4DEF-8DAA-E11789D6D6D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6122CCD-75F9-4DEF-8DAA-E11789D6D6D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6122CCD-75F9-4DEF-8DAA-E11789D6D6D8}.Release|Any CPU.ActiveCfg = Release|Any CPU

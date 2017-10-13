@@ -1,12 +1,10 @@
 ﻿using DotNetNuke.Common;
-using DotNetNuke.Modules.Dashboard.Components.Server;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Installers;
 using DotNetNuke.Services.Installer.Log;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {

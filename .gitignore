@@ -296,8 +296,11 @@ __pycache__/
 
 ## Project Specific
 
-# Angular Build
-**/Angular/dist
+# Client dist folders
+**/Clients/**/dist
+
+# Temporarily ignore assets folder until it's moved.
+**/Clients/assets
 
 # Compiled LESS
 **/css/**/*.css

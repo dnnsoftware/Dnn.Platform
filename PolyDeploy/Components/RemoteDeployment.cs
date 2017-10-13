@@ -1,13 +1,7 @@
-﻿using Cantarus.Libraries.Encryption;
-using Cantarus.Modules.PolyDeploy.DataAccess.Models;
-using DotNetNuke.Entities.Modules;
+﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Web;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
@@ -26,17 +20,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 throw new Exception("API user not found, cannot continue. Shouldn't have been able to get here.");
             }
         }
-
-        //public void DecryptAndAddZip(Stream encryptedStream, string filename)
-        //{
-        //    using (Stream ds = Crypto.Decrypt(encryptedStream, APIUser.EncryptionKey))
-        //    {
-        //        using (FileStream fs = File.Create(Path.Combine(IntakePath, filename)))
-        //        {
-        //            ds.CopyTo(fs);
-        //        }
-        //    }
-        //}
 
         protected override void LogAnyFailures(List<InstallJob> jobs)
         {

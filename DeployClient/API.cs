@@ -26,7 +26,7 @@ namespace DeployClient
 
         public static string CreateSession()
         {
-            string endpoint = "CI/CreateSession";
+            string endpoint = "Remote/CreateSession";
 
             using (HttpClient client = BuildClient())
             {
@@ -49,7 +49,7 @@ namespace DeployClient
 
         public static Dictionary<string, dynamic> GetSession(string sessionGuid)
         {
-            string endpoint = string.Format("CI/GetSession?sessionGuid={0}", sessionGuid);
+            string endpoint = string.Format("Remote/GetSession?sessionGuid={0}", sessionGuid);
 
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
@@ -63,7 +63,7 @@ namespace DeployClient
 
         public static void AddPackages(string sessionGuid, List<KeyValuePair<string, Stream>> streams)
         {
-            string endpoint = string.Format("CI/AddPackages?sessionGuid={0}", sessionGuid);
+            string endpoint = string.Format("Remote/AddPackages?sessionGuid={0}", sessionGuid);
 
             using (HttpClient client = BuildClient())
             {
@@ -80,7 +80,7 @@ namespace DeployClient
 
         public static void AddPackageAsync(string sessionGuid, Stream stream, string filename)
         {
-            string endpoint = string.Format("CI/AddPackages?sessionGuid={0}", sessionGuid);
+            string endpoint = string.Format("Remote/AddPackages?sessionGuid={0}", sessionGuid);
 
             using (HttpClient client = BuildClient())
             {
@@ -94,7 +94,7 @@ namespace DeployClient
 
         public static bool Install(string sessionGuid, out Dictionary<string, dynamic> response)
         {
-            string endpoint = string.Format("CI/Install?sessionGuid={0}", sessionGuid);
+            string endpoint = string.Format("Remote/Install?sessionGuid={0}", sessionGuid);
 
             bool success = false;
 

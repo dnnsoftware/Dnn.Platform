@@ -1,5 +1,5 @@
-﻿using Cantarus.Modules.PolyDeploy.DataAccess.DataControllers;
-using Cantarus.Modules.PolyDeploy.DataAccess.Models;
+﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 
@@ -17,9 +17,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
             {
                 newApiUser = new APIUser(name);
 
-                APIUserDataController dc = new APIUserDataController();
-
-                dc.Create(newApiUser);
+                APIUserDC.Create(newApiUser);
             }
             catch (Exception ex)
             {
@@ -51,9 +49,9 @@ namespace Cantarus.Modules.PolyDeploy.Components
             return APIUserDC.Get(apiUser.APIUserId);
         }
 
-        public static void Delete(APIUser apiuser)
+        public static void Delete(APIUser apiUser)
         {
-            APIUserDC.Delete(apiuser);
+            APIUserDC.Delete(apiUser);
         }
     }
 }
