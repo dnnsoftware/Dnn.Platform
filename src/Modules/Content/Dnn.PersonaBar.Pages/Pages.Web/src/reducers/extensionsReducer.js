@@ -3,6 +3,7 @@ import ActionTypes from "../constants/actionTypes/extensionsActionTypes";
 export default function extensionsReducer(state = {
     toolbarComponents: [],
     multiplePagesComponents: [],
+    pageSettingsComponents: [],
     pageDetailsFooterComponents: [],
     settingsButtonComponents: {},
     pageTypeSelectorComponents: [],
@@ -20,6 +21,14 @@ export default function extensionsReducer(state = {
         newPageInContextComponents = newPageInContextComponents.concat(component.component);
         return newPageInContextComponents;
     }
+
+    function addPageSettingsComponent(component){
+        console.log('ADD PAGE SETTINGS COMPONENT ----'+component);
+        let newPageSettingsComponents = [...state.pageSettingsComponents];
+        newPageSettingsComponents = newPageSettingsComponents.concat(component.component);
+        return newPageSettingsComponents;
+    }
+
     switch (action.type) {
         case ActionTypes.REGISTER_TOOLBAR_COMPONENT:
             return {
@@ -31,6 +40,12 @@ export default function extensionsReducer(state = {
                 ...state,
                 multiplePagesComponents: [...state.multiplePagesComponents, action.data.component]
             };
+        case ActionTypes.REGISTER_PAGE_SETTINGS_COMPONENT:
+            
+            return {
+                ...state,
+                pageDetails:[...state.pageSettings, action.data.component]
+            };
         case ActionTypes.REGISTER_PAGE_DETAILS_FOOTER_COMPONENT:
             return {
                 ...state,
@@ -39,7 +54,7 @@ export default function extensionsReducer(state = {
         case ActionTypes.REGISTER_SETTINGS_BUTTON_COMPONENT:
             return {
                 ...state,
-                settingsButtonComponents: addComponent(action.data.component)
+                settingsButtonComponents: addPageSettingsComponent(action.data.component)
             };
         case ActionTypes.REGISTER_PAGE_TYPE_SELECTOR_COMPONENT:
             return {

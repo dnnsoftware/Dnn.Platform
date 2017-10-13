@@ -42,6 +42,9 @@ const application = {
     registerInContextMenuComponent(component) {
         application.dispatch(ExtensionsActions.registerInContextMenuComponent(component));
     },
+    registerPageSettingsComponent(component) {
+        application.dispatch(ExtensionsActions.registerPageSettingsComponent(component));
+    },
     registerPageDetailFooterComponent(component) {
         application.dispatch(ExtensionsActions.registerPageDetailFooterComponent(component));
     },

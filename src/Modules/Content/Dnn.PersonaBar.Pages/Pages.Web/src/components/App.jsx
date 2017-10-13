@@ -853,6 +853,7 @@ class App extends Component {
                     onGetCachedPageCount={props.onGetCachedPageCount}
                     onClearCache={props.onClearCache}
                     onModuleCopyChange={props.onModuleCopyChange}
+                    customPageSettingsComponent={props.customPageSettingsComponent}
                 />
             );
         };
@@ -1321,7 +1322,8 @@ function mapStateToProps(state) {
         additionalPanels: state.extensions.additionalPanels,
         isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled,
         selectedPagePath: state.pageHierarchy.selectedPagePath,
-        workflowList: state.pages.workflowList
+        workflowList: state.pages.workflowList,
+        customPageSettingsComponent : state.extensions.pageSettingsComponent
 
     };
 }

@@ -15,6 +15,7 @@ window.dnn.pages.apiController = window.dnn.pages.apiController || "Pages";
 window.dnn.pages.setItemTemplate = application.setItemTemplate;
 window.dnn.pages.setDragItemTemplate = application.setDragItemTemplate;
 window.dnn.pages.registerToolbarComponent = application.registerToolbarComponent;
+window.dnn.pages.registerPageSettingsComponent = application.registerPageSettingsComponent;
 window.dnn.pages.registerPageDetailFooterComponent = application.registerPageDetailFooterComponent;
 window.dnn.pages.registerMultiplePagesComponent = application.registerMultiplePagesComponent;
 window.dnn.pages.registerInContextMenuComponent = application.registerInContextMenuComponent;

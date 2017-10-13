@@ -92,8 +92,8 @@ class PageSettings extends Component {
         this.props.onChangeParentId(parentPageId);
         this.props.onChangeField("hierarchy", parentPageName);
     }
-
-    render() {
+    
+    render_tabsDetails(){
         const {
             selectedPage,
             selectedPageErrors,
@@ -228,13 +228,22 @@ class PageSettings extends Component {
         }
 
         return (
-            <Tabs
-                tabHeaders={headers}
-                className={styles.pageSettings}
-                onSelect={this.props.selectPageSettingTab.bind(this)}
-                selectedIndex={this.props.selectedPageSettingTab}>
-                {tabs}
-            </Tabs>
+                <Tabs
+                    tabHeaders={headers}
+                    className={styles.pageSettings}
+                    onSelect={this.props.selectPageSettingTab.bind(this)}
+                    selectedIndex={this.props.selectedPageSettingTab}>
+                    {tabs}
+                </Tabs>
+        );
+    }
+
+
+    render() {
+        return (
+            <div>
+                {this.props.customPageSettingsComponent ? this.props.customPageSettingsComponent : this.render_tabsDetails()}
+            </div>
         );
     }
 }
@@ -263,7 +272,8 @@ PageSettings.propTypes = {
     selectPageSettingTab: PropTypes.func,
     onGetCachedPageCount: PropTypes.func.isRequired,
     onClearCache: PropTypes.func.isRequired,
-    onModuleCopyChange: PropTypes.func
+    onModuleCopyChange: PropTypes.func,
+    customPageSettingsComponent: PropTypes.object
 };
 
 export default PageSettings;

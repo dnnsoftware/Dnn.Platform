@@ -19,6 +19,12 @@ const extensionsActions = {
             data: { component }
         };
     },
+    registerPageSettingsComponent(component) {
+        return {
+            type: ActionTypes.REGISTER_PAGE_SETTINGS_COMPONENT,
+            data: { component }
+        };
+    },
     registerPageDetailFooterComponent(component) {
         return {
             type: ActionTypes.REGISTER_PAGE_DETAILS_FOOTER_COMPONENT,
