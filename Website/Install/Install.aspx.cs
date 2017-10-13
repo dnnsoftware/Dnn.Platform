@@ -254,6 +254,11 @@ namespace DotNetNuke.Services.Install
         { 
             try
             {
+                if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
+                {
+                    Response.Redirect(Request.RawUrl, true);
+                }
+
                 var databaseVersion = DataProvider.Instance().GetVersion();
 
                 //Start Timer

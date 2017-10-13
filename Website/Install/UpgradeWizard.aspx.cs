@@ -401,6 +401,7 @@ namespace DotNetNuke.Services.Install
                 //Reset the accept terms flag
                 HostController.Instance.Update("AcceptDnnTerms", "N");
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
+                Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
             }
         }
         #endregion
