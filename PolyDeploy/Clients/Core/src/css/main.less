@@ -1,3 +1,17 @@
-﻿body {
-    background: red;
+﻿/*
+    Core Styling
+*/
+
+@path-node-modules: "../../../../node_modules/";
+
+#cantarus-poly-deploy {
+
+    // Import namespaced bootstrap.
+    @import "@{path-node-modules}bootstrap/less/bootstrap.less";
+
+    // Override old DNN skin.
+    input {
+        border: solid 1px rgb(238, 238, 238);
+    }
+
 }

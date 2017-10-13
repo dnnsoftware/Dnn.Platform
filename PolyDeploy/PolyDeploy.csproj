@@ -141,7 +141,7 @@
     <Compile Include="Components\Deployment.cs" />
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\InstallJob.cs" />
-    <Compile Include="Components\IPSpecController.cs" />
+    <Compile Include="Components\IPSpecManager.cs" />
     <Compile Include="Components\PackageDependency.cs" />
     <Compile Include="Components\PackageJob.cs" />
     <Compile Include="Components\SessionManager.cs" />
@@ -172,11 +172,12 @@
     <Compile Include="Components\WebAPI\CIController.cs" />
     <Compile Include="Components\WebAPI\Routes.cs" />
     <Compile Include="Components\WebAPI\SessionController.cs" />
-    <Compile Include="Components\WebAPI\WhitelistController.cs" />
+    <Compile Include="Components\WebAPI\IPSpecController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Clients\Core\src\js\app.js" />
     <Content Include="Clients\Core\src\js\bootstrap.js" />
+    <Content Include="Clients\Core\src\js\services\IPSpecDataService.js" />
     <Content Include="Clients\Core\src\js\services\DnnService.js" />
     <Content Include="Clients\Core\src\js\services\index.js" />
     <Content Include="Clients\Deploy\src\js\bootstrap.js" />
@@ -189,20 +190,22 @@
     <Content Include="Clients\Manage\src\js\bootstrap.js" />
     <Content Include="Clients\Manage\src\js\config.js" />
     <Content Include="Clients\Manage\src\js\controllers\index.js" />
-    <Content Include="Clients\Manage\src\js\controllers\IndexController.js" />
-    <Content Include="Clients\Manage\src\js\controllers\ManageUsersController.js" />
+    <Content Include="Clients\Manage\src\js\controllers\WhitelistController.js" />
+    <Content Include="Clients\Manage\src\js\controllers\UsersController.js" />
     <Content Include="Clients\Manage\src\js\services\APIUserDataService.js" />
     <Content Include="Clients\Manage\src\js\services\index.js" />
-    <Content Include="Clients\Manage\src\js\templates\index.html" />
-    <Content Include="Clients\Manage\src\js\templates\manage-users.html" />
+    <Content Include="Clients\Manage\src\js\templates\whitelist.html" />
+    <Content Include="Clients\Manage\src\js\templates\welcome.html" />
+    <Content Include="Clients\Manage\src\js\templates\menu.html" />
+    <Content Include="Clients\Manage\src\js\templates\users.html" />
     <Content Include="webpack.base.js" />
     <Content Include="Clients\Deploy\src\js\app.js" />
     <Content Include="Clients\Deploy\src\js\controllers\InstallController.js" />
     <Content Include="Clients\Deploy\src\js\controllers\ResultController.js" />
     <Content Include="Clients\Deploy\src\js\controllers\SummaryController.js" />
     <Content Include="Clients\Deploy\src\js\controllers\UploadController.js" />
-    <Content Include="Clients\Deploy\src\js\services\APIUserDataService.js" />
-    <Content Include="Clients\Deploy\src\js\services\SessionDataService.js" />
+    <Content Include="Clients\Core\src\js\services\APIUserDataService.js" />
+    <Content Include="Clients\Core\src\js\services\SessionDataService.js" />
     <Content Include="Clients\Deploy\src\js\services\SessionService.js" />
     <Content Include="Clients\Deploy\src\js\templates\manage-users.html" />
     <Content Include="Clients\Deploy\src\js\templates\result.html" />
@@ -213,8 +216,9 @@
     <Content Include="gulpfile.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
-    <Content Include="css\default.less" />
     <Content Include="Clients\Core\src\css\main.less" />
+    <Content Include="Clients\Deploy\src\css\main.less" />
+    <Content Include="Clients\Manage\src\css\main.less" />
     <None Include="PolyDeploy.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -239,8 +243,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Clients\Deploy\src\css\" />
-    <Folder Include="Clients\Manage\src\css\" />
     <Folder Include="Clients\Manage\src\js\directives\" />
   </ItemGroup>
   <ItemGroup>

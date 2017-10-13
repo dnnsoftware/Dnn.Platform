@@ -9,6 +9,8 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
 {
     internal class APIUserDataController
     {
+        #region Create
+
         public void Create(APIUser apiUser)
         {
             using (IDataContext context = DataContext.Instance())
@@ -18,6 +20,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
                 repo.Insert(apiUser);
             }
         }
+
+        #endregion
+
+        #region Read
 
         public IEnumerable<APIUser> Get()
         {
@@ -49,6 +55,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             }
         }
 
+        #endregion
+
+        #region Update
+
         public void Update(APIUser apiUser)
         {
             using (IDataContext context = DataContext.Instance())
@@ -59,6 +69,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             }
         }
 
+        #endregion
+
+        #region Delete
+
         public void Delete(APIUser apiUser)
         {
             using (IDataContext context = DataContext.Instance())
@@ -68,5 +82,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
                 repo.Delete(apiUser);
             }
         }
+
+        #endregion
     }
 }
