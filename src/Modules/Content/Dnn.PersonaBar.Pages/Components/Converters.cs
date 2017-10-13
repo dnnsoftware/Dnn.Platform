@@ -44,6 +44,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
                 PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : "",
+                PublishStatus = GetTabPublishStatus(tab),
                 Tags = tab.Terms.Select(t => t.Name).ToArray(),
                 TabOrder = tab.TabOrder
         };
@@ -216,6 +217,13 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return tab.IsVisible ? "Visible" : "Hidden";
+        }
+
+        private static string GetTabPublishStatus(TabInfo tab)
+        {
+            return WorkflowHelper.IsWorkflowCompleted(tab)
+                ? Localization.GetString("lblPublished")
+                : Localization.GetString("lblDraft");
         }
     }
 }

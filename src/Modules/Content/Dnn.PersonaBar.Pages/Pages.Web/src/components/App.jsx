@@ -28,7 +28,7 @@ import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
 import cloneDeep from 'lodash/clonedeep';
 import GridCell from "dnn-grid-cell";
-
+import OverflowText from "dnn-text-overflow-wrapper";
 import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
@@ -71,6 +71,7 @@ class App extends Component {
 
             inSearch: false,
             searchTerm: "",
+            filtersUpdated: false,
 
             startDate: date,
             endDate: date,
@@ -325,39 +326,23 @@ class App extends Component {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
-    onSearchClick() {
-        const { searchFields, searchTerm } = this.state;
-        const search = Object.keys(searchFields).length ? searchFields : { searchKey: searchTerm };
-        this.props.searchAndFilterPageList(search);
-    }
-
-    onSearchWhileTyping(searchKey) {
-        const searchFields = Object.keys(this.state.searchFields).length ? this.state.searchFields : { searchKey };
-        this.props.searchAndFilterPageList(searchFields);
-    }
-
     onSearchFocus() {
 
     }
 
     onSearchFieldChange(e) {
+        let self = this;
         this.setState({ searchTerm: e.target.value }, () => {
             const { searchTerm } = this.state;
             switch (true) {
                 case searchTerm.length > 3:
-                    this.onSearchWhileTyping(searchTerm);
-                    this.setState({ inSearch: true });
+                    this.setState({ filtersUpdated: true }, () => self.onSearch());
                     return;
                 case searchTerm.length === 0:
-                    this.setState({ inSearch: false });
+                    self.setState({ inSearch: false, filtersUpdated: false });
                     return;
             }
         });
-    }
-
-    onSearchBlur() {
-        const { searchTerm } = this.state;
-        searchTerm ? this.setState({ inSearch: true }) : this.setState({ inSearch: false });
     }
 
     onAddPage(parentPage) {
@@ -835,15 +820,15 @@ class App extends Component {
                 return { ref: `tag-${tag}`, tag: `${tag}` };
             });
 
-        filterByPageType ? filters.push({ ref: "filterByPageType", tag: `Page Type: ${filterByPageType}` }) : null;
-        filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `Published Status: ${filterByPublishStatus}` }) : null;
-        filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `Workflow: ${filterByWorkflowName}` }) : null;
+        filterByPageType ? filters.push({ ref: "filterByPageType", tag: `${Localization.get("PageType")}: ${filterByPageType}` }) : null;
+        filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `${Localization.get("lblPublishStatus")}: ${filterByPublishStatus}` }) : null;
+        filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `${Localization.get("WorkflowTitle")}: ${filterByWorkflowName}` }) : null;
 
         if (startAndEndDateDirty) {
             const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
             const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
-            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `Date Range: ${fullStartDate} ${fullEndDate} ` });
-            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `From Date: ${fullStartDate}` });
+            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblDateRange")}: ${fullStartDate} ${fullEndDate} ` });
+            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblFromDate")}: ${fullStartDate}` });
 
             fullStartDate != fullEndDate ? left() : right();
         }
@@ -855,31 +840,74 @@ class App extends Component {
         return new Promise((resolve) => this.setState({ searchFields }, () => resolve()));
     }
 
-    onSave() {
-        let { searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
-        const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()} 00:00:00`;
-        const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()} : 23:59:59`;
-        const searchDateRange = startAndEndDateDirty ? { publishDateStart: fullStartDate, publishDateEnd: fullEndDate } : {};
-
-        if (tags) {
-            tags = tags[0] == "," ? tags.replace(",", "") : tags;
-            tags = tags[tags.length - 1] == "," ? tags.split(",").filter(t => !!t).join() : tags;
-        }
-
-
-        let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
-        search = Object.assign({}, search, searchDateRange);
-        for (let prop in search) {
-            if (!search[prop]) {
-                delete search[prop];
+    onSearch() {
+        const { selectedPage } = this.props;
+        const { filtersUpdated } = this.state;
+        if (filtersUpdated) {
+            if (selectedPage) {
+                if (this.props.selectedPageDirty) {
+                    this.showCancelWithoutSavingDialogAndRun(() => {
+                        this.doSearch();
+                    });
+                } else {
+                    this.doSearch();
+                }
+            }
+            else {
+                this.doSearch();
             }
         }
-
-        this.generateFilters();
-        this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
-        this.setState({ inSearch: true });
+        this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
     }
 
+    doSearch() {
+        const { selectedPage } = this.props;
+        if (selectedPage) {
+            if (selectedPage.tabId === 0 && selectedPage.isCopy && selectedPage.templateTabId) {
+                this.props.onCancelPage(selectedPage.templateTabId);
+            }
+            else {
+                this.props.onCancelPage();
+            }
+        }
+        let { filtersUpdated, inSearch, searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
+        if (filtersUpdated || !inSearch) {
+            const fullStartDate = `${startDate.getDate() < 10 ? `0` + startDate.getDate() : startDate.getDate()}/${((startDate.getMonth() + 1) < 10 ? `0` + (startDate.getMonth() + 1) : (startDate.getMonth() + 1))}/${startDate.getFullYear()} 00:00:00`;
+            const fullEndDate = `${endDate.getDate() < 10 ? `0` + endDate.getDate() : endDate.getDate()}/${((endDate.getMonth() + 1) < 10 ? `0` + (endDate.getMonth() + 1) : (endDate.getMonth() + 1))}/${endDate.getFullYear()} 23:59:59`;
+            const searchDateRange = startAndEndDateDirty ? { publishDateStart: fullStartDate, publishDateEnd: fullEndDate } : {};
+
+            if (tags) {
+                tags = tags[0] == "," ? tags.replace(",", "") : tags;
+                tags = tags[tags.length - 1] == "," ? tags.split(",").filter(t => !!t).join() : tags;
+            }
+
+
+            let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
+            search = Object.assign({}, search, searchDateRange);
+            for (let prop in search) {
+                if (!search[prop]) {
+                    delete search[prop];
+                }
+            }
+
+            this.generateFilters();
+            this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
+            this.setState({ inSearch: true, filtersUpdated: false });
+        }
+    }
+    showCancelWithoutSavingDialogAndRun(callback) {
+
+        const onConfirm = () => {
+            if (typeof callback === "function") {
+                callback();
+            }
+        };
+        utils.confirm(
+            Localization.get("CancelWithoutSaving"),
+            Localization.get("Close"),
+            Localization.get("Cancel"),
+            onConfirm);
+    }
 
     onBreadcrumbSelect(name) {
     }
@@ -984,10 +1012,10 @@ class App extends Component {
     /* eslint-disable react/no-danger */
     render_more_flyout() {
         const filterByPageTypeOptions = [
-            { value: null, label: "None" },
-            { value: "Normal", label: "Normal" },
-            { value: "URL", label: "URL" },
-            { value: "File", label: "File" }
+            { value: null, label: Localization.get("lblAll") },
+            { value: "Normal", label: Localization.get("lblNormal") },
+            { value: "URL", label: Localization.get("lblUrl") },
+            { value: "File", label: Localization.get("lblFile") }
         ];
 
         let filterByPageStatusOptions = [
@@ -1006,7 +1034,7 @@ class App extends Component {
         const filterByWorkflowOptions = [{ value: null, label: Localization.get("lblNone") }].concat(workflowList);
 
         const generateTags = (e) => {
-            this.setState({ tags: e.target.value });
+            this.setState({ tags: e.target.value, filtersUpdated: true });
         };
 
         const onApplyChangesDropdownDayPicker = () => {
@@ -1015,7 +1043,7 @@ class App extends Component {
             const fullEndDate = endDate.getDate() + endDate.getMonth() + endDate.getFullYear();
 
             const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
-            condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
+            condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null, filtersUpdated: true }) : this.setState({ DropdownCalendarIsActive: null });
         };
         return (
             <div className="search-more-flyout">
@@ -1032,7 +1060,7 @@ class App extends Component {
                                 className="more-dropdown"
                                 options={filterByPageTypeOptions}
                                 label={this.state.filterByPageType ? this.state.filterByPageType : Localization.get("FilterbyPageTypeText")}
-                                onSelect={(data) => this.setState({ filterByPageType: data.value })}
+                                onSelect={(data) => this.setState({ filterByPageType: data.value, filtersUpdated: true })}
                                 withBorder={true} />
                         </GridCell>
                         <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
@@ -1054,7 +1082,7 @@ class App extends Component {
                                 className="more-dropdown"
                                 options={filterByPageStatusOptions}
                                 label={this.state.filterByPublishStatus ? this.state.filterByPublishStatus : Localization.get("FilterbyPublishStatusText")}
-                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value })}
+                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
                                 withBorder={true} />
                         </GridCell>
                         {!utils.isPlatform() &&
@@ -1063,7 +1091,7 @@ class App extends Component {
                                     className="more-dropdown"
                                     options={filterByWorkflowOptions}
                                     label={this.state.filterByWorkflowName ? this.state.filterByWorkflowName : Localization.get("FilterbyWorkflowText")}
-                                    onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label })}
+                                    onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true })}
                                     withBorder={true} />
                             </GridCell>
                         }
@@ -1074,16 +1102,17 @@ class App extends Component {
                 </GridCell>
                 <GridCell columnSize={100} style={{ textAlign: "right" }}>
                     <Button style={{ marginRight: "5px" }} onClick={() => this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false })}>{Localization.get("Cancel")}</Button>
-                    <Button type="primary" onClick={() => this.onSave()}>{Localization.get("Save")}</Button>
+                    <Button type="primary" onClick={() => this.onSearch()}>{Localization.get("Save")}</Button>
                 </GridCell>
             </div>);
     }
 
     render_searchResults() {
         const { pageInContextComponents, searchList } = this.props;
+        const self = this;
         const render_card = (item) => {
             const onNameClick = (item) => {
-                this.setState({ inSearch: false }, () => {
+                this.setState({ searchTerm: "", inSearch: false, filtersUpdated: false }, () => {
                     this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
                 });
             };
@@ -1095,7 +1124,7 @@ class App extends Component {
                 const update = () => {
                     let tags = this.state.tags;
                     tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
-                    this.setState({ tags }, () => this.onSave());
+                    this.setState({ tags, filtersUpdated: true }, () => this.onSearch());
                 };
 
                 condition ? update() : null;
@@ -1113,10 +1142,11 @@ class App extends Component {
             return (
                 <GridCell columnSize={100}>
                     <div className="search-item-card">
-                        <div className="search-item-thumbnail">
-                            <img src={item.thumbnail} />
-                        </div>
-                        <div className="search-item-details">
+                        {!utils.isPlatform() &&
+                            <div className="search-item-thumbnail">
+                                <img src={item.thumbnail} />
+                            </div>}
+                        <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
                             <div className="search-item-details-left">
                                 <h1 onClick={() => onNameClick(item)}>{item.name}</h1>
                                 <h2>{item.tabpath}</h2>
@@ -1129,27 +1159,28 @@ class App extends Component {
                             <div className="search-item-details-list">
                                 <ul>
                                     <li>
-                                        <p>Page Type:</p>
-                                        <p onClick={() => { this.setState({ filterByPageType: item.pageType }, () => this.onSave()); }} >{item.pageType}</p>
+                                        <p>{Localization.get("PageType")}:</p>
+                                        <p onClick={() => { this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{item.pageType}</p>
                                     </li>
                                     <li>
-                                        <p>Publish Status:</p>
-                                        <p onClick={() => { this.setState({ filterByPublishStatus: item.status }, () => this.onSave()); }} >{item.status}</p>
+                                        <p>{Localization.get("lblPublishStatus")}:</p>
+                                        <p onClick={() => { this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
                                     </li>
                                     <li>
-                                        <p >Publish Date:</p>
-                                        <p onClick={() => { this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true }, () => this.onSave()); }}>{item.publishDate.split(" ")[0]}</p>
+                                        <p >{Localization.get("lblPublishDate")}:</p>
+                                        <p onClick={() => { this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
                                     </li>
                                 </ul>
                             </div>
                             <div className="search-item-details-list">
                                 <ul>
-                                    <li>
-                                        <p>Workflow:</p>
-                                        <p onClick={() => { this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName }, () => this.onSave()); }}>{item.workflowName}</p>
+                                    {!utils.isPlatform() && <li>
+                                        <p>{Localization.get("WorkflowTitle")}:</p>
+                                        <p onClick={() => { this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
                                     </li>
+                                    }
                                     <li>
-                                        <p>Tags:</p>
+                                        <p>{Localization.get("Tags")}:</p>
                                         <p>{
                                             item.tags.map((tag) => {
                                                 return (
@@ -1169,7 +1200,7 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
-                </GridCell>
+                </GridCell >
             );
         };
 
@@ -1182,7 +1213,7 @@ class App extends Component {
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{`${searchList.length} ` + Localization.get("lblPagesFound").toUpperCase()}</p>
+                        <p>{`${searchList.length} ` + (searchList.length > 1 ? Localization.get("lblPagesFound").toUpperCase() : Localization.get("lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item) => {
@@ -1219,7 +1250,9 @@ class App extends Component {
                     const left = () => {
                         const update = {};
                         update[prop] = null;
-                        this.setState(update, () => this.onSave());
+                        this.setState({ filtersUpdated: true }, () => {
+                            this.setState(update, () => this.onSearch());
+                        });
                     };
                     const right = () => {
                         let { filters, tags } = this.state;
@@ -1232,7 +1265,7 @@ class App extends Component {
                                 tags += tag + ",";
                         });
                         tags = tags !== "" ? tags.substring(0, tags.length - 1) : "";
-                        this.setState({ filters, tags }, () => this.onSave());
+                        this.setState({ filters, tags, filtersUpdated: true }, () => this.onSearch());
 
                     };
                     const condition = prop.indexOf('tag') === -1;
@@ -1241,7 +1274,7 @@ class App extends Component {
 
                 return (
                     <div className="filter-by-tags">
-                        <div>{filter.tag}</div>
+                        <OverflowText text={filter.tag} />
                         <div className="xIcon"
                             dangerouslySetInnerHTML={{ __html: XIcon }}
                             onClick={(e) => { deleteFilter(filter.ref); }}>
@@ -1282,7 +1315,7 @@ class App extends Component {
                         <GridCell columnSize={100} style={{ padding: "20px" }}>
                             <div className="search-container">
                                 {inSearch ?
-                                    <div className="back-to-page" onClick={() => this.setState({ searchTerm: "", inSearch: false })}>
+                                    <div className="back-to-page" onClick={() => this.setState({ searchTerm: "", inSearch: false, filtersUpdated: false })}>
                                         <div dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <p>{Localization.get("BackToPages")}</p>
                                     </div> : null}
 
@@ -1293,8 +1326,7 @@ class App extends Component {
                                             value={searchTerm}
                                             onFocus={this.onSearchFocus.bind(this)}
                                             onChange={this.onSearchFieldChange.bind(this)}
-                                            onBlur={this.onSearchBlur.bind(this)}
-                                            onKeyPress={(e) => { e.key === "Enter" ? this.onSearchClick() : null; }}
+                                            onKeyPress={(e) => { e.key === "Enter" ? this.onSearch() : null; }}
                                             placeholder="Search" />
                                     </div>
                                     {searchTerm ?
@@ -1302,14 +1334,14 @@ class App extends Component {
                                             className="btn clear-search"
                                             style={{ fill: "#444" }}
                                             dangerouslySetInnerHTML={{ __html: XIcon }}
-                                            onClick={() => this.setState({ searchTerm: "" }, () => this.onSave())}
+                                            onClick={() => this.setState({ searchTerm: "", filtersUpdated: true }, () => this.onSearch())}
                                         />
 
                                         : <div className="btn clear-search" />}
                                     <div
                                         className="btn search-btn"
                                         dangerouslySetInnerHTML={{ __html: PagesSearchIcon }}
-                                        onClick={this.onSearchClick.bind(this)}
+                                        onClick={this.onSearch.bind(this)}
                                     >
                                     </div>
                                     <div

@@ -132,15 +132,16 @@
             width: 83%;
             height:40px;
             padding: 10px 0px 10px 35px;
-
+            &.full{
+                width: 99%;
+            }
             .search-item-details-left{
                 float:left;
-
                 h1{
                     color: @curiousBlue;
+                    cursor: pointer;
                 }
                 h2{
-                    cursor:pointer;
                     color:@alto;
                 }
 
@@ -248,6 +249,7 @@
             float:left;
             width: 200px;
             cursor:pointer;
+            font-weight: bold;
             div {
                 float:left;
                 width: 20px;
@@ -287,11 +289,12 @@
 
         .search-btn {
             padding: 0 5px;
+            line-height: 42px;
         }
 
         .clear-search{
             padding: 8px;
-
+            line-height: 22px;
             svg{
                 fill: @alto;
             }

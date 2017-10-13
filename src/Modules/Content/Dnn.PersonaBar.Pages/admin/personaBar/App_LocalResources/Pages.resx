@@ -1555,4 +1555,31 @@
   <data name="PageCreatedMessage.Text" xml:space="preserve">
     <value>Page created successfully</value>
   </data>
+  <data name="lblDateRange.Text" xml:space="preserve">
+    <value>Date Range</value>
+  </data>
+  <data name="lblFromDate.Text" xml:space="preserve">
+    <value>From Date</value>
+  </data>
+  <data name="lblPageFound.Text" xml:space="preserve">
+    <value>Page Found</value>
+  </data>
+  <data name="lblPublishDate.Text" xml:space="preserve">
+    <value>Publish Date</value>
+  </data>
+  <data name="lblPublishStatus.Text" xml:space="preserve">
+    <value>Publish Status</value>
+  </data>
+  <data name="lblAll.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="lblFile.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="lblNormal.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="lblUrl.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
 </root>

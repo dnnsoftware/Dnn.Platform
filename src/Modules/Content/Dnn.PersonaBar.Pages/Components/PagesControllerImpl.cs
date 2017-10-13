@@ -402,7 +402,7 @@ namespace Dnn.PersonaBar.Pages.Components
             DateTime startDate;
             if (!string.IsNullOrEmpty(publishDateStart) && DateTime.TryParse(publishDateStart, out startDate))
             {
-                startDate = DateTime.ParseExact(publishDateStart, "dd/MM/yyyy h:mm:ss", CultureInfo.InvariantCulture);
+                startDate = DateTime.ParseExact(publishDateStart, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) >= startDate);
             }
             DateTime endDate;
