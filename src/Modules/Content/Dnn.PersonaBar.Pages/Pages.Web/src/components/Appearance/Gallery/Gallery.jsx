@@ -17,15 +17,17 @@ class Gallery extends Component {
     scrollToSelectedItem(scrollToIndex) {
         const indexToScroll = scrollToIndex !== -1 ? scrollToIndex : 0; 
         const scrollbars = this.refs.scrollbars;
-        const scrollClientWidth = scrollbars.getClientWidth();
-        const scrollLeft = indexToScroll * this.getElementSize();
-        const currentScrollLeft = scrollbars.getScrollLeft();
-        const lowBoundary = currentScrollLeft;
-        const highBoundary = currentScrollLeft + scrollClientWidth;        
-        if (scrollLeft > lowBoundary && scrollLeft < highBoundary) {
-            return;
+        if (scrollbars) {
+            const scrollClientWidth = scrollbars.getClientWidth();
+            const scrollLeft = indexToScroll * this.getElementSize();
+            const currentScrollLeft = scrollbars.getScrollLeft();
+            const lowBoundary = currentScrollLeft;
+            const highBoundary = currentScrollLeft + scrollClientWidth;        
+            if (scrollLeft > lowBoundary && scrollLeft < highBoundary) {
+                return;
+            }
+            this.refs.scrollbars.scrollLeft(scrollLeft);
         }
-        this.refs.scrollbars.scrollLeft(scrollLeft);
     }
 
     componentWillReceiveProps(newProps) {
