@@ -5550,6 +5550,8 @@ namespace DotNetNuke.Services.Upgrade
         {
             DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "SharpZipLib.dll");
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
+
+            RemoveAdminPages("//Admin//SearchEngineSiteMap");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
