@@ -212,7 +212,7 @@ ul.buttonList .windowslive a span {
 }
 .dnnFormItem > label.dnnFormLabel, .dnnFormItem > span.dnnFormLabel {
     display: inline-block;
-    margin: 6px 18px 0 0;
+    margin: 6px 64px 0 0;
     width: 30%;
     text-align: right;
 }
