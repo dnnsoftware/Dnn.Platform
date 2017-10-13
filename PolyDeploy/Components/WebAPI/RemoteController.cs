@@ -17,7 +17,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
     [AllowAnonymous]
     [InWhitelist]
     [APIAuthentication]
-    public class CIController : DnnApiController
+    public class RemoteController : DnnApiController
     {
         [HttpGet]
         public HttpResponseMessage CreateSession()
