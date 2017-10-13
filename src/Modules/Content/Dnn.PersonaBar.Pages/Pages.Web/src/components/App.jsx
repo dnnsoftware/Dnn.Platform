@@ -332,11 +332,11 @@ class App extends Component {
 
     onSearchFieldChange(e) {
         let self = this;
-        this.setState({ searchTerm: e.target.value }, () => {
+        this.setState({ searchTerm: e.target.value, filtersUpdated: true }, () => {
             const { searchTerm } = this.state;
             switch (true) {
                 case searchTerm.length > 3:
-                    this.setState({ filtersUpdated: true }, () => self.onSearch());
+                    self.onSearch();
                     return;
                 case searchTerm.length === 0:
                     self.setState({ inSearch: false, filtersUpdated: false });
