@@ -18,23 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Host;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-#endregion
+using Dnn.PersonaBar.Security.Attributes;
 
 namespace Dnn.PersonaBar.Security.Services.Dto
 {
     public class UpdateRegistrationSettingsRequest
     {
+        [UserRegistrationOption]
         public string UserRegistration { get; set; }
 
         public bool UseAuthenticationProviders { get; set; }
@@ -43,12 +34,15 @@ namespace Dnn.PersonaBar.Security.Services.Dto
 
         public bool UseProfanityFilter { get; set; }
 
+        [RegistrationFormTypeOption]
         public int RegistrationFormType { get; set; }
 
+        [RegistrationFields("RegistrationFormType", "RequireUniqueDisplayName")]
         public string RegistrationFields { get; set; }
 
         public bool RequireUniqueDisplayName { get; set; }
 
+        [UserEmailAsUsername]
         public bool UseEmailAsUsername { get; set; }
 
         public string DisplayNameFormat { get; set; }
@@ -65,6 +59,7 @@ namespace Dnn.PersonaBar.Security.Services.Dto
 
         public bool UseCaptchaRegister { get; set; }
 
+        [TabExist]
         public int RedirectAfterRegistrationTabId { get; set; }
 
         public bool EnableRegisterNotification { get; set; }
