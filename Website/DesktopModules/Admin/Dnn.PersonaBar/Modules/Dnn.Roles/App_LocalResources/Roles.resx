@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Create.Text" xml:space="preserve">
+    <value>Create New Role</value>
+  </data>
+  <data name="DuplicateRole.Text" xml:space="preserve">
+    <value>The Role Name Already Exists.</value>
+  </data>
+  <data name="nav_Roles.Text" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="SearchPlaceHolder.Text" xml:space="preserve">
+    <value>Search Roles by Keyword</value>
+  </data>
+  <data name="Actions.Header" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AllGroups.Text" xml:space="preserve">
+    <value>[All Groups]</value>
+  </data>
+  <data name="Auto.Header" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="GlobalRolesGroup.Text" xml:space="preserve">
+    <value>[Global Roles]</value>
+  </data>
+  <data name="GroupName.Header" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="LoadMore.Text" xml:space="preserve">
+    <value>Load More</value>
+  </data>
+  <data name="RoleName.Header" xml:space="preserve">
+    <value>Role Name</value>
+  </data>
+  <data name="Users.Header" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="AutoAssignment.Text" xml:space="preserve">
+    <value>Auto Assignment</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="NewGroup.Text" xml:space="preserve">
+    <value>New Group</value>
+  </data>
+  <data name="Public.Text" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="plRoleGroups.Text" xml:space="preserve">
+    <value>Role Group</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="DuplicateRoleGroup.Text" xml:space="preserve">
+    <value>The Group Name Already Exists.</value>
+  </data>
+  <data name="GroupName.Required" xml:space="preserve">
+    <value>This is a require field.</value>
+  </data>
+  <data name="GroupName.Text" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="RoleName.Text" xml:space="preserve">
+    <value>Role Name</value>
+  </data>
+  <data name="securityModeListLabel.Text" xml:space="preserve">
+    <value>Security Mode</value>
+  </data>
+  <data name="statusListLabel.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="DeleteRole.Confirm" xml:space="preserve">
+    <value>Are you sure you want to delete this role?</value>
+  </data>
+  <data name="NoData.Text" xml:space="preserve">
+    <value>There are no roles in this role group.</value>
+  </data>
+  <data name="RoleName.Required" xml:space="preserve">
+    <value>This is a require field.</value>
+  </data>
+  <data name="UpdateGroup.Text" xml:space="preserve">
+    <value>Update Group</value>
+  </data>
+  <data name="Add.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddUserPlaceHolder.Text" xml:space="preserve">
+    <value>Begin typing to add a user to this role</value>
+  </data>
+  <data name="Expires.Header" xml:space="preserve">
+    <value>Expires</value>
+  </data>
+  <data name="Members.Header" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="PageInfo.Text" xml:space="preserve">
+    <value>Page {0} of {1}</value>
+  </data>
+  <data name="PageSummary.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2}</value>
+  </data>
+  <data name="Start.Header" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="NoUsers.Text" xml:space="preserve">
+    <value>There are no users in this role.</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="DeleteUser.Confirm" xml:space="preserve">
+    <value>Are you sure you want to remove this user from the role?</value>
+  </data>
+  <data name="DeleteRoleGroup.Confirm" xml:space="preserve">
+    <value>Are you sure you want to delete this role group?</value>
+  </data>
+  <data name="Approved.Text" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Both.Text" xml:space="preserve">
+    <value>Both</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Pending.Text" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="SecurityRole.Text" xml:space="preserve">
+    <value>Security Role</value>
+  </data>
+  <data name="SocialGroup.Text" xml:space="preserve">
+    <value>Social Group</value>
+  </data>
+  <data name="AssignToExistUsers.Text" xml:space="preserve">
+    <value>Assign to Existing Users</value>
+  </data>
+  <data name="ActionCancelled.Message" xml:space="preserve">
+    <value>Cancelled.</value>
+  </data>
+  <data name="AssignToExistUsers.Help" xml:space="preserve">
+    <value>Assign this role to all existing users.</value>
+  </data>
+  <data name="DeleteInconsistency.Error" xml:space="preserve">
+    <value>Inconsistency occurred. Please refresh the page and try again.</value>
+  </data>
+  <data name="DeleteRole.Error" xml:space="preserve">
+    <value>Failed to delete the role. Please try later</value>
+  </data>
+  <data name="DeleteRole.Message" xml:space="preserve">
+    <value>Role deleted successfully.</value>
+  </data>
+  <data name="DeleteRoleGroup.Error" xml:space="preserve">
+    <value>Failed to delete the role group. Please try later.</value>
+  </data>
+  <data name="DeleteRoleGroup.Message" xml:space="preserve">
+    <value>Role Group deleted successfully.</value>
+  </data>
+  <data name="Description.Help" xml:space="preserve">
+    <value>Enter a description of the role.</value>
+  </data>
+  <data name="lblNewGroup.Text" xml:space="preserve">
+    <value>[New Group]</value>
+  </data>
+  <data name="plRoleGroups.Help" xml:space="preserve">
+    <value>Select the role group to which this role belongs.</value>
+  </data>
+  <data name="PublicRole.Help" xml:space="preserve">
+    <value>Check this box if users can subscribe to this role via the Manage Services page of their user account.</value>
+  </data>
+  <data name="RoleAdded.Error" xml:space="preserve">
+    <value>Failed to create the role. Please try later.</value>
+  </data>
+  <data name="RoleAdded.Message" xml:space="preserve">
+    <value>Role created successfully.</value>
+  </data>
+  <data name="RoleName.Help" xml:space="preserve">
+    <value>Enter the name of the role.</value>
+  </data>
+  <data name="RoleUpdated.Error" xml:space="preserve">
+    <value>Failed to update the role. Please try later.</value>
+  </data>
+  <data name="RoleUpdated.Message" xml:space="preserve">
+    <value>Role updated successfully.</value>
+  </data>
+  <data name="securityModeListLabel.Help" xml:space="preserve">
+    <value>Choose the security mode for this role/group.</value>
+  </data>
+  <data name="statusListLabel.Help" xml:space="preserve">
+    <value>Select the status for this role/group.</value>
+  </data>
+  <data name="RoleGroupUpdated.Error" xml:space="preserve">
+    <value>Failed to update the role group. Please try later.</value>
+  </data>
+  <data name="RoleGroupUpdated.Message" xml:space="preserve">
+    <value>Role Group updated successfully.</value>
+  </data>
+  <data name="AutoAssignment.Help" xml:space="preserve">
+    <value>Check this box if users are automatically assigned to this role.</value>
+  </data>
+  <data name="GroupDescription.Help" xml:space="preserve">
+    <value>Enter a description of the role group.</value>
+  </data>
+  <data name="GroupDescription.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="GroupName.Help" xml:space="preserve">
+    <value>Enter a name of the role group.</value>
+  </data>
+  <data name="PermissionsByRole.Text" xml:space="preserve">
+    <value>Users In Role</value>
+  </data>
+  <data name="SendEmail.Text" xml:space="preserve">
+    <value>Send Email</value>
+  </data>
+  <data name="isOwner.Text" xml:space="preserve">
+    <value>Is Owner</value>
+  </data>
+  <data name="InSufficientPermissions.Text" xml:space="preserve">
+    <value>You do not have enough permissions to perform this action.</value>
+  </data>
+  <data name="UserNotFound.Text" xml:space="preserve">
+    <value>User not found.</value>
+  </data>
+  <data name="InvalidRequest.Text" xml:space="preserve">
+    <value>Invalid request.</value>
+  </data>
+  <data name="SecurityRoleDeleteNotAllowed.Text" xml:space="preserve">
+    <value>System roles cannot be deleted.</value>
+  </data>
+  <data name="CannotAssginUserToUnApprovedRole.Text" xml:space="preserve">
+    <value>Cannot assign user to an un-approved role.</value>
+  </data>
+  <data name="EditRole.Text" xml:space="preserve">
+    <value>Edit Role</value>
+  </data>
+  <data name="UsersInRole.Text" xml:space="preserve">
+    <value>Users in Role</value>
+  </data>
+</root>

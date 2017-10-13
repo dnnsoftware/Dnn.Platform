@@ -1,0 +1,125 @@
+<!-- new-extension -->
+<section class="dnn-prompt-inline-help">
+  <a name="new-extension"></a>
+  <h3 class="mono">new-extension</h3>
+  <p class="lead">Installs a new extension from a manifest or zip file.</p>
+
+  <h4>Options</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Flag</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">--path</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td></td>
+        <td>A valid path to the installable file on the webserver</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Install Extension</h4>
+  <code class="block">
+    new-extension "
+  </code>
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <tr>
+      <td>RoleId</td><td>:</td><td>9</td>
+    </tr>
+    <tr>
+      <td>RoleGroupId</td><td>:</td><td>-1</td>
+    </tr>
+    <tr>
+      <td>RoleName</td>
+      <td>:</td>
+      <td>Role1</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>IsPublic</td>
+      <td>:</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>AutoAssign</td>
+      <td>:</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>UserCount</td>
+      <td>:</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>CreatedDate</td>
+      <td>:</td>
+      <td>2016-12-31T14:53:44.033</td>
+    </tr>
+    <tr>
+      <td colspan="3">Role successfully created.</td>
+    </tr>
+  </table>
+
+
+  <h4>Create A New DNN Security Role</h4>
+  <code class="block">
+    new-role "General Public" --description "Role for all users" --public true --autoassign true
+  </code>
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <tr>
+      <td>RoleId</td><td>:</td><td>10</td>
+    </tr>
+    <tr>
+      <td>RoleGroupId</td><td>:</td><td>-1</td>
+    </tr>
+    <tr>
+      <td>RoleName</td>
+      <td>:</td>
+      <td>General Public</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>:</td>
+      <td>Role for all users</td>
+    </tr>
+    <tr>
+      <td>IsPublic</td>
+      <td>:</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>AutoAssign</td>
+      <td>:</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>UserCount</td>
+      <td>:</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>CreatedDate</td>
+      <td>:</td>
+      <td>2016-12-31T15:06:02.563</td>
+    </tr>
+    <tr>
+      <td colspan="3">Role successfully created.</td>
+    </tr>
+  </table>
+
+</section>
+

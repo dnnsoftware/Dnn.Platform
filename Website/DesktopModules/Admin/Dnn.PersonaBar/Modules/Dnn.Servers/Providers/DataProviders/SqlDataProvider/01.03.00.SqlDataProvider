@@ -1,0 +1,99 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetDbBackups') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbBackups]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbBackups]
+AS
+	DECLARE @ProductEdition INT
+	SET @ProductEdition = CAST(SERVERPROPERTY('EngineEdition') AS INT)
+
+	IF (@ProductEdition = 5) --Check for SQL Azure
+	BEGIN
+		SELECT      
+			'Unsupported' AS name, 
+			NULL AS StartDate, 
+			NULL AS FinishDate, 
+			0 AS size, 
+			NULL AS database_name, 
+			'UNKNOWN' AS BackupType
+	END
+	ELSE
+	BEGIN
+		EXEC('SELECT TOP 20     
+				name, 
+				backup_start_date as StartDate, 
+				backup_finish_date as FinishDate, 
+				backup_size/1024 as size, 
+				database_name, 
+				CASE type
+					WHEN ''D'' THEN ''Database''
+					WHEN ''I'' THEN ''Differential database''
+					WHEN ''L'' THEN ''Log''
+					WHEN ''F'' THEN ''File or filegroup''
+					WHEN ''G'' THEN ''Differential file''
+					WHEN ''P'' THEN ''Partial''
+					WHEN ''Q'' THEN ''Differential partial''
+				END AS BackupType
+				FROM         
+				msdb..backupset
+				WHERE
+				database_name = DB_NAME() 
+				ORDER BY backup_start_date DESC')
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetDbFileInfo') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbFileInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbFileInfo]
+AS
+	IF OBJECT_ID('sys.database_files') IS NULL
+		BEGIN
+		SELECT 'Total Size' AS FileType,
+					'Total' AS Name,
+					SUM(reserved_page_count)*8 AS Size,
+					'n/a' AS FileName
+				FROM sys.dm_db_partition_stats
+		END
+	ELSE
+		BEGIN
+			SELECT	CASE LOWER(RIGHT(physical_name,3))
+						WHEN 'mdf' THEN 'DATA'
+						WHEN 'ldf' THEN 'LOG'
+						ELSE 'UNKNOWN'
+					END AS FileType,
+						name AS Name,
+						size*8 AS Size,
+						physical_name AS FileName
+					FROM sys.database_files
+		END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetDbInfo') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbInfo]
+AS
+	
+	SELECT
+		SERVERPROPERTY('ProductVersion') AS ProductVersion, 
+		SERVERPROPERTY('ProductLevel') AS ServicePack, 
+		SERVERPROPERTY('Edition') AS ProductEdition, 
+		@@VERSION AS SoftwarePlatform
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

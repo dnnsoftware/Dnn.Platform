@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages>
+    <admin>
+        <name>Site Settings</name>
+        <name>Extensions</name>
+        <name>Security Roles</name>
+        <name>User Accounts</name>
+        <name>File Management</name>
+        <name>Taxonomy</name>
+        <name>Site Redirection Management</name>
+        <name>Device Preview Management</name>
+        <name>Search Admin</name>
+        <name>GoogleAnalytics</name>
+        <name>Languages</name>
+        <name>Lists</name>
+        <name>LogViewer</name>
+        <name>Pages</name>
+        <name>RecycleBin</name>
+        <name>SiteWizard</name>
+        <name>SearchEngineSiteMap</name>
+        <name>Themes</name>
+    </admin>
+    <host>
+        <name>Host Settings</name>
+        <name>Site Management</name>
+        <name>Schedule</name>
+        <name>Superuser Accounts</name>
+        <name>Extensions</name>
+        <name>Configuration Manager</name>
+        <name>Dashboard</name>
+        <name>Lists</name>
+        <name>SQL</name>
+        <name>File Manager</name>
+        <name>File Management</name>
+        <name>HTML Editor Manager</name>
+        <name>Device Detection Management</name>
+    </host>
+</pages>

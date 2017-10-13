@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="nav_SiteImportExport.Text" xml:space="preserve">
+    <value>Import / Export</value>
+  </data>
+  <data name="SiteImportExport.Header" xml:space="preserve">
+    <value>Import / Export</value>
+  </data>
+  <data name="ImportButton.Text" xml:space="preserve">
+    <value>Import Data</value>
+  </data>
+  <data name="ExportButton.Text" xml:space="preserve">
+    <value>Export Data</value>
+  </data>
+  <data name="LastImport.Text" xml:space="preserve">
+    <value>Last Import</value>
+  </data>
+  <data name="LastExport.Text" xml:space="preserve">
+    <value>Last Export</value>
+  </data>
+  <data name="LastUpdate.Text" xml:space="preserve">
+    <value>Last Update</value>
+  </data>
+  <data name="JobDate.Header" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="JobType.Header" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="JobUser.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="JobPortal.Header" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="JobStatus.Header" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="LegendExport.Text" xml:space="preserve">
+    <value>Site Export</value>
+  </data>
+  <data name="LegendImport.Text" xml:space="preserve">
+    <value>Site Import</value>
+  </data>
+  <data name="LogSection.Text" xml:space="preserve">
+    <value>Import / Export Log</value>
+  </data>
+  <data name="ShowSiteLabel.Text" xml:space="preserve">
+    <value>Site: </value>
+  </data>
+  <data name="ShowFilterLabel.Text" xml:space="preserve">
+    <value>Filter: </value>
+  </data>
+  <data name="JobTypeAll.Text" xml:space="preserve">
+    <value>All Imports and Exports</value>
+  </data>
+  <data name="JobTypeImport.Text" xml:space="preserve">
+    <value>All Imports</value>
+  </data>
+  <data name="JobTypeExport.Text" xml:space="preserve">
+    <value>All Exports</value>
+  </data>
+  <data name="SearchPlaceHolder.Text" xml:space="preserve">
+    <value>Search by Keyword</value>
+  </data>
+  <data name="SummaryNoteTitle.Text" xml:space="preserve">
+    <value>*Note:</value>
+  </data>
+  <data name="SummaryNoteDescription.Text" xml:space="preserve">
+    <value>Your site export files are securely stored within your website's App_Data/ExportImport folder.</value>
+  </data>
+  <data name="ExportSummary.Text" xml:space="preserve">
+    <value>Export Summary</value>
+  </data>
+  <data name="NoJobs.Text" xml:space="preserve">
+    <value>No jobs found</value>
+  </data>
+  <data name="BackToImportExport.Text" xml:space="preserve">
+    <value>Back to Import / Export</value>
+  </data>
+  <data name="Export.Text" xml:space="preserve">
+    <value>Export Data</value>
+  </data>
+  <data name="Import.Text" xml:space="preserve">
+    <value>Import Data</value>
+  </data>
+  <data name="ExportSettings.Text" xml:space="preserve">
+    <value>Export Settings</value>
+  </data>
+  <data name="Site.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="IncludeInExport.Text" xml:space="preserve">
+    <value>Include in Export</value>
+  </data>
+  <data name="PagesInExport.Text" xml:space="preserve">
+    <value>Pages in Export</value>
+  </data>
+  <data name="BeginExport.Text" xml:space="preserve">
+    <value>Begin Export</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Content.Text" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="ProfileProperties.Text" xml:space="preserve">
+    <value>Profile Properties</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="Extensions.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="DeletionsInExport.Text" xml:space="preserve">
+    <value>Include Deletions</value>
+  </data>
+  <data name="ExportName.ErrorMessage" xml:space="preserve">
+    <value>Name is required.</value>
+  </data>
+  <data name="ExportRequestSubmitted" xml:space="preserve">
+	<value>Your data export has been placed in the queue, and will begin shortly.</value>
+  </data>
+  <data name="ExportRequestSubmit.ErrorMessage" xml:space="preserve">
+    <value>Failed to submit the export site request. Please try again.</value>
+  </data>
+  <data name="ImportRequestSubmitted" xml:space="preserve">
+	<value>Your data import has been placed in the queue, and will begin shortly.</value>
+  </data>
+  <data name="ImportRequestSubmit.ErrorMessage" xml:space="preserve">
+    <value>Failed to submit the import site request. Please try again.</value>
+  </data>
+  <data name="JobStatus0.Text" xml:space="preserve">
+    <value>Submitted</value>
+  </data>
+  <data name="JobStatus1.Text" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="JobStatus2.Text" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="JobStatus3.Text" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="JobStatus4.Text" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="CreatedOn.Text" xml:space="preserve">
+    <value>Created On</value>
+  </data>
+  <data name="CompletedOn.Text" xml:space="preserve">
+    <value>Completed On</value>
+  </data>
+  <data name="ExportFile.Text" xml:space="preserve">
+    <value>Export File</value>
+  </data>
+  <data name="lblLanguages.Help" xml:space="preserve">
+    <value>Select each of the secondary languages to be included in a multi-language template, or select the language of a single language site.</value>
+  </data>
+  <data name="lblLanguages.Text" xml:space="preserve">
+    <value>Export Languages</value>
+  </data>
+  <data name="lblSelectLanguages.Text" xml:space="preserve">
+    <value>-- Select Languages --</value>
+  </data>
+  <data name="lblNote.Text" xml:space="preserve">
+    <value>The default language ({0}) will always be exported.</value>
+  </data>
+  <data name="AllSites.Text" xml:space="preserve">
+    <value>--ALL SITES--</value>
+  </data>
+  <data name="SelectImportPackage.Text" xml:space="preserve">
+    <value>Select Package to Import</value>
+  </data>
+  <data name="ClicktoSelect.Text" xml:space="preserve">
+    <value>click to select package</value>
+  </data>
+  <data name="ClicktoDeselect.Text" xml:space="preserve">
+    <value>click to deselect package</value>
+  </data>
+  <data name="PackageDescription.Text" xml:space="preserve">
+    <value>Package Description</value>
+  </data>
+  <data name="Continue.Text" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="NoPackages.Text" xml:space="preserve">
+    <value>No import packages found</value>
+  </data>
+  <data name="SelectException.Text" xml:space="preserve">
+    <value>Please select an import package and try again.</value>
+  </data>
+  <data name="AnalyzingPackage.Text" xml:space="preserve">
+    <value>Analyzing Package for Site Import ...</value>
+  </data>
+  <data name="AnalyzedPackage.Text" xml:space="preserve">
+    <value>Files Verified</value>
+  </data>
+  <data name="ImportSummary.Text" xml:space="preserve">
+    <value>Import Summary</value>
+  </data>
+  <data name="Pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="UsersStep1.Text" xml:space="preserve">
+    <value>Users (Step 1 / 2)</value>
+  </data>
+  <data name="UsersStep2.Text" xml:space="preserve">
+    <value>Users (Step 2 / 2)</value>
+  </data>
+  <data name="Roles.Text" xml:space="preserve">
+    <value>Roles and Groups</value>
+  </data>
+  <data name="Vocabularies.Text" xml:space="preserve">
+    <value>Vocabularies</value>
+  </data>
+  <data name="PageTemplates.Text" xml:space="preserve">
+    <value>Page Templates</value>
+  </data>
+  <data name="IncludeProfileProperties.Text" xml:space="preserve">
+    <value>Include Profile Properties</value>
+  </data>
+  <data name="IncludePermissions.Text" xml:space="preserve">
+    <value>Include Permissions</value>
+  </data>
+  <data name="IncludeExtensions.Text" xml:space="preserve">
+    <value>Include Extensions</value>
+  </data>
+  <data name="IncludeDeletions.Text" xml:space="preserve">
+    <value>Include Deletions</value>
+  </data>
+  <data name="IncludeContent.Text" xml:space="preserve">
+    <value>Include Content</value>
+  </data>
+  <data name="FolderName.Text" xml:space="preserve">
+    <value>Folder Name</value>
+  </data>
+  <data name="Timestamp.Text" xml:space="preserve">
+    <value>Timestamp</value>
+  </data>
+  <data name="Assets.Text" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="TotalExportSize.Text" xml:space="preserve">
+    <value>Total Export Size</value>
+  </data>
+  <data name="ExportMode.Text" xml:space="preserve">
+    <value>Export Mode</value>
+  </data>
+  <data name="OverwriteCollisions.Text" xml:space="preserve">
+    <value>Overwrite Collisions</value>
+  </data>
+  <data name="FinishImporting.Text" xml:space="preserve">
+    <value>To finish importing data to your site, click continue below, or click cancel to abort import.</value>
+  </data>
+  <data name="ExportModeComplete.Text" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="ExportModeDifferential.Text" xml:space="preserve">
+    <value>Differential</value>
+  </data>
+  <data name="ConfirmCancel.Text" xml:space="preserve">
+    <value>Yes, Cancel</value>
+  </data>
+  <data name="ConfirmDelete.Text" xml:space="preserve">
+    <value>Yes, Remove</value>
+  </data>
+  <data name="KeepImport.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="CancelExport.Text" xml:space="preserve">
+    <value>Cancel Export</value>
+  </data>
+  <data name="CancelImport.Text" xml:space="preserve">
+    <value>Cancel Import</value>
+  </data>
+  <data name="CancelImportMessage.Text" xml:space="preserve">
+    <value>Cancelling will abort the import process. Are you sure you want to cancel?</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="JobCancelled.Text" xml:space="preserve">
+    <value>Job has been cancelled.</value>
+  </data>
+  <data name="JobDeleted.Text" xml:space="preserve">
+    <value>Job has been removed.</value>
+  </data>
+  <data name="JobCancel.ErrorMessage" xml:space="preserve">
+    <value>Failed to cancel this job, please try again.</value>
+  </data>
+  <data name="JobDelete.ErrorMessage" xml:space="preserve">
+    <value>Failed to remove this job, please try again.</value>
+  </data>
+  <data name="CancelJobMessage.Text" xml:space="preserve">
+    <value>Cancelling will abort the process. Are you sure you want to cancel?</value>
+  </data>
+  <data name="DeleteJobMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to remove this job?</value>
+  </data>
+  <data name="SortByDateNewest.Text" xml:space="preserve">
+    <value>Date (Newest)</value>
+  </data>
+  <data name="SortByDateOldest.Text" xml:space="preserve">
+    <value>Date (Oldest)</value>
+  </data>
+  <data name="SortByName.Text" xml:space="preserve">
+    <value>Name (Alphabetical)</value>
+  </data>
+  <data name="ShowSortLabel.Text" xml:space="preserve">
+    <value>Sort By:</value>
+  </data>
+  <data name="Website.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="Mode.Text" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="FileSize.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="VerifyPackage.Text" xml:space="preserve">
+    <value>Just a moment, we are checking the package ...</value>
+  </data>
+  <data name="DeletedPortal.Text" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="RunNow.Text" xml:space="preserve">
+    <value>Run Now</value>
+  </data>
+  <data name="NoExportItem.ErrorMessage" xml:space="preserve">
+    <value>Failed to submit the export site request. Please select export item(s) and try again.</value>
+  </data>
+  <data name="EmptyDateTime.Text" xml:space="preserve">
+    <value>-- --</value>
+  </data>  
+  <data name="SwitchOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data> 
+  <data name="SwitchOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+</root>

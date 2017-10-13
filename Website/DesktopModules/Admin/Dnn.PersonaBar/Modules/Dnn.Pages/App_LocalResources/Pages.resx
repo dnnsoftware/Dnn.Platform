@@ -1,0 +1,801 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorPages.Text" xml:space="preserve">
+    <value>You must select at least one page to be exported.</value>
+  </data>
+  <data name="nav_Pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="SiteDetails_Pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Description.Label" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="HomeDirectory.Label" xml:space="preserve">
+    <value>Home Directory</value>
+  </data>
+  <data name="Title.Label" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="View.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Hidden.Text" xml:space="preserve">
+    <value>Page is hidden in menu</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DragPageTooltip.Text" xml:space="preserve">
+    <value>Drag Page into Location</value>
+  </data>
+  <data name="DragInvalid.Text" xml:space="preserve">
+    <value>You can't drag a page as a child of itself.</value>
+  </data>
+  <data name="DeletePageConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete this page.&lt;/p&gt;</value>
+  </data>
+  <data name="Pending.Text" xml:space="preserve">
+    <value>Please drag the page into the desired location.</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="page_name_tooltip" xml:space="preserve">
+    <value>Page Name</value>
+  </data>
+  <data name="page_title_tooltip" xml:space="preserve">
+    <value>Page Title</value>
+  </data>
+  <data name="AnErrorOccurred.Text" xml:space="preserve">
+    <value>An error has occurred.</value>
+  </data>
+  <data name="DeleteModuleConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to delete the module "[MODULETITLE]" from this page?</value>
+  </data>
+  <data name="SitemapPriority.Text" xml:space="preserve">
+    <value>Sitemap Priority</value>
+  </data>
+  <data name="SitemapPriority_tooltip.Text" xml:space="preserve">
+    <value>Enter the desired priority (between 0 and 1.0). This helps determine how this page is ranked in Google with respect to other pages on your site (0.5 is the default).</value>
+  </data>
+  <data name="PageHeaderTags.Text" xml:space="preserve">
+    <value>Page Header Tags</value>
+  </data>
+  <data name="PageHeaderTags_tooltip.Text" xml:space="preserve">
+    <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
+  </data>
+  <data name="AddUrl.Text" xml:space="preserve">
+    <value>Add URL</value>
+  </data>
+  <data name="UrlsForThisPage.Text" xml:space="preserve">
+    <value>URLs for this page</value>
+  </data>
+  <data name="Url.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="UrlType.Text" xml:space="preserve">
+    <value>URL Type</value>
+  </data>
+  <data name="GeneratedBy.Text" xml:space="preserve">
+    <value>Generated By</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Include.Text" xml:space="preserve">
+    <value>Include</value>
+  </data>
+  <data name="Exclude.Text" xml:space="preserve">
+    <value>Exclude</value>
+  </data>
+  <data name="Security.Text" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SecureConnection.Text" xml:space="preserve">
+    <value>Secure Connection</value>
+  </data>
+  <data name="SecureConnection_tooltip.Text" xml:space="preserve">
+    <value>Specify whether or not this page should be forced to use a secure connection (SSL). This option will only be enabled if the administrator has Enabled SSL in the site settings.</value>
+  </data>
+  <data name="AllowIndexing.Text" xml:space="preserve">
+    <value>Allow Indexing</value>
+  </data>
+  <data name="AllowIndexing_tooltip.Text" xml:space="preserve">
+    <value>This setting controls whether a page should be indexed by search crawlers. It uses the INDEX/NOINDEX values for ROBOTS meta tag.</value>
+  </data>
+  <data name="CacheSettings.Text" xml:space="preserve">
+    <value>Cache Settings</value>
+  </data>
+  <data name="OutputCacheProvider.Text" xml:space="preserve">
+    <value>Output Cache Provider</value>
+  </data>
+  <data name="OutputCacheProvider_tooltip.Text" xml:space="preserve">
+    <value>Select the provider to use for this page.</value>
+  </data>
+  <data name="CacheDuration.Text" xml:space="preserve">
+    <value>Cache Duration (seconds)</value>
+  </data>
+  <data name="CacheDuration_tooltip.Text" xml:space="preserve">
+    <value>Enter the duration (in seconds) to cache the page for. This must be an integer.</value>
+  </data>
+  <data name="IncludeExcludeParams.Text" xml:space="preserve">
+    <value>Include / Exclude Params by default</value>
+  </data>
+  <data name="IncludeExcludeParams_tooltip.Text" xml:space="preserve">
+    <value>If set to INCLUDE, all querystring parameter value variations will result in a new item in the output cache. If set to EXCLUDE, querystring parameters will not be used to vary the cached page.</value>
+  </data>
+  <data name="IncludeParamsInCacheValidation.Text" xml:space="preserve">
+    <value>Include Params In Cache Validation</value>
+  </data>
+  <data name="IncludeParamsInCacheValidation_tooltip.Text" xml:space="preserve">
+    <value>A list of querystring parameter names (separated by commas) to be INCLUDED in the variations of cached pages. This setting is only valid when the default above is set to EXCLUDE querystring parameters from cached page variations.</value>
+  </data>
+  <data name="ExcludeParamsInCacheValidation.Text" xml:space="preserve">
+    <value>Exclude Params In Cache Validation</value>
+  </data>
+  <data name="ExcludeParamsInCacheValidation_tooltip.Text" xml:space="preserve">
+    <value>A list of querystring parameter names (separated by commas) to be EXCLUDED from the variations of cached pages. This setting is only valid when the default above is set to INCLUDE querystring parameters from cached page variations.</value>
+  </data>
+  <data name="VaryByLimit.Text" xml:space="preserve">
+    <value>Vary By Limit</value>
+  </data>
+  <data name="VaryByLimit_tooltip.Text" xml:space="preserve">
+    <value>Enter the maximum number of variations to cache for this page. This must be an integer. (Note, this feature prevents potential denial of service attacks.)</value>
+  </data>
+  <data name="ModulesOnThisPage.Text" xml:space="preserve">
+    <value>Modules on this page</value>
+  </data>
+  <data name="NoModules.Text" xml:space="preserve">
+    <value>This page does not have any modules.</value>
+  </data>
+  <data name="Advanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="Appearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="CopyAppearanceToDescendantPages.Text" xml:space="preserve">
+    <value>Copy Appearance to Descendant Pages</value>
+  </data>
+  <data name="CopyPermissionsToDescendantPages.Text" xml:space="preserve">
+    <value>Copy Permissions to Descendant Pages</value>
+  </data>
+  <data name="Layout.Text" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="PageContainer.Text" xml:space="preserve">
+    <value>Page Container</value>
+  </data>
+  <data name="PageStyleSheet.Text" xml:space="preserve">
+    <value>Page Stylesheet</value>
+  </data>
+  <data name="PageTheme.Text" xml:space="preserve">
+    <value>Page Theme</value>
+  </data>
+  <data name="PageThemeTooltip.Text" xml:space="preserve">
+    <value>The selected theme will be applied to this page.</value>
+  </data>
+  <data name="PageLayoutTooltip.Text" xml:space="preserve">
+    <value>The selected layout will be applied to this page.</value>
+  </data>
+  <data name="PageContainerTooltip.Text" xml:space="preserve">
+    <value>The selected container will be applied to all modules on this page.</value>
+  </data>
+  <data name="PreviewThemeLayoutAndContainer.Text" xml:space="preserve">
+    <value>Preview Theme Layout and Container</value>
+  </data>
+  <data name="NotEmptyNameError.Text" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="AddPage.Text" xml:space="preserve">
+    <value>Add Page</value>
+  </data>
+  <data name="PageSettings.Text" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
+  <data name="AddMultiplePages.Text" xml:space="preserve">
+    <value>Add Multiple Pages</value>
+  </data>
+  <data name="NameTooltip.Text" xml:space="preserve">
+    <value>This is the name of the Page. The text you enter will be displayed in the menu system.</value>
+  </data>
+  <data name="DisplayInMenu.Text" xml:space="preserve">
+    <value>Display in Menu</value>
+  </data>
+  <data name="DisplayInMenuTooltip.Text" xml:space="preserve">
+    <value>You have the choice on whether or not to include the page in the main navigation menu. If a page is not included in the menu, you can still link to it based on its page URL.</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EnableScheduling.Text" xml:space="preserve">
+    <value>Enable Scheduling</value>
+  </data>
+  <data name="EnableSchedulingTooltip.Text" xml:space="preserve">
+    <value>Enable scheduling for this page.</value>
+  </data>
+  <data name="StartDate.Text" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate.Text" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="TitleTooltip.Text" xml:space="preserve">
+    <value>Enter a title for the page. The title will be displayed in the browser window title.</value>
+  </data>
+  <data name="Keywords.Text" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="Tags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="ExistingPage.Text" xml:space="preserve">
+    <value>Existing Page</value>
+  </data>
+  <data name="ExistingPageTooltip.Text" xml:space="preserve">
+    <value>Redirect to an existing page on your site.</value>
+  </data>
+  <data name="ExternalUrl.Text" xml:space="preserve">
+    <value>External Url</value>
+  </data>
+  <data name="ExternalUrlTooltip.Text" xml:space="preserve">
+    <value>Redirect to an External URL Resource.</value>
+  </data>
+  <data name="PermanentRedirect.Text" xml:space="preserve">
+    <value>Permanent Redirect</value>
+  </data>
+  <data name="PermanentRedirectTooltip.Text" xml:space="preserve">
+    <value>Check this box if you want to notify the client that this page should be considered as permanently moved. This would allow SearchEngines to modify their URLs to directly link to the resource. This is ignored if the LinkType is None.</value>
+  </data>
+  <data name="OpenLinkInNewWindow.Text" xml:space="preserve">
+    <value>Open Link In New Window</value>
+  </data>
+  <data name="OpenLinkInNewWindowTooltip.Text" xml:space="preserve">
+    <value>Open Link in New Browser Window</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Details.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="Modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="SEO.Text" xml:space="preserve">
+    <value>S.E.O.</value>
+  </data>
+  <data name="More.Text" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="Created.Text" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="CreatedValue.Text" xml:space="preserve">
+    <value>[CREATEDDATE] by [CREATEDUSER]</value>
+  </data>
+  <data name="PageParent.Text" xml:space="preserve">
+    <value>Page Parent</value>
+  </data>
+  <data name="Status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PageType.Text" xml:space="preserve">
+    <value>Page Type</value>
+  </data>
+  <data name="Standard.Text" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Existing.Text" xml:space="preserve">
+    <value>Existing</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="PageStyleSheetTooltip.Text" xml:space="preserve">
+    <value>A stylesheet that will only be loaded for this page. The file must be located in the home directory or a sub folder of the current website.</value>
+  </data>
+  <data name="SetPageContainer.Text" xml:space="preserve">
+    <value>set page container</value>
+  </data>
+  <data name="SetPageLayout.Text" xml:space="preserve">
+    <value>set page layout</value>
+  </data>
+  <data name="SetPageTheme.Text" xml:space="preserve">
+    <value>set page theme</value>
+  </data>
+  <data name="BackToPages.Text" xml:space="preserve">
+    <value>Back to pages</value>
+  </data>
+  <data name="ChangesNotSaved.Text" xml:space="preserve">
+    <value>Changes have not been saved</value>
+  </data>
+  <data name="Pages_Seo_GeneratedByAutomatic.Text" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="CopyAppearanceToDescendantPagesSuccess.Text" xml:space="preserve">
+    <value>Appearance has been copy to descendant pages successfully</value>
+  </data>
+  <data name="CopyPermissionsToDescendantPagesSuccess.Text" xml:space="preserve">
+    <value>Permissions have been copy to descendant pages successfully</value>
+  </data>
+  <data name="DeletePageModuleSuccess.Text" xml:space="preserve">
+    <value>Module "[MODULETITLE]" has been deleted successfully</value>
+  </data>
+  <data name="BulkPageSettings.Text" xml:space="preserve">
+    <value>Bulk page settings</value>
+  </data>
+  <data name="BulkPagesToAdd.Text" xml:space="preserve">
+    <value>Bulk pages to add</value>
+  </data>
+  <data name="AddPages.Text" xml:space="preserve">
+    <value>Add Pages</value>
+  </data>
+  <data name="NoContainers.Text" xml:space="preserve">
+    <value>This Theme does not have any Containers</value>
+  </data>
+  <data name="NoLayouts.Text" xml:space="preserve">
+    <value>This Theme does not have any Layouts</value>
+  </data>
+  <data name="NoThemes.Text" xml:space="preserve">
+    <value>Your site does not have any Themes</value>
+  </data>
+  <data name="NoThemeSelectedForContainers.Text" xml:space="preserve">
+    <value>Please, select a theme to load containers</value>
+  </data>
+  <data name="NoThemeSelectedForLayouts.Text" xml:space="preserve">
+    <value>Please, select a theme to load layouts</value>
+  </data>
+  <data name="PleaseSelectLayoutContainer.Text" xml:space="preserve">
+    <value>Please, you must select a layout and a container to perform this operation.</value>
+  </data>
+  <data name="CancelWithoutSaving.Text" xml:space="preserve">
+    <value>Are you sure you want to close? Any changes will be lost.</value>
+  </data>
+  <data name="PathDuplicateWithAlias.Text" xml:space="preserve">
+    <value>There is already a page with the same name, {0} at the same URL path {1}.</value>
+  </data>
+  <data name="TabExists.Text" xml:space="preserve">
+    <value>The Page Name you chose is already being used for another page at the same level of the page hierarchy.</value>
+  </data>
+  <data name="TabRecycled.Text" xml:space="preserve">
+    <value>A page with this name exists in the Recycle Bin.  To restore this page use the Recycle Bin.</value>
+  </data>
+  <data name="BulkPagesLabel.Text" xml:space="preserve">
+    <value>One page per line, prepended with "&gt;" to create hierarchy</value>
+  </data>
+  <data name="BulkPageResponseTotalMessage.Text" xml:space="preserve">
+    <value>[PAGES_CREATED] of [PAGES_TOTAL] pages were created.</value>
+  </data>
+  <data name="System.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="EmptyTabName.Text" xml:space="preserve">
+    <value>Tab Name is Empty</value>
+  </data>
+  <data name="InvalidTabName.Text" xml:space="preserve">
+    <value>{0} is an invalid Page Title.</value>
+  </data>
+  <data name="CustomUrlPathCleaned.Error" xml:space="preserve">
+    <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.   These characters have been removed.  Click the Update button again to accept the modified URL.&lt;br&gt;[NOTE: The illegal characters list is the following: &lt;&gt;\?:&amp;=+|%# ]</value>
+  </data>
+  <data name="DuplicateUrl.Error" xml:space="preserve">
+    <value>The URL is a duplicate of an existing URL.</value>
+  </data>
+  <data name="InvalidRequest.Error" xml:space="preserve">
+    <value>The request is invalid</value>
+  </data>
+  <data name="Pages_Seo_QueryString.Help" xml:space="preserve">
+    <value>Add an optional Querystring to the Redirect URL to match on a URL with a Path and any matching Querystring parameters. The Querystring is the segment of the URL to the right of the first ? in the URL. e.g. example.com/url-to-redirect?id=123</value>
+  </data>
+  <data name="Pages_Seo_QueryString.Text" xml:space="preserve">
+    <value>Query String</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsage.Help" xml:space="preserve">
+    <value>If the selected site alias is different from the primary site alias, select the usage option.</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsage.Text" xml:space="preserve">
+    <value>Selected Site Alias Usage</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsageOptionPageAndChildPages.Text" xml:space="preserve">
+    <value>Page and Child Pages</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsageOptionSameAsParent.Text" xml:space="preserve">
+    <value>Same as Parent Page</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsageOptionThisPageOnly.Text" xml:space="preserve">
+    <value>This page only</value>
+  </data>
+  <data name="Pages_Seo_SiteAlias.Help" xml:space="preserve">
+    <value>Select the alias for the page to use a specific alias.</value>
+  </data>
+  <data name="Pages_Seo_SiteAlias.Text" xml:space="preserve">
+    <value>Site Alias</value>
+  </data>
+  <data name="Pages_Seo_UrlPath.Help" xml:space="preserve">
+    <value>Specify the path for the URL. Do not enter http:// or the site alias.</value>
+  </data>
+  <data name="Pages_Seo_UrlPath.Text" xml:space="preserve">
+    <value>URL Path</value>
+  </data>
+  <data name="Pages_Seo_UrlType.Help" xml:space="preserve">
+    <value>Select 'Active' or 'Redirect'. Active means the URL will be used as the URL for the page, and will return a HTTP status code of 200. 'Redirect' means the entered URL will be redirected to the Active URL for the current page.</value>
+  </data>
+  <data name="Pages_Seo_UrlType.Text" xml:space="preserve">
+    <value>URL Type</value>
+  </data>
+  <data name="UrlPathNotUnique.Error" xml:space="preserve">
+    <value>The submitted URL is not available.  If you wish to accept the suggested alternative, please click Save.</value>
+  </data>
+  <data name="Pages_Seo_DeleteWarningMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to remove this URL?</value>
+  </data>
+  <data name="NoneSpecified.Text" xml:space="preserve">
+    <value>&#60; None Specified &#62; </value>
+  </data>
+  <data name="CannotCopyPermissionsToDescendantPages.Text" xml:space="preserve">
+    <value>You do not have permission to copy permissions to descendant pages</value>
+  </data>
+  <data name="SaveAsTemplate.Text" xml:space="preserve">
+    <value>Save as Template</value>
+  </data>
+  <data name="BackToPageSettings.Text" xml:space="preserve">
+    <value>Back to page settings</value>
+  </data>
+  <data name="DuplicatePage.Text" xml:space="preserve">
+    <value>Duplicate Page</value>
+  </data>
+  <data name="BranchParent.Text" xml:space="preserve">
+    <value>Branch Parent</value>
+  </data>
+  <data name="ModuleSettings.Text" xml:space="preserve">
+    <value>Module Settings</value>
+  </data>
+  <data name="TopPage.Text" xml:space="preserve">
+    <value>Top Page</value>
+  </data>
+  <data name="Folder.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="TemplateName.Text" xml:space="preserve">
+    <value>Template Name</value>
+  </data>
+  <data name="IncludeContent.Text" xml:space="preserve">
+    <value>Include Content</value>
+  </data>
+  <data name="FolderTooltip.Text" xml:space="preserve">
+    <value>Select the export folder where the template will be saved.</value>
+  </data>
+  <data name="TemplateNameTooltip.Text" xml:space="preserve">
+    <value>Enter a name for the page template.</value>
+  </data>
+  <data name="TemplateDescriptionTooltip.Text" xml:space="preserve">
+    <value>Enter a description of this template.</value>
+  </data>
+  <data name="IncludeContentTooltip.Text" xml:space="preserve">
+    <value>Check this box to include the module content.</value>
+  </data>
+  <data name="SearchFolders.Text" xml:space="preserve">
+    <value>Search Folders</value>
+  </data>
+  <data name="ExportedMessage.Text" xml:space="preserve">
+    <value>The page template has been created to {0}</value>
+  </data>
+  <data name="MakeNeutral.ErrorMessage" xml:space="preserve">
+    <value>Page cannot be converted to a neutral culture, because there are child pages.</value>
+  </data>
+  <data name="Detached.Text" xml:space="preserve">
+    <value>Detached {0}</value>
+  </data>
+  <data name="ModuleDeleted.Text" xml:space="preserve">
+    <value>This module is deleted, and exists in the recycle bin.</value>
+  </data>
+  <data name="ModuleInfo.Text" xml:space="preserve">
+    <value>Module: {0}&lt;br/&gt;ModuleTitle: {1}&lt;br/&gt;Pane: {2}</value>
+  </data>
+  <data name="ModuleInfoForNonAdmins.Text" xml:space="preserve">
+    <value>You do not have enough permissions to edit the title of this module.</value>
+  </data>
+  <data name="NotTranslated.Text" xml:space="preserve">
+    <value>Not translated {0}</value>
+  </data>
+  <data name="Reference.Text" xml:space="preserve">
+    <value>Reference {0}</value>
+  </data>
+  <data name="ReferenceDefault.Text" xml:space="preserve">
+    <value>Reference Default Language {0}</value>
+  </data>
+  <data name="Translated.Text" xml:space="preserve">
+    <value>Translated {0}</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve">
+    <value>[Default Language]</value>
+  </data>
+  <data name="NotActive.Text" xml:space="preserve">
+    <value>[Language is not Active]</value>
+  </data>
+  <data name="TranslationMessageConfirmMessage.Error" xml:space="preserve">
+    <value>Something went wrong notifying the Translators.</value>
+  </data>
+  <data name="TranslationMessageConfirmMessage.Text" xml:space="preserve">
+    <value>Translators successfully notified.</value>
+  </data>
+  <data name="NewContentMessage.Body" xml:space="preserve">
+    <value>The following page has new content ready for translation&lt;br/&gt;Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
+  </data>
+  <data name="NewContentMessage.Subject" xml:space="preserve">
+    <value>New Content Ready for Translation</value>
+  </data>
+  <data name="MakePagesTranslatable.Text" xml:space="preserve">
+    <value>Make Page Translatable</value>
+  </data>
+  <data name="MakePageNeutral.Text" xml:space="preserve">
+    <value>Make Page Neutral</value>
+  </data>
+  <data name="Site.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="BadTemplate.Text" xml:space="preserve">
+    <value>The page template is not a valid xml document.  Please select a different template and try again.</value>
+  </data>
+  <data name="AddMissingLanguages.Text" xml:space="preserve">
+    <value>Add Missing Languages</value>
+  </data>
+  <data name="NotifyTranslators.Text" xml:space="preserve">
+    <value>Notify Translators</value>
+  </data>
+  <data name="UpdateLocalization.Text" xml:space="preserve">
+    <value>Update Localization</value>
+  </data>
+  <data name="NeutralPageText.Text" xml:space="preserve">
+    <value>This is a "Language Neutral" page, which means that the page will be visible in every language of the site. Language Neutral pages cannot be translated.</value>
+  </data>
+  <data name="NeutralPageClickButton.Text" xml:space="preserve">
+    <value>To change this to a translatable page, click the button here.</value>
+  </data>
+  <data name="NotifyModalHeader.Text" xml:space="preserve">
+    <value>Send a notification to translators</value>
+  </data>
+  <data name="NotifyModalPlaceholder.Text" xml:space="preserve">
+    <value>Enter a message to send to translators</value>
+  </data>
+  <data name="CopyModule.Text" xml:space="preserve">
+    <value>Copy Module</value>
+  </data>
+  <data name="TranslatedCheckbox.Text" xml:space="preserve">
+    <value>Translated</value>
+  </data>
+  <data name="PublishedCheckbox.Text" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="MakeNeutralWarning.Text" xml:space="preserve">
+    <value>This will delete all translated version of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
+  </data>
+  <data name="PageUpdatedMessage.Text" xml:space="preserve">
+    <value>Page updated successfully</value>
+  </data>
+  <data name="PageDeletedMessage.Text" xml:space="preserve">
+    <value>Page deleted successfully</value>
+  </data>
+  <data name="DisableLink.Text" xml:space="preserve">
+    <value>Disable Page</value>
+  </data>
+  <data name="DisableLink_tooltip.Text" xml:space="preserve">
+    <value>If the page is disabled it cannot be clicked in any navigation menu. This option is used to provide place-holders for child menu items.</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="AddRole.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddRolePlaceHolder.Text" xml:space="preserve">
+    <value>Begin typing to add a role</value>
+  </data>
+  <data name="AddUser.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddUserPlaceHolder.Text" xml:space="preserve">
+    <value>Begin typing to add a user</value>
+  </data>
+  <data name="AllGroups.Text" xml:space="preserve">
+    <value>[All Roles]</value>
+  </data>
+  <data name="EditTab.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EmptyRole.Text" xml:space="preserve">
+    <value>Add a role to set permissions by role</value>
+  </data>
+  <data name="EmptyUser.Text" xml:space="preserve">
+    <value>Add a user to set permissions by user</value>
+  </data>
+  <data name="FilterByGroup.Text" xml:space="preserve">
+    <value>Filter By Group:</value>
+  </data>
+  <data name="GlobalGroups.Text" xml:space="preserve">
+    <value>[Global Roles]</value>
+  </data>
+  <data name="PermissionsByRole.Text" xml:space="preserve">
+    <value>PERMISSIONS BY ROLE</value>
+  </data>
+  <data name="PermissionsByUser.Text" xml:space="preserve">
+    <value>PERMISSIONS BY USER</value>
+  </data>
+  <data name="Role.Text" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="Status_Hidden.Text" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="Status_Visible.Text" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ViewTab.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="SiteDefault.Text" xml:space="preserve">
+    <value>Site Default</value>
+  </data>
+  <data name="ClearPageCache.Text" xml:space="preserve">
+    <value>Clear Cache - This Page</value>
+  </data>
+  <data name="lblCachedItemCount.Text" xml:space="preserve">
+    <value>Current Cache Count: {0} variations for this page</value>
+  </data>
+  <data name="cacheDuration.ErrorMessage">
+    <value>Cache Duration must be an integer.</value>
+  </data>
+  <data name="cacheMaxVaryByCount.ErrorMessage">
+    <value>Vary By Limit must be an integer.</value>
+  </data>
+  <data name="addTagsPlaceholder.Text" xml:space="preserve">
+    <value>Add Tags</value>
+  </data>
+  <data name="On.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Off.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="ParentPage.Text" xml:space="preserve">
+    <value>Parent Page</value>
+  </data>
+</root>

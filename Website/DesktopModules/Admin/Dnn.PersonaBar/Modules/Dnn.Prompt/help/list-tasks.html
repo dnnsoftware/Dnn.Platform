@@ -1,0 +1,252 @@
+<!-- list-tasks -->
+<section class="dnn-prompt-inline-help">
+  <a name="list-tasks"></a>
+  <h3 class="mono">list-tasks</h3>
+  <p class="lead">Retrieves a list of scheduled tasks based on the specified criteria. DNN refers to these as schedules or scheduler items. Prompt refers to them as tasks.</p>
+
+  <h4>Options</h4>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="mono">--enabled</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td></td>
+      <td>When specified, Prompt will return tasks that are enabled (if this flag is set to true) or disabled (if this is set to false). If this flag is not specified, Prompt will return tasks regardless of their enabled status.</td>
+    </tr>
+    <tr>
+      <td class="mono">--name</td>
+      <td>string</td>
+      <td>No</td>
+      <td></td>
+      <td>When specified, Prompt will return tasks whose Friendly Name matches the expression. This supports wildcard matching via the asterisk ( <span class="mono">*</span> ) to represent zero (0) or more characters.</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h4>List All Tasks</h4>
+  <code class="block">
+    list-tasks
+  </code>
+
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <thead>
+    <tr>
+      <th>ScheduleId</th>
+      <th>FriendlyName</th>
+      <th>NextStart</th>
+      <th>Enabled</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>11</td>
+      <td>MessagingDispatch</td>
+      <td>2017-01-02T08:19:49.53</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Purge Cache</td>
+      <td>2017-01-02T08:08:07.4342281-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Purge Client Dependency Files</td>
+      <td>2017-01-02T08:08:07.4342281-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Purge Log Buffer</td>
+      <td>2017-01-02T08:08:07.4342281-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Purge Module Cache</td>
+      <td>2017-01-02T08:19:50.533</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td colspan="4">...</td>
+    </tr>
+    <tr>
+      <td colspan="4">10 tasks found</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h4>List All Enabled Tasks</h4>
+  <code class="block">
+    list-tasks true
+  </code>
+  OR
+  <code class="block">
+    list-tasks --enabled true
+  </code>
+
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <thead>
+    <tr>
+      <th>ScheduleId</th>
+      <th>FriendlyName</th>
+      <th>NextStart</th>
+      <th>Enabled</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>11</td>
+      <td>MessagingDispatch</td>
+      <td>2017-01-02T08:19:49.53</td>
+      <td class="bg-info">true</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Purge Module Cache</td>
+      <td>2017-01-02T08:19:50.533</td>
+      <td class="bg-info">true</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Purge Schedule History</td>
+      <td>2017-01-03T08:08:10.45</td>
+      <td class="bg-info">true</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Search: Site Crawler</td>
+      <td>2017-01-02T09:09:09.94</td>
+      <td class="bg-info">true</td>
+    </tr>
+    <tr>
+      <td colspan="4">4 tasks found</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h4>List All Tasks Whose Name Begins With &quot;purge&quot;</h4>
+  <code class="block">
+    list-tasks purge*
+  </code>
+  OR
+  <code class="block">
+    list-tasks --name purge*
+  </code>
+
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <thead>
+    <tr>
+      <th>ScheduleId</th>
+      <th>FriendlyName</th>
+      <th>NextStart</th>
+      <th>Enabled</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>9</td>
+      <td class="bg-info">Purge Cache</td>
+      <td>2017-01-02T09:08:55.2867143-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td class="bg-info">Purge Client Dependency Files</td>
+      <td>2017-01-02T09:08:55.2867143-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td class="bg-info">Purge Log Buffer</td>
+      <td>2017-01-02T09:08:55.2867143-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td class="bg-info">Purge Module Cache</td>
+      <td>2017-01-02T09:17:20.48</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td class="bg-info">Purge Output Cache</td>
+      <td>2017-01-02T09:08:55.2867143-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td class="bg-info">Purge Schedule History</td>
+      <td>2017-01-03T08:08:10.45</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td class="bg-info">Purge Users Online</td>
+      <td>2017-01-02T09:08:55.2867143-07:00</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td colspan="4">7 tasks found</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h4>List All Enabled Tasks Whose Name Begins With &quot;purge&quot;</h4>
+  <code class="block">
+    list-tasks purge* --enabled true
+  </code>
+  OR
+  <code class="block">
+    list-tasks true --name purge*
+  </code>
+  OR
+  <code class="block">
+    list-tasks --enabled true --name purge*
+  </code>
+
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <thead>
+    <tr>
+      <th>ScheduleId</th>
+      <th>FriendlyName</th>
+      <th>NextStart</th>
+      <th>Enabled</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>10</td>
+      <td class="bg-info">Purge Module Cache</td>
+      <td>2017-01-02T09:17:20.48</td>
+      <td class="bg-info">true</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td class="bg-info">Purge Schedule History</td>
+      <td>2017-01-03T08:08:10.45</td>
+      <td class="bg-info">true</td>
+    </tr>
+    <tr>
+      <td colspan="4">2 tasks found</td>
+    </tr>
+    </tbody>
+  </table>
+
+</section>
+
