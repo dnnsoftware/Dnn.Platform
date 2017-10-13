@@ -152,6 +152,7 @@
     <Compile Include="Components\DataAccess\DataControllers\APIUserDataController.cs" />
     <Compile Include="Components\DataAccess\Models\IPSpec.cs" />
     <Compile Include="Components\DataAccess\Models\Session.cs" />
+    <Compile Include="Components\WebAPI\RemoteController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\PolyDeploySettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -169,7 +170,6 @@
     <Compile Include="Components\WebAPI\ActionFilters\APIAuthentication.cs" />
     <Compile Include="Components\WebAPI\ActionFilters\InWhitelist.cs" />
     <Compile Include="Components\WebAPI\APIUserController.cs" />
-    <Compile Include="Components\WebAPI\CIController.cs" />
     <Compile Include="Components\WebAPI\Routes.cs" />
     <Compile Include="Components\WebAPI\SessionController.cs" />
     <Compile Include="Components\WebAPI\IPSpecController.cs" />
