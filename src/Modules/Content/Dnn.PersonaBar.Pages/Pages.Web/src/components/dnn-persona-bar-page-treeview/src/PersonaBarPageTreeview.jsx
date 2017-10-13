@@ -3,7 +3,7 @@ import GridCell from "dnn-grid-cell";
 import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new";
 import { PropTypes } from "prop-types";
 import { DragSource } from 'react-dnd';
-
+import utils from "utils";
 
 import "./styles.less";
 
@@ -100,8 +100,7 @@ export class PersonaBarPageTreeview extends Component {
             const elm = document.getElementById(`dropzone-${item.name}-${item.id}-${direction}`);
             (direction === "before") ? elm.classList.remove("list-item-border-bottom") : elm.classList.remove("list-item-border-top");
         };
-
-        if (parentItem && !parentItem.canManagePage) {
+        if (!utils.getIsSuperUser() && (parentItem === undefined || parentItem && !parentItem.canManagePage)) {
             return;
         }
 
