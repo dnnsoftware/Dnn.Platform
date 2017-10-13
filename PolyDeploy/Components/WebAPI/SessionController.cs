@@ -1,5 +1,6 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
 using System;
 using System.IO;
@@ -13,6 +14,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
 {
     [RequireHost]
     [ValidateAntiForgeryToken]
+    [InWhitelist]
     public class SessionController : DnnApiController
     {
         [HttpPost]
@@ -23,7 +25,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             return Request.CreateResponse(HttpStatusCode.OK, session);
         }
 
-        // TODO: Will use DNN SF to secure.
         [HttpGet]
         public HttpResponseMessage Get(string guid)
         {
@@ -32,7 +33,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             return Request.CreateResponse(HttpStatusCode.OK, session);
         }
 
-        // TODO: Will use DNN SF to secure.
         [HttpPost]
         public async Task<HttpResponseMessage> AddPackage(string guid)
         {
@@ -73,7 +73,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             return Request.CreateResponse(HttpStatusCode.Created);
         }
 
-        // TODO: Will use DNN SF to secure.
         [HttpGet]
         public HttpResponseMessage Summary(string guid)
         {
@@ -104,7 +103,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
         }
 
-        // TODO: Will use DNN SF to secure.
         [HttpGet]
         public HttpResponseMessage Install(string guid)
         {

@@ -9,7 +9,7 @@ using System.Web.Http.Filters;
 
 namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
 {
-    public class APIAuthentication : ActionFilterAttribute
+    internal class APIAuthentication : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {

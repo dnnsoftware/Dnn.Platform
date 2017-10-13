@@ -8,7 +8,7 @@ using System.Web.Http.Filters;
 
 namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
 {
-    public class InWhitelist : ActionFilterAttribute
+    internal class InWhitelist : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {

@@ -1,5 +1,6 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,11 @@ using System.Web.Script.Serialization;
 
 namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
 {
-    [AllowAnonymous] // TODO: Secure this controller properly.
+    [RequireHost]
+    [ValidateAntiForgeryToken]
+    [InWhitelist]
     public class APIUserController : DnnApiController
     {
-        // TODO: Will use DNN SF to secure.
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
@@ -30,7 +32,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             return Request.CreateResponse(HttpStatusCode.OK, apiUsers);
         }
 
-        // TODO: Will use DNN SF to secure.
         [HttpPost]
         public HttpResponseMessage Create(string name)
         {
@@ -46,7 +47,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             return Request.CreateResponse(HttpStatusCode.Created, apiUser);
         }
 
-        // TODO: Will use DNN SF to secure.
         [HttpPut]
         public HttpResponseMessage Update()
         {
@@ -77,7 +77,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             return Request.CreateResponse(HttpStatusCode.OK, apiUser);
         }
 
-        // TODO: Will use DNN SF to secure.
         [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
