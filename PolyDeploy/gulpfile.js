@@ -53,6 +53,13 @@ function getClients(dir) {
 */
 function getJsEntryPoint(dir) {
 
+    // Dir exists?
+    if (!fs.existsSync(dir)) {
+
+        // No.
+        return undefined;
+    }
+
     // Get all js files in the directory.
     var jsFiles = fs.readdirSync(dir)
         .filter(function (file) {
@@ -106,6 +113,13 @@ function getJsEntryPoint(dir) {
     - a lone less or sass file
 */
 function getCssEntryPoint(dir) {
+
+    // Dir exists?
+    if (!fs.existsSync(dir)) {
+
+        // No.
+        return undefined;
+    }
 
     // Get all less/sass files in the directory.
     var stylingFiles = fs.readdirSync(dir)
