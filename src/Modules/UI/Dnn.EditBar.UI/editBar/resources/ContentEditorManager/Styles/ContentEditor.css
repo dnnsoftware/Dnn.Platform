@@ -69,7 +69,7 @@
 .dnnModuleDialog .dnnDialogTitle {
     height: 70px;
     line-height: 70px;
-    background-color: #0a3b4e;
+    background-color: #3d3c3c;
     -moz-border-top-left-radius: 5px;
     -webkit-border-top-left-radius:5px;
     border-top-left-radius: 5px;
@@ -290,9 +290,7 @@
     right: 68px;
     display: inline-block;
     width: 250px;
-    height: 100%;
-    border-left: 1px solid #0a3243;
-    border-right: 1px solid #0a3243;
+    height: 100%;    
 }
 .dnnModuleDialog .dnnDialogTitle .search-container .search-input-container {
     height: 100%;
@@ -312,21 +310,21 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 
-    color: #537e91;
+    color: #fff;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container input.search-input::-webkit-input-placeholder {
-    color:    #537e91;
+    color:    #c8c8c8;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container input.search-input:-moz-placeholder {
-   color:    #537e91;
+   color:    #c8c8c8;
    opacity:  1;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container input.search-input::-moz-placeholder {
-   color:    #537e91;
+   color:    #c8c8c8;
    opacity:  1;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container input.search-input:-ms-input-placeholder {
-   color:    #537e91;
+   color:    #c8c8c8;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container input.search-input::-ms-clear {
     display: none;
