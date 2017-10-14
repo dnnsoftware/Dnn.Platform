@@ -118,7 +118,7 @@ class PageDetailsFooter extends Component {
         const normalPage = page.pageType === "normal";
         const componentsInNewSection= this.getNewSections(normalPage, page.pageType);
         const includeTemplates = componentsInNewSection.length === 0;
-
+        console.log(componentsInNewSection);
         return (
             <div className={styles.pageDetailsFooter}>                
                 <GridSystem>

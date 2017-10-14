@@ -238,11 +238,21 @@ class PageSettings extends Component {
         );
     }
 
-
+    render_customComponent(){
+        let CustomComponent = this.props.customPageSettingsComponent[0];
+        return (<CustomComponent 
+            onCancel={this.props.onCancel}
+            onSave={this.props.onSave}
+            selectedPage={this.props.selectedPage}
+             />
+        );
+    }
     render() {
+        //console.log(this.props.customPageSettingsComponent);
+
         return (
             <div>
-                {this.props.customPageSettingsComponent ? this.props.customPageSettingsComponent : this.render_tabsDetails()}
+                { this.props.customPageSettingsComponent ? this.render_customComponent() : this.render_tabsDetails()}
             </div>
         );
     }

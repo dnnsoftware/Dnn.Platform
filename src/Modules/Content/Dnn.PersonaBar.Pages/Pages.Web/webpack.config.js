@@ -10,7 +10,7 @@ module.exports = {
         filename: "pages-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
-    devtool: "source-map",
+    devtool: "n",
     module: {
         loaders: [
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
