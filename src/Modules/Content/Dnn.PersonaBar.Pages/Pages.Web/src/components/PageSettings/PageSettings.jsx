@@ -238,39 +238,6 @@ class PageSettings extends Component {
         );
     }
     
-    render_customComponent(){
-        let CustomComponent = this.props.customPageSettingsComponents[0];
-        return (
-            <CustomComponent 
-                onCancel={this.props.onCancel}
-                onSave={this.props.onSave}
-                selectedPage={this.props.selectedPage}
-            />
-        );
-    }
-
-    getAdditionalPageSettings() {
-        const additionalPageSettings = [];
-        const { props } = this;
-
-        if (props.customPageSettingsComponents) {
-            for (let i = 0; i < props.customPageSettingsComponents.length; i++) {
-                const customPageSettings = props.customPageSettingsComponents[i];
-                if (props.selectedView === customPageSettings.panelId) {
-                    const Component = customPageSettings.component;
-                    additionalPageSettings.push(
-                        <Component
-                            onCancel={props.onCancel}
-                            selectedPage={props.selectedPage}
-                            store={customPageSettings.store} />
-                    );
-                }
-            }
-        }
-
-        return additionalPageSettings;
-    }
-
 
     render_pageSettings(){
 
@@ -311,8 +278,7 @@ PageSettings.propTypes = {
     selectPageSettingTab: PropTypes.func,
     onGetCachedPageCount: PropTypes.func.isRequired,
     onClearCache: PropTypes.func.isRequired,
-    onModuleCopyChange: PropTypes.func,
-    customPageSettingsComponents: PropTypes.object
+    onModuleCopyChange: PropTypes.func
 };
 
 export default PageSettings;
