@@ -93,7 +93,7 @@ class PageSettings extends Component {
         this.props.onChangeField("hierarchy", parentPageName);
     }
     
-    render_tabsDetails(){
+    render_defaultTabsDetails(){
         const {
             selectedPage,
             selectedPageErrors,
@@ -239,7 +239,7 @@ class PageSettings extends Component {
     }
     
     render_customComponent(){
-        let CustomComponent = this.props.customPageSettingsComponent[0];
+        let CustomComponent = this.props.customPageSettingsComponents[0];
         return (
             <CustomComponent 
                 onCancel={this.props.onCancel}
@@ -249,14 +249,39 @@ class PageSettings extends Component {
         );
     }
 
-    
+    getAdditionalPageSettings() {
+        const additionalPageSettings = [];
+        const { props } = this;
+
+        if (props.customPageSettingsComponents) {
+            for (let i = 0; i < props.customPageSettingsComponents.length; i++) {
+                const customPageSettings = props.customPageSettingsComponents[i];
+                if (props.selectedView === customPageSettings.panelId) {
+                    const Component = customPageSettings.component;
+                    additionalPageSettings.push(
+                        <Component
+                            onCancel={props.onCancel}
+                            selectedPage={props.selectedPage}
+                            store={customPageSettings.store} />
+                    );
+                }
+            }
+        }
+
+        return additionalPageSettings;
+    }
+
+
+    render_pageSettings(){
+
+        return this.render_defaultTabsDetails();
+    }
 
     render() {
-        //console.log(this.props.customPageSettingsComponent);
-
+        
         return (
             <div>
-                { this.props.customPageSettingsComponent ? this.render_customComponent() : this.render_tabsDetails()}
+                { this.render_defaultTabsDetails() }
             </div>
         );
     }
@@ -287,7 +312,7 @@ PageSettings.propTypes = {
     onGetCachedPageCount: PropTypes.func.isRequired,
     onClearCache: PropTypes.func.isRequired,
     onModuleCopyChange: PropTypes.func,
-    customPageSettingsComponent: PropTypes.object
+    customPageSettingsComponents: PropTypes.object
 };
 
 export default PageSettings;
