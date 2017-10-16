@@ -393,6 +393,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     utils.notifyError(response.Message, 3000);
                     return 0;
                 }
+                utils.notify(Localization.get("PageUpdatedMessage"));
                 return 1;
             }).then((response) => {
                 response === 1 && this.reOrderPage({
