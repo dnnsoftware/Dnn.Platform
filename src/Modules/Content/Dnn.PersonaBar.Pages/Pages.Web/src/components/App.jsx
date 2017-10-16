@@ -330,9 +330,9 @@ class App extends Component {
     onEditMode(){
         const {selectedPage, selectedView} = this.props;
         return (selectedPage && selectedPage.tabId === 0 
+            || selectedView === panels.SAVE_AS_TEMPLATE_PANEL
             || selectedView === panels.ADD_MULTIPLE_PAGES_PANEL 
-            || selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL
-            || selectedView === panels.PAGE_SETTINGS_PANEL);
+            || selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL);
     }
 
     onAddPage(parentPage) {
@@ -1101,7 +1101,7 @@ class App extends Component {
         let CustomComponent = props.customPageSettingsComponents[0];
         return (
             <CustomComponent 
-                onCancel={this.onCancelSettings.bind(this)}
+                onCancel={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                 onSave={props.onSave}
                 selectedPage={props.selectedPage}
                 disabled={this.onEditMode()}
