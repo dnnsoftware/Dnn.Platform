@@ -121,19 +121,78 @@
         height:107px;
         animation: fadeIn .25s ease-in forwards;
 
+
         .search-item-thumbnail{
             float:left;
+            max-width: 16%;
+            img{
+                height: 105px;
+            }
         }
 
         .search-item-details {
             float:left;
+            width: 83%;
             height:40px;
-            padding-left: 35px;
+            padding: 10px 0px 10px 35px;
+            &.full{
+                width: 99%;
+            }
+            .search-item-details-left{
+                float:left;
+                h1{
+                    color: @curiousBlue;
+                    cursor: pointer;
+                }
+                h2{
+                    color:@alto;
+                }
+
+            }
+
+            .search-item-details-right{
+                float:right;
+                height: 32px;
+                ul{
+                    float:right;
+                    transition: opacity .25s ease-in;
+                    opacity:0;
+                    padding:0;
+                    margin:0;
+                    li{
+                        list-style:none;
+                        padding: 0 10px;
+                        float:left;
+
+                        div{
+                            width: 20px;
+                            cursor:pointer;
+
+                            svg{
+                                width:20px;
+                                fill: @alto;
+                                stroke: @alto;
+                            }
+                            svg:hover {
+                                width:20px;
+                                fill: @curiousBlue;
+                                stroke: @curiousBlue;
+                            }
+                        }
+
+                    }
+                }
+
+                ul:hover{
+                    opacity: 1
+                }
+            }
         }
 
         .search-item-details-list {
-            padding:10px 0px;
-            
+            padding:3px 0px;
+            clear:both;
+            float: left;
             ul{
                 list-style: none;
                 padding:0;
@@ -142,6 +201,8 @@
 
             li{
                 float:left;
+                margin: 0 10px;
+
                 p{
                     display:inline;
                     font-weight:bold;
@@ -150,10 +211,17 @@
                 p:first-child{
 
                 }
+
                 p:not(:first-child) {
                     margin: 0px 10px;
-                    color: @curiousBlue
+                    color: @curiousBlue;
+                    cursor:pointer;
                 }
+            }
+
+            li:first-child{
+                float:left;
+                margin:0;
             }
         }
     }
@@ -180,13 +248,64 @@
             display:block;
         }
 
+        .back-to-page {
+            float:left;
+            width: 200px;
+            cursor:pointer;
+            font-weight: bold;
+            display: block;
+            div {
+                float:left;
+                width: 20px;
+                margin-right: 10px;
+
+                svg{
+                    fill:#000;
+                }
+            }
+
+            p{
+                padding-top:3px;
+                text-transform: uppercase;
+            }
+        }
+        .dnn-back-to-link {
+            float:left;
+            width: 200px;
+            cursor:pointer;
+            display: block;
+            margin-top: 5px;
+            > span {
+                position: relative;
+                float: left;
+            }
+            .dnn-back-to-arrow {
+                > svg {
+                    width: 16px;
+                    height: 16px;
+                    fill: @thunder;
+                }
+                float: left;
+                position: relative;
+            }
+            &:hover {
+                float: left;
+                color: @mountainMist;
+                .dnn-back-to-arrow {
+                    > svg {
+                        fill: @mountainMist;
+                    }
+                }
+            }
+        }
+
         .search-box{
             float:right;
             border-left: 1px solid @alto;
             width: 300px;
 
             .search-input {
-                width:230px;
+                width:200px;
                 float:left;
                 input{
                     border:none;
@@ -203,6 +322,15 @@
 
         .search-btn {
             padding: 0 5px;
+            line-height: 42px;
+        }
+
+        .clear-search{
+            padding: 8px;
+            line-height: 22px;
+            svg{
+                fill: @alto;
+            }
         }
     }
 

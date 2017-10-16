@@ -57,6 +57,7 @@ const loadPage = function (dispatch, pageId, callback) {
 const pageActions = {
     getPageList(id) {
         return (dispatch) => PagesService.getPageList(id).then(pageList => {
+         
             dispatch({
                 type: PageListActionTypes.SAVE,
                 data: { pageList }
@@ -71,6 +72,11 @@ const pageActions = {
                 data: { searchList }
             });
         });
+    },
+
+
+    getPageHierarchy(id){
+        return () => PagesService.getPageHierarchy(id);
     },
 
     searchAndFilterPageList(params) {
