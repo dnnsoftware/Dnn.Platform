@@ -23,6 +23,7 @@ module.exports = {
     },
     externals: {
         "react": "react",
+		"react-dom": "react-dom",
         "dnn-text-overflow-wrapper": "dnn-text-overflow-wrapper"
     },
     resolve: {
