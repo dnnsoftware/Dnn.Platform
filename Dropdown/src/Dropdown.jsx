@@ -83,7 +83,6 @@ class Dropdown extends Component {
         if (props.closeOnClick) {
             document.addEventListener("mousedown", this.handleClick);
         }
-        this.updateScrollbar();
         this._isMounted = true;
     }
 
@@ -184,8 +183,9 @@ class Dropdown extends Component {
 
             if (labelToMatch.match(stringToMatchBeginning) && labelToMatch.match(stringToMatchBeginning).length > closestValueLength) {
                 closestValueLength = labelToMatch.match(stringToMatchBeginning).length;
-                closestValue = option;
+                closestValue = option.value;
                 itemIndex = index;
+
             }
         });
 
@@ -206,7 +206,8 @@ class Dropdown extends Component {
         }
 
         this.setState({
-            closestValue
+            closestValue,
+            currentIndex:itemIndex
         }, () => {
             setTimeout(() => {
                 this.setState({
@@ -217,11 +218,20 @@ class Dropdown extends Component {
 
         if (closestValue !== null) {
             // SCM-1115
-            const optionValue = this.getOption(itemIndex);
-            if (optionValue) {
-                const bottom = optionValue.offsetTop - this.getDropdownHeight();
-                scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], bottom);
+            this.scrollToSelectedItem(itemIndex);
+        }
+    }
+
+    scrollToSelectedItem(itemIndex, eventKey) {
+
+        const optionRef = this.selectedOptionElement ? this.selectedOptionElement : null;
+        if (optionRef) {
+            const domElement = ReactDOM.findDOMNode(optionRef);
+            let offset = domElement.offsetTop;
+            if(eventKey == "ArrowUp"){
+                offset = domElement.offsetBottom;
             }
+            scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], offset);
         }
     }
 
@@ -234,14 +244,45 @@ class Dropdown extends Component {
     }
 
     onKeyDown(event) {
-        if (event.key === "Enter") {
-            if (this.state.closestValue && this.state.closestValue.value !== null) {
-                this.onSelect(this.state.closestValue);
-                this.dropdownSearch.blur();
-            } else {
-                this.onSelect(this.state.selectedOption);
-            }
+        switch (event.key) {
+            case  "Enter":
+                if (this.state.closestValue && this.state.closestValue.value !== null) {
+                    this.onSelect(this.state.closestValue);
+                    this.dropdownSearch.blur();
+                } else {
+                    this.onSelect(this.state.selectedOption);
+                }
+                break;
+            case "ArrowUp":
+                this.onArrowUp(event.key);
+                break;
+            case "ArrowDown":
+                this.onArrowDown(event.key);
+                break;
         }
+
+    }
+
+    getCurrentIndex() {
+        const maxIndex = this.optionItems ? this.optionItems.length : 0;
+        const currentIndex = this.state.currentIndex != undefined ? this.state.currentIndex : -1;
+        return currentIndex > -1 && currentIndex < maxIndex ? currentIndex : -1;
+    }
+
+    onArrowDown(eventKey) {
+        const maxIndex = this.optionItems ? this.optionItems.length : 0;
+        let currentIndex = this.getCurrentIndex();
+        const nextIndex = currentIndex < maxIndex ? currentIndex++ : currentIndex;
+        const option = this.getOption(currentIndex);
+        this.setState({currentIndex, selectedOption: option, closestValue: null});
+        this.scrollToSelectedItem(nextIndex, eventKey);
+    }
+
+    onArrowUp(eventKey) {
+        let currentIndex = this.getCurrentIndex();
+        const nextIndex = currentIndex > 0 ? currentIndex-- : currentIndex;
+        this.setState({currentIndex, selectedOption: this.getOption(currentIndex), closestValue: null});
+        this.scrollToSelectedItem(nextIndex, eventKey);
     }
 
     // SCM-1115
@@ -249,19 +290,32 @@ class Dropdown extends Component {
         const {props, state} = this;
         this.optionItems = [];
         const options = props.options && props.options.map((option, index) => {
+            this.optionItems.push(option);
             return <li onClick={this.onSelect.bind(this, option)} key={index}
-                       ref={this.addOptionRef.bind(this)}
-                       className={((option.value === props.value && state.closestValue === null) || option.value === (state.closestValue && state.closestValue.value)) ? "dnn-dropdown-option selected" : "dnn-dropdown-option"}>{option.label}</li>;
+                       ref={this.isSelectedItem(index) ? this.addOptionRef.bind(this) : f => f}
+                       className={this.getOptionClassName(option, index)}>{option.label}</li>;
         });
         return options;
     }
 
+    getOptionClassName(option, index) {
+        const {props, state} = this;
+        const currentIndex = this.getCurrentIndex();
+        const isCurrentIndex = index === currentIndex;
+        const isPreselected = props.value != null && (option.value === props.value && state.closestValue === null && currentIndex < 0);
+        const isSearchResult = state.closestValue != null && (option.value === state.closestValue);
+        const selected = isCurrentIndex || isSearchResult || isPreselected;
+        return selected ? "dnn-dropdown-option selected" : "dnn-dropdown-option";
+    }
+
+    isSelectedItem(index) {
+        return index == this.state.currentIndex;
+    }
+
     // SCM-1115
     addOptionRef(option) {
-        //console.log(`OPTION REF: ${option}`);
         if (option) {
-            this.optionItems = this.optionItems ? this.optionItems : [];
-            this.optionItems.push(option);
+            this.selectedOptionElement = option;
         }
     }
 
@@ -312,7 +366,7 @@ class Dropdown extends Component {
                                 autoHeightMin={DNN_DROPDOWN_MINHEIGHT}
                                 style={props.scrollAreaStyle}
                                 onUpdate={this.props.onScrollUpdate}
-                                renderTrackHorizontal={() => <div /> }>
+                                renderTrackHorizontal={() => <div/>}>
                                 <ul className="dnn-dropdown-options" ref={(ul) => this.dropDownListElement = ul}>
                                     {options}
                                 </ul>

@@ -182,7 +182,7 @@ exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
                           className="dnn-dropdown-options"
                         >
                           <li
-                            className="dnn-dropdown-optionf"
+                            className="dnn-dropdown-option"
                             key="0"
                             onClick={[Function]}
                           >
@@ -196,7 +196,7 @@ exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
                             Second Label
                           </li>
                           <li
-                            className="dnn-dropdown-optionf"
+                            className="dnn-dropdown-option"
                             key="2"
                             onClick={[Function]}
                           >
@@ -557,7 +557,7 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
                           className="dnn-dropdown-options"
                         >
                           <li
-                            className="dnn-dropdown-optionf"
+                            className="dnn-dropdown-option"
                             key="0"
                             onClick={[Function]}
                           >
@@ -571,7 +571,7 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
                             Second Label
                           </li>
                           <li
-                            className="dnn-dropdown-optionf"
+                            className="dnn-dropdown-option"
                             key="2"
                             onClick={[Function]}
                           >
@@ -753,7 +753,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -765,7 +765,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -892,7 +892,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -904,7 +904,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -945,7 +945,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -957,7 +957,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -997,7 +997,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -1009,7 +1009,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -1033,7 +1033,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -1045,7 +1045,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -1071,7 +1071,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -1083,7 +1083,7 @@ ShallowWrapper {
                       Second Label
                     </li>,
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -1099,7 +1099,7 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": "First Label",
-                      "className": "dnn-dropdown-optionf",
+                      "className": "dnn-dropdown-option",
                       "onClick": [Function],
                     },
                     "ref": [Function],
@@ -1125,7 +1125,7 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": "Third Label",
-                      "className": "dnn-dropdown-optionf",
+                      "className": "dnn-dropdown-option",
                       "onClick": [Function],
                     },
                     "ref": [Function],
@@ -1218,7 +1218,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -1230,7 +1230,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -1357,7 +1357,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -1369,7 +1369,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -1410,7 +1410,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -1422,7 +1422,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -1462,7 +1462,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -1474,7 +1474,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -1498,7 +1498,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -1510,7 +1510,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -1536,7 +1536,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       <li
-                        className="dnn-dropdown-optionf"
+                        className="dnn-dropdown-option"
                         onClick={[Function]}
                       >
                         First Label
@@ -1548,7 +1548,7 @@ ShallowWrapper {
                         Second Label
                       </li>,
                       <li
-                        className="dnn-dropdown-optionf"
+                        className="dnn-dropdown-option"
                         onClick={[Function]}
                       >
                         Third Label
@@ -1564,7 +1564,7 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": "First Label",
-                        "className": "dnn-dropdown-optionf",
+                        "className": "dnn-dropdown-option",
                         "onClick": [Function],
                       },
                       "ref": [Function],
@@ -1590,7 +1590,7 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": "Third Label",
-                        "className": "dnn-dropdown-optionf",
+                        "className": "dnn-dropdown-option",
                         "onClick": [Function],
                       },
                       "ref": [Function],
@@ -1752,7 +1752,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -1764,7 +1764,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -1911,7 +1911,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -1923,7 +1923,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -1964,7 +1964,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -1976,7 +1976,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -2016,7 +2016,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -2028,7 +2028,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -2052,7 +2052,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -2064,7 +2064,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -2090,7 +2090,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -2102,7 +2102,7 @@ ShallowWrapper {
                       Second Label
                     </li>,
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -2118,7 +2118,7 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": "First Label",
-                      "className": "dnn-dropdown-optionf",
+                      "className": "dnn-dropdown-option",
                       "onClick": [Function],
                     },
                     "ref": [Function],
@@ -2144,7 +2144,7 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": "Third Label",
-                      "className": "dnn-dropdown-optionf",
+                      "className": "dnn-dropdown-option",
                       "onClick": [Function],
                     },
                     "ref": [Function],
@@ -2251,7 +2251,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -2263,7 +2263,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -2410,7 +2410,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -2422,7 +2422,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -2463,7 +2463,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -2475,7 +2475,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -2515,7 +2515,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -2527,7 +2527,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -2551,7 +2551,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -2563,7 +2563,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -2589,7 +2589,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       <li
-                        className="dnn-dropdown-optionf"
+                        className="dnn-dropdown-option"
                         onClick={[Function]}
                       >
                         First Label
@@ -2601,7 +2601,7 @@ ShallowWrapper {
                         Second Label
                       </li>,
                       <li
-                        className="dnn-dropdown-optionf"
+                        className="dnn-dropdown-option"
                         onClick={[Function]}
                       >
                         Third Label
@@ -2617,7 +2617,7 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": "First Label",
-                        "className": "dnn-dropdown-optionf",
+                        "className": "dnn-dropdown-option",
                         "onClick": [Function],
                       },
                       "ref": [Function],
@@ -2643,7 +2643,7 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": "Third Label",
-                        "className": "dnn-dropdown-optionf",
+                        "className": "dnn-dropdown-option",
                         "onClick": [Function],
                       },
                       "ref": [Function],
@@ -2856,7 +2856,7 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
                           className="dnn-dropdown-options"
                         >
                           <li
-                            className="dnn-dropdown-optionf"
+                            className="dnn-dropdown-option"
                             key="0"
                             onClick={[Function]}
                           >
@@ -2870,7 +2870,7 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
                             Second Label
                           </li>
                           <li
-                            className="dnn-dropdown-optionf"
+                            className="dnn-dropdown-option"
                             key="2"
                             onClick={[Function]}
                           >
@@ -4330,7 +4330,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -4342,7 +4342,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -4489,7 +4489,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -4501,7 +4501,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -4542,7 +4542,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -4554,7 +4554,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -4594,7 +4594,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -4606,7 +4606,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -4630,7 +4630,7 @@ ShallowWrapper {
                   className="dnn-dropdown-options"
                 >
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     First Label
@@ -4642,7 +4642,7 @@ ShallowWrapper {
                     Second Label
                   </li>
                   <li
-                    className="dnn-dropdown-optionf"
+                    className="dnn-dropdown-option"
                     onClick={[Function]}
                   >
                     Third Label
@@ -4668,7 +4668,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -4680,7 +4680,7 @@ ShallowWrapper {
                       Second Label
                     </li>,
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -4696,7 +4696,7 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": "First Label",
-                      "className": "dnn-dropdown-optionf",
+                      "className": "dnn-dropdown-option",
                       "onClick": [Function],
                     },
                     "ref": [Function],
@@ -4722,7 +4722,7 @@ ShallowWrapper {
                     "nodeType": "host",
                     "props": Object {
                       "children": "Third Label",
-                      "className": "dnn-dropdown-optionf",
+                      "className": "dnn-dropdown-option",
                       "onClick": [Function],
                     },
                     "ref": [Function],
@@ -4829,7 +4829,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -4841,7 +4841,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -4988,7 +4988,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -5000,7 +5000,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -5041,7 +5041,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -5053,7 +5053,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -5093,7 +5093,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -5105,7 +5105,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -5129,7 +5129,7 @@ ShallowWrapper {
                     className="dnn-dropdown-options"
                   >
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       First Label
@@ -5141,7 +5141,7 @@ ShallowWrapper {
                       Second Label
                     </li>
                     <li
-                      className="dnn-dropdown-optionf"
+                      className="dnn-dropdown-option"
                       onClick={[Function]}
                     >
                       Third Label
@@ -5167,7 +5167,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       <li
-                        className="dnn-dropdown-optionf"
+                        className="dnn-dropdown-option"
                         onClick={[Function]}
                       >
                         First Label
@@ -5179,7 +5179,7 @@ ShallowWrapper {
                         Second Label
                       </li>,
                       <li
-                        className="dnn-dropdown-optionf"
+                        className="dnn-dropdown-option"
                         onClick={[Function]}
                       >
                         Third Label
@@ -5195,7 +5195,7 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": "First Label",
-                        "className": "dnn-dropdown-optionf",
+                        "className": "dnn-dropdown-option",
                         "onClick": [Function],
                       },
                       "ref": [Function],
@@ -5221,7 +5221,7 @@ ShallowWrapper {
                       "nodeType": "host",
                       "props": Object {
                         "children": "Third Label",
-                        "className": "dnn-dropdown-optionf",
+                        "className": "dnn-dropdown-option",
                         "onClick": [Function],
                       },
                       "ref": [Function],
