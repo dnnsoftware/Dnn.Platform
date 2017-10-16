@@ -124,7 +124,10 @@
 
         .search-item-thumbnail{
             float:left;
-            width:16%;
+            max-width: 16%;
+            img{
+                height: 105px;
+            }
         }
 
         .search-item-details {
@@ -149,7 +152,7 @@
 
             .search-item-details-right{
                 float:right;
-
+                height: 32px;
                 ul{
                     float:right;
                     transition: opacity .25s ease-in;
@@ -250,6 +253,7 @@
             width: 200px;
             cursor:pointer;
             font-weight: bold;
+            display: block;
             div {
                 float:left;
                 width: 20px;
@@ -263,6 +267,35 @@
             p{
                 padding-top:3px;
                 text-transform: uppercase;
+            }
+        }
+        .dnn-back-to-link {
+            float:left;
+            width: 200px;
+            cursor:pointer;
+            display: block;
+            margin-top: 5px;
+            > span {
+                position: relative;
+                float: left;
+            }
+            .dnn-back-to-arrow {
+                > svg {
+                    width: 16px;
+                    height: 16px;
+                    fill: @thunder;
+                }
+                float: left;
+                position: relative;
+            }
+            &:hover {
+                float: left;
+                color: @mountainMist;
+                .dnn-back-to-arrow {
+                    > svg {
+                        fill: @mountainMist;
+                    }
+                }
             }
         }
 

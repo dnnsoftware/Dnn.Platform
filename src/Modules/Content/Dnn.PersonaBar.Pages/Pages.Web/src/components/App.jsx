@@ -346,38 +346,40 @@ class App extends Component {
     }
 
     onAddPage(parentPage) {
-        this.clearEmptyStateMessage();
-        this.selectPageSettingTab(0);
+        this.clearSearch(() => {
+            this.clearEmptyStateMessage();
+            this.selectPageSettingTab(0);
 
-        const addPage = () => {
-            const { props } = this;
-            const { selectedPage } = props;
-            let runUpdateStore = null;
-            let pageList = null;
+            const addPage = () => {
+                const { props } = this;
+                const { selectedPage } = props;
+                let runUpdateStore = null;
+                let pageList = null;
 
-            this._traverse((item, list, updateStore) => {
-                item.selected = false;
-                pageList = list;
-                runUpdateStore = updateStore;
-            });
+                this._traverse((item, list, updateStore) => {
+                    item.selected = false;
+                    pageList = list;
+                    runUpdateStore = updateStore;
+                });
 
-            runUpdateStore(pageList);
+                runUpdateStore(pageList);
 
-            if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-                const onConfirm = () => this.props.getNewPage(parentPage);
-                utils.confirm(
-                    Localization.get("CancelWithoutSaving"),
-                    Localization.get("Close"),
-                    Localization.get("Cancel"),
-                    onConfirm);
+                if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+                    const onConfirm = () => this.props.getNewPage(parentPage);
+                    utils.confirm(
+                        Localization.get("CancelWithoutSaving"),
+                        Localization.get("Close"),
+                        Localization.get("Cancel"),
+                        onConfirm);
 
-            } else {
-                props.getNewPage(parentPage);
-            }
-        };
+                } else {
+                    props.getNewPage(parentPage);
+                }
+            };
 
-        const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
-        parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
+            const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
+            parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
+        });
     }
 
     onCancelSettings() {
@@ -802,12 +804,12 @@ class App extends Component {
         this.setState({ startAndEndDateDirty: true });
         const right = () => {
             const condition = newDay.getTime() < this.state.endDate.getTime();
-            condition ? this.setState({ startDate: newDay }) : this.setState({ startDate: newDay, endDate: newDay });
+            condition ? this.setState({ startDate: newDay, filtersUpdated: true }) : this.setState({ startDate: newDay, endDate: newDay, filtersUpdated: true });
         };
 
         const left = () => {
             const condition = newDay.getTime() >= this.state.startDate.getTime();
-            condition ? this.setState({ endDate: newDay }) : null;
+            condition ? this.setState({ endDate: newDay, filtersUpdated: true }) : null;
         };
         isEndDate ? left() : right();
     }
@@ -894,6 +896,31 @@ class App extends Component {
             this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
             this.setState({ inSearch: true, filtersUpdated: false });
         }
+    }
+    clearSearch(callback) {
+        let date = new Date();
+        this.setState({
+            toggleSearchMoreFlyout: false,
+            DropdownCalendarIsActive: null,
+            filtersUpdated: false,
+            inSearch: false,
+            searchTerm: "",
+            startDate: date,
+            endDate: date,
+            defaultDate: date,
+            startAndEndDateDirty: false,
+            filterByPageType: null,
+            filterByPublishStatus: null,
+            filterByWorkflow: null,
+            workflowList: [],
+            tags: "",
+            filters: [],
+            searchFields: {}
+        }, () => {
+            if (typeof callback === "function") {
+                callback();
+            }
+        });
     }
     showCancelWithoutSavingDialogAndRun(callback) {
 
@@ -1008,12 +1035,20 @@ class App extends Component {
             <PageList onPageSettings={this.onPageSettings.bind(this)} />
         );
     }
-
+    distinct(list) {
+        let distinctList = [];
+        list.map((item) => {
+            if (distinctList.indexOf(item.trim()) === -1)
+                distinctList.push(item);
+        });
+        return distinctList;
+    }
     /* eslint-disable react/no-danger */
     render_more_flyout() {
         const filterByPageTypeOptions = [
             { value: null, label: Localization.get("lblAll") },
             { value: "Normal", label: Localization.get("lblNormal") },
+            { value: "tab", label: Localization.get("Existing") },
             { value: "URL", label: Localization.get("lblUrl") },
             { value: "File", label: Localization.get("lblFile") }
         ];
@@ -1034,7 +1069,12 @@ class App extends Component {
         const filterByWorkflowOptions = [{ value: null, label: Localization.get("lblNone") }].concat(workflowList);
 
         const generateTags = (e) => {
+
             this.setState({ tags: e.target.value, filtersUpdated: true });
+        };
+        const filterTags = () => {
+            let { tags } = this.state;
+            this.setState({ tags: this.distinct(tags.split(",")).join(",") });
         };
 
         const onApplyChangesDropdownDayPicker = () => {
@@ -1043,7 +1083,7 @@ class App extends Component {
             const fullEndDate = endDate.getDate() + endDate.getMonth() + endDate.getFullYear();
 
             const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
-            condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null, filtersUpdated: true }) : this.setState({ DropdownCalendarIsActive: null });
+            condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
         };
         return (
             <div className="search-more-flyout">
@@ -1098,7 +1138,7 @@ class App extends Component {
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
-                    <textarea value={this.state.tags} onChange={(e) => generateTags(e)}></textarea>
+                    <textarea value={this.state.tags} onChange={(e) => generateTags(e)} onBlur={() => filterTags()}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{ textAlign: "right" }}>
                     <Button style={{ marginRight: "5px" }} onClick={() => this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false })}>{Localization.get("Cancel")}</Button>
@@ -1109,10 +1149,9 @@ class App extends Component {
 
     render_searchResults() {
         const { pageInContextComponents, searchList } = this.props;
-        const self = this;
         const render_card = (item) => {
             const onNameClick = (item) => {
-                this.setState({ searchTerm: "", inSearch: false, filtersUpdated: false }, () => {
+                this.clearSearch(() => {
                     this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
                 });
             };
@@ -1124,6 +1163,7 @@ class App extends Component {
                 const update = () => {
                     let tags = this.state.tags;
                     tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
+                    tags = this.distinct(tags.split(",")).join(",");
                     this.setState({ tags, filtersUpdated: true }, () => this.onSearch());
                 };
 
@@ -1160,15 +1200,15 @@ class App extends Component {
                                 <ul>
                                     <li>
                                         <p>{Localization.get("PageType")}:</p>
-                                        <p onClick={() => { this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{item.pageType}</p>
+                                        <p onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{item.pageType}</p>
                                     </li>
                                     <li>
                                         <p>{Localization.get("lblPublishStatus")}:</p>
-                                        <p onClick={() => { this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
+                                        <p onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
                                     </li>
                                     <li>
                                         <p >{Localization.get("lblPublishDate")}:</p>
-                                        <p onClick={() => { this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
+                                        <p onClick={() => { (this.state.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
                                     </li>
                                 </ul>
                             </div>
@@ -1176,21 +1216,21 @@ class App extends Component {
                                 <ul>
                                     {!utils.isPlatform() && <li>
                                         <p>{Localization.get("WorkflowTitle")}:</p>
-                                        <p onClick={() => { this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
+                                        <p onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
                                     </li>
                                     }
                                     <li>
                                         <p>{Localization.get("Tags")}:</p>
                                         <p>{
-                                            item.tags.map((tag) => {
+                                            item.tags.map((tag, count) => {
                                                 return (
                                                     <span>
                                                         <span style={{ marginLeft: "5px" }} onClick={() => addToTags(tag)}>
                                                             {tag}
                                                         </span>
-                                                        <span style={{ color: "#000" }}>
+                                                        {count < (item.tags.length - 1) && <span style={{ color: "#000" }}>
                                                             ,
-                                                        </span>
+                                                        </span>}
                                                     </span>
                                                 );
                                             })}
@@ -1256,6 +1296,7 @@ class App extends Component {
                     };
                     const right = () => {
                         let { filters, tags } = this.state;
+                        tags = this.distinct(tags.split(",")).join(",");
                         filters = filters.filter(f => f.ref != prop);
                         const findTag = prop.split("-")[1];
                         let tagList = tags.split(",");
@@ -1315,9 +1356,10 @@ class App extends Component {
                         <GridCell columnSize={100} style={{ padding: "20px" }}>
                             <div className="search-container">
                                 {inSearch ?
-                                    <div className="back-to-page" onClick={() => this.setState({ searchTerm: "", inSearch: false, filtersUpdated: false })}>
-                                        <div dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <p>{Localization.get("BackToPages")}</p>
-                                    </div> : null}
+                                    <div className="dnn-back-to-link" onClick={() => this.clearSearch()}>
+                                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <span>{Localization.get("BackToPages")}</span>
+                                    </div> : null
+                                }
 
                                 <div className="search-box">
                                     <div className="search-input">
