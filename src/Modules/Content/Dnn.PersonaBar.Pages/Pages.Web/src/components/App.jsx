@@ -332,14 +332,15 @@ class App extends Component {
 
     onSearchFieldChange(e) {
         let self = this;
+        const currentSearchTerm = this.state.searchTerm;
         this.setState({ searchTerm: e.target.value, filtersUpdated: true }, () => {
             const { searchTerm } = this.state;
             switch (true) {
                 case searchTerm.length > 3:
                     self.onSearch();
                     return;
-                case searchTerm.length === 0:
-                    self.setState({ inSearch: false, filtersUpdated: false });
+                case currentSearchTerm.length > 0 && searchTerm.length === 0:
+                    self.onSearch();
                     return;
             }
         });
@@ -850,6 +851,8 @@ class App extends Component {
                 if (this.props.selectedPageDirty) {
                     this.showCancelWithoutSavingDialogAndRun(() => {
                         this.doSearch();
+                    }, () => {
+                        this.clearSearch();
                     });
                 } else {
                     this.doSearch();
@@ -865,12 +868,7 @@ class App extends Component {
     doSearch() {
         const { selectedPage } = this.props;
         if (selectedPage) {
-            if (selectedPage.tabId === 0 && selectedPage.isCopy && selectedPage.templateTabId) {
-                this.props.onCancelPage(selectedPage.templateTabId);
-            }
-            else {
-                this.props.onCancelPage();
-            }
+            this.props.onCancelPage();
         }
         let { filtersUpdated, inSearch, searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
         if (filtersUpdated || !inSearch) {
@@ -922,18 +920,24 @@ class App extends Component {
             }
         });
     }
-    showCancelWithoutSavingDialogAndRun(callback) {
+    showCancelWithoutSavingDialogAndRun(callback, cancelCallback) {
 
         const onConfirm = () => {
             if (typeof callback === "function") {
                 callback();
             }
         };
+        const onCancel = () => {
+            if (typeof cancelCallback === "function") {
+                cancelCallback();
+            }
+        };
         utils.confirm(
             Localization.get("CancelWithoutSaving"),
             Localization.get("Close"),
             Localization.get("Cancel"),
-            onConfirm);
+            onConfirm,
+            onCancel);
     }
 
     onBreadcrumbSelect(name) {
@@ -1290,6 +1294,9 @@ class App extends Component {
                     const left = () => {
                         const update = {};
                         update[prop] = null;
+                        if (prop === "startAndEndDateDirty") {
+                            this.setState({ startDate: new Date(), endDate: new Date() });
+                        }
                         this.setState({ filtersUpdated: true }, () => {
                             this.setState(update, () => this.onSearch());
                         });
