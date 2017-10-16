@@ -188,6 +188,11 @@ const PageService = function () {
         return api.get("GetWorkflows");
     };
 
+    const getPageHierarchy = (id) => {
+        const api = getPagesApi();
+        return api.get("GetPageHierarchy", {pageId: id});
+    };
+
     return {
         getPageList,
         getChildPageList,
@@ -207,7 +212,8 @@ const PageService = function () {
         getCachedPageCount,
         clearCache,
         movePage,
-        getWorkflowsList
+        getWorkflowsList,
+        getPageHierarchy
     };
 };
 

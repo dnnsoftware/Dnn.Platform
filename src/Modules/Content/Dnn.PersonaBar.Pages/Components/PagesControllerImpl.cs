@@ -22,6 +22,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -399,13 +400,15 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
             }
             DateTime startDate;
-            if (!string.IsNullOrEmpty(publishDateStart) && DateTime.TryParse(publishDateStart, out startDate))
+            if (!string.IsNullOrEmpty(publishDateStart))
             {
+                startDate = DateTime.ParseExact(publishDateStart, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) >= startDate);
             }
             DateTime endDate;
-            if (!string.IsNullOrEmpty(publishDateEnd) && DateTime.TryParse(publishDateEnd, out endDate))
+            if (!string.IsNullOrEmpty(publishDateEnd))
             {
+                endDate = DateTime.ParseExact(publishDateEnd, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) <= endDate);
             }
             if (workflowId != -1)
