@@ -61,7 +61,7 @@ export class PersonaBarPageTreeMenu extends Component {
                         className={(item.selected) ? "list-item-highlight" : null}
                         style={{ height: "28px" }}>
                         <div className="draft-pencil">
-                            <PersonaBarSelectionArrow
+                            {(item.canViewPage || item.canAddPage || item.canAddContentToPage || item.canCopyPage) && <PersonaBarSelectionArrow
                                 CallCustomAction={this.props.CallCustomAction}
                                 onAddPage={this.props.onAddPage}
                                 onViewPage={this.props.onViewPage}
@@ -70,6 +70,7 @@ export class PersonaBarPageTreeMenu extends Component {
                                 item={item}
                                 pageInContextComponents={this.props.pageInContextComponents}
                                 _traverse={_traverse} />
+                            }
                         </div>
                     </div>
                     {item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null}
