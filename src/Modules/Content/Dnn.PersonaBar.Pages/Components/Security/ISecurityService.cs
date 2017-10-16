@@ -1,5 +1,6 @@
 ﻿using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Pages.Services.Dto;
+using DotNetNuke.Entities.Tabs;
 using Newtonsoft.Json.Linq;
 
 namespace Dnn.PersonaBar.Pages.Components.Security
@@ -9,6 +10,8 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         bool IsVisible(MenuItem menuItem);
 
         JObject GetCurrentPagePermissions();
+
+        JObject GetPagePermissions(TabInfo tab);
 
         bool IsPageAdminUser();
 

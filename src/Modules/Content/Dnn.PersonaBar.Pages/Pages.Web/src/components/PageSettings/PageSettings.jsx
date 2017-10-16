@@ -47,7 +47,7 @@ class PageSettings extends Component {
 
         if (selectedPage.tabId !== 0
             && !selectedPage.isspecial
-            && securityService.userHasPermission(permissionTypes.DELETE_PAGE)) {
+            && securityService.userHasPermission(permissionTypes.DELETE_PAGE, selectedPage)) {
             buttons.unshift(<Button
                 type="secondary"
                 onClick={onDelete.bind(this, selectedPage)} >
@@ -176,7 +176,7 @@ class PageSettings extends Component {
 
         let headers = [];
         let tabs = [];
-        if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
+        if (!isEditingExistingPage || securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage)) {
             
             headers.push(Localization.get("Details"));
             tabs.push(
@@ -197,7 +197,7 @@ class PageSettings extends Component {
                     {footer}
                 </div>);
         }
-        if (securityService.userHasPermission(permissionTypes.ADMIN_PAGE)) {
+        if (!isEditingExistingPage ||securityService.userHasPermission(permissionTypes.ADMIN_PAGE, selectedPage)) {
             headers.push(Localization.get("Permissions"));
             if (isLocalizationTabVisible) {
                 headers.push(Localization.get("Localization"));
@@ -216,7 +216,7 @@ class PageSettings extends Component {
                 </div>);
             }
         }
-        if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
+        if (!isEditingExistingPage ||securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage)) {
             headers.push(Localization.get("Advanced"));
             tabs.push(<div>
                 <Tabs

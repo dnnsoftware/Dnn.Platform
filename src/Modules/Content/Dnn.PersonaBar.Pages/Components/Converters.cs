@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using Dnn.PersonaBar.Pages.Components.Security;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
 using Dnn.PersonaBar.Themes.Components.DTO;
@@ -127,7 +128,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 ContainerSrc = tab.ContainerSrc,
                 HasChild = pageManagementController.TabHasChildren(tab),
                 ParentId = tab.ParentId,
-                IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current)
+                IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
+                PagePermissions = SecurityService.Instance.GetPagePermissions(tab)
             };
         }
         

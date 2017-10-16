@@ -6,6 +6,8 @@ import Menu from "./InContextMenu/Menu";
 import MenuItem from "./InContextMenu/MenuItem";
 import ReactDOM from "react-dom";
 import cloneDeep from 'lodash/clonedeep';
+import securityService from "../../../services/securityService";
+
 import "./styles.less";
 
 export class PersonaBarTreeInContextMenu extends Component {
@@ -93,7 +95,7 @@ export class PersonaBarTreeInContextMenu extends Component {
         item.canAddContentToPage ? visibleMenus.push({ key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick }) : null;
         item.canCopyPage ? visibleMenus.push({ key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }) : null;
 
-        if (this.props.pageInContextComponents) {
+        if (this.props.pageInContextComponents && securityService.isSuperUser()) {
             let { onItemClick } = this;
             let additionalMenus = cloneDeep(this.props.pageInContextComponents || []);
             additionalMenus && additionalMenus.map(item => {
