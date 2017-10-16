@@ -77,8 +77,11 @@ namespace DotNetNuke.Web.Api
                         token = values.FirstOrDefault();
                     }
 
+                    if (string.IsNullOrEmpty(token))
+                        return new Tuple<bool, string>(false, "RequestVerificationToken not present");
+
                     var cookieValue = GetAntiForgeryCookieValue(actionContext);
-                    AntiForgery.Instance.Validate(cookieValue, token ?? "");
+                    AntiForgery.Instance.Validate(cookieValue, token);
                 }
             }
             catch (Exception e)
