@@ -178,8 +178,11 @@ class App extends Component {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         const { selectedPage } = newProps;
-
-        if (selectedPage && this.shouldRunRecursive) {
+        if (selectedPage && selectedPage.tabId > 0 && selectedPage.canManagePage !== undefined && !selectedPage.canManagePage) {
+            this.noPermissionSelectionPageId = utils.getCurrentPageId();
+            this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
+        }
+        if (selectedPage && selectedPage.tabId > 0 && this.shouldRunRecursive) {
             this.shouldRunRecursive = false;
             this.buildTree(selectedPage.tabId);
         }
@@ -352,6 +355,7 @@ class App extends Component {
             this.selectPageSettingTab(0);
 
             const addPage = () => {
+
                 const { props } = this;
                 const { selectedPage } = props;
                 let runUpdateStore = null;
@@ -786,6 +790,7 @@ class App extends Component {
     }
 
     clearEmptyStateMessage() {
+        this.noPermissionSelectionPageId = null;
         this.setState({ emptyStateMessage: null });
     }
 
@@ -1156,7 +1161,13 @@ class App extends Component {
         const render_card = (item) => {
             const onNameClick = (item) => {
                 this.clearSearch(() => {
-                    this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
+                    if (item.canManagePage) {
+                        this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
+                    }
+                    else {
+                        this.noPermissionSelectionPageId = item.id;
+                        this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
+                    }
                 });
             };
 
