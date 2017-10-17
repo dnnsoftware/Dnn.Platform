@@ -1,0 +1,38 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update DeleteTab so that TabOrder of other Portals is not affected on Delete */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+  @TabId Int  -- ID of tab to delete; Not Null and > 0
+AS
+BEGIN
+    DECLARE @TabOrder Int
+    DECLARE @ParentId Int
+    DECLARE @ContentItemId Int
+	DECLARE @PortalId int
+    SELECT @TabOrder = TabOrder, @ParentId = ParentID, @ContentItemID = ContentItemID, @PortalId = PortalID FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+
+    -- Delete Tab --
+    DELETE FROM {databaseOwner}[{objectQualifier}Tabs] WHERE  TabID = @TabId
+
+    -- Update TabOrder of remaining Tabs --
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET TabOrder = TabOrder - 2
+        WHERE IsNull(ParentID, -1) = IsNull(@ParentId , -1) AND TabOrder > @TabOrder 
+		AND (PortalID = @PortalId OR (PortalID is Null AND @PortalId is Null))
+
+    -- Delete Content Item --
+    DELETE FROM {databaseOwner}[{objectQualifier}ContentItems] WHERE ContentItemID = @ContentItemId
+END
