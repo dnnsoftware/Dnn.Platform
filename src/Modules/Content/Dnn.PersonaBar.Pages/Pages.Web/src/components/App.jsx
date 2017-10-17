@@ -1047,8 +1047,8 @@ class App extends Component {
     distinct(list) {
         let distinctList = [];
         list.map((item) => {
-            if (distinctList.indexOf(item.trim()) === -1)
-                distinctList.push(item);
+            if (item.trim() !== "" && distinctList.indexOf(item.trim()) === -1)
+                distinctList.push(item.trim());
         });
         return distinctList;
     }
@@ -1203,8 +1203,8 @@ class App extends Component {
                             </div>}
                         <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
                             <div className="search-item-details-left">
-                                <h1 onClick={() => onNameClick(item)}>{item.name}</h1>
-                                <h2>{item.tabpath}</h2>
+                                <h1 onClick={() => onNameClick(item)}><OverflowText text={item.name} /></h1>
+                                <h2><OverflowText text={item.tabpath} /></h2>
                             </div>
                             <div className="search-item-details-right">
                                 <ul>
@@ -1414,7 +1414,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 20px 20px 20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className={(selectedPage && selectedPage.tabId === 0 || inSearch) ? "tree-container disabled" : "tree-container"}>
+                                <div className={((selectedPage && selectedPage.tabId === 0) || inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
                                             clearSelectedPage={this.props.clearSelectedPage}
@@ -1437,7 +1437,8 @@ class App extends Component {
                                             onSelection={this.onSelection.bind(this)}
                                             onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents}
-                                            NoPermissionSelectionPageId={this.noPermissionSelectionPageId} />
+                                            NoPermissionSelectionPageId={this.noPermissionSelectionPageId}
+                                            enabled={!((selectedPage && selectedPage.tabId === 0) || inSearch)} />
                                     </div>
                                 </div>
                                 <GridCell columnSize={70}>
