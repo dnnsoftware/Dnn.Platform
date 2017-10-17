@@ -103,18 +103,22 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             //check whether have conflict between tab path and portal alias.
-            if (TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
+            if (valid && TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
             {
                 errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), newTabName, newTabPath);
                 valid = false;
             }
 
-            bool modified;
-            FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
-            if (modified)
+            if (valid)
             {
-                errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
-                valid = false;
+                bool modified;
+                FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger,
+                    portalSettings, out modified);
+                if (modified)
+                {
+                    errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
+                    valid = false;
+                }
             }
 
             return valid;
