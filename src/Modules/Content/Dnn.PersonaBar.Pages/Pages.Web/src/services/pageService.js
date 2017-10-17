@@ -21,12 +21,6 @@ const PageService = function () {
         const api = getOverridablePagesApi();
         let request = page;
 
-        if (page.tabId === 0 && !securityService.isSuperUser()) {
-            request = {
-                ...page,
-                parentId: utils.getCurrentPageId()
-            };
-        }
         if (!hasChangeUrl) {
             request = {
                 ...request,
