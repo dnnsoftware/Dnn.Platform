@@ -84,6 +84,22 @@ BEGIN
 END
 GO
 
+/***** DNN-10091: Add THML5 video files (.mp4, .webm, .ogv) to allowed files list . *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%mp4%')
+	UPDATE {databaseOwner}{objectQualifier}HostSettings
+		SET SettingValue = SettingValue + ',mp4'
+		WHERE SettingName='FileExtensions'
+GO
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%webm%')
+	UPDATE {databaseOwner}{objectQualifier}HostSettings
+		SET SettingValue = SettingValue + ',webm'
+		WHERE SettingName='FileExtensions'
+GO
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%ogv%')
+	UPDATE {databaseOwner}{objectQualifier}HostSettings
+		SET SettingValue = SettingValue + ',ogv'
+		WHERE SettingName='FileExtensions'
+=======
 /***** DNN-9963: Add svg & ico Image File Type to Lists *****/
 IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='svg')
 BEGIN
@@ -500,6 +516,7 @@ BEGIN
 
         EXEC(@sql)
 END
+
 GO
 
 /* DNN-8564: Update DeleteTab so that TabOrder of other Portals is not affected on Delete */
