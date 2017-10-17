@@ -238,8 +238,6 @@ class App extends Component {
             const removeFromOldParent = () => {
                 const left = () => {
                     const { pageList } = this.props;
-                    
-                    console.log('left');
                     pageList.forEach((item, index) => {
                         if (item.id == update.tabId) {
                             cachedItem = item;
@@ -276,7 +274,6 @@ class App extends Component {
             const addToNewParent = () => {
 
                 this._traverse((item, list, updateStore) => {
-                    console.log('Add new parent is running', item.id, update.parentId);
                     if (item.id == update.parentId) {
                         
                         (cachedItem) ? cachedItem.parentId = item.id : null;
