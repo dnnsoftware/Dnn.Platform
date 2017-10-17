@@ -132,9 +132,6 @@ describe("Dnn Dropdown component", () => {
         let collapsibleLabel = deepRendering.find(".collapsible-label").first();
         collapsibleLabel.simulate("click");
 
-        const container = deepRendering.find("div.collapsible-content").children().first();
-
-        //expect(container.getDOMNode().style.height).toBe("600px");
         const json = toJson(deepRendering);
         expect(json).toMatchSnapshot();
 
