@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
   },
-  "peerDependencies": {
+  "dependencies": {
     "eslint-import-resolver-webpack": "^0.3.2",
     "eslint-plugin-filenames": "^1.0.0",
     "eslint-plugin-import": "^1.10.1",
