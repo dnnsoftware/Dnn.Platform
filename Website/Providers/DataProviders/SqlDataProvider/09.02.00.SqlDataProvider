@@ -99,7 +99,8 @@ IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE 
 	UPDATE {databaseOwner}{objectQualifier}HostSettings
 		SET SettingValue = SettingValue + ',ogv'
 		WHERE SettingName='FileExtensions'
-=======
+GO
+
 /***** DNN-9963: Add svg & ico Image File Type to Lists *****/
 IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ImageTypes' AND Value='svg')
 BEGIN
