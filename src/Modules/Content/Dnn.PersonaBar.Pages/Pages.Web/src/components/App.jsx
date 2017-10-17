@@ -469,7 +469,7 @@ class App extends Component {
                         const arr1 = item.childListItems.slice(0, itemIndex);
                         const arr2 = item.childListItems.slice(itemIndex + 1);
                         item.childListItems = [...arr1, ...arr2];
-                        props.onDeletePage(props.selectedPage, item.url);
+                        props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? item.url : null);
                         updateStore(list);
                         props.onCancelPage();
                     }
