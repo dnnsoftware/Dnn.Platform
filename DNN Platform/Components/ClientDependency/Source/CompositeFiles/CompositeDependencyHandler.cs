@@ -56,7 +56,8 @@ namespace ClientDependency.Core.CompositeFiles
 
                 // querystring format
                 fileKey = queryStrings["s"];
-                if (!string.IsNullOrEmpty(queryStrings["cdv"]) && !Int32.TryParse(queryStrings["cdv"], out version))
+                var clientDepdendencyVersion = queryStrings["cdv"].TrimEnd('/');
+                if (!string.IsNullOrEmpty(clientDepdendencyVersion) && !Int32.TryParse(clientDepdendencyVersion, out version))
                     throw new ArgumentException("Could not parse the version in the request");
                 try
                 {

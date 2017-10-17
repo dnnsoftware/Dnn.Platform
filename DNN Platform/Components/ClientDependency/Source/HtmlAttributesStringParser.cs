@@ -61,6 +61,8 @@ namespace ClientDependency.Core
 
                         //now we can add/replace the current value to the dictionary
                         destination[key] = val;
+                        key = "";
+                        val = "";
                         continue;
                     }
                     
