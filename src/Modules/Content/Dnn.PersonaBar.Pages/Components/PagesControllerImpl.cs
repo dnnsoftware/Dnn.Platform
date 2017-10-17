@@ -1229,6 +1229,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private void CopyModulesFromSourceTab(TabInfo tab, TabInfo sourceTab, IEnumerable<ModuleItem> includedModules)
         {
+            includedModules = includedModules ?? sourceTab.ChildModules.Values.Select(Converters.ConvertToModuleItem);
             foreach (var module in includedModules)
             {
                 var includedInCopy = module.IncludedInCopy ?? true;
