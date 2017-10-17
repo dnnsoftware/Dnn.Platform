@@ -7,7 +7,8 @@ module.exports = {
         "filenames"
     ],
     "settings": {
-        "import/resolver": "webpack"
+        "import/resolver": "webpack",
+        "version": "15.3"
     },
     "rules": {
         "semi": "error",
