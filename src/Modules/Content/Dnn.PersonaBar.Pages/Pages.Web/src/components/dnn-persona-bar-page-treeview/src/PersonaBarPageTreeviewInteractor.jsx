@@ -714,9 +714,17 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         );
     }
 
+    setMouseOver(isMouseOver){
+        let hasChildren = this.state.pageList.some((page)=>page.childCount>0);
+
+        this.setState({
+            isMouseInTree: (isMouseOver && hasChildren)
+        });
+    }
+
     render() {
         return (
-            <div onMouseEnter={()=>this.setState({isMouseInTree:true})} onMouseLeave={()=>this.setState({isMouseInTree:false})}>
+            <div onMouseEnter={()=>this.setMouseOver(true)} onMouseLeave={()=>this.setMouseOver(false)}>
                 <GridCell
                     columnSize={30}
                     className="dnn-persona-bar-treeview"
