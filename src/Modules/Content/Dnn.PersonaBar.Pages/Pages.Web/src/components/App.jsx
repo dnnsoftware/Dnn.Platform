@@ -496,7 +496,7 @@ class App extends Component {
             };
         };
 
-        const onDelete = (selectedPage.parentId !== 1) ? left() : right();
+        const onDelete = (selectedPage.parentId !== -1) ? left() : right();
 
         utils.confirm(
             Localization.get("DeletePageConfirm"),
