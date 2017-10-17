@@ -490,7 +490,7 @@ class App extends Component {
                 const arr1 = pageList.slice(0, itemIndex);
                 const arr2 = pageList.slice(itemIndex + 1);
                 const update = [...arr1, ...arr2];
-                this.props.onDeletePage(props.selectedPage, utils.getDefaultPageUrl());
+                this.props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? utils.getDefaultPageUrl() : null);
                 this.props.updatePageListStore(update);
                 this.props.onCancelPage();
             };
