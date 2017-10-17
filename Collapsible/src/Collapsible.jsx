@@ -11,13 +11,19 @@ const page = /Firefox/.test(navigator.userAgent) ?
 
 export default class Collapsible extends Component {
 
+    componentWillUnmount() {
+        if (this.scrollTimeout) {
+            clearTimeout(this.scrollTimeout);
+            this.scrollTimeout = null;
+        }
+    }
     scroll(height) {
         const {scrollDelay} = this.props;
         const delay = scrollDelay || scrollDelay === 0 ? scrollDelay : defaultDelay;
         if (!this.props.isOpened || !this.props.autoScroll ) {
             return;
         }
-        setTimeout(()=> {
+        this.scrollTimeout = setTimeout(()=> {
             const collapsible = findDOMNode(this.refs.collapsible);
             const collapsibleTop = collapsible.getBoundingClientRect().top;
             const collapsibleHeight = this.props.fixedHeight || height;
