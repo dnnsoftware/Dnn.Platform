@@ -224,8 +224,8 @@ class App extends Component {
     }
 
     onCreatePage() {
-        this.props.onCreatePage((page) => { 
-            if (page && page.publishStatus === "Published") {
+        this.props.onCreatePage((page) => {
+            if (page && page.canAddContentToPage || utils.getIsSuperUser()) {
                 page.selected = true;
                 if (page.parentId && page.parentId !== -1) {
                     this._traverse((item, list, updateStore) => {
