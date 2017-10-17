@@ -649,7 +649,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.setState({ pageX: e.pageX, pageY: e.pageY })} style={{ paddingBottom: "10px" }}>
+            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.props.enabled && this.setState({ pageX: e.pageX, pageY: e.pageY })} style={{ paddingBottom: "10px" }}>
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={this.state.draggedItem}
@@ -658,16 +658,16 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         listItems={this.state.pageList}
                         setEmptyPageMessage={this.props.setEmptyPageMessage}
                         getChildListItems={this.getChildListItems.bind(this)}
-                        onSelection={this.onSelection.bind(this)}
-                        onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
-                        onDragEnter={this.onDragEnter.bind(this)}
-                        onDrag={this.onDrag.bind(this)}
-                        onDragStart={this.onDragStart.bind(this)}
-                        onDragOver={this.onDragOver.bind(this)}
-                        onDragLeave={this.onDragLeave.bind(this)}
-                        onDragEnd={this.onDragEnd.bind(this)}
-                        onDrop={this.onDrop.bind(this)}
-                        onMovePage={this.onMovePage.bind(this)}
+                        onSelection={this.props.enabled && this.onSelection.bind(this)}
+                        onNoPermissionSelection={this.props.enabled && this.onNoPermissionSelection.bind(this)}
+                        onDragEnter={this.props.enabled && this.onDragEnter.bind(this)}
+                        onDrag={this.props.enabled && this.onDrag.bind(this)}
+                        onDragStart={this.props.enabled && this.onDragStart.bind(this)}
+                        onDragOver={this.props.enabled && this.onDragOver.bind(this)}
+                        onDragLeave={this.props.enabled && this.onDragLeave.bind(this)}
+                        onDragEnd={this.props.enabled && this.onDragEnd.bind(this)}
+                        onDrop={this.props.enabled && this.onDrop.bind(this)}
+                        onMovePage={this.props.enabled && this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
                         Localization={this.props.Localization}
                     />
@@ -681,11 +681,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             <span className="dnn-persona-bar-treeview-ul" >
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeMenu
-                        CallCustomAction={this.props.CallCustomAction}
-                        onAddPage={this.props.onAddPage}
-                        onViewPage={this.props.onViewPage}
-                        onViewEditPage={this.props.onViewEditPage}
-                        onDuplicatePage={this.onDuplicatePage.bind(this)}
+                        CallCustomAction={this.props.enabled && this.props.CallCustomAction}
+                        onAddPage={this.props.enabled && this.props.onAddPage}
+                        onViewPage={this.props.enabled && this.props.onViewPage}
+                        onViewEditPage={this.props.enabled && this.props.onViewEditPage}
+                        onDuplicatePage={this.props.enabled && this.onDuplicatePage.bind(this)}
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
                         pageInContextComponents={this.props.pageInContextComponents}
@@ -707,7 +707,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     render_collapseExpand() {
         return (
             <div
-                onClick={this.toggleExpandAll.bind(this)}
+                onClick={this.props.enabled && this.toggleExpandAll.bind(this)}
                 className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
                 [{this.state.isTreeviewExpanded ? Localization.get("lblCollapseAll").toUpperCase() : Localization.get("lblExpandAll").toUpperCase()}]
             </div>
@@ -777,5 +777,10 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     pageInContextComponents: PropTypes.array.isRequired,
     Localization: PropTypes.func.isRequired,
     onNoPermissionSelection: PropTypes.func.isRequired,
-    NoPermissionSelectionPageId: PropTypes.number.isRequired
+    NoPermissionSelectionPageId: PropTypes.number.isRequired,
+    enabled: PropTypes.bool
+};
+
+PersonaBarPageTreeviewInteractor.defaultProps = {
+    enabled: true
 };

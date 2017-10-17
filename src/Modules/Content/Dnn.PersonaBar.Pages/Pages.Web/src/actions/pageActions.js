@@ -31,33 +31,58 @@ const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId, callback) {
     return new Promise((resolve) => {
-        PagesService.getPage(pageId).then(response => {
+        const currentPageId = utils.getCurrentPageId();
+        if (pageId === currentPageId && !utils.getCurrentPagePermissions().managePage) {
+            let permissions = utils.getCurrentPagePermissions();
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
                 data: {
-                    page: response
+                    page: {
+                        tabId: pageId,
+                        isOpen: false,
+                        hasChild: utils.getCurrentParentHasChildren(),
+                        canManagePage: permissions.managePage,
+                        canAddContentToPage: permissions.addContentToPage,
+                        canViewPage: true,
+                        canAddPage: permissions.addPage,
+                        canAdminPage: permissions.adminPage,
+                        canCopyPage: permissions.copyPage,
+                        canDeletePage: permissions.deletePage,
+                        canNavigateToPage: true,
+                        name: utils.getCurrentPageName()
+                    }
                 },
                 selectedPageSettingTab: 0
             });
-            if (callback) {
-                callback(response);
-            }
-            resolve(response);
-        }).catch((error) => {
-            dispatch({
-                type: ActionTypes.ERROR_LOADING_PAGE,
-                data: { error }
+        }
+        else {
+            PagesService.getPage(pageId).then(response => {
+                dispatch({
+                    type: ActionTypes.LOADED_PAGE,
+                    data: {
+                        page: response
+                    },
+                    selectedPageSettingTab: 0
+                });
+                if (callback) {
+                    callback(response);
+                }
+                resolve(response);
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_LOADING_PAGE,
+                    data: { error }
+                });
+                resolve();
             });
-            resolve();
-        });
-
+        }
     });
 };
 
 const pageActions = {
     getPageList(id) {
         return (dispatch) => PagesService.getPageList(id).then(pageList => {
-         
+
             dispatch({
                 type: PageListActionTypes.SAVE,
                 data: { pageList }
@@ -75,7 +100,7 @@ const pageActions = {
     },
 
 
-    getPageHierarchy(id){
+    getPageHierarchy(id) {
         return () => PagesService.getPageHierarchy(id);
     },
 

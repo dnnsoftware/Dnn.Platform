@@ -178,8 +178,11 @@ class App extends Component {
         this.notifyErrorIfNeeded(newProps);
         window.dnn.utility.closeSocialTasks();
         const { selectedPage } = newProps;
-
-        if (selectedPage && this.shouldRunRecursive) {
+        if (selectedPage && selectedPage.tabId > 0 && selectedPage.canManagePage !== undefined && !selectedPage.canManagePage) {
+            this.noPermissionSelectionPageId = utils.getCurrentPageId();
+            this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
+        }
+        if (selectedPage && selectedPage.tabId > 0 && this.shouldRunRecursive) {
             this.shouldRunRecursive = false;
             this.buildTree(selectedPage.tabId);
         }
@@ -399,6 +402,7 @@ class App extends Component {
             this.selectPageSettingTab(0);
 
             const addPage = () => {
+
                 const { props } = this;
                 const { selectedPage } = props;
                 let runUpdateStore = null;
@@ -833,6 +837,7 @@ class App extends Component {
     }
 
     clearEmptyStateMessage() {
+        this.noPermissionSelectionPageId = null;
         this.setState({ emptyStateMessage: null });
     }
 
@@ -1089,8 +1094,8 @@ class App extends Component {
     distinct(list) {
         let distinctList = [];
         list.map((item) => {
-            if (distinctList.indexOf(item.trim()) === -1)
-                distinctList.push(item);
+            if (item.trim() !== "" && distinctList.indexOf(item.trim()) === -1)
+                distinctList.push(item.trim());
         });
         return distinctList;
     }
@@ -1203,7 +1208,13 @@ class App extends Component {
         const render_card = (item) => {
             const onNameClick = (item) => {
                 this.clearSearch(() => {
-                    this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
+                    if (item.canManagePage) {
+                        this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
+                    }
+                    else {
+                        this.noPermissionSelectionPageId = item.id;
+                        this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
+                    }
                 });
             };
 
@@ -1239,8 +1250,8 @@ class App extends Component {
                             </div>}
                         <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
                             <div className="search-item-details-left">
-                                <h1 onClick={() => onNameClick(item)}>{item.name}</h1>
-                                <h2>{item.tabpath}</h2>
+                                <h1 onClick={() => onNameClick(item)}><OverflowText text={item.name} /></h1>
+                                <h2><OverflowText text={item.tabpath} /></h2>
                             </div>
                             <div className="search-item-details-right">
                                 <ul>
@@ -1450,7 +1461,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 20px 20px 20px" }} >
                             <GridCell columnSize={100} className="page-container">
-                                <div className={(selectedPage && selectedPage.tabId === 0 || inSearch) ? "tree-container disabled" : "tree-container"}>
+                                <div className={((selectedPage && selectedPage.tabId === 0) || inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <div>
                                         <PersonaBarPageTreeviewInteractor
                                             clearSelectedPage={this.props.clearSelectedPage}
@@ -1473,7 +1484,8 @@ class App extends Component {
                                             onSelection={this.onSelection.bind(this)}
                                             onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
                                             pageInContextComponents={props.pageInContextComponents}
-                                            NoPermissionSelectionPageId={this.noPermissionSelectionPageId} />
+                                            NoPermissionSelectionPageId={this.noPermissionSelectionPageId}
+                                            enabled={!((selectedPage && selectedPage.tabId === 0) || inSearch)} />
                                     </div>
                                 </div>
                                 <GridCell columnSize={70}>
