@@ -61,7 +61,7 @@ export class PersonaBarPageTreeMenu extends Component {
                         className={(item.selected) ? "list-item-highlight" : null}
                         style={{ height: "28px" }}>
                         <div className="draft-pencil">
-                            {(item.canViewPage || item.canAddPage || item.canAddContentToPage || item.canCopyPage) && <PersonaBarSelectionArrow
+                            {item.canViewPage && <PersonaBarSelectionArrow
                                 CallCustomAction={this.props.CallCustomAction}
                                 onAddPage={this.props.onAddPage}
                                 onViewPage={this.props.onViewPage}
