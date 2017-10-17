@@ -25,6 +25,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.UI.Skins;
 
 #endregion
@@ -70,23 +71,15 @@ namespace DotNetNuke.UI.Containers
                 Visible = false;
                 if ((ModuleControl != null) && (ModuleControl.ModuleContext.Configuration != null))
                 {
-                    if (!String.IsNullOrEmpty(ModuleControl.ModuleContext.Configuration.IconFile))
+                    var iconFile = GetIconFileUrl();
+                    if (!string.IsNullOrEmpty(iconFile))
                     {
-                        if (ModuleControl.ModuleContext.Configuration.IconFile.StartsWith("~/"))
+                        if (Globals.IsAdminControl())
                         {
-                            imgIcon.ImageUrl = ModuleControl.ModuleContext.Configuration.IconFile;
+                            iconFile = $"~/DesktopModules/{ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName}/{iconFile}";
                         }
-                        else
-                        {
-                            if (Globals.IsAdminControl())
-                            {
-                                imgIcon.ImageUrl = ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName + "/" + ModuleControl.ModuleContext.Configuration.IconFile;
-                            }
-                            else
-                            {
-                                imgIcon.ImageUrl = ModuleControl.ModuleContext.PortalSettings.HomeDirectory + ModuleControl.ModuleContext.Configuration.IconFile;
-                            }
-                        }
+
+                        imgIcon.ImageUrl = iconFile;
                         imgIcon.AlternateText = ModuleControl.ModuleContext.Configuration.ModuleTitle;
                         Visible = true;
                     }
@@ -97,7 +90,33 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-		
-		#endregion
+
+        #endregion
+
+        #region Private Methods
+
+        private string GetIconFileUrl()
+        {
+            var iconFile = ModuleControl.ModuleContext.Configuration.IconFile;
+            if ((string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~")))
+            {
+                return iconFile;
+            }
+
+            IFileInfo fileInfo;
+            if (iconFile.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var fileId = Convert.ToInt32(iconFile.Substring(7));
+                fileInfo = FileManager.Instance.GetFile(fileId);
+            }
+            else
+            {
+                fileInfo = FileManager.Instance.GetFile(PortalSettings.PortalId, iconFile);
+            }
+
+            return fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconFile;
+        }
+
+        #endregion
     }
 }
