@@ -15,7 +15,7 @@
       <releaseNotes src="releasenotes.txt"/>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">05.00.00</dependency>
+        <dependency type="CoreVersion">07.00.00</dependency>
       </dependencies>
       <components>
         <component type="AuthenticationSystem">

@@ -658,28 +658,6 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        #region Obsolete
-
-        [Obsolete("Deprecated in DNN 6.0. Replaced by PreferredTimeZone.")]
-        [Browsable(false)]
-        public int TimeZone
-        {
-            get
-            {
-                Int32 retValue = Null.NullInteger;
-                string propValue = GetPropertyValue(USERPROFILE_TimeZone);
-                if (!string.IsNullOrEmpty(propValue))
-                {
-                    retValue = int.Parse(propValue);
-                }
-                return retValue;
-            }
-            set
-            {
-                SetProfileProperty(USERPROFILE_TimeZone, value.ToString(CultureInfo.InvariantCulture));
-            }
-        }
-
         public string Biography
         {
             get
@@ -691,8 +669,6 @@ namespace DotNetNuke.Entities.Users
                 SetProfileProperty(USERPROFILE_Biography, value);
             }
         }
-
-        #endregion
 
         #region Implement IIndexable
 

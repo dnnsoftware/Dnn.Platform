@@ -38,11 +38,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
     using DotNetNuke.Web.UI;
     using DotNetNuke.Web.UI.WebControls;
 
-
-
     /// <summary>
     /// Presenter for Provider Configuration
     /// </summary>
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public class ProviderConfigurationPresenter : ModulePresenter<IProviderConfigurationView, ProviderConfigurationViewModel>
     {
         /// <summary>The HTML editor node</summary>

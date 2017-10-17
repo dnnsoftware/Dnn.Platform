@@ -105,23 +105,5 @@ namespace DotNetNuke.UI.Skins
                 _SkinSrc = value;
             }
         }
-
-        [Obsolete("Replaced in DNN 5.0 by SkinController.RootSkin")]
-        public static string RootSkin
-        {
-            get
-            {
-                return "Skins";
-            }
-        }
-
-        [Obsolete("Replaced in DNN 5.0 by SkinController.RootContainer")]
-        public static string RootContainer
-        {
-            get
-            {
-                return "Containers";
-            }
-        }
     }
 }

@@ -16,7 +16,7 @@ using System.Web.UI;
 
 [assembly: AssemblyTitle("DotNetNuke.Website.Deprecated")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 

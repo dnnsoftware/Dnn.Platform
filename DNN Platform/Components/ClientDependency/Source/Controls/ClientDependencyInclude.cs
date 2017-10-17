@@ -13,9 +13,11 @@ namespace ClientDependency.Core.Controls
             Group = Constants.DefaultGroup;
             PathNameAlias = "";
             HtmlAttributes = new Dictionary<string, string>();
+            //*** DNN related change *** begin
             AddTag = true;
             Name = "";
             Version = "";
+            //*** DNN related change *** end
         }
 
         protected ClientDependencyInclude(IClientDependencyFile file)
@@ -26,10 +28,12 @@ namespace ClientDependency.Core.Controls
             DependencyType = file.DependencyType;
             Group = file.Group;
             HtmlAttributes = new Dictionary<string, string>();
+            //*** DNN related change *** begin
             AddTag = true;
             Name = "";
             Version = "";
             ForceVersion = false;
+            //*** DNN related change *** end
         }
 
         public ClientDependencyType DependencyType { get; internal set; }
@@ -38,6 +42,8 @@ namespace ClientDependency.Core.Controls
         public string PathNameAlias { get; set; }
         public int Priority { get; set; }
         public int Group { get; set; }
+
+        //*** DNN related change *** begin
         public bool AddTag { get; set; }
 
         /// <summary>Name of the script (e.g. <c>jQuery</c>, <c>Bootstrap</c>, <c>Angular</c>, etc.</summary>
@@ -48,8 +54,11 @@ namespace ClientDependency.Core.Controls
 
         /// <summary>Force this version to be used. Meant for skin designers that wish to override choices made by module developers or the framework.</summary>
         public bool ForceVersion { get; set; }
+        //*** DNN related change *** end
 
-        /// <summary>This can be empty and will use default provider</summary>
+        /// <summary>
+        /// This can be empty and will use default provider
+        /// </summary>
         public string ForceProvider { get; set; }
 
         /// <summary>
@@ -58,23 +67,30 @@ namespace ClientDependency.Core.Controls
         /// </summary>
         public bool ForceBundle { get; set; }
 
-        /// <summary>Used to store additional attributes in the HTML markup for the item</summary>
-        /// <remarks>Mostly used for CSS Media, but could be for anything</remarks>
+        /// <summary>
+        /// Used to store additional attributes in the HTML markup for the item
+        /// </summary>
+        /// <remarks>
+        /// Mostly used for CSS Media, but could be for anything
+        /// </remarks>
         public IDictionary<string, string> HtmlAttributes { get; private set; }
 
-        /// <summary>Used to set the HtmlAttributes on this class via a string which is parsed</summary>
-        /// <remarks>The syntax for the string must be: <c>key1:value1,key2:value2</c> etc.</remarks>
+        /// <summary>
+        /// Used to set the HtmlAttributes on this class via a string which is parsed
+        /// </summary>
+        /// <remarks>
+        /// The syntax for the string must be: key1:value1,key2:value2   etc...
+        /// </remarks>
         public string HtmlAttributesAsString { get; set; }
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             if (string.IsNullOrEmpty(FilePath))
-            {
                 throw new NullReferenceException("Both File and Type properties must be set");
-            }
         }
 
+        //*** DNN related change *** begin
         protected override void Render(HtmlTextWriter writer)
         {
             if (AddTag || this.Context.IsDebuggingEnabled)
@@ -84,6 +100,7 @@ namespace ClientDependency.Core.Controls
 
             base.Render(writer);
         }
+        //*** DNN related change *** end
 
         protected bool Equals(ClientDependencyInclude other)
         {

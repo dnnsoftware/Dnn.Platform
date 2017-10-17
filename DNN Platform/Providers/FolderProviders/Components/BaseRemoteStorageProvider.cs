@@ -25,7 +25,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         #region Private Members
 
         private readonly string _encryptionKey = Host.GUID;
-        private readonly PortalSecurity _portalSecurity = new PortalSecurity();
+        private readonly PortalSecurity _portalSecurity = PortalSecurity.Instance;
         #endregion
 
         #region Private Methods
@@ -156,7 +156,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             UpdateFile(folder, fileName, content);
         }
 
-        public void ClearCache(int folderMappingId)
+        public virtual void ClearCache(int folderMappingId)
         {
             var cacheKey = String.Format(ListObjectsCacheKey, folderMappingId);
             DataCache.RemoveCache(cacheKey);
@@ -225,6 +225,12 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             Requires.NotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
+
+            //the root folder should always exist.
+            if (folderPath == "")
+            {
+                return true;
+            }
 
             var list = GetObjectList(folderMapping, folderPath);
 

@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.IO;
+
 namespace DotNetNuke.Web.Client.Providers
 {
     using ClientDependency.Core;
@@ -39,7 +41,18 @@ namespace DotNetNuke.Web.Client.Providers
                 case ClientDependencyType.Css:
                     return MinifyCss ? CssHelper.MinifyCss(fileContents) : fileContents;
                 case ClientDependencyType.Javascript:
-                    return MinifyJs ? JSMin.CompressJS(fileContents) : fileContents;
+                {
+                    if (!MinifyJs)
+                        return fileContents;
+
+                    using (var ms = new MemoryStream())
+                    using (var writer = new StreamWriter(ms))
+                    {
+                        writer.Write(fileContents);
+                        writer.Flush();
+                        return JSMin.CompressJS(ms);
+                    }
+                }
                 default:
                     return fileContents;
             }

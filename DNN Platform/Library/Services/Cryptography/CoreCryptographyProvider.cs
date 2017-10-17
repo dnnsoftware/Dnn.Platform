@@ -86,64 +86,44 @@ namespace DotNetNuke.Services.Cryptography
         /// <returns></returns>
         public override string DecryptParameter(string message, string passphrase)
         {
-            if (String.IsNullOrEmpty(message))
-            {
-                return "";
-            }
             string strValue = "";
-            if (!String.IsNullOrEmpty(passphrase))
+            if (!string.IsNullOrEmpty(passphrase) && !string.IsNullOrEmpty(message))
             {
-                //convert key to 16 characters for simplicity
-                if (passphrase.Length < 16)
-                {
-                    passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
-                }
-                else
-                {
-                    passphrase = passphrase.Substring(0, 16);
-                }
-
-                //create encryption keys
-                byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
-                byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
-
-                //convert data to byte array and Base64 decode
-                var byteData = new byte[message.Length];
                 try
                 {
-                    byteData = Convert.FromBase64String(message);
-                }
-                catch //invalid length
-                {
-                    strValue = message;
-                }
-                if (String.IsNullOrEmpty(strValue))
-                {
-                    try
+                    //convert key to 16 characters for simplicity
+                    if (passphrase.Length < 16)
                     {
-                        //decrypt
-                        using (var objDes = new DESCryptoServiceProvider())
-                        using (var objMemoryStream = new MemoryStream())
-                        using (var objCryptoStream = new CryptoStream(objMemoryStream,
-                            objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
-                        {
-                            objCryptoStream.Write(byteData, 0, byteData.Length);
-                            objCryptoStream.FlushFinalBlock();
+                        passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
+                    }
+                    else
+                    {
+                        passphrase = passphrase.Substring(0, 16);
+                    }
 
-                            //convert to string
-                            Encoding objEncoding = Encoding.UTF8;
-                            strValue = objEncoding.GetString(objMemoryStream.ToArray());
-                        }
-                    }
-                    catch //decryption error
+                    //create encryption keys
+                    byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
+                    byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
+                    byte[] byteData = Convert.FromBase64String(message);
+
+                    //decrypt
+                    using (var objDes = new DESCryptoServiceProvider())
+                    using (var objMemoryStream = new MemoryStream())
+                    using (var objCryptoStream = new CryptoStream(objMemoryStream,
+                        objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
                     {
-                        strValue = "";
+                        objCryptoStream.Write(byteData, 0, byteData.Length);
+                        objCryptoStream.FlushFinalBlock();
+
+                        //convert to string
+                        Encoding objEncoding = Encoding.UTF8;
+                        strValue = objEncoding.GetString(objMemoryStream.ToArray());
                     }
                 }
-            }
-            else
-            {
-                strValue = message;
+                catch //decryption error
+                {
+                    strValue = "";
+                }
             }
             return strValue;
         }

@@ -490,7 +490,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal virtual string InputFilter(string input)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
         }
 

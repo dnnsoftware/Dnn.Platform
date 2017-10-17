@@ -251,7 +251,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// <summary>
         /// The Page_Load runs when the page loads
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>

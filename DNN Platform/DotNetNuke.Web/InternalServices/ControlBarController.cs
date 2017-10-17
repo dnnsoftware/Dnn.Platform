@@ -457,7 +457,6 @@ namespace DotNetNuke.Web.InternalServices
             ToggleUserMode(userMode.UserMode);
             var response = Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
-
             if (userMode.UserMode.Equals("VIEW", StringComparison.InvariantCultureIgnoreCase))
             {
                 var cookie = Request.Headers.GetCookies("StayInEditMode").FirstOrDefault();

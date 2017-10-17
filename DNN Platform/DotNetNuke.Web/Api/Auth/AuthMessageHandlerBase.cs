@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
@@ -96,11 +97,14 @@ namespace DotNetNuke.Web.Api.Auth
 
         protected static bool IsXmlHttpRequest(HttpRequestMessage request)
         {
-            const string requestedWithHeader = "X-REQUESTED-WITH";
-            if (!request.Headers.Contains(requestedWithHeader)) return false;
-            var header = request.Headers.GetValues(requestedWithHeader).FirstOrDefault();
-            return !string.IsNullOrEmpty(header) &&
-                   header.Equals("XmlHttpRequest", StringComparison.InvariantCultureIgnoreCase);
+            string value = null;
+            IEnumerable<string> values;
+            if (request != null && request.Headers.TryGetValues("X-REQUESTED-WITH", out values))
+            {
+                value = values.FirstOrDefault();
+            }
+            return !string.IsNullOrEmpty(value) &&
+                   value.Equals("XmlHttpRequest", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>

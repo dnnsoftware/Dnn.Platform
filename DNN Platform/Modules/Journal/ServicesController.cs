@@ -76,7 +76,12 @@ namespace DotNetNuke.Modules.Journal
 
         private static bool IsImageFile(string relativePath)
         {
-	        if (relativePath.Contains("?"))
+            if (relativePath == null)
+            {
+                return false;
+            }
+
+            if (relativePath.Contains("?"))
 	        {
 		        relativePath = relativePath.Substring(0,
 			        relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
@@ -86,6 +91,11 @@ namespace DotNetNuke.Modules.Journal
             var extension = relativePath.Substring(relativePath.LastIndexOf(".",
             StringComparison.Ordinal) + 1).ToLower();
             return AcceptedFileExtensions.Contains(extension);
+        }
+
+        private static bool IsAllowedLink(string url)
+        {
+            return !string.IsNullOrEmpty(url) && !url.Contains("//");
         }
 
         [HttpPost]
@@ -114,14 +124,31 @@ namespace DotNetNuke.Modules.Journal
                     postData.ProfileId = UserInfo.UserID;
                 }
 
+                if (postData.ProfileId != UserInfo.UserID)
+                {
+                    var profileUser = UserController.Instance.GetUser(PortalSettings.PortalId, postData.ProfileId);
+                    if (profileUser == null || (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !Utilities.AreFriends(profileUser, UserInfo)))
+                    {
+                        throw new ArgumentException("you have no permission to post journal on current profile page.");
+                    }
+                }
+
                 if (postData.GroupId > 0)
                 {
                     postData.ProfileId = -1;
 
                     RoleInfo roleInfo = RoleController.Instance.GetRoleById(ActiveModule.OwnerPortalID, postData.GroupId);
-                    if (roleInfo != null && !roleInfo.IsPublic)
+                    if (roleInfo != null)
                     {
-                        postData.SecuritySet = "R";
+                        if (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !UserInfo.IsInRole(roleInfo.RoleName))
+                        {
+                            throw new ArgumentException("you have no permission to post journal on current group.");
+                        }
+
+                        if (!roleInfo.IsPublic)
+                        {
+                            postData.SecuritySet = "R";
+                        }
                     }
                 }
 
@@ -139,7 +166,7 @@ namespace DotNetNuke.Modules.Journal
                 ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));
                 ji.Summary = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Summary));
 
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
 
                 ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoScripting);
                 ji.Title = Utilities.RemoveHTML(ji.Title);
@@ -165,17 +192,33 @@ namespace DotNetNuke.Modules.Journal
                     ji.ItemData = postData.ItemData.FromJson<ItemData>();
                     var originalImageUrl = ji.ItemData.ImageUrl;
                     if (!IsImageFile(ji.ItemData.ImageUrl))
+                    {
                         ji.ItemData.ImageUrl = string.Empty;
+                    }
+
                     ji.ItemData.Description = HttpUtility.UrlDecode(ji.ItemData.Description);
+
+                    if (!IsAllowedLink(ji.ItemData.Url))
+                    {
+                        ji.ItemData.Url = string.Empty;
+                    }
 
                     if (!string.IsNullOrEmpty(ji.ItemData.Url) && ji.ItemData.Url.StartsWith("fileid="))
                     {
                         var fileId = Convert.ToInt32(ji.ItemData.Url.Replace("fileid=", string.Empty).Trim());
                         var file = FileManager.Instance.GetFile(fileId);
+
+                        if (!IsCurrentUserFile(file))
+                        {
+                            throw new ArgumentException("you have no permission to attach files not belongs to you.");
+                        }
+
                         ji.ItemData.Title = file.FileName;
-						ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
-                        
-                        if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) && originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") && AcceptedFileExtensions.Contains(file.Extension.ToLower()))
+                        ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
+
+                        if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) &&
+                            originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") &&
+                            AcceptedFileExtensions.Contains(file.Extension.ToLower()))
                         {
                             ji.ItemData.ImageUrl = originalImageUrl;
                         }
@@ -627,6 +670,41 @@ namespace DotNetNuke.Modules.Journal
 
                 Services.Social.Notifications.NotificationsController.Instance.SendNotification(notification, PortalSettings.PortalId, null, new List<UserInfo> { mentionUser });
             }
+        }
+
+        private bool IsCurrentUserFile(IFileInfo file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            var userFolders = GetUserFolders();
+
+            return userFolders.Any(f => file.FolderId == f.FolderID);
+        }
+
+        private IList<IFolderInfo> GetUserFolders()
+        {
+            var folders = new List<IFolderInfo>();
+
+            var userFolder = FolderManager.Instance.GetUserFolder(UserInfo);
+            folders.Add(userFolder);
+            folders.AddRange(GetSubFolders(userFolder));
+
+            return folders;
+        }
+
+        private IList<IFolderInfo> GetSubFolders(IFolderInfo parentFolder)
+        {
+            var folders = new List<IFolderInfo>();
+            foreach (var folder in FolderManager.Instance.GetFolders(parentFolder))
+            {
+                folders.Add(folder);
+                folders.AddRange(GetSubFolders(folder));
+            }
+
+            return folders;
         }
 
         #endregion

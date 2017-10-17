@@ -24,7 +24,9 @@ namespace ClientDependency.Core
                     compressedStream = new GZipStream(ms, CompressionMode.Compress, true);
                 }
 
-                if (type != CompressionType.none && compressedStream != null)
+                //*** DNN related change *** begin
+                if (compressedStream != null)
+                //*** DNN related change *** end
                 {
                     //write the bytes to the compressed stream
                     compressedStream.Write(fileBytes, 0, fileBytes.Length);
@@ -54,7 +56,9 @@ namespace ClientDependency.Core
                     decompressedStream = new GZipStream(ms, CompressionMode.Decompress, true);
                 }
 
-                if (type != CompressionType.none && decompressedStream != null)
+                //*** DNN related change *** begin
+                if (decompressedStream != null)
+                //*** DNN related change *** end
                 {
                     //write the bytes to the compressed stream
                     decompressedStream.Write(compressedBytes, 0, compressedBytes.Length);

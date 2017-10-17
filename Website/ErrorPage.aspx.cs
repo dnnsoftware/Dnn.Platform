@@ -84,45 +84,6 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        [Obsolete("Function obsoleted in 5.6.1 as no longer used in core - version identification can be useful to potential hackers if used incorrectly")]
-        public string ExtractOSVersion()
-        {
-            //default name to OSVersion in case OS not recognised
-            string commonName = Environment.OSVersion.ToString();
-            switch (Environment.OSVersion.Version.Major)
-            {
-                case 5:
-                    switch (Environment.OSVersion.Version.Minor)
-                    {
-                        case 0:
-                            commonName = "Windows 2000";
-                            break;
-                        case 1:
-                            commonName = "Windows XP";
-                            break;
-                        case 2:
-                            commonName = "Windows Server 2003";
-                            break;
-                    }
-                    break;
-                case 6:
-                    switch (Environment.OSVersion.Version.Minor)
-                    {
-                        case 0:
-                            commonName = "Windows Vista";
-                            break;
-                        case 1:
-                            commonName = "Windows Server 2008";
-                            break;
-                        case 2:
-                            commonName = "Windows 7";
-                            break;
-                    }
-                    break;
-            }
-            return commonName;
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -146,7 +107,7 @@ namespace DotNetNuke.Services.Exceptions
             headerImage.Visible = !string.IsNullOrEmpty(headerImage.ImageUrl);
 
             string localizedMessage;
-            var security = new PortalSecurity();
+            var security = PortalSecurity.Instance;
             var status = security.InputFilter(Request.QueryString["status"],
                                                     PortalSecurity.FilterFlag.NoScripting |
                                                     PortalSecurity.FilterFlag.NoMarkup);

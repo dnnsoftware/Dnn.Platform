@@ -6,7 +6,7 @@
     [>NODE-TOP]
         <li class="[?NODE]dropdown [/?][?SELECTED]active[/?]">
         [?ENABLED]
-            <a href="[=URL]"><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
+            <a href="[=URL]" [?TARGET]target="[=TARGET]"[/?]><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
         [?ELSE]
             <a href="#"><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
         [/?]
@@ -20,7 +20,7 @@
 	[>NODE]
         <li class="[?NODE]dropdown [/?][?SELECTED]active[/?]">
         [?ENABLED]
-            <a href="[=URL]"><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
+            <a href="[=URL]" [?TARGET]target="[=TARGET]"[/?]><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
         [?ELSE]
             <a href="#"><span>[=TEXT]</span> [?NODE]<span class="caret"></span>[/?]</a>
         [/?]

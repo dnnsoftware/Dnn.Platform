@@ -125,27 +125,40 @@ namespace ClientDependency.Core.FileRegistration.Providers
                     strClientLoader.AppendLine(";");
 				}
 			}
-			else
-			{
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
-                    ClientDependencyType.Javascript, 
-                    http,
-                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
-
-                foreach (var s in comp)
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in asArray)
                 {
-                    strClientLoader.Append("CDLazyLoader");
-                    strClientLoader.AppendFormat(".AddJs('{0}')", s);
-                    strClientLoader.AppendLine(";");
-                }   
-			}
+                    RenderJsComposites(http, htmlAttributes, strClientLoader, Enumerable.Repeat(dependency, 1));
+                }
+            }
+            else
+			{
+                RenderJsComposites(http, htmlAttributes, strClientLoader, asArray);
+            }
 
-            sb.Append(string.Format(HtmlEmbedContants.ScriptEmbedWithCode, strClientLoader.ToString()));
+            sb.Append(string.Format(HtmlEmbedContants.ScriptEmbedWithCode, strClientLoader));
 
             return sb.ToString();
         }
 
+        protected override void RenderJsComposites(HttpContextBase http, IDictionary<string, string> htmlAttributes, StringBuilder sb, IEnumerable<IClientDependencyFile> dependencies)
+        {
+            var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    dependencies,
+                    ClientDependencyType.Javascript, 
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
+            foreach (var s in comp)
+            {
+                sb.Append("CDLazyLoader");
+                sb.AppendFormat(".AddJs('{0}')", s);
+                sb.AppendLine(";");
+            }
+        }
+
+        
         /// <summary>
         /// Renders many Css dependencies. 
         /// </summary>
@@ -172,25 +185,37 @@ namespace ClientDependency.Core.FileRegistration.Providers
                     strClientLoader.AppendLine(";");
                 }
             }
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in asArray)
+                {
+                    RenderCssComposites(http, htmlAttributes, strClientLoader, Enumerable.Repeat(dependency, 1));
+                }
+            }
             else
             {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
-                    ClientDependencyType.Css, 
+                RenderCssComposites(http, htmlAttributes, strClientLoader, asArray);
+            }
+
+            sb.Append(string.Format(HtmlEmbedContants.ScriptEmbedWithCode, strClientLoader));
+
+            return sb.ToString();
+        }
+
+        protected override void RenderCssComposites(HttpContextBase http, IDictionary<string, string> htmlAttributes, StringBuilder sb, IEnumerable<IClientDependencyFile> dependencies)
+        {
+            var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    dependencies,
+                    ClientDependencyType.Css,
                     http,
                     ClientDependencySettings.Instance.CompositeFileHandlerPath);
 
-                foreach (var s in comp)
-                {
-                    strClientLoader.Append("CDLazyLoader");
-                    strClientLoader.AppendFormat(".AddCss('{0}')", s);
-                    strClientLoader.AppendLine(";");
-                }
+            foreach (var s in comp)
+            {
+                sb.Append("CDLazyLoader");
+                sb.AppendFormat(".AddCss('{0}')", s);
+                sb.AppendLine(";");
             }
-
-            sb.Append(string.Format(HtmlEmbedContants.ScriptEmbedWithCode, strClientLoader.ToString()));
-
-            return sb.ToString();
         }
 
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)

@@ -8,7 +8,6 @@
 using System;
 using System.Web;
 using DotNetNuke.Providers.FolderProviders.Components;
-using Microsoft.WindowsAzure.StorageClient;
 
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {

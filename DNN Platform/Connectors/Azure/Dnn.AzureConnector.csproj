@@ -59,8 +59,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.WindowsAzure.StorageClient">
-      <HintPath>..\..\Components\WindowsAzure\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Components\WindowsAzure\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\..\..\Packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>

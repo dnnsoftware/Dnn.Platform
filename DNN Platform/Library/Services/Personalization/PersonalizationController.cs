@@ -23,10 +23,12 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Text;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Security;
 
 #endregion
@@ -67,6 +69,16 @@ namespace DotNetNuke.Services.Personalization
                 if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
                 {
                     profileData = DecryptData(context.Request.Cookies["DNNPersonalization"].Value);
+
+                    if (string.IsNullOrEmpty(profileData))
+                    {
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", string.Empty)
+                        {
+                            Expires = DateTime.Now.AddDays(-1),
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
+                        context.Response.Cookies.Add(personalizationCookie);
+                    }
                 }
             }
             personalization.Profile = string.IsNullOrEmpty(profileData)
@@ -149,14 +161,21 @@ namespace DotNetNuke.Services.Personalization
             }
         }
 
-        private string EncryptData(string profileData)
+        private static string EncryptData(string profileData)
         {
-            return new PortalSecurity().Encrypt(Config.GetDecryptionkey(), profileData);
+            return PortalSecurity.Instance.Encrypt(GetDecryptionkey(), profileData);
         }
 
-        private string DecryptData(string profileData)
+        private static string DecryptData(string profileData)
         {
-            return new PortalSecurity().Decrypt(Config.GetDecryptionkey(), profileData);
+            return PortalSecurity.Instance.Decrypt(GetDecryptionkey(), profileData);
+        }
+
+        private static string GetDecryptionkey()
+        {
+            var machineKey = Config.GetDecryptionkey();
+            var hostGuid = Host.GUID.Replace("-", string.Empty);
+            return (machineKey ?? "") + hostGuid;
         }
     }
 }

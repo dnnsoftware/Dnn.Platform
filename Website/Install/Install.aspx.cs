@@ -254,6 +254,11 @@ namespace DotNetNuke.Services.Install
         { 
             try
             {
+                if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
+                {
+                    Response.Redirect(Request.RawUrl, true);
+                }
+
                 var databaseVersion = DataProvider.Instance().GetVersion();
 
                 //Start Timer
@@ -523,6 +528,12 @@ namespace DotNetNuke.Services.Install
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
+            {
+                Response.Redirect(Request.RawUrl, true);
+            }
+
             //if previous config deleted create new empty one
             string installConfig = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config");
             if (!File.Exists(installConfig))

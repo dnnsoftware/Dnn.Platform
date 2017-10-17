@@ -177,18 +177,7 @@ namespace DotNetNuke.Data
                     connectionString = builder.ConnectionString;
                 }
 
-                SqlConnection connection = null;
-                try
-                {
-                    connection = new SqlConnection(connectionString);
-                    connection.Open();
-                    return SqlHelper.ExecuteReader(connection, CommandType.Text, sql);
-                }
-                catch (Exception)
-                {
-                    connection?.Dispose();
-                    throw;
-                }
+                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
             catch (SqlException sqlException)
             {

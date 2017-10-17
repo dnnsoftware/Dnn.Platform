@@ -50,6 +50,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         internal const string ConstSortColumnFrom = "From";
         internal const string ConstSortColumnSubject = "Subject";
         internal const bool ConstAscending = true;
+        internal const double DefaultMessagingThrottlingInterval = 0.5; //default MessagingThrottlingInterval set to 30 seconds.
 
         #endregion
 
@@ -198,7 +199,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
             var waitTime = 0;
             // MessagingThrottlingInterval contains the number of MINUTES to wait before sending the next message
-            var interval = GetPortalSettingAsInteger("MessagingThrottlingInterval", sender.PortalID, Null.NullInteger) * 60;
+            var interval = GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingInterval) * 60;
             if (interval > 0 && !IsAdminOrHost(sender))
             {
                 var lastSentMessage = GetLastSentMessage(sender);
@@ -440,6 +441,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return PortalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
         }
 
+        internal virtual double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
+        {
+            return PortalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
+        }
+
         internal virtual string GetPortalSetting(string settingName, int portalId, string defaultValue)
         {
             return PortalController.GetPortalSetting(settingName, portalId, defaultValue);
@@ -452,7 +458,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual string InputFilter(string input)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
         }
 

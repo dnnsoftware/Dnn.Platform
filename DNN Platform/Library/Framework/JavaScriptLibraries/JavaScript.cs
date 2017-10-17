@@ -98,6 +98,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             //handle case where script has no javascript library
             switch (jsname)
             {
+                case CommonJs.jQuery:
+                    RequestRegistration(CommonJs.jQueryMigrate);
+                    break;
                 case CommonJs.DnnPlugins:
                     RequestRegistration(CommonJs.jQueryUI);
                     RequestRegistration(CommonJs.HoverIntent);

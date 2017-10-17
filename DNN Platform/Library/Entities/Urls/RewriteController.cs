@@ -1139,39 +1139,25 @@ namespace DotNetNuke.Entities.Urls
                 {
                     curAliasPathDepth += 1;
                     //gone too deep 
-                    if ((curAliasPathDepth > maxAliasPathDepth) & (reWritten == false))
+                    if ((curAliasPathDepth > maxAliasPathDepth) && !reWritten)
                     {
                         // no hope of finding it then 
-                        if (triedFixingSubdomain == false && false)
+                        if (!Globals.ServicesFrameworkRegex.IsMatch(url) && result.RedirectAllowed)
                         {
-                            //resplit the new url 
-                            splitUrl = newUrl.Split(Convert.ToChar("/"));
-                            curAliasPathDepth = minAliasPathDepth;
-                            if (result.RedirectAllowed)
+                            //nothing left to try 
+                            result.Action = (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
+                                    ? ActionType.Output404
+                                    : ActionType.Redirect301;
+                            if (result.Action == ActionType.Redirect301)
                             {
-                                result.Action = ActionType.Redirect301;
-                            }
-                            //this should be redirected 
-                            triedFixingSubdomain = true;
-                        }
-                        else
-                        {
-                            if (!Globals.ServicesFrameworkRegex.IsMatch(url) && result.RedirectAllowed)
-                            {
-                                //nothing left to try 
-                                result.Action = (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
-                                        ? ActionType.Output404
-                                        : ActionType.Redirect301;
-                                if (result.Action == ActionType.Redirect301)
-                                {
-                                    result.Reason = RedirectReason.Deleted_Page;
-                                    result.DoRewrite = true;
-                                    result.FinalUrl = Globals.AddHTTP(result.PortalAlias.HTTPAlias + "/");
-                                    reWritten = true;
-                                }
-                                break;
+                                result.Reason = RedirectReason.Deleted_Page;
+                                result.DoRewrite = true;
+                                result.FinalUrl = Globals.AddHTTP(result.PortalAlias.HTTPAlias + "/");
+                                reWritten = true;
                             }
                         }
+
+                        break;
                     }
                 }
             }

@@ -215,7 +215,7 @@ namespace DotNetNuke.Security.Membership
 
         private UserCreateStatus CreateDNNUser(ref UserInfo user)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             string userName = objSecurity.InputFilter(user.Username,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -270,7 +270,7 @@ namespace DotNetNuke.Security.Membership
 
         private static UserCreateStatus CreateMemberhipUser(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string userName = portalSecurity.InputFilter(user.Username,
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -623,7 +623,7 @@ namespace DotNetNuke.Security.Membership
 
         private static void UpdateUserMembership(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string email = portalSecurity.InputFilter(user.Email,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -800,7 +800,7 @@ namespace DotNetNuke.Security.Membership
 
         private UserCreateStatus ValidateForProfanity(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             var createStatus = UserCreateStatus.AddUser;
 
             Hashtable settings = UserController.GetUserSettings(user.PortalID);
@@ -1640,7 +1640,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void UpdateUser(UserInfo user)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             string firstName = objSecurity.InputFilter(user.FirstName,
                                                        PortalSecurity.FilterFlag.NoScripting |
                                                        PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -1661,7 +1661,16 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            
+
+            if (!firstName.Equals(user.FirstName))
+            {
+                user.FirstName = firstName;
+            }
+
+            if (!lastName.Equals(user.LastName))
+            {
+                user.LastName = lastName;
+            }
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
@@ -1799,7 +1808,7 @@ namespace DotNetNuke.Security.Membership
                     }
                     else
                     {
-                        var ps = new PortalSecurity();
+                        var ps = PortalSecurity.Instance;
                         if (verificationCode == ps.Encrypt(Config.GetDecryptionkey(), portalId + "-" + user.UserID))
                         {
                             UserController.ApproveUser(user);
@@ -1858,57 +1867,5 @@ namespace DotNetNuke.Security.Membership
             }
             return arrUsers;
         }
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUnAuthorizedUsers(int portalId, bool isHydrated)
-        {
-            return GetUnAuthorizedUsers(portalId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUser(int portalId, int userId, bool isHydrated)
-        {
-            return GetUser(portalId, userId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUserByUserName(int portalId, string username, bool isHydrated)
-        {
-            return GetUserByUserName(portalId, username);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsers(int portalId, bool isHydrated, int pageIndex, int pageSize,
-                                           ref int totalRecords)
-        {
-            return GetUsers(portalId, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByEmail(int portalId, bool isHydrated, string emailToMatch, int pageIndex,
-                                                  int pageSize, ref int totalRecords)
-        {
-            return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByUserName(int portalId, bool isHydrated, string userNameToMatch,
-                                                     int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByProfileProperty(int portalId, bool isHydrated, string propertyName,
-                                                            string propertyValue, int pageIndex, int pageSize,
-                                                            ref int totalRecords)
-        {
-            return GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize,
-                                             ref totalRecords);
-        }
-
-        #endregion
     }
 }

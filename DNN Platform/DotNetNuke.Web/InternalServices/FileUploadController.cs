@@ -343,17 +343,16 @@ namespace DotNetNuke.Web.InternalServices
             return null;
         }
 
-        private static readonly List<string> ImageExtensions = new List<string> { "JPG", "JPE", "BMP", "GIF", "PNG", "JPEG", "ICO" };
+        private static readonly List<string> ImageExtensions = Globals.glbImageFileTypes.Split(',').ToList();
 
         private static bool IsImageExtension(string extension)
         {
-            return ImageExtensions.Contains(extension.ToUpper());
+            return ImageExtensions.Any(e => e.Equals(extension, StringComparison.OrdinalIgnoreCase));
         }
 
         private static bool IsImage(string fileName)
         {
-            var name = fileName.ToUpper();
-            return ImageExtensions.Any(extension => name.EndsWith("." + extension));
+            return ImageExtensions.Any(extension => fileName.EndsWith("." + extension, StringComparison.OrdinalIgnoreCase));
         }
 
         public class UploadByUrlDto

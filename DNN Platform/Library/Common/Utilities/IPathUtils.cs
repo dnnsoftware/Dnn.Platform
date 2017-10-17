@@ -56,14 +56,6 @@ namespace DotNetNuke.Common.Utilities
         string GetRootFolderMapPath(int portalID);
 
         /// <summary>
-        /// Gets the path to a user folder.
-        /// </summary>
-        /// <param name="user">The user info.</param>
-        /// <returns>The path to a user folder.</returns>
-        [Obsolete("Deprecated in 6.2.0.  Replaced by FolderManager.Instance.GetUserFolder(UserInfo)")]
-        string GetUserFolderPath(UserInfo user);
-
-        /// <summary>
         /// Get elements from the user folder path.
         /// </summary>
         /// <param name="userID">The user identifier.</param>

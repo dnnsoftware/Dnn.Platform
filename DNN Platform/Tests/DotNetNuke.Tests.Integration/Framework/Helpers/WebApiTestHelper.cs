@@ -80,30 +80,51 @@ namespace DotNetNuke.Tests.Integration.Framework.Helpers
             try
             {
                 return CryptoConfig.AllowOnlyFipsAlgorithms
-                    ? GenerateSha256Hash(str)
-                    : GenerateMd5(str);
+                    ? str.GenerateSha1Hash()
+                    : str.GenerateMd5();
             }
             catch (Exception)
             {
-                return GenerateMd5(str);
+                return str.GenerateMd5();
             }
         }
 
-        private static string GenerateSha256Hash(string str)
+        public static string GenerateSha1Hash(this string str)
         {
-            using (var hasher = new SHA256CryptoServiceProvider())
-            {
-                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
-                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
-            }
+            return str.GenerateHash("SHA1");
         }
-        
-        private static string GenerateMd5(string str)
+
+        /// <summary>Generate a MD5 hash of a string
+        /// </summary>
+        public static string GenerateMd5(this string str)
         {
-            using (var hasher = new MD5CryptoServiceProvider())
+            return str.GenerateHash("MD5");
+        }
+
+        private static string GenerateHash(this string str, string hashType)
+        {
+            var hasher = HashAlgorithm.Create(hashType);
+            if (hasher == null) throw new InvalidOperationException("No hashing type found by name " + hashType);
+            using (hasher)
             {
-                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
-                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
+                //convert our string into byte array
+                var byteArray = Encoding.UTF8.GetBytes(str);
+
+                //get the hashed values created by our SHA1CryptoServiceProvider
+                var hashedByteArray = hasher.ComputeHash(byteArray);
+
+                //create a StringBuilder object
+                var stringBuilder = new StringBuilder();
+
+                //loop to each each byte
+                foreach (var b in hashedByteArray)
+                {
+                    //append it to our StringBuilder
+                    stringBuilder.Append(b.ToString("x2").ToLower());
+                }
+
+                //return the hashed value
+                return stringBuilder.ToString();
             }
         }
 
@@ -210,7 +231,8 @@ namespace DotNetNuke.Tests.Integration.Framework.Helpers
         public static IWebApiConnector ClearHostCache()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
-            connector.PostJson("API/internalservices/controlbar/ClearHostCache", null);
+            //connector.PostJson("API/internalservices/controlbar/ClearHostCache", null);
+            connector.PostJson("API/PersonaBar/Server/ClearCache", null);
             return connector;
         }
 

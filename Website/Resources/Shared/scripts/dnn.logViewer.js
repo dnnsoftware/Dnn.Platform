@@ -4,7 +4,7 @@
 
     //handle window unload event, when window in unload process, then don't remove the cookie.
     var windowUnloaded = false;
-    $(window).bind('beforeunload', function () {
+    $(window).on('beforeunload', function () {
         windowUnloaded = true;
     });
     

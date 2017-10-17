@@ -69,8 +69,17 @@ namespace DotNetNuke.Web.Api
             {
                 if (!BypassTokenCheck())
                 {
-                    var headers = actionContext.Request.Headers;
-                    var token = headers.GetValues("RequestVerificationToken").FirstOrDefault();
+                    string token = null;
+                    IEnumerable<string> values;
+                    if (actionContext?.Request != null &&
+                        actionContext.Request.Headers.TryGetValues("RequestVerificationToken", out values))
+                    {
+                        token = values.FirstOrDefault();
+                    }
+
+                    if (string.IsNullOrEmpty(token))
+                        return new Tuple<bool, string>(false, "RequestVerificationToken not present");
+
                     var cookieValue = GetAntiForgeryCookieValue(actionContext);
                     AntiForgery.Instance.Validate(cookieValue, token);
                 }
@@ -85,15 +94,18 @@ namespace DotNetNuke.Web.Api
 
         protected static string GetAntiForgeryCookieValue(HttpActionContext actionContext)
         {
-            foreach (var cookieValue in actionContext.Request.Headers.GetValues("Cookie"))
+            IEnumerable<string> cookies;
+            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out cookies))
             {
-                var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
-
-                if (nameIndex > -1)
+                foreach (var cookieValue in cookies)
                 {
-                    var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
-                    var valueEndIndex = cookieValue.Substring(valueIndex).IndexOf(';');
-                    return valueEndIndex > -1 ? cookieValue.Substring(valueIndex, valueEndIndex) : cookieValue.Substring(valueIndex);
+                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
+                    if (nameIndex > -1)
+                    {
+                        var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
+                        var valueEndIndex = cookieValue.Substring(valueIndex).IndexOf(';');
+                        return valueEndIndex > -1 ? cookieValue.Substring(valueIndex, valueEndIndex) : cookieValue.Substring(valueIndex);
+                    }
                 }
             }
 

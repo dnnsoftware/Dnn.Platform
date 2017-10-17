@@ -18,9 +18,11 @@ namespace ClientDependency.Core
 		    HtmlAttributes = new Dictionary<string, string>();
 		    Priority = Constants.DefaultPriority;
 		    Group = Constants.DefaultGroup;
+            //*** DNN related change *** begin
             Name = "";
             Version = "";
             ForceVersion = false;
+            //*** DNN related change *** end
         }
 
         #region IClientDependencyFile Members
@@ -44,6 +46,7 @@ namespace ClientDependency.Core
         /// </remarks>
         public IDictionary<string, string> HtmlAttributes { get; private set; }
 
+        //*** DNN related change *** begin
         /// <summary>
         /// Name of a framework such as jQuery, Bootstrap, Angular, etc.
         /// </summary>
@@ -60,6 +63,7 @@ namespace ClientDependency.Core
         /// choices made by module developers or the framework.
         /// </summary>
         public bool ForceVersion { get; set; }
+        //*** DNN related change *** end
 
         #endregion
 

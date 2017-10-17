@@ -74,7 +74,7 @@
             var data = nodeContext.data || { name: "", selectable: false };
             var textNode = $("<a>" + $.htmlEncode(data.name) + "</a>").addClass(this.options.textCss);
             if (data.selectable) {
-                textNode.prop("href", "javascript:void(0);").bind("click", this._onNodeTextClickHandler);
+                textNode.prop("href", "javascript:void(0);").on("click", this._onNodeTextClickHandler);
             }
             else {
                 textNode.addClass(this.options.unselectableCss);
@@ -471,7 +471,7 @@
             if (!this._resizer) {
                 var $resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
                 this._resizer = new dnn.Resizer($resizerElement[0], { container: this.$element });
-                $(this._resizer).bind("resized", $.proxy(this._onResize, this));
+                $(this._resizer).on("resized", $.proxy(this._onResize, this));
             }
 
             this._showTree(this._selectedNodeId);

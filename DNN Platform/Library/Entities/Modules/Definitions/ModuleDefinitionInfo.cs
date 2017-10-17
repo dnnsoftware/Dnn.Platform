@@ -47,7 +47,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
     public class ModuleDefinitionInfo : IXmlSerializable, IHydratable
     {
         private Dictionary<string, ModuleControlInfo> _ModuleControls;
-        private int _TempModuleID;
         private string _definitionName;
 
         public ModuleDefinitionInfo()
@@ -294,22 +293,5 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 ModuleControls.Add(moduleControl.ControlKey, moduleControl);
             } while (reader.ReadToNextSibling("moduleControl"));
         }
-
-        #region Obsolete Members
-
-        [Obsolete("No longer used in DotNetNuke 5.0 as new Installer does not need this.")]
-        public int TempModuleID
-        {
-            get
-            {
-                return _TempModuleID;
-            }
-            set
-            {
-                _TempModuleID = value;
-            }
-        }
-
-        #endregion
     }
 }

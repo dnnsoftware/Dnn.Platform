@@ -43,17 +43,17 @@ namespace DotNetNuke.Web.DDRMenu
 
 			var settings = new Settings
 			               {
-			               	MenuStyle = moduleSettings["MenuStyle"].ToString(),
-			               	NodeXmlPath = moduleSettings["NodeXmlPath"].ToString(),
-			               	NodeSelector = moduleSettings["NodeSelector"].ToString(),
-			               	IncludeNodes = moduleSettings["IncludeNodes"].ToString(),
-			               	ExcludeNodes = moduleSettings["ExcludeNodes"].ToString(),
-			               	NodeManipulator = moduleSettings["NodeManipulator"].ToString(),
+			               	MenuStyle = Convert.ToString(moduleSettings["MenuStyle"]),
+			               	NodeXmlPath = Convert.ToString(moduleSettings["NodeXmlPath"]),
+			               	NodeSelector = Convert.ToString(moduleSettings["NodeSelector"]),
+			               	IncludeNodes = Convert.ToString(moduleSettings["IncludeNodes"]),
+			               	ExcludeNodes = Convert.ToString(moduleSettings["ExcludeNodes"]),
+			               	NodeManipulator = Convert.ToString(moduleSettings["NodeManipulator"]),
 			               	IncludeContext = Convert.ToBoolean(moduleSettings["IncludeContext"]),
 			               	IncludeHidden = Convert.ToBoolean(moduleSettings["IncludeHidden"]),
-			               	ClientOptions = Settings.ClientOptionsFromSettingString(moduleSettings["ClientOptions"].ToString()),
+			               	ClientOptions = Settings.ClientOptionsFromSettingString(Convert.ToString(moduleSettings["ClientOptions"])),
 			               	TemplateArguments =
-			               		Settings.TemplateArgumentsFromSettingString(moduleSettings["TemplateArguments"].ToString())
+			               		Settings.TemplateArgumentsFromSettingString(Convert.ToString(moduleSettings["TemplateArguments"]))
 			               };
 			return settings.ToXml();
 		}

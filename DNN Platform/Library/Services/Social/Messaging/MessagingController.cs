@@ -66,6 +66,7 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const string ConstSortColumnFrom = "From";
         internal const string ConstSortColumnSubject = "Subject";
         internal const bool ConstAscending = true;
+        internal const double DefaultMessagingThrottlingInterval = 0.5; //default MessagingThrottlingInterval set to 30 seconds.
 
         #endregion
 
@@ -168,12 +169,12 @@ namespace DotNetNuke.Services.Social.Messaging
             var waitTime = InternalMessagingController.Instance.WaitTimeForNextMessage(sender);
             if (waitTime > 0)
             {
-                var interval = GetPortalSettingAsInteger("MessagingThrottlingInterval", sender.PortalID, Null.NullInteger);
+                var interval = GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingInterval);
                 throw new ThrottlingIntervalNotMetException(string.Format(Localization.Localization.GetString("MsgThrottlingIntervalNotMet", Localization.Localization.ExceptionsResourceFile), interval));
             }
 
             //Cannot have attachments if it's not enabled
-            if (fileIDs != null && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
+            if (fileIDs != null && fileIDs.Count > 0 && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
             {
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
@@ -272,9 +273,14 @@ namespace DotNetNuke.Services.Social.Messaging
             return PortalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
         }
 
+        internal virtual double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
+        {
+            return PortalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
+        }
+
         internal virtual string InputFilter(string input)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
         }
 

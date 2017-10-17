@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -32,6 +33,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.UI.Modules;
+using System.Threading;
 
 #endregion
 
@@ -445,7 +447,7 @@ namespace DotNetNuke.Services.Installer
         public static string ParsePackageIconFileName(PackageInfo package)
         {
             var filename = string.Empty;
-            if ((package.IconFile != null) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
+            if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
                 filename = package.IconFile.StartsWith("~/" + package.FolderName) ? package.IconFile.Remove(0, ("~/" + package.FolderName).Length).TrimStart('/') : package.IconFile;
             }
@@ -455,7 +457,7 @@ namespace DotNetNuke.Services.Installer
         public static string ParsePackageIconFile(PackageInfo package)
         {
             var iconFile = string.Empty;
-            if ((package.IconFile != null) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
+            if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
                 iconFile = !package.IconFile.StartsWith("~/") ? "~/" + package.FolderName + "/" + package.IconFile : package.IconFile;
             }
@@ -577,15 +579,85 @@ namespace DotNetNuke.Services.Installer
 
             var file = new FileInfo(destFileName);
             if (file.Directory != null && !file.Directory.Exists)
-            {
                 file.Directory.Create();
+
+            TryToCreateAndExecute(destFileName, (f) => StreamToStream(sourceStream, f), 1000);
+
+        }
+
+        /// <summary>
+        /// Try to create file and perform an action on a file until a specific amount of time
+        /// </summary>
+        /// <param name="path">Path of the file</param>
+        /// <param name="action">Action to execute on file</param>
+        /// <param name="milliSecondMax">Maimum amount of time to try to do the action</param>
+        /// <returns>true if action occur and false otherwise</returns>
+        public static bool TryToCreateAndExecute(string path, Action<FileStream> action, int milliSecondMax = Timeout.Infinite)
+        {
+            bool result = false;
+            DateTime dateTimestart = DateTime.Now;
+            Tuple < AutoResetEvent, FileSystemWatcher > tuple = null;
+
+            while (true)
+            {
+                try
+                {
+                    using (var file = File.Open(path,
+                        FileMode.Create,
+                        FileAccess.ReadWrite,
+                        FileShare.Write))
+                    {
+                        action(file);
+                        result = true;
+                        break;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    // Init only once and only if needed. Prevent against many instantiation in case of multhreaded 
+                    // file access concurrency (if file is frequently accessed by someone else). Better memory usage.
+                    if (tuple == null)
+                    {
+                        var autoResetEvent = new AutoResetEvent(true);
+                        var fileSystemWatcher = new FileSystemWatcher(Path.GetDirectoryName(path))
+                        {
+                            EnableRaisingEvents = true
+                        };
+
+                        fileSystemWatcher.Changed +=
+                            (o, e) =>
+                            {
+                                if (Path.GetFullPath(e.FullPath) == Path.GetFullPath(path))
+                                {
+                                    autoResetEvent.Set();
+                                }
+                            };
+
+                        tuple = new Tuple<AutoResetEvent, FileSystemWatcher>(autoResetEvent, fileSystemWatcher);
+                    }
+
+                    int milliSecond = Timeout.Infinite;
+                    if (milliSecondMax != Timeout.Infinite)
+                    {
+                        milliSecond = (int) (DateTime.Now - dateTimestart).TotalMilliseconds;
+                        if (milliSecond >= milliSecondMax)
+                        {
+                            result = false;
+                            break;
+                        }
+                    }
+
+                    tuple.Item1.WaitOne(milliSecond);
+                }
             }
-            Stream fileStrm = file.Create();
 
-            StreamToStream(sourceStream, fileStrm);
+            if (tuple != null && tuple.Item1 != null) // Dispose of resources now (don't wait the GC).
+            {
+                tuple.Item1.Dispose();
+                tuple.Item2.Dispose();
+            }
 
-            //Close the stream
-            fileStrm.Close();
+            return result;
         }
 
         public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST, string UserAgent,

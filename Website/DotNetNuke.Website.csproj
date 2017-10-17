@@ -49,6 +49,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,6 +58,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
@@ -105,16 +107,17 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PetaPoco">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
-    <Reference Include="SharpZipLib">
-      <HintPath>..\DNN Platform\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -2806,7 +2809,6 @@
     <Content Include="js\MicrosoftAjaxWebForms.js" />
     <Content Include="js\PopupCalendar.js" />
     <Content Include="KeepAlive.aspx" />
-    <Content Include="Licenses\51Degrees.mobi %28MPL%29.txt" />
     <Content Include="Licenses\Anthem %28Public Domain%29.txt" />
     <Content Include="Licenses\Brettle NeatUpload %28LGPL%29.txt" />
     <Content Include="Licenses\Client Dependency Framework%28Ms-PL%29.txt" />
@@ -2919,9 +2921,6 @@
     <Content Include="Resources\ControlPanel\ControlPanel.debug.js" />
     <Content Include="Resources\ControlPanel\ControlPanel.js" />
     <Content Include="Resources\Dashboard\jquery.dashboard.js" />
-    <Content Include="Resources\Libraries\jQuery-Migrate\01_02_01\jquery-migrate.js" />
-    <Content Include="Resources\Libraries\jQuery\01_09_01\jquery.js" />
-    <Content Include="Resources\Libraries\Knockout.Mapping\02_04_01\knockout.mapping.js" />
     <Content Include="Resources\Search\Search.js" />
     <Content Include="Resources\Search\SearchSkinObjectPreview.css" />
     <Content Include="Resources\Search\SearchSkinObjectPreview.js" />
@@ -3275,6 +3274,8 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.29.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.04.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.30.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.31.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\08.00.01.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.04.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.00.00.SqlDataProvider" />
@@ -3290,7 +3291,6 @@
     <None Include="release.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\Libraries\jQuery\01_09_01\jquery.min.map" />
     <None Include="Resources\Shared\scripts\jquery\jquery.min.map" />
   </ItemGroup>
   <ItemGroup>
@@ -3351,6 +3351,10 @@
       <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
       <Name>DotNetNuke.Modules.DDRMenu</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\AuthenticationEditor.ascx.resx" />
+    <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\EditExtension.ascx.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

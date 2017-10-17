@@ -41,6 +41,7 @@ using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -126,7 +127,7 @@ namespace DotNetNuke.HttpModules.Membership
                     if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
                     {
                         application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
-                        new PortalSecurity().SignIn(UserController.Instance.GetCurrentUserInfo(), false);
+                        PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
                     }
                 }
             }
@@ -187,7 +188,7 @@ namespace DotNetNuke.HttpModules.Membership
                     || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
                     || user.Username.ToLower() != context.User.Identity.Name.ToLower())
                 {
-                    var portalSecurity = new PortalSecurity();
+                    var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
 
                     //Remove user from cache
@@ -217,7 +218,7 @@ namespace DotNetNuke.HttpModules.Membership
                 {
                     //update LastActivityDate and IP Address for user
                     user.Membership.LastActivityDate = DateTime.Now;
-                    user.LastIPAddress = request.UserHostAddress;
+                    user.LastIPAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
                     UserController.UpdateUser(portalSettings.PortalId, user, false, false);
                 }
 

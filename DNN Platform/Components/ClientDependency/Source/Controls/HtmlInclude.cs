@@ -13,10 +13,13 @@ namespace ClientDependency.Core.Controls
     {
         public const string TagPattern = @"<{0}((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>";
         public const string AttributePattern = @"{0}(\s*=\s*(?:""(?<val>.*?)""|'(?<val>.*?)'|(?<val>[^'"">\s]+)))";
+
         private const string MatchAllAttributes = "(\\S+)=[\"']?((?:.(?![\"']?\\s+(?:\\S+)=|[>\"']))+.)[\"']?";
 
+        //*** DNN related change *** begin
         private static readonly Regex LinkTagRegex = new Regex(string.Format(TagPattern, "link"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex ScriptTagRegex = new Regex(string.Format(TagPattern, "script"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        //*** DNN related change *** end
 
         public string ForceProvider { get; set; }
         public int Priority { get; set; }
@@ -57,6 +60,7 @@ namespace ClientDependency.Core.Controls
 
         internal IEnumerable<BasicFile> GetIncludes(string innerHtml, ClientDependencyType dependencyType)
         {
+            //*** DNN related change *** begin
             Regex tagRegex;
             string sourceAttribute, mime;
             if (dependencyType == ClientDependencyType.Css)
@@ -75,9 +79,12 @@ namespace ClientDependency.Core.Controls
             var files = new List<BasicFile>();
             foreach (Match match in tagRegex.Matches(innerHtml))
             {
-                var allAttributes = Regex.Matches(match.Value, MatchAllAttributes, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+                var allAttributes = Regex.Matches(match.Value, MatchAllAttributes,
+                                                  RegexOptions.IgnoreCase |
+                                                  RegexOptions.CultureInvariant)
                                          .Cast<Match>()
                                          .ToArray();
+            //*** DNN related change *** end
 
                 var type = allAttributes.FirstOrDefault(x =>
                 {

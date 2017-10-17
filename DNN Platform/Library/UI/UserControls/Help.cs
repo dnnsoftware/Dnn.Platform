@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dnnsoftware.com
 // Copyright (c) 2002-2017
-// by DotNetNuke Corporation
+// by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.UserControls
             }
             else if (Host.EnableModuleOnLineHelp)
             {
-                helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500' />", Host.HelpURL);
+                helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", Host.HelpURL);
             }
 
             ModuleControlInfo objModuleControl = ModuleControlController.GetModuleControl(moduleControlId);
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(objModuleControl.HelpURL) && Host.EnableModuleOnLineHelp)
                 {
-                    helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500' />", objModuleControl.HelpURL); ;
+                    helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", objModuleControl.HelpURL); ;
                 }
                 else
                 {

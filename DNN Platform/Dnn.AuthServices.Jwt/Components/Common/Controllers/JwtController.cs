@@ -83,7 +83,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
-            var authorization = ValidateAuthHeader(request.Headers.Authorization);
+            var authorization = ValidateAuthHeader(request?.Headers.Authorization);
             return string.IsNullOrEmpty(authorization) ? null : ValidateAuthorizationValue(authorization);
         }
 
@@ -95,7 +95,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return false;
             }
 
-            var rawToken = ValidateAuthHeader(request.Headers.Authorization);
+            var rawToken = ValidateAuthHeader(request?.Headers.Authorization);
             if (string.IsNullOrEmpty(rawToken))
             {
                 return false;
@@ -192,7 +192,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("disabled");
             }
 
-            var rawToken = ValidateAuthHeader(request.Headers.Authorization);
+            var rawToken = ValidateAuthHeader(request?.Headers.Authorization);
             if (string.IsNullOrEmpty(rawToken))
             {
                 return EmptyWithError("bad-credentials");

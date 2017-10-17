@@ -2310,7 +2310,7 @@ namespace DotNetNuke.Data
                                                           bool sortAscending,
                                                             string propertyNames, string propertyValues)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             string filterSort = ps.InputFilter(sortColumn, PortalSecurity.FilterFlag.NoSQL);
             string filterName = ps.InputFilter(propertyNames, PortalSecurity.FilterFlag.NoSQL);
             string filterValue = ps.InputFilter(propertyValues, PortalSecurity.FilterFlag.NoSQL);
@@ -2321,7 +2321,7 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
                                     bool sortAscending, string propertyName, string propertyValue)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             string filterSort = ps.InputFilter(sortColumn, PortalSecurity.FilterFlag.NoSQL);
             string filterName = ps.InputFilter(propertyName, PortalSecurity.FilterFlag.NoSQL);
             string filterValue = ps.InputFilter(propertyValue, PortalSecurity.FilterFlag.NoSQL);

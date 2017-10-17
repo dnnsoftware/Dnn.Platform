@@ -63,7 +63,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DecryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
             var toDecrypt = new StringBuilder(value);
             toDecrypt.Replace("_", "/");
@@ -89,7 +89,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string EncryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             var parameterValue = new StringBuilder(objSecurity.Encrypt(encryptionKey, value));
 
             //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
@@ -310,7 +310,8 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (string.IsNullOrEmpty(url))
                 {
-                    return "";
+                    //DNN-10193: returns the same value as passed in rather than empty string
+                    return url;
                 }
 
                 url = url.Replace("\\", "/");
@@ -320,7 +321,7 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 //clean the return url to avoid possible XSS attack.
-                var cleanUrl = new PortalSecurity().InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+                var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
                 if (url != cleanUrl)
                 {
                     return "";
@@ -380,7 +381,7 @@ namespace DotNetNuke.Common.Utilities
         //Whether current page is show in popup.
         public static bool InPopUp()
         {
-            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
+            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>

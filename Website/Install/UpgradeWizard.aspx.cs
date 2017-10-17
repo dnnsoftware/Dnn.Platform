@@ -361,6 +361,12 @@ namespace DotNetNuke.Services.Install
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
+            {
+                Response.Redirect(Request.RawUrl, true);
+            }
+
             SslRequiredCheck();
             GetInstallerLocales();
         }
@@ -395,6 +401,7 @@ namespace DotNetNuke.Services.Install
                 //Reset the accept terms flag
                 HostController.Instance.Update("AcceptDnnTerms", "N");
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
+                Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
             }
         }
         #endregion

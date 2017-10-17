@@ -1037,7 +1037,7 @@ namespace DotNetNuke.Entities.Portals
             if (settingNode.Encrypt)
             {
                 return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
-                //return new PortalSecurity().Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
+                //return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
             }
             return ensuredSettingValue;
         }
@@ -3155,6 +3155,36 @@ namespace DotNetNuke.Entities.Portals
                 else
                 {
                     retValue = Convert.ToInt32(setting);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+            return retValue;
+        }
+
+        /// <summary>
+		/// Gets the portal setting as double.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal Id.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
+        {
+            double retValue = Null.NullDouble;
+            try
+            {
+                string setting = Null.NullString;
+                PortalController.Instance.GetPortalSettings(portalId).TryGetValue(key, out setting);
+                if (string.IsNullOrEmpty(setting))
+                {
+                    retValue = defaultValue;
+                }
+                else
+                {
+                    retValue = Convert.ToDouble(setting);
                 }
             }
             catch (Exception exc)
