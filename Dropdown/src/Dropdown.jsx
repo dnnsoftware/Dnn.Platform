@@ -48,7 +48,6 @@ class Dropdown extends Component {
         }
     }
 
-    // SCM-1115
     getDropdownHeight() {
         const {props} = this;
         const maxHeight = props.fixedHeight ? props.fixedHeight : DNN_DROPDOWN_MINHEIGHT;
@@ -58,7 +57,7 @@ class Dropdown extends Component {
     componentWillMount() {
         const {props} = this;
         if (props.options && props.options.length > 0) {
-            let fixedHeight = DNN_DROPDOWN_MINHEIGHT; //this.getDropdownHeight();
+            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
             this.setState({
                 fixedHeight
             });
@@ -67,7 +66,7 @@ class Dropdown extends Component {
 
     componentWillReceiveProps(props) {
         if (props.options && props.options.length > 0) {
-            let fixedHeight = DNN_DROPDOWN_MINHEIGHT; //this.getDropdownHeight();
+            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
             this.setState({
                 fixedHeight
             });
@@ -207,7 +206,7 @@ class Dropdown extends Component {
 
         this.setState({
             closestValue,
-            currentIndex:itemIndex
+            currentIndex: itemIndex
         }, () => {
             setTimeout(() => {
                 this.setState({
@@ -217,7 +216,7 @@ class Dropdown extends Component {
         });
 
         if (closestValue !== null) {
-            // SCM-1115
+
             this.scrollToSelectedItem(itemIndex);
         }
     }
@@ -228,7 +227,7 @@ class Dropdown extends Component {
         if (optionRef) {
             const domElement = ReactDOM.findDOMNode(optionRef);
             let offset = domElement.offsetTop;
-            if(eventKey == "ArrowUp"){
+            if (eventKey == "ArrowUp") {
                 offset = domElement.offsetBottom;
             }
             scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], offset);
@@ -285,7 +284,7 @@ class Dropdown extends Component {
         this.scrollToSelectedItem(nextIndex, eventKey);
     }
 
-    // SCM-1115
+
     initOptions(option, index) {
         const {props, state} = this;
         this.optionItems = [];
@@ -312,14 +311,14 @@ class Dropdown extends Component {
         return index == this.state.currentIndex;
     }
 
-    // SCM-1115
+
     addOptionRef(option) {
         if (option) {
             this.selectedOptionElement = option;
         }
     }
 
-    // SCM-1115
+
     getOption(index) {
         const options = this.optionItems;
         return options && options[index] !== undefined ? options[index] : null;

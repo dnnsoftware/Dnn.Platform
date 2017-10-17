@@ -94,7 +94,14 @@ describe("Dnn Dropdown component", () => {
     });
 
     it("Renders <Collapse />", () => {
-        const props = {options, value: "second", label: "My new label", prependWith: "Prepend text:", withIcon: false,isDropDownOpen:true};
+        const props = {
+            options,
+            value: "second",
+            label: "My new label",
+            prependWith: "Prepend text:",
+            withIcon: false,
+            isDropDownOpen: true
+        };
         const deepRendering = mount(<Dropdown onSelect={f => f} {...props}/>);
 
         const collapse = deepRendering.find(Collapse);
@@ -118,8 +125,8 @@ describe("Dnn Dropdown component", () => {
             label: "My new label",
             prependWith: "Prepend text:",
             withIcon: false,
-            isDropDownOpen:true,
-            fixedHeight:600
+            isDropDownOpen: true,
+            fixedHeight: 600
         };
         const deepRendering = mount(<Dropdown onSelect={f => f} {...props}/>);
         let collapsibleLabel = deepRendering.find(".collapsible-label").first();
