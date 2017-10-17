@@ -152,6 +152,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     $('.btn_panel, .hovermenu > ul > li').removeClass('selected');
                 } else {
                     $('.btn_panel, .hovermenu > ul > li').removeClass('selected pending');
+                    self.panelViewData(null, null);
                 }
 
                 parentBody.style.overflow = "auto";
@@ -261,6 +262,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     $personaBarPanels.append($panel);
                 }
                 var template = path;
+                var loaded = self.loaded(template);
 
                 if ($mask.css("display") === 'none') {
                     activePath = path;
@@ -286,7 +288,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             inAnimation = false;
                             $personaBarPlaceholder.show();
                             self.loadTemplate(folderName, template, $panel, params, function () {
-                                self.panelLoaded(params);
+                                self.panelLoaded(params, loaded);
                             });
                             $(document).keyup(function (e) {
                                 if (e.keyCode === 27) {
@@ -315,7 +317,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 activemodule = moduleName;
                                 inAnimation = false;
                                 self.loadTemplate(folderName, template, $panel, params, function () {
-                                    self.panelLoaded(params);
+                                    self.panelLoaded(params, loaded);
                                 });
 
                                 saveUserSetting({
@@ -327,16 +329,20 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     } else if (activemodule !== moduleName) {
                         activemodule = moduleName;
                         self.loadTemplate(folderName, template, $panel, params, function () {
-                            self.panelLoaded(params);
+                            self.panelLoaded(params, loaded);
                         });
                     }
                 }
                 setCloseButtonClass(panelId);
             },
-            panelLoaded: function (params) {
+            panelLoaded: function (params, loaded) {
                 extension.load(util, params);
-
                 this.loadCustomModules();
+
+                if (params.handleTabViewInModule !== true && loaded === false) {
+                    var panelId = util.getPanelIdFromPath(params.path);
+                    util.updatePanelTabView(panelId);
+                }
             },
             initCustomModules: function (callback) {
                 if (config.customModules && config.customModules.length > 0) {
@@ -415,6 +421,113 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     cache: true,
                     url: path
                 });
+            },
+            panelViewData: function (panelId, viewData) {
+                var localStorageAllowed = function () {
+                    var mod = 'DNN_localStorageTEST';
+                    try {
+                        window.localStorage.setItem(mod, mod);
+                        window.localStorage.removeItem(mod);
+                        return true;
+                    } catch (e) {
+                        return false;
+                    }
+                };
+
+                if (!localStorageAllowed()) {
+                    return {};
+                }
+
+                var cacheKey = "DNN_PB_PANEL_VIEW";
+                var savedData = window.localStorage[cacheKey];
+                if (!savedData) {
+                    savedData = {};
+                } else {
+                    savedData = JSON.parse(savedData);
+                }
+
+                if (typeof viewData !== "undefined") {
+                    if (panelId === null && viewData === null) {
+                        window.localStorage.removeItem(cacheKey);
+                        savedData = {};
+                    } else {
+                        if (panelId === null) {
+                            savedData = viewData;
+                        } else {
+                            savedData[panelId] = viewData;
+                        }
+                        window.localStorage.setItem(cacheKey, JSON.stringify(savedData));
+                    }
+                }
+
+                return panelId ? savedData[panelId] : savedData;
+            },
+            savePanelTabView: function(panelId) {
+                var $panel = $('#' + panelId);
+                var $primaryTabs = $panel.find('.dnn-tabs.primary, .ui-tabs').eq(0).find('> ul > li');
+                if (!$primaryTabs.length) {
+                    $primaryTabs = $panel.find('.dnn-tabs.secondary').eq(0).find('> ul > li');
+                }
+                var $primarySelected = $primaryTabs.parent().find('>li[aria-selected="true"],>li[class*="selected"]');
+                if ($primarySelected.length) {
+                    var primaryIndex = $primaryTabs.index($primarySelected);
+
+                    var viewData = [primaryIndex];
+                    var $primaryPanel = $('#' + $primarySelected.attr('aria-controls'));
+                    if ($primaryPanel.length) {
+
+                        var $secondaryTabs = $primaryPanel.find('.dnn-tabs.secondary').eq(0).find('> ul > li');
+                        var $secondarySelected = $secondaryTabs.parent().find('>li[aria-selected="true"],>li[class*="selected"]');
+                        if ($secondarySelected.length) {
+                            var secondaryIndex = $secondaryTabs.index($secondarySelected);
+
+                            viewData.push(secondaryIndex);
+                        }
+                    }
+
+                    util.panelViewData(panelId, { tab: viewData });
+                }
+            },
+            updatePanelTabView: function (panelId) {
+                var viewData = (util.panelViewData(panelId) || {}).tab;
+                if (!viewData || !viewData.length) {
+                    return;
+                }
+
+                var sleep = function(timeout) {
+                    setTimeout(function() {
+                        util.updatePanelTabView(panelId);
+                    }, timeout);
+                }
+
+                var $panel = $('#' + panelId);
+                var $primaryTab = $panel.find('.dnn-tabs.primary,.ui-tabs').eq(0).find('> ul > li').eq(viewData[0]);
+                if (!$primaryTab.length) {
+                    $primaryTab = $panel.find('.dnn-tabs.secondary').eq(0).find('> ul > li').eq(viewData[0]);
+                }
+
+                if (!$primaryTab.length) {
+                    sleep(50);
+                    return;
+                }
+
+                if ($primaryTab.attr('aria-selected') !== "true" && $primaryTab.attr('class').indexOf('selected') === -1) {
+                    if ($primaryTab.find('a').length) {
+                        $primaryTab.find('a').trigger('click', [true]);
+                    } else {
+                        $primaryTab.trigger('click', [true]);
+                    }
+                }
+
+                if (viewData.length > 1) {
+                    var $primaryPanel = $('#' + $primaryTab.attr('aria-controls'));
+                    var $secondaryTab = $primaryPanel.find('.dnn-tabs.secondary').eq(0).find('> ul > li').eq(viewData[1]);
+                    if (!$secondaryTab.length) {
+                        sleep(50);
+                    }
+
+                    $secondaryTab.trigger('click', [true]);
+                }
             }
         };
         util = $.extend(util, utility);
@@ -555,6 +668,24 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             eventEmitter.addPanelCloseEventListener(function handleClosingPersonaBar() {
                 saveBtnEditSettings();
             });
+        }
+
+        function handleTabSelection (callback) {
+            $('#personabar-panels').on('click',
+                '> .socialpanel .dnn-tabs.primary > ul > li,' +
+                '> .socialpanel .dnn-tabs.secondary > ul > li,' +
+                '> .socialpanel .ui-tabs > ul > li > a', function (e, byScript) {
+                if (byScript) {
+                    return;
+                }
+
+                var panelId = $(this).parents('.socialpanel').attr('id');
+                setTimeout(function() {
+                    util.savePanelTabView(panelId);
+                }, 0);
+            });
+
+            callback();
         }
 
         util.asyncParallel([
@@ -951,6 +1082,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 },
                 function initCustomModules(callback) {
                     util.initCustomModules(callback);
+                },
+                function (callback) {
+                    handleTabSelection(callback);
                 }
         ],
         function loadPanelFromPersistedSetting() {
