@@ -39,6 +39,7 @@ namespace DotNetNuke.Entities.Users.Membership
         public bool EnablePasswordHistory { get; set; }
 
         public int NumberOfPasswordsStored { get; set; }
+        public int NumberOfDaysBeforePasswordReuse { get; set; }
         public int ResetLinkValidity { get; set; }
 
         /// <summary>
@@ -111,6 +112,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
                 ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
                 NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+                NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
             }
             else //setup default values during install process.
             {

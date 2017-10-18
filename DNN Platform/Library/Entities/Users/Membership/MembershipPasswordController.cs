@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
         #region Private functions
 
-        private void AddPasswordHistory(int userId, string password, int retained)
+        private void AddPasswordHistory(int userId, string password, int passwordsRetained, int daysRetained)
         {
             using (HashAlgorithm ha = HashAlgorithm.Create())
             {
@@ -56,8 +56,7 @@ namespace DotNetNuke.Entities.Users.Membership
                 byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
                 string hashedPassword = Convert.ToBase64String(bhashedPassword);
 
-                _dataProvider.AddPasswordHistory(userId, hashedPassword,
-                    Convert.ToBase64String(newSalt), retained);
+                _dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
             }
         }
 
@@ -79,8 +78,19 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>list of PasswordHistory objects</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId)
         {
+            return GetPasswordHistory(userId, Null.NullInteger);
+        }
+
+        /// <summary>
+        /// returns the password history of the supplied user
+        /// </summary>
+        /// <param name="portalId">portalid - futureproofing against any setting become site level</param>
+        /// <returns>list of PasswordHistory objects</returns>
+        public List<PasswordHistory> GetPasswordHistory(int userId, int portalId)
+        {
+            var settings = new MembershipPasswordSettings(portalId);
             List<PasswordHistory> history =
-                CBO.FillCollection<PasswordHistory>(_dataProvider.GetPasswordHistory(userId));
+                CBO.FillCollection<PasswordHistory>(_dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
             return history;
         }
 
@@ -113,7 +123,7 @@ namespace DotNetNuke.Entities.Users.Membership
 				{
 					if (autoAdd)
 					{
-						AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored);
+						AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse);
 					}
 				}
 				else
