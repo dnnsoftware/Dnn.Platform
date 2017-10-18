@@ -11,8 +11,8 @@ const KEY = {
 function findKey(thisObject, id) {
     let p, tRet;
     for (p in thisObject) {
-        if (p == "data") {
-            if (thisObject[p].key == id) {
+        if (p === "data") {
+            if (thisObject[p].key === id) {
                 return thisObject;
             }
         } else if (thisObject[p] instanceof Object) {
@@ -113,7 +113,7 @@ export default class Browse extends Component {
 
     setFolders(result) {
         this.setState({ folders: result.Tree });
-        if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder && this.state.selectedFolder.value == "0") {
+        if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder && this.state.selectedFolder.value === "0") {
             const selectedFolder = result.Tree.children[0].data;
             this.setState({ selectedFolder });
         }
