@@ -388,13 +388,13 @@
     <value>Number of messages sent in each batch:</value>
   </data>
   <data name="plConnectionLimit.Help" xml:space="preserve">
-    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1.</value>
+    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 2.</value>
   </data>
   <data name="plConnectionLimit.Text" xml:space="preserve">
     <value>Connection Limit:</value>
   </data>
   <data name="plMaxIdleTime.Help" xml:space="preserve">
-    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 0.</value>
+    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 100,000 (100 seconds).</value>
   </data>
   <data name="plMaxIdleTime.Text" xml:space="preserve">
     <value>Max Idle Time:</value>
