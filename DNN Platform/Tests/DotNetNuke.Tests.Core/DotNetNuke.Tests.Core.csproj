@@ -184,6 +184,7 @@
     <Compile Include="Services\Localization\LocalizationTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
+    <Compile Include="Services\Tokens\TokenReplaceTests.cs" />
     <Compile Include="Services\Tokens\PropertyAccessTests.cs" />
     <Compile Include="FileSystemUtilsTests.cs" />
     <Compile Include="Services\UtilTest.cs" />
