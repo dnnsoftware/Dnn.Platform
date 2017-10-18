@@ -30,48 +30,59 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId, callback) {
-    return new Promise((resolve)=>{
-            if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
+    return new Promise((resolve) => {
+        const currentPageId = utils.getCurrentPageId();
+        if (pageId === currentPageId && !utils.getCurrentPagePermissions().managePage) {
+            let permissions = utils.getCurrentPagePermissions();
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
                 data: {
                     page: {
-                        tabId: utils.getCurrentPageId(),
+                        tabId: pageId,
+                        isOpen: false,
+                        hasChild: utils.getCurrentParentHasChildren(),
+                        canManagePage: permissions.managePage,
+                        canAddContentToPage: permissions.addContentToPage,
+                        canViewPage: true,
+                        canAddPage: permissions.addPage,
+                        canAdminPage: permissions.adminPage,
+                        canCopyPage: permissions.copyPage,
+                        canDeletePage: permissions.deletePage,
+                        canNavigateToPage: true,
                         name: utils.getCurrentPageName()
                     }
                 },
                 selectedPageSettingTab: 0
             });
-            resolve();
-            return;
         }
-
-        PagesService.getPage(pageId).then(response => {
-            dispatch({
-                type: ActionTypes.LOADED_PAGE,
-                data: {
-                    page: response
-                },
-                selectedPageSettingTab: 0
+        else {
+            PagesService.getPage(pageId).then(response => {
+                dispatch({
+                    type: ActionTypes.LOADED_PAGE,
+                    data: {
+                        page: response
+                    },
+                    selectedPageSettingTab: 0
+                });
+                if (callback) {
+                    callback(response);
+                }
+                resolve(response);
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_LOADING_PAGE,
+                    data: { error }
+                });
+                resolve();
             });
-            if (callback) {
-                callback(response);
-            }
-            resolve(response);
-        }).catch((error) => {
-            dispatch({
-                type: ActionTypes.ERROR_LOADING_PAGE,
-                data: { error }
-            });
-            resolve();
-        });
-
+        }
     });
 };
 
 const pageActions = {
     getPageList(id) {
         return (dispatch) => PagesService.getPageList(id).then(pageList => {
+
             dispatch({
                 type: PageListActionTypes.SAVE,
                 data: { pageList }
@@ -88,12 +99,17 @@ const pageActions = {
         });
     },
 
+
+    getPageHierarchy(id) {
+        return () => PagesService.getPageHierarchy(id);
+    },
+
     searchAndFilterPageList(params) {
-        return (dispatch) => PagesService.searchAndFilterPageList(params).then((searchList)=>{
-            searchList= searchList.Results;
+        return (dispatch) => PagesService.searchAndFilterPageList(params).then((searchList) => {
+            searchList = searchList.Results;
             dispatch({
                 type: SearchListActionTypes.SAVE_SEARCH_LIST,
-                data: {searchList}
+                data: { searchList }
             });
         });
     },
@@ -102,7 +118,7 @@ const pageActions = {
         return (dispatch) => PagesService.getWorkflowsList().then(workflowList => {
             dispatch({
                 type: ActionTypes.GET_WORKFLOW_LIST,
-                data: {workflowList}
+                data: { workflowList }
             });
         });
     },
@@ -111,10 +127,10 @@ const pageActions = {
         return (dispatch) => PagesService.getPage(id);
     },
 
-    getCurrentSelectedPage(){
+    getCurrentSelectedPage() {
         return (dispatch) => dispatch({
             type: ActionTypes.GET_CURRENT_SELECTED_PAGE,
-            data:{}
+            data: {}
         });
     },
     getChildPageList(id) {
@@ -157,13 +173,13 @@ const pageActions = {
             const { pages } = getState();
             const duplicate = (page) => {
                 const duplicatedPage = cloneDeep(page);
-                
+
                 duplicatedPage.templateTabId = duplicatedPage.tabId;
                 duplicatedPage.tabId = 0;
                 duplicatedPage.name = "";
                 duplicatedPage.url = "";
                 duplicatedPage.isCopy = true;
-                
+
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
                     data: {
@@ -179,7 +195,7 @@ const pageActions = {
             }
             else {
                 duplicate(pages.selectedPage);
-            }            
+            }
         };
     },
 
@@ -236,7 +252,7 @@ const pageActions = {
             });
         };
     },
-    createPage() {
+    createPage(callback) {
 
         return (dispatch, getState) => {
             dispatch({
@@ -255,8 +271,13 @@ const pageActions = {
                 if (selectedPage.tabId > 0) {
                     utils.notify(Localization.get("PageUpdatedMessage"));
                 }
-                PagesService.openPageInEditMode(response.Page.id, response.Page.url);
-
+                if (response.Page.canAddContentToPage && selectedPage.pageType === "normal" && !selectedPage.disableLink) {
+                    PagesService.openPageInEditMode(response.Page.id, response.Page.url);
+                }
+                else if (typeof callback === "function") {
+                    utils.notify(Localization.get("PageCreatedMessage"));
+                    callback(response.Page);
+                }
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PAGE,
@@ -287,7 +308,7 @@ const pageActions = {
                     data: null
                 });
 
-                callback(page);
+                callback(response.Page);
 
             }).catch((error) => {
                 dispatch({

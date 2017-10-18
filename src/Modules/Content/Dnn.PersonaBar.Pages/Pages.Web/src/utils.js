@@ -147,6 +147,11 @@ function getCurrentPagePermissions() {
     return settings.currentPagePermissions;
 }
 
+function getCurrentParentHasChildren() {
+    checkInit();
+    return settings.currentParentHasChildren;
+}
+
 function getCurrentPageName() {
     checkInit();
     return settings.currentPageName;
@@ -188,6 +193,7 @@ const utils = {
     getIsSuperUser,
     canSeePagesList,
     getCurrentPagePermissions,
+    getCurrentParentHasChildren,
     getCurrentPageName,
     getDefaultPageUrl,
     getProductSKU,

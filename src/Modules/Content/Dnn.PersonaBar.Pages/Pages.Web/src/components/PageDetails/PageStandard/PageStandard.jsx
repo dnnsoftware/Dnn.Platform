@@ -52,7 +52,8 @@ class PageDetails extends Component {
             isMultiLanguage: false,
             excludeAdminTabs: false,
             roles: "",
-            sortOrder: 0
+            sortOrder: 0,
+            includeDisabled: true
         };
 
         let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });

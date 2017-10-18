@@ -13,7 +13,7 @@ import {
 } from "./PersonaBarPageTreeParentExpand";
 import responseStatus from "../../../constants/responseStatus";
 import utils from "../../../utils";
-
+import cloneDeep from "lodash/cloneDeep";
 import {
     PropTypes
 } from "prop-types";
@@ -50,17 +50,19 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     componentWillReceiveProps(newProps) {
         let setTreeViewExpanded = null;
         const {
-            activePage
+            activePage,
+            NoPermissionSelectionPageId
         } = newProps;
-        const pageList = JSON.parse(JSON.stringify(newProps.pageList));
+        const pageList = cloneDeep(newProps.pageList);
         this.setState({
             pageList: pageList,
             rootLoaded: true
         });
-        if (activePage) {
+        if (activePage || NoPermissionSelectionPageId) {
+            const tabId = (activePage && activePage.tabId) || NoPermissionSelectionPageId;
             this.props._traverse((item, list, updateStore) => {
                 item.selected = false;
-                if (item.id === activePage.tabId) {
+                if (item.id === tabId) {
                     item.selected = true;
                     this.setState({
                         pageList: list
@@ -68,8 +70,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 }
             });
         }
-        else
-        {
+        else {
             this.props._traverse((item, list, updateStore) => {
                 item.selected = false;
                 this.setState({
@@ -128,7 +129,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    onSelection({id}) {
+    onSelection({ id }) {
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id && item.canManagePage) ? item.selected = true : item.selected = false;
             item.selected ? this.props.onSelection(id) : null;
@@ -137,14 +138,14 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
-    onNoPermissionSelection({id}){
-        let updateTheStore = null;
+    onNoPermissionSelection({ id }) {
+        let pageList = null;
         this.props._traverse((item, list, updateStore) => {
+            (item.id === id) ? item.selected = true : item.selected = false;
+            item.selected ? this.props.onNoPermissionSelection(id) : null;
             delete item.showInContextMenu;
-            (item.id === id ) ? item.selected=true : item.selected = false;
             updateStore(list);
         });
-
         this.props.setEmptyPageMessage(Localization.get("NoPermissionEditPage"));
     }
 
@@ -231,19 +232,19 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
         const left = () => {
             const img = new Image();
-            if (e.dataTransfer.setDragImage && !userAgent.indexOf("AppleWebkit")){
+            if (e.dataTransfer.setDragImage && !userAgent.indexOf("AppleWebkit")) {
                 e.dataTransfer.setDragImage(img, 0, 0);
             }
 
             this.createClonedElement(e, item);
-
+            const self = this;
             this.props._traverse((li, list, updateStore) => {
                 li.selected = false;
                 delete li.showInContextMenu;
                 if (li.id === item.id) {
                     li.selected = true;
                     li.isOpen = false;
-                    this.setState({
+                    self.setState({
                         draggedItem: li,
                         pageList: list,
                         activePage: item
@@ -368,12 +369,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
 
     onMovePage({
-        e,
+    e,
         Action,
         PageId,
         ParentId,
         RelatedPageId
-    }) {
+}) {
 
         e.preventDefault();
         const {
@@ -392,6 +393,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     utils.notifyError(response.Message, 3000);
                     return 0;
                 }
+                utils.notify(Localization.get("PageUpdatedMessage"));
                 return 1;
             }).then((response) => {
                 response === 1 && this.reOrderPage({
@@ -428,11 +430,11 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     reOrderPage({
-        Action,
+    Action,
         PageId,
         ParentId,
         RelatedPageId
-    }) {
+}) {
         return new Promise((resolve, reject) => {
 
             let cachedItem = null;
@@ -627,12 +629,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     }
 
-    addNewPageData(pageData) {
-        const pageListArray = this.state.pageList.concat();
-        const parentId = pageData.parentId;
-    }
-
-
     toggleExpandAll() {
         let pageList = null;
         let runUpdateStore = null;
@@ -653,25 +649,25 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.setState({ pageX: e.pageX, pageY: e.pageY })} style={{ paddingBottom: "10px" }}>
+            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.props.enabled && this.setState({ pageX: e.pageX, pageY: e.pageY })} style={{ paddingBottom: "10px" }}>
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={this.state.draggedItem}
                         droppedItem={this.state.droppedItem}
                         dragOverItem={this.state.dragOverItem}
-                        listItems={this.props.pageList}
+                        listItems={this.state.pageList}
                         setEmptyPageMessage={this.props.setEmptyPageMessage}
                         getChildListItems={this.getChildListItems.bind(this)}
-                        onSelection={this.onSelection.bind(this)}
-                        onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
-                        onDragEnter={this.onDragEnter.bind(this)}
-                        onDrag={this.onDrag.bind(this)}
-                        onDragStart={this.onDragStart.bind(this)}
-                        onDragOver={this.onDragOver.bind(this)}
-                        onDragLeave={this.onDragLeave.bind(this)}
-                        onDragEnd={this.onDragEnd.bind(this)}
-                        onDrop={this.onDrop.bind(this)}
-                        onMovePage={this.onMovePage.bind(this)}
+                        onSelection={this.props.enabled && this.onSelection.bind(this)}
+                        onNoPermissionSelection={this.props.enabled && this.onNoPermissionSelection.bind(this)}
+                        onDragEnter={this.props.enabled && this.onDragEnter.bind(this)}
+                        onDrag={this.props.enabled && this.onDrag.bind(this)}
+                        onDragStart={this.props.enabled && this.onDragStart.bind(this)}
+                        onDragOver={this.props.enabled && this.onDragOver.bind(this)}
+                        onDragLeave={this.props.enabled && this.onDragLeave.bind(this)}
+                        onDragEnd={this.props.enabled && this.onDragEnd.bind(this)}
+                        onDrop={this.props.enabled && this.onDrop.bind(this)}
+                        onMovePage={this.props.enabled && this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
                         Localization={this.props.Localization}
                     />
@@ -685,12 +681,12 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             <span className="dnn-persona-bar-treeview-ul" >
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeMenu
-                        CallCustomAction={this.props.CallCustomAction}
-                        onAddPage={this.props.onAddPage}
-                        onViewPage={this.props.onViewPage}
-                        onViewEditPage={this.props.onViewEditPage}
-                        onDuplicatePage={this.onDuplicatePage.bind(this)}
-                        listItems={this.props.pageList}
+                        CallCustomAction={this.props.enabled && this.props.CallCustomAction}
+                        onAddPage={this.props.enabled && this.props.onAddPage}
+                        onViewPage={this.props.enabled && this.props.onViewPage}
+                        onViewEditPage={this.props.enabled && this.props.onViewEditPage}
+                        onDuplicatePage={this.props.enabled && this.onDuplicatePage.bind(this)}
+                        listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
                         pageInContextComponents={this.props.pageInContextComponents}
                     /> : null}
@@ -703,7 +699,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         return (
             <span
                 className="dnn-persona-bar-treeview-ul" >
-                {this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.props.pageList} getChildListItems={this.getChildListItems.bind(this)} /> : null}
+                {this.state.rootLoaded ? <PersonaBarPageTreeParentExpand listItems={this.state.pageList} getChildListItems={this.getChildListItems.bind(this)} /> : null}
             </span>
         );
     }
@@ -711,7 +707,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
     render_collapseExpand() {
         return (
             <div
-                onClick={this.toggleExpandAll.bind(this)}
+                onClick={this.props.enabled && this.toggleExpandAll.bind(this)}
                 className={(this.state.initialCollapse) ? "collapse-expand initial" : "collapse-expand"} >
                 [{this.state.isTreeviewExpanded ? Localization.get("lblCollapseAll").toUpperCase() : Localization.get("lblExpandAll").toUpperCase()}]
             </div>
@@ -779,5 +775,12 @@ PersonaBarPageTreeviewInteractor.propTypes = {
     getChildPageList: PropTypes.func.isRequired,
     getPageList: PropTypes.func.isRequired,
     pageInContextComponents: PropTypes.array.isRequired,
-    Localization: PropTypes.func.isRequired
+    Localization: PropTypes.func.isRequired,
+    onNoPermissionSelection: PropTypes.func.isRequired,
+    NoPermissionSelectionPageId: PropTypes.number.isRequired,
+    enabled: PropTypes.bool
+};
+
+PersonaBarPageTreeviewInteractor.defaultProps = {
+    enabled: true
 };

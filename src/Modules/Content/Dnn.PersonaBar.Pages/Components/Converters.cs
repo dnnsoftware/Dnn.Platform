@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using Dnn.PersonaBar.Pages.Components.Security;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
 using Dnn.PersonaBar.Themes.Components.DTO;
@@ -43,11 +44,12 @@ namespace Dnn.PersonaBar.Pages.Components
                 LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
                 PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : "",
+                PublishStatus = GetTabPublishStatus(tab),
                 Tags = tab.Terms.Select(t => t.Name).ToArray(),
                 TabOrder = tab.TabOrder
-        };
+            };
         }
-        
+
         public static ModuleItem ConvertToModuleItem(ModuleInfo module) => new ModuleItem
         {
             Id = module.ModuleID,
@@ -62,7 +64,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return Globals.NavigateURL(module.TabID, PortalSettings.Current, "Module", "ModuleId=" + module.ModuleID);
         }
 
-        public static T ConvertToPageSettings<T>(TabInfo tab) where T: PageSettings, new()
+        public static T ConvertToPageSettings<T>(TabInfo tab) where T : PageSettings, new()
         {
             if (tab == null)
             {
@@ -74,7 +76,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Current.Description;
             var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.Current.KeyWords;
             var pageType = GetPageType(tab.Url);
-            
+
             var file = GetFileRedirection(tab.Url);
             var fileId = file?.FileId;
             var fileUrl = file?.Folder;
@@ -106,8 +108,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 IncludeInMenu = tab.IsVisible,
                 DisableLink = tab.DisableLink,
                 CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
-                StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?) null,
-                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?) null,
+                StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?)null,
+                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?)null,
                 IsSecure = tab.IsSecure,
                 AllowIndex = AllowIndex(tab),
                 CacheProvider = (string)tab.TabSettings["CacheProvider"],
@@ -127,10 +129,11 @@ namespace Dnn.PersonaBar.Pages.Components
                 ContainerSrc = tab.ContainerSrc,
                 HasChild = pageManagementController.TabHasChildren(tab),
                 ParentId = tab.ParentId,
-                IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current)
+                IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
+                PagePermissions = SecurityService.Instance.GetPagePermissions(tab)
             };
         }
-        
+
         private static ThemeFileInfo GetThemeFileFromSkinSrc(string skinSrc)
         {
             if (string.IsNullOrWhiteSpace(skinSrc))
@@ -163,7 +166,7 @@ namespace Dnn.PersonaBar.Pages.Components
             int i;
             var duration = (int?)null;
 
-            if (tab.TabSettings["CacheDuration"] != null && int.TryParse((string) tab.TabSettings["CacheDuration"], out i))
+            if (tab.TabSettings["CacheDuration"] != null && int.TryParse((string)tab.TabSettings["CacheDuration"], out i))
             {
                 duration = i;
             }
@@ -214,6 +217,13 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return tab.IsVisible ? "Visible" : "Hidden";
+        }
+
+        private static string GetTabPublishStatus(TabInfo tab)
+        {
+            return tab.HasBeenPublished && WorkflowHelper.IsWorkflowCompleted(tab)
+                ? Localization.GetString("lblPublished")
+                : Localization.GetString("lblDraft");
         }
     }
 }

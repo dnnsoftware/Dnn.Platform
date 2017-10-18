@@ -22,6 +22,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -102,18 +103,22 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             //check whether have conflict between tab path and portal alias.
-            if (TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
+            if (valid && TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
             {
                 errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), newTabName, newTabPath);
                 valid = false;
             }
 
-            bool modified;
-            FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
-            if (modified)
+            if (valid)
             {
-                errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
-                valid = false;
+                bool modified;
+                FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger,
+                    portalSettings, out modified);
+                if (modified)
+                {
+                    errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
+                    valid = false;
+                }
             }
 
             return valid;
@@ -399,13 +404,15 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
             }
             DateTime startDate;
-            if (!string.IsNullOrEmpty(publishDateStart) && DateTime.TryParse(publishDateStart, out startDate))
+            if (!string.IsNullOrEmpty(publishDateStart))
             {
+                startDate = DateTime.ParseExact(publishDateStart, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) >= startDate);
             }
             DateTime endDate;
-            if (!string.IsNullOrEmpty(publishDateEnd) && DateTime.TryParse(publishDateEnd, out endDate))
+            if (!string.IsNullOrEmpty(publishDateEnd))
             {
+                endDate = DateTime.ParseExact(publishDateEnd, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 pages = pages.Where(p => WorkflowHelper.GetTabLastPublishedOn(p) <= endDate);
             }
             if (workflowId != -1)
@@ -1226,6 +1233,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private void CopyModulesFromSourceTab(TabInfo tab, TabInfo sourceTab, IEnumerable<ModuleItem> includedModules)
         {
+            includedModules = includedModules ?? sourceTab.ChildModules.Values.Select(Converters.ConvertToModuleItem);
             foreach (var module in includedModules)
             {
                 var includedInCopy = module.IncludedInCopy ?? true;

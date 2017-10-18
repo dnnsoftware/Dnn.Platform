@@ -21,12 +21,6 @@ const PageService = function () {
         const api = getOverridablePagesApi();
         let request = page;
 
-        if (page.tabId === 0 && !securityService.isSuperUser()) {
-            request = {
-                ...page,
-                parentId: utils.getCurrentPageId()
-            };
-        }
         if (!hasChangeUrl) {
             request = {
                 ...request,
@@ -188,6 +182,11 @@ const PageService = function () {
         return api.get("GetWorkflows");
     };
 
+    const getPageHierarchy = (id) => {
+        const api = getPagesApi();
+        return api.get("GetPageHierarchy", {pageId: id});
+    };
+
     return {
         getPageList,
         getChildPageList,
@@ -207,7 +206,8 @@ const PageService = function () {
         getCachedPageCount,
         clearCache,
         movePage,
-        getWorkflowsList
+        getWorkflowsList,
+        getPageHierarchy
     };
 };
 

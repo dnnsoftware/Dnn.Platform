@@ -56,7 +56,8 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
                 {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
                 {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName},
                 {"productSKU", DotNetNukeContext.Current.Application.SKU},
-                {"isAdmin", _securityService.IsPageAdminUser() }
+                {"isAdmin", _securityService.IsPageAdminUser()},
+                {"currentParentHasChildren", PortalSettings.Current?.ActiveTab?.HasChildren}
             };
 
             return settings;

@@ -20,6 +20,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "status")]
         public string Status { get; set; }
 
+        [DataMember(Name = "publishStatus")]
+        public string PublishStatus { get; set; }
+
         [DataMember(Name = "parentId")]
         public int ParentId { get; set; }
 

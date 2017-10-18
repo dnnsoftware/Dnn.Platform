@@ -78,6 +78,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
@@ -102,6 +103,14 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Attributes\AuthProviderSupportedAttribute.cs" />
+    <Compile Include="Attributes\CultureCodeExistAttribute.cs" />
+    <Compile Include="Attributes\RegistrationFieldsAttribute.cs" />
+    <Compile Include="Attributes\RegistrationFormTypeOptionAttribute.cs" />
+    <Compile Include="Attributes\TabExistAttribute.cs" />
+    <Compile Include="Attributes\UserEmailAsUsernameAttribute.cs" />
+    <Compile Include="Attributes\UserExistAttribute.cs" />
+    <Compile Include="Attributes\UserRegistrationOptionAttribute.cs" />
     <Compile Include="Components\AuditChecks.cs" />
     <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\CheckResult.cs" />
@@ -122,6 +131,7 @@
     <Compile Include="Components\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Checks\CheckViewstatemac.cs" />
     <Compile Include="Components\Constants.cs" />
+    <Compile Include="Helper\RegistrationSettingsHelper.cs" />
     <Compile Include="MenuControllers\SecurityMenuController.cs" />
     <Compile Include="Components\IAuditCheck.cs" />
     <Compile Include="Components\SecurityController.cs" />

@@ -245,13 +245,9 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         [HttpGet]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage GetPageHierarchy(int pageId)
         {
-            if (!_securityService.IsPageAdminUser())
-            {
-                return GetForbiddenResponse();
-            }
-
             try
             {
                 var paths = _pagesController.GetPageHierarchy(pageId);
@@ -380,7 +376,7 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         public HttpResponseMessage EditModeForPage([FromUri]int id)
         {
-            if (!_securityService.CanManagePage(id))
+            if (!TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(id, PortalId)))
             {
                 return GetForbiddenResponse();
             }

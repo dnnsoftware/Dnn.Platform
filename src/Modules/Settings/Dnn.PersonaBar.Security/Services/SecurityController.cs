@@ -48,7 +48,8 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Api; 
+using Dnn.PersonaBar.Security.Helper;
 
 namespace Dnn.PersonaBar.Security.Services
 {
@@ -139,6 +140,11 @@ namespace Dnn.PersonaBar.Security.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit)]
         public HttpResponseMessage UpdateBasicLoginSettings(UpdateBasicLoginSettingsRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
             try
             {
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode)
@@ -415,15 +421,8 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var userRegistrationOptions = new List<KeyValuePair<string, int>>();
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("None", Components.Constants.LocalResourcesFile), 0));
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Private", Components.Constants.LocalResourcesFile), 1));
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Public", Components.Constants.LocalResourcesFile), 2));
-                userRegistrationOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Verified", Components.Constants.LocalResourcesFile), 3));
-
-                var registrationFormTypeOptions = new List<KeyValuePair<string, int>>();
-                registrationFormTypeOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Standard", Components.Constants.LocalResourcesFile), 0));
-                registrationFormTypeOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Custom", Components.Constants.LocalResourcesFile), 1));
+                List<KeyValuePair<string, int>> userRegistrationOptions = RegistrationSettingsHelper.GetUserRegistrationOptions();
+                List<KeyValuePair<string, int>> registrationFormTypeOptions = RegistrationSettingsHelper.GetRegistrationFormOptions();
 
                 var activeLanguage = LocaleController.Instance.GetDefaultLocale(PortalId).Code;
                 var portal = PortalController.Instance.GetPortal(PortalId, activeLanguage);
@@ -522,34 +521,17 @@ namespace Dnn.PersonaBar.Security.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit)]
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
             try
             {
-                if (request.RegistrationFormType == 1)
-                {
-                    var setting = request.RegistrationFields;
-                    if (!setting.Contains("Email"))
-                    {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("NoEmail", Components.Constants.LocalResourcesFile));
-                    }
-
-                    if (!setting.Contains("DisplayName") && request.RequireUniqueDisplayName)
-                    {
-                        PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFormType", "0", false);
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("NoDisplayName", Components.Constants.LocalResourcesFile));
-                    }
-
-                    PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFields", setting);
-                }
+                var setting = request.RegistrationFields;
+                PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFields", setting);
                 PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFormType", request.RegistrationFormType.ToString(), false);
-
-                if (request.UseEmailAsUsername && UserController.GetDuplicateEmailCount() > 0)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("ContainsDuplicateAddresses", Components.Constants.LocalResourcesFile));
-                }
-                else
-                {
-                    PortalController.UpdatePortalSetting(PortalId, "Registration_UseEmailAsUserName", request.UseEmailAsUsername.ToString(), false);
-                }
+                PortalController.UpdatePortalSetting(PortalId, "Registration_UseEmailAsUserName", request.UseEmailAsUsername.ToString(), false);
 
                 var portalInfo = PortalController.Instance.GetPortal(PortalId);
                 portalInfo.UserRegistration = Convert.ToInt32(request.UserRegistration);
