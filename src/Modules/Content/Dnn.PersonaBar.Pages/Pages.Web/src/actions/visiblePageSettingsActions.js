@@ -1,14 +1,13 @@
 import PageSettingsActionTypes from "../constants/actionTypes/visiblePageSettingsActionTypes";
 
 
-const visiblePanelActions = {
-    //TODO: Verify the pageId to identify what custom detail panel should be preseted to user
+const visiblePageSettingsActions = {
 
-    showCustomPageSettings() {        
+    showCustomPageSettings(pageSettingsId) {    
         return (dispatch) => {
             dispatch({
                 type: PageSettingsActionTypes.SHOW_CUSTOM_PAGE_SETTINGS,
-                data: {}
+                data: { pageSettingsId }
             });
         };
     },
@@ -21,4 +20,5 @@ const visiblePanelActions = {
         };       
     }
 };
-export default visiblePanelActions;
+export default visiblePageSettingsActions
+;

@@ -24,7 +24,7 @@ export default function extensionsReducer(state = {
 
     function addPageSettingsComponent(component){
         let newPageSettingsComponents = [...state.pageSettingsComponents];
-        newPageSettingsComponents = newPageSettingsComponents.concat(component.component);
+        newPageSettingsComponents = newPageSettingsComponents.concat(component);
         return newPageSettingsComponents;
     }
 
@@ -42,8 +42,6 @@ export default function extensionsReducer(state = {
         case ActionTypes.REGISTER_PAGE_SETTINGS_COMPONENT:
             return {
                 ...state,
-                //pageSettings: [...state.pageSettings, action.data.component]
-                //TODO: Alter to single component
                 pageSettingsComponent : addPageSettingsComponent(action.data.component)
             };
         case ActionTypes.REGISTER_PAGE_DETAILS_FOOTER_COMPONENT:

@@ -506,7 +506,7 @@ class App extends Component {
     }
 
     getSettingsButtons() {
-        const { settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
+        const { settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPageSettings, onHidePageSettings } = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
         
         return (
@@ -517,8 +517,8 @@ class App extends Component {
                         size="large"
                         disabled={this.onEditMode()}
                         onClick={onLoadSavePageAsTemplate}
-                        onShowPanelCallback={onShowPanel}
-                        onHidePanelCallback={onHidePanel}
+                        onShowPageSettingsCallback={onShowPageSettings}
+                        onHidePageSettings={onHidePageSettings}
                         onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
                         {Localization.get("SaveAsTemplate")}
                     </SaveAsTemplateButton>
@@ -1096,35 +1096,25 @@ class App extends Component {
         return this.getAddPages();
     }
 
-    render_customComponent(){
-        let {props} = this;
-        let CustomComponent = props.customPageSettingsComponents[0];
-        return (
-            <CustomComponent 
-                onCancel={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
-                onSave={props.onSave}
-                selectedPage={props.selectedPage}
-                disabled={this.onEditMode()}
-            />
-        );
-    }
-
 
     getAdditionalPageSettings() {
         const additionalPageSettings = [];
+
         const { props } = this;
+        
         if (props.customPageSettingsComponents) {
             for (let i = 0; i < props.customPageSettingsComponents.length; i++) {
                 const customPageSettings = props.customPageSettingsComponents[i];
-                // if (props.selectedView === customPageSettings.panelId) {
+                if (props.selectedCustomPageSettings.pageSettingsId === customPageSettings.panelId) {
                     const Component = customPageSettings.component;
                     additionalPageSettings.push(
                         <Component
-                            onCancel={props.onCancel}
+                            onCancel={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                             selectedPage={props.selectedPage}
+                            disabled={this.onEditMode()}
                             store={customPageSettings.store} />
                     );
-                // }
+                }
             }
         }
 
@@ -1146,7 +1136,7 @@ class App extends Component {
             case selectedView === panels.SAVE_AS_TEMPLATE_PANEL:
                 return this.getSaveAsTemplatePage();
             case selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL:
-                return this.render_customComponent();
+                return this.getAdditionalPageSettings();
             case !selectedPage:
             default:
                 return this.render_PagesDetailEditor();
@@ -1328,6 +1318,8 @@ App.propTypes = {
     additionalPanels: PropTypes.array.isRequired,
     onShowPanel: PropTypes.func.isRequired,
     onHidePanel: PropTypes.func.isRequired,
+    onShowPageSettings: PropTypes.func,
+    onHidePageSettings: PropTypes.func,
     isContentLocalizationEnabled: PropTypes.object.isRequired,
     getContentLocalizationEnabled: PropTypes.func.isRequired,
     selectPage: PropTypes.func.isRequired,
@@ -1342,11 +1334,11 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
-
     return {
         pageList: state.pageList.pageList,
         searchList: state.searchList.searchList,
         selectedView: state.visiblePanel.selectedPage,
+        selectedCustomPageSettings : state.visiblePageSettings.panelId,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
         selectedPageDirty: state.pages.dirtyPage,
@@ -1400,10 +1392,10 @@ function mapDispatchToProps(dispatch) {
         onLoadSavePageAsTemplate: TemplateActions.loadSavePageAsTemplate,
         onCancelSavePageAsTemplate: TemplateActions.cancelSavePageAsTemplate,
         onDuplicatePage: PageActions.duplicatePage,
-        // onShowPanel: VisiblePanelActions.showPanel, 
-        // onHidePanel: VisiblePanelActions.hidePanel,
-        onShowPanel: VisiblePageSettingsActions.showCustomPageSettings,
-        onHidePanel: VisiblePageSettingsActions.hideCustomPageSettings,
+        onShowPanel: VisiblePanelActions.showPanel, 
+        onHidePanel: VisiblePanelActions.hidePanel,
+        onShowPageSettings: VisiblePageSettingsActions.showCustomPageSettings,
+        onHidePageSettings: VisiblePageSettingsActions.hideCustomPageSettings,
         getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
         selectPage: PageHierarchyActions.selectPage,
         changeSelectedPagePath: PageHierarchyActions.changeSelectedPagePath,
