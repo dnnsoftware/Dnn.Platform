@@ -317,7 +317,7 @@ class App extends Component {
                     });
                 };
 
-                (update.oldParentId == 1 || update.parentId == 1) ? left() : right();
+                (update.oldParentId === -1 || update.parentId === -1) ? left() : right();
             };
 
             const addToNewParent = () => {
