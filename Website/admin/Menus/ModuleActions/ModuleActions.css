@@ -176,18 +176,13 @@ div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.secondarybtn 
 }
 div.actionMenu ul.dnn_mact li.dnn_shared {
   display: inline-block;
-  width: 20px;
-  height: 100px;
-  background-color: #ffffff;
 }
 div.actionMenu ul.dnn_mact li.dnn_shared > div {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  writing-mode: tb-rl;
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
+  padding: 0.5em 0;
+  -webkit-writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
   white-space: nowrap;
   color: white;
   background-color: #000;
