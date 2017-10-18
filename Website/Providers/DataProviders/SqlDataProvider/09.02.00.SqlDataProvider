@@ -558,19 +558,10 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPasswordHistory]
 	@PasswordsRetained  int,
 	@DaysRetained       int
 AS
-	DELETE FROM {databaseOwner}{objectQualifier}PasswordHistory
-	WHERE UserID=@UserId
-	  AND PasswordHistoryID NOT IN (
-		SELECT TOP (@PasswordsRetained) PasswordHistoryID
-		FROM {databaseOwner}{objectQualifier}PasswordHistory
-		WHERE UserID=@UserId
-		ORDER BY CreatedOnDate DESC
-		)
-	  AND DATEDIFF(day, CreatedOnDate, GETDATE()) > @DaysRetained;
-
-	SELECT *
+	SELECT TOP (@PasswordsRetained) *
 	FROM {databaseOwner}{objectQualifier}PasswordHistory
 	WHERE UserID=@UserID
+	  AND DATEDIFF(day, CreatedOnDate, GETDATE()) <= @DaysRetained;
 GO
 
 /************************************************************/
