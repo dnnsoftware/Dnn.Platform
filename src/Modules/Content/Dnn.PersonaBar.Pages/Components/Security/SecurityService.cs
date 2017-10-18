@@ -157,6 +157,12 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             );
         }
 
+        public virtual bool IsAdminHostSystemPage()
+        {
+            return PortalSettings.Current.ActiveTab.IsSystem || PortalSettings.Current.ActiveTab.IsSuperTab ||
+                PortalSettings.Current.ActiveTab.ParentId == PortalSettings.Current.AdminTabId || PortalSettings.Current.ActiveTab.TabID == PortalSettings.Current.AdminTabId;
+        }
+
         private TabInfo GetTabById(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();

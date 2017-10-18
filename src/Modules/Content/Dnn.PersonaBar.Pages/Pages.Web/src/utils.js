@@ -169,6 +169,10 @@ function isPlatform(){
     checkInit();
     return settings.productSKU.toLowerCase() === 'dnn';
 }
+function getIsAdminHostSystemPage() {
+    checkInit();
+    return settings.isAdminHostSystemPage;
+}
 const utils = {
     init,
     load,
@@ -197,7 +201,8 @@ const utils = {
     getCurrentPageName,
     getDefaultPageUrl,
     getProductSKU,
-    isPlatform
+    isPlatform,
+    getIsAdminHostSystemPage
 };
 
 export default utils;
