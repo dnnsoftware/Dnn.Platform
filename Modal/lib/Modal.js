@@ -1,1 +1,158 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t(require("dnn-svg-icons"),require("react"),require("react-custom-scrollbars"),require("react-modal")):"function"==typeof define&&define.amd?define(["dnn-svg-icons","react","react-custom-scrollbars","react-modal"],t):"object"==typeof exports?exports.Modal=t(require("dnn-svg-icons"),require("react"),require("react-custom-scrollbars"),require("react-modal")):e.Modal=t(e["dnn-svg-icons"],e.react,e["react-custom-scrollbars"],e["react-modal"])}(this,function(e,t,r,n){return function(e){function t(n){if(r[n])return r[n].exports;var o=r[n]={exports:{},id:n,loaded:!1};return e[n].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var r={};return t.m=e,t.c=r,t.p="",t(0)}([function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function a(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function i(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var l=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),s=r(6),c=n(s),u=r(8),d=n(u),p=r(7),f=r(5);r(4);var h=function(e){function t(){return o(this,t),a(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return i(t,e),l(t,[{key:"getScrollbarStyle",value:function(e){return{width:"100%",height:e.header?"calc(100% - 55px)":"100%",boxSizing:"border-box",padding:"25px 30px"}}},{key:"getModalStyles",value:function(e){var t=e.modalWidth,r=e.modalTopMargin;return document.getElementsByClassName("socialpanel")&&document.getElementsByClassName("socialpanel").length>0&&!e.modalWidth&&(t=document.getElementsByClassName("socialpanel")[0].offsetWidth),document.getElementsByClassName("dnn-persona-bar-page-header")&&document.getElementsByClassName("dnn-persona-bar-page-header").length>0&&!e.modalHeight&&(r=document.getElementsByClassName("dnn-persona-bar-page-header")[0].offsetHeight),e.style||{overlay:{zIndex:"99999",backgroundColor:"rgba(0,0,0,0.6)"},content:{top:r+e.dialogVerticalMargin,left:e.dialogHorizontalMargin+85,padding:0,borderRadius:0,border:"none",width:t-2*e.dialogHorizontalMargin,height:e.modalHeight||"60%",backgroundColor:"#FFFFFF",position:"absolute",userSelect:"none",WebkitUserSelect:"none",MozUserSelect:"none",MsUserSelect:"none",boxSizing:"border-box"}}}},{key:"render",value:function(){var e=this.props,t=this.getModalStyles(e),r=this.getScrollbarStyle(e);return c["default"].createElement(d["default"],{isOpen:e.isOpen,onRequestClose:e.onRequestClose,onAfterOpen:e.onAfterOpen,closeTimeoutMS:e.closeTimeoutMS,shouldCloseOnOverlayClick:e.shouldCloseOnOverlayClick,style:t},e.header&&c["default"].createElement("div",{className:"modal-header"},c["default"].createElement("h3",null,e.header),e.headerChildren,c["default"].createElement("div",{className:"close-modal-button",dangerouslySetInnerHTML:{__html:f.XThinIcon},onClick:e.onRequestClose})),c["default"].createElement(p.Scrollbars,{style:r},c["default"].createElement("div",{style:e.contentStyle},e.children)))}}]),t}(s.Component);h.propTypes={isOpen:s.PropTypes.bool,style:s.PropTypes.object,onRequestClose:s.PropTypes.func,children:s.PropTypes.node,dialogVerticalMargin:s.PropTypes.number,dialogHorizontalMargin:s.PropTypes.number,modalWidth:s.PropTypes.number,modalHeight:s.PropTypes.number,modalTopMargin:s.PropTypes.number,header:s.PropTypes.string,headerChildren:s.PropTypes.node,contentStyle:s.PropTypes.object,onAfterOpen:s.PropTypes.func,closeTimeoutMS:s.PropTypes.number,shouldCloseOnOverlayClick:s.PropTypes.bool},h.defaultProps={modalWidth:861,modalTopMargin:100,dialogVerticalMargin:25,dialogHorizontalMargin:30,contentStyle:{padding:"25px 30px"},shouldCloseOnOverlayClick:!0},t["default"]=h},function(e,t,r){t=e.exports=r(2)(),t.push([e.id,"svg{fill:#c8c8c8}svg:hover{fill:#6f7273}svg:active{fill:#1e88c3}.ReactModalPortal{position:relative}.ReactModalPortal .modal-header{width:100%;height:50px;border-bottom:1px solid #c8c8c8}.ReactModalPortal .modal-header h3{font-size:18px;padding:15px 30px;float:left;color:#46292b}.ReactModalPortal .modal-header .close-modal-button{width:16px;height:16px;float:right;padding:17px 20px;cursor:pointer}",""])},function(e,t){e.exports=function(){var e=[];return e.toString=function(){for(var e=[],t=0;t<this.length;t++){var r=this[t];r[2]?e.push("@media "+r[2]+"{"+r[1]+"}"):e.push(r[1])}return e.join("")},e.i=function(t,r){"string"==typeof t&&(t=[[null,t,""]]);for(var n={},o=0;o<this.length;o++){var a=this[o][0];"number"==typeof a&&(n[a]=!0)}for(o=0;o<t.length;o++){var i=t[o];"number"==typeof i[0]&&n[i[0]]||(r&&!i[2]?i[2]=r:r&&(i[2]="("+i[2]+") and ("+r+")"),e.push(i))}},e}},function(e,t,r){function n(e,t){for(var r=0;r<e.length;r++){var n=e[r],o=f[n.id];if(o){o.refs++;for(var a=0;a<o.parts.length;a++)o.parts[a](n.parts[a]);for(;a<n.parts.length;a++)o.parts.push(c(n.parts[a],t))}else{for(var i=[],a=0;a<n.parts.length;a++)i.push(c(n.parts[a],t));f[n.id]={id:n.id,refs:1,parts:i}}}}function o(e){for(var t=[],r={},n=0;n<e.length;n++){var o=e[n],a=o[0],i=o[1],l=o[2],s=o[3],c={css:i,media:l,sourceMap:s};r[a]?r[a].parts.push(c):t.push(r[a]={id:a,parts:[c]})}return t}function a(e,t){var r=g(),n=v[v.length-1];if("top"===e.insertAt)n?n.nextSibling?r.insertBefore(t,n.nextSibling):r.appendChild(t):r.insertBefore(t,r.firstChild),v.push(t);else{if("bottom"!==e.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");r.appendChild(t)}}function i(e){e.parentNode.removeChild(e);var t=v.indexOf(e);t>=0&&v.splice(t,1)}function l(e){var t=document.createElement("style");return t.type="text/css",a(e,t),t}function s(e){var t=document.createElement("link");return t.rel="stylesheet",a(e,t),t}function c(e,t){var r,n,o;if(t.singleton){var a=b++;r=y||(y=l(t)),n=u.bind(null,r,a,!1),o=u.bind(null,r,a,!0)}else e.sourceMap&&"function"==typeof URL&&"function"==typeof URL.createObjectURL&&"function"==typeof URL.revokeObjectURL&&"function"==typeof Blob&&"function"==typeof btoa?(r=s(t),n=p.bind(null,r),o=function(){i(r),r.href&&URL.revokeObjectURL(r.href)}):(r=l(t),n=d.bind(null,r),o=function(){i(r)});return n(e),function(t){if(t){if(t.css===e.css&&t.media===e.media&&t.sourceMap===e.sourceMap)return;n(e=t)}else o()}}function u(e,t,r,n){var o=r?"":n.css;if(e.styleSheet)e.styleSheet.cssText=x(t,o);else{var a=document.createTextNode(o),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(a,i[t]):e.appendChild(a)}}function d(e,t){var r=t.css,n=t.media;t.sourceMap;if(n&&e.setAttribute("media",n),e.styleSheet)e.styleSheet.cssText=r;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(r))}}function p(e,t){var r=t.css,n=(t.media,t.sourceMap);n&&(r+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(n))))+" */");var o=new Blob([r],{type:"text/css"}),a=e.href;e.href=URL.createObjectURL(o),a&&URL.revokeObjectURL(a)}var f={},h=function(e){var t;return function(){return"undefined"==typeof t&&(t=e.apply(this,arguments)),t}},m=h(function(){return/msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase())}),g=h(function(){return document.head||document.getElementsByTagName("head")[0]}),y=null,b=0,v=[];e.exports=function(e,t){t=t||{},"undefined"==typeof t.singleton&&(t.singleton=m()),"undefined"==typeof t.insertAt&&(t.insertAt="bottom");var r=o(e);return n(r,t),function(e){for(var a=[],i=0;i<r.length;i++){var l=r[i],s=f[l.id];s.refs--,a.push(s)}if(e){var c=o(e);n(c,t)}for(var i=0;i<a.length;i++){var s=a[i];if(0===s.refs){for(var u=0;u<s.parts.length;u++)s.parts[u]();delete f[s.id]}}}};var x=function(){var e=[];return function(t,r){return e[t]=r,e.filter(Boolean).join("\n")}}()},function(e,t,r){var n=r(1);"string"==typeof n&&(n=[[e.id,n,""]]);r(3)(n,{});n.locals&&(e.exports=n.locals)},function(t,r){t.exports=e},function(e,r){e.exports=t},function(e,t){e.exports=r},function(e,t){e.exports=n}])});
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactModal = require("react-modal");
+
+var _reactModal2 = _interopRequireDefault(_reactModal);
+
+var _reactCustomScrollbars = require("react-custom-scrollbars");
+
+var _dnnSvgIcons = require("dnn-svg-icons");
+
+require("./style.less");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Modal = function (_Component) {
+    _inherits(Modal, _Component);
+
+    function Modal() {
+        _classCallCheck(this, Modal);
+
+        return _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).apply(this, arguments));
+    }
+
+    _createClass(Modal, [{
+        key: "getScrollbarStyle",
+        value: function getScrollbarStyle(props) {
+            return {
+                width: "100%",
+                height: props.header ? "calc(100% - 55px)" : "100%",
+                boxSizing: "border-box",
+                padding: "25px 30px"
+            };
+        }
+    }, {
+        key: "getModalStyles",
+        value: function getModalStyles(props) {
+            var modalWidth = props.modalWidth;
+            var modalTopMargin = props.modalTopMargin;
+            if (document.getElementsByClassName("socialpanel") && document.getElementsByClassName("socialpanel").length > 0 && !props.modalWidth) {
+                modalWidth = document.getElementsByClassName("socialpanel")[0].offsetWidth;
+            }
+            if (document.getElementsByClassName("dnn-persona-bar-page-header") && document.getElementsByClassName("dnn-persona-bar-page-header").length > 0 && !props.modalHeight) {
+                modalTopMargin = document.getElementsByClassName("dnn-persona-bar-page-header")[0].offsetHeight;
+            }
+            return props.style || {
+                overlay: {
+                    zIndex: "99999",
+                    backgroundColor: "rgba(0,0,0,0.6)"
+                },
+                content: {
+                    top: modalTopMargin + props.dialogVerticalMargin,
+                    left: props.dialogHorizontalMargin + 85,
+                    padding: 0,
+                    borderRadius: 0,
+                    border: "none",
+                    width: modalWidth - props.dialogHorizontalMargin * 2,
+                    height: props.modalHeight || "60%",
+                    backgroundColor: "#FFFFFF",
+                    position: "absolute",
+                    userSelect: "none",
+                    WebkitUserSelect: "none",
+                    MozUserSelect: "none",
+                    MsUserSelect: "none",
+                    boxSizing: "border-box"
+                }
+            };
+        }
+        /*eslint-disable react/no-danger*/
+
+    }, {
+        key: "render",
+        value: function render() {
+            var props = this.props;
+
+            var modalStyles = this.getModalStyles(props);
+            var scrollBarStyle = this.getScrollbarStyle(props);
+            return _react2.default.createElement(
+                _reactModal2.default,
+                {
+                    isOpen: props.isOpen,
+                    onRequestClose: props.onRequestClose,
+                    onAfterOpen: props.onAfterOpen,
+                    closeTimeoutMS: props.closeTimeoutMS,
+                    shouldCloseOnOverlayClick: props.shouldCloseOnOverlayClick,
+                    style: modalStyles },
+                props.header && _react2.default.createElement(
+                    "div",
+                    { className: "modal-header" },
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        props.header
+                    ),
+                    props.headerChildren,
+                    _react2.default.createElement("div", {
+                        className: "close-modal-button",
+                        dangerouslySetInnerHTML: { __html: _dnnSvgIcons.XThinIcon },
+                        onClick: props.onRequestClose })
+                ),
+                _react2.default.createElement(
+                    _reactCustomScrollbars.Scrollbars,
+                    { style: scrollBarStyle },
+                    _react2.default.createElement(
+                        "div",
+                        { style: props.contentStyle },
+                        props.children
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Modal;
+}(_react.Component);
+
+Modal.propTypes = {
+    isOpen: _react.PropTypes.bool,
+    style: _react.PropTypes.object,
+    onRequestClose: _react.PropTypes.func,
+    children: _react.PropTypes.node,
+    dialogVerticalMargin: _react.PropTypes.number,
+    dialogHorizontalMargin: _react.PropTypes.number,
+    modalWidth: _react.PropTypes.number,
+    modalHeight: _react.PropTypes.number,
+    modalTopMargin: _react.PropTypes.number,
+    header: _react.PropTypes.string,
+    headerChildren: _react.PropTypes.node,
+    contentStyle: _react.PropTypes.object,
+    onAfterOpen: _react.PropTypes.func,
+    closeTimeoutMS: _react.PropTypes.number,
+    shouldCloseOnOverlayClick: _react.PropTypes.bool
+};
+Modal.defaultProps = {
+    modalWidth: 861,
+    modalTopMargin: 100,
+    dialogVerticalMargin: 25,
+    dialogHorizontalMargin: 30,
+    contentStyle: { padding: "25px 30px" },
+    shouldCloseOnOverlayClick: true
+};
+exports.default = Modal;
+//# sourceMappingURL=Modal.js.map
