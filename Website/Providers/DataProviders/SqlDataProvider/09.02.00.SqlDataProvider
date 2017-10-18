@@ -346,19 +346,10 @@ BEGIN
             DECLARE @propertyFilter nvarchar(max)
             DECLARE @userFilter nvarchar(max)
             DECLARE @userFilterJoin nvarchar(max) SET @userFilterJoin = ''
-            DECLARE @needJoinDataType BIT SET @needJoinDataType = 0
-            DECLARE @dataTypeJoin nvarchar(max) SET @dataTypeJoin = ''
             DECLARE @profilePropertyCount INT
             DECLARE @userFilterCount INT
             DECLARE @propertyAndUserFilter nvarchar(10) SET @propertyAndUserFilter = ''
             DECLARE @groupBy NVARCHAR(300)
-
-            --Check whether need to join the data type (Lists) table to search
-            IF EXISTS(SELECT 1 FROM @PropertyNamesTable WHERE RowValue IN ('Country','Region'))
-            BEGIN
-                SET @needJoinDataType = 1
-                SET @dataTypeJoin = ' LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.EntryID = CASE WHEN p.PropertyName = ''Region'' OR p.PropertyName = ''Country'' THEN CAST(p.PropertyValue AS INT) ELSE 0 END'
-            END
 
             -- Filters on Profile Properties    
             ;WITH CTE_PropertyNames(RowNumber, RowValue) AS
@@ -370,9 +361,12 @@ BEGIN
 
             SELECT @propertyFilter = COALESCE(@propertyFilter + ' OR ' , ' ') 
                                         + ' (PropertyName=''' + N.RowValue 
-                                        + ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%'')'
-                                        + CASE WHEN @needJoinDataType = 1 THEN ' OR (l.Text LIKE ''' + V.RowValue +'%'')' ELSE '' END
-                                        + '))'
+                                        + CASE WHEN SUBSTRING(V.RowValue, 1, 1) = '$' AND SUBSTRING(V.RowValue, LEN(V.RowValue), 1) = '$' THEN
+                                            ''' AND CHARINDEX(''$'' + PropertyValue + ''$'', ''' + V.RowValue + ''') > 0'
+                                          ELSE 
+                                            ''' AND ((PropertyValue LIKE ''' + V.RowValue +'%'') OR (PropertyValue LIKE ''% ' + V.RowValue +'%''))'
+                                          END
+                                        + ')'
             FROM CTE_PropertyNames AS N INNER JOIN CTE_PropertyValues AS V ON N.RowNumber = V.RowNumber
                                 
             -- Filters on User Property                           
@@ -398,7 +392,7 @@ BEGIN
 
             -- CREATE FINAL FILTER
             SET @filterSql = ' CREATE TABLE #MatchingUsers (UserId int, occurances int) INSERT INTO #MatchingUsers SELECT p.UserID, COUNT(*) AS occurances' 
-                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin + @dataTypeJoin
+                                        + ' FROM {databaseOwner}{objectQualifier}vw_profile p ' + @userFilterJoin
                                         + ' WHERE ' + COALESCE(' ( ' + @propertyFilter + ') ', ' ') + @propertyAndUserFilter + COALESCE(@userFilter, ' ') 
 										+ ' AND ((Visibility = 0) OR (Visibility = 1 AND ' + CONVERT(nvarchar(20), @UserId) + ' > 0) OR (Visibility = 2 AND ' + CONVERT(nvarchar(20), @IsAdmin) + ' = 1))' 
                                         + @groupBy
@@ -517,6 +511,48 @@ BEGIN
         EXEC(@sql)
 END
 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ConvertListToTable]') AND type in (N'FN', N'TF', N'IF'))
+	DROP FUNCTION {databaseOwner}[{objectQualifier}ConvertListToTable]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}ConvertListToTable]
+(  
+	@Delimiter	NVARCHAR(5), 
+    @List		NVARCHAR(MAX)
+) 
+RETURNS @TableOfValues TABLE 
+(  
+	RowNumber	SMALLINT IDENTITY(1,1), 
+    RowValue	NVARCHAR(1000) 
+) 
+AS 
+   BEGIN
+      DECLARE @LenString INT 
+ 
+      WHILE len( @List ) > 0 
+         BEGIN 
+         
+            SELECT @LenString = 
+               (CASE charindex( @Delimiter, @List ) 
+                   WHEN 0 THEN len( @List ) 
+                   ELSE ( charindex( @Delimiter, @List ) -1 )
+                END
+               ) 
+                                
+            INSERT INTO @TableOfValues 
+               SELECT substring( @List, 1, @LenString )
+                
+            SELECT @List = 
+               (CASE ( len( @List ) - @LenString ) 
+                   WHEN 0 THEN '' 
+                   ELSE right( @List, len( @List ) - @LenString - 1 ) 
+                END
+               ) 
+         END
+      RETURN 
+   END 
 GO
 
 /* DNN-8564: Update DeleteTab so that TabOrder of other Portals is not affected on Delete */
