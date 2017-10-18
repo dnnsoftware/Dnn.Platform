@@ -1140,7 +1140,7 @@ namespace DotNetNuke.Entities.Modules
                         var newModule = sourceModule.Clone();
                         newModule.ModuleID = Null.NullInteger;
                         newModule.TabID = destinationTab.TabID;
-                        AddModule(sourceModule);
+                        AddModule(newModule);
                     }
                     else
                     {
