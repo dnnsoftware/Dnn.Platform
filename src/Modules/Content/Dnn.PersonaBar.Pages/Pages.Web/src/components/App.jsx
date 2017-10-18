@@ -100,7 +100,7 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         this.props.getPageList();
         const selectedPageId = utils.getCurrentPageId();
-        selectedPageId && this.props.onLoadPage(selectedPageId);
+        selectedPageId && !utils.getIsAdminHostSystemPage() && this.props.onLoadPage(selectedPageId);
         // .then(() => {
         //     this.shouldRunRecursive = false;
         //     this.buildTree(selectedPageId);

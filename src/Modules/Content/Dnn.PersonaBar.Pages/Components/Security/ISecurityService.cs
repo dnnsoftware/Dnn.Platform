@@ -30,5 +30,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         bool CanViewPageList(int menuId);
 
         bool CanSavePageDetails(PageSettings pageSettings);
+
+        bool IsAdminHostSystemPage();
     }
 }
