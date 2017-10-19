@@ -158,6 +158,14 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public string Version { get; private set; }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether the last update performed by this instance resulted in any changes
+        /// </summary>
+        /// <value><c>true</c> if there were changes, <c>false</c> if no changes were made to the target document</value>
+        /// -----------------------------------------------------------------------------
+        public bool ConfigUpdateChangedNodes { get; private set; }
+
         public IDictionary<string, XmlDocument> PendingDocuments
         {
             get
@@ -175,35 +183,44 @@ namespace DotNetNuke.Services.Installer
 
 		#region "Private Methods"
 
-        private void AddNode(XmlNode rootNode, XmlNode actionNode)
+        private bool AddNode(XmlNode rootNode, XmlNode actionNode)
         {
+            var changedNode = false;
             foreach (XmlNode child in actionNode.ChildNodes)
             {
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
                 {
                     rootNode.AppendChild(TargetConfig.ImportNode(child, true));
 					DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddNode:" + child.InnerXml.ToString());
+                    changedNode = true;
                 }
             }
+
+            return changedNode;
         }
 
-        private void PrependNode(XmlNode rootNode, XmlNode actionNode)
+        private bool PrependNode(XmlNode rootNode, XmlNode actionNode)
         {
+            var changedNode = false;
             foreach (XmlNode child in actionNode.ChildNodes)
             {
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
                 {
                     rootNode.PrependChild(TargetConfig.ImportNode(child, true));
                     DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "PrependNode:" + child.InnerXml.ToString());
+                    changedNode = true;
                 }
             }
+
+            return changedNode;
         }
 
-        private void InsertNode(XmlNode childRootNode, XmlNode actionNode, NodeInsertType mode)
+        private bool InsertNode(XmlNode childRootNode, XmlNode actionNode, NodeInsertType mode)
         {
             XmlNode rootNode = childRootNode.ParentNode;
             Debug.Assert(rootNode != null);
-            
+
+            var changedNode = false;
             foreach (XmlNode child in actionNode.ChildNodes)
             {
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
@@ -213,16 +230,20 @@ namespace DotNetNuke.Services.Installer
                     {
                         case NodeInsertType.Before:
                             rootNode.InsertBefore(TargetConfig.ImportNode(child, true), childRootNode);
+                            changedNode = true;
                             break;
                         case NodeInsertType.After:
                             rootNode.InsertAfter(TargetConfig.ImportNode(child, true), childRootNode);
+                            changedNode = true;
                             break;
                     }
                 }
             }
+
+            return changedNode;
         }
 
-        private void ProcessNode(XmlNode node, XmlNode targetRoot)
+        private bool ProcessNode(XmlNode node, XmlNode targetRoot)
         {
             Debug.Assert(node.Attributes != null, "node.Attributes != null");
 
@@ -232,35 +253,29 @@ namespace DotNetNuke.Services.Installer
 
 			if (rootNode == null)
 			{
-			    return; //not every TargetRoot will contain every target node
+			    return false; //not every TargetRoot will contain every target node
 			}
             
             switch (nodeAction)
             {
                 case "add":
-                    AddNode(rootNode, node);
-                    break;
+                    return AddNode(rootNode, node);
                 case "prepend":
-                    PrependNode(rootNode, node);
-                    break;
+                    return PrependNode(rootNode, node);
                 case "insertbefore":
-                    InsertNode(rootNode, node, NodeInsertType.Before);
-                    break;
+                    return InsertNode(rootNode, node, NodeInsertType.Before);
                 case "insertafter":
-                    InsertNode(rootNode, node, NodeInsertType.After);
-                    break;
+                    return InsertNode(rootNode, node, NodeInsertType.After);
                 case "remove":
-                    RemoveNode(rootNode);
-                    break;
+                    return RemoveNode(rootNode);
                 case "removeattribute":
-                    RemoveAttribute(rootNode, node);
-                    break;
+                    return RemoveAttribute(rootNode, node);
                 case "update":
-                    UpdateNode(rootNode, node);
-                    break;
+                    return UpdateNode(rootNode, node);
                 case "updateattribute":
-                    UpdateAttribute(rootNode, node);
-                    break;
+                    return UpdateAttribute(rootNode, node);
+                default:
+                    return false;
             }
         }
 
@@ -294,8 +309,10 @@ namespace DotNetNuke.Services.Installer
             return adjustedPath;
         }
 
-        private void ProcessNodes(XmlNodeList nodes, bool saveConfig)
+        private bool ProcessNodes(XmlNodeList nodes, bool saveConfig)
         {
+            var changedNodes = false;
+
             //The nodes definition is not correct so skip changes
             if (TargetConfig != null)
             {
@@ -309,7 +326,7 @@ namespace DotNetNuke.Services.Installer
                     var root = targetRoots[0];
                     foreach (XmlNode node in nodes)
                     {
-                        ProcessNode(node, root);
+                        changedNodes = ProcessNode(node, root) || changedNodes;
                     }
                 }
                 else
@@ -325,11 +342,11 @@ namespace DotNetNuke.Services.Installer
                         
                         if(hits.Count == 1)
                         {
-                            ProcessNode(node, hits[0]);
+                            changedNodes = ProcessNode(node, hits[0]) || changedNodes;
                         }
                         else if(hits.Count < targetRoots.Count)
                         {
-                            ProcessNode(node, hits[0]);
+                            changedNodes = ProcessNode(node, hits[0]) || changedNodes;
                         }
                         else
                         {
@@ -337,22 +354,24 @@ namespace DotNetNuke.Services.Installer
                             XmlNode hit = FindMatchingNodes(node, hits, "targetpath").FirstOrDefault();
                             if (hit != null)
                             {
-                                ProcessNode(node, hit);
+                                changedNodes = ProcessNode(node, hit) || changedNodes;
                             }
                             else
                             {
                                 //all paths match at root level but no targetpaths match below that so default to the initial root
-                                ProcessNode(node, hits[0]);
+                                changedNodes = ProcessNode(node, hits[0]) || changedNodes;
                             }
                         }
                     }
                 }
                 
-                if (saveConfig)
+                if (saveConfig && changedNodes)
                 {
                     Config.Save(TargetConfig, TargetFileName);
                 }
             }
+
+            return changedNodes;
         }
 
         private IEnumerable<XmlNode> FindMatchingNodes(XmlNode mergeNode, IEnumerable<XmlNode> rootNodes, string pathAttributeName)
@@ -407,11 +426,12 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        private void RemoveAttribute(XmlNode rootNode, XmlNode actionNode)
+        private bool RemoveAttribute(XmlNode rootNode, XmlNode actionNode)
         {
             Debug.Assert(actionNode.Attributes != null, "actionNode.Attributes != null");
             Debug.Assert(rootNode.Attributes != null, "rootNode.Attributes != null");
-            
+
+            var changedNode = false;
             if (actionNode.Attributes["name"] != null)
             {
                 string attributeName = actionNode.Attributes["name"].Value;
@@ -421,16 +441,19 @@ namespace DotNetNuke.Services.Installer
                     {
                         rootNode.Attributes.Remove(rootNode.Attributes[attributeName]);
 						DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveAttribute:attributeName=" + attributeName.ToString());
+                        changedNode = true;
                     }
                 }
             }
+
+            return changedNode;
         }
 
-        private void RemoveNode(XmlNode node)
+        private bool RemoveNode(XmlNode node)
         {
+            var changedNode = false;
             if (node != null)
             {
-                
                 //Get Parent
                 XmlNode parentNode = node.ParentNode;
 
@@ -439,15 +462,19 @@ namespace DotNetNuke.Services.Installer
                 {
                     parentNode.RemoveChild(node);
 					DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveNode:" + node.InnerXml.ToString());
+                    changedNode = true;
                 }
             }
+
+            return changedNode;
         }
 
-        private void UpdateAttribute(XmlNode rootNode, XmlNode actionNode)
+        private bool UpdateAttribute(XmlNode rootNode, XmlNode actionNode)
         {
             Debug.Assert(actionNode.Attributes != null, "actionNode.Attributes != null");
             Debug.Assert(rootNode.Attributes != null, "rootNode.Attributes != null");
-            
+
+            var changedNode = false;
             if (actionNode.Attributes["name"] != null && actionNode.Attributes["value"] != null)
             {
                 string attributeName = actionNode.Attributes["name"].Value;
@@ -458,16 +485,26 @@ namespace DotNetNuke.Services.Installer
                     if (rootNode.Attributes[attributeName] == null)
                     {
                         rootNode.Attributes.Append(TargetConfig.CreateAttribute(attributeName));
+                        changedNode = true;
                     }
+
+                    var oldAttributeValue = rootNode.Attributes[attributeName].Value;
                     rootNode.Attributes[attributeName].Value = attributeValue;
+                    if (!string.Equals(oldAttributeValue, attributeValue, StringComparison.Ordinal))
+                    {
+                        changedNode = true;
+                    }
                 }
             }
+
+            return changedNode;
         }
 
-        private void UpdateNode(XmlNode rootNode, XmlNode actionNode)
+        private bool UpdateNode(XmlNode rootNode, XmlNode actionNode)
         {
             Debug.Assert(actionNode.Attributes != null, "actionNode.Attributes != null");
-            
+
+            var changedNode = false;
             string keyAttribute = "";
             if (actionNode.Attributes["key"] != null)
             {
@@ -497,6 +534,7 @@ namespace DotNetNuke.Services.Installer
                     {
                         //Since there is no collision we can just add the node
                         rootNode.AppendChild(TargetConfig.ImportNode(child, true));
+                        changedNode = true;
                         continue;
                     }
 
@@ -505,8 +543,10 @@ namespace DotNetNuke.Services.Installer
                     switch (collisionAction.ToLowerInvariant())
                     {
                         case "overwrite":
-                            rootNode.RemoveChild(targetNode);
-                            rootNode.InnerXml = rootNode.InnerXml + child.OuterXml;
+                            var oldContent = rootNode.InnerXml;
+                            rootNode.ReplaceChild(TargetConfig.ImportNode(child, true), targetNode);
+                            var newContent = rootNode.InnerXml;
+                            changedNode = !string.Equals(oldContent, newContent, StringComparison.Ordinal);
                             break;
                         case "save":
                             string commentHeaderText = string.Format(Localization.Localization.GetString("XMLMERGE_Upgrade", Localization.Localization.SharedResourceFile),
@@ -520,12 +560,15 @@ namespace DotNetNuke.Services.Installer
 							XmlComment commentNode = TargetConfig.CreateComment(targetNodeContent);
                             rootNode.RemoveChild(targetNode);
                             rootNode.InnerXml = rootNode.InnerXml + commentHeader.OuterXml + commentNode.OuterXml + child.OuterXml;
+                            changedNode = true;
                             break;
                         case "ignore":
                             break;
                     }
                 }
             }
+
+            return changedNode;
         }
 
 	    private string GetNodeContentWithoutComment(XmlNode node)
@@ -571,11 +614,14 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target)
         {
+            var changedAnyNodes = false;
             TargetConfig = target;
             if (TargetConfig != null)
             {
-                ProcessNodes(SourceConfig.SelectNodes("/configuration/nodes/node"), false);
+                changedAnyNodes = ProcessNodes(SourceConfig.SelectNodes("/configuration/nodes/node"), false);
             }
+
+            ConfigUpdateChangedNodes = changedAnyNodes;
         }
 
         /// -----------------------------------------------------------------------------
@@ -588,12 +634,15 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target, string fileName)
         {
+            var changedAnyNodes = false;
             TargetFileName = fileName;
             TargetConfig = target;
             if (TargetConfig != null)
             {
-                ProcessNodes(SourceConfig.SelectNodes("/configuration/nodes/node"), true);
+                changedAnyNodes = ProcessNodes(SourceConfig.SelectNodes("/configuration/nodes/node"), true);
             }
+
+            ConfigUpdateChangedNodes = changedAnyNodes;
         }
 
         /// -----------------------------------------------------------------------------
@@ -610,6 +659,7 @@ namespace DotNetNuke.Services.Installer
 
         public void UpdateConfigs(bool autoSave)
         {
+            var changedAnyNodes = false;
             var nodes = SourceConfig.SelectNodes("/configuration/nodes");
             if (nodes != null)
             {
@@ -644,15 +694,17 @@ namespace DotNetNuke.Services.Installer
                     //The nodes definition is not correct so skip changes
                     if (TargetConfig != null && isAppliedToProduct)
                     {
-                        ProcessNodes(configNode.SelectNodes("node"), autoSave);
-
-                        if (!autoSave)
+                        var changedNodes = ProcessNodes(configNode.SelectNodes("node"), autoSave);
+                        changedAnyNodes = changedAnyNodes || changedNodes;
+                        if (!autoSave && changedNodes)
                         {
                             PendingDocuments.Add(TargetFileName, TargetConfig);
                         }
                     }
                 }
             }
+
+            ConfigUpdateChangedNodes = changedAnyNodes;
         }
 
         public void SavePendingConfigs()
