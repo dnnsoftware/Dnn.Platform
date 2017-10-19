@@ -3,6 +3,8 @@
     var config = cf.init();
 
     var init = function (wrapper, util, params, callback) {
+        params.handleTabViewInModule = true;
+
         window.dnn.initServers = function initServers() {
             if (typeof callback === 'function') {
                 callback();
@@ -10,6 +12,7 @@
             return {
                 utilities: util,
                 moduleName: "Servers",
+                path: params.path,
                 config: config,
                 settings: params.settings
             };
