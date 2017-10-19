@@ -36,6 +36,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
@@ -47,14 +48,13 @@ using DotNetNuke.UI.Containers.EventListeners;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
 
 namespace DotNetNuke.UI.Containers
 {
-    using Web.Client;
-
     /// <summary>
     /// Container is the base for the Containers
     /// </summary>
@@ -191,6 +191,11 @@ namespace DotNetNuke.UI.Containers
             ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
         }
 
+        private void AddModuleSharedHighlighting(string message)
+        {
+            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoModuleSharedMssg\">{0}</div>", message)));
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessChildControls parses all the controls in the container, and if the
@@ -281,6 +286,11 @@ namespace DotNetNuke.UI.Containers
             if (showMessage)
             {
                 AddAdministratorOnlyHighlighting(adminMessage);
+            }
+            if (PortalSettings.UserMode == PortalSettings.Mode.Edit && (ModuleConfiguration.AllTabs || TabController.Instance.GetTabsByModuleID(ModuleConfiguration.ModuleID).Count > 1))
+            {
+                var sharedModuleMessage = Localization.GetString("ModuleAddedToMultiplePages.Text");
+                AddModuleSharedHighlighting(sharedModuleMessage);
             }
         }
 
