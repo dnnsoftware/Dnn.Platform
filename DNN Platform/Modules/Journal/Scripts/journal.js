@@ -620,6 +620,7 @@ function pluginInit() {
                 $(opts.previewSelector + ' #imgCount').text(currImage + 1 + ' of ' + images.length);
                 $(opts.previewSelector + ' #imagePreviewer').show();
             } else {
+                journalItem.ItemData.ImageUrl = '';
                 $(opts.previewSelector + ' #imagePreviewer').hide();
             }
             if (link.Description == null) {
