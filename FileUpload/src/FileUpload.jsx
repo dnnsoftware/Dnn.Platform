@@ -45,7 +45,7 @@ export default class FileUpload extends Component {
 
             errorText: ""
         };
-        setTimeout(this.compareDimensions.bind(this), 2000);
+        this.compareTimeout = setTimeout(this.compareDimensions.bind(this), 2000);
     }
 
     componentWillMount() {
@@ -67,7 +67,7 @@ export default class FileUpload extends Component {
         }
         if (nextProps.selectedFile.fileId !== this.state.selectedFile.fileId) {
             const file = nextProps.selectedFile;
-            this.updateFileState(file);
+            //this.updateFileState(file);
         }
     }
 
@@ -83,6 +83,12 @@ export default class FileUpload extends Component {
     componentWillUnmount() {
         window.removeEventListener("dragover", this.prevent);
         window.removeEventListener("drop", this.prevent);
+        
+        this._unmounted = true;
+        if(this.compareTimeout){
+            clearTimeout(this.compareTimeout);
+            this.compareTimeout = null;
+        }
     }
 
     onLink() {
@@ -180,6 +186,10 @@ export default class FileUpload extends Component {
     }
 
     showPreview(fileUrl) {
+        if(this._unmounted){
+            return;
+        }
+
         this.setState({ fileUrl: "" });  
         if (typeof fileUrl !== "string") {
             return;
