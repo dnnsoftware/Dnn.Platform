@@ -205,8 +205,7 @@ class App extends Component {
                             };
 
                             const right = () => update(list);
-
-                            item.id === data[0].parentId ? left() : right();
+                            (item.id === data[0].parentId && data[0].parentId !== selectedId) ? left() : right();
                         });
                     });
             };
@@ -232,7 +231,7 @@ class App extends Component {
                 page.selected = true;
                 if (page.parentId && page.parentId !== -1) {
                     this._traverse((item, list, updateStore) => {
-                        if (item.id === page.parentId) {              
+                        if (item.id === page.parentId) {
                             switch (true) {
                                 case item.childCount > 0 && !item.childListItems:
                                     this.props.getChildPageList(item.id).then((data) => {
@@ -261,20 +260,20 @@ class App extends Component {
                 else {
                     this.props.getPageList().then(() => {
                         this._traverse((item, list, updateStore) => {
-                            if (item.id === page.id) {              
+                            if (item.id === page.id) {
                                 item.isOpen = true;
                                 item.selected = true;
                                 updateStore(list);
-                                this.props.onLoadPage(page.id);                                                        
+                                this.props.onLoadPage(page.id);
                             }
                         });
-                    });  
-                }   
-            }  
+                    });
+                }
+            }
             else {
                 let self = this;
                 self.setEmptyStateMessage();
-            }  
+            }
         });
     }
 
