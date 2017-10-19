@@ -37,7 +37,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             dragOverDebounce: false,
             setMouseCoordDebounce: false,
             pageX: 0,
-            pageY: 0
+            pageY: 0,
+            isMouseInTree: false
         };
         this.origin = window.origin;
     }
@@ -714,42 +715,52 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         );
     }
 
+    setMouseOver(isMouseOver){
+        let hasChildren = this.state.pageList.some((page)=>page.childCount>0);
+
+        this.setState({
+            isMouseInTree: (isMouseOver && hasChildren)
+        });
+    }
+
     render() {
         return (
-            <GridCell
-                columnSize={30}
-                className="dnn-persona-bar-treeview"
-                style={{ "zIndex": 1000 }} >
-
-                {this.render_collapseExpand()}
-
-                <GridCell columnSize={15} >
-                    <div className="dnn-persona-bar-treeview-menu" >
-                        {this.render_tree_parent_expand()}
-                    </div>
-                </GridCell>
-
+            <div onMouseEnter={()=>this.setMouseOver(true)} onMouseLeave={()=>this.setMouseOver(false)}>
                 <GridCell
-                    columnSize={55}
-                    style={{ marginLeft: "-2px" }} >
-                    <Scrollbars
-                        className="scrollArea content-horizontal"
-                        autoHeight autoHide={true} autoHeightMin={100}
-                        autoHeightMax={9999}
-                        renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
-                        {this.render_treeview()}
-                    </Scrollbars>
-                </GridCell>
+                    columnSize={30}
+                    className="dnn-persona-bar-treeview"
+                    style={{ "zIndex": 1000 }} >
 
-                <GridCell columnSize={30} >
-                    <div
-                        className="dnn-persona-bar-treeview-menu selection-arrows"
-                        style={{ float: "right" }} >
-                        {this.render_treemenu()}
-                    </div>
-                </GridCell>
+                    {this.render_collapseExpand()}
 
-            </GridCell>
+                    <GridCell columnSize={15} >
+                        <div className="dnn-persona-bar-treeview-menu" >
+                            {this.render_tree_parent_expand()}
+                        </div>
+                    </GridCell>
+
+                    <GridCell
+                        columnSize={55}
+                        style={{ marginLeft: "-2px" }} >
+                        <Scrollbars
+                            className="scrollArea content-horizontal"                        
+                            autoHeight autoHide={!this.state.isMouseInTree} autoHeightMin={100}
+                            autoHeightMax={9999}
+                            renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
+                            {this.render_treeview()}
+                        </Scrollbars>
+                    </GridCell>
+
+                    <GridCell columnSize={30} >
+                        <div
+                            className="dnn-persona-bar-treeview-menu selection-arrows"
+                            style={{ float: "right" }} >
+                            {this.render_treemenu()}
+                        </div>
+                    </GridCell>
+
+                </GridCell>
+            </div>
         );
     }
 }

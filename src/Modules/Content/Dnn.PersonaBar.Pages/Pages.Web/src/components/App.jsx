@@ -301,6 +301,7 @@ class App extends Component {
 
 
                 const right = () => {
+                    
                     this._traverse((item, list, updateStore) => {
                         if (item.id == update.oldParentId) {
                             item.childListItems.forEach((child, index) => {
@@ -324,6 +325,7 @@ class App extends Component {
 
                 this._traverse((item, list, updateStore) => {
                     if (item.id == update.parentId) {
+                        
                         (cachedItem) ? cachedItem.parentId = item.id : null;
 
                         switch (true) {
