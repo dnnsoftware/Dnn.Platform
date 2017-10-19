@@ -544,8 +544,7 @@ namespace DotNetNuke.Services.Installer
                     {
                         case "overwrite":
                             var oldContent = rootNode.InnerXml;
-                            rootNode.RemoveChild(targetNode);
-                            rootNode.InnerXml = rootNode.InnerXml + child.OuterXml;
+                            rootNode.ReplaceChild(TargetConfig.ImportNode(child, true), targetNode);
                             var newContent = rootNode.InnerXml;
                             changedNode = !string.Equals(oldContent, newContent, StringComparison.Ordinal);
                             break;
