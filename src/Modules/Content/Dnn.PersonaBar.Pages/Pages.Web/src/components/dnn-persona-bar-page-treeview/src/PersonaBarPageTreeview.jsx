@@ -114,7 +114,7 @@ export class PersonaBarPageTreeview extends Component {
                     onDragOver={(e) => onDragOver(e, item, direction)}
                     onDragLeave={() => onDragLeave(item, direction)}
                     onDragEnd={() => onDragEnd(item, direction)}
-                    onDrop={(e) => onMovePage({ e: e, Action: direction, PageId: draggedItem.id, ParentId: draggedItem.parentId, RelatedPageId: dragOverItem.id })} >
+                    onDrop={(e) => onMovePage({ e: e, Action: direction, PageId: draggedItem.id, ParentId: draggedItem.parentId, RelatedPageId: dragOverItem.id, RelatedPageParentId: dragOverItem.parentId })} >
                 </div>
             );
             // (draggedItem.parentId === dragOverItem.parentId ? draggedItem.parentId : dragOverItem.parentId)
