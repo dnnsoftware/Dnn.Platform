@@ -17,7 +17,7 @@ class ThemeList extends Component {
     render() {
         const { props } = this;
         let globalThemes = props.dataSource.filter(t => t.level === 4);
-        let siteThemes = props.dataSource.filter(t => t.level === 2);
+        let siteThemes = props.dataSource.filter(t => t.level === 1 || t.level === 2);
         return (
             <div className="theme-list-wrapper">
                 {globalThemes.length === 0 && siteThemes.length === 0 &&
