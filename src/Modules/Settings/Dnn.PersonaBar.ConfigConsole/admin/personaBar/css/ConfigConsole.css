@@ -2,7 +2,7 @@
     line-height: 24px;
     width: 100%;
     clear: both;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 }
 
 .configConsolePanel .form-item.last {
@@ -182,4 +182,11 @@
 .configConsolePanel div.body div.ui-tabs-panel {
     background-color: #fff;
     padding: 25px;
+}
+.configConsolePanel .pb-dropdown {
+    width: 100%;
+    z-index: 10;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
 }
