@@ -701,13 +701,22 @@ namespace Dnn.PersonaBar.Themes.Components
 
         internal static ThemeLevel GetThemeLevel(string themeFilePath)
         {
-            if (themeFilePath.Replace("\\", "/").IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
+            themeFilePath = themeFilePath.Replace("\\", "/");
+            if (!string.IsNullOrEmpty(Globals.ApplicationPath)
+                && !themeFilePath.StartsWith("[")
+                && !themeFilePath.StartsWith(Globals.ApplicationPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var needSlash = !Globals.ApplicationPath.EndsWith("/") && !themeFilePath.StartsWith("/");
+                themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : "")}{themeFilePath}";
+            }
+
+            if (themeFilePath.IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
                 || themeFilePath.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
             {
                 return ThemeLevel.Global;
             }
             else if ((PortalSettings.Current != null &&
-                        themeFilePath.Replace("\\", "/").IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger)
+                        themeFilePath.IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger)
                         || themeFilePath.StartsWith("[S]", StringComparison.OrdinalIgnoreCase))
             {
                 return ThemeLevel.SiteSystem;
