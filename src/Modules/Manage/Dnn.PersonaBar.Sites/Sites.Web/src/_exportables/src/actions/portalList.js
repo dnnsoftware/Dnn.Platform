@@ -42,7 +42,7 @@ const portalActions = {
             }, errorCallback);
         };
     },
-    createPortal(payload, callback) {
+    createPortal(payload, success, fail) {
         return (dispatch) => {
             PortalService.createPortal(payload, data => {
                 dispatch({
@@ -52,10 +52,15 @@ const portalActions = {
                         ErrorMessage: data.ErrorMessage
                     }
                 });
-                if (callback) {
-                    callback(data);
+                if (success) {
+                    success(data);
                 }
-            }, errorCallback);
+            }, (message) => {
+                errorCallback(message);
+                if(fail){
+                    fail(message);
+                }
+            });
         };
     },
     loadPortals(searchParameters, append, callback) {
