@@ -34,6 +34,8 @@
     "babel-preset-react": "6.5.0",
     "cpy-cli": "^1.0.1",
     "eslint": "2.10.2",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "eslint-config-dnn": "0.0.7",
     "eslint-import-resolver-node": "^0.3.1",
     "eslint-plugin-babel": "^4.1.2",
