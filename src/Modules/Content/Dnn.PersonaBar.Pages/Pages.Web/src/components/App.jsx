@@ -1271,28 +1271,28 @@ class App extends Component {
                                 <ul>
                                     <li>
                                         <p>{Localization.get("PageType")}:</p>
-                                        <p onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{item.pageType}</p>
+                                        <p title={item.pageType} onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{item.pageType}</p>
                                     </li>
                                     <li>
                                         <p>{Localization.get("lblPublishStatus")}:</p>
-                                        <p onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
+                                        <p title={item.publishStatus} onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
                                     </li>
                                     <li>
                                         <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
-                                        <p onClick={() => { (this.state.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
+                                        <p title={item.publishDate} onClick={() => { (this.state.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
                                     </li>
                                 </ul>
                             </div>
                             <div className="search-item-details-list">
                                 <ul>
                                     {!utils.isPlatform() && <li>
-                                        <p>{Localization.get("WorkflowTitle")}:</p>
-                                        <p onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
+                                        <p >{Localization.get("WorkflowTitle")}:</p>
+                                        <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
                                     </li>
                                     }
                                     <li>
                                         <p>{Localization.get("Tags")}:</p>
-                                        <p>{
+                                        <p title={item.tags.join(",").trim(",")}>{
                                             item.tags.map((tag, count) => {
                                                 return (
                                                     <span>
