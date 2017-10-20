@@ -667,10 +667,16 @@ namespace Dnn.PersonaBar.Extensions.Services
                 const string packageFileName = "installlanguage.resources";
                 var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install/Language/" + packageFileName);
 
-                if (!File.Exists(packagePath))
+                var parsePackage = ParsePackageFile(packagePath);
+                var invalidPackage = !parsePackage.Success 
+                                        || !parsePackage.PackageType.Equals("CoreLanguagePack")
+                                        || !parsePackage.Name.EndsWith(cultureCode, StringComparison.InvariantCultureIgnoreCase);
+
+                if (invalidPackage)
                 {
                     DotNetNuke.Services.Upgrade.Internals.InstallController.Instance.IsAvailableLanguagePack(cultureCode);
                 }
+
                 return DownLoadFile(packagePath);
             }
             catch (Exception ex)
