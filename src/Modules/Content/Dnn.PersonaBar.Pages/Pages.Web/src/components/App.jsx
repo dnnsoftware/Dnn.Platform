@@ -880,17 +880,28 @@ class App extends Component {
         filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `${Localization.get("WorkflowTitle")}: ${filterByWorkflowName}` }) : null;
 
         if (startAndEndDateDirty) {
+            let dateRangeText = Localization.get(utils.isPlatform() ? "ModifiedDateRange" : "PublishedDateRange");
             const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
             const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
-            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblDateRange")}: ${fullStartDate} - ${fullEndDate} ` });
-            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblFromDate")}: ${fullStartDate}` });
+            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate} - ${fullEndDate} ` });
+            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate}` });
 
             fullStartDate != fullEndDate ? left() : right();
         }
 
         this.setState({ filters, DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
     }
-
+    getDateLabel() {
+        let filterByDateText = utils.isPlatform() ? "FilterByModifiedDateText" : "FilterByPublishDateText";
+        const { startDate, endDate, startAndEndDateDirty } = this.state;
+        let label = Localization.get(filterByDateText);
+        if (startAndEndDateDirty) {
+            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
+            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+            label = fullStartDate !== fullEndDate ? `${fullStartDate} - ${fullEndDate}` : `${fullStartDate}`;
+        }
+        return label;
+    }
     saveSearchFilters(searchFields) {
         return new Promise((resolve) => this.setState({ searchFields }, () => resolve()));
     }
@@ -1117,11 +1128,9 @@ class App extends Component {
         let filterByPageStatusOptions = [
             { value: "Published", label: Localization.get("lblPublished") }
         ];
-        let filterByDateText = "FilterByModifiedDateText";
         let workflowList = [];
         if (!utils.isPlatform()) {
             filterByPageStatusOptions = ([{ value: "", label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "Draft", label: Localization.get("lblDraft") }]));
-            filterByDateText = "FilterByPublishDateText";
             if (this.props.workflowList.length <= 0) {
                 this.props.getWorkflowsList();
             }
@@ -1175,7 +1184,7 @@ class App extends Component {
                                 endDate={this.state.endDate}
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
                                 CalendarIcon={CalendarIcon}
-                                label={Localization.get(filterByDateText)}
+                                label={this.getDateLabel()}
                             />
                         </GridCell>
                     </GridCell>
@@ -1241,13 +1250,13 @@ class App extends Component {
                 condition ? update() : null;
             };
             let visibleMenus = [];
-            item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
-            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
+            item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
+            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
             if (pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
                 let additionalMenus = cloneDeep(pageInContextComponents || []);
                 additionalMenus && additionalMenus.map(additionalMenu => {
                     visibleMenus.push(<li onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
-                        && this.CallCustomAction(additionalMenu.OnClickAction)}><div dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
+                        && this.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
                 });
             }
             return (
@@ -1389,7 +1398,7 @@ class App extends Component {
 
                 return (
                     <div className="filter-by-tags">
-                        <OverflowText text={filter.tag} />
+                        <OverflowText text={filter.tag} maxWidth={300} />
                         <div className="xIcon"
                             dangerouslySetInnerHTML={{ __html: XIcon }}
                             onClick={(e) => { deleteFilter(filter.ref); }}>

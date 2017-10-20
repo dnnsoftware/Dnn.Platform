@@ -1594,4 +1594,7 @@
   <data name="TagsInstructions.Text" xml:space="preserve">
     <value>Begin typing to filter by tags.</value>
   </data>
+  <data name="ModifiedDateRange.Text" xml:space="preserve">
+    <value>Modified Date Range</value>
+  </data>
 </root>
