@@ -7,13 +7,10 @@ import UploadBar from "./UploadBar";
 import "./style.less";
 
 const Buttons = [
-    { name: "browse", text: "Browse Filesystem" },
-    { name: "upload", text: "Upload a File" },
-    { name: "link", text: "Enter URL Link" }
+    { name: "browse" },
+    { name: "upload" },
+    { name: "link" }
 ];
-
-const DefaultText = "Drag and Drop a File or Select an Option";
-const onDragOverText = "Drag and Drop a File";
 
 export default class FileUpload extends Component {
     constructor(props) {
@@ -23,7 +20,7 @@ export default class FileUpload extends Component {
         let selectedFolder = null;
             
         this.state = {
-            text: DefaultText,
+            text: props.defaultText,
             showLinkInput: false,
             showFolderPicker: false,
 
@@ -126,7 +123,7 @@ export default class FileUpload extends Component {
     }
 
     onMouseLeave() {
-        this.setState({ text: DefaultText });
+        this.setState({ text: this.props.defaultText });
     }
 
     onFileSelect(selectedFolder, selectedFile) {
@@ -147,7 +144,7 @@ export default class FileUpload extends Component {
     }
 
     handleError(error) {
-        const errorText = error && typeof error === "string" ? error : "Upload Failed";
+        const errorText = error && typeof error === "string" ? error : this.props.uploadFailedText;
         this.setState({ uploading: true, errorText }, () => {
             setTimeout(() => {
                 this.setState({ uploading: false, errorText: "" });
@@ -165,7 +162,7 @@ export default class FileUpload extends Component {
             let format = file.type;
             const isAcceptFormat = fileFormats.some(f => format === f);
             if (!isAcceptFormat) {
-                return this.handleError("wrong format");
+                return this.handleError(this.props.wrongFormatText);
             }
         }        
         
@@ -288,11 +285,11 @@ export default class FileUpload extends Component {
     }
 
     onDragOver() {
-        this.setState({ draggedOver: true, text: onDragOverText });
+        this.setState({ draggedOver: true, text: this.props.onDragOverText });
     }
 
     onDragLeave() {
-        this.setState({ draggedOver: false, text: DefaultText });
+        this.setState({ draggedOver: false, text: this.props.defaultText });
     }
 
     onDrop(e) {
@@ -332,7 +329,7 @@ export default class FileUpload extends Component {
             const accept = this.props.fileFormats.join(",");
             return <div
                 className={"button " + button.name}
-                onMouseEnter={this.onMouseEnter.bind(this, button.text) }
+                onMouseEnter={this.onMouseEnter.bind(this, this.props[button.name + "ButtonText"]) }
                 onMouseLeave={this.onMouseLeave.bind(this) }
                 onClick={this.onButtonClick.bind(this, button.name) }
                 key={button.name}>
@@ -363,25 +360,34 @@ export default class FileUpload extends Component {
                 </div>
 
                 {this.state.showLinkInput && <LinkInput
+                    {...this.props}
                     linkPath={this.state.linkPath}
                     onSave={this.uploadFromLink.bind(this) }
-                    onCancel={this.hideFields.bind(this) }/>}
+                    onCancel={this.hideFields.bind(this) } 
+                    />}
                 {this.state.showFolderPicker && <Browse
+                    {...this.props}
                     utils={this.props.utils}
                     fileFormats={this.props.fileFormats}
                     selectedFolder={this.state.selectedFolder}
                     selectedFile={this.state.selectedFile}
                     onSave={this.onFileSelect.bind(this) }
-                    onCancel={this.hideFields.bind(this) } />}
+                    onCancel={this.hideFields.bind(this) }
+                    />}
                 {showImage && <div className="image-container">
                     <img
                         style={this.getImageStyle() }
                         onError={this.handleImageError.bind(this) }
-                        src={src} alt="Image"/></div>}
+                        src={src} alt={this.props.imageText}/></div>}
                 {this.state.selectedFile &&
                     <div className="dnn-file-upload-file-name"><span>{this.state.selectedFile.value}</span></div>}
             </div>
-            {this.state.uploading && <UploadBar uploadComplete={this.state.uploadComplete} errorText={this.state.errorText} fileName={this.state.fileName}/>}
+            {this.state.uploading && <UploadBar 
+                {...this.props}
+                uploadComplete={this.state.uploadComplete} 
+                errorText={this.state.errorText} 
+                fileName={this.state.fileName} 
+                />}
         </div>;
     }
 }
@@ -398,13 +404,56 @@ FileUpload.propTypes = {
     buttons: PropTypes.array,
     folderName: PropTypes.string,
     portalId: PropTypes.number,
-    fileFormats: PropTypes.array
+    fileFormats: PropTypes.array,
+
+    //-- Localization Props---
+    browseButtonText: PropTypes.string,
+    uploadButtonText: PropTypes.string,
+    linkButtonText: PropTypes.string,
+    defaultText: PropTypes.string,
+    onDragOverText: PropTypes.string,
+    uploadFailedText: PropTypes.string,
+    wrongFormatText: PropTypes.string,
+    imageText: PropTypes.string,
+    linkInputTitleText: PropTypes.string,
+    linkInputPlaceholderText: PropTypes.string,
+    linkInputActionText: PropTypes.string,
+    uploadCompleteText: PropTypes.string,
+    uploadingText: PropTypes.string,
+    uploadDefaultText: PropTypes.string,
+    browseActionText: PropTypes.string,
+    notSpecifiedText: PropTypes.string,
+    searchFilesPlaceHolderText: PropTypes.string,
+    searchFoldersPlaceHolderText: PropTypes.string,
+    fileText: PropTypes.string,
+    folderText: PropTypes.string
 };
 
 FileUpload.defaultProps = {
     cropImagePreview: false,
     portalId: -1,
-    fileFormats: []
+    fileFormats: [],
+    
+    browseButtonText: "Browse Filesystem",
+    uploadButtonText: "Upload a File",
+    linkButtonText: "Enter URL Link",
+    defaultText: "Drag and Drop a File or Select an Option",
+    onDragOverText: "Drag and Drop a File",
+    uploadFailedText: "Upload Failed",
+    wrongFormatText: "wrong format",
+    imageText: "Image",
+    linkInputTitleText: "URL Link",
+    linkInputPlaceholderText: "http://example.com/imagename.jpg",
+    linkInputActionText: "Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel",
+    uploadCompleteText: "Upload Complete",
+    uploadingText: "Uploading...",
+    uploadDefaultText: "myImage.jpg",
+    browseActionText: "Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel",
+    notSpecifiedText: "<None Specified>",
+    searchFilesPlaceHolderText: "Search Files...",
+    searchFoldersPlaceHolderText: "Search Folders...",
+    fileText: "File",
+    folderText: "Folder"
 };
 
 

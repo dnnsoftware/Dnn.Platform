@@ -4,8 +4,6 @@ const searchIcon = require("!raw!./img/search.svg");
 const fileIcon = require("!raw!./img/pages.svg");
 import { Scrollbars } from "react-custom-scrollbars";
 
-const notSpecifiedText = "<None Specified>";
-
 export default class FilePicker extends Component {
 
     constructor() {
@@ -95,7 +93,7 @@ export default class FilePicker extends Component {
         return <ul>
             <li>
                 <div className="icon" dangerouslySetInnerHTML={{ __html: fileIcon }} onClick={this.onFileNameClick.bind(this) }/>
-                <div className="item-name none-specified" onClick={this.onFileNameClick.bind(this) }>{notSpecifiedText}</div>
+                <div className="item-name none-specified" onClick={this.onFileNameClick.bind(this) }>{this.props.notSpecifiedText}</div>
             </li>
             {files}
         </ul>;
@@ -104,7 +102,7 @@ export default class FilePicker extends Component {
 
     render() {
         /* eslint-disable react/no-danger */
-        const selectedFileText = this.props.selectedFile ? this.props.selectedFile.value : notSpecifiedText;
+        const selectedFileText = this.props.selectedFile ? this.props.selectedFile.value : this.props.notSpecifiedText;
 
         const files = this.getFiles();
 
@@ -115,7 +113,7 @@ export default class FilePicker extends Component {
             <div className={"item-picker-container" + (this.state.showFilePicker ? " show" : "") } >
                 <div className="inner-box">
                     <div className="search">
-                        <input type="text" value={this.state.searchFileText} onChange={this.onChangeSearchFileText.bind(this) } placeholder="Search Files..." aria-label="Search" />
+                        <input type="text" value={this.state.searchFileText} onChange={this.onChangeSearchFileText.bind(this) } placeholder={this.props.searchFilesPlaceHolderText} aria-label="Search" />
                         {this.state.searchFileText && <div onClick={this.clearSearch.bind(this) } className="clear-button">×</div>}
                         <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
                     </div>
@@ -139,5 +137,8 @@ FilePicker.propTypes = {
     files: PropTypes.object.isRequired,
     onFileClick: PropTypes.func.isRequired,
     selectedFile: PropTypes.object.isRequired,
-    getFiles: PropTypes.func.isRequired
+    getFiles: PropTypes.func.isRequired,
+
+    notSpecifiedText: PropTypes.string,
+    searchFilesPlaceHolderText: PropTypes.string
 };

@@ -142,24 +142,62 @@ export default class Browse extends Component {
         this.setState({ folders });
     }
 
+    renderActions(){
+        const {props} = this;
+
+        let components = [];
+        let actionTemplate = props.browseActionText;
+
+        let tokenRegex = /\{(.+?)\|(.+?)\}/;
+        while(tokenRegex.test(actionTemplate)){
+            let match = tokenRegex.exec(actionTemplate);
+
+            components.push(actionTemplate.substr(0, match.index));
+
+            let action = ((type) => {
+                switch(type.toLowerCase()){
+                    case "save":
+                        return this.onSave.bind(this);
+                    case "cancel":
+                        return this.props.onCancel;
+                    default:
+                        return null;
+                }
+            })(match[1]);
+
+            components.push(<strong onClick={action}>{match[2]}</strong>);
+
+            actionTemplate = actionTemplate.substr(match.index + match[0].length);
+        }
+
+        if(actionTemplate){
+            components.push(actionTemplate);
+        }
+
+        return components;
+    }
+
     render() {
         /* eslint-disable react/no-danger */
         return <div className="file-upload-container">
-            <h4>Folder</h4>
+            <h4>{this.props.folderText}</h4>
             <FolderPicker
+                {...this.props}
                 selectedFolder={this.state.selectedFolder}
                 folders={this.state.folders}
                 searchFolder={this.getFolders.bind(this)}
                 onFolderClick={this.onFolderClick.bind(this) }
-                getChildren={this.getChildrenFolders.bind(this) }/>
-            <h4>File</h4>
+                getChildren={this.getChildrenFolders.bind(this) }
+                />
+            <h4>{this.props.fileText}</h4>
             <FilePicker
+                {...this.props}
                 selectedFile={this.state.selectedFile}
                 files={this.state.files}
                 onFileClick={this.onFileClick.bind(this) }
-                getFiles={this.getFiles.bind(this) }
+                getFiles={this.getFiles.bind(this) }                
                 />
-            <span>Press <strong onClick={this.onSave.bind(this) }>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
+            <span>{this.renderActions()}</span>
         </div>;
     }
 }
@@ -171,7 +209,11 @@ Browse.propTypes = {
     selectedFolder: PropTypes.object.isRequired,
     fileFormats: PropTypes.array,
     onSave: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired,
+
+    browseActionText: PropTypes.string,
+    fileText: PropTypes.string,
+    folderText: PropTypes.string
 };
 
 Browse.defaultProps = {

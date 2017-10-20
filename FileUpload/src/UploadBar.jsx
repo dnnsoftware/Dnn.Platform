@@ -40,7 +40,7 @@ export default class UploadBar extends Component {
     render() {
         /* eslint-disable react/no-danger */
         let percent = this.props.errorText ? 0 : this.state.percent;
-        let text = this.props.uploadComplete ? "Upload Complete" : "Uploading...";
+        let text = this.props.uploadComplete ? this.props.uploadCompleteText : this.props.uploadingText;
         text = this.props.errorText ? this.props.errorText : text;
         let svg = this.props.uploadComplete ? checkmark : upload;
         svg = this.props.errorText ? errorIcon : svg;
@@ -48,7 +48,7 @@ export default class UploadBar extends Component {
 
         return <div className={className}>
             <div className="upload-bar-container">
-                <div className="upload-file-name">{this.props.fileName || "myImage.jpg"}</div>
+                <div className="upload-file-name">{this.props.fileName || this.props.uploadDefaultText}</div>
                 <div className="upload-icon" dangerouslySetInnerHTML={{ __html: svg }} />
                 <h4>{text}</h4>
                 <div className="upload-percent">{percent + "%"}</div>
@@ -63,5 +63,9 @@ export default class UploadBar extends Component {
 UploadBar.propTypes = {
     errorText: PropTypes.string.isRequired, 
     fileName: PropTypes.string.isRequired,
-    uploadComplete: PropTypes.bool.isRequired
+    uploadComplete: PropTypes.bool.isRequired,
+
+    uploadCompleteText: PropTypes.string,
+    uploadingText: PropTypes.string,
+    uploadDefaultText: PropTypes.string
 };

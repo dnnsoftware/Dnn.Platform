@@ -41,12 +41,51 @@ export default class LinkInput extends Component {
         this.setState({ url: e.target.value });
     }
 
+    renderActions(){
+        const {props} = this;
+
+        let components = [];
+        let actionTemplate = props.linkInputActionText;
+
+        let tokenRegex = /\{(.+?)\|(.+?)\}/;
+        while(tokenRegex.test(actionTemplate)){
+            let match = tokenRegex.exec(actionTemplate);
+
+            components.push(actionTemplate.substr(0, match.index));
+
+            let action = ((type) => {
+                switch(type.toLowerCase()){
+                    case "save":
+                        return this.onSave.bind(this);
+                    case "cancel":
+                        return this.props.onCancel;
+                    default:
+                        return null;
+                }
+            })(match[1]);
+
+            components.push(<strong onClick={action}>{match[2]}</strong>);
+
+            actionTemplate = actionTemplate.substr(match.index + match[0].length);
+        }
+
+        if(actionTemplate){
+            components.push(actionTemplate);
+        }
+
+        return components;
+    }
+
     render() {
         return <div className="file-upload-container">
-            <h4>{"URL Link"}</h4>
+            <h4>{this.props.linkInputTitleText}</h4>
             <div className="textarea-container">
-                <textarea value={this.state.url} onChange={this.onChange.bind(this) } placeholder="http://example.com/imagename.jpg" aria-label="Link" />
-                <span>Press <strong onClick={this.onSave.bind(this)}>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
+                <textarea 
+                    value={this.state.url} 
+                    onChange={this.onChange.bind(this) } 
+                    placeholder={this.props.linkInputPlaceholderText} 
+                    aria-label="Link" />
+                <span>{this.renderActions()}</span>
             </div>
         </div>;
     }
@@ -55,5 +94,9 @@ export default class LinkInput extends Component {
 LinkInput.propTypes = {
     linkPath: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired,
+
+    linkInputTitleText: PropTypes.string,
+    linkInputPlaceholderText: PropTypes.string,
+    linkInputActionText: PropTypes.string
 };
