@@ -30,13 +30,10 @@ using System.Text.RegularExpressions;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
-using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
-
-using Microsoft.ApplicationBlocks.Data;
 
 #endregion
 
@@ -83,7 +80,8 @@ namespace DotNetNuke.Data
 
             try
             {
-                PetaPocoHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, owner + qualifier + "GetDatabaseVersion");
+                DatabaseConnectionProvider.Instance()
+                    .ExecuteReader(connectionString, CommandType.StoredProcedure, 0, owner + qualifier + "GetDatabaseVersion");
             }
             catch (SqlException ex)
             {
@@ -129,17 +127,8 @@ namespace DotNetNuke.Data
                     {
                         Logger.Trace("Executing SQL Script " + query);
 
-                        //Create a new connection
-                        using (var connection = new SqlConnection(connectionString))
-                        {
-                            //Create a new command
-                            using (var command = new SqlCommand(query, connection) { CommandTimeout = timeoutSec })
-                            {
-                                connection.Open();
-                                command.ExecuteNonQuery();
-                                connection.Close();
-                            }
-                        }
+                        DatabaseConnectionProvider.Instance()
+                            .ExecuteNonQuery(connectionString, CommandType.Text, timeoutSec, query);
                     }
                     catch (SqlException objException)
                     {
@@ -168,16 +157,7 @@ namespace DotNetNuke.Data
                 if (string.IsNullOrEmpty(connectionString))
                     throw new ArgumentNullException(nameof(connectionString));
 
-                if (timeoutSec > 0)
-                {
-                    var builder = GetConnectionStringBuilder();
-                    builder.ConnectionString = connectionString;
-                    builder["Connect Timeout"] = null;
-                    builder["Connection Timeout"] = timeoutSec;
-                    connectionString = builder.ConnectionString;
-                }
-
-                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
+                return DatabaseConnectionProvider.Instance().ExecuteSql(connectionString, CommandType.Text, timeoutSec, sql);
             }
             catch (SqlException sqlException)
             {
@@ -220,95 +200,88 @@ namespace DotNetNuke.Data
 
         private string GrantStoredProceduresPermission(string Permission, string LoginOrRole)
         {
-            string SQL = string.Empty;
-            string Exceptions = string.Empty;
+            //grant rights to a login or role for all stored procedures
+            var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
+                + "  begin"
+                + "    declare @exec nvarchar(2000) "
+                + "    declare @name varchar(150) "
+                + "    declare sp_cursor cursor for select o.name as name "
+                + "    from dbo.sysobjects o "
+                + "    where ( OBJECTPROPERTY(o.id, N'IsProcedure') = 1 or OBJECTPROPERTY(o.id, N'IsExtendedProc') = 1 or OBJECTPROPERTY(o.id, N'IsReplProc') = 1 ) "
+                + "    and OBJECTPROPERTY(o.id, N'IsMSShipped') = 0 "
+                + "    and o.name not like N'#%%' "
+                + "    and (left(o.name,len('" + ObjectQualifier + "')) = '" + ObjectQualifier + "' or left(o.name,7) = 'aspnet_') "
+                + "    open sp_cursor "
+                + "    fetch sp_cursor into @name "
+                + "    while @@fetch_status >= 0 "
+                + "      begin"
+                + "        select @exec = 'grant " + Permission + " on [' +  @name  + '] to [" + LoginOrRole + "]'"
+                + "        execute (@exec)"
+                + "        fetch sp_cursor into @name "
+                + "      end "
+                + "    deallocate sp_cursor"
+                + "  end ";
 
-            try
-            {
-                //grant rights to a login or role for all stored procedures
-                SQL += "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')";
-                SQL += "  begin";
-                SQL += "    declare @exec nvarchar(2000) ";
-                SQL += "    declare @name varchar(150) ";
-                SQL += "    declare sp_cursor cursor for select o.name as name ";
-                SQL += "    from dbo.sysobjects o ";
-                SQL += "    where ( OBJECTPROPERTY(o.id, N'IsProcedure') = 1 or OBJECTPROPERTY(o.id, N'IsExtendedProc') = 1 or OBJECTPROPERTY(o.id, N'IsReplProc') = 1 ) ";
-                SQL += "    and OBJECTPROPERTY(o.id, N'IsMSShipped') = 0 ";
-                SQL += "    and o.name not like N'#%%' ";
-                SQL += "    and (left(o.name,len('" + ObjectQualifier + "')) = '" + ObjectQualifier + "' or left(o.name,7) = 'aspnet_') ";
-                SQL += "    open sp_cursor ";
-                SQL += "    fetch sp_cursor into @name ";
-                SQL += "    while @@fetch_status >= 0 ";
-                SQL += "      begin";
-                SQL += "        select @exec = 'grant " + Permission + " on [' +  @name  + '] to [" + LoginOrRole + "]'";
-                SQL += "        execute (@exec)";
-                SQL += "        fetch sp_cursor into @name ";
-                SQL += "      end ";
-                SQL += "    deallocate sp_cursor";
-                SQL += "  end ";
-
-                SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
-            }
-            catch (SqlException objException)
-            {
-                Logger.Error(objException);
-
-                Exceptions += objException + Environment.NewLine + Environment.NewLine + SQL + Environment.NewLine + Environment.NewLine;
-            }
-            return Exceptions;
+            return ExecuteUpgradedConnectionQuery(sql);
         }
 
         private string GrantUserDefinedFunctionsPermission(string ScalarPermission, string TablePermission, string LoginOrRole)
         {
-            string SQL = string.Empty;
-            string Exceptions = string.Empty;
+            //grant EXECUTE rights to a login or role for all functions
+            var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
+                + "  begin"
+                + "    declare @exec nvarchar(2000) "
+                + "    declare @name varchar(150) "
+                + "    declare @isscalarfunction int "
+                + "    declare @istablefunction int "
+                + "    declare sp_cursor cursor for select o.name as name, OBJECTPROPERTY(o.id, N'IsScalarFunction') as IsScalarFunction "
+                + "    from dbo.sysobjects o "
+                + "    where ( OBJECTPROPERTY(o.id, N'IsScalarFunction') = 1 OR OBJECTPROPERTY(o.id, N'IsTableFunction') = 1 ) "
+                + "      and OBJECTPROPERTY(o.id, N'IsMSShipped') = 0 "
+                + "      and o.name not like N'#%%' "
+                + "      and (left(o.name,len('" + ObjectQualifier + "')) = '" + ObjectQualifier + "' or left(o.name,7) = 'aspnet_') "
+                + "    open sp_cursor "
+                + "    fetch sp_cursor into @name, @isscalarfunction "
+                + "    while @@fetch_status >= 0 "
+                + "      begin "
+                + "        if @IsScalarFunction = 1 "
+                + "          begin"
+                + "            select @exec = 'grant " + ScalarPermission + " on [' +  @name  + '] to [" + LoginOrRole + "]'"
+                + "            execute (@exec)"
+                + "            fetch sp_cursor into @name, @isscalarfunction  "
+                + "          end "
+                + "        else "
+                + "          begin"
+                + "            select @exec = 'grant " + TablePermission + " on [' +  @name  + '] to [" + LoginOrRole + "]'"
+                + "            execute (@exec)"
+                + "            fetch sp_cursor into @name, @isscalarfunction  "
+                + "          end "
+                + "      end "
+                + "    deallocate sp_cursor"
+                + "  end ";
+
+            return ExecuteUpgradedConnectionQuery(sql);
+        }
+
+        private string ExecuteUpgradedConnectionQuery(string sql)
+        {
+            var exceptions = string.Empty;
+
             try
             {
-                //grant EXECUTE rights to a login or role for all functions
-                SQL += "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')";
-                SQL += "  begin";
-                SQL += "    declare @exec nvarchar(2000) ";
-                SQL += "    declare @name varchar(150) ";
-                SQL += "    declare @isscalarfunction int ";
-                SQL += "    declare @istablefunction int ";
-                SQL += "    declare sp_cursor cursor for select o.name as name, OBJECTPROPERTY(o.id, N'IsScalarFunction') as IsScalarFunction ";
-                SQL += "    from dbo.sysobjects o ";
-                SQL += "    where ( OBJECTPROPERTY(o.id, N'IsScalarFunction') = 1 OR OBJECTPROPERTY(o.id, N'IsTableFunction') = 1 ) ";
-                SQL += "      and OBJECTPROPERTY(o.id, N'IsMSShipped') = 0 ";
-                SQL += "      and o.name not like N'#%%' ";
-                SQL += "      and (left(o.name,len('" + ObjectQualifier + "')) = '" + ObjectQualifier + "' or left(o.name,7) = 'aspnet_') ";
-                SQL += "    open sp_cursor ";
-                SQL += "    fetch sp_cursor into @name, @isscalarfunction ";
-                SQL += "    while @@fetch_status >= 0 ";
-                SQL += "      begin ";
-                SQL += "        if @IsScalarFunction = 1 ";
-                SQL += "          begin";
-                SQL += "            select @exec = 'grant " + ScalarPermission + " on [' +  @name  + '] to [" + LoginOrRole + "]'";
-                SQL += "            execute (@exec)";
-                SQL += "            fetch sp_cursor into @name, @isscalarfunction  ";
-                SQL += "          end ";
-                SQL += "        else ";
-                SQL += "          begin";
-                SQL += "            select @exec = 'grant " + TablePermission + " on [' +  @name  + '] to [" + LoginOrRole + "]'";
-                SQL += "            execute (@exec)";
-                SQL += "            fetch sp_cursor into @name, @isscalarfunction  ";
-                SQL += "          end ";
-                SQL += "      end ";
-                SQL += "    deallocate sp_cursor";
-                SQL += "  end ";
-
-                SqlHelper.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, SQL);
+                DatabaseConnectionProvider.Instance()
+                    .ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, 0, sql);
             }
             catch (SqlException objException)
             {
                 Logger.Error(objException);
 
-                Exceptions += objException + Environment.NewLine + Environment.NewLine + SQL + Environment.NewLine + Environment.NewLine;
+                exceptions += objException + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
             }
-            return Exceptions;
+            return exceptions;
         }
 
-        private string GetAzureCompactScript(string script)
+        private static string GetAzureCompactScript(string script)
         {
             if (ScriptWithRegex.IsMatch(script))
             {
@@ -329,52 +302,62 @@ namespace DotNetNuke.Data
 
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
-            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            DatabaseConnectionProvider.Instance()
+                .ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            DatabaseConnectionProvider.Instance()
+                .ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
-            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+            DatabaseConnectionProvider.Instance()
+                .BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
         {
-            PetaPocoHelper.BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+            DatabaseConnectionProvider.Instance()
+                .BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
         {
-            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+            DatabaseConnectionProvider.Instance()
+                .BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
         {
-            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, timeoutSec, commandParameters);
+            DatabaseConnectionProvider.Instance()
+                .BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return DatabaseConnectionProvider.Instance()
+                .ExecuteReader(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return DatabaseConnectionProvider.Instance()
+                .ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return DatabaseConnectionProvider.Instance()
+                .ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return DatabaseConnectionProvider.Instance()
+                .ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override string ExecuteScript(string script)

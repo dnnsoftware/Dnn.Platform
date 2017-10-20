@@ -4318,8 +4318,7 @@ namespace DotNetNuke.Data
 
         #region Obsolete Methods
 
-        [Obsolete(
-            "Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet.")]
+        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet.")]
         public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)
         {
             return Globals.ConvertDataReaderToDataSet(ExecuteReader(procedureName, commandParameters));
@@ -4329,30 +4328,6 @@ namespace DotNetNuke.Data
         public virtual object ExecuteScalar(string procedureName, params object[] commandParameters)
         {
             return ExecuteScalar<object>(procedureName, commandParameters);
-        }
-
-        [Obsolete("Temporarily Added in DNN 5.4.2. This will be removed and replaced with named instance support.")]
-        public virtual IDataReader ExecuteSQL(string sql, params IDataParameter[] commandParameters)
-        {
-            SqlParameter[] sqlCommandParameters = null;
-            if (commandParameters != null)
-            {
-                sqlCommandParameters = new SqlParameter[commandParameters.Length];
-                for (int intIndex = 0; intIndex <= commandParameters.Length - 1; intIndex++)
-                {
-                    sqlCommandParameters[intIndex] = (SqlParameter)commandParameters[intIndex];
-                }
-            }
-            sql = DataUtil.ReplaceTokens(sql);
-            try
-            {
-                return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql, sqlCommandParameters);
-            }
-            catch
-            {
-                //error in SQL query
-                return null;
-            }
         }
 
         #endregion
