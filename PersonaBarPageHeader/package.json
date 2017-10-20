@@ -1,6 +1,6 @@
 {
   "name": "dnn-persona-bar-page-header",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "DNN Persona Bar Page Header",
   "main": "index.js",
   "scripts": {
