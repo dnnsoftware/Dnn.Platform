@@ -1,6 +1,6 @@
 {
   "name": "dnn-modal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "DNN Modal",
   "main": "index.js",
   "scripts": {
