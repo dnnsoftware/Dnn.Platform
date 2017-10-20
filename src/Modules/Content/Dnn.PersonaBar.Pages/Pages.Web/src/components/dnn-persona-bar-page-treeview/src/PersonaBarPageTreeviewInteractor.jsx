@@ -147,7 +147,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             delete item.showInContextMenu;
             updateStore(list);
         });
-        this.props.setEmptyPageMessage(Localization.get("NoPermissionEditPage"));
     }
 
     onDuplicatePage(listItem) {
