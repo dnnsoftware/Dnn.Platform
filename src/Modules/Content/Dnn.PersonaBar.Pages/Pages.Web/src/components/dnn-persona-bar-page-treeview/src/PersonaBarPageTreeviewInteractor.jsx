@@ -396,7 +396,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     return 0;
                 }
                 utils.notify(Localization.get("PageUpdatedMessage"));
-                if (RelatedPageParentId === -1 && ParentId !== -1) {
+                if (RelatedPageParentId === -1 && ParentId !== -1 && utils.getCurrentPageId() === response.Page.id) {
                     window.parent.location = response.Page.url;
                 }
                 return 1;
