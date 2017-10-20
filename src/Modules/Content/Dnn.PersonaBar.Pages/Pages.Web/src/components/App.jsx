@@ -204,7 +204,10 @@ class App extends Component {
                                 callAPI();
                             };
 
-                            const right = () => update(list);
+                            const right = () => {
+                                update(list);
+                                this.buildBreadCrumbPath(selectedId);
+                            };
                             (item.id === data[0].parentId && data[0].parentId !== selectedId) ? left() : right();
                         });
                     });
@@ -300,7 +303,7 @@ class App extends Component {
 
 
                 const right = () => {
-                    
+
                     this._traverse((item, list, updateStore) => {
                         if (item.id == update.oldParentId) {
                             item.childListItems.forEach((child, index) => {
@@ -324,7 +327,7 @@ class App extends Component {
 
                 this._traverse((item, list, updateStore) => {
                     if (item.id == update.parentId) {
-                        
+
                         (cachedItem) ? cachedItem.parentId = item.id : null;
 
                         switch (true) {
@@ -716,11 +719,7 @@ class App extends Component {
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
                 this.props.onLoadPage(pageId).then((data) => {
-                    const selectedPath = data.hierarchy.split(">").map((d) => {
-                        return { name: d, tabId: data.tabId };
-                    });
-                    this.props.changeSelectedPagePath(selectedPath);
-
+                    this.buildBreadCrumbPath(data.tabId);
                 });
                 this.selectPageSettingTab(0);
             }
@@ -992,7 +991,31 @@ class App extends Component {
             onConfirm,
             onCancel);
     }
-
+    buildBreadCrumbPath(pageId) {
+        let page = {};
+        let selectedPath = [];
+        const buildBreadCrumbPathInternal = () => {
+            const addNode = (tabId) => {
+                this._traverse((item, list, update) => {
+                    if (item.id === tabId) {
+                        page = item;
+                        return;
+                    }
+                });
+                selectedPath.push({ name: page.name, tabId: (page.id !== pageId ? page.id : null) });
+                const left = () => {
+                    addNode(page.parentId);
+                };
+                const right = () => {
+                    selectedPath.reverse();
+                    this.props.changeSelectedPagePath(selectedPath);
+                };
+                page.parentId > 0 ? left() : right();
+            };
+            addNode(pageId);
+        };
+        buildBreadCrumbPathInternal();
+    }
     onBreadcrumbSelect(name) {
     }
 
