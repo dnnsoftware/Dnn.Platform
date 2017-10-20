@@ -1,5 +1,5 @@
-﻿module.exports = ['$scope', 'FileUploader', 'SessionService', 'apiUrl',
-    function ($scope, FileUploader, SessionService, apiUrl) {
+﻿module.exports = ['$scope', 'FileUploader', 'SessionService', 'DnnService', 'apiUrl',
+    function ($scope, FileUploader, SessionService, DnnService, apiUrl) {
 
         // Store for errors.
         $scope.errors = [];
@@ -15,7 +15,8 @@
 
             // Create uploader.
             var uploader = new FileUploader({
-                url: uploadUrl
+                url: uploadUrl,
+                headers: DnnService.getSecurityHeaders()
             });
 
             // Place on scope.
