@@ -1,14 +1,41 @@
 module.exports = {
-
     "plugins": [
         "react",
         "spellcheck",
         "import",
-        "filenames"
+        "filenames",
+        "babel"
     ],
     "settings": {
-        "import/resolver": "webpack",
-        "version": "15.3"
+        "import/resolver":{
+            "webpack": {},
+            "node":{
+                "extensions":[".js", ".jsx"]
+            }
+        }
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true,
+            "experimentalObjectRestSpread": true,
+            "arrowFunctions": true,
+            "blockBindings": true,
+            "classes": true,
+            "defaultParams": true,
+            "destructuring": true,
+            "forOf": true,
+            "generators": true,
+            "modules": true,
+            "objectLiteralComputedProperties": true,
+            "regexUFlag": true,
+            "regexYFlag": true,
+            "spread": true,
+            "superInFunctions": false,
+            "templateStrings": true
+        },
+        "ecmaVersion": 6,
+        "sourceType": "module"
     },
     "rules": {
         "semi": "error",
@@ -30,5 +57,4 @@ module.exports = {
         "filenames/match-exported": 2,
         "filenames/no-index": 2
     }
-    
 };

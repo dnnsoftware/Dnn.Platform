@@ -16,6 +16,16 @@
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.Evoq.Microservices.UI.Common.git"
   },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ],
+    "plugins": [
+      "transform-object-assign",
+      "transform-object-rest-spread"
+    ]
+  },
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",

@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-dnn",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Shared ESLint config for Dnn projects",
   "main": "index.js",
   "scripts": {
