@@ -436,7 +436,7 @@
     <value>set page theme</value>
   </data>
   <data name="BackToPages.Text" xml:space="preserve">
-    <value>Back to pages</value>
+    <value>Back to page</value>
   </data>
   <data name="ChangesNotSaved.Text" xml:space="preserve">
     <value>Changes have not been saved</value>
@@ -1581,5 +1581,17 @@
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
     <value>URL</value>
+  </data>
+  <data name="lblModifiedDate.Text" xml:space="preserve">
+    <value>Modified Date</value>
+  </data>
+  <data name="NoPagesFound.Text" xml:space="preserve">
+    <value>No pages found.</value>
+  </data>
+  <data name="PagesSearchHeader.Text" xml:space="preserve">
+    <value>Page Search Results</value>
+  </data>
+  <data name="TagsInstructions.Text" xml:space="preserve">
+    <value>Begin typing to filter by tags.</value>
   </data>
 </root>

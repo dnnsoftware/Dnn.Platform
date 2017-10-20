@@ -87,7 +87,7 @@ class App extends Component {
             filters: [],
             searchFields: {}
         };
-
+        this.lastActivePageId = null;
         this.shouldRunRecursive = true;
         this.noPermissionSelectionPageId = null;
     }
@@ -300,7 +300,7 @@ class App extends Component {
 
 
                 const right = () => {
-                    
+
                     this._traverse((item, list, updateStore) => {
                         if (item.id == update.oldParentId) {
                             item.childListItems.forEach((child, index) => {
@@ -324,7 +324,7 @@ class App extends Component {
 
                 this._traverse((item, list, updateStore) => {
                     if (item.id == update.parentId) {
-                        
+
                         (cachedItem) ? cachedItem.parentId = item.id : null;
 
                         switch (true) {
@@ -384,13 +384,14 @@ class App extends Component {
     onSearchFieldChange(e) {
         let self = this;
         const currentSearchTerm = this.state.searchTerm;
+        const inSearch = this.state.inSearch;
         this.setState({ searchTerm: e.target.value, filtersUpdated: true }, () => {
             const { searchTerm } = this.state;
             switch (true) {
                 case searchTerm.length > 3:
                     self.onSearch();
                     return;
-                case currentSearchTerm.length > 0 && searchTerm.length === 0:
+                case currentSearchTerm.length > 0 && searchTerm.length === 0 && inSearch:
                     self.onSearch();
                     return;
             }
@@ -398,41 +399,39 @@ class App extends Component {
     }
 
     onAddPage(parentPage) {
-        this.clearSearch(() => {
-            this.clearEmptyStateMessage();
-            this.selectPageSettingTab(0);
+        this.clearEmptyStateMessage();
+        this.selectPageSettingTab(0);
 
-            const addPage = () => {
+        const addPage = () => {
 
-                const { props } = this;
-                const { selectedPage } = props;
-                let runUpdateStore = null;
-                let pageList = null;
+            const { props } = this;
+            const { selectedPage } = props;
+            let runUpdateStore = null;
+            let pageList = null;
 
-                this._traverse((item, list, updateStore) => {
-                    item.selected = false;
-                    pageList = list;
-                    runUpdateStore = updateStore;
-                });
+            this._traverse((item, list, updateStore) => {
+                item.selected = false;
+                pageList = list;
+                runUpdateStore = updateStore;
+            });
 
-                runUpdateStore(pageList);
+            runUpdateStore(pageList);
 
-                if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-                    const onConfirm = () => this.props.getNewPage(parentPage);
-                    utils.confirm(
-                        Localization.get("CancelWithoutSaving"),
-                        Localization.get("Close"),
-                        Localization.get("Cancel"),
-                        onConfirm);
+            if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+                const onConfirm = () => this.props.getNewPage(parentPage);
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
 
-                } else {
-                    props.getNewPage(parentPage);
-                }
-            };
+            } else {
+                props.getNewPage(parentPage);
+            }
+        };
 
-            const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
-            parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
-        });
+        const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
+        parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
@@ -883,7 +882,7 @@ class App extends Component {
         if (startAndEndDateDirty) {
             const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
             const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
-            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblDateRange")}: ${fullStartDate} ${fullEndDate} ` });
+            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblDateRange")}: ${fullStartDate} - ${fullEndDate} ` });
             const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblFromDate")}: ${fullStartDate}` });
 
             fullStartDate != fullEndDate ? left() : right();
@@ -901,6 +900,7 @@ class App extends Component {
         const { filtersUpdated } = this.state;
         if (filtersUpdated) {
             if (selectedPage) {
+                this.lastActivePageId = selectedPage.tabId;
                 if (this.props.selectedPageDirty) {
                     this.showCancelWithoutSavingDialogAndRun(() => {
                         this.doSearch();
@@ -921,6 +921,7 @@ class App extends Component {
     doSearch() {
         const { selectedPage } = this.props;
         if (selectedPage) {
+            this.lastActivePageId = selectedPage.tabId;
             this.props.onCancelPage();
         }
         let { filtersUpdated, inSearch, searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
@@ -970,6 +971,9 @@ class App extends Component {
         }, () => {
             if (typeof callback === "function") {
                 callback();
+            }
+            else {
+                this.lastActivePageId && this.props.onLoadPage(this.lastActivePageId);
             }
         });
     }
@@ -1095,15 +1099,15 @@ class App extends Component {
     distinct(list) {
         let distinctList = [];
         list.map((item) => {
-            if (item.trim() !== "" && distinctList.indexOf(item.trim()) === -1)
-                distinctList.push(item.trim());
+            if (item.trim() !== "" && distinctList.indexOf(item.trim().toLowerCase()) === -1)
+                distinctList.push(item.trim().toLowerCase());
         });
         return distinctList;
     }
     /* eslint-disable react/no-danger */
     render_more_flyout() {
         const filterByPageTypeOptions = [
-            { value: null, label: Localization.get("lblAll") },
+            { value: "", label: Localization.get("lblAll") },
             { value: "Normal", label: Localization.get("lblNormal") },
             { value: "tab", label: Localization.get("Existing") },
             { value: "URL", label: Localization.get("lblUrl") },
@@ -1116,14 +1120,14 @@ class App extends Component {
         let filterByDateText = "FilterByModifiedDateText";
         let workflowList = [];
         if (!utils.isPlatform()) {
-            filterByPageStatusOptions = ([{ value: null, label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "Draft", label: Localization.get("lblDraft") }]));
+            filterByPageStatusOptions = ([{ value: "", label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "Draft", label: Localization.get("lblDraft") }]));
             filterByDateText = "FilterByPublishDateText";
             if (this.props.workflowList.length <= 0) {
                 this.props.getWorkflowsList();
             }
         }
         this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return { value: item.workflowId, label: item.workflowName }; })) : null;
-        const filterByWorkflowOptions = [{ value: null, label: Localization.get("lblNone") }].concat(workflowList);
+        const filterByWorkflowOptions = [{ value: "", label: Localization.get("lblNone") }].concat(workflowList);
 
         const generateTags = (e) => {
 
@@ -1156,9 +1160,11 @@ class App extends Component {
                             <Dropdown
                                 className="more-dropdown"
                                 options={filterByPageTypeOptions}
-                                label={this.state.filterByPageType ? this.state.filterByPageType : Localization.get("FilterbyPageTypeText")}
-                                onSelect={(data) => this.setState({ filterByPageType: data.value, filtersUpdated: true })}
-                                withBorder={true} />
+                                label={this.state.filterByPageType ? filterByPageTypeOptions.find(x => x.value === this.state.filterByPageType).label : Localization.get("FilterbyPageTypeText")}
+                                value={this.state.filterByPageType !== "" && this.state.filterByPageType}
+                                onSelect={(data) => { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }}
+                                withBorder={true}
+                            />
                         </GridCell>
                         <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
                             <DropdownDayPicker
@@ -1178,8 +1184,9 @@ class App extends Component {
                             <Dropdown
                                 className="more-dropdown"
                                 options={filterByPageStatusOptions}
-                                label={this.state.filterByPublishStatus ? this.state.filterByPublishStatus : Localization.get("FilterbyPublishStatusText")}
+                                label={this.state.filterByPublishStatus ? filterByPageStatusOptions.find(x => x.value === this.state.filterByPublishStatus).label : Localization.get("FilterbyPublishStatusText")}
                                 onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
+                                value={this.state.filterByPublishStatus !== "" && this.state.filterByPublishStatus}
                                 withBorder={true} />
                         </GridCell>
                         {!utils.isPlatform() &&
@@ -1187,15 +1194,16 @@ class App extends Component {
                                 <Dropdown
                                     className="more-dropdown"
                                     options={filterByWorkflowOptions}
-                                    label={this.state.filterByWorkflowName ? this.state.filterByWorkflowName : Localization.get("FilterbyWorkflowText")}
+                                    label={this.state.filterByWorkflow ? filterByWorkflowOptions.find(x => x.value === this.state.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
                                     onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true })}
+                                    value={this.state.filterByWorkflow !== "" && this.state.filterByWorkflow}
                                     withBorder={true} />
                             </GridCell>
                         }
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
-                    <textarea value={this.state.tags} onChange={(e) => generateTags(e)} onBlur={() => filterTags()}></textarea>
+                    <textarea placeholder={Localization.get("TagsInstructions")} value={this.state.tags} onChange={(e) => generateTags(e)} onBlur={() => filterTags()}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{ textAlign: "right" }}>
                     <Button style={{ marginRight: "5px" }} onClick={() => this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false })}>{Localization.get("Cancel")}</Button>
@@ -1270,7 +1278,7 @@ class App extends Component {
                                         <p onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
                                     </li>
                                     <li>
-                                        <p >{Localization.get("lblPublishDate")}:</p>
+                                        <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
                                         <p onClick={() => { (this.state.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
                                     </li>
                                 </ul>
@@ -1316,7 +1324,7 @@ class App extends Component {
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{`${searchList.length} ` + (searchList.length > 1 ? Localization.get("lblPagesFound").toUpperCase() : Localization.get("lblPageFound").toUpperCase())}</p>
+                        <p>{searchList.length === 0 ? Localization.get("NoPagesFound") : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item) => {
@@ -1411,19 +1419,19 @@ class App extends Component {
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
-                        <PersonaBarPageHeader title={Localization.get("Pages")}>
-                            {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
+                        <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
+                            {securityService.isSuperUser() && <Button type="primary" disabled={((selectedPage && selectedPage.tabId === 0) || inSearch) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
                             {
                                 selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data) => onSelect(data)} withBorder={true} />
                             }
-                            <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
+                            {!inSearch && <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />}
                         </PersonaBarPageHeader>
                         {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{ padding: "20px" }}>
                             <div className="search-container">
                                 {inSearch ?
                                     <div className="dnn-back-to-link" onClick={() => this.clearSearch()}>
-                                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <span>{Localization.get("BackToPages")}</span>
+                                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <span>{Localization.get("BackToPages").toUpperCase()}</span>
                                     </div> : null
                                 }
 
