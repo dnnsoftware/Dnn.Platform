@@ -734,7 +734,9 @@ class App extends Component {
     }
 
     onChangePageField(key, value) {
-        this.props.onChangePageField(key, value);
+        if (this.props.selectedPage[key] !== value) {
+            this.props.onChangePageField(key, value);
+        }
     }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
