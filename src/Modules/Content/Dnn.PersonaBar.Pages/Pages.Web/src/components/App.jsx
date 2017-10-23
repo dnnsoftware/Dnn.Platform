@@ -987,7 +987,8 @@ class App extends Component {
                 callback();
             }
             else {
-                this.lastActivePageId && this.props.onLoadPage(this.lastActivePageId);
+                const { selectedPage } = this.props;
+                !selectedPage && this.lastActivePageId && this.props.onLoadPage(this.lastActivePageId);
             }
         });
     }
