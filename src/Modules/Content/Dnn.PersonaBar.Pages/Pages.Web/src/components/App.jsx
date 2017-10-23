@@ -1460,36 +1460,34 @@ class App extends Component {
                                 </div>
                             </div>
                         </GridCell>
-                        <GridCell columnSize={100} style={{ padding: "0px 20px 20px 20px" }} >
-                            <GridCell columnSize={100} className="page-container">
+                        <GridCell columnSize={100} style={{ padding: "0px 30px 30px 30px" }} >
+                            <GridCell columnSize={1096} type={"px"} className="page-container">
                                 <div className={((selectedPage && selectedPage.tabId === 0) || inSearch) ? "tree-container disabled" : "tree-container"}>
-                                    <div>
-                                        <PersonaBarPageTreeviewInteractor
-                                            clearSelectedPage={this.props.clearSelectedPage}
-                                            Localization={Localization}
-                                            pageList={this.props.pageList}
-                                            getChildPageList={this.props.getChildPageList}
-                                            getPage={this.props.getPage.bind(this)}
-                                            _traverse={this._traverse.bind(this)}
-                                            showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
-                                            selectedPageDirty={this.props.selectedPageDirty}
-                                            activePage={this.props.selectedPage}
-                                            setEmptyPageMessage={this.setEmptyStateMessage.bind(this)}
-                                            setActivePage={this.setActivePage.bind(this)}
-                                            saveDropState={this.onUpdatePage.bind(this)}
-                                            onMovePage={this.onMovePage.bind(this)}
-                                            onViewPage={this.onViewPage.bind(this)}
-                                            onViewEditPage={this.onViewEditPage.bind(this)}
-                                            onDuplicatePage={this.onDuplicatePage.bind(this)}
-                                            onAddPage={this.onAddPage.bind(this)}
-                                            onSelection={this.onSelection.bind(this)}
-                                            onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
-                                            pageInContextComponents={props.pageInContextComponents}
-                                            NoPermissionSelectionPageId={this.noPermissionSelectionPageId}
-                                            enabled={!((selectedPage && selectedPage.tabId === 0) || inSearch)} />
-                                    </div>
+                                    <PersonaBarPageTreeviewInteractor
+                                        clearSelectedPage={this.props.clearSelectedPage}
+                                        Localization={Localization}
+                                        pageList={this.props.pageList}
+                                        getChildPageList={this.props.getChildPageList}
+                                        getPage={this.props.getPage.bind(this)}
+                                        _traverse={this._traverse.bind(this)}
+                                        showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
+                                        selectedPageDirty={this.props.selectedPageDirty}
+                                        activePage={this.props.selectedPage}
+                                        setEmptyPageMessage={this.setEmptyStateMessage.bind(this)}
+                                        setActivePage={this.setActivePage.bind(this)}
+                                        saveDropState={this.onUpdatePage.bind(this)}
+                                        onMovePage={this.onMovePage.bind(this)}
+                                        onViewPage={this.onViewPage.bind(this)}
+                                        onViewEditPage={this.onViewEditPage.bind(this)}
+                                        onDuplicatePage={this.onDuplicatePage.bind(this)}
+                                        onAddPage={this.onAddPage.bind(this)}
+                                        onSelection={this.onSelection.bind(this)}
+                                        onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
+                                        pageInContextComponents={props.pageInContextComponents}
+                                        NoPermissionSelectionPageId={this.noPermissionSelectionPageId}
+                                        enabled={!((selectedPage && selectedPage.tabId === 0) || inSearch)} />
                                 </div>
-                                <GridCell columnSize={70}>
+                                <GridCell columnSize={760} type={"px"}>
                                     {this.render_details()}
                                 </GridCell>
                             </GridCell>
