@@ -538,6 +538,7 @@ class App extends Component {
                             Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
                             this.props.updatePageListStore(list);
                             this.selectPageSettingTab(0);
+                            this.lastActivePageId = null;
                         }
                     });
                 });
@@ -551,7 +552,9 @@ class App extends Component {
 
         } else {
             this.props.onCancelPage();
+            this.lastActivePageId = null;
             this.props.changeSelectedPagePath("");
+
         }
     }
 
