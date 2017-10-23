@@ -554,14 +554,6 @@ namespace DotNetNuke.Entities.Portals
             get { return PortalController.GetPortalSettingAsBoolean("IsLocked", PortalId, false); }
         }
 
-        /// <summary>
-        /// Get the ID of the user who locked this portal
-        /// </summary>
-        public int LockedByUserId
-        {
-            get { return PortalController.GetPortalSettingAsInteger("LockedByUserId", PortalId, Null.NullInteger); }
-        }
-
 		public TimeZoneInfo TimeZone
 		{
 			get { return _timeZone; }

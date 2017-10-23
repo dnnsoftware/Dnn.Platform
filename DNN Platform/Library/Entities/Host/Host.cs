@@ -1682,15 +1682,6 @@ namespace DotNetNuke.Entities.Host
             get { return HostController.Instance.GetBoolean("IsLocked", false); }
         }
 
-        /// <summary>
-        /// Get the ID of the user that locked the entire instance
-        /// </summary>
-        public static int LockedByUserId
-        {
-            get { return HostController.Instance.GetInteger("LockedByUserId", Null.NullInteger); }
-        }
-
-
         #endregion
     }
 }

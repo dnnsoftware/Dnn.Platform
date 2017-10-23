@@ -503,7 +503,6 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage LockInstance(LockingDTO lockingRequest)
         {
             HostController.Instance.Update("IsLocked", lockingRequest.Lock.ToString(), true);
-            HostController.Instance.Update("LockedByUserId", this.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
@@ -513,7 +512,6 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage LockSite(LockingDTO lockingRequest)
         {
             PortalController.UpdatePortalSetting(PortalSettings.PortalId, "IsLocked", lockingRequest.Lock.ToString(), true);
-            PortalController.UpdatePortalSetting(PortalSettings.PortalId, "LockedByUserId", this.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
