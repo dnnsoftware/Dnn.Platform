@@ -725,12 +725,27 @@ class App extends Component {
                 this.selectPageSettingTab(0);
             }
         };
-        const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
+        const right = () => (!selectedPage || pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
         (!selectedPageDirty) ? left() : right();
     }
 
     onNoPermissionSelection(pageId) {
-        this.noPermissionSelectionPageId = pageId;
+        const setNoPermissionState = () => {
+            this.props.onCancelPage();
+            this.props.changeSelectedPagePath("");
+            this.noPermissionSelectionPageId = pageId;
+            this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
+        };
+        if (this.props.selectedPageDirty) {            
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Continue"),
+                Localization.get("Go Back"),
+                setNoPermissionState);
+        } 
+        else {            
+            setNoPermissionState();
+        }
     }
 
     onChangePageField(key, value) {
