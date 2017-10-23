@@ -354,8 +354,13 @@ class App extends Component {
 
             this.props.onUpdatePage(update, (page) => {
                 if (update.oldParentId) {
-                    removeFromOldParent();
-                    addToNewParent();
+                    if (page.id === utils.getCurrentPageId()) {
+                        window.parent.location = page.url;
+                    }   
+                    else {                 
+                        removeFromOldParent();
+                        addToNewParent();
+                    }
                 }
 
                 this._traverse((item, list, updateStore) => {
