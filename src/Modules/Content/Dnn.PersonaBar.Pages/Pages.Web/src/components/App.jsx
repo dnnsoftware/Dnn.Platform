@@ -324,35 +324,44 @@ class App extends Component {
             };
 
             const addToNewParent = () => {
-
-                this._traverse((item, list, updateStore) => {
-                    if (item.id == update.parentId) {
-
-                        (cachedItem) ? cachedItem.parentId = item.id : null;
-
-                        switch (true) {
-                            case item.childCount > 0 && !item.childListItems:
-                                this.props.getChildPageList(item.id).then((data) => {
-                                    item.isOpen = true;
-                                    item.childListItems = data;
-                                    updateStore(list);
-                                });
-                                break;
-                            case item.childCount == 0 && !item.childListItems:
-                                item.childCount++;
-                                item.childListItems = [];
-                                item.childListItems.push(cachedItem);
-                                break;
-                            case Array.isArray(item.childListItems) === true:
-                                item.childCount++;
-                                item.childListItems.push(cachedItem);
-                                this.onLoadPage(cachedItem.id);
-                                break;
+                if (update.parentId == -1) {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id === list[list.length - 1].id) {
+                            (cachedItem) ? cachedItem.parentId = -1 : null;
+                            const listCopy = [...list, cachedItem];
+                            updateStore(listCopy);
                         }
-                        item.isOpen = true;
-                        updateStore(list);
-                    }
-                });
+                    });
+                } else {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id == update.parentId) {
+
+                            (cachedItem) ? cachedItem.parentId = item.id : null;
+
+                            switch (true) {
+                                case item.childCount > 0 && !item.childListItems:
+                                    this.props.getChildPageList(item.id).then((data) => {
+                                        item.isOpen = true;
+                                        item.childListItems = data;
+                                        updateStore(list);
+                                    });
+                                    break;
+                                case item.childCount == 0 && !item.childListItems:
+                                    item.childCount++;
+                                    item.childListItems = [];
+                                    item.childListItems.push(cachedItem);
+                                    break;
+                                case Array.isArray(item.childListItems) === true:
+                                    item.childCount++;
+                                    item.childListItems.push(cachedItem);
+                                    this.onLoadPage(cachedItem.id);
+                                    break;
+                            }
+                            item.isOpen = true;
+                            updateStore(list);
+                        }
+                    });
+                }
             };
 
             this.props.onUpdatePage(update, (page) => {
