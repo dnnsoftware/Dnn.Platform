@@ -1176,6 +1176,17 @@ class App extends Component {
                             />
                         </GridCell>
                         <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
+                            <Dropdown
+                                className="more-dropdown"
+                                options={filterByPageStatusOptions}
+                                label={this.state.filterByPublishStatus ? filterByPageStatusOptions.find(x => x.value === this.state.filterByPublishStatus).label : Localization.get("FilterbyPublishStatusText")}
+                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
+                                value={this.state.filterByPublishStatus !== "" && this.state.filterByPublishStatus}
+                                withBorder={true} />
+                        </GridCell>
+                    </GridCell>
+                    <GridCell columnSize={100}>
+                        <GridCell columnSize={50} style={{ padding: "5px" }}>
                             <DropdownDayPicker
                                 onDayClick={this.onDayClick.bind(this)}
                                 dropdownIsActive={this.state.DropdownCalendarIsActive}
@@ -1186,17 +1197,6 @@ class App extends Component {
                                 CalendarIcon={CalendarIcon}
                                 label={this.getDateLabel()}
                             />
-                        </GridCell>
-                    </GridCell>
-                    <GridCell columnSize={100}>
-                        <GridCell columnSize={50} style={{ padding: "5px" }}>
-                            <Dropdown
-                                className="more-dropdown"
-                                options={filterByPageStatusOptions}
-                                label={this.state.filterByPublishStatus ? filterByPageStatusOptions.find(x => x.value === this.state.filterByPublishStatus).label : Localization.get("FilterbyPublishStatusText")}
-                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
-                                value={this.state.filterByPublishStatus !== "" && this.state.filterByPublishStatus}
-                                withBorder={true} />
                         </GridCell>
                         {!utils.isPlatform() &&
                             <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
