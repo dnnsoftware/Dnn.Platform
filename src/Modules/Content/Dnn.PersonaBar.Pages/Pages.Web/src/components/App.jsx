@@ -1385,7 +1385,7 @@ class App extends Component {
                         let { filters, tags } = this.state;
                         tags = this.distinct(tags.split(",")).join(",");
                         filters = filters.filter(f => f.ref != prop);
-                        const findTag = prop.split("-")[1];
+                        const findTag = prop.replace("tag-", "");
                         let tagList = tags.split(",");
                         tags = "";
                         tagList.map((tag) => {
