@@ -629,20 +629,18 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-            string userName = PrefixServiceToUserName ? Service + "-" + user.Email : user.Email;
-            string token = Service + "-" + user.Email + "-" + user.Id;
+            string userName = PrefixServiceToUserName ? Service + "-" + user.Id : user.Id;
+            string token = Service + "-" + user.Id;
 
             UserInfo objUserInfo;
 
             if (AutoMatchExistingUsers)
             {
                 objUserInfo = MembershipProvider.Instance().GetUserByUserName(settings.PortalId, userName);
-
                 if (objUserInfo != null)
                 {
                     //user already exists... lets check for a token next... 
                     var dnnAuthToken = MembershipProvider.Instance().GetUserByAuthToken(settings.PortalId, token, Service);
-
                     if (dnnAuthToken == null)
                     {
                         DataProvider.Instance().AddUserAuthentication(objUserInfo.UserID, Service, token, objUserInfo.UserID);
