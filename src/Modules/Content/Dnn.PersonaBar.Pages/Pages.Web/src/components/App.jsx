@@ -730,15 +730,22 @@ class App extends Component {
     }
 
     onNoPermissionSelection(pageId) {
-        const { selectedPage, selectedPageDirty } = this.props;
-        this.selectPageSettingTab(0);
-        this.shouldRunRecursive = false;
-        const left = () => { 
+        const setNoPermissionState = () => {
+            this.props.onCancelPage();
+            this.props.changeSelectedPagePath("");
             this.noPermissionSelectionPageId = pageId;
             this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
         };
-        const right = () => (!selectedPage || pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
-        (!selectedPageDirty) ? left() : right();        
+        if (this.props.selectedPageDirty) {            
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Continue"),
+                Localization.get("Go Back"),
+                setNoPermissionState);
+        } 
+        else {            
+            setNoPermissionState();
+        }
     }
 
     onChangePageField(key, value) {
