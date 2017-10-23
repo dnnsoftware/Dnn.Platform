@@ -83,7 +83,6 @@ export default class FolderPicker extends Component {
                             autoHeightMin={0}
                             autoHeightMax={200}>
                             <Folders
-                                {...this.props}
                                 folders={this.props.folders}
                                 getChildren={this.props.getChildren}
                                 onFolderClick={this.onFolderClick.bind(this) }/>

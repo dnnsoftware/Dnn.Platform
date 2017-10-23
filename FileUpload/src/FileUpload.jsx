@@ -313,10 +313,12 @@ export default class FileUpload extends Component {
     }
 
     render() {
+        const {props, state} = this;
+
         let buttons = Buttons;
-        if (this.props.buttons) {
+        if (props.buttons) {
             buttons = buttons.filter((button) => {
-                return this.props.buttons.some((propButton) => {
+                return props.buttons.some((propButton) => {
                     return button.name === propButton;
                 });
             });
@@ -326,10 +328,10 @@ export default class FileUpload extends Component {
             const svg = require(`!raw!./img/${button.name}.svg`);
             const isUpload = button.name === "upload";
             /* eslint-disable react/no-danger */
-            const accept = this.props.fileFormats.join(",");
+            const accept = props.fileFormats.join(",");
             return <div
                 className={"button " + button.name}
-                onMouseEnter={this.onMouseEnter.bind(this, this.props[button.name + "ButtonText"]) }
+                onMouseEnter={this.onMouseEnter.bind(this, props[button.name + "ButtonText"]) }
                 onMouseLeave={this.onMouseLeave.bind(this) }
                 onClick={this.onButtonClick.bind(this, button.name) }
                 key={button.name}>
@@ -340,9 +342,9 @@ export default class FileUpload extends Component {
         });
 
         const buttonsStyle = { width: buttons.length * 67 };
-        const src = this.state.fileUrl || "";
-        const showImage = src && this.state.fileExist && !this.state.showLinkInput && !this.state.showFolderPicker;
-        const className = "overlay" + (src && this.state.fileExist ? " has-image" : "") + (this.state.draggedOver ? " hover" : "");
+        const src = state.fileUrl || "";
+        const showImage = src && state.fileExist && !state.showLinkInput && !state.showFolderPicker;
+        const className = "overlay" + (src && state.fileExist ? " has-image" : "") + (state.draggedOver ? " hover" : "");
 
         return <div className="dnn-file-upload">
             <div>
@@ -356,21 +358,28 @@ export default class FileUpload extends Component {
                     <div className="buttons" style={buttonsStyle}>
                         {buttons}
                     </div>
-                    <span>{this.state.text}</span>
+                    <span>{state.text}</span>
                 </div>
 
-                {this.state.showLinkInput && <LinkInput
-                    {...this.props}
-                    linkPath={this.state.linkPath}
+                {state.showLinkInput && <LinkInput
+                    linkInputTitleText = {props.linkInputTitleText}
+                    linkInputPlaceholderText = {props.linkInputPlaceholderText}
+                    linkInputActionText = {props.linkInputActionText}
+                    linkPath={state.linkPath}
                     onSave={this.uploadFromLink.bind(this) }
                     onCancel={this.hideFields.bind(this) } 
                     />}
-                {this.state.showFolderPicker && <Browse
-                    {...this.props}
-                    utils={this.props.utils}
-                    fileFormats={this.props.fileFormats}
-                    selectedFolder={this.state.selectedFolder}
-                    selectedFile={this.state.selectedFile}
+                {state.showFolderPicker && <Browse
+                    browseActionText = {props.browseActionText}
+                    fileText = {props.fileText}
+                    folderText = {props.folderText}
+                    notSpecifiedText = {props.notSpecifiedText}
+                    searchFoldersPlaceHolderText = {props.searchFoldersPlaceHolderText}
+                    searchFilesPlaceHolderText = {props.searchFilesPlaceHolderText}
+                    utils={props.utils}
+                    fileFormats={props.fileFormats}
+                    selectedFolder={state.selectedFolder}
+                    selectedFile={state.selectedFile}
                     onSave={this.onFileSelect.bind(this) }
                     onCancel={this.hideFields.bind(this) }
                     />}
@@ -378,15 +387,17 @@ export default class FileUpload extends Component {
                     <img
                         style={this.getImageStyle() }
                         onError={this.handleImageError.bind(this) }
-                        src={src} alt={this.props.imageText}/></div>}
-                {this.state.selectedFile &&
-                    <div className="dnn-file-upload-file-name"><span>{this.state.selectedFile.value}</span></div>}
+                        src={src} alt={props.imageText}/></div>}
+                {state.selectedFile &&
+                    <div className="dnn-file-upload-file-name"><span>{state.selectedFile.value}</span></div>}
             </div>
-            {this.state.uploading && <UploadBar 
-                {...this.props}
-                uploadComplete={this.state.uploadComplete} 
-                errorText={this.state.errorText} 
-                fileName={this.state.fileName} 
+            {state.uploading && <UploadBar 
+                uploadCompleteText = {props.uploadCompleteText}
+                uploadingText = {props.uploadingText}
+                uploadDefaultText = {props.uploadDefaultText}
+                uploadComplete={state.uploadComplete} 
+                errorText={state.errorText} 
+                fileName={state.fileName} 
                 />}
         </div>;
     }

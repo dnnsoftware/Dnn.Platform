@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import FolderPicker from "./FolderPicker";
 import FilePicker from "./FilePicker";
+import helper from "../helper";
 
 import "./style.less";
 const KEY = {
@@ -145,36 +146,10 @@ export default class Browse extends Component {
     renderActions(){
         const {props} = this;
 
-        let components = [];
-        let actionTemplate = props.browseActionText;
-
-        let tokenRegex = /\{(.+?)\|(.+?)\}/;
-        while(tokenRegex.test(actionTemplate)){
-            let match = tokenRegex.exec(actionTemplate);
-
-            components.push(actionTemplate.substr(0, match.index));
-
-            let action = ((type) => {
-                switch(type.toLowerCase()){
-                    case "save":
-                        return this.onSave.bind(this);
-                    case "cancel":
-                        return this.props.onCancel;
-                    default:
-                        return null;
-                }
-            })(match[1]);
-
-            components.push(<strong onClick={action}>{match[2]}</strong>);
-
-            actionTemplate = actionTemplate.substr(match.index + match[0].length);
-        }
-
-        if(actionTemplate){
-            components.push(actionTemplate);
-        }
-
-        return components;
+        return helper.renderActions(props.browseActionText, {
+            "save": this.onSave.bind(this),
+            "cancel": props.onCancel
+        });
     }
 
     render() {
@@ -182,7 +157,8 @@ export default class Browse extends Component {
         return <div className="file-upload-container">
             <h4>{this.props.folderText}</h4>
             <FolderPicker
-                {...this.props}
+                notSpecifiedText = {this.props.notSpecifiedText}
+                searchFoldersPlaceHolderText = {this.props.searchFoldersPlaceHolderText}
                 selectedFolder={this.state.selectedFolder}
                 folders={this.state.folders}
                 searchFolder={this.getFolders.bind(this)}
@@ -191,7 +167,8 @@ export default class Browse extends Component {
                 />
             <h4>{this.props.fileText}</h4>
             <FilePicker
-                {...this.props}
+                notSpecifiedText = {this.props.notSpecifiedText}
+                searchFilesPlaceHolderText = {this.props.searchFilesPlaceHolderText}
                 selectedFile={this.state.selectedFile}
                 files={this.state.files}
                 onFileClick={this.onFileClick.bind(this) }
@@ -213,7 +190,10 @@ Browse.propTypes = {
 
     browseActionText: PropTypes.string,
     fileText: PropTypes.string,
-    folderText: PropTypes.string
+    folderText: PropTypes.string,
+    notSpecifiedText: PropTypes.string,
+    searchFoldersPlaceHolderText: PropTypes.string,
+    searchFilesPlaceHolderText: PropTypes.string
 };
 
 Browse.defaultProps = {

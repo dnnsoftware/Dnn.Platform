@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import helper from "./helper";
 
 const KEY = {
     ENTER: 13,
@@ -44,36 +45,10 @@ export default class LinkInput extends Component {
     renderActions(){
         const {props} = this;
 
-        let components = [];
-        let actionTemplate = props.linkInputActionText;
-
-        let tokenRegex = /\{(.+?)\|(.+?)\}/;
-        while(tokenRegex.test(actionTemplate)){
-            let match = tokenRegex.exec(actionTemplate);
-
-            components.push(actionTemplate.substr(0, match.index));
-
-            let action = ((type) => {
-                switch(type.toLowerCase()){
-                    case "save":
-                        return this.onSave.bind(this);
-                    case "cancel":
-                        return this.props.onCancel;
-                    default:
-                        return null;
-                }
-            })(match[1]);
-
-            components.push(<strong onClick={action}>{match[2]}</strong>);
-
-            actionTemplate = actionTemplate.substr(match.index + match[0].length);
-        }
-
-        if(actionTemplate){
-            components.push(actionTemplate);
-        }
-
-        return components;
+        return helper.renderActions(props.linkInputActionText, {
+            "save": this.onSave.bind(this),
+            "cancel": this.props.onCancel
+        });
     }
 
     render() {
