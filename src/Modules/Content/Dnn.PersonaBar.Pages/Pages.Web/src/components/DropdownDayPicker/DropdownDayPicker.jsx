@@ -54,6 +54,7 @@ class DropdownDayPicker extends Component  {
                                 <GridCell columnSize={50}  className="calendar">
                                         <DayPicker
                                             id="try-this"
+                                            month={startDate}
                                             selectedDays={startDate}
                                             onDayClick={(data) => onDayClick(data, false) }/>
                                 </GridCell>

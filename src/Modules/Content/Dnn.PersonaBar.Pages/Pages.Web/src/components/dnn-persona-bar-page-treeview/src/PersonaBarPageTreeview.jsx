@@ -170,7 +170,7 @@ export class PersonaBarPageTreeview extends Component {
             };
             index++;
 
-            const style = item.canManagePage ? { height: "28px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
+            const style = item.canManagePage ? { height: "28px", lineHeight: "35px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
