@@ -42,6 +42,8 @@ namespace DotNetNuke.Data
     public sealed class SqlDataProvider : DataProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
+        private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance();
+
         #region Private Members
 
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
@@ -80,8 +82,7 @@ namespace DotNetNuke.Data
 
             try
             {
-                DatabaseConnectionProvider.Instance()
-                    .ExecuteReader(connectionString, CommandType.StoredProcedure, 0, owner + qualifier + "GetDatabaseVersion");
+                _dbConnectionProvider.ExecuteReader(connectionString, CommandType.StoredProcedure, 0, owner + qualifier + "GetDatabaseVersion");
             }
             catch (SqlException ex)
             {
@@ -127,8 +128,7 @@ namespace DotNetNuke.Data
                     {
                         Logger.Trace("Executing SQL Script " + query);
 
-                        DatabaseConnectionProvider.Instance()
-                            .ExecuteNonQuery(connectionString, CommandType.Text, timeoutSec, query);
+                        _dbConnectionProvider.ExecuteNonQuery(connectionString, CommandType.Text, timeoutSec, query);
                     }
                     catch (SqlException objException)
                     {
@@ -157,7 +157,7 @@ namespace DotNetNuke.Data
                 if (string.IsNullOrEmpty(connectionString))
                     throw new ArgumentNullException(nameof(connectionString));
 
-                return DatabaseConnectionProvider.Instance().ExecuteSql(connectionString, CommandType.Text, timeoutSec, sql);
+                return _dbConnectionProvider.ExecuteSql(connectionString, CommandType.Text, timeoutSec, sql);
             }
             catch (SqlException sqlException)
             {
@@ -269,8 +269,7 @@ namespace DotNetNuke.Data
 
             try
             {
-                DatabaseConnectionProvider.Instance()
-                    .ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, 0, sql);
+                _dbConnectionProvider.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, 0, sql);
             }
             catch (SqlException objException)
             {
@@ -302,62 +301,52 @@ namespace DotNetNuke.Data
 
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
-            DatabaseConnectionProvider.Instance()
-                .ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            _dbConnectionProvider.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            DatabaseConnectionProvider.Instance()
-                .ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            _dbConnectionProvider.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
-            DatabaseConnectionProvider.Instance()
-                .BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+            _dbConnectionProvider.BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
         {
-            DatabaseConnectionProvider.Instance()
-                .BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+            _dbConnectionProvider.BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
         {
-            DatabaseConnectionProvider.Instance()
-                .BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+            _dbConnectionProvider.BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
         {
-            DatabaseConnectionProvider.Instance()
-                .BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+            _dbConnectionProvider.BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
-            return DatabaseConnectionProvider.Instance()
-                .ExecuteReader(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteReader(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return DatabaseConnectionProvider.Instance()
-                .ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return DatabaseConnectionProvider.Instance()
-                .ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return DatabaseConnectionProvider.Instance()
-                .ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override string ExecuteScript(string script)
