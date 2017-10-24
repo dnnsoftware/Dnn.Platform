@@ -32,8 +32,18 @@
             var response = session.Response;
 
             // Get counts.
-            var installed = response.Installed.length;
-            var failed = response.Failed.length;
+            var installed = 0;
+            var failed = 0;
+
+            response.forEach(function (modPackage) {
+
+                // Attempted install?
+                if (modPackage.Attempted) {
+
+                    // Success?
+                    modPackage.Success ? installed++ : failed++;
+                }
+            });
 
             // Create start of string.
             var installStatus = 'Installation ';
@@ -55,6 +65,24 @@
             installStatus = installStatus + ': ' + installed + ' successful installs and ' + failed + ' failures.';
 
             return installStatus;
+        };
+
+        // Get CSS class to apply to module panel.
+        $scope.panelStatus = function (modPackage) {
+
+            // Default class.
+            var panelClass = 'panel-default';
+
+            // Attempted install?
+            if (modPackage.Attempted) {
+
+                // Success?
+                panelClass = modPackage.Success ? 'panel-success' : 'panel-danger';
+            }
+
+            console.log(panelClass);
+
+            return panelClass;
         };
 
     }];
