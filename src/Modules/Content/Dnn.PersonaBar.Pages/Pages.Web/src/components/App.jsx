@@ -193,24 +193,40 @@ class App extends Component {
             const callAPI = () => {
                 const parentId = hierarchy.shift();
                 parentId && setTimeout(() => execute(), 100);
-                const execute = () => this.props.getChildPageList(parentId)
-                    .then(data => {
+                const execute = () => {
+                    if (parentId !== selectedId) {
+                        let page = null;
                         this._traverse((item, list, update) => {
-                            const left = () => {
-                                item.childListItems = data;
+                            if (item.id === parentId) {
                                 item.isOpen = true;
                                 item.hasChildren = true;
+                                page = item;
                                 update(list);
-                                callAPI();
-                            };
-
-                            const right = () => {
-                                update(list);
-                                this.buildBreadCrumbPath(selectedId);
-                            };
-                            (data.length > 0 && item.id === data[0].parentId && data[0].parentId !== selectedId) ? left() : right();
+                                return;
+                            }
                         });
-                    });
+                        if (!page || !page.childListItems) {
+                            this.props.getChildPageList(parentId)
+                                .then(data => {
+                                    this._traverse((item, list, update) => {
+                                        const left = () => {
+                                            item.childListItems = data;
+                                            item.isOpen = true;
+                                            item.hasChildren = true;
+                                            update(list);
+                                            callAPI();
+                                        };
+                                        const right = () => { update(list); };
+                                        (data.length > 0 && item.id === data[0].parentId) ? left() : right();
+                                    });
+                                });
+                        } else {
+                            callAPI();
+                        }
+                    } else {
+                        this.buildBreadCrumbPath(selectedId);
+                    }
+                };
             };
             callAPI();
         };
@@ -383,8 +399,8 @@ class App extends Component {
                         updateStore(list);
                     }
                 });
-
-                this.onLoadPage(update.tabId);
+                this.buildTree(update.tabId);
+                //this.onLoadPage(update.tabId);
                 resolve();
             });
         });
