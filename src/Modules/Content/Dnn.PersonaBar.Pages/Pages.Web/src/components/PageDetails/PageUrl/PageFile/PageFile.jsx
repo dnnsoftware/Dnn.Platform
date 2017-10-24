@@ -5,6 +5,7 @@ import utils from "../../../../utils";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
+import Localization from "../../../../localization";
 
 class PageFile extends Component {
 
@@ -33,7 +34,28 @@ class PageFile extends Component {
                         <FileUpload
                             utils={utilities}
                             selectedFile={selectedFile}
-                            onSelectFile={this.onFileSelect.bind(this)} />
+                            onSelectFile={this.onFileSelect.bind(this)}
+                            browseButtonText = {Localization.get("BrowseButton")}
+                            uploadButtonText = {Localization.get("UploadButton")}
+                            linkButtonText = {Localization.get("LinkButton")}
+                            defaultText = {Localization.get("DragDefault")}
+                            onDragOverText = {Localization.get("DragOver")}
+                            uploadFailedText = {Localization.get("UploadFailed")}
+                            wrongFormatText = {Localization.get("WrongFormat")}
+                            imageText = {Localization.get("DefaultImageTitle")}
+                            linkInputTitleText = {Localization.get("LinkInputTitle")}
+                            linkInputPlaceholderText = {Localization.get("LinkInputPlaceHolder")}
+                            linkInputActionText = {Localization.get("LinkInputAction")}
+                            uploadCompleteText = {Localization.get("UploadComplete")}
+                            uploadingText = {Localization.get("Uploading")}
+                            uploadDefaultText = {Localization.get("UploadDefault")}
+                            browseActionText = {Localization.get("BrowseAction")}
+                            notSpecifiedText = {Localization.get("NotSpecified")}
+                            searchFilesPlaceHolderText = {Localization.get("SearchFilesPlaceHolder")}
+                            searchFoldersPlaceHolderText = {Localization.get("SearchFoldersPlaceHolder")}
+                            fileText = {Localization.get("File")}
+                            folderText = {Localization.get("Folder")}
+                            />
                     </GridCell>
                     <GridCell className="right-column">
                         <PageUrlCommons {...this.props} display="vertical" />
