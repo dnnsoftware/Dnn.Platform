@@ -145,7 +145,7 @@ namespace DeployClient
                 JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
                 // Start.
-                Dictionary<string, dynamic> results = null;
+                SortedList<string, dynamic> results = null;
 
                 if (!API.Install(sessionGuid, out results))
                 {
@@ -172,19 +172,16 @@ namespace DeployClient
                         if (response.ContainsKey("Response"))
                         {
                             // Yes, get the response.
-                            results = jsonSer.Deserialize<Dictionary<string, dynamic>>(response["Response"]);
+                            results = jsonSer.Deserialize<SortedList<string, dynamic>>(response["Response"]);
                         }
 
                         // As long as we have something.
                         if (status != -1 && results != null)
-                        {   
-                            // Get the installed and failed lists.
-                            ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
-                            ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
-
-                            // Give some feedback on it, only if it's changed.
-                            string print = string.Format("\t{0} module archives processed, {0}/{1} succeeded.", installed.Count + failed.Count, installed.Count);
+                        {
+                            // Build feedback.
+                            string print = BuildUpdateString(results);
                             
+                            // Same as previous feedback?
                             if (print != previousPrint)
                             {
                                 WriteLine(print);
@@ -204,15 +201,14 @@ namespace DeployClient
                 }
                 else
                 {
-                    // Get the installed and failed lists.
-                    ArrayList installed = results.ContainsKey("Installed") ? results["Installed"] : null;
-                    ArrayList failed = results.ContainsKey("Failed") ? results["Failed"] : null;
+                    // Build feedback.
+                    string print = BuildUpdateString(results);
 
-                    // Give some feedback on it.
-                    WriteLine(string.Format("\t{0} module archives processed, {0}/{1} succeeded.", installed.Count + failed.Count, installed.Count));
-                    
+                    // Print feedback.
+                    WriteLine(print);   
                 }
 
+                // Finished install.
                 WriteLine(string.Format("Finished installation in {0} ms.", (DateTime.Now - installStartTime).TotalMilliseconds));
                 ReadLine();
             }
@@ -225,6 +221,35 @@ namespace DeployClient
                 ReadLine();
                 Environment.Exit((int)ExitCode.Error);
             }
+        }
+
+        private static string BuildUpdateString(SortedList<string, dynamic> results)
+        {
+            // Get counts.
+            int attempted = 0;
+            int succeeded = 0;
+            int failed = 0;
+
+            foreach (KeyValuePair<string, dynamic> kvp in results)
+            {
+                Dictionary<string, dynamic> module = kvp.Value;
+
+                if (module.ContainsKey("Attempted") && (bool)module["Attempted"])
+                {
+                    attempted++;
+
+                    if (module.ContainsKey("Success") && (bool)module["Success"])
+                    {
+                        succeeded++;
+                    }
+                    else
+                    {
+                        failed++;
+                    }
+                }
+            }
+
+            return string.Format("\t{0}/{1} module archives processed, {2}/{0} succeeded.", attempted, results.Count, succeeded);
         }
 
         private static void WriteException(Exception ex, int maxDepth = 10, int depth = 0)
