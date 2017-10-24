@@ -92,7 +92,7 @@ namespace DeployClient
             }
         }
 
-        public static bool Install(string sessionGuid, out Dictionary<string, dynamic> response)
+        public static bool Install(string sessionGuid, out SortedList<string, dynamic> response)
         {
             string endpoint = string.Format("Remote/Install?sessionGuid={0}", sessionGuid);
 
@@ -112,7 +112,7 @@ namespace DeployClient
                     {
                         success = true;
                         string json = httpResponse.Content.ReadAsStringAsync().Result;
-                        response = jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+                        response = jsonSer.Deserialize<SortedList<string, dynamic>>(json);
                     }
                 }
                 catch (Exception ex)

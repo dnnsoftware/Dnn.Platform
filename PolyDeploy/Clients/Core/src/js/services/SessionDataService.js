@@ -16,7 +16,7 @@
 
                     // Parse if we need to.
                     if (data.Response) {
-                        data.Response = JSON.parse(data.Response);
+                        data.Response = parseSessionResponse(data.Response);
                     } else {
                         data.Response = undefined;
                     }
@@ -38,7 +38,7 @@
 
                     // Parse if we need to.
                     if (data.Response) {
-                        data.Response = JSON.parse(data.Response);
+                        data.Response = parseSessionResponse(data.Response);
                     } else {
                         data.Response = undefined;
                     }
@@ -105,6 +105,28 @@
         function install(guid) {
 
             $http.get(controllerUrl + 'Install?guid=' + guid);
+        }
+
+        function parseSessionResponse(rawResponse) {
+
+            // Parse to json.
+            var response = JSON.parse(rawResponse);
+
+            var newResponse = [];
+
+            // Tidy the response to make it easier to deal with.
+            for (var key in response) {
+
+                var modulePackage = response[key];
+
+                modulePackage.Order = parseInt(key);
+
+                newResponse.push(modulePackage);
+            }
+
+            console.log(newResponse);
+
+            return newResponse;
         }
 
         return {

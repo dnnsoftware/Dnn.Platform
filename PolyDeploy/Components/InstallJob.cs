@@ -13,6 +13,8 @@ namespace Cantarus.Modules.PolyDeploy.Components
         public string Name { get; set; }
         public List<PackageJob> Packages { get; set; }
         public List<string> Failures { get; set; }
+        public bool Attempted { get; set; }
+        public bool Success { get; set; }
 
         public bool CanInstall
         {
@@ -37,6 +39,8 @@ namespace Cantarus.Modules.PolyDeploy.Components
             Name = Path.GetFileName(path);
             Packages = new List<PackageJob>();
             Failures = new List<string>();
+            Attempted = false;
+            Success = false;
             Installer = new Installer(new FileStream(path, FileMode.Open, FileAccess.Read), Globals.ApplicationMapPath, true, false);
 
             foreach (KeyValuePair<int, PackageInstaller> orderedPackage in Installer.Packages)
@@ -62,14 +66,15 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
-        public bool Install()
+        public void Install()
         {
-            bool installSuccess = false;
+            // Record that we have attempted an install.
+            Attempted = true;
 
             // Can this be installed at this point?
             if (CanInstall)
             {
-                // Possibly need to recreate the installer at the point.
+                // Possibly need to recreate the installer at this point.
                 Installer = new Installer(Installer.TempInstallFolder, ModuleManifestName(Installer.TempInstallFolder), Globals.ApplicationMapPath, true);
 
                 // Is the installer valid?
@@ -86,7 +91,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
                     Installer.Install();
 
                     // Did the package install successfully?
-                    installSuccess = Installer.IsValid;
+                    Success = Installer.IsValid;
                 }
 
                 // Record failures.
@@ -100,8 +105,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
                     }
                 }
             }
-
-            return installSuccess;
         }
 
         private bool FindDependency(string name, List<PackageJob> packageJobs)

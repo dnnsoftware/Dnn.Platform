@@ -66,14 +66,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
         public void Deploy()
         {
             // Do the install.
-            List<InstallJob> successJobs = new List<InstallJob>();
-            List<InstallJob> failedJobs = new List<InstallJob>();
-
-            Dictionary<string, List<InstallJob>> results = new Dictionary<string, List<InstallJob>>();
-
-            results.Add("Installed", successJobs);
-            results.Add("Failed", failedJobs);
-
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
             SessionDataController dc = new SessionDataController();
 
@@ -81,31 +73,31 @@ namespace Cantarus.Modules.PolyDeploy.Components
             Session.Status = SessionStatus.InProgess;
             dc.Update(Session);
 
+            // Install in order.
             foreach (KeyValuePair<int, InstallJob> keyPair in OrderedInstall)
             {
+                // Get install job.
                 InstallJob job = keyPair.Value;
 
-                if (job.Install())
+                // Attempt install.
+                job.Install();
+
+                // Make sorted list serialisable.
+                SortedList<string, InstallJob> serOrderedInstall = new SortedList<string, InstallJob>();
+
+                foreach(KeyValuePair<int, InstallJob> pair in OrderedInstall)
                 {
-                    successJobs.Add(job);
-                }
-                else
-                {
-                    failedJobs.Add(job);
+                    serOrderedInstall.Add(pair.Key.ToString(), pair.Value);
                 }
 
                 // After each install job, update response.
-                Session.Response = jsonSer.Serialize(results);
+                Session.Response = jsonSer.Serialize(serOrderedInstall);
                 dc.Update(Session);
             }
 
             // Done.
             Session.Status = SessionStatus.Complete;
             dc.Update(Session);
-
-            // Log failures.
-            LogAnyFailures(successJobs);
-            LogAnyFailures(failedJobs);
         }
 
         protected virtual void LogAnyFailures(List<InstallJob> jobs)
