@@ -303,7 +303,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 if (String.IsNullOrEmpty(redirectURL))
                 {
-                    if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
+                    if (PortalSettings.RegisterTabId != -1 && PortalSettings.HomeTabId != -1)
                     {
                         //redirect to portal home page specified
                         redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
