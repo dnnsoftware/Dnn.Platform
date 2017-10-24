@@ -152,7 +152,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 5 }}
                         selectedTabId={state.defaultPagesSettings.SplashTabId ? state.defaultPagesSettings.SplashTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "SplashTabId")}
-                        defaultLabel={state.defaultPagesSettings.SplashTabId ? state.defaultPagesSettings.SplashTabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.SplashTabName ? state.defaultPagesSettings.SplashTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
@@ -168,7 +168,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 4 }}
                         selectedTabId={state.defaultPagesSettings.HomeTabId ? state.defaultPagesSettings.HomeTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "HomeTabId")}
-                        defaultLabel={state.defaultPagesSettings.HomeTabId ? state.defaultPagesSettings.HomeTabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.HomeTabName ? state.defaultPagesSettings.HomeTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
@@ -184,7 +184,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 3 }}
                         selectedTabId={state.defaultPagesSettings.LoginTabId ? state.defaultPagesSettings.LoginTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "LoginTabId")}
-                        defaultLabel={state.defaultPagesSettings.LoginTabId ? state.defaultPagesSettings.LoginTabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.LoginTabName ? state.defaultPagesSettings.LoginTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_Login}
@@ -200,7 +200,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 2 }}
                         selectedTabId={state.defaultPagesSettings.RegisterTabId ? state.defaultPagesSettings.RegisterTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "RegisterTabId")}
-                        defaultLabel={state.defaultPagesSettings.RegisterTabId ? state.defaultPagesSettings.RegisterTabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.RegisterTabName ? state.defaultPagesSettings.RegisterTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
@@ -218,7 +218,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 5 }}
                         selectedTabId={state.defaultPagesSettings.UserTabId ? state.defaultPagesSettings.UserTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "UserTabId")}
-                        defaultLabel={state.defaultPagesSettings.UserTabId ? state.defaultPagesSettings.UserTabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.UserTabName ? state.defaultPagesSettings.UserTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
@@ -234,7 +234,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 4 }}
                         selectedTabId={state.defaultPagesSettings.SearchTabId ? state.defaultPagesSettings.SearchTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "SearchTabId")}
-                        defaultLabel={state.defaultPagesSettings.SearchTabId ? state.defaultPagesSettings.SearchTabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.SearchTabName ? state.defaultPagesSettings.SearchTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_Search}
@@ -250,7 +250,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 3 }}
                         selectedTabId={state.defaultPagesSettings.Custom404TabId ? state.defaultPagesSettings.Custom404TabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "Custom404TabId")}
-                        defaultLabel={state.defaultPagesSettings.Custom404TabId ? state.defaultPagesSettings.Custom404TabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.Custom404TabName ? state.defaultPagesSettings.Custom404TabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_2}
@@ -266,7 +266,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         style={{ width: "100%", zIndex: 2 }}
                         selectedTabId={state.defaultPagesSettings.Custom500TabId ? state.defaultPagesSettings.Custom500TabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "Custom500TabId")}
-                        defaultLabel={state.defaultPagesSettings.Custom500TabId ? state.defaultPagesSettings.Custom500TabName : noneSpecifiedText}
+                        defaultLabel={state.defaultPagesSettings.Custom500TabName ? state.defaultPagesSettings.Custom500TabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_2}
