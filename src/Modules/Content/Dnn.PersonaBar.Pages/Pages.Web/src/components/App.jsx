@@ -1333,6 +1333,10 @@ class App extends Component {
 
                 condition ? update() : null;
             };
+            const getTabPath = (path) => {
+                path = path.startsWith("/") ? path.substring(1) : path;
+                return path.split("/").join(" / ");
+            };
             let visibleMenus = [];
             item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
             item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
@@ -1353,7 +1357,7 @@ class App extends Component {
                         <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
                             <div className="search-item-details-left">
                                 <h1 onClick={() => onNameClick(item)}><OverflowText text={item.name} /></h1>
-                                <h2><OverflowText text={item.tabpath} /></h2>
+                                <h2><OverflowText text={getTabPath(item.tabpath)} /></h2>
                             </div>
                             <div className="search-item-details-right">
                                 <ul>
