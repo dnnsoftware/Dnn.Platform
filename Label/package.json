@@ -43,7 +43,7 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "dnn-tooltip": "^0.2.1",
+    "dnn-tooltip": "0.2.1",
     "react": "~15.3.2",
     "dnn-global-styles": "0.0.5"
   }

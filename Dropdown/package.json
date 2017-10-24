@@ -50,6 +50,6 @@
     "lodash": "4.17.4",
     "scroll": "^2.0.0",
     "dnn-global-styles": "0.0.5",
-    "dnn-svg-icons": "latest"
+    "dnn-svg-icons": "0.1.20"
   }
 }

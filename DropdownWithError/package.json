@@ -46,8 +46,8 @@
     "react": "~15.3.2",
     "lodash": "4.17.4",
     "dnn-global-styles": "0.0.5",
-    "dnn-tooltip": "latest",
-    "dnn-dropdown": "latest",
-    "dnn-label": "latest"
+    "dnn-tooltip": "0.2.1",
+    "dnn-dropdown": "1.0.16",
+    "dnn-label": "0.0.8"
   }
 }

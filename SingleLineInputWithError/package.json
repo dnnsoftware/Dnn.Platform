@@ -44,9 +44,9 @@
   },
   "dependencies": {
     "dnn-global-styles": "0.0.5",
-    "dnn-label": "0.0.7",
-    "dnn-single-line-input": "^1.0.4",
-    "dnn-tooltip": "^0.2.1",
+    "dnn-label": "0.0.8",
+    "dnn-single-line-input": "1.0.5",
+    "dnn-tooltip": "0.2.1",
     "react": "~15.3.2"
   }
 }

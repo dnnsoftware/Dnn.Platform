@@ -45,7 +45,7 @@
   "dependencies": {
     "react": "~15.3.2",
     "dnn-global-styles": "0.0.5",
-    "dnn-grid-cell": "latest",
-    "dnn-back-to-link": "latest"
+    "dnn-grid-cell": "0.0.4",
+    "dnn-back-to-link": "0.0.3"
   }
 }

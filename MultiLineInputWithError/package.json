@@ -45,8 +45,8 @@
   "dependencies": {
     "react": "~15.3.2",
     "dnn-global-styles": "0.0.5",
-    "dnn-multi-line-input": "latest",
-    "dnn-tooltip": "latest",
-    "dnn-label": "latest"
+    "dnn-multi-line-input": "1.0.7",
+    "dnn-tooltip": "0.2.1",
+    "dnn-label": "0.0.8"
   }
 }

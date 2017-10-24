@@ -45,6 +45,6 @@
   "dependencies": {
     "react": "~15.3.2",
     "dnn-global-styles": "0.0.5",
-    "react-tabs": "latest"
+    "react-tabs": "0.8.0"
   }
 }
