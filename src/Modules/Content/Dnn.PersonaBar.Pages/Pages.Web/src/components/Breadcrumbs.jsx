@@ -1,28 +1,28 @@
-import React, {PropTypes} from "react";
+import React, { PropTypes } from "react";
 
 const maxItems = 4;
 
-const Breadcrumbs = ({items, onSelectedItem}) => {
+const Breadcrumbs = ({ items, onSelectedItem }) => {
 
-    function onClick(index) {
-        if (index < items.length - 1) {
-            onSelectedItem({...items[index]});
-        }
+    function onClick(tabId) {
+        if (tabId)
+            onSelectedItem(tabId);
     }
 
     return (
         <div className="breadcrumbs-container">
-            { items.length > maxItems && 
+            {items.length > maxItems &&
                 <span className="more"
                     title={items.map(i => i.name).join(" > ")}
-                    onClick={() => onClick(0)} /> }
+                    onClick={() => onClick(0)} />}
 
-            { items.slice(Math.max(items.length - maxItems, 0)).map((item, i) =>{
+            {items.slice(Math.max(items.length - maxItems, 0)).map((item, i) => {
 
                 return (
-                <div key={item.id} onClick={() => onClick(item.tabId)}>
-                    <span>{item.name}</span>
-                </div>); } )
+                    <div key={item.id} onClick={() => onClick(item.tabId)}>
+                        <span>{item.name}</span>
+                    </div>);
+            })
             }
         </div>
     );

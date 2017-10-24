@@ -80,19 +80,20 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             });
         }
 
-        if (!this.state.initialCollapse) {
-            this.props._traverse((item) => {
-                if (item.isOpen) {
-                    setTreeViewExpanded = true;
-                }
-            });
+        //if (!this.state.initialCollapse) {
+        this.props._traverse((item) => {
+            if (item.isOpen) {
+                setTreeViewExpanded = true;
+            }
+        });
 
-            (setTreeViewExpanded) ? this.setState({
-                isTreeviewExpanded: true
-            }) : this.setState({
-                isTreeviewExpanded: false
-            });
-        }
+        (setTreeViewExpanded) ? this.setState({
+            isTreeviewExpanded: true,
+            initialCollapse: false
+        }) : this.setState({
+            isTreeviewExpanded: false
+        });
+        //}
     }
 
     init() {
@@ -718,8 +719,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         );
     }
 
-    setMouseOver(isMouseOver){
-        let hasChildren = this.state.pageList.some((page)=>page.childCount>0);
+    setMouseOver(isMouseOver) {
+        let hasChildren = this.state.pageList.some((page) => page.childCount > 0);
 
         this.setState({
             isMouseInTree: (isMouseOver && hasChildren)
@@ -728,7 +729,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     render() {
         return (
-            <div onMouseEnter={()=>this.setMouseOver(true)} onMouseLeave={()=>this.setMouseOver(false)}>
+            <div onMouseEnter={() => this.setMouseOver(true)} onMouseLeave={() => this.setMouseOver(false)}>
                 <GridCell
                     columnSize={30}
                     className="dnn-persona-bar-treeview"
@@ -746,7 +747,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         columnSize={55}
                         style={{ marginLeft: "-2px" }} >
                         <Scrollbars
-                            className="scrollArea content-horizontal"                        
+                            className="scrollArea content-horizontal"
                             autoHeight autoHide={!this.state.isMouseInTree} autoHeightMin={100}
                             autoHeightMax={9999}
                             renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>

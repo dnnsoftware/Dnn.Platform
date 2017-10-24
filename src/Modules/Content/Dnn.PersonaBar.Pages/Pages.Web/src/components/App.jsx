@@ -100,14 +100,14 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         this.props.getPageList();
         const selectedPageId = utils.getCurrentPageId();
-        selectedPageId && !utils.getIsAdminHostSystemPage() && this.props.onLoadPage(selectedPageId);
-        // .then(() => {
+        selectedPageId && !utils.getIsAdminHostSystemPage() && this.onLoadPage(selectedPageId);
+        // , (data) => {
         //     this.shouldRunRecursive = false;
         //     this.buildTree(selectedPageId);
         // });
 
         if (viewName === "edit") {
-            props.onLoadPage(utils.getCurrentPageId());
+            this.onLoadPage(utils.getCurrentPageId());
         }
 
         if (!utils.isPlatform()) {
@@ -151,7 +151,7 @@ class App extends Component {
             return;
         }
         if (viewParams.pageId) {
-            this.props.onLoadPage(viewParams.pageId);
+            this.onLoadPage(viewParams.pageId);
 
         }
         if (viewParams.viewTab) {
@@ -193,21 +193,40 @@ class App extends Component {
             const callAPI = () => {
                 const parentId = hierarchy.shift();
                 parentId && setTimeout(() => execute(), 100);
-                const execute = () => this.props.getChildPageList(parentId)
-                    .then(data => {
+                const execute = () => {
+                    if (parentId !== selectedId) {
+                        let page = null;
                         this._traverse((item, list, update) => {
-                            const left = () => {
-                                item.childListItems = data;
+                            if (item.id === parentId) {
                                 item.isOpen = true;
                                 item.hasChildren = true;
+                                page = item;
                                 update(list);
-                                callAPI();
-                            };
-
-                            const right = () => update(list);
-                            (item.id === data[0].parentId && data[0].parentId !== selectedId) ? left() : right();
+                                return;
+                            }
                         });
-                    });
+                        if (!page || !page.childListItems) {
+                            this.props.getChildPageList(parentId)
+                                .then(data => {
+                                    this._traverse((item, list, update) => {
+                                        const left = () => {
+                                            item.childListItems = data;
+                                            item.isOpen = true;
+                                            item.hasChildren = true;
+                                            update(list);
+                                            callAPI();
+                                        };
+                                        const right = () => { update(list); };
+                                        (data.length > 0 && item.id === data[0].parentId) ? left() : right();
+                                    });
+                                });
+                        } else {
+                            callAPI();
+                        }
+                    } else {
+                        this.buildBreadCrumbPath(selectedId);
+                    }
+                };
             };
             callAPI();
         };
@@ -222,7 +241,7 @@ class App extends Component {
 
     onPageSettings(pageId) {
         const { props } = this;
-        props.onLoadPage(pageId);
+        this.onLoadPage(pageId);
     }
 
     onCreatePage() {
@@ -244,12 +263,12 @@ class App extends Component {
                                     item.childCount++;
                                     item.childListItems = [];
                                     item.childListItems.push(page);
-                                    this.props.onLoadPage(page.id);
+                                    this.onLoadPage(page.id);
                                     break;
                                 case Array.isArray(item.childListItems) === true:
                                     item.childCount++;
                                     item.childListItems.push(page);
-                                    this.props.onLoadPage(page.id);
+                                    this.onLoadPage(page.id);
                                     break;
                             }
                             item.isOpen = true;
@@ -264,7 +283,7 @@ class App extends Component {
                                 item.isOpen = true;
                                 item.selected = true;
                                 updateStore(list);
-                                this.props.onLoadPage(page.id);
+                                this.onLoadPage(page.id);
                             }
                         });
                     });
@@ -321,43 +340,52 @@ class App extends Component {
             };
 
             const addToNewParent = () => {
-
-                this._traverse((item, list, updateStore) => {
-                    if (item.id == update.parentId) {
-
-                        (cachedItem) ? cachedItem.parentId = item.id : null;
-
-                        switch (true) {
-                            case item.childCount > 0 && !item.childListItems:
-                                this.props.getChildPageList(item.id).then((data) => {
-                                    item.isOpen = true;
-                                    item.childListItems = data;
-                                    updateStore(list);
-                                });
-                                break;
-                            case item.childCount == 0 && !item.childListItems:
-                                item.childCount++;
-                                item.childListItems = [];
-                                item.childListItems.push(cachedItem);
-                                break;
-                            case Array.isArray(item.childListItems) === true:
-                                item.childCount++;
-                                item.childListItems.push(cachedItem);
-                                this.props.onLoadPage(cachedItem.id);
-                                break;
+                if (update.parentId == -1) {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id === list[list.length - 1].id) {
+                            (cachedItem) ? cachedItem.parentId = -1 : null;
+                            const listCopy = [...list, cachedItem];
+                            updateStore(listCopy);
                         }
-                        item.isOpen = true;
-                        updateStore(list);
-                    }
-                });
+                    });
+                } else {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id == update.parentId) {
+
+                            (cachedItem) ? cachedItem.parentId = item.id : null;
+
+                            switch (true) {
+                                case item.childCount > 0 && !item.childListItems:
+                                    this.props.getChildPageList(item.id).then((data) => {
+                                        item.isOpen = true;
+                                        item.childListItems = data;
+                                        updateStore(list);
+                                    });
+                                    break;
+                                case item.childCount == 0 && !item.childListItems:
+                                    item.childCount++;
+                                    item.childListItems = [];
+                                    item.childListItems.push(cachedItem);
+                                    break;
+                                case Array.isArray(item.childListItems) === true:
+                                    item.childCount++;
+                                    item.childListItems.push(cachedItem);
+                                    this.onLoadPage(cachedItem.id);
+                                    break;
+                            }
+                            item.isOpen = true;
+                            updateStore(list);
+                        }
+                    });
+                }
             };
 
             this.props.onUpdatePage(update, (page) => {
                 if (update.oldParentId) {
                     if (page.id === utils.getCurrentPageId()) {
                         window.parent.location = page.url;
-                    }   
-                    else {                 
+                    }
+                    else {
                         removeFromOldParent();
                         addToNewParent();
                     }
@@ -371,11 +399,23 @@ class App extends Component {
                         updateStore(list);
                     }
                 });
-
-                this.props.onLoadPage(update.tabId);
+                this.buildTree(update.tabId);
+                //this.onLoadPage(update.tabId);
                 resolve();
             });
         });
+    }
+    onLoadPage(pageId, callback) {
+        const self = this;
+        this.props.onLoadPage(pageId).then((data) => {
+            self.buildBreadCrumbPath(data.tabId);
+            if (typeof callback === "function")
+                callback(data);
+        });
+    }
+    onCancelPage(pageId) {
+        this.props.changeSelectedPagePath("");
+        this.props.onCancelPage(pageId);
     }
 
     onChangeParentId(newParentId) {
@@ -421,9 +461,8 @@ class App extends Component {
             });
 
             runUpdateStore(pageList);
-
+            const onConfirm = () => { this.props.changeSelectedPagePath(""); this.props.getNewPage(parentPage); };
             if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-                const onConfirm = () => this.props.getNewPage(parentPage);
                 utils.confirm(
                     Localization.get("CancelWithoutSaving"),
                     Localization.get("Close"),
@@ -431,7 +470,7 @@ class App extends Component {
                     onConfirm);
 
             } else {
-                props.getNewPage(parentPage);
+                onConfirm();
             }
         };
 
@@ -446,10 +485,10 @@ class App extends Component {
         }
         else {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.props.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.templateTabId);
             }
             else {
-                this.props.onCancelPage();
+                this.onCancelPage();
             }
         }
     }
@@ -476,7 +515,7 @@ class App extends Component {
                         item.childListItems = [...arr1, ...arr2];
                         props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? item.url : null);
                         updateStore(list);
-                        props.onCancelPage();
+                        this.onCancelPage();
                     }
                 });
             };
@@ -497,7 +536,7 @@ class App extends Component {
                 const update = [...arr1, ...arr2];
                 this.props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? utils.getDefaultPageUrl() : null);
                 this.props.updatePageListStore(update);
-                this.props.onCancelPage();
+                this.onCancelPage();
             };
         };
 
@@ -519,10 +558,10 @@ class App extends Component {
         const { props } = this;
         const onConfirm = () => {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.props.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.templateTabId);
             }
             else {
-                this.props.onCancelPage();
+                this.onCancelPage();
             }
         };
         utils.confirm(
@@ -537,7 +576,7 @@ class App extends Component {
         const id = (typeof input === "object") ? this.props.selectedPage.tabId : input;
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(id).then((data) => {
+                this.onLoadPage(id, (data) => {
                     this._traverse((item, list, updateStore) => {
                         if (item.id === id) {
                             Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
@@ -556,8 +595,7 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            this.props.onCancelPage();
-            this.lastActivePageId = null;
+            this.onCancelPage();
             this.props.changeSelectedPagePath("");
 
         }
@@ -711,7 +749,7 @@ class App extends Component {
             this.selectPageSettingTab(0);
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
-            this.props.onLoadPage(pageInfo.tabId);
+            this.onLoadPage(pageInfo.tabId);
             resolve();
         });
     }
@@ -722,13 +760,7 @@ class App extends Component {
         this.shouldRunRecursive = false;
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
-                this.props.onLoadPage(pageId).then((data) => {
-                    const selectedPath = data.hierarchy.split(">").map((d) => {
-                        return { name: d, tabId: data.tabId };
-                    });
-                    this.props.changeSelectedPagePath(selectedPath);
-
-                });
+                this.onLoadPage(pageId);
                 this.selectPageSettingTab(0);
             }
         };
@@ -738,19 +770,19 @@ class App extends Component {
 
     onNoPermissionSelection(pageId) {
         const setNoPermissionState = () => {
-            this.props.onCancelPage();
-            this.props.changeSelectedPagePath("");
+            this.onCancelPage();
+            this.buildBreadCrumbPath(pageId);
             this.noPermissionSelectionPageId = pageId;
             this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
         };
-        if (this.props.selectedPageDirty) {            
+        if (this.props.selectedPageDirty) {
             utils.confirm(
                 Localization.get("CancelWithoutSaving"),
                 Localization.get("Continue"),
                 Localization.get("Go Back"),
                 setNoPermissionState);
-        } 
-        else {            
+        }
+        else {
             setNoPermissionState();
         }
     }
@@ -832,7 +864,7 @@ class App extends Component {
     onViewPage(item) {
         const { selectedPageDirty } = this.props;
         const view = () => {
-            //this.props.onLoadPage(item.id);
+            //this.onLoadPage(item.id);
             utils.getUtilities().closePersonaBar(function () {
                 window.parent.location = item.url;
             });
@@ -957,9 +989,9 @@ class App extends Component {
     doSearch() {
         const { selectedPage } = this.props;
         if (selectedPage) {
-            this.lastActivePageId = selectedPage.tabId;
-            this.props.onCancelPage();
+            this.onCancelPage();
         }
+
         let { filtersUpdated, inSearch, searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
         if (filtersUpdated || !inSearch) {
             const fullStartDate = `${startDate.getDate() < 10 ? `0` + startDate.getDate() : startDate.getDate()}/${((startDate.getMonth() + 1) < 10 ? `0` + (startDate.getMonth() + 1) : (startDate.getMonth() + 1))}/${startDate.getFullYear()} 00:00:00`;
@@ -1010,7 +1042,7 @@ class App extends Component {
             }
             else {
                 const { selectedPage } = this.props;
-                !selectedPage && this.lastActivePageId && this.props.onLoadPage(this.lastActivePageId);
+                !selectedPage && this.lastActivePageId && this.onLoadPage(this.lastActivePageId);
             }
         });
     }
@@ -1033,7 +1065,32 @@ class App extends Component {
             onConfirm,
             onCancel);
     }
-
+    buildBreadCrumbPath(pageId) {
+        let page = {};
+        let selectedPath = [];
+        const buildBreadCrumbPathInternal = () => {
+            const addNode = (tabId) => {
+                this._traverse((item, list, update) => {
+                    if (item.id === tabId) {
+                        page = item;
+                        return;
+                    }
+                });
+                //page && page.name && page.id && 
+                selectedPath.push({ name: page.name, tabId: (page.id !== pageId ? page.id : null) });
+                const left = () => {
+                    addNode(page.parentId);
+                };
+                const right = () => {
+                    selectedPath.reverse();
+                    this.props.changeSelectedPagePath(selectedPath);
+                };
+                page.parentId > 0 ? left() : right();
+            };
+            addNode(pageId);
+        };
+        buildBreadCrumbPathInternal();
+    }
     onBreadcrumbSelect(name) {
     }
 
@@ -1253,10 +1310,11 @@ class App extends Component {
             const onNameClick = (item) => {
                 this.clearSearch(() => {
                     if (item.canManagePage) {
-                        this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
+                        this.onLoadPage(item.id, (data) => { this.buildTree(item.id); });
                     }
                     else {
                         this.noPermissionSelectionPageId = item.id;
+                        this.buildBreadCrumbPath(item.id);
                         this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
                     }
                 });
