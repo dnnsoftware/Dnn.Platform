@@ -768,6 +768,9 @@
   <data name="Status_Visible.Text" xml:space="preserve">
     <value>Visible</value>
   </data>
+  <data name="Status_Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
   <data name="User.Text" xml:space="preserve">
     <value>User</value>
   </data>
