@@ -132,7 +132,7 @@ class RegistrationSettingsPanelBody extends Component {
 
     getRegistrationFields(fields) {
         let fieldList = [];
-        if (fields !== undefined) {
+        if (fields) {
             fieldList = fields.split(",").map((item) => {
                 return { id: item, name: item };
             });
