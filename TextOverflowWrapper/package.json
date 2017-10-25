@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "dnn-global-styles": "0.0.5",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "react-portal-tooltip": "^0.14.2",
     "react-tooltip": "^3.4.0"
   }

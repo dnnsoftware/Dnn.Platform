@@ -45,7 +45,7 @@
   "dependencies": {
     "dnn-global-styles": "0.0.5",
     "interact.js": "^1.2.8",
-    "react": "~15.3.2",
+    "react": "^15.3.2",
     "react-dom": "^15.3.2"
   }
 }

@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "interact.js": "1.2.6",
-    "react": "~15.3.2",
+    "react": "^15.3.2",
     "react-collapse": "^2.3.3",
     "react-dom": "^15.3.2",
     "scroll": "1.0.0"

@@ -43,8 +43,8 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "react": "15.4.2",
-    "react-dom": "15.4.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "dnn-button": "0.0.8",
     "dnn-global-styles": "0.0.5"
   }

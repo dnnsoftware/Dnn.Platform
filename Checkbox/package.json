@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "dnn-label": "0.0.8",
-    "react": "~15.3.2",
+    "react": "^15.3.2",
     "dnn-global-styles": "0.0.5"
   }
 }
