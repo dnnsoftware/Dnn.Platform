@@ -699,7 +699,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 foreach (var tag in pageSettings.Tags.Trim().Split(','))
                 {
-                    if (!string.IsNullOrEmpty(tag))
+                    if (!string.IsNullOrEmpty(tag) && tab.Terms.All(t => !t.Name.Equals(tag, StringComparison.OrdinalIgnoreCase)))
                     {
                         var term = allTerms.FirstOrDefault(t => t.Name.Equals(tag, StringComparison.OrdinalIgnoreCase));
                         if (term == null)
