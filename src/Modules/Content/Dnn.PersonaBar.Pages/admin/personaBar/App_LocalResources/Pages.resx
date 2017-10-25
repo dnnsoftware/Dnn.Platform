@@ -1588,8 +1588,8 @@
   <data name="lblModifiedDate.Text" xml:space="preserve">
     <value>Modified Date</value>
   </data>
-  <data name="NoPagesFound.Text" xml:space="preserve">
-    <value>No pages found.</value>
+  <data name="NoPageFound.Text" xml:space="preserve">
+    <value>No page found.</value>
   </data>
   <data name="PagesSearchHeader.Text" xml:space="preserve">
     <value>Page Search Results</value>

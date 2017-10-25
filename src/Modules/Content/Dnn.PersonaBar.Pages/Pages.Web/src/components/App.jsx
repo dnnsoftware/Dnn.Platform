@@ -1421,7 +1421,7 @@ class App extends Component {
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{searchList.length === 0 ? Localization.get("NoPagesFound") : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
+                        <p>{searchList.length === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item) => {
