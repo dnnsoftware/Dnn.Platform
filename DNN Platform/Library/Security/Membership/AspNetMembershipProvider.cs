@@ -257,6 +257,9 @@ namespace DotNetNuke.Security.Membership
                                                           updatePassword,
                                                           isApproved,
                                                           UserController.Instance.GetCurrentUserInfo().UserID));
+
+                //Save the user password history
+                new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
             }
             catch (Exception ex)
             {

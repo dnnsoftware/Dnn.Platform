@@ -175,6 +175,7 @@
     <Compile Include="Providers\Folder\SecureFolderProviderTests.cs" />
     <Compile Include="Providers\Folder\StandardFolderProviderTests.cs" />
     <Compile Include="EscapedStringTest.cs" />
+    <Compile Include="Providers\Membership\MembershipProviderTests.cs" />
     <Compile Include="Providers\Permissions\PermissionTests.cs" />
     <Compile Include="RetryableActionTests.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
@@ -213,6 +214,9 @@
     <None Include="..\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="DotNetNuke.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Entities\Portals\TestFiles\SettingValues.csv" />
     <None Include="Entities\Portals\TestFiles\HostSettings.csv" />
