@@ -59,11 +59,6 @@ export default function extensionsReducer(state = {
                 ...state,
                 pageTypeSelectorComponents: [...state.pageTypeSelectorComponents, action.data.component]
             };
-        case ActionTypes.REGISTER_ADDITIONAL_PANEL:
-            return {
-                ...state,
-                additionalPanels: [...state.additionalPanels, action.data.panel]
-            };
         case ActionTypes.REGISTER_INCONTEXTMENU_COMPONENT:
             return {
                 ...state,

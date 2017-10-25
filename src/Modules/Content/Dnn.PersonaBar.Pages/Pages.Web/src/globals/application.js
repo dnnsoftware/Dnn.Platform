@@ -57,9 +57,6 @@ const application = {
     registerPageTypeSelectorComponent(component) {
         application.dispatch(ExtensionsActions.registerPageTypeSelectorComponent(component));
     },
-    registerAdditionalPanel(panel) {
-        application.dispatch(ExtensionsActions.registerAdditionalPanel(panel));
-    },
     isSuperUserForPages() {
         return utilities.getIsSuperUser();
     },

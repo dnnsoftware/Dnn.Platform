@@ -21,7 +21,6 @@ window.dnn.pages.registerMultiplePagesComponent = application.registerMultiplePa
 window.dnn.pages.registerInContextMenuComponent = application.registerInContextMenuComponent;
 window.dnn.pages.registerSettingsButtonComponent = application.registerSettingsButtonComponent;
 window.dnn.pages.registerPageTypeSelectorComponent = application.registerPageTypeSelectorComponent;
-window.dnn.pages.registerAdditionalPanel = application.registerAdditionalPanel;
 window.dnn.pages.isSuperUserForPages = application.isSuperUserForPages;
 window.dnn.pages.getProductSKU = application.getProductSKU;
 window.dnn.pages.load = application.load;

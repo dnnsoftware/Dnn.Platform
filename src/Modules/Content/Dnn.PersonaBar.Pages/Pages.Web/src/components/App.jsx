@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
     pageActions as PageActions,
@@ -27,15 +26,13 @@ import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
-import cloneDeep from 'lodash/clonedeep';
+import cloneDeep from "lodash/clonedeep";
 import GridCell from "dnn-grid-cell";
 import OverflowText from "dnn-text-overflow-wrapper";
-import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
 import { PagesSearchIcon, PagesVerticalMore, CalendarIcon, ArrowBack, EyeIcon, TreeEdit, TreeAnalytics } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
-import DayPicker from "./DayPicker/src/DayPicker";
 import { XIcon } from "dnn-svg-icons";
 
 import "./style.less";
@@ -94,7 +91,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
         window.dnn.utility.setConfirmationDialogPosition();
@@ -102,11 +98,7 @@ class App extends Component {
         this.props.getPageList();
         const selectedPageId = utils.getCurrentPageId();
         selectedPageId && !utils.getIsAdminHostSystemPage() && this.onLoadPage(selectedPageId);
-        // , (data) => {
-        //     this.shouldRunRecursive = false;
-        //     this.buildTree(selectedPageId);
-        // });
-
+       
         if (viewName === "edit") {
             this.onLoadPage(utils.getCurrentPageId());
         }
@@ -443,12 +435,6 @@ class App extends Component {
             }
         });
     }
-
-    onSearchBlur(){
-        const {searchTerm} = this.state;
-        searchTerm ? this.setState({inSearch:true}) : this.setState({inSearch:false});
-    }
-
 
     onAddMultiplePage() {
         this.clearEmptyStateMessage();
@@ -1441,11 +1427,7 @@ class App extends Component {
             </GridCell>
         );
     }
-    render_addMultiplePages(){
-        return this.getAddPages();
-    }
-
-
+    
     getAdditionalPageSettings() {
         const additionalPageSettings = [];
 
@@ -1469,7 +1451,7 @@ class App extends Component {
 
         return additionalPageSettings;
     }
-
+    
     render_details() {
         const {selectedPage} = this.props;
         const {inSearch} = this.state;
@@ -1481,7 +1463,7 @@ class App extends Component {
             case selectedPage && selectedPage.tabId === 0:
                 return this.render_addPageEditor();
             case selectedView === panels.ADD_MULTIPLE_PAGES_PANEL:
-                return this.render_addMultiplePages();
+                return this.getAddPages();
             case selectedView === panels.SAVE_AS_TEMPLATE_PANEL:
                 return this.getSaveAsTemplatePage();
             case selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL:
@@ -1547,8 +1529,6 @@ class App extends Component {
         const { selectedPage } = props;
         const { inSearch, headerDropdownSelection, toggleSearchMoreFlyout, searchTerm } = this.state;
 
-
-        const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.canSeePagesList();
        
          /* eslint-disable react/no-danger */
@@ -1648,13 +1628,6 @@ class App extends Component {
                     </PersonaBarPage>
                 }
                
-                {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL &&
-                    this.getAddPages()
-                }
-                {props.selectedPage && props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL &&
-                    this.getSaveAsTemplatePage()
-                }
-                { additionalPanels }
             </div>
         );
     }

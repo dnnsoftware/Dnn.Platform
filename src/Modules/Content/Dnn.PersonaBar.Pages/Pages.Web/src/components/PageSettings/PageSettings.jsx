@@ -95,7 +95,7 @@ class PageSettings extends Component {
         }
     }
     
-    render_defaultTabsDetails(){
+    render() {
         const {
             selectedPage,
             selectedPageErrors,
@@ -228,8 +228,8 @@ class PageSettings extends Component {
                 </Tabs>
             </div>);
         }
-
         return (
+            <div>
                 <Tabs
                     tabHeaders={headers}
                     className={styles.pageSettings}
@@ -237,20 +237,6 @@ class PageSettings extends Component {
                     selectedIndex={this.props.selectedPageSettingTab}>
                     {tabs}
                 </Tabs>
-        );
-    }
-    
-
-    render_pageSettings(){
-
-        return this.render_defaultTabsDetails();
-    }
-
-    render() {
-        
-        return (
-            <div>
-                { this.render_defaultTabsDetails() }
             </div>
         );
     }
