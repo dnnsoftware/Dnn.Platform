@@ -1387,7 +1387,7 @@ class App extends Component {
                                         <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
                                     </li>
                                     }
-                                    <li>
+                                    <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
                                         <p>{Localization.get("Tags")}:</p>
                                         <p title={item.tags.join(",").trim(",")}>{
                                             item.tags.map((tag, count) => {
