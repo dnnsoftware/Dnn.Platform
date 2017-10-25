@@ -1400,7 +1400,7 @@ class App extends Component {
                                         <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
                                     </li>
                                     }
-                                    <li>
+                                    <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
                                         <p>{Localization.get("Tags")}:</p>
                                         <p title={item.tags.join(",").trim(",")}>{
                                             item.tags.map((tag, count) => {
@@ -1434,7 +1434,7 @@ class App extends Component {
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{searchList.length === 0 ? Localization.get("NoPagesFound") : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
+                        <p>{searchList.length === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item) => {
