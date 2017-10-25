@@ -1226,11 +1226,11 @@ class App extends Component {
     }
     getPageTypeLabel(pageType) {
         const filterByPageTypeOptions = this.getFilterByPageTypeOptions();
-        return filterByPageTypeOptions.find(x => x.value === pageType.toLowerCase()) && filterByPageTypeOptions.find(x => x.value.toLowerCase() === pageType.toLowerCase()).label || pageType;
+        return filterByPageTypeOptions.find(x => x.value === pageType.toLowerCase()) && filterByPageTypeOptions.find(x => x.value === pageType.toLowerCase()).label;
     }
     getPublishStatusLabel(publishStatus) {
         const filterByPublishStatusOptions = this.getFilterByPageStatusOptions();
-        return filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()) && filterByPublishStatusOptions.find(x => x.value.toLowerCase() === publishStatus.toLowerCase()).label || publishStatus;
+        return filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()) && filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()).label || publishStatus;
     }
 
     /* eslint-disable react/no-danger */
