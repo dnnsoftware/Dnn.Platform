@@ -392,10 +392,10 @@ namespace Dnn.PersonaBar.Pages.Components
                 switch (status)
                 {
                     case PublishStatus.Published:
-                        pages = pages.Where(WorkflowHelper.IsWorkflowCompleted);
+                        pages = pages.Where(tab => tab.HasBeenPublished && WorkflowHelper.IsWorkflowCompleted(tab));
                         break;
                     case PublishStatus.Draft:
-                        pages = pages.Where(p => !WorkflowHelper.IsWorkflowCompleted(p));
+                        pages = pages.Where(tab => !tab.HasBeenPublished || !WorkflowHelper.IsWorkflowCompleted(tab));
                         break;
                     case PublishStatus.All:
                         break;

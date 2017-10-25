@@ -923,8 +923,8 @@ class App extends Component {
                 return { ref: `tag-${tag}`, tag: `${tag}` };
             });
 
-        filterByPageType ? filters.push({ ref: "filterByPageType", tag: `${Localization.get("PageType")}: ${filterByPageType}` }) : null;
-        filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `${Localization.get("lblPublishStatus")}: ${filterByPublishStatus}` }) : null;
+        filterByPageType ? filters.push({ ref: "filterByPageType", tag: `${Localization.get("PageType")}: ${this.getPageTypeLabel(filterByPageType)}` }) : null;
+        filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `${Localization.get("lblPublishStatus")}: ${this.getPublishStatusLabel(filterByPublishStatus)}` }) : null;
         filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `${Localization.get("WorkflowTitle")}: ${filterByWorkflowName}` }) : null;
 
         if (startAndEndDateDirty) {
@@ -1194,43 +1194,54 @@ class App extends Component {
         });
         return distinctList;
     }
-    /* eslint-disable react/no-danger */
-    render_more_flyout() {
-        const filterByPageTypeOptions = [
+    getFilterByPageTypeOptions() {
+        return [
             { value: "", label: Localization.get("lblAll") },
-            { value: "Normal", label: Localization.get("lblNormal") },
+            { value: "normal", label: Localization.get("lblNormal") },
             { value: "tab", label: Localization.get("Existing") },
-            { value: "URL", label: Localization.get("lblUrl") },
-            { value: "File", label: Localization.get("lblFile") }
+            { value: "url", label: Localization.get("lblUrl") },
+            { value: "file", label: Localization.get("lblFile") }
         ];
-
+    }
+    getFilterByPageStatusOptions() {
         let filterByPageStatusOptions = [
-            { value: "Published", label: Localization.get("lblPublished") }
+            { value: "published", label: Localization.get("lblPublished") }
         ];
-        let workflowList = [];
         if (!utils.isPlatform()) {
-            filterByPageStatusOptions = ([{ value: "", label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "Draft", label: Localization.get("lblDraft") }]));
-            if (this.props.workflowList.length <= 0) {
-                this.props.getWorkflowsList();
-            }
+            filterByPageStatusOptions = ([{ value: "", label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "draft", label: Localization.get("lblDraft") }]));
+        }
+        return filterByPageStatusOptions;
+    }
+    getFilterByWorkflowOptions() {
+        let workflowList = [];
+        if (!utils.isPlatform() && this.props.workflowList.length <= 0) {
+            this.props.getWorkflowsList();
         }
         this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return { value: item.workflowId, label: item.workflowName }; })) : null;
-        const filterByWorkflowOptions = [{ value: "", label: Localization.get("lblNone") }].concat(workflowList);
+        return [{ value: "", label: Localization.get("lblNone") }].concat(workflowList);
+    }
+    getPageTypeLabel(pageType) {
+        const filterByPageTypeOptions = this.getFilterByPageTypeOptions();
+        return filterByPageTypeOptions.find(x => x.value === pageType.toLowerCase()) && filterByPageTypeOptions.find(x => x.value === pageType.toLowerCase()).label;
+    }
+    getPublishStatusLabel(publishStatus) {
+        const filterByPublishStatusOptions = this.getFilterByPageStatusOptions();
+        return filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()) && filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()).label || publishStatus;
+    }
 
+    /* eslint-disable react/no-danger */
+    render_more_flyout() {
         const generateTags = (e) => {
-
             this.setState({ tags: e.target.value, filtersUpdated: true });
         };
         const filterTags = () => {
             let { tags } = this.state;
             this.setState({ tags: this.distinct(tags.split(",")).join(",") });
         };
-
         const onApplyChangesDropdownDayPicker = () => {
             const { startAndEndDateDirty, startDate, endDate } = this.state;
             const fullStartDate = startDate.getDate() + startDate.getMonth() + startDate.getFullYear();
             const fullEndDate = endDate.getDate() + endDate.getMonth() + endDate.getFullYear();
-
             const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
             condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
         };
@@ -1247,8 +1258,8 @@ class App extends Component {
                         <GridCell columnSize={50} style={{ padding: "5px" }}>
                             <Dropdown
                                 className="more-dropdown"
-                                options={filterByPageTypeOptions}
-                                label={this.state.filterByPageType ? filterByPageTypeOptions.find(x => x.value === this.state.filterByPageType).label : Localization.get("FilterbyPageTypeText")}
+                                options={this.getFilterByPageTypeOptions()}
+                                label={this.state.filterByPageType ? this.getFilterByPageTypeOptions().find(x => x.value === this.state.filterByPageType.toLowerCase()).label : Localization.get("FilterbyPageTypeText")}
                                 value={this.state.filterByPageType !== "" && this.state.filterByPageType}
                                 onSelect={(data) => { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }}
                                 withBorder={true}
@@ -1257,10 +1268,10 @@ class App extends Component {
                         <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
                             <Dropdown
                                 className="more-dropdown"
-                                options={filterByPageStatusOptions}
-                                label={this.state.filterByPublishStatus ? filterByPageStatusOptions.find(x => x.value === this.state.filterByPublishStatus).label : Localization.get("FilterbyPublishStatusText")}
-                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
+                                options={this.getFilterByPageStatusOptions()}
+                                label={this.state.filterByPublishStatus ? this.getFilterByPageStatusOptions().find(x => x.value === this.state.filterByPublishStatus.toLowerCase()).label : Localization.get("FilterbyPublishStatusText")}
                                 value={this.state.filterByPublishStatus !== "" && this.state.filterByPublishStatus}
+                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
                                 withBorder={true} />
                         </GridCell>
                     </GridCell>
@@ -1281,10 +1292,10 @@ class App extends Component {
                             <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
                                 <Dropdown
                                     className="more-dropdown"
-                                    options={filterByWorkflowOptions}
-                                    label={this.state.filterByWorkflow ? filterByWorkflowOptions.find(x => x.value === this.state.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
-                                    onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true })}
+                                    options={this.getFilterByWorkflowOptions()}
+                                    label={this.state.filterByWorkflow ? this.getFilterByWorkflowOptions().find(x => x.value === this.state.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
                                     value={this.state.filterByWorkflow !== "" && this.state.filterByWorkflow}
+                                    onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true })}
                                     withBorder={true} />
                             </GridCell>
                         }
@@ -1333,6 +1344,8 @@ class App extends Component {
                 path = path.startsWith("/") ? path.substring(1) : path;
                 return path.split("/").join(" / ");
             };
+
+
             let visibleMenus = [];
             item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
             item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
@@ -1364,11 +1377,11 @@ class App extends Component {
                                 <ul>
                                     <li>
                                         <p>{Localization.get("PageType")}:</p>
-                                        <p title={item.pageType} onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{item.pageType}</p>
+                                        <p title={this.getPageTypeLabel(item.pageType)} onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{this.getPageTypeLabel(item.pageType)}</p>
                                     </li>
                                     <li>
                                         <p>{Localization.get("lblPublishStatus")}:</p>
-                                        <p title={item.publishStatus} onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
+                                        <p title={this.getPublishStatusLabel(item.publishStatus)} onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{this.getPublishStatusLabel(item.publishStatus)}</p>
                                     </li>
                                     <li>
                                         <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
@@ -1383,7 +1396,7 @@ class App extends Component {
                                         <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
                                     </li>
                                     }
-                                    <li>
+                                    <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
                                         <p>{Localization.get("Tags")}:</p>
                                         <p title={item.tags.join(",").trim(",")}>{
                                             item.tags.map((tag, count) => {
@@ -1417,7 +1430,7 @@ class App extends Component {
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{searchList.length === 0 ? Localization.get("NoPagesFound") : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
+                        <p>{searchList.length === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item) => {
