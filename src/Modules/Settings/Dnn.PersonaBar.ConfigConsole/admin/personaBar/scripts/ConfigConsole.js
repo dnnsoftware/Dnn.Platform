@@ -15,9 +15,10 @@ define(['jquery',
 		'jquery-ui.min',
         'main/codeEditor',
 		'main/config',
+        'jquery.easydropdown.min',
         'dnn.jquery',
         'main/koBindingHandlers/jScrollPane'],
-    function ($, ko, koMapping, jqueryUI, codeEditor, cf, jScrollPane) {
+    function ($, ko, koMapping, jqueryUI, codeEditor, cf) {
         var config = cf.init();
 
         var identifier, utility, $panel, viewModel, configEditor, mergeEditor, curConfigName;
@@ -32,6 +33,8 @@ define(['jquery',
         var getConfigs = function () {
             requestService('get', 'GetConfigFilesList', {}, function (data) {
                 viewModel.configs(data.Results);
+
+                $('.configConsolePanel select').easyDropDown({ wrapperClass: 'pb-dropdown', cutOff: 10, inFocus: true });
             }, function () {
                 // failed
                 utility.notifyError('Failed...');

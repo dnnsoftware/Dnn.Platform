@@ -269,6 +269,26 @@ class BasicSettingsPanelBody extends Component {
                         folderName={state.basicSettings.LogoFile ? state.basicSettings.LogoFile.FolderName : null}
                         onSelectFile={this.onSettingChange.bind(this, "LogoFile") }
                         fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpeg", "image/svg+xml"]}
+                        browseButtonText = {resx.get("BrowseButton")}
+                        uploadButtonText = {resx.get("UploadButton")}
+                        linkButtonText = {resx.get("LinkButton")}
+                        defaultText = {resx.get("DragDefault")}
+                        onDragOverText = {resx.get("DragOver")}
+                        uploadFailedText = {resx.get("UploadFailed")}
+                        wrongFormatText = {resx.get("WrongFormat")}
+                        imageText = {resx.get("DefaultImageTitle")}
+                        linkInputTitleText = {resx.get("LinkInputTitle")}
+                        linkInputPlaceholderText = {resx.get("LinkInputPlaceHolder")}
+                        linkInputActionText = {resx.get("LinkInputAction")}
+                        uploadCompleteText = {resx.get("UploadComplete")}
+                        uploadingText = {resx.get("Uploading")}
+                        uploadDefaultText = {resx.get("UploadDefault")}
+                        browseActionText = {resx.get("BrowseAction")}
+                        notSpecifiedText = {resx.get("NotSpecified")}
+                        searchFilesPlaceHolderText = {resx.get("SearchFilesPlaceHolder")}
+                        searchFoldersPlaceHolderText = {resx.get("SearchFoldersPlaceHolder")}
+                        fileText = {resx.get("File")}
+                        folderText = {resx.get("Folder")}
                         />
                 </InputGroup>
             </div>;
@@ -285,6 +305,26 @@ class BasicSettingsPanelBody extends Component {
                         folderName={state.basicSettings.FavIcon ? state.basicSettings.FavIcon.FolderName : null}
                         onSelectFile={this.onSettingChange.bind(this, "FavIcon") }
                         fileFormats={["image/x-icon", "image/ico"]}
+                        browseButtonText = {resx.get("BrowseButton")}
+                        uploadButtonText = {resx.get("UploadButton")}
+                        linkButtonText = {resx.get("LinkButton")}
+                        defaultText = {resx.get("DragDefault")}
+                        onDragOverText = {resx.get("DragOver")}
+                        uploadFailedText = {resx.get("UploadFailed")}
+                        wrongFormatText = {resx.get("WrongFormat")}
+                        imageText = {resx.get("DefaultImageTitle")}
+                        linkInputTitleText = {resx.get("LinkInputTitle")}
+                        linkInputPlaceholderText = {resx.get("LinkInputPlaceHolder")}
+                        linkInputActionText = {resx.get("LinkInputAction")}
+                        uploadCompleteText = {resx.get("UploadComplete")}
+                        uploadingText = {resx.get("Uploading")}
+                        uploadDefaultText = {resx.get("UploadDefault")}
+                        browseActionText = {resx.get("BrowseAction")}
+                        notSpecifiedText = {resx.get("NotSpecified")}
+                        searchFilesPlaceHolderText = {resx.get("SearchFilesPlaceHolder")}
+                        searchFoldersPlaceHolderText = {resx.get("SearchFoldersPlaceHolder")}
+                        fileText = {resx.get("File")}
+                        folderText = {resx.get("Folder")}
                         />
                 </InputGroup>
             </div>;

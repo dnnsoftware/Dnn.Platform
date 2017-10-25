@@ -223,6 +223,11 @@ class CreatePortal extends Component {
                 this.setCreatingPortal(false);
                 this.resetNewPortal();
                 props.onCancel();
+            }, () => {
+                //active the button after error message disappear
+                setTimeout(() => {
+                    this.setCreatingPortal(false);
+                }, 5200);
             }));
         });
     }

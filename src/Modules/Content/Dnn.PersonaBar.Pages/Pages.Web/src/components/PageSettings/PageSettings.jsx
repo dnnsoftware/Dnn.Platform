@@ -88,9 +88,11 @@ class PageSettings extends Component {
     }
 
     onSelectParentPageId(parentPageId, parentPageName) {
-        this.setState({ parentPageId, parentPageName });
-        this.props.onChangeParentId(parentPageId);
-        this.props.onChangeField("hierarchy", parentPageName);
+        if (this.state.parentPageId !== parentPageId) {
+            this.setState({ parentPageId, parentPageName });
+            this.props.onChangeParentId(parentPageId);
+            this.props.onChangeField("hierarchy", parentPageName);
+        }
     }
     
     render_defaultTabsDetails(){

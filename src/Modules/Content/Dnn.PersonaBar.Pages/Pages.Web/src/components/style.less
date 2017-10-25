@@ -1,114 +1,97 @@
 @import "~dnn-global-styles/index";
-
 .pages-app {
-    #confirmation-dialog{
-        left:400px!important;
+    #confirmation-dialog {
+        left: 400px!important;
     }
-
-    .tags-container{
-            padding-top:10px;
-            width:100%;
-            float:right;
-        }
-
-        .filter-by-tags{
-            display:inline-block;
-            background-color:@curiousBlue;
+    .tags-container {
+        padding-top: 10px;
+        width: 100%;
+        float: right;
+    }
+    .filter-by-tags {
+        display: inline-block;
+        background-color: @curiousBlue;
+        padding: 5px;
+        margin-right: 3px;
+        border-radius: 2px;
+        color: #fff;
+        position: relative;
+        div {
+            float: left;
             padding: 5px;
-            margin-right: 3px;
-            border-radius:2px;
-            color:#fff;
-            position:relative;
-
-            div{
-                float:left;
-                padding: 5px;
-                height:25px;
-            }
-
-            .xIcon{
-                cursor: pointer;
-                width:25px;
-            }
+            height: 25px;
         }
-
+        .xIcon {
+            cursor: pointer;
+            width: 25px;
+        }
+    }
     .header-dropdown {
         padding: 5px;
-        border-radius:3px;
+        border-radius: 3px;
         border: 1px solid @curiousBlue;
         color: @curiousBlue;
-        float:right;
+        float: right;
     }
-
     .search-more-flyout {
-        position:absolute;
-        z-index:9999;
-        top:170px;
-        left:340px;
+        position: absolute;
+        z-index: 9999;
+        top: 170px;
+        left: 375px;
         padding: 20px;
         -webkit-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
         -moz-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
         box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
-        background-color:white;
-        height:200px;
-        width:800px;
-        transition:all .25s;
+        background-color: white;
+        height: 200px;
+        width: 765px;
+        transition: all .25s;
         animation: fadeIn .25s ease-in forwards;
-
-        .more-dropdown{
-            width:100%;
+        .more-dropdown {
+            width: 100%;
         }
-
         textarea {
-            resize:none;
-            width:100%;
-            height:82px;
+            resize: none;
+            width: 100%;
+            height: 82px;
         }
-
-        .date-picker{
+        .date-picker {
             border: 1px solid #959695;
-            height:33px;
+            height: 33px;
         }
-
-        .calendar-dropdown-container{
-            position:relative;
+        .calendar-dropdown-container {
+            position: relative;
         }
-        .calendar-icon{
-            width:15px;
-            height:35px;
-            padding:0;
-            margin-left:5px;
-            cursor:pointer;
+        .calendar-icon {
+            width: 15px;
+            height: 35px;
+            padding: 0;
+            margin-left: 5px;
+            cursor: pointer;
             line-height: 35px;
         }
-
-        .calendar-dropdown{
-            position:absolute;
-            top:31px;
-            left:-1px;
-            width:550px;
-            height:0;
-            border-left: 1px solid @alto;
-            border-right: 1px solid @alto;
-            border-top: 1px solid @alto;
-            overflow:hidden;
+        .calendar-dropdown {
+            position: absolute;
+            top: 31px;
+            left: -1px;
+            width: 550px;
+            height: 0;
+            border: 1px solid @alto;
+            overflow: hidden;
             display: none;
             z-index: 1;
         }
-
-        .calendar-dropdown-content{
-            background-color:white;
-            overflow:auto;
-            padding-bottom:100px;
-            margin-top:0px;
-            height:100%;
+        .calendar-dropdown-content {
+            background-color: white;
+            overflow: auto;
+            padding-bottom: 100px;
+            margin-top: 0px;
+            height: 100%;
         }
-
-        .selected-date{
+        .selected-date {
             margin-top: 2px;
-            padding:5px;
+            padding: 5px;
         }
-
         .calendar {
             height: 270px;
             width: 300px;
@@ -118,164 +101,153 @@
         margin: 10px 0;
         padding: 0;
         border: 1px solid @alto;
-        height:107px;
+        height: 107px;
         animation: fadeIn .25s ease-in forwards;
-
-
-        .search-item-thumbnail{
-            float:left;
-            max-width: 16%;
-            img{
+        .search-item-thumbnail {
+            float: left;
+            width: 16%;
+            img {
                 height: 105px;
             }
         }
-
         .search-item-details {
-            float:left;
+            float: left;
             width: 83%;
-            height:40px;
+            height: 40px;
             padding: 10px 0px 10px 35px;
-            &.full{
+            &.full {
                 width: 99%;
             }
-            .search-item-details-left{
-                float:left;
-                h1{
+            .search-item-details-left {
+                float: left;
+                h1 {
                     color: @curiousBlue;
                     cursor: pointer;
                 }
-                h2{
-                    color:@alto;
+                h2 {
+                    >div {
+                        font-size: 11px;
+                    }
+                    color: @rollingStone;
                 }
-
             }
-
-            .search-item-details-right{
-                float:right;
+            .search-item-details-right {
+                float: right;
                 height: 32px;
-                div{
+                div {
                     height: 32px;
                 }
-                ul{
-                    float:right;
+                ul {
+                    float: right;
                     transition: opacity .25s ease-in;
-                    opacity:0;
-                    padding:0;
-                    margin:0;
-                    li{
-                        list-style:none;
+                    opacity: 0;
+                    padding: 0;
+                    margin: 0;
+                    li {
+                        list-style: none;
                         padding: 0 10px;
-                        float:left;
-
-                        div{
+                        float: left;
+                        div {
                             width: 20px;
-                            cursor:pointer;
-
-                            svg{
-                                width:20px;
+                            cursor: pointer;
+                            svg {
+                                width: 20px;
                                 fill: @alto;
                                 stroke: @alto;
                             }
                             svg:hover {
-                                width:20px;
+                                width: 20px;
                                 fill: @curiousBlue;
                                 stroke: @curiousBlue;
                             }
                         }
-
                     }
                 }
-
-                ul:hover{
-                    opacity: 1
+            }
+            &:hover {
+                ul {
+                    opacity: 1;
                 }
             }
         }
-
         .search-item-details-list {
-            padding:3px 0px;
-            clear:both;
+            padding: 3px 0px;
+            clear: both;
             float: left;
-            ul{
+            width: 100%;
+            ul {
+                width: 100%;
                 list-style: none;
-                padding:0;
-                margin:0;
+                padding: 0;
+                margin: 0;
             }
-
-            li{
-                float:left;
+            li {
+                width: 30%;
+                float: left;
                 margin: 0 10px;
-
-                p{
-                    display:inline;
-                    font-weight:bold;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                p {
+                    display: inline;
+                    font-weight: bold;
                 }
-
-                p:first-child{
-
-                }
-
+                p:first-child {}
                 p:not(:first-child) {
                     margin: 0px 10px;
                     color: @curiousBlue;
-                    cursor:pointer;
+                    cursor: pointer;
                 }
             }
-
-            li:first-child{
-                float:left;
-                margin:0;
+            li:first-child {
+                float: left;
+                margin: 0;
+            }
+            p {
+                text-transform: capitalize;
             }
         }
     }
-
-    .search-container{
+    .search-container {
         border-bottom: 1px solid @alto;
-        height:40px;
+        height: 40px;
         margin-top: 110px;
-
-        .btn{
-            float:left;
+        .btn {
+            float: left;
             cursor: pointer;
-            width:30px;
-            height:30px;
-            padding-top:5px;
-
-            svg{
-                width:100%;
-                fill:#000;
+            width: 30px;
+            height: 30px;
+            padding-top: 5px;
+            svg {
+                width: 100%;
+                fill: #000;
             }
         }
-
-        div{
-            display:block;
+        div {
+            display: block;
         }
-
         .back-to-page {
-            float:left;
+            float: left;
             width: 200px;
-            cursor:pointer;
+            cursor: pointer;
             font-weight: bold;
             display: block;
             div {
-                float:left;
+                float: left;
                 width: 20px;
                 margin-right: 10px;
-
-                svg{
-                    fill:#000;
+                svg {
+                    fill: #000;
                 }
             }
-
-            p{
-                padding-top:3px;
+            p {
+                padding-top: 3px;
                 text-transform: uppercase;
             }
         }
         .dnn-back-to-link {
-            float:left;
+            float: left;
             width: 200px;
-            cursor:pointer;
+            cursor: pointer;
             display: block;
             margin-top: 5px;
             > span {
@@ -301,130 +273,120 @@
                 }
             }
         }
-
-        .search-box{
-            float:right;
+        .search-box {
+            float: right;
             border-left: 1px solid @alto;
             width: 300px;
-
             .search-input {
-                width:200px;
-                float:left;
-                input{
-                    border:none;
-                    background-color:transparent;
-                    width:100%;
-                    outline:none;
+                width: 200px;
+                float: left;
+                input {
+                    border: none;
+                    background-color: transparent;
+                    width: 100%;
+                    outline: none;
                 }
-
                 input::-ms-clear {
                     display: none;
                 }
             }
         }
-
         .search-btn {
             padding: 0 5px;
             line-height: 42px;
         }
-
-        .clear-search{
+        .clear-search {
             padding: 8px;
             line-height: 22px;
-            svg{
+            svg {
                 fill: @alto;
             }
         }
     }
-
     .page-container {
-        background-color:#fff;
+        background-color: #fff;
         border: 1px solid @alto;
-
-        .fade-in{
-           transition: all .15s forwards ease-in;
-           animation: fadeIn .15s;
+        .fade-in {
+            transition: all .15s forwards ease-in;
+            animation: fadeIn .15s;
         }
-
-        .tree-container{
+        .tree-container {
             transition: all .5s;
-            opacity:1;
+            opacity: 1;
             cursor: auto;
         }
-
-        .disabled{
-            opacity:0.5;
-            .dnn-persona-bar-treeview{
-                cursor:not-allowed;
-                .collapse-expand { pointer-events:none;}
-                li{pointer-events:none;}
+        .disabled {
+            opacity: 0.5;
+            .dnn-persona-bar-treeview {
+                cursor: not-allowed;
+                .collapse-expand {
+                    pointer-events: none;
+                }
+                li {
+                    pointer-events: none;
+                }
             }
         }
     }
-
     .empty-page-state {
         height: 300px;
         border: 1px solid @alto;
-        text-align:center;
+        text-align: center;
         font-family: inherit;
         animation: fadeIn .25s ease-in;
-
-        h1{
-            margin:30px 0px 10px 0px;
-            font-size:24px;
+        h1 {
+            margin: 30px 0px 10px 0px;
+            font-size: 24px;
             font-family: inherit;
         }
-
-        p{
+        p {
             color: @alto;
         }
     }
-
     .treeview-page-details {
-        padding:20px;
+        padding: 20px;
     }
 }
 
 @keyframes fadeIn {
-    0%{
-        opacity:0;
+    0% {
+        opacity: 0;
     }
     100% {
-        opacity:1;
+        opacity: 1;
     }
 }
 
-
-.expand-down{
-     animation: ExpandDown .25s ease-in forwards;
-     z-index: 9999;
-     display: inline-block !important;
+.expand-down {
+    animation: ExpandDown .25s ease-in forwards;
+    z-index: 9999;
+    display: inline-block !important;
 }
 
 .expand-up {
-    overflow:hidden;
+    overflow: hidden;
     animation: ExpandUp .25s ease-in forwards;
 }
 
 @keyframes ExpandDown {
-    0%{
-        height:0px;
+    0% {
+        height: 0px;
     }
-    100%{
-        height:350px;
-        background-color:white;
+    100% {
+        height: 350px;
+        background-color: white;
         border-bottom: 1px solid @alto;
     }
 }
 
 @keyframes ExpandUp {
-    0%{
-        height:350px;
-        background-color:white;
+    0% {
+        height: 350px;
+        background-color: white;
     }
-    100%{
-        height:0px;
+    100% {
+        height: 0px;
         border: 1px solid transparent;
-        background-color:transparent;
+        background-color: transparent;
     }
 }

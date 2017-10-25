@@ -436,7 +436,7 @@
     <value>set page theme</value>
   </data>
   <data name="BackToPages.Text" xml:space="preserve">
-    <value>Back to pages</value>
+    <value>Back to page</value>
   </data>
   <data name="ChangesNotSaved.Text" xml:space="preserve">
     <value>Changes have not been saved</value>
@@ -767,6 +767,9 @@
   </data>
   <data name="Status_Visible.Text" xml:space="preserve">
     <value>Visible</value>
+  </data>
+  <data name="Status_Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
   </data>
   <data name="User.Text" xml:space="preserve">
     <value>User</value>
@@ -1581,5 +1584,74 @@
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
     <value>URL</value>
+  </data>
+  <data name="lblModifiedDate.Text" xml:space="preserve">
+    <value>Modified Date</value>
+  </data>
+  <data name="NoPagesFound.Text" xml:space="preserve">
+    <value>No pages found.</value>
+  </data>
+  <data name="PagesSearchHeader.Text" xml:space="preserve">
+    <value>Page Search Results</value>
+  </data>
+  <data name="TagsInstructions.Text" xml:space="preserve">
+    <value>Begin typing to filter by tags.</value>
+  </data>
+  <data name="ModifiedDateRange.Text" xml:space="preserve">
+    <value>Modified Date Range</value>
+  </data>
+  <data name="BrowseAction.Text" xml:space="preserve">
+    <value>Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel</value>
+  </data>
+  <data name="BrowseButton.Text" xml:space="preserve">
+    <value>Browse File System</value>
+  </data>
+  <data name="DefaultImageTitle.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="DragDefault.Text" xml:space="preserve">
+    <value>Drag and Drop a File or Select an Option</value>
+  </data>
+  <data name="DragOver.Text" xml:space="preserve">
+    <value>Drag and Drop a File</value>
+  </data>
+  <data name="LinkButton.Text" xml:space="preserve">
+    <value>Enter URL Link</value>
+  </data>
+  <data name="LinkInputAction.Text" xml:space="preserve">
+    <value>Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel</value>
+  </data>
+  <data name="LinkInputPlaceholder.Text" xml:space="preserve">
+    <value>http://example.com/imagename.jpg</value>
+  </data>
+  <data name="LinkInputTitle.Text" xml:space="preserve">
+    <value>URL Link</value>
+  </data>
+  <data name="NotSpecified.Text" xml:space="preserve">
+    <value>&lt;None Specified&gt;</value>
+  </data>
+  <data name="SearchFilesPlaceHolder.Text" xml:space="preserve">
+    <value>Search Files...</value>
+  </data>
+  <data name="SearchFoldersPlaceHolder.Text" xml:space="preserve">
+    <value>Search Folders...</value>
+  </data>
+  <data name="UploadButton.Text" xml:space="preserve">
+    <value>Upload a File</value>
+  </data>
+  <data name="UploadComplete.Text" xml:space="preserve">
+    <value>Upload Complete</value>
+  </data>
+  <data name="UploadDefault.Text" xml:space="preserve">
+    <value>myImage.jpg</value>
+  </data>
+  <data name="UploadFailed.Text" xml:space="preserve">
+    <value>Upload Failed</value>
+  </data>
+  <data name="Uploading.Text" xml:space="preserve">
+    <value>Uploading...</value>
+  </data>
+  <data name="WrongFormat.Text" xml:space="preserve">
+    <value>Wrong Format</value>
   </data>
 </root>

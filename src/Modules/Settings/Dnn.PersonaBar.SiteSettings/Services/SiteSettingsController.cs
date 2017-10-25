@@ -372,14 +372,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
-                portalInfo.SplashTabId = request.SplashTabId;
-                portalInfo.HomeTabId = request.HomeTabId;
-                portalInfo.LoginTabId = request.LoginTabId;
-                portalInfo.RegisterTabId = request.RegisterTabId;
-                portalInfo.UserTabId = request.UserTabId;
-                portalInfo.SearchTabId = request.SearchTabId;
-                portalInfo.Custom404TabId = request.Custom404TabId;
-                portalInfo.Custom500TabId = request.Custom500TabId;
+                portalInfo.SplashTabId = ValidateTabId(request.SplashTabId, pid);
+                portalInfo.HomeTabId = ValidateTabId(request.HomeTabId, pid);
+                portalInfo.LoginTabId = ValidateTabId(request.LoginTabId, pid);
+                portalInfo.RegisterTabId = ValidateTabId(request.RegisterTabId, pid);
+                portalInfo.UserTabId = ValidateTabId(request.UserTabId, pid);
+                portalInfo.SearchTabId = ValidateTabId(request.SearchTabId, pid);
+                portalInfo.Custom404TabId = ValidateTabId(request.Custom404TabId, pid);
+                portalInfo.Custom500TabId = ValidateTabId(request.Custom500TabId, pid);
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
                 PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
@@ -3331,6 +3331,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 return null;
             }
+        }
+
+        private int ValidateTabId(int tabId, int portalId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, portalId);
+            return tab != null && !tab.IsDeleted ? tab.TabID : Null.NullInteger;
         }
 
         #endregion

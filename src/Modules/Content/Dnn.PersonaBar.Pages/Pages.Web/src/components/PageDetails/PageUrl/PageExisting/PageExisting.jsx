@@ -23,7 +23,7 @@ class PageExisting extends Component {
 
     onChangePage(value) {
         const {onChangeField} = this.props;
-        onChangeField("existingTabRedirection", value);
+        onChangeField("existingTabRedirection", parseInt(value) === -1 ? "" : value);
     }
 
     render() {

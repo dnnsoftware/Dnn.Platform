@@ -37,7 +37,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             dragOverDebounce: false,
             setMouseCoordDebounce: false,
             pageX: 0,
-            pageY: 0
+            pageY: 0,
+            isMouseInTree: false
         };
         this.origin = window.origin;
     }
@@ -79,19 +80,20 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             });
         }
 
-        if (!this.state.initialCollapse) {
-            this.props._traverse((item) => {
-                if (item.isOpen) {
-                    setTreeViewExpanded = true;
-                }
-            });
+        //if (!this.state.initialCollapse) {
+        this.props._traverse((item) => {
+            if (item.isOpen) {
+                setTreeViewExpanded = true;
+            }
+        });
 
-            (setTreeViewExpanded) ? this.setState({
-                isTreeviewExpanded: true
-            }) : this.setState({
-                isTreeviewExpanded: false
-            });
-        }
+        (setTreeViewExpanded) ? this.setState({
+            isTreeviewExpanded: true,
+            initialCollapse: false
+        }) : this.setState({
+            isTreeviewExpanded: false
+        });
+        //}
     }
 
     init() {
@@ -146,7 +148,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
             delete item.showInContextMenu;
             updateStore(list);
         });
-        this.props.setEmptyPageMessage(Localization.get("NoPermissionEditPage"));
     }
 
     onDuplicatePage(listItem) {
@@ -373,7 +374,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         Action,
         PageId,
         ParentId,
-        RelatedPageId
+        RelatedPageId,
+        RelatedPageParentId
 }) {
 
         e.preventDefault();
@@ -394,6 +396,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     return 0;
                 }
                 utils.notify(Localization.get("PageUpdatedMessage"));
+                if (RelatedPageParentId === -1 && ParentId !== -1 && utils.getCurrentPageId() === response.Page.id) {
+                    window.parent.location = response.Page.url;
+                }
                 return 1;
             }).then((response) => {
                 response === 1 && this.reOrderPage({
@@ -714,42 +719,52 @@ export class PersonaBarPageTreeviewInteractor extends Component {
         );
     }
 
+    setMouseOver(isMouseOver) {
+        let hasChildren = this.state.pageList.some((page) => page.childCount > 0);
+
+        this.setState({
+            isMouseInTree: (isMouseOver && hasChildren)
+        });
+    }
+
     render() {
         return (
-            <GridCell
-                columnSize={30}
-                className="dnn-persona-bar-treeview"
-                style={{ "zIndex": 1000 }} >
-
-                {this.render_collapseExpand()}
-
-                <GridCell columnSize={15} >
-                    <div className="dnn-persona-bar-treeview-menu" >
-                        {this.render_tree_parent_expand()}
-                    </div>
-                </GridCell>
-
+            <div onMouseEnter={() => this.setMouseOver(true)} onMouseLeave={() => this.setMouseOver(false)}>
                 <GridCell
-                    columnSize={55}
-                    style={{ marginLeft: "-2px" }} >
-                    <Scrollbars
-                        className="scrollArea content-horizontal"
-                        autoHeight autoHide={true} autoHeightMin={100}
-                        autoHeightMax={9999}
-                        renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
-                        {this.render_treeview()}
-                    </Scrollbars>
-                </GridCell>
+                    columnSize={30}
+                    className="dnn-persona-bar-treeview"
+                    style={{ "zIndex": 1000 }} >
 
-                <GridCell columnSize={30} >
-                    <div
-                        className="dnn-persona-bar-treeview-menu selection-arrows"
-                        style={{ float: "right" }} >
-                        {this.render_treemenu()}
-                    </div>
-                </GridCell>
+                    {this.render_collapseExpand()}
 
-            </GridCell>
+                    <GridCell columnSize={15} >
+                        <div className="dnn-persona-bar-treeview-menu" >
+                            {this.render_tree_parent_expand()}
+                        </div>
+                    </GridCell>
+
+                    <GridCell
+                        columnSize={55}
+                        style={{ marginLeft: "-2px" }} >
+                        <Scrollbars
+                            className="scrollArea content-horizontal"
+                            autoHeight autoHide={!this.state.isMouseInTree} autoHeightMin={100}
+                            autoHeightMax={9999}
+                            renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
+                            {this.render_treeview()}
+                        </Scrollbars>
+                    </GridCell>
+
+                    <GridCell columnSize={30} >
+                        <div
+                            className="dnn-persona-bar-treeview-menu selection-arrows"
+                            style={{ float: "right" }} >
+                            {this.render_treemenu()}
+                        </div>
+                    </GridCell>
+
+                </GridCell>
+            </div>
         );
     }
 }
