@@ -60,6 +60,7 @@ namespace DotNetNuke.Tests.Utilities
         public const string UserDisplayName_FirstSocialGroupOwner = "First Social Group Owner";
         public const string RuFirstName = "TestUser";
         public const string RuLastName = "Automation";
+        public const string DefaultPassword = "dnnhost";
 
 
         #endregion
