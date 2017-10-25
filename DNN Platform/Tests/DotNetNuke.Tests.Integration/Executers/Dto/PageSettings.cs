@@ -53,5 +53,6 @@ namespace DotNetNuke.Tests.Integration.Executers.Dto
         public TabPermissions permissions { get; set; }
         public int templateTabId { get; set; }
         public IList<CopyModuleItem> modules { get; set; } 
+        public bool isSecure { get; set;  }
     }
 }

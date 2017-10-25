@@ -129,6 +129,7 @@
     <Compile Include="Executers\WebApiExecuter.cs" />
     <Compile Include="Modules\DDRMenu\DDRMenuTests.cs" />
     <Compile Include="Modules\Journal\PostJournalTests.cs" />
+    <Compile Include="PersonaBar\Pages\PagesManagementTests.cs" />
     <Compile Include="Tests\DotNetNukeWeb\DotNetNukeWebTests.cs" />
     <Compile Include="Tests\Jwt\JwtAuthTest.cs" />
     <Compile Include="Data\FluentMapperTests.cs" />

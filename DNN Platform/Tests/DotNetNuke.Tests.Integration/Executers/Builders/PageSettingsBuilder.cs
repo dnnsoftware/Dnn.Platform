@@ -104,6 +104,12 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
             return this;
         }
 
+        public PageSettingsBuilder WithSecure(bool secure)
+        {
+            Set(x => x.isSecure, secure);
+            return this;
+        }
+
         protected override PageSettings BuildObject()
         {
             var name = GetOrDefault(p => p.Name);
@@ -135,7 +141,8 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
                 endDate = GetOrDefault(p => p.endDate),
                 permissions = GetOrDefault(p => p.permissions),
                 templateTabId = GetOrDefault(p => p.templateTabId),
-                modules = GetOrDefault(p => p.modules)
+                modules = GetOrDefault(p => p.modules),
+                isSecure = GetOrDefault(p => p.isSecure)
             };
             return pageSettings;
         }
