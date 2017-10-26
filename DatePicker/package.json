@@ -9,7 +9,9 @@
     "prepublishOnly": "npm-run-all prepublishOnly:*",
     "prepublishOnly:eslint": "eslint ./src/**/*.jsx",
     "prepublishOnly:babel": "babel src -d lib --source-maps",
-    "prepublishOnly:copy-less": "cpy **/*.less ../lib/ --cwd=src --parents"
+    "prepublishOnly:copy-less": "cpy **/*.less ../lib/ --cwd=src --parents",
+    "prepublishOnly:copy-svg": "cpy **/*.svg ../lib/ --cwd=src --parents",
+    "prepublishOnly:copy-png": "cpy **/*.png ../lib/ --cwd=src --parents"
   },
   "license": "MIT",
   "repository": {
