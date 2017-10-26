@@ -139,12 +139,13 @@ const userActions = {
             }, errorCallback);
         };
     },
-    updateSuperUserStatus(payload, callback) {
+    updateSuperUserStatus(payload, filter, callback) {
         return (dispatch) => {
             UserService.updateSuperUserStatus(payload, data => {
                 dispatch({
                     type: ActionTypes.USER_MADE_SUPERUSER,
-                    payload: { userId: payload.userId }
+                    payload: { userId: payload.userId },
+                    filter: filter
                 });
                 if (callback) {
                     callback(data);
