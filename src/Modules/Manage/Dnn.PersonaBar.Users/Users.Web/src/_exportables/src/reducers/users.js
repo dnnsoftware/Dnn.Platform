@@ -64,12 +64,18 @@ const switchCase = [
     },
     {
         condition: ActionTypes.USER_MADE_SUPERUSER,
-        functionToRun: (state, action) => {            
-            if (action.filter === 3) {
-                let totalUsers = Object.assign(state.totalUsers);
+        functionToRun: (state, action) => { 
+            let totalUsers = Object.assign(state.totalUsers);           
+            if (action.filter === 3) {                
                 return {
                     users: removeUser(state.users, action.payload.userId),
                     totalUsers: totalUsers - 1
+                };
+            }
+            else {
+                return {
+                    users: state.users,
+                    totalUsers: totalUsers
                 };
             }
         }
