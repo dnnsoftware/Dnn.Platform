@@ -38,7 +38,7 @@ BEGIN
 			) 
 			OR IsNull(@Keyword, N'') = N''
 		)
-	AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND @IncludeSuperUsers = 1 AND (U.IsSuperUser = 1 OR U.Authorised = 1) OR (@IncludeUnauthorized = 0 AND @IncludeSuperUsers = 0 AND U.Authorised = 1 AND u.IsSuperUser = 0)))
+	AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)))
 	AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
 		
 	;WITH UsersCTE
@@ -64,7 +64,7 @@ BEGIN
 				) 
 				OR IsNull(@Keyword, N'') = N''
 			)
-		AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND @IncludeSuperUsers = 1 AND (U.IsSuperUser = 1 OR U.Authorised = 1) OR (@IncludeUnauthorized = 0 AND @IncludeSuperUsers = 0 AND U.Authorised = 1 AND u.IsSuperUser = 0)))
+		AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)))
 		AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
 	)
 	SELECT * FROM UsersCTE
