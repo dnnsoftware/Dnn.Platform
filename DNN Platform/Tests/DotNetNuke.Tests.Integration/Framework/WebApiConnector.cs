@@ -781,9 +781,14 @@ namespace DotNetNuke.Tests.Integration.Framework
             // Dump the Stream into a byte[]
             formDataStream.Position = 0;
             var formData = new byte[formDataStream.Length];
-            formDataStream.Read(formData, 0, formData.Length);
-            formDataStream.Close();
+            var len = formDataStream.Read(formData, 0, formData.Length);
+            if (len != formDataStream.Length)
+            {
+                Console.WriteLine(@"ERROR: not all form data was read from the stream. " +
+                    @"Requested to read {0} bytes, but was read {1} bytes", formDataStream.Length, len);
+            }
 
+            formDataStream.Close();
             return formData;
         }
 
