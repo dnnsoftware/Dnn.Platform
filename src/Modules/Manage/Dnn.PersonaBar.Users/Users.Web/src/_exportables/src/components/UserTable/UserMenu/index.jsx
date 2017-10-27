@@ -179,7 +179,7 @@ class UserMenu extends Component {
         }));
     }
     updateSuperUserStatus(setSuperUser) {
-        this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, () => {
+        this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, this.props.filter, () => {
             this.reload();
         }));
     }
