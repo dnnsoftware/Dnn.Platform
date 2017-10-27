@@ -164,7 +164,7 @@ class GridRow extends Component {
         let self = this;
 
         return <GridCell className="grid-row">
-            <GridCell columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
+            <GridCell columnSize={roleColumnWidth}><span style={{"text-overflow": "ellipsis", "overflow":"hidden"}} title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
             {props.definitions.map(function (def) {
                 let permission = props.permission.permissions.filter(p => {
                     return p.permissionId == def.permissionId;
