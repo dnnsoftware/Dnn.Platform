@@ -16,7 +16,6 @@
     .dnn-persona-bar-treeview-ul {
         margin-left: 0px;
         padding: 0 0;
-
         li::before, li::after {
             display: none;
         }
@@ -101,7 +100,6 @@
             fill: #000;
         }
     }
-
     .parent-expand-icon {
         display: inline-block;
         width: 10px;
@@ -109,7 +107,6 @@
         margin-right: 10px;
         font-size: 14px;
     }
-
     .selection-arrow {
         display: inline-block;
         position: relative;
@@ -125,7 +122,7 @@
             width: 20px;
             display: inherit;
             svg {
-                fill: @curiousBlue;                
+                fill: @curiousBlue;
             }
             svg:hover {
                 fill: @curiousBlue !important;
@@ -135,7 +132,7 @@
             margin-right: 7px;
             cursor: pointer;
             svg {
-                width: 20px;                
+                width: 20px;
                 circle {
                     fill: @alto;
                 }
@@ -150,7 +147,7 @@
                     fill: @curiousBlue;
                 }
             }
-        }        
+        }
     }
     .draft-pencil {
         margin-left: 3px;
@@ -201,7 +198,6 @@
             top: -10px;
         }
     }
-
     float: left;
 }
 
@@ -231,7 +227,6 @@
         height: 28px;
         z-index: 9998;
         background-color: transparent;
-
     }
     .dropZoneActive {
         margin: 0;
@@ -268,8 +263,12 @@
     width: 20px;
     height: 28px;
     display: inline-block;
+    float: left;
     div {
         height: 28px;
+    }
+    svg {
+        height: 20px;
     }
 }
 

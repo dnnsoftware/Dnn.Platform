@@ -87,7 +87,7 @@ class App extends Component {
             filters: [],
             searchFields: {}
         };
-
+        this.lastActivePageId = null;
         this.shouldRunRecursive = true;
         this.noPermissionSelectionPageId = null;
     }
@@ -100,14 +100,14 @@ class App extends Component {
         window.dnn.utility.closeSocialTasks();
         this.props.getPageList();
         const selectedPageId = utils.getCurrentPageId();
-        selectedPageId && !utils.getIsAdminHostSystemPage() && this.props.onLoadPage(selectedPageId);
-        // .then(() => {
+        selectedPageId && !utils.getIsAdminHostSystemPage() && this.onLoadPage(selectedPageId);
+        // , (data) => {
         //     this.shouldRunRecursive = false;
         //     this.buildTree(selectedPageId);
         // });
 
         if (viewName === "edit") {
-            props.onLoadPage(utils.getCurrentPageId());
+            this.onLoadPage(utils.getCurrentPageId());
         }
 
         if (!utils.isPlatform()) {
@@ -151,7 +151,7 @@ class App extends Component {
             return;
         }
         if (viewParams.pageId) {
-            this.props.onLoadPage(viewParams.pageId);
+            this.onLoadPage(viewParams.pageId);
 
         }
         if (viewParams.viewTab) {
@@ -193,21 +193,40 @@ class App extends Component {
             const callAPI = () => {
                 const parentId = hierarchy.shift();
                 parentId && setTimeout(() => execute(), 100);
-                const execute = () => this.props.getChildPageList(parentId)
-                    .then(data => {
+                const execute = () => {
+                    if (parentId !== selectedId) {
+                        let page = null;
                         this._traverse((item, list, update) => {
-                            const left = () => {
-                                item.childListItems = data;
+                            if (item.id === parentId) {
                                 item.isOpen = true;
                                 item.hasChildren = true;
+                                page = item;
                                 update(list);
-                                callAPI();
-                            };
-
-                            const right = () => update(list);
-                            (item.id === data[0].parentId && data[0].parentId !== selectedId) ? left() : right();
+                                return;
+                            }
                         });
-                    });
+                        if (!page || !page.childListItems) {
+                            this.props.getChildPageList(parentId)
+                                .then(data => {
+                                    this._traverse((item, list, update) => {
+                                        const left = () => {
+                                            item.childListItems = data;
+                                            item.isOpen = true;
+                                            item.hasChildren = true;
+                                            update(list);
+                                            callAPI();
+                                        };
+                                        const right = () => { update(list); };
+                                        (data.length > 0 && item.id === data[0].parentId) ? left() : right();
+                                    });
+                                });
+                        } else {
+                            callAPI();
+                        }
+                    } else {
+                        this.buildBreadCrumbPath(selectedId);
+                    }
+                };
             };
             callAPI();
         };
@@ -222,7 +241,7 @@ class App extends Component {
 
     onPageSettings(pageId) {
         const { props } = this;
-        props.onLoadPage(pageId);
+        this.onLoadPage(pageId);
     }
 
     onCreatePage() {
@@ -244,12 +263,12 @@ class App extends Component {
                                     item.childCount++;
                                     item.childListItems = [];
                                     item.childListItems.push(page);
-                                    this.props.onLoadPage(page.id);
+                                    this.onLoadPage(page.id);
                                     break;
                                 case Array.isArray(item.childListItems) === true:
                                     item.childCount++;
                                     item.childListItems.push(page);
-                                    this.props.onLoadPage(page.id);
+                                    this.onLoadPage(page.id);
                                     break;
                             }
                             item.isOpen = true;
@@ -264,7 +283,7 @@ class App extends Component {
                                 item.isOpen = true;
                                 item.selected = true;
                                 updateStore(list);
-                                this.props.onLoadPage(page.id);
+                                this.onLoadPage(page.id);
                             }
                         });
                     });
@@ -300,7 +319,7 @@ class App extends Component {
 
 
                 const right = () => {
-                    
+
                     this._traverse((item, list, updateStore) => {
                         if (item.id == update.oldParentId) {
                             item.childListItems.forEach((child, index) => {
@@ -321,41 +340,55 @@ class App extends Component {
             };
 
             const addToNewParent = () => {
-
-                this._traverse((item, list, updateStore) => {
-                    if (item.id == update.parentId) {
-                        
-                        (cachedItem) ? cachedItem.parentId = item.id : null;
-
-                        switch (true) {
-                            case item.childCount > 0 && !item.childListItems:
-                                this.props.getChildPageList(item.id).then((data) => {
-                                    item.isOpen = true;
-                                    item.childListItems = data;
-                                    updateStore(list);
-                                });
-                                break;
-                            case item.childCount == 0 && !item.childListItems:
-                                item.childCount++;
-                                item.childListItems = [];
-                                item.childListItems.push(cachedItem);
-                                break;
-                            case Array.isArray(item.childListItems) === true:
-                                item.childCount++;
-                                item.childListItems.push(cachedItem);
-                                this.props.onLoadPage(cachedItem.id);
-                                break;
+                if (update.parentId == -1) {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id === list[list.length - 1].id) {
+                            (cachedItem) ? cachedItem.parentId = -1 : null;
+                            const listCopy = [...list, cachedItem];
+                            updateStore(listCopy);
                         }
-                        item.isOpen = true;
-                        updateStore(list);
-                    }
-                });
+                    });
+                } else {
+                    this._traverse((item, list, updateStore) => {
+                        if (item.id == update.parentId) {
+
+                            (cachedItem) ? cachedItem.parentId = item.id : null;
+
+                            switch (true) {
+                                case item.childCount > 0 && !item.childListItems:
+                                    this.props.getChildPageList(item.id).then((data) => {
+                                        item.isOpen = true;
+                                        item.childListItems = data;
+                                        updateStore(list);
+                                    });
+                                    break;
+                                case item.childCount == 0 && !item.childListItems:
+                                    item.childCount++;
+                                    item.childListItems = [];
+                                    item.childListItems.push(cachedItem);
+                                    break;
+                                case Array.isArray(item.childListItems) === true:
+                                    item.childCount++;
+                                    item.childListItems.push(cachedItem);
+                                    this.onLoadPage(cachedItem.id);
+                                    break;
+                            }
+                            item.isOpen = true;
+                            updateStore(list);
+                        }
+                    });
+                }
             };
 
             this.props.onUpdatePage(update, (page) => {
                 if (update.oldParentId) {
-                    removeFromOldParent();
-                    addToNewParent();
+                    if (page.id === utils.getCurrentPageId()) {
+                        window.parent.location = page.url;
+                    }
+                    else {
+                        removeFromOldParent();
+                        addToNewParent();
+                    }
                 }
 
                 this._traverse((item, list, updateStore) => {
@@ -366,11 +399,23 @@ class App extends Component {
                         updateStore(list);
                     }
                 });
-
-                this.props.onLoadPage(update.tabId);
+                this.buildTree(update.tabId);
+                //this.onLoadPage(update.tabId);
                 resolve();
             });
         });
+    }
+    onLoadPage(pageId, callback) {
+        const self = this;
+        this.props.onLoadPage(pageId).then((data) => {
+            self.buildBreadCrumbPath(data.tabId);
+            if (typeof callback === "function")
+                callback(data);
+        });
+    }
+    onCancelPage(pageId) {
+        this.props.changeSelectedPagePath("");
+        this.props.onCancelPage(pageId);
     }
 
     onChangeParentId(newParentId) {
@@ -384,13 +429,14 @@ class App extends Component {
     onSearchFieldChange(e) {
         let self = this;
         const currentSearchTerm = this.state.searchTerm;
+        const inSearch = this.state.inSearch;
         this.setState({ searchTerm: e.target.value, filtersUpdated: true }, () => {
             const { searchTerm } = this.state;
             switch (true) {
                 case searchTerm.length > 3:
                     self.onSearch();
                     return;
-                case currentSearchTerm.length > 0 && searchTerm.length === 0:
+                case currentSearchTerm.length > 0 && searchTerm.length === 0 && inSearch:
                     self.onSearch();
                     return;
             }
@@ -398,41 +444,38 @@ class App extends Component {
     }
 
     onAddPage(parentPage) {
-        this.clearSearch(() => {
-            this.clearEmptyStateMessage();
-            this.selectPageSettingTab(0);
+        this.clearEmptyStateMessage();
+        this.selectPageSettingTab(0);
 
-            const addPage = () => {
+        const addPage = () => {
 
-                const { props } = this;
-                const { selectedPage } = props;
-                let runUpdateStore = null;
-                let pageList = null;
+            const { props } = this;
+            const { selectedPage } = props;
+            let runUpdateStore = null;
+            let pageList = null;
 
-                this._traverse((item, list, updateStore) => {
-                    item.selected = false;
-                    pageList = list;
-                    runUpdateStore = updateStore;
-                });
+            this._traverse((item, list, updateStore) => {
+                item.selected = false;
+                pageList = list;
+                runUpdateStore = updateStore;
+            });
 
-                runUpdateStore(pageList);
+            runUpdateStore(pageList);
+            const onConfirm = () => { this.props.changeSelectedPagePath(""); this.props.getNewPage(parentPage); };
+            if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
 
-                if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-                    const onConfirm = () => this.props.getNewPage(parentPage);
-                    utils.confirm(
-                        Localization.get("CancelWithoutSaving"),
-                        Localization.get("Close"),
-                        Localization.get("Cancel"),
-                        onConfirm);
+            } else {
+                onConfirm();
+            }
+        };
 
-                } else {
-                    props.getNewPage(parentPage);
-                }
-            };
-
-            const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
-            parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
-        });
+        const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
+        parentPage.canAddPage === undefined || parentPage.canAddPage ? addPage() : noPermission();
     }
 
     onCancelSettings() {
@@ -442,10 +485,10 @@ class App extends Component {
         }
         else {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.props.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.templateTabId);
             }
             else {
-                this.props.onCancelPage();
+                this.onCancelPage();
             }
         }
     }
@@ -472,7 +515,7 @@ class App extends Component {
                         item.childListItems = [...arr1, ...arr2];
                         props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? item.url : null);
                         updateStore(list);
-                        props.onCancelPage();
+                        this.onCancelPage();
                     }
                 });
             };
@@ -493,7 +536,7 @@ class App extends Component {
                 const update = [...arr1, ...arr2];
                 this.props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? utils.getDefaultPageUrl() : null);
                 this.props.updatePageListStore(update);
-                this.props.onCancelPage();
+                this.onCancelPage();
             };
         };
 
@@ -515,10 +558,10 @@ class App extends Component {
         const { props } = this;
         const onConfirm = () => {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.props.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.templateTabId);
             }
             else {
-                this.props.onCancelPage();
+                this.onCancelPage();
             }
         };
         utils.confirm(
@@ -533,12 +576,13 @@ class App extends Component {
         const id = (typeof input === "object") ? this.props.selectedPage.tabId : input;
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.props.onLoadPage(id).then((data) => {
+                this.onLoadPage(id, (data) => {
                     this._traverse((item, list, updateStore) => {
                         if (item.id === id) {
                             Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
                             this.props.updatePageListStore(list);
                             this.selectPageSettingTab(0);
+                            this.lastActivePageId = null;
                         }
                     });
                 });
@@ -551,8 +595,9 @@ class App extends Component {
                 onConfirm);
 
         } else {
-            this.props.onCancelPage();
+            this.onCancelPage();
             this.props.changeSelectedPagePath("");
+
         }
     }
 
@@ -704,7 +749,7 @@ class App extends Component {
             this.selectPageSettingTab(0);
             pageInfo.id = pageInfo.id || pageInfo.tabId;
             pageInfo.tabId = pageInfo.tabId || pageInfo.id;
-            this.props.onLoadPage(pageInfo.tabId);
+            this.onLoadPage(pageInfo.tabId);
             resolve();
         });
     }
@@ -715,26 +760,37 @@ class App extends Component {
         this.shouldRunRecursive = false;
         const left = () => {
             if (!selectedPage || selectedPage.tabId !== pageId) {
-                this.props.onLoadPage(pageId).then((data) => {
-                    const selectedPath = data.hierarchy.split(">").map((d) => {
-                        return { name: d, tabId: data.tabId };
-                    });
-                    this.props.changeSelectedPagePath(selectedPath);
-
-                });
+                this.onLoadPage(pageId);
                 this.selectPageSettingTab(0);
             }
         };
-        const right = () => (pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
+        const right = () => (!selectedPage || pageId !== selectedPage.tabId) ? this.showCancelWithoutSavingDialogInEditMode(pageId) : null;
         (!selectedPageDirty) ? left() : right();
     }
 
     onNoPermissionSelection(pageId) {
-        this.noPermissionSelectionPageId = pageId;
+        const setNoPermissionState = () => {
+            this.onCancelPage();
+            this.buildBreadCrumbPath(pageId);
+            this.noPermissionSelectionPageId = pageId;
+            this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
+        };
+        if (this.props.selectedPageDirty) {
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Continue"),
+                Localization.get("Go Back"),
+                setNoPermissionState);
+        }
+        else {
+            setNoPermissionState();
+        }
     }
 
     onChangePageField(key, value) {
-        this.props.onChangePageField(key, value);
+        if (this.props.selectedPage[key] !== value) {
+            this.props.onChangePageField(key, value);
+        }
     }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
@@ -808,7 +864,7 @@ class App extends Component {
     onViewPage(item) {
         const { selectedPageDirty } = this.props;
         const view = () => {
-            //this.props.onLoadPage(item.id);
+            //this.onLoadPage(item.id);
             utils.getUtilities().closePersonaBar(function () {
                 window.parent.location = item.url;
             });
@@ -876,22 +932,33 @@ class App extends Component {
                 return { ref: `tag-${tag}`, tag: `${tag}` };
             });
 
-        filterByPageType ? filters.push({ ref: "filterByPageType", tag: `${Localization.get("PageType")}: ${filterByPageType}` }) : null;
-        filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `${Localization.get("lblPublishStatus")}: ${filterByPublishStatus}` }) : null;
+        filterByPageType ? filters.push({ ref: "filterByPageType", tag: `${Localization.get("PageType")}: ${this.getPageTypeLabel(filterByPageType)}` }) : null;
+        filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `${Localization.get("lblPublishStatus")}: ${this.getPublishStatusLabel(filterByPublishStatus)}` }) : null;
         filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `${Localization.get("WorkflowTitle")}: ${filterByWorkflowName}` }) : null;
 
         if (startAndEndDateDirty) {
+            let dateRangeText = Localization.get(utils.isPlatform() ? "ModifiedDateRange" : "PublishedDateRange");
             const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
             const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
-            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblDateRange")}: ${fullStartDate} ${fullEndDate} ` });
-            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${Localization.get("lblFromDate")}: ${fullStartDate}` });
+            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate} - ${fullEndDate} ` });
+            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate}` });
 
             fullStartDate != fullEndDate ? left() : right();
         }
 
         this.setState({ filters, DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
     }
-
+    getDateLabel() {
+        let filterByDateText = utils.isPlatform() ? "FilterByModifiedDateText" : "FilterByPublishDateText";
+        const { startDate, endDate, startAndEndDateDirty } = this.state;
+        let label = Localization.get(filterByDateText);
+        if (startAndEndDateDirty) {
+            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
+            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+            label = fullStartDate !== fullEndDate ? `${fullStartDate} - ${fullEndDate}` : `${fullStartDate}`;
+        }
+        return label;
+    }
     saveSearchFilters(searchFields) {
         return new Promise((resolve) => this.setState({ searchFields }, () => resolve()));
     }
@@ -901,6 +968,7 @@ class App extends Component {
         const { filtersUpdated } = this.state;
         if (filtersUpdated) {
             if (selectedPage) {
+                this.lastActivePageId = selectedPage.tabId;
                 if (this.props.selectedPageDirty) {
                     this.showCancelWithoutSavingDialogAndRun(() => {
                         this.doSearch();
@@ -921,8 +989,9 @@ class App extends Component {
     doSearch() {
         const { selectedPage } = this.props;
         if (selectedPage) {
-            this.props.onCancelPage();
+            this.onCancelPage();
         }
+
         let { filtersUpdated, inSearch, searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
         if (filtersUpdated || !inSearch) {
             const fullStartDate = `${startDate.getDate() < 10 ? `0` + startDate.getDate() : startDate.getDate()}/${((startDate.getMonth() + 1) < 10 ? `0` + (startDate.getMonth() + 1) : (startDate.getMonth() + 1))}/${startDate.getFullYear()} 00:00:00`;
@@ -971,6 +1040,10 @@ class App extends Component {
             if (typeof callback === "function") {
                 callback();
             }
+            else {
+                const { selectedPage } = this.props;
+                !selectedPage && this.lastActivePageId && this.onLoadPage(this.lastActivePageId);
+            }
         });
     }
     showCancelWithoutSavingDialogAndRun(callback, cancelCallback) {
@@ -992,7 +1065,32 @@ class App extends Component {
             onConfirm,
             onCancel);
     }
-
+    buildBreadCrumbPath(pageId) {
+        let page = {};
+        let selectedPath = [];
+        const buildBreadCrumbPathInternal = () => {
+            const addNode = (tabId) => {
+                this._traverse((item, list, update) => {
+                    if (item.id === tabId) {
+                        page = item;
+                        return;
+                    }
+                });
+                //page && page.name && page.id && 
+                selectedPath.push({ name: page.name, tabId: (page.id !== pageId ? page.id : null) });
+                const left = () => {
+                    addNode(page.parentId);
+                };
+                const right = () => {
+                    selectedPath.reverse();
+                    this.props.changeSelectedPagePath(selectedPath);
+                };
+                page.parentId > 0 ? left() : right();
+            };
+            addNode(pageId);
+        };
+        buildBreadCrumbPathInternal();
+    }
     onBreadcrumbSelect(name) {
     }
 
@@ -1095,50 +1193,59 @@ class App extends Component {
     distinct(list) {
         let distinctList = [];
         list.map((item) => {
-            if (item.trim() !== "" && distinctList.indexOf(item.trim()) === -1)
-                distinctList.push(item.trim());
+            if (item.trim() !== "" && distinctList.indexOf(item.trim().toLowerCase()) === -1)
+                distinctList.push(item.trim().toLowerCase());
         });
         return distinctList;
     }
-    /* eslint-disable react/no-danger */
-    render_more_flyout() {
-        const filterByPageTypeOptions = [
-            { value: null, label: Localization.get("lblAll") },
-            { value: "Normal", label: Localization.get("lblNormal") },
+    getFilterByPageTypeOptions() {
+        return [
+            { value: "", label: Localization.get("lblAll") },
+            { value: "normal", label: Localization.get("lblNormal") },
             { value: "tab", label: Localization.get("Existing") },
-            { value: "URL", label: Localization.get("lblUrl") },
-            { value: "File", label: Localization.get("lblFile") }
+            { value: "url", label: Localization.get("lblUrl") },
+            { value: "file", label: Localization.get("lblFile") }
         ];
-
+    }
+    getFilterByPageStatusOptions() {
         let filterByPageStatusOptions = [
-            { value: "Published", label: Localization.get("lblPublished") }
+            { value: "published", label: Localization.get("lblPublished") }
         ];
-        let filterByDateText = "FilterByModifiedDateText";
-        let workflowList = [];
         if (!utils.isPlatform()) {
-            filterByPageStatusOptions = ([{ value: null, label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "Draft", label: Localization.get("lblDraft") }]));
-            filterByDateText = "FilterByPublishDateText";
-            if (this.props.workflowList.length <= 0) {
-                this.props.getWorkflowsList();
-            }
+            filterByPageStatusOptions = ([{ value: "", label: Localization.get("lblNone") }]).concat(filterByPageStatusOptions.concat([{ value: "draft", label: Localization.get("lblDraft") }]));
+        }
+        return filterByPageStatusOptions;
+    }
+    getFilterByWorkflowOptions() {
+        let workflowList = [];
+        if (!utils.isPlatform() && this.props.workflowList.length <= 0) {
+            this.props.getWorkflowsList();
         }
         this.props.workflowList.length ? workflowList = this.props.workflowList.map((item => { return { value: item.workflowId, label: item.workflowName }; })) : null;
-        const filterByWorkflowOptions = [{ value: null, label: Localization.get("lblNone") }].concat(workflowList);
+        return [{ value: "", label: Localization.get("lblNone") }].concat(workflowList);
+    }
+    getPageTypeLabel(pageType) {
+        const filterByPageTypeOptions = this.getFilterByPageTypeOptions();
+        return filterByPageTypeOptions.find(x => x.value === pageType.toLowerCase()) && filterByPageTypeOptions.find(x => x.value === pageType.toLowerCase()).label;
+    }
+    getPublishStatusLabel(publishStatus) {
+        const filterByPublishStatusOptions = this.getFilterByPageStatusOptions();
+        return filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()) && filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()).label || publishStatus;
+    }
 
+    /* eslint-disable react/no-danger */
+    render_more_flyout() {
         const generateTags = (e) => {
-
             this.setState({ tags: e.target.value, filtersUpdated: true });
         };
         const filterTags = () => {
             let { tags } = this.state;
             this.setState({ tags: this.distinct(tags.split(",")).join(",") });
         };
-
         const onApplyChangesDropdownDayPicker = () => {
             const { startAndEndDateDirty, startDate, endDate } = this.state;
             const fullStartDate = startDate.getDate() + startDate.getMonth() + startDate.getFullYear();
             const fullEndDate = endDate.getDate() + endDate.getMonth() + endDate.getFullYear();
-
             const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
             condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
         };
@@ -1155,12 +1262,25 @@ class App extends Component {
                         <GridCell columnSize={50} style={{ padding: "5px" }}>
                             <Dropdown
                                 className="more-dropdown"
-                                options={filterByPageTypeOptions}
-                                label={this.state.filterByPageType ? this.state.filterByPageType : Localization.get("FilterbyPageTypeText")}
-                                onSelect={(data) => this.setState({ filterByPageType: data.value, filtersUpdated: true })}
-                                withBorder={true} />
+                                options={this.getFilterByPageTypeOptions()}
+                                label={this.state.filterByPageType ? this.getFilterByPageTypeOptions().find(x => x.value === this.state.filterByPageType.toLowerCase()).label : Localization.get("FilterbyPageTypeText")}
+                                value={this.state.filterByPageType !== "" && this.state.filterByPageType}
+                                onSelect={(data) => { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }}
+                                withBorder={true}
+                            />
                         </GridCell>
                         <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
+                            <Dropdown
+                                className="more-dropdown"
+                                options={this.getFilterByPageStatusOptions()}
+                                label={this.state.filterByPublishStatus ? this.getFilterByPageStatusOptions().find(x => x.value === this.state.filterByPublishStatus.toLowerCase()).label : Localization.get("FilterbyPublishStatusText")}
+                                value={this.state.filterByPublishStatus !== "" && this.state.filterByPublishStatus}
+                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
+                                withBorder={true} />
+                        </GridCell>
+                    </GridCell>
+                    <GridCell columnSize={100}>
+                        <GridCell columnSize={50} style={{ padding: "5px" }}>
                             <DropdownDayPicker
                                 onDayClick={this.onDayClick.bind(this)}
                                 dropdownIsActive={this.state.DropdownCalendarIsActive}
@@ -1169,25 +1289,16 @@ class App extends Component {
                                 endDate={this.state.endDate}
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
                                 CalendarIcon={CalendarIcon}
-                                label={Localization.get(filterByDateText)}
+                                label={this.getDateLabel()}
                             />
-                        </GridCell>
-                    </GridCell>
-                    <GridCell columnSize={100}>
-                        <GridCell columnSize={50} style={{ padding: "5px" }}>
-                            <Dropdown
-                                className="more-dropdown"
-                                options={filterByPageStatusOptions}
-                                label={this.state.filterByPublishStatus ? this.state.filterByPublishStatus : Localization.get("FilterbyPublishStatusText")}
-                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
-                                withBorder={true} />
                         </GridCell>
                         {!utils.isPlatform() &&
                             <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
                                 <Dropdown
                                     className="more-dropdown"
-                                    options={filterByWorkflowOptions}
-                                    label={this.state.filterByWorkflowName ? this.state.filterByWorkflowName : Localization.get("FilterbyWorkflowText")}
+                                    options={this.getFilterByWorkflowOptions()}
+                                    label={this.state.filterByWorkflow ? this.getFilterByWorkflowOptions().find(x => x.value === this.state.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
+                                    value={this.state.filterByWorkflow !== "" && this.state.filterByWorkflow}
                                     onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true })}
                                     withBorder={true} />
                             </GridCell>
@@ -1195,7 +1306,7 @@ class App extends Component {
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
-                    <textarea value={this.state.tags} onChange={(e) => generateTags(e)} onBlur={() => filterTags()}></textarea>
+                    <textarea placeholder={Localization.get("TagsInstructions")} value={this.state.tags} onChange={(e) => generateTags(e)} onBlur={() => filterTags()}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{ textAlign: "right" }}>
                     <Button style={{ marginRight: "5px" }} onClick={() => this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false })}>{Localization.get("Cancel")}</Button>
@@ -1210,10 +1321,11 @@ class App extends Component {
             const onNameClick = (item) => {
                 this.clearSearch(() => {
                     if (item.canManagePage) {
-                        this.props.onLoadPage(item.id).then(() => this.buildTree(item.id));
+                        this.onLoadPage(item.id, (data) => { this.buildTree(item.id); });
                     }
                     else {
                         this.noPermissionSelectionPageId = item.id;
+                        this.buildBreadCrumbPath(item.id);
                         this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
                     }
                 });
@@ -1232,14 +1344,20 @@ class App extends Component {
 
                 condition ? update() : null;
             };
+            const getTabPath = (path) => {
+                path = path.startsWith("/") ? path.substring(1) : path;
+                return path.split("/").join(" / ");
+            };
+
+
             let visibleMenus = [];
-            item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
-            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
+            item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
+            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
             if (pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
                 let additionalMenus = cloneDeep(pageInContextComponents || []);
                 additionalMenus && additionalMenus.map(additionalMenu => {
                     visibleMenus.push(<li onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
-                        && this.CallCustomAction(additionalMenu.OnClickAction)}><div dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
+                        && this.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
                 });
             }
             return (
@@ -1252,7 +1370,7 @@ class App extends Component {
                         <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
                             <div className="search-item-details-left">
                                 <h1 onClick={() => onNameClick(item)}><OverflowText text={item.name} /></h1>
-                                <h2><OverflowText text={item.tabpath} /></h2>
+                                <h2><OverflowText text={getTabPath(item.tabpath)} /></h2>
                             </div>
                             <div className="search-item-details-right">
                                 <ul>
@@ -1263,28 +1381,28 @@ class App extends Component {
                                 <ul>
                                     <li>
                                         <p>{Localization.get("PageType")}:</p>
-                                        <p onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{item.pageType}</p>
+                                        <p title={this.getPageTypeLabel(item.pageType)} onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{this.getPageTypeLabel(item.pageType)}</p>
                                     </li>
                                     <li>
                                         <p>{Localization.get("lblPublishStatus")}:</p>
-                                        <p onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{item.publishStatus}</p>
+                                        <p title={this.getPublishStatusLabel(item.publishStatus)} onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{this.getPublishStatusLabel(item.publishStatus)}</p>
                                     </li>
                                     <li>
-                                        <p >{Localization.get("lblPublishDate")}:</p>
-                                        <p onClick={() => { (this.state.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
+                                        <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
+                                        <p title={item.publishDate} onClick={() => { (this.state.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
                                     </li>
                                 </ul>
                             </div>
                             <div className="search-item-details-list">
                                 <ul>
                                     {!utils.isPlatform() && <li>
-                                        <p>{Localization.get("WorkflowTitle")}:</p>
-                                        <p onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
+                                        <p >{Localization.get("WorkflowTitle")}:</p>
+                                        <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
                                     </li>
                                     }
-                                    <li>
+                                    <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
                                         <p>{Localization.get("Tags")}:</p>
-                                        <p>{
+                                        <p title={item.tags.join(",").trim(",")}>{
                                             item.tags.map((tag, count) => {
                                                 return (
                                                     <span>
@@ -1316,7 +1434,7 @@ class App extends Component {
                         </div>
                     </GridCell>
                     <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{`${searchList.length} ` + (searchList.length > 1 ? Localization.get("lblPagesFound").toUpperCase() : Localization.get("lblPageFound").toUpperCase())}</p>
+                        <p>{searchList.length === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item) => {
@@ -1364,7 +1482,7 @@ class App extends Component {
                         let { filters, tags } = this.state;
                         tags = this.distinct(tags.split(",")).join(",");
                         filters = filters.filter(f => f.ref != prop);
-                        const findTag = prop.split("-")[1];
+                        const findTag = prop.replace("tag-", "");
                         let tagList = tags.split(",");
                         tags = "";
                         tagList.map((tag) => {
@@ -1381,7 +1499,7 @@ class App extends Component {
 
                 return (
                     <div className="filter-by-tags">
-                        <OverflowText text={filter.tag} />
+                        <OverflowText text={filter.tag} maxWidth={300} />
                         <div className="xIcon"
                             dangerouslySetInnerHTML={{ __html: XIcon }}
                             onClick={(e) => { deleteFilter(filter.ref); }}>
@@ -1411,19 +1529,19 @@ class App extends Component {
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
-                        <PersonaBarPageHeader title={Localization.get("Pages")}>
-                            {securityService.isSuperUser() && <Button type="primary" disabled={(selectedPage && selectedPage.tabId === 0) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
+                        <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
+                            {securityService.isSuperUser() && <Button type="primary" disabled={((selectedPage && selectedPage.tabId === 0) || inSearch) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
                             {
                                 selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data) => onSelect(data)} withBorder={true} />
                             }
-                            <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
+                            {!inSearch && <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />}
                         </PersonaBarPageHeader>
                         {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{ padding: "30px 30px 16px 30px" }}>
                             <div className="search-container">
                                 {inSearch ?
                                     <div className="dnn-back-to-link" onClick={() => this.clearSearch()}>
-                                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <span>{Localization.get("BackToPages")}</span>
+                                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <span>{Localization.get("BackToPages").toUpperCase()}</span>
                                     </div> : null
                                 }
 

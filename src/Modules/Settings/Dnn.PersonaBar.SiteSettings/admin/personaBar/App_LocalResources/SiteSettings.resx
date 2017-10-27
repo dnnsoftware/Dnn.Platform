@@ -1260,4 +1260,64 @@
   <data name="EnableSortOrder.Help" xml:space="preserve">
     <value>Check this box to enable custom sorting of entries in this list.</value>
   </data>
+  <data name="BrowseAction.Text" xml:space="preserve">
+    <value>Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel</value>
+  </data>
+  <data name="BrowseButton.Text" xml:space="preserve">
+    <value>Browse File System</value>
+  </data>
+  <data name="DefaultImageTitle.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="DragDefault.Text" xml:space="preserve">
+    <value>Drag and Drop a File or Select an Option</value>
+  </data>
+  <data name="DragOver.Text" xml:space="preserve">
+    <value>Drag and Drop a File</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Folder.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="LinkButton.Text" xml:space="preserve">
+    <value>Enter URL Link</value>
+  </data>
+  <data name="LinkInputAction.Text" xml:space="preserve">
+    <value>Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel</value>
+  </data>
+  <data name="LinkInputPlaceholder.Text" xml:space="preserve">
+    <value>http://example.com/imagename.jpg</value>
+  </data>
+  <data name="LinkInputTitle.Text" xml:space="preserve">
+    <value>URL Link</value>
+  </data>
+  <data name="NotSpecified.Text" xml:space="preserve">
+    <value>&lt;None Specified&gt;</value>
+  </data>
+  <data name="SearchFilesPlaceHolder.Text" xml:space="preserve">
+    <value>Search Files...</value>
+  </data>
+  <data name="SearchFoldersPlaceHolder.Text" xml:space="preserve">
+    <value>Search Folders...</value>
+  </data>
+  <data name="UploadButton.Text" xml:space="preserve">
+    <value>Upload a File</value>
+  </data>
+  <data name="UploadComplete.Text" xml:space="preserve">
+    <value>Upload Complete</value>
+  </data>
+  <data name="UploadDefault.Text" xml:space="preserve">
+    <value>myImage.jpg</value>
+  </data>
+  <data name="UploadFailed.Text" xml:space="preserve">
+    <value>Upload Failed</value>
+  </data>
+  <data name="Uploading.Text" xml:space="preserve">
+    <value>Uploading...</value>
+  </data>
+  <data name="WrongFormat.Text" xml:space="preserve">
+    <value>Wrong Format</value>
+  </data>
 </root>

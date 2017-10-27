@@ -114,7 +114,7 @@ export class PersonaBarPageTreeview extends Component {
                     onDragOver={(e) => onDragOver(e, item, direction)}
                     onDragLeave={() => onDragLeave(item, direction)}
                     onDragEnd={() => onDragEnd(item, direction)}
-                    onDrop={(e) => onMovePage({ e: e, Action: direction, PageId: draggedItem.id, ParentId: draggedItem.parentId, RelatedPageId: dragOverItem.id })} >
+                    onDrop={(e) => onMovePage({ e: e, Action: direction, PageId: draggedItem.id, ParentId: draggedItem.parentId, RelatedPageId: dragOverItem.id, RelatedPageParentId: dragOverItem.parentId })} >
                 </div>
             );
             // (draggedItem.parentId === dragOverItem.parentId ? draggedItem.parentId : dragOverItem.parentId)
@@ -170,7 +170,7 @@ export class PersonaBarPageTreeview extends Component {
             };
             index++;
 
-            const style = item.canManagePage ? { height: "28px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
+            const style = item.canManagePage ? { height: "28px", lineHeight: "35px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
