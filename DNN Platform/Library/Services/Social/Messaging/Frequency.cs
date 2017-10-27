@@ -25,7 +25,6 @@ using System.Runtime.Serialization;
 namespace DotNetNuke.Services.Social.Messaging
 {
     [DataContract]
-    [Flags]
     public enum Frequency
     {
         [EnumMember] Never = -1,
