@@ -466,11 +466,6 @@ namespace DotNetNuke.Modules.Admin.Security
 				//Unsubscribe
                 Subscribe(roleID, true);
             }
-            else if (commandName == Localization.GetString("Unsubscribe", LocalResourceFile))
-            {
-				//Unsubscribe
-                Subscribe(roleID, true);
-            }
             else if (commandName == "UseTrial")
             {
 				//Use Trial
