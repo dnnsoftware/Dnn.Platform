@@ -145,6 +145,7 @@ namespace Dnn.PersonaBar.Security.Components
             }
             catch
             {
+                //ignore
             }
             return results;
         }
