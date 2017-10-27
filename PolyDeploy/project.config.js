@@ -6,6 +6,6 @@
         than MODULE_VERSION.
     */
     MODULE_NAME: 'PolyDeploy',
-    MODULE_VERSION: '00.05.00',
+    MODULE_VERSION: '00.06.00',
     WEBSITE_PATH: '../../Website/'
 };

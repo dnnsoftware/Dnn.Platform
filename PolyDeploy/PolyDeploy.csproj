@@ -137,6 +137,10 @@
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\APIUserManager.cs" />
+    <Compile Include="Components\DataAccess\DataControllers\EventLogDataController.cs" />
+    <Compile Include="Components\DataAccess\Models\EventLog.cs" />
+    <Compile Include="Components\Logging\EventLogSeverity.cs" />
+    <Compile Include="Components\Logging\EventLogManager.cs" />
     <Compile Include="Components\RemoteDeployment.cs" />
     <Compile Include="Components\Deployment.cs" />
     <Compile Include="Components\FeatureController.cs" />
@@ -231,6 +235,7 @@
     <Content Include="SqlDataProviders\Uninstall.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.03.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.04.00.SqlDataProvider" />
+    <Content Include="SqlDataProviders\00.06.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\cantarus.png" />
