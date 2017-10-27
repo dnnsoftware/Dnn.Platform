@@ -1419,7 +1419,7 @@ class App extends Component {
                             <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />
                         </PersonaBarPageHeader>
                         {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
-                        <GridCell columnSize={100} style={{ padding: "20px" }}>
+                        <GridCell columnSize={100} style={{ padding: "30px 30px 16px 30px" }}>
                             <div className="search-container">
                                 {inSearch ?
                                     <div className="dnn-back-to-link" onClick={() => this.clearSearch()}>
