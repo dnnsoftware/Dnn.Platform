@@ -41,12 +41,13 @@ const userActions = {
             }, errorCallback);
         };
     },
-    createUser(userDetails, callback) {
+    createUser(userDetails, filter, callback) {
         return (dispatch) => {
             UserService.createUser(userDetails, data => {
                 dispatch({
                     type: ActionTypes.CREATE_USER,
-                    payload: data
+                    payload: data,
+                    filter: filter
                 });
                 if (callback) {
                     callback(data);

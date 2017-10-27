@@ -61,7 +61,7 @@ class CreateUserBox extends Component {
     save() {
         this.submitted = true;
         if (this.validateForm()) {
-            this.props.dispatch(CommonUsersActions.createUser(this.state.UserDetails, () => {
+            this.props.dispatch(CommonUsersActions.createUser(this.state.UserDetails, this.props.filter, () => {
                 this.cancel();
                 utilities.notify(Localization.get("UserCreated"), 3000);
             }));
@@ -239,7 +239,8 @@ class CreateUserBox extends Component {
 CreateUserBox.propTypes = {
     dispatch: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    style: PropTypes.object
+    style: PropTypes.object,
+    filter: PropTypes.number
 };
 
 function mapStateToProps() {

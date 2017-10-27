@@ -22,10 +22,12 @@ const switchCase = [
         condition: ActionTypes.CREATE_USER,
         functionToRun: (state, action) => {
             let totalUsers = Object.assign(state.totalUsers);
-            return {
-                users: updateUsersList(state.users, action.payload),
-                totalUsers: totalUsers + 1
-            };
+            if (action.filter === 0 && action.payload.authorized || action.filter === 1 || action.filter === 5) {
+                return {
+                    users: updateUsersList(state.users, action.payload),
+                    totalUsers: totalUsers + 1
+                };
+            }
         }
     },
     {
