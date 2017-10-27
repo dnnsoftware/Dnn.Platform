@@ -297,10 +297,10 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                                 NotificationsController.Instance.DeleteNotificationRecipient(notifications[0].NotificationID, currentUser.UserID);
                             }
                         }
-                        catch 
-                        {}
-
-
+                        catch
+                        {
+                            //ignore
+                        }
                     }                    
                 }
 

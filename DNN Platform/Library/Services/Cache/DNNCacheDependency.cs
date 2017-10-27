@@ -226,25 +226,18 @@ namespace DotNetNuke.Services.Cache
         {
             get
             {
-                try
+                if (_systemCacheDependency == null)
                 {
-                    if (_systemCacheDependency == null)
+                    if (_cacheDependency == null)
                     {
-                        if (_cacheDependency == null)
-                        {
-                            _systemCacheDependency = new CacheDependency(_fileNames, _cacheKeys, _utcStart);
-                        }
-                        else
-                        {
-                            _systemCacheDependency = new CacheDependency(_fileNames, _cacheKeys, _cacheDependency.SystemCacheDependency, _utcStart);
-                        }
+                        _systemCacheDependency = new CacheDependency(_fileNames, _cacheKeys, _utcStart);
                     }
-                    return _systemCacheDependency;
+                    else
+                    {
+                        _systemCacheDependency = new CacheDependency(_fileNames, _cacheKeys, _cacheDependency.SystemCacheDependency, _utcStart);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                return _systemCacheDependency;
             }
         }
 

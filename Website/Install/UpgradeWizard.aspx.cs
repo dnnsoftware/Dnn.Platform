@@ -514,6 +514,7 @@ namespace DotNetNuke.Services.Install
             }
             catch (Exception)
             {
+                //ignore
             }
 
             return data;
