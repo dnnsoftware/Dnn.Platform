@@ -99,7 +99,10 @@ namespace DotNetNuke.Common.Lists
 
                     res = Services.Localization.Localization.GetString(key, ResourceFileRoot);
                 }
-                catch { }
+                catch
+                {
+                    //ignore
+                }
                 if (string.IsNullOrEmpty(res)) { res = _Text; };
                 return res;
             }

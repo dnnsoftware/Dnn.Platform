@@ -39,6 +39,7 @@ namespace ClientDependency.Core.Config
             }
             catch (Exception)
             {
+                //ignore
             }
         }
 
@@ -179,6 +180,7 @@ namespace ClientDependency.Core.Config
             }
             catch (Exception)
             {
+                //ignore
             }
             return null;
         }
@@ -204,6 +206,7 @@ namespace ClientDependency.Core.Config
             }
             catch (Exception)
             {
+                //ignore
             }
             return null;
         }
@@ -224,6 +227,7 @@ namespace ClientDependency.Core.Config
             }
             catch (Exception)
             {
+                //ignore
             }
             return null;
         }

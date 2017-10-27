@@ -2846,7 +2846,10 @@ namespace DotNetNuke.Entities.Tabs
                     newnode.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.DefaultLanguageTab.TabID].ToString());
                     tabNode.AppendChild(newnode);
                 }
-                catch { }
+                catch
+                {
+                    //ignore
+                }
             }
 
             XmlNode panesNode;
