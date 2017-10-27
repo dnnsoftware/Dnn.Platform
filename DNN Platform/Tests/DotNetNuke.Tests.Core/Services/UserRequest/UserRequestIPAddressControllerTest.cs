@@ -30,14 +30,12 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [SetUp]
         public void Setup()
         {
-            var requestIp = "111.111.111.111";
             NameValueCollection serverVariables = new NameValueCollection();
             
             // Setup Mock
             _mockhttpContext = HttpContextHelper.RegisterMockHttpContext();
             _mockRequest = Mock.Get(_mockhttpContext.Object.Request);
             _mockRequest.Setup(x => x.ServerVariables).Returns(serverVariables);
-            _mockRequest.Setup(x => x.UserHostAddress).Returns(requestIp);            
             _mockHostController = MockComponentProvider.CreateNew<IHostController>();
             _mockPortalController = MockComponentProvider.CreateNew<IPortalController>();
             PortalController.SetTestableInstance(_mockPortalController.Object);
@@ -100,6 +98,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         {
             //Arrange
             var expectedIp = "111.111.111.111";
+            _mockRequest.Setup(x => x.UserHostAddress).Returns(expectedIp);
 
             //Act
             var userRequestIPAddress = _userRequestIPAddressController.GetUserRequestIPAddress(_mockhttpContext.Object.Request);
