@@ -48,6 +48,8 @@ namespace DotNetNuke.Services.Mail
     {
         #region Private Methods
 
+        private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static string SendMailInternal(MailMessage mailMessage, string subject, string body, MailPriority priority,  
                                 MailFormat bodyFormat, Encoding bodyEncoding, IEnumerable<Attachment> attachments, 
                                 string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
@@ -111,8 +113,9 @@ namespace DotNetNuke.Services.Mail
                 var HTMLView = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
                 mailMessage.AlternateViews.Add(HTMLView);
             }
-            
-            if (!String.IsNullOrEmpty(smtpServer))
+
+            smtpServer = smtpServer.Trim();
+            if (SmtpServerRegex.IsMatch(smtpServer))
             {
                 try
                 {
@@ -214,7 +217,7 @@ namespace DotNetNuke.Services.Mail
 
         public static void SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body)
         {
-			if (string.IsNullOrEmpty(Host.SMTPServer) || string.IsNullOrEmpty(fromAddress) || string.IsNullOrEmpty(senderAddress) || string.IsNullOrEmpty(toAddress))
+			if (string.IsNullOrWhiteSpace(Host.SMTPServer) || string.IsNullOrEmpty(fromAddress) || string.IsNullOrEmpty(senderAddress) || string.IsNullOrEmpty(toAddress))
             {
                 return;
             }
@@ -231,7 +234,7 @@ namespace DotNetNuke.Services.Mail
 
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
-            if ((string.IsNullOrEmpty(Host.SMTPServer)))
+            if ((string.IsNullOrWhiteSpace(Host.SMTPServer)))
             {
                 return "SMTP Server not configured";
             }
@@ -528,7 +531,7 @@ namespace DotNetNuke.Services.Mail
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             //SMTP server configuration
-            if (string.IsNullOrEmpty(smtpServer) && !string.IsNullOrEmpty(Host.SMTPServer))
+            if (string.IsNullOrWhiteSpace(smtpServer) && !string.IsNullOrWhiteSpace(Host.SMTPServer))
             {
                 smtpServer = Host.SMTPServer;
             }
