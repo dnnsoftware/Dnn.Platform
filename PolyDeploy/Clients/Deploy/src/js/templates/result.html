@@ -1,0 +1,61 @@
+﻿<div id="result">
+    
+    <!-- Header -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Installing</h2>
+            <p>
+                Information will refresh automatically, please do not reload the page.
+            </p>
+        </div>
+    </div>
+    <!-- /Header -->
+
+    <!-- Content -->
+    <div ng-if="session" class="row">
+        <div class="col-xs-12">
+
+            <!-- Current -->
+            <h4>{{ currentStatus(session) }}</h4>
+            <!-- /Current -->
+
+            <div class="row">
+
+                <!-- Packages -->
+                <div ng-repeat="packageZip in session.Response" class="col-xs-12 col-md-6">
+                    <div class="panel" ng-class="panelStatus(packageZip)">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">{{ packageZip.Name }}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="module-info">
+
+                                <h5>Packages</h5>
+                                <div ng-repeat="package in packageZip.Packages">
+                                    <ul class="package-info">
+                                        <li><strong>Name:</strong> {{ package.Name }}</li>
+                                        <li><strong>Version:</strong> {{ package.VersionStr }}</li>
+                                    </ul>
+                                </div>
+
+                                <div ng-show="packageZip.Failures && packageZip.Failures.length > 0">
+                                    <h5>Failures</h5>
+                                    <ul>
+                                        <li ng-repeat="failure in packageZip.Failures">
+                                            {{ failure }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Packages -->
+
+            </div>
+
+        </div>
+    </div>
+    <!-- /Content -->
+
+</div>

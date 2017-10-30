@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Cantarus.PolyDeploy" type="Module" version="00.04.00">
+    <package name="Cantarus.PolyDeploy" type="Module" version="00.05.00">
       <friendlyName>Cantarus PolyDeploy</friendlyName>
       <description>Cantarus PolyDeploy module</description>
       <iconFile>Images/cantarus.png</iconFile>
@@ -40,7 +40,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/View.ascx</controlSrc>
+                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Clients/Deploy/Deploy.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
@@ -49,10 +49,10 @@
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                   <moduleControl>
-                    <controlKey>Settings</controlKey>
-                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Settings.ascx</controlSrc>
+                    <controlKey>Manage</controlKey>
+                    <controlSrc>DesktopModules/Cantarus/PolyDeploy/Clients/Manage/Manage.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>PolyDeploy Settings</controlTitle>
+                    <controlTitle>PolyDeploy Manage</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile />
                     <helpUrl />

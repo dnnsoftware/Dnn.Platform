@@ -293,3 +293,15 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+## Project Specific
+
+# Client dist folders
+**/Clients/**/dist
+
+# Temporarily ignore assets folder until it's moved.
+**/Clients/assets
+
+# Compiled LESS
+**/css/**/*.css
+
