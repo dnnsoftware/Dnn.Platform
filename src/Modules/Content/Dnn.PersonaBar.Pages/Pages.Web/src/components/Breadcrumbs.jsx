@@ -1,5 +1,4 @@
 import React, { PropTypes } from "react";
-
 const maxItems = 4;
 
 const Breadcrumbs = ({ items, onSelectedItem }) => {
@@ -12,9 +11,11 @@ const Breadcrumbs = ({ items, onSelectedItem }) => {
     return (
         <div className="breadcrumbs-container">
             {items.length > maxItems &&
-                <span className="more"
-                    title={items.map(i => i.name).join(" > ")}
-                    onClick={() => onClick(0)} />}
+                <div>
+                    <span className="more"
+                        title={items.map(i => i.name).join(" > ")}
+                        onClick={() => onClick(0)}>&nbsp;</span>
+                </div>}
 
             {items.slice(Math.max(items.length - maxItems, 0)).map((item, i) => {
 
