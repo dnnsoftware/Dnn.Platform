@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Mail
     {
         #region Private Methods
 
-        private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
 
         private static string SendMailInternal(MailMessage mailMessage, string subject, string body, MailPriority priority,  
                                 MailFormat bodyFormat, Encoding bodyEncoding, IEnumerable<Attachment> attachments, 
