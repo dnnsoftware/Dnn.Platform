@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;

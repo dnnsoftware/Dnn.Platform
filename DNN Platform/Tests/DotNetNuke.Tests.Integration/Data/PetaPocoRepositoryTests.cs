@@ -25,9 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Data.PetaPoco;

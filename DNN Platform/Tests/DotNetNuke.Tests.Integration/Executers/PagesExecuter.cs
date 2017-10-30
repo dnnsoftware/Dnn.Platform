@@ -19,9 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-using DotNetNuke.Tests.Integration.Executers.Dto;
-
 namespace DotNetNuke.Tests.Integration.Executers
 {
     public class PagesExecuter : WebApiExecuter

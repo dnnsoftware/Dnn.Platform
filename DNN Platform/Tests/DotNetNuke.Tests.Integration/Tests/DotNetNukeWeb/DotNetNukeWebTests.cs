@@ -24,7 +24,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web;
-using DotNetNuke.Tests.Integration.Framework;
+using DNN.Integration.Test.Framework;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb

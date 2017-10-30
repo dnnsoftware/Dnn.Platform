@@ -438,6 +438,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F4AAB2C9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Providers.AspNetClientCapabilityProvider", "DNN Platform\Providers\ClientCapabilityProviders\Provider.AspNetClientCapabilityProvider\DotNetNuke.Providers.AspNetClientCapabilityProvider.csproj", "{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNN.Integration.Test.Framework", "DNN Platform\Tests\DNN.Integration.Test.Framework\DNN.Integration.Test.Framework.csproj", "{8F727796-7C6C-4F42-B385-67B06ECD358E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -1150,6 +1152,22 @@ Global
 		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|x86.ActiveCfg = Release|Any CPU
 		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}.Release|x86.Build.0 = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Debug|x86.ActiveCfg = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Debug|x86.Build.0 = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Release|x86.ActiveCfg = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Cloud_Release|x86.Build.0 = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Debug|x86.Build.0 = Debug|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Release|x86.ActiveCfg = Release|Any CPU
+		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1238,5 +1256,6 @@ Global
 		{4248BC91-5EAC-489B-929F-6494F805B24E} = {2D7DB29D-72F1-44DE-A01E-D6547D8271C2}
 		{F4AAB2C9-8B8B-441B-8623-9347B62884A1} = {4248BC91-5EAC-489B-929F-6494F805B24E}
 		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7} = {C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}
+		{8F727796-7C6C-4F42-B385-67B06ECD358E} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 	EndGlobalSection
 EndGlobal
