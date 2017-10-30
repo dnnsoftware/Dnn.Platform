@@ -1,4 +1,5 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Logging;
 using DotNetNuke.Data;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             }
         }
 
-        public IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType = null, int? severity = null)
+        public IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType = null, EventLogSeverity? severity = null)
         {
             Dictionary<string, object> conditions = new Dictionary<string, dynamic>();
 
@@ -82,14 +83,13 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             }
         }
 
-        //public IEnumerable<string> GetEventTypes()
-        //{
-
-        //    using (IDataContext context = DataContext.Instance())
-        //    {
-        //        context.ExecuteQuery<IEnumerable<string>>(System.Data.CommandType.Text, "")
-        //    }
-        //}
+        public IEnumerable<string> GetEventTypes()
+        {
+            using (IDataContext context = DataContext.Instance())
+            {
+                return context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT DISTINCT [EventType] FROM [dbo].[Cantarus_PolyDeploy_EventLogs]", null);
+            }
+        }
 
         #endregion
     }

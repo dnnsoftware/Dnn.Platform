@@ -156,6 +156,7 @@
     <Compile Include="Components\DataAccess\DataControllers\APIUserDataController.cs" />
     <Compile Include="Components\DataAccess\Models\IPSpec.cs" />
     <Compile Include="Components\DataAccess\Models\Session.cs" />
+    <Compile Include="Components\WebAPI\EventLogController.cs" />
     <Compile Include="Components\WebAPI\RemoteController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\PolyDeploySettingsBase.cs">

@@ -1,12 +1,23 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Cantarus.Modules.PolyDeploy.Components.Logging
 {
     internal static class EventLogManager
     {
         private static EventLogDataController LogDC = new EventLogDataController();
+
+        public static IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType, EventLogSeverity severity)
+        {
+            return LogDC.Browse(pageIndex, pageSize, eventType, severity);
+        }
+
+        public static IEnumerable<string> GetEventTypes()
+        {
+            return LogDC.GetEventTypes();
+        }
 
         public static void Log(string eventType, EventLogSeverity severity, string message = null, Exception ex = null)
         {
