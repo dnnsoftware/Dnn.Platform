@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Modules.HTMLEditorProvider;
@@ -38,12 +40,36 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         {
             Globals.SetStatus(Globals.UpgradeStatus.None);
 
+            ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("logging", typeof(LoggingProvider), typeof(DBLoggingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("roles", typeof(RoleProvider), typeof(DNNRoleProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("profiles", typeof(ProfileProvider), typeof(DNNProfileProvider)));
+            ComponentFactory.RegisterComponent<IPortalSettingsController, PortalSettingsController>();
+
+            PortalController.ClearInstance();
+            UserController.ClearInstance();
+            RoleController.ClearInstance();
+
+            var roleController = RoleController.Instance;
+            var roleProviderField = roleController.GetType().GetField("provider", BindingFlags.NonPublic | BindingFlags.Static);
+            if (roleProviderField != null)
+            {
+                roleProviderField.SetValue(roleController, RoleProvider.Instance());
+            }
+
+            var membershipType = typeof(System.Web.Security.Membership);
+            var initializedDefaultProviderField = membershipType.GetField("s_InitializedDefaultProvider", BindingFlags.NonPublic | BindingFlags.Static);
+            var defaultProviderField = membershipType.GetField("s_Provider", BindingFlags.NonPublic | BindingFlags.Static);
+            if (initializedDefaultProviderField != null
+                && defaultProviderField != null
+                && (bool)initializedDefaultProviderField.GetValue(null) == false)
+            {
+                initializedDefaultProviderField.SetValue(null, true);
+                defaultProviderField.SetValue(null, System.Web.Security.Membership.Providers["AspNetSqlMembershipProvider"]);
+            }
         }
 
         [TearDown]
