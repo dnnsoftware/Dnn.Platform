@@ -7,6 +7,3 @@ devfactory:
     - "**/DNN Platform/DotNetNuke.Instrumentation/**"
     - "**/DNN Platform/DotNetNuke.WebUtility/**"
     - "**/DNN Platform/Tests/**"
-  includes:
-    - "**/DNN Platform/**"
-    - "**/Website/**"
