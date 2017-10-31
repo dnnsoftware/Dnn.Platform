@@ -76,7 +76,7 @@ const switchCase = [
             }
             else {
                 return {
-                    users: state.users,
+                    users: updateUser(state.users, action.payload.userId, null, null, action.payload.setSuperUser),
                     totalUsers: totalUsers
                 };
             }

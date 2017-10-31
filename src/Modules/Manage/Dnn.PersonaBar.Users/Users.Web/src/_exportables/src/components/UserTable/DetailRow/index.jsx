@@ -64,7 +64,7 @@ class DetailsRow extends Component {
         let actionIcons = [];
         actionIcons = actionIcons.concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons(user)) || []);
 
-        if (canManageProfile(this.props.appSettings.applicationSettings.settings, user))
+        if (canManageProfile(this.props.appSettings.applicationSettings.settings))
         {
             actionIcons = actionIcons.concat([{
                 index: 15,
