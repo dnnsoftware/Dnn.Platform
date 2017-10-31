@@ -36,7 +36,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             }
         }
 
-        public IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType = null, EventLogSeverity? severity = null)
+        public IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType, EventLogSeverity? severity)
         {
             Dictionary<string, object> conditions = new Dictionary<string, dynamic>();
 
@@ -54,26 +54,32 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             {
                 var repo = context.GetRepository<EventLog>();
 
+                string sqlQuery = "";
+                object[] sqlParams = new object[] { conditions.Values };
+
+                // Deal with conditions.
                 if (conditions.Count > 0)
                 {
-                    string sqlQuery = "";
-                    object [] sqlParams = new object[] { conditions.Values };
                     int paramNo = 0;
 
                     foreach (KeyValuePair<string, object> kvp in conditions)
                     {
                         if (string.IsNullOrEmpty(sqlQuery))
                         {
-                            sqlQuery = sqlQuery + "WHERE " + kvp.Key + " = @" + paramNo;
+                            sqlQuery = string.Format("WHERE {0} = @{1}", kvp.Key, paramNo);
                         }
                         else
                         {
-                            sqlQuery = sqlQuery + " AND " + kvp.Key + " = @0" + paramNo;
+                            sqlQuery = string.Format("{0} AND {1} = @{2}", sqlQuery, kvp.Key, paramNo);
                         }
 
                         paramNo++;
-                    }
+                    }   
+                }
 
+                // Perform query.
+                if (!string.IsNullOrEmpty(sqlQuery))
+                {
                     return repo.Find(pageIndex, pageSize, sqlQuery, sqlParams);
                 }
                 else

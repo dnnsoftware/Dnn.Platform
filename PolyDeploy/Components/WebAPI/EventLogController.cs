@@ -17,9 +17,17 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
     public class EventLogController : DnnApiController
     {
         [HttpGet]
-        public HttpResponseMessage Browse(int pageIndex, int pageSize, string eventType, EventLogSeverity severity)
+        public HttpResponseMessage Browse(int pageIndex = 0, int pageSize = 30, string eventType = null, int severity = -1)
         {
-            List<EventLog> eventLogs = EventLogManager.Browse(pageIndex, pageSize, eventType, severity).ToList();
+            EventLogSeverity? actualSeverity = null;
+
+            // Is there a severity set?
+            if (severity >= 0)
+            {
+                actualSeverity = (EventLogSeverity)severity;
+            }
+
+            List<EventLog> eventLogs = EventLogManager.Browse(pageIndex, pageSize, eventType, actualSeverity).ToList();
 
             return Request.CreateResponse(HttpStatusCode.OK, eventLogs);
         }

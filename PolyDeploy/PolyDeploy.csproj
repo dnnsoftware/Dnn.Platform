@@ -182,6 +182,7 @@
   <ItemGroup>
     <Content Include="Clients\Core\src\js\app.js" />
     <Content Include="Clients\Core\src\js\bootstrap.js" />
+    <Content Include="Clients\Core\src\js\services\EventLogDataService.js" />
     <Content Include="Clients\Core\src\js\services\IPSpecDataService.js" />
     <Content Include="Clients\Core\src\js\services\DnnService.js" />
     <Content Include="Clients\Core\src\js\services\index.js" />
@@ -195,10 +196,12 @@
     <Content Include="Clients\Manage\src\js\bootstrap.js" />
     <Content Include="Clients\Manage\src\js\config.js" />
     <Content Include="Clients\Manage\src\js\controllers\index.js" />
+    <Content Include="Clients\Manage\src\js\controllers\EventsController.js" />
     <Content Include="Clients\Manage\src\js\controllers\WhitelistController.js" />
     <Content Include="Clients\Manage\src\js\controllers\UsersController.js" />
     <Content Include="Clients\Manage\src\js\services\APIUserDataService.js" />
     <Content Include="Clients\Manage\src\js\services\index.js" />
+    <Content Include="Clients\Manage\src\js\templates\events.html" />
     <Content Include="Clients\Manage\src\js\templates\whitelist.html" />
     <Content Include="Clients\Manage\src\js\templates\welcome.html" />
     <Content Include="Clients\Manage\src\js\templates\menu.html" />

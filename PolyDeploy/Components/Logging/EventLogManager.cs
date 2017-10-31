@@ -9,7 +9,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.Logging
     {
         private static EventLogDataController LogDC = new EventLogDataController();
 
-        public static IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType, EventLogSeverity severity)
+        public static IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType, EventLogSeverity? severity)
         {
             return LogDC.Browse(pageIndex, pageSize, eventType, severity);
         }
