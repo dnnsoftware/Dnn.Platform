@@ -11,11 +11,6 @@ const style = {
 
 export default class Suggestions extends Component {
 
-    constructor() {
-        super();
-        this.itemRef = null;
-    }
-
     onSelectSuggestion(tag) {
         this.props.onSelectSuggestion(tag);
     }
@@ -29,11 +24,7 @@ export default class Suggestions extends Component {
     getSuggestions() {
         let suggestions = this.props.suggestions.map((suggestion, index) => {
             let className = this.props.selectedIndex > -1 && index === this.props.selectedIndex ? "selected" : "";
-            return <div ref={(itemRef) => {
-                if (index === 0) {
-                    this.itemRef = itemRef;
-                }
-            }} className={`suggestion ${className}`} key={index}
+            return <div ref={(itemRef) => this.itemRef = index === 0 ? itemRef : null} className={`suggestion ${className}`} key={index}
                         onClick={this.onSelectSuggestion.bind(this, suggestion.value)}>{suggestion.value}</div>;
         });
         return suggestions;
@@ -41,20 +32,19 @@ export default class Suggestions extends Component {
 
     keySelectionHandler(scrollBars) {
         const selectedIndex = this.props.selectedIndex;
-        if (scrollBars) {
-            if (this.itemRef) {
-                const viewHeight = scrollBars.getClientHeight();
-                const h = this.itemRef.clientHeight;
-                const selectedItemScroll = h * selectedIndex;
-                const currentScroll = scrollBars.getScrollTop();
-                setTimeout(() => {
-                    if (selectedItemScroll < currentScroll) {
-                        scrollBars.scrollTop(currentScroll - viewHeight);
-                    } else if (selectedItemScroll + h > (currentScroll + viewHeight )) {
-                        scrollBars.scrollTop(selectedItemScroll + h + currentScroll + viewHeight);
-                    }
-                });
-            }
+        if (!scrollBars) return;
+        if (this.itemRef) {
+            const viewHeight = scrollBars.getClientHeight();
+            const h = this.itemRef.clientHeight;
+            const selectedItemScroll = h * selectedIndex;
+            const currentScroll = scrollBars.getScrollTop();
+            setTimeout(() => {
+                if (selectedItemScroll < currentScroll) {
+                    scrollBars.scrollTop(currentScroll - viewHeight);
+                } else if (selectedItemScroll + h > (currentScroll + viewHeight )) {
+                    scrollBars.scrollTop(selectedItemScroll + h + currentScroll + viewHeight);
+                }
+            });
         }
     }
 
