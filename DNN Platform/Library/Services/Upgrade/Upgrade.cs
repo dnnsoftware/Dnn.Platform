@@ -5552,6 +5552,24 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
 
             RemoveAdminPages("//Admin//SearchEngineSiteMap");
+
+            if (!HostTabExists("Superuser Accounts"))
+            {
+                //add SuperUser Accounts module and tab
+                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("Security", Null.NullInteger);
+                if(desktopModule != null)
+                { 
+                    var moduleDefId = ModuleDefinitionController
+                        .GetModuleDefinitionByFriendlyName("User Accounts", desktopModule.DesktopModuleID).ModuleDefID;
+
+                    //Create New Host Page (or get existing one)
+                    var newPage = AddHostPage("Superuser Accounts", "Manage host user accounts.", 
+                        "~/Icons/Sigma/Users_16X16_Standard.png", "~/Icons/Sigma/Users_32X32_Standard.png", false);
+
+                    //Add Module To Page
+                    AddModuleToPage(newPage, moduleDefId, "SuperUser Accounts", "~/Icons/Sigma/Users_32X32_Standard.png");
+                }
+            }
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
