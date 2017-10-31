@@ -169,7 +169,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                 Sys.WebForms.PageRequestManager.getInstance().add_endRequest(this._refreshCompleteHandler);
                 this._refreshPaneId = paneId;
                 this._refreshCallback = callback;
-                __doPostBack(ajaxPanel.attr('id'), args);
+                window.setTimeout(function () { __doPostBack(ajaxPanel.attr('id'), args); }, 100);
             } else {
                 //save the args into cookie, after page reload then catch the cookie
                 //and float the module for drag
