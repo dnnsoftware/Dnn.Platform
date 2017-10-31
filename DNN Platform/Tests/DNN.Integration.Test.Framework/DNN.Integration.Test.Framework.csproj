@@ -61,14 +61,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="CachedWebPage.cs" />
-    <Compile Include="Controllers\MechanicsController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
-    <Compile Include="Controllers\SolutionController.cs" />
     <Compile Include="Controllers\TabController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="FileParameter.cs" />
@@ -99,6 +100,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DNN.Integration.Test.Framework.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

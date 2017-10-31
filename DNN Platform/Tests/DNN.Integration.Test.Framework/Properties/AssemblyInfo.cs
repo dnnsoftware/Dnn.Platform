@@ -22,12 +22,6 @@
 using System.Reflection;
 
 [assembly: AssemblyTitle("DNN.Integration.Test.Framework")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("DNN Integration Testing Framework")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DNN Corporation")]
-[assembly: AssemblyProduct("DNNIngerationTestFramework")]
-[assembly: AssemblyCopyright("Copyright (c) 2002-2017 DNN Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DNN Corporation")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
