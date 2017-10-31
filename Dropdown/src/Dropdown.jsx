@@ -1,11 +1,13 @@
-import React, { PropTypes, Component } from "react";
+import React, {PropTypes, Component} from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import Scrollbars from "react-custom-scrollbars";
-import { ArrowDownIcon } from "dnn-svg-icons";
+import {ArrowDownIcon} from "dnn-svg-icons";
 import scroll from "scroll";
 import debounce from "lodash/debounce";
 import "./style.less";
+
+const DNN_DROPDOWN_MINHEIGHT = 100;
 
 class Dropdown extends Component {
     constructor() {
@@ -21,18 +23,14 @@ class Dropdown extends Component {
         this.uniqueId = Date.now() * Math.random();
         this.debouncedSearch = debounce(this.searchItems, 500);
     }
-    toggleDropdown(avoidFocusOnOpen) {
+
+    toggleDropdown() {
         const {props} = this;
         if (props.enabled) {
 
             //This triggers re-render, showing scrollbar on open.
             if (!this.state.dropDownOpen) {
-                setTimeout(() => {
-                    this.setState({});
-                    if(!avoidFocusOnOpen) {
-                        ReactDOM.findDOMNode(this.refs.dropdownSearch).focus();
-                    }
-                }, 250);
+                this.dropdownSearch.focus();
             } else {
                 this.setState({
                     closestValue: null
@@ -49,47 +47,36 @@ class Dropdown extends Component {
             });
         }
     }
-    getDropdownHeight(length, size) {
+
+    getDropdownHeight() {
         const {props} = this;
-        if (props.fixedHeight) {
-            return props.fixedHeight;
-        }
-        let itemHeight = (size === "large" ? 38 : 28) * length;
-
-        return itemHeight < 140 ? itemHeight + 20 : 160;
+        const maxHeight = props.fixedHeight ? props.fixedHeight : DNN_DROPDOWN_MINHEIGHT;
+        return this.dropDownListElement ? Math.min(this.dropDownListElement.offsetHeight, maxHeight) + 20 : 0;
     }
-    needScroll(){
-        const {props} = this;
 
-        if (props.options && props.options.length > 0) {
-            let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
-            let itemHeight = (props.size === "large" ? 38 : 28) * props.options.length;
-            return itemHeight > fixedHeight;
-        }
-
-        return false;
-    }
     componentWillMount() {
         const {props} = this;
         if (props.options && props.options.length > 0) {
-            let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
+            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
             this.setState({
                 fixedHeight
             });
         }
     }
+
     componentWillReceiveProps(props) {
         if (props.options && props.options.length > 0) {
-            let fixedHeight = this.getDropdownHeight(props.options.length, props.size);
+            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
             this.setState({
                 fixedHeight
             });
         }
 
-        if(props.isDropDownOpen !== this.props.isDropDownOpen) {
+        if (props.isDropDownOpen !== this.props.isDropDownOpen) {
             this.setState({dropDownOpen: !props.isDropDownOpen}, () => this.toggleDropdown(true));
         }
     }
+
     componentDidMount() {
         const {props} = this;
         if (props.closeOnClick) {
@@ -102,12 +89,15 @@ class Dropdown extends Component {
         document.removeEventListener("mousedown", this.handleClick);
         this._isMounted = false;
     }
+
     handleClick(event) {
         const {props} = this;
         // Note: this workaround is needed in IE. The remove event listener in the componentWillUnmount is called
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
-        if (!this._isMounted || !props.closeOnClick) { return; }
+        if (!this._isMounted || !props.closeOnClick) {
+            return;
+        }
 
         if (!ReactDOM.findDOMNode(this).contains(event.target)) {
             this.setState({
@@ -117,6 +107,7 @@ class Dropdown extends Component {
             });
         }
     }
+
     onSelect(option) {
         const {props} = this;
         if (props.enabled) {
@@ -133,6 +124,14 @@ class Dropdown extends Component {
             }
         }
     }
+
+    /**
+     * We have two types of Dropdown: small and large.
+     * More informations about it here: https://dnntracker.atlassian.net/wiki/spaces/DP/pages/45940759/EVOQ+-+COLOR+AND+STYLE+GUIDE#EVOQ-COLORANDSTYLEGUIDE-SMALLDROPDOWN
+     * PS: "small" is passed as a prop and used as a CSS class name.
+     *
+     * @returns {string}
+     */
     getClassName() {
         const {props, state} = this;
         let className = "dnn-dropdown";
@@ -163,7 +162,8 @@ class Dropdown extends Component {
                 label = selectedValue.label;
             }
         }
-        return (props.prependWith ? <span className="dropdown-prepend"><strong>{props.prependWith}</strong> {label}</span> : label);
+        return (props.prependWith ?
+            <span className="dropdown-prepend"><strong>{props.prependWith}</strong> {label}</span> : label);
     }
 
     getIsMultiLineLabel() {
@@ -182,8 +182,9 @@ class Dropdown extends Component {
 
             if (labelToMatch.match(stringToMatchBeginning) && labelToMatch.match(stringToMatchBeginning).length > closestValueLength) {
                 closestValueLength = labelToMatch.match(stringToMatchBeginning).length;
-                closestValue = option;
+                closestValue = option.value;
                 itemIndex = index;
+
             }
         });
 
@@ -204,7 +205,8 @@ class Dropdown extends Component {
         }
 
         this.setState({
-            closestValue
+            closestValue,
+            currentIndex: itemIndex
         }, () => {
             setTimeout(() => {
                 this.setState({
@@ -214,11 +216,21 @@ class Dropdown extends Component {
         });
 
         if (closestValue !== null) {
-            const optionValue = ReactDOM.findDOMNode(this.refs[this.uniqueId + "option-" + itemIndex]);
-            if (optionValue) {
-                const bottom = optionValue.offsetTop - 165;
-                scroll.top(ReactDOM.findDOMNode(this.refs.dropdownScrollContainer).childNodes[0], bottom);
+
+            this.scrollToSelectedItem(itemIndex);
+        }
+    }
+
+    scrollToSelectedItem(itemIndex, eventKey) {
+
+        const optionRef = this.selectedOptionElement ? this.selectedOptionElement : null;
+        if (optionRef) {
+            const domElement = ReactDOM.findDOMNode(optionRef);
+            let offset = domElement.offsetTop;
+            if (eventKey == "ArrowUp") {
+                offset = domElement.offsetBottom;
             }
+            scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], offset);
         }
     }
 
@@ -231,69 +243,134 @@ class Dropdown extends Component {
     }
 
     onKeyDown(event) {
-        if (event.key === "Enter") {
-            if (this.state.closestValue && this.state.closestValue.value !== null) {
-                this.onSelect(this.state.closestValue);
-                ReactDOM.findDOMNode(this.refs.dropdownSearch).blur();
-            } else {
-                this.onSelect(this.state.selectedOption);
-            }
+        switch (event.key) {
+            case  "Enter":
+                if (this.state.closestValue && this.state.closestValue.value !== null) {
+                    this.onSelect(this.state.closestValue);
+                    this.dropdownSearch.blur();
+                } else {
+                    this.onSelect(this.state.selectedOption);
+                }
+                break;
+            case "ArrowUp":
+                this.onArrowUp(event.key);
+                break;
+            case "ArrowDown":
+                this.onArrowDown(event.key);
+                break;
         }
+
+    }
+
+    getCurrentIndex() {
+        const maxIndex = this.optionItems ? this.optionItems.length : 0;
+        const currentIndex = this.state.currentIndex != undefined ? this.state.currentIndex : -1;
+        return currentIndex > -1 && currentIndex < maxIndex ? currentIndex : -1;
+    }
+
+    onArrowDown(eventKey) {
+        const maxIndex = this.optionItems ? this.optionItems.length : 0;
+        let currentIndex = this.getCurrentIndex();
+        const nextIndex = currentIndex < maxIndex ? currentIndex++ : currentIndex;
+        const option = this.getOption(currentIndex);
+        this.setState({currentIndex, selectedOption: option, closestValue: null});
+        this.scrollToSelectedItem(nextIndex, eventKey);
+    }
+
+    onArrowUp(eventKey) {
+        let currentIndex = this.getCurrentIndex();
+        const nextIndex = currentIndex > 0 ? currentIndex-- : currentIndex;
+        this.setState({currentIndex, selectedOption: this.getOption(currentIndex), closestValue: null});
+        this.scrollToSelectedItem(nextIndex, eventKey);
+    }
+
+
+    initOptions(option, index) {
+        const {props, state} = this;
+        this.optionItems = [];
+        const options = props.options && props.options.map((option, index) => {
+            this.optionItems.push(option);
+            return <li onClick={this.onSelect.bind(this, option)} key={index}
+                       ref={this.isSelectedItem(index) ? this.addOptionRef.bind(this) : f => f}
+                       className={this.getOptionClassName(option, index)}>{option.label}</li>;
+        });
+        return options;
+    }
+
+    getOptionClassName(option, index) {
+        const {props, state} = this;
+        const currentIndex = this.getCurrentIndex();
+        const isCurrentIndex = index === currentIndex;
+        const isPreselected = props.value != null && (option.value === props.value && state.closestValue === null && currentIndex < 0);
+        const isSearchResult = state.closestValue != null && (option.value === state.closestValue);
+        const selected = isCurrentIndex || isSearchResult || isPreselected;
+        return selected ? "dnn-dropdown-option selected" : "dnn-dropdown-option";
+    }
+
+    isSelectedItem(index) {
+        return index == this.state.currentIndex;
+    }
+
+
+    addOptionRef(option) {
+        if (option) {
+            this.selectedOptionElement = option;
+        }
+    }
+
+
+    getOption(index) {
+        const options = this.optionItems;
+        return options && options[index] !== undefined ? options[index] : null;
     }
 
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const options = props.options && props.options.map((option, index) => {
-            return <li onClick={this.onSelect.bind(this, option)} key={this.uniqueId + "option-" + index} ref={this.uniqueId + "option-" + index}
-                className={((option.value === props.value && state.closestValue === null) || option.value === (state.closestValue && state.closestValue.value)) ? "selected" : ""}>{option.label}</li>;
-        });
+        const options = this.initOptions();
         return (
             <div className={this.getClassName()} style={props.style}>
-                <div className={"collapsible-label" + this.getIsMultiLineLabel()} 
-                    onClick={this.toggleDropdown.bind(this)} title={this.props.title}>
+                <div className={"collapsible-label" + this.getIsMultiLineLabel()}
+                     onClick={this.toggleDropdown.bind(this)} title={this.props.title}>
                     {this.getDropdownLabel()}
                 </div>
                 <input
                     type="text"
                     onChange={this.onDropdownSearch.bind(this)}
-                    ref="dropdownSearch"
+                    ref={(input) => this.dropdownSearch = input}
                     value={this.state.dropdownText}
                     onKeyDown={this.onKeyDown.bind(this)}
-                    style={{ position: "absolute", opacity: 0, pointerEvents: "none", width: 0, height: 0, padding: 0, margin: 0 }}
+                    style={{
+                        position: "absolute",
+                        opacity: 0,
+                        pointerEvents: "none",
+                        width: 0,
+                        height: 0,
+                        padding: 0,
+                        margin: 0
+                    }}
                     aria-label="Search"
-                    />
-                {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggleDropdown.bind(this)}></div>}
+                />
+                {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{__html: ArrowDownIcon}}
+                                        onClick={this.toggleDropdown.bind(this)}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
-                        fixedHeight={state.fixedHeight}
                         keepCollapsedContent={true}
                         isOpened={state.dropDownOpen}>
-                        {this.needScroll() && 
+                        <div>
                             <Scrollbars
+                                ref={(scrollbar) => this.scrollBar = scrollbar}
                                 autoHide={this.props.autoHide}
+                                autoHeight={true}
+                                autoHeightMin={DNN_DROPDOWN_MINHEIGHT}
                                 style={props.scrollAreaStyle}
-                                ref="dropdownScrollContainer"
-                                onUpdate={this.props.onScrollUpdate}>
-                                <div>
-                                    <ul>
-                                        {options}
-                                    </ul>
-                                </div>
-                            </Scrollbars>
-                        }
-                        {!this.needScroll() && 
-                            <div>
-                                <ul>
+                                onUpdate={this.props.onScrollUpdate}
+                                renderTrackHorizontal={() => <div/>}>
+                                <ul className="dnn-dropdown-options" ref={(ul) => this.dropDownListElement = ul}>
                                     {options}
                                 </ul>
-                            </div>
-                        }
-                        {!props.fixedHeight &&
-                            <ul>
-                                {options}
-                            </ul>
-                        }
+                            </Scrollbars>
+                        </div>
                     </Collapse>
                 </div>
             </div>
@@ -322,7 +399,9 @@ Dropdown.propTypes = {
     labelIsMultiLine: PropTypes.bool,
     title: PropTypes.string,
     onScrollUpdate: PropTypes.func,
-    isDropDownOpen: PropTypes.bool
+    isDropDownOpen: PropTypes.bool,
+    selectedIndex: PropTypes.number,
+    onArrowKey: PropTypes.func
 };
 
 Dropdown.defaultProps = {
@@ -332,9 +411,10 @@ Dropdown.defaultProps = {
     size: "small",
     closeOnClick: true,
     enabled: true,
-    autoHide: false,
+    autoHide: true,
     className: "",
-    isDropDownOpen: false
+    isDropDownOpen: false,
+    selectedIndex: -1
 };
 
 export default Dropdown;
