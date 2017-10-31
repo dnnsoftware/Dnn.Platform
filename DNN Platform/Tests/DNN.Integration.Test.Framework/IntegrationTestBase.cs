@@ -2,6 +2,7 @@
 // Copyright (c) 2002-2017, DNN Corp.
 // All Rights Reserved
 
+using System;
 using System.Globalization;
 using System.Threading;
 using DNN.Integration.Test.Framework.Helpers;
@@ -44,6 +45,13 @@ namespace DNN.Integration.Test.Framework
         {
             var builder = new System.Data.Common.DbConnectionStringBuilder { ConnectionString = connectionString };
             return builder["Database"] as string;
+        }
+
+        public static void LogText(string text)
+        {
+            // Don't write anything to console when we run in TeamCity
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+                Console.WriteLine(text);
         }
     }
 }

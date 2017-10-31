@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>DNN.Integration.Test.Framework</id>
-    <version>1.1.0</version>
+    <version>9.2.0</version>
     <title>DNN Integration Testing Framework</title>
     <authors>DNN Corp.</authors>
     <owners>DNN Corp.</owners>
@@ -13,6 +13,6 @@
   <files>
     <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.dll" target="lib\"/>
     <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.pdb" target="lib\"/>
-    <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\PetaPoco.dll" target="lib\"/>
+    <!-- file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\PetaPoco.dll" target="lib\"/ -->
   </files>
 </package>

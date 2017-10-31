@@ -93,7 +93,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var credentials = new { u = _hostName, p = _hostPass + "." };
             var result = _httpClient.PostAsJsonAsync(LoginQuery, credentials).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -123,7 +123,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token.AccessToken);
             var result1 = _httpClient.GetAsync(TestGetQuery).Result;
             var content1 = result1.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content1 => " + content1);
+            LogText(@"content1 => " + content1);
             Assert.AreEqual(HttpStatusCode.OK, result1.StatusCode);
 
             LogoutUser(token.AccessToken);
@@ -131,7 +131,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token.AccessToken);
             var result2 = _httpClient.GetAsync(TestGetQuery).Result;
             var content2 = result2.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content2 => " + content2);
+            LogText(@"content2 => " + content2);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result2.StatusCode);
         }
 
@@ -140,7 +140,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -151,7 +151,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token.AccessToken);
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             Assert.Less(0, content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal));
         }
@@ -163,7 +163,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token.AccessToken);
             var result = _httpClient.PostAsJsonAsync(TestPostQuery, new { text = "Integraton Testing Rocks!" }).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             Assert.Less(0, content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal));
             Assert.Less(0, content.IndexOf("You said: (Integraton Testing Rocks!)", StringComparison.Ordinal));
@@ -191,7 +191,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token1.AccessToken);
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -227,7 +227,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token2.AccessToken);
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
@@ -240,14 +240,14 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken("x" + token1.AccessToken);
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
 
             // tampered signature
             SetAuthHeaderToken(token1.AccessToken + "y");
             result = _httpClient.GetAsync(TestGetQuery).Result;
             content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
 
             // tampered claims
@@ -256,7 +256,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(tampered);
             result = _httpClient.GetAsync(TestGetQuery).Result;
             content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -307,7 +307,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token1.AccessToken);
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -327,7 +327,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token1.AccessToken);
             var result = _httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -358,7 +358,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetAuthHeaderToken(token.AccessToken);
             var result = _httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.NotNull(content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
@@ -387,7 +387,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = _httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
@@ -414,7 +414,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = _httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -431,13 +431,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
         #region helpers
 
-        private static void ShowInfo(string info)
-        {
-            // Don't write anything to console when we run in TeamCity
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
-                Console.WriteLine(info);
-        }
-
         private LoginResultData GetAuthorizationTokenFor(string uname, string upass)
         {
             var credentials = new { u = uname, p = upass };
@@ -445,7 +438,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             var token = result.Content.ReadAsAsync<LoginResultData>().Result;
             Assert.IsNotNull(token);
-            ShowInfo(@"AuthToken => " + JsonConvert.SerializeObject(token));
+            LogText(@"AuthToken => " + JsonConvert.SerializeObject(token));
             _httpClient.DefaultRequestHeaders.Clear();
             return token;
         }
@@ -458,7 +451,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             var token = result.Content.ReadAsAsync<LoginResultData>().Result;
             Assert.IsNotNull(token);
-            ShowInfo(@"RenewedToken => " + JsonConvert.SerializeObject(token));
+            LogText(@"RenewedToken => " + JsonConvert.SerializeObject(token));
             return token;
         }
 
