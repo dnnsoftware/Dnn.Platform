@@ -162,31 +162,35 @@ class GridRow extends Component {
         const {props} = this;
         const {roleColumnWidth, columnWidth, actionsWidth} = props;
         let self = this;
+        let headerLength = this.getHeaderColumnText().match(/ /g)?this.getHeaderColumnText().match(/ /g).length:0;
+        return (
+            <GridCell className="grid-row">
+                <GridCell style={{"text-overflow": "ellipsis", "overflow":"hidden"}} columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
+                {props.definitions.map(function (def) {
+                    let permission = props.permission.permissions.filter(p => {
+                        return p.permissionId == def.permissionId;
+                    });
 
-        return <GridCell className="grid-row">
-            <GridCell columnSize={roleColumnWidth}><span style={{"text-overflow": "ellipsis", "overflow":"hidden"}} title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
-            {props.definitions.map(function (def) {
-                let permission = props.permission.permissions.filter(p => {
-                    return p.permissionId == def.permissionId;
-                });
+                    let status = 0;
 
-                let status = 0;
+                    if (props.permission.locked) {
+                        status = 3;
+                    }
+                    else {
+                        status = permission.length > 0 ? (permission[0].allowAccess ? 1 : 2) : 0;
+                    }
 
-                if (props.permission.locked) {
-                    status = 3;
-                }
-                else {
-                    status = permission.length > 0 ? (permission[0].allowAccess ? 1 : 2) : 0;
-                }
-
-                return <GridCell columnSize={columnWidth}>
-                    <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def) } />
-                </GridCell>;
-            }) }
-            <GridCell columnSize={actionsWidth} className="col-actions">
-                {!props.permission.default && <IconButton type="trash" onClick={this.onDelete.bind(this) } />}
+                    return (
+                        <GridCell style={{"display":"table-cell","height":((40+(headerLength*4)+"px"))}} columnSize={columnWidth}>
+                            <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def) } />
+                        </GridCell>
+                    );
+                }) }
+                <GridCell style={{"display":"table-cell","height":((40+(headerLength*4)+"px"))}} columnSize={actionsWidth} className="col-actions">
+                    {!props.permission.default && <IconButton type="trash" onClick={this.onDelete.bind(this) } />}
+                </GridCell>
             </GridCell>
-        </GridCell>;
+        );
     }
 
     render() {

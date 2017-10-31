@@ -61,19 +61,21 @@
     }
     .grid-row {
         min-height: 40px;
-        height: fit-content;
         border: 1px solid @alto;
         border-top: none;
+        display: table-row;
         .dnn-grid-cell {
             border-left: 1px solid @alto;
             min-height: 40px;
-            height: auto;
+            display: table-cell;
             text-align: center;
             padding-top: 5px;
             &:first-child {
                 border-left: none;
                 padding-left: 5px;
                 text-align: left;
+                text-overflow: ellipsis;
+                overflow:hidden;
             }
             & > span, & > a {
                 display: inline-block;

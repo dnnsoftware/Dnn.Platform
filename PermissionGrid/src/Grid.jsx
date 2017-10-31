@@ -109,26 +109,28 @@ class Grid extends Component {
         }
 
         let self = this;
-        return <GridCell className={props.type + "-permissions-grid"}>
-            <GridCaption service={props.service} localization={props.localization} type={props.type} onSuggestion={this.onSuggestion.bind(this) } />
-            <GridHeader type={props.type} definitions={props.definitions}
-                roleColumnWidth={roleColumnWidth}
-                columnWidth={columnWidth}
-                actionsWidth={actionsWidth}
-                localization={props.localization}  />
-            {props.permissions.map((permission) => {
-                return <GridRow
-                    type={props.type}
-                    definitions={props.definitions}
-                    permission={permission}
-                    onChange={self.onPermissionChange.bind(self) }
-                    onDeletePermisson={self.onPermissionDeleted.bind(self) }
+        return (
+            <GridCell style={{"display":"table"}}className={props.type + "-permissions-grid"}>
+                <GridCaption service={props.service} localization={props.localization} type={props.type} onSuggestion={this.onSuggestion.bind(this) } />
+                <GridHeader type={props.type} definitions={props.definitions}
                     roleColumnWidth={roleColumnWidth}
                     columnWidth={columnWidth}
-                    actionsWidth={actionsWidth} />;
-            }) }
-            {props.permissions.length === 0 && <GridCell className="empty-row">{props.type == "role" ? props.localization.emptyRole : props.localization.emptyUser}</GridCell>}
-        </GridCell>;
+                    actionsWidth={actionsWidth}
+                    localization={props.localization}  />
+                {props.permissions.map((permission) => {
+                    return (
+                        <GridRow
+                            type={props.type}
+                            definitions={props.definitions}
+                            permission={permission}
+                            onChange={self.onPermissionChange.bind(self) }
+                            onDeletePermisson={self.onPermissionDeleted.bind(self) }
+                            roleColumnWidth={roleColumnWidth}
+                            columnWidth={columnWidth}
+                            actionsWidth={actionsWidth} />);
+                }) }
+                {props.permissions.length === 0 && <GridCell className="empty-row">{props.type == "role" ? props.localization.emptyRole : props.localization.emptyUser}</GridCell>}
+            </GridCell>);
     }
 
     render() {
