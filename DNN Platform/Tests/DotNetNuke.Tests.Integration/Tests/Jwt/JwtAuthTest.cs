@@ -27,8 +27,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Web;
-using DotNetNuke.Tests.Integration.Framework;
-using DotNetNuke.Tests.Integration.Framework.Helpers;
+using DNN.Integration.Test.Framework;
+using DNN.Integration.Test.Framework.Helpers;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

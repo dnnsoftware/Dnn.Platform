@@ -19,20 +19,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Tests.Integration.Executers;
 using DotNetNuke.Tests.Integration.Executers.Builders;
 using DotNetNuke.Tests.Integration.Executers.Dto;
-using DotNetNuke.Tests.Integration.Framework;
-using DotNetNuke.Tests.Integration.Framework.Controllers;
-using DotNetNuke.Tests.Integration.Framework.Helpers;
-using DotNetNuke.Web.Api;
+using DNN.Integration.Test.Framework;
+using DNN.Integration.Test.Framework.Controllers;
+using DNN.Integration.Test.Framework.Helpers;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
