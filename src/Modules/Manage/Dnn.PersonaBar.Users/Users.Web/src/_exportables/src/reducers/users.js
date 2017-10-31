@@ -129,7 +129,7 @@ const switchCase = [
         condition: ActionTypes.UPDATE_USER_AUTHORIZE_STATUS,
         functionToRun: (state, action) => {
             let totalUsers = Object.assign(state.totalUsers);
-            if (action.filter === 3 || action.filter === 5) {
+            if (action.filter === 2 || action.filter === 3 || action.filter === 5) {
                 return {
                     users: updateUsersList(state.users, action.payload)
                 };
