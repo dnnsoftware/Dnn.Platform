@@ -92,12 +92,10 @@ class Tags extends Component {
     }
 
     onArrowDown() {
-        if (this.props.suggestions.length > 0) {
-            const maxIndex = this.props.suggestions.length - 1;
-            const current = this.state.selectedIndex;
-            const selectedIndex = current < maxIndex ? current + 1 : current;
-            this.setState({selectedIndex});
-        }
+        const maxIndex = this.props.suggestions.length - 1;
+        const current = this.state.selectedIndex;
+        const selectedIndex = current < maxIndex ? current + 1 : current;
+        this.setState({selectedIndex});
     }
 
     onArrowUp() {
