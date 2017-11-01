@@ -111,7 +111,15 @@ class ApplicationService {
         searchParameters = Object.assign({}, searchParameters, {
             
         });
-        sf.get("SearchFileSystemAndDatabase?" + serializeQueryStringParameters(searchParameters), {}, callback);
+
+        if(this.searchRequest && this.searchRequest.readyState !== 4){
+            if(window.dnn){
+                window.dnn.loading = false;
+            }
+            this.searchRequest.abort();
+        }
+
+        this.searchRequest = sf.get("SearchFileSystemAndDatabase?" + serializeQueryStringParameters(searchParameters), {}, callback);
     } 
 
     getLastModifiedSettings(callback) {

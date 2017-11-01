@@ -22,10 +22,12 @@ const switchCase = [
         condition: ActionTypes.CREATE_USER,
         functionToRun: (state, action) => {
             let totalUsers = Object.assign(state.totalUsers);
-            return {
-                users: updateUsersList(state.users, action.payload),
-                totalUsers: totalUsers + 1
-            };
+            if (action.filter === 0 && action.payload.authorized || action.filter === 1 || action.filter === 5) {
+                return {
+                    users: updateUsersList(state.users, action.payload),
+                    totalUsers: totalUsers + 1
+                };
+            }
         }
     },
     {
@@ -64,12 +66,20 @@ const switchCase = [
     },
     {
         condition: ActionTypes.USER_MADE_SUPERUSER,
-        functionToRun: (state, action) => {
-            let totalUsers = Object.assign(state.totalUsers);
-            return {
-                users: removeUser(state.users, action.payload.userId),
-                totalUsers: totalUsers - 1
-            };
+        functionToRun: (state, action) => { 
+            let totalUsers = Object.assign(state.totalUsers);           
+            if (action.filter === 3) {                
+                return {
+                    users: removeUser(state.users, action.payload.userId),
+                    totalUsers: totalUsers - 1
+                };
+            }
+            else {
+                return {
+                    users: state.users,
+                    totalUsers: totalUsers
+                };
+            }
         }
     },
     {
@@ -119,7 +129,7 @@ const switchCase = [
         condition: ActionTypes.UPDATE_USER_AUTHORIZE_STATUS,
         functionToRun: (state, action) => {
             let totalUsers = Object.assign(state.totalUsers);
-            if (action.filter === 5) {
+            if (action.filter === 3 || action.filter === 5) {
                 return {
                     users: updateUsersList(state.users, action.payload)
                 };

@@ -118,7 +118,17 @@ export default function pagesReducer(state = {
             };
 
         case ActionTypes.SAVE_PAGE:
-            return {...state, dirtyPage:false};
+            if (action.data) {
+                return {...state, 
+                    selectedPage: { ...state.selectedPage,
+                        tags: action.data.tags.join()
+                    },
+                    dirtyPage:false
+                };
+            }
+            else {
+                return {...state, dirtyPage:false};
+            }
 
         case ActionTypes.CANCEL_EDITING_PAGE_MODULE: {
             const editingSettingModuleId = null;

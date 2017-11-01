@@ -11,25 +11,18 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, Id);
-            try
-            {
-                var page = HttpContext.Current.Handler as Page;
+            var page = HttpContext.Current.Handler as Page;
 
-                if (page != null)
-                {
-                    if (page.EnableViewStateMac == false)
-                    {
-                        result.Severity = SeverityEnum.Failure;
-                    }
-                    else
-                    {
-                        result.Severity = SeverityEnum.Pass;
-                    }
-                }
-            }
-            catch (Exception ex)
+            if (page != null)
             {
-                throw (ex);
+                if (page.EnableViewStateMac == false)
+                {
+                    result.Severity = SeverityEnum.Failure;
+                }
+                else
+                {
+                    result.Severity = SeverityEnum.Pass;
+                }
             }
             return result;
         }

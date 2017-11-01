@@ -305,7 +305,7 @@ const pageActions = {
 
                 dispatch({
                     type: ActionTypes.SAVE_PAGE,
-                    data: null
+                    data: response.Page
                 });
 
                 callback(response.Page);

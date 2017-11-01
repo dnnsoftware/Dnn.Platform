@@ -41,12 +41,13 @@ const userActions = {
             }, errorCallback);
         };
     },
-    createUser(userDetails, callback) {
+    createUser(userDetails, filter, callback) {
         return (dispatch) => {
             UserService.createUser(userDetails, data => {
                 dispatch({
                     type: ActionTypes.CREATE_USER,
-                    payload: data
+                    payload: data,
+                    filter: filter
                 });
                 if (callback) {
                     callback(data);
@@ -139,12 +140,13 @@ const userActions = {
             }, errorCallback);
         };
     },
-    updateSuperUserStatus(payload, callback) {
+    updateSuperUserStatus(payload, filter, callback) {
         return (dispatch) => {
             UserService.updateSuperUserStatus(payload, data => {
                 dispatch({
                     type: ActionTypes.USER_MADE_SUPERUSER,
-                    payload: { userId: payload.userId }
+                    payload: { userId: payload.userId },
+                    filter: filter
                 });
                 if (callback) {
                     callback(data);

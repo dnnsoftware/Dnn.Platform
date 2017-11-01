@@ -274,23 +274,15 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         private XmlDocument GetExceptions(IEnumerable<string> logIds)
         {
             var objXml = new XmlDocument();
-            try
+            objXml.LoadXml("<LogEntries></LogEntries>");
+            foreach (var logId in logIds)
             {
-                objXml.LoadXml("<LogEntries></LogEntries>");
-
-                foreach (var logId in logIds)
+                var objLogInfo = new LogInfo { LogGUID = logId };
+                var objNode = objXml.ImportNode((XmlNode)LogController.Instance.GetSingleLog(objLogInfo, LoggingProvider.ReturnType.XML), true);
+                if (objXml.DocumentElement != null)
                 {
-                    var objLogInfo = new LogInfo { LogGUID = logId };
-                    var objNode = objXml.ImportNode((XmlNode)LogController.Instance.GetSingleLog(objLogInfo, LoggingProvider.ReturnType.XML), true);
-                    if (objXml.DocumentElement != null)
-                    {
-                        objXml.DocumentElement.AppendChild(objNode);
-                    }
+                    objXml.DocumentElement.AppendChild(objNode);
                 }
-            }
-            catch (Exception exc)
-            {
-                throw exc;
             }
             return objXml;
         }

@@ -9,6 +9,7 @@
 /************************************************************/
 
 /** DNN-10073 Update to support keyword search **/
+/** DNN-10154 Added option to include super users in search result **/
 IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Personabar_GetUsers') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 	DROP PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers
 GO
@@ -21,14 +22,15 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers (
     @PageSize int = 10,
 	@Keyword NVARCHAR(128),
 	@IncludeUnauthorized bit,
-	@IncludeDeleted bit
+	@IncludeDeleted bit,
+	@IncludeSuperUsers bit
 ) AS
 BEGIN
 	SELECT COUNT(*) AS TotalRecords
 	FROM {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
-	INNER JOIN {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK) ON UP.UserId = U.UserID AND U.PortalId = @PortalId
+	INNER JOIN {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK) ON UP.UserId = U.UserID AND (@IncludeSuperUsers = 1 or U.PortalId = @PortalId)
 	WHERE UP.PortalId = @PortalId
-	AND IsSuperUser = 0
+	AND (@IncludeSuperUsers = 1 OR (@IncludeSuperUsers = 0 and U.IsSuperUser = 0))
 	AND (
 			(
 				IsNull(@Keyword, N'') != N'' 
@@ -36,7 +38,7 @@ BEGIN
 			) 
 			OR IsNull(@Keyword, N'') = N''
 		)
-	AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND U.Authorised = 1))
+	AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)))
 	AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
 		
 	;WITH UsersCTE
@@ -52,9 +54,9 @@ BEGIN
 		FROM {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK)
 		INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
 			ON U.UserID = UP.UserId
-			AND U.PortalId = @PortalId
+			AND (@IncludeSuperUsers = 1 or U.PortalId = @PortalId)
 		WHERE UP.PortalId = @PortalId
-		AND IsSuperUser = 0
+		AND (@IncludeSuperUsers = 1 OR (@IncludeSuperUsers = 0 and U.IsSuperUser = 0))
 		AND (
 				(
 					IsNull(@Keyword, N'') != N'' 
@@ -62,7 +64,7 @@ BEGIN
 				) 
 				OR IsNull(@Keyword, N'') = N''
 			)
-		AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND U.Authorised = 1))
+		AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)))
 		AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
 	)
 	SELECT * FROM UsersCTE
