@@ -33,6 +33,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Xml;
+using System.Xml.XPath;
 using Dnn.PersonaBar.Extensions.Components;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Editors;
@@ -1263,6 +1264,19 @@ namespace Dnn.PersonaBar.Extensions.Services
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "PackageNotFound");
                 }
 
+                //Save package manifest
+                if (packageManifestDto.Manifests.Any())
+                {
+                    var doc = new XPathDocument(new StringReader(packageManifestDto.Manifests.Values.FirstOrDefault()));
+                    XPathNavigator nav = doc.CreateNavigator();
+                    XPathNavigator packageNav = nav.SelectSingleNode("dotnetnuke/packages");
+                    package.Manifest = packageNav.InnerXml;
+                    var pkgIconFile = DotNetNuke.Services.Installer.Util.ParsePackageIconFileName(package);
+                    package.IconFile = (pkgIconFile.Trim().Length > 0) ? DotNetNuke.Services.Installer.Util.ParsePackageIconFile(package) : null;
+
+                    PackageController.Instance.SaveExtensionPackage(package);
+                }
+                
                 var writer = PackageWriterFactory.GetWriter(package);
 
                 var manifestName = packageManifestDto.ManifestName;
