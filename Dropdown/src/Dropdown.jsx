@@ -29,7 +29,7 @@ class Dropdown extends Component {
             if (!this.state.dropDownOpen) {
                 setTimeout(() => {
                     this.setState({});
-                    if(!avoidFocusOnOpen) {
+                    if (!avoidFocusOnOpen) {
                         ReactDOM.findDOMNode(this.refs.dropdownSearch).focus();
                     }
                 }, 250);
@@ -58,7 +58,7 @@ class Dropdown extends Component {
 
         return itemHeight < 140 ? itemHeight + 20 : 160;
     }
-    needScroll(){
+    needScroll() {
         const {props} = this;
 
         if (props.options && props.options.length > 0) {
@@ -86,7 +86,7 @@ class Dropdown extends Component {
             });
         }
 
-        if(props.isDropDownOpen !== this.props.isDropDownOpen) {
+        if (props.isDropDownOpen !== this.props.isDropDownOpen) {
             this.setState({dropDownOpen: !props.isDropDownOpen}, () => this.toggleDropdown(true));
         }
     }

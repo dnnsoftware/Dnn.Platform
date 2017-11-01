@@ -258,9 +258,9 @@ export default class FileUpload extends Component {
         this.clearFileUploaderValue(this.refs.fileInput2);
     }
 
-    clearFileUploaderValue(fileInput){
-        if(fileInput){
-            fileInput.value = '';
+    clearFileUploaderValue(fileInput) {
+        if (fileInput) {
+            fileInput.value = "";
         }
     }
 
