@@ -26,6 +26,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Tests.Utilities.Mocks;
+using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Core
@@ -68,6 +69,47 @@ namespace DotNetNuke.Tests.Core
 
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.AllDirectories);
             Assert.Greater(files.Length, 0);
+        }
+
+        [Test]
+        public void AddToZip_Should_Able_To_Add_Multiple_Files()
+        {
+            //Action
+            var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
+            var zipFilePath = Path.Combine(Globals.ApplicationMapPath, $"Test{Guid.NewGuid().ToString().Substring(0, 8)}.zip");
+            using (var stream = File.Create(zipFilePath))
+            {
+                var zipStream = new ZipOutputStream(stream);
+                zipStream.SetLevel(9);
+
+                foreach (var file in files)
+                {
+                    var fileName = Path.GetFileName(file);
+                    FileSystemUtils.AddToZip(ref zipStream, file, fileName, string.Empty);
+                }
+
+                zipStream.Finish();
+                zipStream.Close();
+            }
+
+            //Assert
+            using (var stream = File.OpenRead(zipFilePath))
+            {
+                var zipStream = new ZipInputStream(stream);
+
+                var destPath = Path.Combine(Globals.ApplicationMapPath, Path.GetFileNameWithoutExtension(zipFilePath));
+                if (!Directory.Exists(destPath))
+                {
+                    Directory.CreateDirectory(destPath);
+                }
+
+                FileSystemUtils.UnzipResources(zipStream, destPath);
+                zipStream.Close();
+
+                var unZippedFiles = Directory.GetFiles(destPath, "*.*", SearchOption.TopDirectoryOnly);
+
+                Assert.AreEqual(files.Length, unZippedFiles.Length);
+            }
         }
 
         private void PrepareRootPath(string rootPath)
