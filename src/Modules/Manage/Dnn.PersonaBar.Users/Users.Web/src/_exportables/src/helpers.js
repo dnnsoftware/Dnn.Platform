@@ -74,7 +74,7 @@ export function removeUser(userList, userId) {
     }
     return userListCopy;
 }
-export function updateUser(userList, userId, deleteStatus, authorizeStatus) {
+export function updateUser(userList, userId, deleteStatus, authorizeStatus, superUserStatus) {
     let userListCopy = Object.assign([], utilities.getObjectCopy(userList));
     if (userListCopy.some(user => user.userId === userId)) {
         userListCopy = userListCopy.filter(user => {
@@ -84,6 +84,9 @@ export function updateUser(userList, userId, deleteStatus, authorizeStatus) {
                 }
                 if (authorizeStatus !== undefined && authorizeStatus !== null) {
                     user.authorized = authorizeStatus;
+                }
+                if (superUserStatus !== undefined && superUserStatus !== null) {
+                    user.isSuperUser = superUserStatus;
                 }
             }
             return true;

@@ -2,8 +2,8 @@ export function canManageRoles(settings, user) {
     return !user.isSuperUser && (settings.isAdmin || settings.permissions.MANAGE_ROLES);
 }
 
-export function canManageProfile(settings, user) {
-    return !user.isSuperUser && (settings.isAdmin || settings.permissions.MANAGE_PROFILE);
+export function canManageProfile(settings) {
+    return settings.isAdmin || settings.permissions.MANAGE_PROFILE;
 }
 
 export function canViewSettings(settings) {

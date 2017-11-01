@@ -23,9 +23,23 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers (
 	@Keyword NVARCHAR(128),
 	@IncludeUnauthorized bit,
 	@IncludeDeleted bit,
-	@IncludeSuperUsers bit
+	@IncludeSuperUsers bit,
+	@FilterId int -- Authorized = 0, UnAuthorized = 1, Deleted = 2, SuperUsers = 3, RegisteredUsers = 4, All = 5
 ) AS
 BEGIN
+	IF @FilterId = 0 -- must exclude unauthorized users for authorized filter
+	BEGIN
+		SET @IncludeUnauthorized = 0
+	END
+	ELSE IF @FilterId = 1 -- must include unauthorized users for unauthorized filter
+	BEGIN
+		SET @IncludeUnauthorized = 1
+	END
+	ELSE IF @FilterId = 2 -- must include deleted users for deleted filter
+	BEGIN
+		SET @IncludeDeleted = 1
+	END
+
 	SELECT COUNT(*) AS TotalRecords
 	FROM {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
 	INNER JOIN {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK) ON UP.UserId = U.UserID AND (@IncludeSuperUsers = 1 or U.PortalId = @PortalId)
@@ -40,11 +54,18 @@ BEGIN
 		)
 	AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)))
 	AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
+	AND (
+		(@FilterId = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)) OR 
+		(@FilterId = 1 AND UP.Authorised <> 1) OR 
+		(@FilterId = 2 AND U.IsDeleted = 1) OR 
+		(@FilterId = 3 AND U.IsSuperUser = 1) OR 
+		(@FilterId = 5)
+	)
 		
 	;WITH UsersCTE
 	AS
 	(	
-		SELECT U.UserID, U.Username, U.DisplayName, U.Email, U.CreatedOnDate, U.IsDeleted, U.Authorised,
+		SELECT U.UserID, U.Username, U.DisplayName, U.Email, U.CreatedOnDate, U.IsDeleted, U.Authorised, U.IsSuperUser,
 		ROW_NUMBER() OVER ( ORDER BY CASE WHEN @SortColumn = 'Joined' AND @SortAscending = 1 THEN U.UserID END ASC, 
 									 CASE WHEN @SortColumn = 'Joined' AND @SortAscending = 0 THEN U.UserID END DESC,
 									 CASE WHEN @SortColumn = 'Email' AND @SortAscending = 1 THEN U.Email END ASC, 
@@ -66,6 +87,13 @@ BEGIN
 			)
 		AND (@IncludeUnauthorized = 1 OR (@IncludeUnauthorized = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)))
 		AND (@IncludeDeleted = 1 OR (@IncludeDeleted = 0 AND U.IsDeleted = 0))
+		AND (
+			(@FilterId = 0 AND (U.Authorised = 1 OR UP.Authorised = 1)) OR 
+			(@FilterId = 1 AND UP.Authorised <> 1) OR 
+			(@FilterId = 2 AND U.IsDeleted = 1) OR 
+			(@FilterId = 3 AND U.IsSuperUser = 1) OR 
+			(@FilterId = 5)
+		)
 	)
 	SELECT * FROM UsersCTE
 	WHERE	RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize);

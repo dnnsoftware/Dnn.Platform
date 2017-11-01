@@ -425,20 +425,12 @@ namespace Dnn.PersonaBar.Users.Components
                     paged = true;
                     break;
                 case UserFilters.UnAuthorized:
-                    dbUsers = UserController.GetUnAuthorizedUsers(portalId, false, false);
-                    userInfos = dbUsers?.OfType<UserInfo>().ToList();
-                    if (!isSuperUser)
-                    {
-                        userInfos = userInfos?.Where(x => !x.IsSuperUser);
-                    }
+                    users = GetUsers(usersContract, true, false, isSuperUser, out totalRecords);
+                    paged = true;
                     break;
                 case UserFilters.Deleted:
-                    dbUsers = UserController.GetDeletedUsers(portalId);
-                    userInfos = dbUsers?.OfType<UserInfo>().ToList();
-                    if (!isSuperUser)
-                    {
-                        userInfos = userInfos?.Where(x => !x.IsSuperUser);
-                    }
+                    users = GetUsers(usersContract, true, true, isSuperUser, out totalRecords);
+                    paged = true;
                     break;
                 //                    case UserFilters.Online:
                 //                        dbUsers = UserController.GetOnlineUsers(usersContract.PortalId);
@@ -581,7 +573,8 @@ namespace Dnn.PersonaBar.Users.Components
                                 string.IsNullOrEmpty(usersContract.SearchText) ? "" : usersContract.SearchText.TrimEnd('%') + "%",
                                 includeUnauthorized,
                                 includeDeleted,
-                                includeSuperUsers);
+                                includeSuperUsers,
+                                usersContract.Filter);
             if (reader.Read())
             {
                 totalRecords = reader.GetInt32(0);

@@ -72,7 +72,7 @@ class UserTable extends Component {
             }]);
         }
 
-        if (canManageProfile(this.props.appSettings.applicationSettings.settings, user))
+        if (canManageProfile(this.props.appSettings.applicationSettings.settings))
         {
             children = children.concat([{
                 index: 15,
