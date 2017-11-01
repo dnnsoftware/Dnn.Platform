@@ -200,7 +200,6 @@ namespace DotNetNuke.Common.Utilities
             try
             {
 				//Open File Stream
-                var crc = new Crc32();
                 fs = File.OpenRead(filePath.Replace("/", "\\"));
 				
 				//Read file into byte array buffer
@@ -218,9 +217,6 @@ namespace DotNetNuke.Common.Utilities
                 entry.DateTime = DateTime.Now;
                 entry.Size = fs.Length;
                 fs.Close();
-                crc.Reset();
-                crc.Update(buffer);
-                entry.Crc = crc.Value;
 
                 //Compress file and add to Zip file
                 ZipFile.PutNextEntry(entry);
