@@ -26,13 +26,10 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Security;
-using Dnn.PersonaBar.Users.Components.Comparers;
 using Dnn.PersonaBar.Users.Components.Contracts;
 using Dnn.PersonaBar.Users.Components.Dto;
 using Dnn.PersonaBar.Users.Data;
@@ -43,18 +40,15 @@ using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
-using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.UI.UserControls;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
-using System.Net.Http;
 using System.Net;
 using DotNetNuke.Services.Mail;
 
@@ -63,7 +57,6 @@ namespace Dnn.PersonaBar.Users.Components
     public class UsersController : ServiceLocator<IUsersController, UsersController>, IUsersController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
-        private const int SearchPageSize = 500;
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
@@ -398,7 +391,6 @@ namespace Dnn.PersonaBar.Users.Components
         {
             totalRecords = 0;
             List<UserBasicDto> users = null;
-            ArrayList dbUsers = null;
             IEnumerable<UserInfo> userInfos = null;
 
             var portalId = usersContract.PortalId;
@@ -419,7 +411,7 @@ namespace Dnn.PersonaBar.Users.Components
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
+                        var dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
                         userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     }
                     paged = true;
@@ -493,9 +485,9 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 KeyWords = usersContract.SearchText,
                 PortalIds = new List<int> { usersContract.PortalId },
-                PageIndex = 1,
+                PageIndex = usersContract.PageIndex + 1, // Lucene's search page index starts at 1 and not 0
+                PageSize = Math.Min(usersContract.PageSize, 100),
                 SearchTypeIds = new List<int> { SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId },
-                PageSize = SearchPageSize,
                 WildCardSearch = true,
                 CultureCode = null
             };
@@ -505,28 +497,18 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             var searchResults = SearchController.Instance.SiteSearch(query);
-            var userIds = searchResults.Results.Distinct(new UserSearchResultComparer()).Take(SearchPageSize).Select(r =>
+            var userIds = searchResults.Results.Select(r =>
             {
                 int userId;
-                TryConvertToInt32(r.UniqueKey.Split('_')[0], out userId);
+                int.TryParse(r.UniqueKey?.Split('_')[0], out userId);
                 return userId;
-            }).Where(u => u > 0).ToList();
+            }).Where(u => u > 0);
 
-            var currentIds = string.Join(",", userIds);//.Skip(usersContract.PageIndex * usersContract.PageSize).Take(usersContract.PageSize));
-            var users = UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds).Where(u => UserController.GetUserById(usersContract.PortalId, u.UserId).Membership.Approved).ToList();
-            totalRecords = users.Count;
-            return GetSortedUsers(users.Skip(usersContract.PageIndex * usersContract.PageSize).Take(usersContract.PageSize), usersContract.SortColumn, usersContract.SortAscending).ToList();
-        }
-
-        private static bool TryConvertToInt32(string paramValue, out int intValue)
-        {
-            if (!string.IsNullOrEmpty(paramValue) && Int32.TryParse(paramValue, out intValue))
-            {
-                return true;
-            }
-
-            intValue = Null.NullInteger;
-            return false;
+            var currentIds = string.Join(",", userIds);
+            var users = UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds)
+                .Where(u => UserController.GetUserById(usersContract.PortalId, u.UserId).Membership.Approved).ToList();
+            totalRecords = searchResults.TotalHits;
+            return GetSortedUsers(users, usersContract.SortColumn, usersContract.SortAscending).ToList();
         }
 
         private bool CanUpdateUsername(UserInfo user)
