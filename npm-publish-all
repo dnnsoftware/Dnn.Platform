@@ -1,0 +1,113 @@
+const fs = require("fs");
+const proc = require("child_process");
+const path = require("path");
+
+const skipList = ['GlobalStyles','node_modules'];
+
+const unpublishAll = (items) => {
+    items.forEach((item) => {
+        const cwd = `./${item}`;
+        fs.lstat(cwd, (err, stats) => {
+            if (!err) {
+                const packageJson = `${cwd}\\package.json`;
+                if (stats.isDirectory() && fs.existsSync(packageJson)) {
+                    const json = JSON.parse(fs.readFileSync(packageJson));
+                    console.log(`Current module is ${json.name}`);
+                    console.log(`Current directory is ${cwd}`);
+
+                    const cmdOptsUnpublish = `npm unpublish ${json.name} --force`;
+                    let out = proc.execSync(cmdOptsUnpublish, cwd);
+                    console.log(out);
+                }
+            }
+        });
+    });
+};
+
+const publishAll = (items) => {
+    items.filter((item) => !skipList.includes(item)).forEach((item) => {
+        const cwd = `./${item}`;
+        fs.lstat(cwd, (err, stats) => {
+            if (!err) {
+                if (stats.isDirectory() && isProjectFolder(cwd)) {
+                    const json = getPackageJson(cwd);
+                    updateVersionIfNeeded(json.name, cwd);
+
+                    console.log(`Installing dependencies of ${json.name}`);
+                    let out = proc.execSync("npm i", {cwd,shell:true});
+                    console.log(out.toString());
+
+                    const cmdOptsPublish = `npm publish`;
+                    out = proc.execSync(cmdOptsPublish, {cwd,shell:true});
+                    console.log(out.toString());
+                }
+            }
+        });
+    });
+};
+
+const getRemoteVersion = (pkg, cwd) => {
+    const cmd = `npm show ${pkg} version`;
+    const out = proc.execSync(cmd, {cwd, shell:true});
+    const version = out.toString().trim();
+    return version;
+};
+
+const isProjectFolder = (cwd) => {
+    const fullpath = path.resolve(cwd);
+    const pkg = `${fullpath}\\package.json`;
+    return fs.existsSync(pkg);
+};
+
+const getPackageJson = (cwd) => {
+    const fullpath = path.resolve(cwd);
+    const packageJson = `${fullpath}\\package.json`;
+    if(!fs.existsSync(packageJson)) {
+        throw new Error(`File not found ${packageJson}`);
+    }
+
+    const json = JSON.parse(fs.readFileSync(packageJson));
+    return json;
+};
+
+const getLocalVersion = (cwd) => {
+    const json = getPackageJson(cwd);
+    return json.version;
+};
+
+const getBuildNumber = (version) => {
+    const split = version.split('.');
+    const [build] = split.slice(-1);
+    return build;
+};
+
+const updateVersionIfNeeded = (pkg, cwd) => {
+    const remoteVersion = getRemoteVersion(pkg, cwd);
+    let remoteBuild = getBuildNumber(remoteVersion);
+    const localVersion = getLocalVersion(cwd);
+    let localBuild = getBuildNumber(localVersion);
+    if(parseInt(remoteBuild) >= parseInt(localBuild)) {
+        remoteBuild++;
+        let parts = localVersion.split('.');
+        parts[parts.length - 1] = remoteBuild;
+        const newVersion = parts.join('.');
+
+        console.log(`Upgrade ${pkg} from ${remoteVersion} to ${newVersion}`);
+
+        const packageJson = getPackageJson(cwd);
+        packageJson.version = newVersion;
+
+        const json = JSON.stringify(packageJson,null,2);
+        console.log(`Writing JSON: ${json}`);
+        const fullPath = `${path.resolve(cwd)}\\package.json`;
+        fs.writeFileSync(fullPath, json);
+    } else {
+        console.log(`Local version of ${pkg} is ${localVersion} and it's already upgraded (remote: ${remoteVersion})`);
+    }
+};
+
+
+fs.readdir(".",function(err, items){
+    // unpublishAll(items);
+    publishAll(items);
+});

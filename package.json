@@ -12,6 +12,16 @@
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
   },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ],
+    "plugins": [
+      "transform-object-assign",
+      "transform-object-rest-spread"
+    ]
+  },
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "6.2.4",
