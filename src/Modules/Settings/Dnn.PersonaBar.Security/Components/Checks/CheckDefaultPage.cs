@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         public string Id => "CheckDefaultPage";
 
+        public bool LazyLoad => false;
 
         public CheckResult Execute()
         {
