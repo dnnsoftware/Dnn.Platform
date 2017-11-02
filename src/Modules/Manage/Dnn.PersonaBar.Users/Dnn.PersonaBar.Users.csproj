@@ -101,7 +101,6 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Components\Comparers\UserSearchResultComparer.cs" />
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Contracts\CreateUserContract.cs" />
     <Compile Include="Components\Contracts\GetUsersContract.cs" />
@@ -166,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Providers\DataProviders\SqlDataProvider\01.05.00.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\Comparers\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
