@@ -8,6 +8,10 @@ module.exports = {
     },
     module: {
         loaders: [
+            {
+                test: /\.(svg)$/, exclude: /node_modules/,
+                loader: "raw-loader"
+            },
             { 
                 test: /\.(js|jsx)$/, exclude: /node_modules/,
                 loader: "babel-loader",

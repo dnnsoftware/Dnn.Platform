@@ -31,7 +31,7 @@ export default class Folders extends Component {
         this.setState({ openFolders });
     }
 
-    onParentClick(item, e) {
+    onParentClick(item) {
         if (!item.data.hasChildren) {
             return;
         }
@@ -42,7 +42,7 @@ export default class Folders extends Component {
         this.props.getChildren(item.data.key);
     }
 
-    onFolderNameClick(folder, e) {
+    onFolderNameClick(folder) {
         this.props.onFolderClick(folder.data);
     }
 
