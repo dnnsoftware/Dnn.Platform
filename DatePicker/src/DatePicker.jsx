@@ -349,7 +349,7 @@ class DatePicker extends Component {
         const showInput = this.props.showInput !== false;
 
         const mode = this.props.mode ? "_" + this.props.mode : "";
-        let icon = require(`!raw!./img/calendar${mode}.svg`);
+        let icon = require(`./img/calendar${mode}.svg`);
         if (this.props.icon) {
             icon = this.props.icon;
         }
