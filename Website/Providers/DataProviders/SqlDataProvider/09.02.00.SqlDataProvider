@@ -648,6 +648,17 @@ AS
 	  AND DATEDIFF(day, CreatedOnDate, GETDATE()) <= @DaysRetained;
 GO
 
+/***** DNN-10266: add security checker for svg files. *****/
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='FileSecurityChecker' AND Value='svg')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] (
+        [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]
+    ) VALUES (
+        N'FileSecurityChecker', N'svg', N'DotNetNuke.Services.FileSystem.Internal.SecurityCheckers.SvgFileChecker, DotNetNuke', 0, 0, 0, -1, N'', -1, 1, -1, GETDATE(), -1, GETDATE()
+    )
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

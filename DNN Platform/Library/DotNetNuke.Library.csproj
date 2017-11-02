@@ -699,6 +699,7 @@
     <Compile Include="Services\FileSystem\EventArgs\FileRenamedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
+    <Compile Include="Services\FileSystem\Exceptions\InvalidFileContentException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -722,7 +723,11 @@
     <Compile Include="Services\FileSystem\Internal\FileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IFileDeletionController.cs" />
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileSecurityChecker.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\FileSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\SecurityCheckers\SvgFileChecker.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
     <Compile Include="Services\GeneratedImage\IPCount.cs" />
     <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
