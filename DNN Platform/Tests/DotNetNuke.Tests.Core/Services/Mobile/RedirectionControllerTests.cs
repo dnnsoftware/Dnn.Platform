@@ -30,6 +30,7 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.ClientCapability;
@@ -120,7 +121,14 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			SetupDataProvider();
 			SetupClientCapabilityProvider();
 			SetupRoleProvider();
-		}
+
+            var tabController = TabController.Instance;
+            var dataProviderField = tabController.GetType().GetField("_dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (dataProviderField != null)
+            {
+                dataProviderField.SetValue(tabController, DataProvider.Instance());
+            }
+        }
 
         [TearDown]
         public void TearDown()

@@ -3317,14 +3317,26 @@ namespace DotNetNuke.Data
 
         #region Password History
 
+        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes passwordsRetained and daysRetained")]
         public virtual IDataReader GetPasswordHistory(int userId)
         {
-            return ExecuteReader("GetPasswordHistory", GetNull(userId));
+            return this.GetPasswordHistory(userId, int.MaxValue, int.MaxValue);
         }
 
+        public virtual IDataReader GetPasswordHistory(int userId, int passwordsRetained, int daysRetained)
+        {
+            return ExecuteReader("GetPasswordHistory", GetNull(userId), passwordsRetained, daysRetained);
+        }
+
+        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes daysRetained")]
         public virtual void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
         {
-            ExecuteNonQuery("AddPasswordHistory", GetNull(userId), password, passwordHistory, retained, GetNull(userId));
+            this.AddPasswordHistory(userId, password, passwordHistory, retained, int.MaxValue);
+        }
+
+        public virtual void AddPasswordHistory(int userId, string password, string passwordHistory, int passwordsRetained, int daysRetained)
+        {
+            ExecuteNonQuery("AddPasswordHistory", GetNull(userId), password, passwordHistory, passwordsRetained, daysRetained, GetNull(userId));
         }
 
         #endregion

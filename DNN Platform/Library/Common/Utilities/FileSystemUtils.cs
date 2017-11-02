@@ -200,22 +200,23 @@ namespace DotNetNuke.Common.Utilities
             try
             {
 				//Open File Stream
-                var crc = new Crc32();
                 fs = File.OpenRead(filePath.Replace("/", "\\"));
 				
 				//Read file into byte array buffer
                 var buffer = new byte[fs.Length];
 
-                fs.Read(buffer, 0, buffer.Length);
+                var len = fs.Read(buffer, 0, buffer.Length);
+                if (len != fs.Length)
+                {
+                    Logger.ErrorFormat("Reading from " + filePath + " didn't read all data in buffer. " +
+                                      "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
+                }
 
                 //Create Zip Entry
                 var entry = new ZipEntry(Path.Combine(folder, fileName));
                 entry.DateTime = DateTime.Now;
                 entry.Size = fs.Length;
                 fs.Close();
-                crc.Reset();
-                crc.Update(buffer);
-                entry.Crc = crc.Value;
 
                 //Compress file and add to Zip file
                 ZipFile.PutNextEntry(entry);

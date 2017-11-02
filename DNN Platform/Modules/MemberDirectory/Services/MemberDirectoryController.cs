@@ -28,7 +28,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -52,8 +52,25 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             if (!String.IsNullOrEmpty(value))
             {
                 propertyNames += name + ",";
+
+                if (name.Equals("Country", StringComparison.InvariantCultureIgnoreCase) ||
+                    name.Equals("Region", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    value = GetMatchedListEntryIds(name, value);
+                }
                 propertyValues += value + ",";
             }
+        }
+
+        private static string GetMatchedListEntryIds(string name, string value)
+        {
+            var listEntries = new ListController().GetListEntryInfoItems(name)
+                .Where(i => i.Text.StartsWith(value, StringComparison.InvariantCultureIgnoreCase)
+                            || i.TextNonLocalized.StartsWith(value, StringComparison.InvariantCultureIgnoreCase)
+                            || i.Value.StartsWith(value, StringComparison.InvariantCultureIgnoreCase))
+                .Select(i => i.EntryID);
+
+            return $"${string.Join("$", listEntries)}$";
         }
 
         private bool CanViewGroupMembers(int portalId, int groupId)

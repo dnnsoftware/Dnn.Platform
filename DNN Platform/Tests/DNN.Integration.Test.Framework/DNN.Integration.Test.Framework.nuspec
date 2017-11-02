@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>DNN.Integration.Test.Framework</id>
+    <version>9.2.0</version>
+    <title>DNN Integration Testing Framework</title>
+    <authors>DNN Corp.</authors>
+    <owners>DNN Corp.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Integration Testing framework to run NUint type Stored Procedure or DNN WebAPI Integration testing</description>
+    <copyright>DotNetNuke is copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+  </metadata>
+  <files>
+    <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.dll" target="lib\"/>
+    <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.pdb" target="lib\"/>
+    <!-- file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\PetaPoco.dll" target="lib\"/ -->
+  </files>
+</package>

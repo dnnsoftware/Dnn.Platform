@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                if (string.IsNullOrEmpty(_FileName))
+                if (string.IsNullOrEmpty(_FileName) && _xmlMerge.ConfigUpdateChangedNodes)
                 {
                     //Save the XmlDocument
                     Config.Save(TargetConfig, TargetFile.FullName);
@@ -164,10 +164,10 @@ namespace DotNetNuke.Services.Installer.Installers
                     TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
                     //Create XmlMerge instance from InstallConfig source
-                    var merge = new XmlMerge(new StringReader(InstallConfig), Package.Version.ToString(), Package.Name);
+                    _xmlMerge = new XmlMerge(new StringReader(InstallConfig), Package.Version.ToString(), Package.Name);
 
                     //Update the Config file - Note that this method does not save the file - we will save it in Commit
-                    merge.UpdateConfig(TargetConfig);
+                    _xmlMerge.UpdateConfig(TargetConfig);
                     Completed = true;
                     Log.AddInfo(Util.CONFIG_Updated + " - " + TargetFile.Name);
                 }

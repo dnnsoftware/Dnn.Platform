@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Tests.Integration.Framework;
-using DotNetNuke.Tests.Integration.Framework.Helpers;
-using DotNetNuke.Web.Api;
+using DNN.Integration.Test.Framework;
+using DNN.Integration.Test.Framework.Helpers;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Modules.Journal

@@ -1216,7 +1216,7 @@ namespace DotNetNuke.Entities.Portals
                             }
                             else
                             {
-                                throw ex;
+                                throw;
                             }
                         }
                         objInfo.IsProtected = isProtected;

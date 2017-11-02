@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -452,6 +451,38 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             var node = nodes[0];
             Assert.AreEqual("foo", node.Attributes["test"].Value);
 
+        }
+
+        [Test]
+        public void NoChangeOnOverwrite()
+        {
+            XmlMerge merge = GetXmlMerge(nameof(NoChangeOnOverwrite));
+            XmlDocument targetDoc = LoadTargetDoc(nameof(NoChangeOnOverwrite));
+
+            merge.UpdateConfig(targetDoc);
+
+            WriteToDebug(targetDoc);
+
+            var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
+            Assert.AreEqual(3, nodes.Count);
+            
+            Assert.False(merge.ConfigUpdateChangedNodes);
+        }
+
+        [Test]
+        public void ShouldChangeOnOverwrite()
+        {
+            XmlMerge merge = GetXmlMerge(nameof(ShouldChangeOnOverwrite));
+            XmlDocument targetDoc = LoadTargetDoc(nameof(ShouldChangeOnOverwrite));
+
+            merge.UpdateConfig(targetDoc);
+
+            WriteToDebug(targetDoc);
+
+            var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
+            Assert.AreEqual(3, nodes.Count);
+            
+            Assert.True(merge.ConfigUpdateChangedNodes);
         }
 
 // ReSharper restore PossibleNullReferenceException

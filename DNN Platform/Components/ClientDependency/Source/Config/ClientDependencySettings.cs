@@ -164,9 +164,6 @@ namespace ClientDependency.Core.Config
 
         private bool? _allowOnlyFipsAlgorithms;
 
-        /// <summary>
-        /// Indicates whether CDF should enforce the policy to create only Federal Information Processing Standard (FIPS) certified algorithms.
-        /// </summary>
         [Obsolete("Use the built in .Net CryptoConfig.AllowOnlyFipsAlgorithms")]
         public bool AllowOnlyFipsAlgorithms
         {

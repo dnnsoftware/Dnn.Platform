@@ -203,40 +203,6 @@ namespace DotNetNuke.UI.WebControls
             return LookupCountryName(_Address);
         }
 
-        private long vbShiftLeft(long value, int Count)
-        {
-			//------------------------------------------------------------------------------------------------
-            // Replacement for Bitwise operators which are missing in VB.NET,
-            // these functions are present in .NET 1.1, but for developers
-            // using 1.0, replacement functions must be implemented
-            //------------------------------------------------------------------------------------------------
-            long returnValue = 0;
-            int _Iterator;
-            returnValue = value;
-            for (_Iterator = 1; _Iterator <= Count; _Iterator++)
-            {
-                returnValue = returnValue*2;
-            }
-            return returnValue;
-        }
-
-        private long vbShiftRight(long value, int Count)
-        {
-			//------------------------------------------------------------------------------------------------
-            // Replacement for Bitwise operators which are missing in VB.NET,
-            // these functions are present in .NET 1.1, but for developers
-            // using 1.0, replacement functions must be implemented
-            //------------------------------------------------------------------------------------------------
-            long returnValue = 0;
-            int _Iterator;
-            returnValue = value;
-            for (_Iterator = 1; _Iterator <= Count; _Iterator++)
-            {
-                returnValue = returnValue/2;
-            }
-            return returnValue;
-        }
-
         public int SeekCountry(int Offset, long Ipnum, short Depth)
         {
             try
@@ -251,21 +217,32 @@ namespace DotNetNuke.UI.WebControls
                     throw new Exception();
                 }
                 m_MemoryStream.Seek(6*Offset, 0);
-                m_MemoryStream.Read(Buffer, 0, 6);
-                for (I = 0; I <= 1; I++)
+                var len = m_MemoryStream.Read(Buffer, 0, 6);
+                if (len == 6)
                 {
-                    X[I] = 0;
-                    for (J = 0; J <= 2; J++)
+                    for (I = 0; I <= 1; I++)
                     {
-                        Y = Buffer[I*3 + J];
-                        if (Y < 0)
+                        X[I] = 0;
+                        for (J = 0; J <= 2; J++)
                         {
-                            Y = Convert.ToByte(Y + 256);
+                            Y = Buffer[I * 3 + J];
+                            if (Y < 0)
+                            {
+                                Y = Convert.ToByte(Y + 256);
+                            }
+                            X[I] = Convert.ToInt32(X[I] + (Y << (J * 8)));
                         }
-                        X[I] = Convert.ToInt32(X[I] + vbShiftLeft(Y, J*8));
                     }
                 }
-                if ((Ipnum & vbShiftLeft(1, Depth)) > 0)
+                else
+                {
+                    for (I = 0; I < 6; I++)
+                    {
+                        X[I] = 0;
+                    }
+                }
+
+                if ((Ipnum & (1 << Depth)) > 0)
                 {
                     if (X[1] >= CountryBegin)
                     {

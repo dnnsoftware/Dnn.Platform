@@ -1267,11 +1267,13 @@ namespace DotNetNuke.Entities.Users
 
         public static UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
+            portalId = GetEffectivePortalId(portalId);
             return MembershipProvider.Instance().GetUserByVanityUrl(portalId, vanityUrl);
         }
 
         public static UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
         {
+            portalId = GetEffectivePortalId(portalId);
             return MembershipProvider.Instance().GetUserByPasswordResetToken(portalId, resetToken);
         }
 

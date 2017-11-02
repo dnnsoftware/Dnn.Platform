@@ -67,6 +67,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
     </Reference>
@@ -81,9 +85,9 @@
     <Reference Include="Moq">
       <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
@@ -95,6 +99,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Externals\AJAX\bin\System.Web.Extensions.dll</HintPath>
@@ -175,6 +180,7 @@
     <Compile Include="Providers\Folder\SecureFolderProviderTests.cs" />
     <Compile Include="Providers\Folder\StandardFolderProviderTests.cs" />
     <Compile Include="EscapedStringTest.cs" />
+    <Compile Include="Providers\Membership\MembershipProviderTests.cs" />
     <Compile Include="Providers\Permissions\PermissionTests.cs" />
     <Compile Include="RetryableActionTests.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
@@ -184,8 +190,10 @@
     <Compile Include="Services\Localization\LocalizationTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
+    <Compile Include="Services\Tokens\TokenReplaceTests.cs" />
     <Compile Include="Services\Tokens\PropertyAccessTests.cs" />
     <Compile Include="FileSystemUtilsTests.cs" />
+    <Compile Include="Services\UtilTest.cs" />
     <Compile Include="Services\UserRequest\UserRequestIPAddressControllerTest.cs" />
     <Compile Include="TabCollectionTest.cs" />
     <Compile Include="Services\HtmlUtilsTest.cs" />
@@ -211,6 +219,9 @@
     <None Include="..\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="DotNetNuke.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Entities\Portals\TestFiles\SettingValues.csv" />
     <None Include="Entities\Portals\TestFiles\HostSettings.csv" />

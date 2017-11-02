@@ -40,7 +40,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                if (_listSource != value)
+                var changed = !Equals(_listSource, value);
+                if (changed)
                 {
                     _listSource = value;
                     BindList();

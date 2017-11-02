@@ -156,11 +156,9 @@ namespace DotNetNuke.Services.Journal
             int thumbnailHeight = 400;
             GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
             var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, ThumbnailCallback, IntPtr.Zero);
-            using (var result = new MemoryStream())
-            {
-                thumbnail.Save(result, image.RawFormat);
-                return result;
-            }
+            var result = new MemoryStream();
+            thumbnail.Save(result, image.RawFormat);
+            return result;
         }
 
         private void GetThumbnailSize(int imageWidth, int imageHeight, ref int thumbnailWidth, ref int thumbnailHeight)
@@ -576,7 +574,10 @@ namespace DotNetNuke.Services.Journal
 
             if (IsImageFile(fileName) && IsResizePhotosEnabled(module))
             {
-                return FileManager.Instance.AddFile(userFolder, fileName, GetJournalImageContent(fileContent), true);
+                using (var stream = GetJournalImageContent(fileContent))
+                {
+                    return FileManager.Instance.AddFile(userFolder, fileName, stream, true);
+                }
             }
             //todo: deal with the case where the exact file name already exists.            
             return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);                    

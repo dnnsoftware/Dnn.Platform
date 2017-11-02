@@ -5550,6 +5550,26 @@ namespace DotNetNuke.Services.Upgrade
         {
             DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "SharpZipLib.dll");
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
+
+            RemoveAdminPages("//Admin//SearchEngineSiteMap");
+
+            if (!HostTabExists("Superuser Accounts"))
+            {
+                //add SuperUser Accounts module and tab
+                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("Security", Null.NullInteger);
+                if(desktopModule != null)
+                { 
+                    var moduleDefId = ModuleDefinitionController
+                        .GetModuleDefinitionByFriendlyName("User Accounts", desktopModule.DesktopModuleID).ModuleDefID;
+
+                    //Create New Host Page (or get existing one)
+                    var newPage = AddHostPage("Superuser Accounts", "Manage host user accounts.", 
+                        "~/Icons/Sigma/Users_16X16_Standard.png", "~/Icons/Sigma/Users_32X32_Standard.png", false);
+
+                    //Add Module To Page
+                    AddModuleToPage(newPage, moduleDefId, "SuperUser Accounts", "~/Icons/Sigma/Users_32X32_Standard.png");
+                }
+            }
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
@@ -5962,6 +5982,29 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return activationResult;
+        }
+
+        public static bool RemoveInvalidAntiForgeryCookie()
+        {
+            //DNN-9394: when upgrade from old version which use MVC version below than 5, it may saved antiforgery cookie
+            // with a different cookie name which join the root path even equals to "/", then it will cause API request failed.
+            // we need remove the cookie during upgrade process.
+            var appPath = HttpRuntime.AppDomainAppVirtualPath;
+            if (appPath == "/" && HttpContext.Current != null)
+            {
+                var cookieSuffix = Convert.ToBase64String(Encoding.UTF8.GetBytes(appPath)).Replace('+', '.').Replace('/', '-').Replace('=', '_');
+                var cookieName = $"__RequestVerificationToken_{cookieSuffix}";
+                var invalidCookie = HttpContext.Current.Request.Cookies[cookieName];
+                if (invalidCookie != null)
+                {
+                    invalidCookie.Expires = DateTime.Now.AddYears(-1);
+                    HttpContext.Current.Response.Cookies.Add(invalidCookie);
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         internal static void CheckFipsCompilanceAssemblies()
