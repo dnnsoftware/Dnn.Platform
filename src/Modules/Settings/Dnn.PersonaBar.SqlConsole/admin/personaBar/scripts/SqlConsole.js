@@ -203,6 +203,16 @@ define(['jquery',
             return cloneData;
         }
 
+        var encode = function (item) {
+            for (var name in item) {
+                if (item.hasOwnProperty(name) && item[name]) {
+                    item[name] = $('<div/>').text(item[name]).html();
+                }
+            }
+
+            return item;
+        };
+
         var matchKeyword = function (data, keyword) {
             if (!keyword) {
                 return true;
@@ -325,7 +335,7 @@ define(['jquery',
                 var source = table.rows();
                 for (var i = 0; i < source.length; i++) {
                     var keywords = table.keywords();
-                    var item = clone(source[i]);
+                    var item = encode(clone(source[i]));
                     if (matchKeyword(item, keywords)) {
                         filterData.push(item);
                     }
@@ -425,9 +435,9 @@ define(['jquery',
 
             table.pageData = ko.computed(function () {
                 var data = [];
-
+                var filterData = table.filterData();
                 for (var i = table.startIndex() ; i < table.endIndex() ; i++) {
-                    data.push(table.filterData()[i]);
+                    data.push(filterData[i]);
                 }
                 return data;
             });
