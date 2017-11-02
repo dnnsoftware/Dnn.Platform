@@ -415,7 +415,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                         usingSeekableStream = true;
                     }
 
-                    CheckFileWritingRestrictions(folder, fileContent.Length, oldFile, createdByUserID);
+                    CheckFileWritingRestrictions(folder, fileName, fileContent, oldFile, createdByUserID);
 
                     // Retrieve Metadata
                     SetInitialFileMetadata(ref fileContent, file, folderProvider);
@@ -620,9 +620,9 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             }
         }
 
-        private void CheckFileWritingRestrictions(IFolderInfo folder, long fileSize, IFileInfo oldFile, int createdByUserId)
+        private void CheckFileWritingRestrictions(IFolderInfo folder, string fileName, Stream fileContent, IFileInfo oldFile, int createdByUserId)
         {
-            if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, fileSize))
+            if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, fileContent.Length))
             {
                 throw new NoSpaceAvailableException(
                     Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
@@ -635,6 +635,13 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 throw new FileLockedException(
                                 Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
                                                                                 "File locked. The file cannot be updated because it is out of Publish Period"));
+            }
+
+            if (!FileSecurityController.Instance.Validate(fileName, fileContent))
+            {
+                var defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
+                var errorMessage = Localization.Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
+                throw new InvalidFileContentException(string.Format(errorMessage, fileName));
             }
         }
 
