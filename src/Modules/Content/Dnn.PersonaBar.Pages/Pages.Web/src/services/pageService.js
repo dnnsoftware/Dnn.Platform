@@ -150,12 +150,12 @@ const PageService = function () {
 
     const getCachedPageCount = function (cacheProvider, pageId) {
         const api = getPagesApi();
-        return api.get("GetCachedItemCount", { cacheProvider: cacheProvider, tabId: pageId });
+        return api.get("GetCachedItemCount", { cacheProvider: cacheProvider, pageId: pageId });
     };
 
     const clearCache = function (cacheProvider, pageId) {
         const api = getPagesApi();
-        return api.post("ClearCache?cacheProvider=" + cacheProvider + "&tabId=" + pageId);
+        return api.post("ClearCache?cacheProvider=" + cacheProvider + "&pageId=" + pageId);
     };
 
     const getPageList = () => {
