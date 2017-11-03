@@ -30,6 +30,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
@@ -316,8 +317,10 @@ namespace DotNetNuke.UI.Skins.Controls
 				tab = tab.DefaultLanguageTab;
 			}
 
-            return TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale) != null;
-		}
+            var localizedTab = TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale);
+
+            return localizedTab != null && !localizedTab.IsDeleted && TabPermissionController.CanViewPage(localizedTab);
+        }
 
 		#endregion
 
