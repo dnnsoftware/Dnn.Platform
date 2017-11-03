@@ -11,7 +11,8 @@ class Tags extends Component {
             newTagText: "",
             tags: this.props.tags || [],
             inputWidth: 13,
-            isInputVisible: false
+            isInputVisible: false,
+            selectedIndex:-1
         };
     }
 
@@ -30,7 +31,7 @@ class Tags extends Component {
         }
 
         const tags = this.props.tags.slice();
-        tags.push(newTagText.trim());         
+        tags.push(newTagText.trim());
         this.updateTags(tags);
     }
 
@@ -46,11 +47,12 @@ class Tags extends Component {
     }
 
     updateTags(tags) {
+        this.setState({selectedIndex:-1});
         this.setState({ tags }, () => {
             this.props.onUpdateTags(tags);
         });
     }
-    
+
     onClick() {
         if (this.state.isInputVisible) {
             return;
@@ -65,17 +67,20 @@ class Tags extends Component {
         }
 
         this.setState({ isInputVisible: false,  newTagText: ""});
-        
+
         if (typeof(this.props.onAddingNewTagChange) === "function") {
             this.props.onAddingNewTagChange("");
         }
     }
 
     addTag(tag) {
-        if (!tag) {
-            return;
+        if (tag) {
+            this.internalAddTag(tag);
+        } else if (this.state.selectedIndex > -1) {
+            let selectedTag = this.props.suggestions[this.state.selectedIndex];
+            this.internalAddTag(selectedTag.value);
+            this.setState({selectedIndex:-1});
         }
-        this.internalAddTag(tag);
     }
 
     onAddingNewTagChange(value) {
@@ -83,6 +88,21 @@ class Tags extends Component {
 
         if (typeof(this.props.onAddingNewTagChange) === "function") {
             this.props.onAddingNewTagChange(value);
+        }
+    }
+
+    onArrowDown() {
+        const maxIndex = this.props.suggestions.length - 1;
+        const current = this.state.selectedIndex;
+        const selectedIndex = current < maxIndex ? current + 1 : current;
+        this.setState({selectedIndex});
+    }
+
+    onArrowUp() {
+        const current = this.state.selectedIndex;
+        if (current > 0) {
+            const selectedIndex = current - 1;
+            this.setState({selectedIndex});
         }
     }
 
@@ -97,7 +117,7 @@ class Tags extends Component {
                 return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag)} enabled={this.props.enabled} />;
             });
         }
-        
+
         let className = "dnn-uicommon-tags-field-input" +
             (this.state.isInputVisible ? " active " : "");
 
@@ -107,22 +127,24 @@ class Tags extends Component {
             opts["disabled"] = "disabled";
             className += " disabled";
         }
-        
+
         const typingText = this.props.autoSuggest ? this.props.searchTagsPlaceholder : this.props.addTagsPlaceholder;
         return (
-            <div className={className} 
-                onClick={this.onClick.bind(this) }                
+            <div className={className}
+                onClick={this.onClick.bind(this) }
                 style={this.props.style}
                 ref={ref => this.containerRef = ref}>
                 <div type="text">
                     {Tags.length > 0 && Tags}
                     {!this.state.isInputVisible && Tags.length === 0 &&
                         <div className="typing-text">{typingText}</div>}
-                    {this.state.isInputVisible && 
+                    {this.state.isInputVisible &&
                     <TagInput
                         value={this.state.newTagText}
                         addTag={this.addTag.bind(this)}
                         onAddingNewTagChange={this.onAddingNewTagChange.bind(this)}
+                        onArrowUp={this.onArrowUp.bind(this)}
+                        onArrowDown={this.onArrowDown.bind(this)}
                         onClose={this.onInputClose.bind(this) }
                         opts={opts}
                         onFocus={this.props.onInputFocus}
@@ -131,13 +153,14 @@ class Tags extends Component {
                         addTagsPlaceholder={this.props.addTagsPlaceholder}
                         container={this.containerRef} />}
                 </div>
-                {this.state.isInputVisible && 
-                    this.props.autoSuggest && 
-                    this.props.suggestions && 
+                {this.state.isInputVisible &&
+                    this.props.autoSuggest &&
+                    this.props.suggestions &&
                     this.props.suggestions.length > 0 &&
                 <div className="suggestions-container">
-                    <Suggestions suggestions={this.props.suggestions} 
+                    <Suggestions suggestions={this.props.suggestions}
                         onSelectSuggestion={this.addTag.bind(this)}
+                        selectedIndex={this.state.selectedIndex}
                         onScrollUpdate={this.props.onScrollUpdate} />
                 </div>}
             </div>
