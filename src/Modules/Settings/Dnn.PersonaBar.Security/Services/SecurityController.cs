@@ -815,12 +815,12 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>audit check results</returns>
         [HttpGet]
         [RequireHost]
-        public HttpResponseMessage GetAuditCheckResults()
+        public HttpResponseMessage GetAuditCheckResults([FromUri] bool checkAll = false)
         {
             try
             {
                 var audit = new Components.AuditChecks();
-                var results = audit.DoChecks();
+                var results = audit.DoChecks(checkAll);
                 var response = new
                 {
                     Success = true,
@@ -836,11 +836,39 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        /// GET: api/Security/GetAuditCheckResults
+        /// GET: api/Security/GetAuditCheckResult?id={id}
         /// <summary>
-        /// Gets audit check results
+        /// Gets audit check result for a specific checker.
         /// </summary>
-        /// <returns>audit check results</returns>
+        /// <returns>audit check result</returns>
+        [HttpGet]
+        [RequireHost]
+        public HttpResponseMessage GetAuditCheckResult([FromUri] string id)
+        {
+            try
+            {
+                var audit = new Components.AuditChecks();
+                var result = audit.DoCheck(id);
+                var response = new
+                {
+                    Success = true,
+                    Result = result
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/Security/GetSuperuserActivities
+        /// <summary>
+        /// Gets super user activities.
+        /// </summary>
+        /// <returns>super user activities.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetSuperuserActivities()

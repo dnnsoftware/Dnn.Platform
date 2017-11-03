@@ -145,7 +145,7 @@ const userActions = {
             UserService.updateSuperUserStatus(payload, data => {
                 dispatch({
                     type: ActionTypes.USER_MADE_SUPERUSER,
-                    payload: { userId: payload.userId },
+                    payload: { userId: payload.userId, setSuperUser: payload.setSuperUser },
                     filter: filter
                 });
                 if (callback) {

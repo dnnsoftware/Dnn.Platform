@@ -339,6 +339,21 @@ const securityActions = {
             });
         };
     },
+    getAuditCheckResult(id, callback) {
+        return (dispatch) => {
+            ApplicationService.getAuditCheckResult(id, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SECURITY_AUDITCHECK_RESULT,
+                    data: {
+                        auditCheckResult: data.Result
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
     searchFileSystemAndDatabase(searchParameters, callback) {
         return (dispatch) => {
             ApplicationService.searchFileSystemAndDatabase(searchParameters, data => {

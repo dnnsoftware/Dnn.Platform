@@ -26,6 +26,7 @@ using Dnn.PersonaBar.Library.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -104,7 +105,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         private static string GetSettingUrl(int portalId, int userId)
         {
-            var module = ModuleController.Instance.GetModulesByDefinition(portalId, "User Accounts")
+            var module = ModuleController.Instance.GetModulesByDefinition(UserController.Instance.GetUserById(portalId, userId).IsSuperUser ? -1 : portalId, "User Accounts")
                 .Cast<ModuleInfo>().FirstOrDefault();
             if (module == null)
             {

@@ -4,6 +4,8 @@
     {
         string Id { get; }
 
+        bool LazyLoad { get; }
+
         CheckResult Execute();
     }
 }

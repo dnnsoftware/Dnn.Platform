@@ -538,22 +538,22 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
-        public HttpResponseMessage MakePageNeutral([FromUri] int tabId)
+        public HttpResponseMessage MakePageNeutral([FromUri] int pageId)
         {
             try
             {
-                if (!_securityService.CanManagePage(tabId))
+                if (!_securityService.CanManagePage(pageId))
                 {
                     return GetForbiddenResponse();
                 }
 
-                if (_tabController.GetTabsByPortal(PortalId).WithParentId(tabId).Count > 0)
+                if (_tabController.GetTabsByPortal(PortalId).WithParentId(pageId).Count > 0)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, LocalizeString("MakeNeutral.ErrorMessage"));
                 }
 
                 var defaultLocale = _localeController.GetDefaultLocale(PortalId);
-                _tabController.ConvertTabToNeutralLanguage(PortalId, tabId, defaultLocale.Code, true);
+                _tabController.ConvertTabToNeutralLanguage(PortalId, pageId, defaultLocale.Code, true);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
@@ -567,16 +567,16 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
-        public HttpResponseMessage MakePageTranslatable([FromUri] int tabId)
+        public HttpResponseMessage MakePageTranslatable([FromUri] int pageId)
         {
             try
             {
-                if (!_securityService.CanManagePage(tabId))
+                if (!_securityService.CanManagePage(pageId))
                 {
                     return GetForbiddenResponse();
                 }
 
-                var currentTab = _tabController.GetTab(tabId, PortalId, false);
+                var currentTab = _tabController.GetTab(pageId, PortalId, false);
                 if (currentTab == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidTab");
@@ -584,7 +584,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
                 var defaultLocale = _localeController.GetDefaultLocale(PortalId);
                 _tabController.LocalizeTab(currentTab, defaultLocale, true);
-                _tabController.AddMissingLanguages(PortalId, tabId);
+                _tabController.AddMissingLanguages(PortalId, pageId);
                 _tabController.ClearCache(PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -599,16 +599,16 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
-        public HttpResponseMessage AddMissingLanguages([FromUri] int tabId)
+        public HttpResponseMessage AddMissingLanguages([FromUri] int pageId)
         {
             try
             {
-                if (!_securityService.CanManagePage(tabId))
+                if (!_securityService.CanManagePage(pageId))
                 {
                     return GetForbiddenResponse();
                 }
 
-                _tabController.AddMissingLanguages(PortalId, tabId);
+                _tabController.AddMissingLanguages(PortalId, pageId);
                 _tabController.ClearCache(PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -658,29 +658,29 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        // GET /api/personabar/pages/GetTabLocalization?tabId=123
+        // GET /api/personabar/pages/GetTabLocalization?pageId=123
         /// <summary>
         /// Gets the view data that used to be in the old ControlBar's localization tab
         /// under Page Settings ( /{page}/ctl/Tab/action/edit/activeTab/settingTab ).
         /// </summary>
-        /// <param name="tabId">The ID of the tab to get localization for.</param>
+        /// <param name="pageId">The ID of the tab to get localization for.</param>
         /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage GetTabLocalization(int tabId)
+        public HttpResponseMessage GetTabLocalization(int pageId)
         {
             try
             {
-                if (!_securityService.CanManagePage(tabId))
+                if (!_securityService.CanManagePage(pageId))
                 {
                     return GetForbiddenResponse();
                 }
 
-                var currentTab = _tabController.GetTab(tabId, PortalId, false);
+                var currentTab = _tabController.GetTab(pageId, PortalId, false);
                 var locales = new List<LocaleInfoDto>();
                 var pages = new DnnPagesDto(locales);
                 if (!currentTab.IsNeutralCulture)
                 {
-                    pages = GetNonLocalizedPages(tabId);
+                    pages = GetNonLocalizedPages(pageId);
                 }
                 return Request.CreateResponse(HttpStatusCode.OK, pages);
             }
@@ -805,7 +805,7 @@ namespace Dnn.PersonaBar.Pages.Services
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage GetCachedItemCount(string cacheProvider, int tabId)
+        public HttpResponseMessage GetCachedItemCount(string cacheProvider, int pageId)
         {
             try
             {
@@ -813,7 +813,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 {
                     return GetForbiddenResponse();
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Count = OutputCachingProvider.Instance(cacheProvider).GetItemCount(tabId) });
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Count = OutputCachingProvider.Instance(cacheProvider).GetItemCount(pageId) });
             }
             catch (Exception ex)
             {
@@ -826,16 +826,16 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
-        public HttpResponseMessage ClearCache([FromUri]string cacheProvider, [FromUri]int tabId)
+        public HttpResponseMessage ClearCache([FromUri]string cacheProvider, [FromUri]int pageId)
         {
             try
             {
-                if (!_securityService.CanManagePage(tabId))
+                if (!_securityService.CanManagePage(pageId))
                 {
                     return GetForbiddenResponse();
                 }
 
-                OutputCachingProvider.Instance(cacheProvider).Remove(tabId);
+                OutputCachingProvider.Instance(cacheProvider).Remove(pageId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)

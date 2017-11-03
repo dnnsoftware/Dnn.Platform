@@ -7,6 +7,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         public string Id => "CheckHiddenSystemFiles";
 
+        public bool LazyLoad => true;
+
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, Id);

@@ -14,6 +14,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         public string Id => "CheckSqlRisk";
 
+        public bool LazyLoad => false;
+
         private string LocalResourceFile
         {
             get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
