@@ -23,50 +23,52 @@ class SaveAsTemplate extends Component {
         const {template, onChangeField, onSave, onCancel, errors} = this.props;
 
         return (
-            <div className={styles.saveAsTemplate}>
-                <div className="input-group">
-                    <SingleLineInputWithError
-                        label={Localization.get("TemplateName") + "*"}
-                        tooltipMessage={Localization.get("TemplateNameTooltip") }
-                        error={!!errors.name}
-                        errorMessage={errors.name}
-                        value={template.name}
-                        onChange={this.onChangeField.bind(this, "name") } />
-                </div>
-                <div className="input-group">
-                    <MultiLineInputWithError
-                        label={Localization.get("Description") + "*"}
-                        value={template.description}
-                        onChange={this.onChangeField.bind(this, "description") }
-                        tooltipMessage={Localization.get("TemplateDescriptionTooltip") }
-                        error={!!errors.description}
-                        errorMessage={errors.description} />
-                </div>
-                <div className="input-group">
-                    <Label
-                        labelType="inline"
-                        tooltipMessage={Localization.get("IncludeContentTooltip") }
-                        label={Localization.get("IncludeContent") } />
-                    <Switch
-                        labelHidden={false}
-                        onText={Localization.get("On") }
-                        offText={Localization.get("Off") }
-                        value={template.includeContent}
-                        onChange={(value) => onChangeField("includeContent", value) } />
-                    <div style={{ clear: "both" }}></div>
-                </div>
-                <div className="buttons-box">
-                    <Button
-                        type="secondary"
-                        onClick={onCancel}>
-                        {Localization.get("Cancel") }
-                    </Button>
-                    <Button
-                        type="primary"
-                        onClick={onSave}
-                        disabled={!template.name || !template.description}>
-                        {Localization.get("Save") }
-                    </Button>
+            <div style={{padding: "44px 2px 30px 0px"}}>
+                <div className={styles.saveAsTemplate}>
+                    <div className="input-group">
+                        <SingleLineInputWithError
+                            label={Localization.get("TemplateName") + "*"}
+                            tooltipMessage={Localization.get("TemplateNameTooltip") }
+                            error={!!errors.name}
+                            errorMessage={errors.name}
+                            value={template.name}
+                            onChange={this.onChangeField.bind(this, "name") } />
+                    </div>
+                    <div className="input-group">
+                        <MultiLineInputWithError
+                            label={Localization.get("Description") + "*"}
+                            value={template.description}
+                            onChange={this.onChangeField.bind(this, "description") }
+                            tooltipMessage={Localization.get("TemplateDescriptionTooltip") }
+                            error={!!errors.description}
+                            errorMessage={errors.description} />
+                    </div>
+                    <div className="input-group">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={Localization.get("IncludeContentTooltip") }
+                            label={Localization.get("IncludeContent") } />
+                        <Switch
+                            labelHidden={false}
+                            onText={Localization.get("On") }
+                            offText={Localization.get("Off") }
+                            value={template.includeContent}
+                            onChange={(value) => onChangeField("includeContent", value) } />
+                        <div style={{ clear: "both" }}></div>
+                    </div>
+                    <div className="buttons-box">
+                        <Button
+                            type="secondary"
+                            onClick={onCancel}>
+                            {Localization.get("Cancel") }
+                        </Button>
+                        <Button
+                            type="primary"
+                            onClick={onSave}
+                            disabled={!template.name || !template.description}>
+                            {Localization.get("Save") }
+                        </Button>
+                    </div>
                 </div>
             </div>
         );

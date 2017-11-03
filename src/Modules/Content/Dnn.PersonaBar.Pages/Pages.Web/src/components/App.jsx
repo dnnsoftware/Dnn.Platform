@@ -658,6 +658,27 @@ class App extends Component {
         });
     }
 
+    
+    onCancelAddMultiplePages(){
+        const { props } = this;
+        
+        if (props.dirtyBulkPage) {
+            const onConfirm = () => {
+                if (!(props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId)) {
+                    props.onCancelSavePageAsTemplate();
+                }
+            };
+
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                onConfirm);
+        } else {
+            props.onCancelAddMultiplePages();
+        }    
+    }
+
     getAddPages() {
         const { props } = this;
         return (
@@ -1669,6 +1690,7 @@ App.propTypes = {
     selectedPageDirty: PropTypes.boolean,
     selectedTemplateDirty: PropTypes.boolean,
     bulkPage: PropTypes.object,
+    dirtyBulkPage : PropTypes.boolean, 
     editingSettingModuleId: PropTypes.number,
     onCancelPage: PropTypes.func.isRequired,
     onCreatePage: PropTypes.func.isRequired,
@@ -1732,6 +1754,7 @@ function mapStateToProps(state) {
         selectedPageDirty: state.pages.dirtyPage,
         selectedTemplateDirty: state.template.dirtyTemplate,
         bulkPage: state.addPages.bulkPage,
+        dirtyBulkPage : state.addPages.dirtyBulkPage,
         editingSettingModuleId: state.pages.editingSettingModuleId,
         error: state.errors.error,
         multiplePagesComponents: state.extensions.multiplePagesComponents,

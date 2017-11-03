@@ -77,39 +77,41 @@ class AddPages extends Component {
         const {bulkPage, onCancel, onSave} = this.props;
 
         return (
-            <div className={styles.addPages}>
-                <div className="grid-columns">
-                    <div className="left-column">
-                        <div className="column-heading">
-                            {Localization.get("BulkPageSettings")}
+            <div style={{padding: "44px 2px 30px 0px"}}>
+                <div className={styles.addPages}>
+                    <div className="grid-columns">
+                        <div className="left-column">
+                            <div className="column-heading">
+                                {Localization.get("BulkPageSettings")}
+                            </div>
+                            {this.getLeftColumnComponents()}
                         </div>
-                        {this.getLeftColumnComponents()}
-                    </div>
-                    <div className="right-column">
-                        <div className="column-heading">
-                            {Localization.get("BulkPagesToAdd")}
+                        <div className="right-column">
+                            <div className="column-heading">
+                                {Localization.get("BulkPagesToAdd")}
+                            </div>
+                            <Label
+                                label={Localization.get("BulkPagesLabel")} />
+                            <MultiLineInput
+                                onChange={(event) => this.onChangeEvent("bulkPages", event)}
+                                value={bulkPage.bulkPages}
+                                className="bulk-page-input" />
                         </div>
-                        <Label
-                            label={Localization.get("BulkPagesLabel")} />
-                        <MultiLineInput
-                            onChange={(event) => this.onChangeEvent("bulkPages", event)}
-                            value={bulkPage.bulkPages}
-                            className="bulk-page-input" />
                     </div>
-                </div>
-                <div style={{clear: "both"}}></div>
-                <div className="buttons-box">
-                    <Button
-                        type="secondary"
-                        onClick={onCancel}>
-                        {Localization.get("Cancel")}
-                    </Button>
-                    <Button
-                        type="primary"
-                        onClick={onSave}
-                        disabled={!bulkPage.bulkPages}>
-                        {Localization.get("AddPages")}
-                    </Button>
+                    <div style={{clear: "both"}}></div>
+                    <div className="buttons-box">
+                        <Button
+                            type="secondary"
+                            onClick={onCancel}>
+                            {Localization.get("Cancel")}
+                        </Button>
+                        <Button
+                            type="primary"
+                            onClick={onSave}
+                            disabled={!bulkPage.bulkPages}>
+                            {Localization.get("AddPages")}
+                        </Button>
+                    </div>
                 </div>
             </div>
         );
