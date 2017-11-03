@@ -77,8 +77,8 @@ class AddPages extends Component {
         const {bulkPage, onCancel, onSave} = this.props;
 
         return (
-            <div style={{padding: "44px 2px 30px 0px"}}>
-                <div className={styles.addPages}>
+            <div className={styles.addPages}>
+                <div className="addPagesDetail">
                     <div className="grid-columns">
                         <div className="left-column">
                             <div className="column-heading">

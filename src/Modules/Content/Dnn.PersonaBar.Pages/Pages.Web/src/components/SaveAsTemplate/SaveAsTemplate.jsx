@@ -23,8 +23,8 @@ class SaveAsTemplate extends Component {
         const {template, onChangeField, onSave, onCancel, errors} = this.props;
 
         return (
-            <div style={{padding: "44px 2px 30px 0px"}}>
-                <div className={styles.saveAsTemplate}>
+            <div className={styles.saveAsTemplate}>
+                <div className="saveAsTemplateDetail">
                     <div className="input-group">
                         <SingleLineInputWithError
                             label={Localization.get("TemplateName") + "*"}
