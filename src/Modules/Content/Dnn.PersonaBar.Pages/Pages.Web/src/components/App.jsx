@@ -443,7 +443,9 @@ class App extends Component {
         this.props.onLoadAddMultiplePages();
         
     }
-
+    /**
+     * When on edit mode
+     */
     onEditMode(){
         const {selectedPage, selectedView} = this.props;
         return (selectedPage && selectedPage.tabId === 0 
@@ -454,10 +456,8 @@ class App extends Component {
 
     onAddPage(parentPage) {
         this.clearEmptyStateMessage();
-        this.selectPageSettingTab(0);
-
+        this.selectPageSettingTab(0); 
         const addPage = () => {
-
             const { props } = this;
             const { selectedPage } = props;
             let runUpdateStore = null;
@@ -472,6 +472,7 @@ class App extends Component {
             runUpdateStore(pageList);
             const onConfirm = () => { this.props.changeSelectedPagePath(""); this.props.getNewPage(parentPage); };
             if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+
                 utils.confirm(
                     Localization.get("CancelWithoutSaving"),
                     Localization.get("Close"),
@@ -662,18 +663,41 @@ class App extends Component {
         return (
                 <AddPages
                     bulkPage={props.bulkPage}
-                    onCancel={props.onCancelAddMultiplePages}
+                    onCancel={this.onCancelAddMultiplePages.bind(this)}
                     onSave={this.onSaveMultiplePages.bind(this)}
                     onChangeField={props.onChangeAddMultiplePagesField}
                     components={props.multiplePagesComponents} />);
     }
+
+
+    onCancelSavePageAsTemplate() {
+        const { props } = this;
+        
+        if (props.selectedTemplateDirty) {
+            const onConfirm = () => {
+                if (!(props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId)) {
+                    props.onCancelSavePageAsTemplate();
+                }
+            };
+
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                onConfirm);
+        } else {
+            props.onCancelSavePageAsTemplate();
+        }
+    }
+
+        
 
     getSaveAsTemplatePage() {
         const { props } = this;
 
         return (
                 <SaveAsTemplate
-                    onCancel={props.onCancelSavePageAsTemplate} />);
+                    onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
     }
 
     getAdditionalPanels() {
@@ -1593,7 +1617,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 30px 30px 30px" }} >
                             <GridCell columnSize={1096} type={"px"} className="page-container">
-                                <div className={((selectedPage && selectedPage.tabId === 0) || inSearch) ? "tree-container disabled" : "tree-container"}>
+                                <div className={((selectedPage && selectedPage.tabId === 0) || this.onEditMode()) ? "tree-container disabled" : "tree-container"}>
                                     <PersonaBarPageTreeviewInteractor
                                         clearSelectedPage={this.props.clearSelectedPage}
                                         Localization={Localization}
@@ -1643,6 +1667,7 @@ App.propTypes = {
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
     selectedPageDirty: PropTypes.boolean,
+    selectedTemplateDirty: PropTypes.boolean,
     bulkPage: PropTypes.object,
     editingSettingModuleId: PropTypes.number,
     onCancelPage: PropTypes.func.isRequired,
@@ -1705,6 +1730,7 @@ function mapStateToProps(state) {
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
         selectedPageDirty: state.pages.dirtyPage,
+        selectedTemplateDirty: state.template.dirtyTemplate,
         bulkPage: state.addPages.bulkPage,
         editingSettingModuleId: state.pages.editingSettingModuleId,
         error: state.errors.error,

@@ -5,7 +5,6 @@ function changeField(state, field, value) {
         ...state.template
     };  
     template[field] = value;
-    
     return template;
 }
 
@@ -26,12 +25,14 @@ export default function templateReducer(state = {
         case ActionTypes.LOAD_SAVE_AS_TEMPLATE:
             return { ...state,                
                 template: getEmptyTemplateModel(),
-                errors: []
+                errors: [],
+                dirtyTemplate:false
             };
         
         case ActionTypes.CHANGE_TEMPLATE_FIELD_VALUE:
             return { ...state,
-                template: changeField(state, action.field, action.value)           
+                template: changeField(state, action.field, action.value),
+                dirtyTemplate:true           
             };
 
         default:
