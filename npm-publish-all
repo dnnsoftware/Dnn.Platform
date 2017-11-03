@@ -85,8 +85,8 @@ const publishAll = (items) => {
 
                     let out = '';
                     if(compareVersions(localVersion, removeVersion) < 1) {
-                        out = proc.execSync("npm config set tag-version-prefix '' && npm version patch", {cwd, shell: true});
-                        EXPECTED_VERSION = out.toString().trim();
+                        out = proc.execSync("npm version patch", {cwd, shell: true});
+                        EXPECTED_VERSION = stripVersionTagPrefix(out.toString().trim());
                         console.log(`Version update from ${json.version} to ${EXPECTED_VERSION}`);
                     }
 
@@ -94,9 +94,9 @@ const publishAll = (items) => {
                     out = proc.execSync("npm i", {cwd, shell: true});
                     console.log(out.toString());
 
-                    //const cmdOptsPublish = `npm publish`;
-                    //out = proc.execSync(cmdOptsPublish, {cwd, shell: true});
-                    //console.log(out.toString());
+                    const cmdOptsPublish = `npm publish`;
+                    out = proc.execSync(cmdOptsPublish, {cwd, shell: true});
+                    console.log(out.toString());
 
                     const p = new Promise((resolve, reject) => {
                         const itvId = setInterval(() => {
@@ -119,6 +119,11 @@ const publishAll = (items) => {
         }
     });
     return promises;
+};
+
+const stripVersionTagPrefix = (version) => {
+    const res = version.replace(/[^\d^\.]/,'');
+    return res;
 };
 
 const getRemoteVersion = (pkg, cwd, prefix = false) => {
