@@ -78,17 +78,25 @@ const publishAll = (items) => {
                 console.log(`### INSTALLING ${json.name} ###`);
 
                 try {
-                    let out = proc.execSync("npm version patch", {cwd, shell: true});
-                    const EXPECTED_VERSION = out.toString().trim();
-                    console.log(`Version update from ${json.version} to ${EXPECTED_VERSION}`);
+
+                    const removeVersion = getRemoteVersion(json.name, cwd);
+                    const localVersion = json.version;
+                    let EXPECTED_VERSION = localVersion;
+
+                    let out = '';
+                    if(compareVersions(localVersion, removeVersion) < 1) {
+                        out = proc.execSync("npm config set tag-version-prefix '' && npm version patch", {cwd, shell: true});
+                        EXPECTED_VERSION = out.toString().trim();
+                        console.log(`Version update from ${json.version} to ${EXPECTED_VERSION}`);
+                    }
 
                     console.log(`Installing dependencies of ${json.name}`);
                     out = proc.execSync("npm i", {cwd, shell: true});
                     console.log(out.toString());
 
-                    const cmdOptsPublish = `npm publish`;
-                    out = proc.execSync(cmdOptsPublish, {cwd, shell: true});
-                    console.log(out.toString());
+                    //const cmdOptsPublish = `npm publish`;
+                    //out = proc.execSync(cmdOptsPublish, {cwd, shell: true});
+                    //console.log(out.toString());
 
                     const p = new Promise((resolve, reject) => {
                         const itvId = setInterval(() => {
@@ -113,11 +121,28 @@ const publishAll = (items) => {
     return promises;
 };
 
-const getRemoteVersion = (pkg, cwd) => {
+const getRemoteVersion = (pkg, cwd, prefix = false) => {
     const cmd = `npm show ${pkg} version`;
     const out = proc.execSync(cmd, {cwd, shell: true});
     const version = out.toString().trim();
-    return `v${version}`;
+    return `${prefix === true ? "v" : ""}${version}`;
+};
+
+const compareVersions = (locale, remote) => {
+  const s1 = locale.split('.');
+  const s2 = remote.split('.');
+
+  for(let i = 0; i < s1.length; i++) {
+      const v1 = s1[i];
+      const v2 = s2[i] != undefined ? s2[i] : 0;
+      if(v1 < v2) {
+          return -1;
+      }
+      if(v1 > v2) {
+          return 1;
+      }
+  }
+  return 0;
 };
 
 const isProjectFolder = (cwd) => {
