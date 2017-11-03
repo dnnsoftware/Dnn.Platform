@@ -170,7 +170,7 @@
         }
 
         function buildMenuRoot(root, rootText, rootClass, rootIcon) {
-            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)' aria-label=\"" + rootText + "\"><i class='fa fa-" + rootIcon + "' /></a><ul></ul>");
+            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)' aria-label=\"" + rootText + "\"><i class='dnni dnni-" + rootIcon + "' /></a><ul></ul>");
             var parent = root.find("li." + rootClass + " > ul");
 
             return parent;
