@@ -106,6 +106,11 @@ class ApplicationService {
         sf.get("GetAuditCheckResults", {}, callback);
     }
 
+    getAuditCheckResult(id, callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.get("GetAuditCheckResult", {id: id}, callback);
+    }
+
     searchFileSystemAndDatabase(searchParameters, callback) {
         const sf = this.getServiceFramework("Security");        
         searchParameters = Object.assign({}, searchParameters, {

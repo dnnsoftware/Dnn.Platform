@@ -13,6 +13,10 @@ import styles from "./style.less";
 class AuditCheckPanelBody extends Component {
     constructor() {
         super();
+
+        this.state = {
+            checking: false
+        };
     }
 
     componentWillMount() {
@@ -39,7 +43,12 @@ class AuditCheckPanelBody extends Component {
         return <div className="auditCheckHeader-wrapper">{tableHeaders}</div>;
     }
 
-    getResultDisplay(severity, successText, failureText) {
+    getResultDisplay(result) {
+        const severity = result.Severity;
+        const successText = result.SuccessText;
+        const failureText = result.FailureText;
+        const reason = result.Reason;
+        
         switch (severity) {
             case 0:
                 return (
@@ -76,15 +85,28 @@ class AuditCheckPanelBody extends Component {
             default:
                 return (
                     <div className="label-result-severity">
-                        <div className="label-result-severity-pass">
-                            {resx.get("Pass")}
+                        <div className="label-result-severity-unverified" onClick={this.onAuditCheck.bind(this, result)}>
+                            {resx.get("Check")}
                         </div>
                         <div>
-                            {successText}
+                            {reason}
                         </div>
                     </div>
                 );
         }
+    }
+
+    onAuditCheck(result){
+        const {state, props} = this;
+        if(state.checking){
+            return;
+        }
+
+        this.setState({checking: true}, () => {
+            props.dispatch(SecurityActions.getAuditCheckResult(result.CheckName, () => {
+                this.setState({checking: false});
+            }));
+        });
     }
 
     /* eslint-disable react/no-danger */
@@ -109,7 +131,7 @@ class AuditCheckPanelBody extends Component {
                     </div>
                     <div className="label-result">
                         <div className="label-wrapper">
-                            <span>{this.getResultDisplay(term.Severity, term.SuccessText, term.FailureText)}&nbsp; </span>
+                            <span>{this.getResultDisplay(term)}&nbsp; </span>
                         </div>
                     </div>
                     <div className="label-notes">

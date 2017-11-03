@@ -8,6 +8,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         public string Id => "CheckUnexpectedExtensions";
 
+        public bool LazyLoad => false;
+
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, Id);
