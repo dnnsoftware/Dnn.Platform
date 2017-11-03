@@ -45,15 +45,20 @@ export default class FileUpload extends Component {
         this.compareTimeout = setTimeout(this.compareDimensions.bind(this), 2000);
     }
 
+    updateStateAndReloadImage(file){
+        const selectedFolder = { value: file.folderPath, key: file.folderId };
+        const selectedFile = { value: file.fileName, key: file.fileId };
+        const fileExist = true;
+        
+        this.setState({fileExist, selectedFile, selectedFolder}, () => {
+            this.getPreviewUrl(file.fileId);
+        });
+    }
+    
     componentWillMount() {
         const file = this.props.selectedFile;
         if (file) {
-            const selectedFolder = { value: file.folderPath, key: file.folderId };
-            const selectedFile = { value: file.fileName, key: file.fileId };
-            const fileExist = true;
-            this.setState({fileExist, selectedFile, selectedFolder}, () => {
-                this.getPreviewUrl(file.fileId);
-            });
+            this.updateStateAndReloadImage(file);
         }
     }
 
@@ -62,9 +67,12 @@ export default class FileUpload extends Component {
             this.setState({ fileExist: null, selectedFile: null, selectedFolder: null }, () => {});
             return;
         }
-        if (nextProps.selectedFile.fileId !== this.state.selectedFile.fileId) {
-            const file = nextProps.selectedFile;
-            //this.updateFileState(file);
+        if(nextProps.selectedFile && this.state.selectedFile)
+        {
+            if (nextProps.selectedFile.fileId !== this.state.selectedFile.fileId) {
+                const file = nextProps.selectedFile;
+                this.updateStateAndReloadImage(file);
+            }
         }
     }
 
