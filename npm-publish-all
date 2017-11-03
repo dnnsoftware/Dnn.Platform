@@ -2,7 +2,7 @@ const fs = require("fs");
 const proc = require("child_process");
 const path = require("path");
 
-const skipList = ['GlobalStyles','node_modules'];
+const skipList = ['GlobalStyles', 'node_modules'];
 
 const unpublishAll = (items) => {
     items.forEach((item) => {
@@ -24,33 +24,100 @@ const unpublishAll = (items) => {
     });
 };
 
-const publishAll = (items) => {
+const installedPkgs = [];
+
+const getFullPackagesList = (items) => {
+    const allPackages = [];
     items.filter((item) => !skipList.includes(item)).forEach((item) => {
         const cwd = `./${item}`;
-        fs.lstat(cwd, (err, stats) => {
-            if (!err) {
-                if (stats.isDirectory() && isProjectFolder(cwd)) {
-                    const json = getPackageJson(cwd);
-                    updateVersionIfNeeded(json.name, cwd);
+        const stats = fs.lstatSync(cwd);
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+            const json = getPackageJson(cwd);
+            if (!allPackages.includes(json.name)) {
+                allPackages.push(json.name);
+            }
+        }
+    });
+    return allPackages;
+};
+
+const checkDeps = (pkjs) => {
+    if (pkjs.dependencies) {
+        for (let pkg of Object.keys(pkjs.dependencies)) {
+            const hasDnnDeps = pkg.startsWith('dnn-') && pkg !== 'dnn-global-styles' && pkg !== 'dnn-api' && pkg !== 'dnn-flag' && pkg !== 'dnn-token-service' && !installedPkgs.includes(pkg);
+            if (hasDnnDeps) {
+                console.log(`Error in ${pkjs.name}: missing dependency ${pkg}`);
+                return false; // check failed
+            }
+        }
+    }
+    if (pkjs.devDependencies) {
+        for (let pkg of Object.keys(pkjs.devDependencies)) {
+            const hasDnnDeps = pkg.startsWith('dnn-') && pkg !== 'dnn-global-styles' && pkg !== 'dnn-api' && pkg !== 'dnn-flag' && pkg !== 'dnn-token-service' && !installedPkgs.includes(pkg);
+            const hasEslintDeps = pkg == 'eslint-config-dnn' && !installedPkgs.includes(pkg);
+            if (hasEslintDeps || hasDnnDeps) {
+                console.log(`Error in ${pkjs.name}: missing dependency ${pkg}`);
+                return false; // check failed
+            }
+        }
+    }
+    return true; // passed check
+
+};
+
+const publishAll = (items) => {
+    const promises = [];
+    items.filter((item) => !skipList.includes(item)).forEach((item) => {
+        const cwd = `./${item}`;
+        const stats = fs.lstatSync(cwd);
+
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+            const json = getPackageJson(cwd);
+            const canInstall = checkDeps(json);
+            if (canInstall === true && !installedPkgs.includes(json.name)) {
+                console.log(`### INSTALLING ${json.name} ###`);
+
+                try {
+                    let out = proc.execSync("npm version patch", {cwd, shell: true});
+                    const EXPECTED_VERSION = out.toString().trim();
+                    console.log(`Version update from ${json.version} to ${EXPECTED_VERSION}`);
 
                     console.log(`Installing dependencies of ${json.name}`);
-                    let out = proc.execSync("npm i", {cwd,shell:true});
+                    out = proc.execSync("npm i", {cwd, shell: true});
                     console.log(out.toString());
 
                     const cmdOptsPublish = `npm publish`;
-                    out = proc.execSync(cmdOptsPublish, {cwd,shell:true});
+                    out = proc.execSync(cmdOptsPublish, {cwd, shell: true});
                     console.log(out.toString());
+
+                    const p = new Promise((resolve, reject) => {
+                        const itvId = setInterval(() => {
+                            const PUBLISHED_VERSION = getRemoteVersion(json.name, cwd);
+                            if (EXPECTED_VERSION == PUBLISHED_VERSION) {
+                                resolve(json.name);
+                                installedPkgs.push(json.name);
+                                clearInterval(itvId);
+                            } else {
+                                console.log(`Expected version ${EXPECTED_VERSION} current ${PUBLISHED_VERSION}, retry in 5 seconds`);
+                            }
+                        }, 5000);
+                    });
+                    promises.push(p);
+
+                } catch (e) {
+                    console.log(`Error installing ${json.name}: ${e}`);
                 }
             }
-        });
+        }
     });
+    return promises;
 };
 
 const getRemoteVersion = (pkg, cwd) => {
     const cmd = `npm show ${pkg} version`;
-    const out = proc.execSync(cmd, {cwd, shell:true});
+    const out = proc.execSync(cmd, {cwd, shell: true});
     const version = out.toString().trim();
-    return version;
+    return `v${version}`;
 };
 
 const isProjectFolder = (cwd) => {
@@ -62,7 +129,7 @@ const isProjectFolder = (cwd) => {
 const getPackageJson = (cwd) => {
     const fullpath = path.resolve(cwd);
     const packageJson = `${fullpath}\\package.json`;
-    if(!fs.existsSync(packageJson)) {
+    if (!fs.existsSync(packageJson)) {
         throw new Error(`File not found ${packageJson}`);
     }
 
@@ -70,44 +137,16 @@ const getPackageJson = (cwd) => {
     return json;
 };
 
-const getLocalVersion = (cwd) => {
-    const json = getPackageJson(cwd);
-    return json.version;
-};
-
-const getBuildNumber = (version) => {
-    const split = version.split('.');
-    const [build] = split.slice(-1);
-    return build;
-};
-
-const updateVersionIfNeeded = (pkg, cwd) => {
-    const remoteVersion = getRemoteVersion(pkg, cwd);
-    let remoteBuild = getBuildNumber(remoteVersion);
-    const localVersion = getLocalVersion(cwd);
-    let localBuild = getBuildNumber(localVersion);
-    if(parseInt(remoteBuild) >= parseInt(localBuild)) {
-        remoteBuild++;
-        let parts = localVersion.split('.');
-        parts[parts.length - 1] = remoteBuild;
-        const newVersion = parts.join('.');
-
-        console.log(`Upgrade ${pkg} from ${remoteVersion} to ${newVersion}`);
-
-        const packageJson = getPackageJson(cwd);
-        packageJson.version = newVersion;
-
-        const json = JSON.stringify(packageJson,null,2);
-        console.log(`Writing JSON: ${json}`);
-        const fullPath = `${path.resolve(cwd)}\\package.json`;
-        fs.writeFileSync(fullPath, json);
-    } else {
-        console.log(`Local version of ${pkg} is ${localVersion} and it's already upgraded (remote: ${remoteVersion})`);
+const ctrl = (items) => {
+    const proms = publishAll(items);
+    if (proms.length > 0) {
+        Promise.all(proms).then(([...res]) => {
+            console.log(res);
+            ctrl(items);
+        });
     }
 };
 
-
-fs.readdir(".",function(err, items){
-    // unpublishAll(items);
-    publishAll(items);
+fs.readdir(".", function (err, items) {
+    ctrl(items);
 });
