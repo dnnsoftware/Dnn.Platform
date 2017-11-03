@@ -41,6 +41,20 @@ const getFullPackagesList = (items) => {
     return allPackages;
 };
 
+const cleanup = (items) => {
+    const promises = [];
+    items.filter((item) => !skipList.includes(item)).forEach((item) => {
+        const cwd = `./${item}`;
+        const stats = fs.lstatSync(cwd);
+
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+
+            let out = proc.execSync("rimraf node_modules lib", {cwd, shell: true});
+            console.log(`Cleanup folder ${cwd}: ${out.toString()}`);
+        }
+    });
+};
+
 const checkDeps = (pkjs) => {
     if (pkjs.dependencies) {
         for (let pkg of Object.keys(pkjs.dependencies)) {
@@ -72,6 +86,7 @@ const publishAll = (items) => {
         const stats = fs.lstatSync(cwd);
 
         if (stats.isDirectory() && isProjectFolder(cwd)) {
+
             const json = getPackageJson(cwd);
             const canInstall = checkDeps(json);
             if (canInstall === true && !installedPkgs.includes(json.name)) {
@@ -80,24 +95,25 @@ const publishAll = (items) => {
                 try {
 
                     const removeVersion = getRemoteVersion(json.name, cwd);
-                    const localVersion = json.version;
-                    let EXPECTED_VERSION = localVersion;
+                    let localVersion = json.version;
 
                     let out = '';
                     if(compareVersions(localVersion, removeVersion) < 1) {
                         out = proc.execSync("npm version patch", {cwd, shell: true});
-                        EXPECTED_VERSION = stripVersionTagPrefix(out.toString().trim());
-                        console.log(`Version update from ${json.version} to ${EXPECTED_VERSION}`);
+                        localVersion = stripVersionTagPrefix(out.toString().trim());
+                        console.log(`Version update from ${json.version} to ${localVersion}`);
                     }
 
                     console.log(`Installing dependencies of ${json.name}`);
                     out = proc.execSync("npm i", {cwd, shell: true});
                     console.log(out.toString());
 
+
                     const cmdOptsPublish = `npm publish`;
                     out = proc.execSync(cmdOptsPublish, {cwd, shell: true});
                     console.log(out.toString());
 
+                    const EXPECTED_VERSION = localVersion;
                     const p = new Promise((resolve, reject) => {
                         const itvId = setInterval(() => {
                             const PUBLISHED_VERSION = getRemoteVersion(json.name, cwd);
@@ -178,5 +194,6 @@ const ctrl = (items) => {
 };
 
 fs.readdir(".", function (err, items) {
+    cleanup(items);
     ctrl(items);
 });
