@@ -76,7 +76,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         });
     }
 
-    onSettingChange(key, event) {
+    onSettingChange(key, event, value) {
         let {state, props} = this;
 
         let defaultPagesSettings = Object.assign({}, state.defaultPagesSettings);
@@ -85,6 +85,7 @@ class DefaultPagesSettingsPanelBody extends Component {
             key === "UserTabId" || key === "SearchTabId" || key === "Custom404TabId" || key === "Custom500TabId") {
             if (defaultPagesSettings[key] !== parseInt(event)) {
                 defaultPagesSettings[key] = event;
+                defaultPagesSettings[key.replace("Id", "Name")] = value;
             }
             else {
                 return;
