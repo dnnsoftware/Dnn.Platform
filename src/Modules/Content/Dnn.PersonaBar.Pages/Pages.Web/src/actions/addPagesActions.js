@@ -1,7 +1,6 @@
 import ActionTypes from "../constants/actionTypes/addPagesActionTypes";
 import responseStatus from "../constants/responseStatus";
 import PagesService from "../services/pageService";
-import pageActions from "./pageActions";
 import utils from "../utils";
 import Localization from "../localization";
 

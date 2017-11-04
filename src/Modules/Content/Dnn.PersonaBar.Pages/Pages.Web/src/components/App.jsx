@@ -688,9 +688,28 @@ class App extends Component {
                     components={props.multiplePagesComponents} />);
     }
 
+    onCancelSaveCustomDetail(onCancelSave) {
+        return ((isDirty) =>{
+            if (isDirty) {
+                const onConfirm = () => {
+                    onCancelSave();
+                };
 
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
+            } else {
+                onCancelSave();
+            }
+        });
+    }
+
+    
     onCancelSavePageAsTemplate() {
         const { props } = this;
+
         if (props.dirtyTemplate) {
             const onConfirm = () => {
                 props.onCancelSavePageAsTemplate();
@@ -706,11 +725,7 @@ class App extends Component {
         }
     }
 
-        
-
     getSaveAsTemplatePage() {
-        const { props } = this;
-
         return (
                 <SaveAsTemplate
                     onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
@@ -1459,7 +1474,7 @@ class App extends Component {
                     const Component = customPageSettings.component;
                     additionalPageSettings.push(
                         <Component
-                            onCancel={this.showCancelWithoutSavingDialog.bind(this)}
+                            onCancel={this.onCancelSaveCustomDetail(this.props.onCancelSavePageAsTemplate)} 
                             selectedPage={props.selectedPage}
                             disabled={this.onEditMode()}
                             store={customPageSettings.store} />

@@ -26,10 +26,6 @@ class AddPages extends Component {
         this.onChangeValue(key, event.target.value);
     }
 
-    onChangeCustomComponentValue(key,value){
-
-    }
-
     onChangeTags(tags) {
         this.onChangeValue("tags", tags.join(","));
     }
