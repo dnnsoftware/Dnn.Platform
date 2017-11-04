@@ -60,8 +60,6 @@ class AddPages extends Component {
     }
 
     insertElementsInArray(array, elements) {
-        const store = elements[0].store;
-
         for (let i = 0; i < elements.length; i++) {
             let index = this.getInteger(elements[i].order);
             const Component = elements[i].component;

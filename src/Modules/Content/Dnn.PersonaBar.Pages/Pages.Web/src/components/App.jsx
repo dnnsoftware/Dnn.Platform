@@ -664,7 +664,7 @@ class App extends Component {
         
         if (props.dirtyBulkPage) {
             const onConfirm = () => {
-                props.onCancelSavePageAsTemplate();
+                props.onCancelAddMultiplePages();
             };
 
             utils.confirm(
@@ -1459,7 +1459,7 @@ class App extends Component {
                     const Component = customPageSettings.component;
                     additionalPageSettings.push(
                         <Component
-                            onCancel={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
+                            onCancel={this.showCancelWithoutSavingDialog.bind(this)}
                             selectedPage={props.selectedPage}
                             disabled={this.onEditMode()}
                             store={customPageSettings.store} />
