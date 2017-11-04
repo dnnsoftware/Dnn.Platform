@@ -664,9 +664,7 @@ class App extends Component {
         
         if (props.dirtyBulkPage) {
             const onConfirm = () => {
-                if (!(props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId)) {
-                    props.onCancelSavePageAsTemplate();
-                }
+                props.onCancelSavePageAsTemplate();
             };
 
             utils.confirm(
@@ -693,12 +691,9 @@ class App extends Component {
 
     onCancelSavePageAsTemplate() {
         const { props } = this;
-        
-        if (props.selectedTemplateDirty) {
+        if (props.dirtyTemplate) {
             const onConfirm = () => {
-                if (!(props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId)) {
-                    props.onCancelSavePageAsTemplate();
-                }
+                props.onCancelSavePageAsTemplate();
             };
 
             utils.confirm(
@@ -721,27 +716,6 @@ class App extends Component {
                     onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
     }
 
-    getAdditionalPanels() {
-        const additionalPanels = [];
-        const { props } = this;
-
-        if (props.additionalPanels) {
-            for (let i = 0; i < props.additionalPanels.length; i++) {
-                const panel = props.additionalPanels[i];
-                if (props.selectedView === panel.panelId) {
-                    const Component = panel.component;
-                    additionalPanels.push(
-                        <Component
-                            onCancel={props.onCancelSavePageAsTemplate}
-                            selectedPage={props.selectedPage}
-                            store={panel.store} />
-                    );
-                }
-            }
-        }
-
-        return additionalPanels;
-    }
 
     _traverse(comparator, pageListCopy) {
         let listItems = pageListCopy || JSON.parse(JSON.stringify(this.props.pageList));
@@ -1752,7 +1726,8 @@ function mapStateToProps(state) {
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
         selectedPageDirty: state.pages.dirtyPage,
-        selectedTemplateDirty: state.template.dirtyTemplate,
+        dirtyTemplate: state.template.dirtyTemplate,
+        dirtyEvoqTemplate: state.template.dirtyEvoqTemplate,
         bulkPage: state.addPages.bulkPage,
         dirtyBulkPage : state.addPages.dirtyBulkPage,
         editingSettingModuleId: state.pages.editingSettingModuleId,

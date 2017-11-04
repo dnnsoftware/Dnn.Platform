@@ -12,17 +12,21 @@ function getEmptyTemplateModel() {
     return {
         name: "",
         description: "",
-        includeContent: false
+        includeContent: false,
+        dirtyTemplate:true
     };
 }
 
 export default function templateReducer(state = { 
     template: getEmptyTemplateModel(),
-    errors: []
+    errors: [],
+    dirtyTemplate:false
 }, action) {
 
     switch (action.type) {
+        case ActionTypes.CANCEL_SAVE_AS_TEMPLATE:
         case ActionTypes.LOAD_SAVE_AS_TEMPLATE:
+            
             return { ...state,                
                 template: getEmptyTemplateModel(),
                 errors: [],

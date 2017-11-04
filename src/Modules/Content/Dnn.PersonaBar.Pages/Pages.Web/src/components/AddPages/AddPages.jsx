@@ -11,6 +11,12 @@ import DisplayInMenu from "./DisplayInMenu";
 import EnableScheduling from "./EnableScheduling";
 
 class AddPages extends Component {
+    constructor(props){
+        super(props);
+        this._isFinishLoad = false;
+
+    }
+
     onChangeValue(key, value) {
         const {onChangeField} = this.props;
         onChangeField(key, value);
@@ -18,6 +24,10 @@ class AddPages extends Component {
 
     onChangeEvent(key, event) {
         this.onChangeValue(key, event.target.value);
+    }
+
+    onChangeCustomComponentValue(key,value){
+
     }
 
     onChangeTags(tags) {
@@ -45,15 +55,19 @@ class AddPages extends Component {
         const additionalComponents = this.props.components;
 
         this.insertElementsInArray(defaultLeftColumnComponents, additionalComponents);
+        this._isFinishLoad = true;
         return defaultLeftColumnComponents;
     }
 
     insertElementsInArray(array, elements) {
+        const store = elements[0].store;
+
         for (let i = 0; i < elements.length; i++) {
             let index = this.getInteger(elements[i].order);
             const Component = elements[i].component;
-            const instance = <div className="input-group"><Component bulkPage={this.props.bulkPage} onChange={this.onChangeValue.bind(this)} 
-                store={elements[i].store} /></div>;
+            const instance = <div className="input-group">
+                <Component bulkPage={this.props.bulkPage} onChange={this.onChangeValue.bind(this)} 
+                    store={elements[i].store} /></div>;
          
             if (index || index === 0) {
                 index = Math.min(array.length, Math.max(0, index));
