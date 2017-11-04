@@ -69,7 +69,7 @@ a ticket number.
 
 ## Submitting Changes
 
-* Sign the [Contributor License Agreement](http://www.dnnsoftware.com/Portals/0/Community/CLA/DNN - CLA.docx).
+* Sign the [Contributor License Agreement](http://www.dnnsoftware.com/Portals/0/Community/CLA/DNN%20-%20CLA.docx).
 * Push your changes to a topic branch in your fork of the repository.
 * Submit a pull request to the DNN.Platform repository in the DNNSoftware organization.
 * The committers will handle updating the associated issue in the DNN Tracker to ensure it gets the necessary code review and QA.
