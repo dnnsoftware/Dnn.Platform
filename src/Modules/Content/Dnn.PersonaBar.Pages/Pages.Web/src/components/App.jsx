@@ -233,7 +233,6 @@ class App extends Component {
     }
 
     onPageSettings(pageId) {
-        const { props } = this;
         this.onLoadPage(pageId);
     }
 
@@ -293,7 +292,6 @@ class App extends Component {
         this.shouldRunRecursive = false;
         return new Promise((resolve) => {
             const update = (input && input.tabId) ? input : this.props.selectedPage;
-            let newList = null;
             let cachedItem = null;
 
             const removeFromOldParent = () => {
@@ -439,6 +437,7 @@ class App extends Component {
     onAddMultiplePage() {
         this.clearEmptyStateMessage();
         this.selectPageSettingTab(0);
+        this.props.clearSelectedPage();
 
         this.props.onLoadAddMultiplePages();
         
@@ -709,7 +708,7 @@ class App extends Component {
     
     onCancelSavePageAsTemplate() {
         const { props } = this;
-
+        
         if (props.dirtyTemplate) {
             const onConfirm = () => {
                 props.onCancelSavePageAsTemplate();
