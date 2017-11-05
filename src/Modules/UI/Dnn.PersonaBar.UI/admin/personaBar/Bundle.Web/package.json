@@ -42,7 +42,7 @@
     "dnn-multi-line-input-with-error": "0.0.7",
     "dnn-page-picker": "0.0.17",
     "dnn-pager": "0.0.14",
-    "dnn-permission-grid": "0.0.13",
+    "dnn-permission-grid": "0.0.15",
     "dnn-persona-bar-page": "0.0.3",
     "dnn-persona-bar-page-body": "0.0.3",
     "dnn-persona-bar-page-header": "0.0.29",
@@ -58,10 +58,10 @@
     "dnn-switch": "0.1.3",
     "dnn-tabs": "0.0.6",
     "dnn-tags": "0.0.26",
-    "dnn-tree-control-interactor": "0.1.4",
     "dnn-text-overflow-wrapper": "0.0.7",
     "dnn-text-overflow-wrapper-new": "0.0.6",
     "dnn-tooltip": "0.2.1",
+    "dnn-tree-control-interactor": "0.1.4",
     "es6-object-assign": "1.0.3",
     "es6-promise": "4.0.5",
     "eslint": "2.9.0",
@@ -98,5 +98,8 @@
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "react-redux": "^5.0.6"
   }
 }
