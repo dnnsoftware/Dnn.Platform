@@ -4,7 +4,9 @@ const KEY = {
     BACKSPACE: 8,
     TAB: 9,
     ENTER: 13,
-    COMMA: 188
+    COMMA: 188,
+    DOWN_ARROW: 40,
+    UP_ARROW: 38
 };
 
 export default class TagInput extends Component {
@@ -62,13 +64,17 @@ export default class TagInput extends Component {
             case KEY.ENTER:
             case KEY.COMMA:
             case KEY.TAB:
-                if (this.props.newTagText) {
-                    event.preventDefault();
-                    this.addTag(this.props.newTagText);
-                }
+                event.preventDefault();
+                this.addTag(this.props.newTagText);
                 break;
             case KEY.BACKSPACE:
                 this.removeLastTag();
+                break;
+            case KEY.DOWN_ARROW:
+                this.props.onArrowDown();
+                break;
+            case KEY.UP_ARROW:
+                this.props.onArrowUp();
                 break;
         }
     }
@@ -111,5 +117,7 @@ TagInput.propTypes = {
     removeLastTag: PropTypes.func.isRequired,
     addTagsPlaceholder: PropTypes.string.isRequired,
     onFocus: PropTypes.func,
-    container: PropTypes.object
+    container: PropTypes.object,
+    onArrowUp: PropTypes.func.isRequired,
+    onArrowDown: PropTypes.func.isRequired
 };
