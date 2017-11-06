@@ -73,6 +73,7 @@ namespace DotNetNuke.Security
             new Regex("<form[^>]*>.*?</form[^><]*>", RxOptions),
             new Regex("<option[^>]*>.*?</option[^><]*>", RxOptions),
             new Regex("<select[^>]*>.*?</select[^><]*>", RxOptions),
+            new Regex("<source[^>]*>.*?</source[^><]*>", RxOptions),
             new Regex("<iframe[^>]*>.*?</iframe[^><]*>", RxOptions),
             new Regex("<iframe.*?<", RxOptions),
             new Regex("<iframe.*?", RxOptions),

@@ -183,6 +183,7 @@
     <Compile Include="Providers\Membership\MembershipProviderTests.cs" />
     <Compile Include="Providers\Permissions\PermissionTests.cs" />
     <Compile Include="RetryableActionTests.cs" />
+    <Compile Include="Security\PortalSecurity\PortalSecurityTest.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
     <Compile Include="Services\ClientCapability\TestClientCapability.cs" />
     <Compile Include="Services\CryptographyProviders\FipsCompilanceCryptographyProviderTests.cs" />
