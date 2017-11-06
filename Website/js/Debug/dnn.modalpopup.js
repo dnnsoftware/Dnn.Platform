@@ -207,7 +207,9 @@
                         var $window = $(window),
                             newHeight,
                             newWidth,
-                            JQUERY_UI_HEIGHT_SHRINK_OFFSET = 100;
+                            JQUERY_UI_HEIGHT_SHRINK_OFFSET = 100,
+                            horizontalPosition = "center",
+                            verticalPosition = "center";                            
 
                         if ($modal.data('isMaximized')) {
                             newHeight = $modal.data('height') + JQUERY_UI_HEIGHT_SHRINK_OFFSET;
@@ -216,17 +218,20 @@
 
                         } else {
                             $modal.data('height', $modal.dialog("option", "minHeight"))
-                                .data('width', $modal.dialog("option", "minWidth"));
+                                .data('width', $modal.dialog("option", "minWidth"));                                                       
 
+                            var maximizedWidthCorrection = $('#personaBar-iframe').width();
+                            newWidth = $window.width() - 40 - maximizedWidthCorrection;
                             newHeight = $window.height() - 46;
-                            newWidth = $window.width() - 40;
 
+                            horizontalPosition = "right center";
+                            verticalPosition = "right center";
                             $modal.data('isMaximized', true);
                         }
 
                         $modal.dialog("option", "height", newHeight);
                         $modal.dialog("option", "width", newWidth);
-                        $modal.dialog("option", "position", { my: "center", at: "center", of: window });
+                        $modal.dialog("option", "position", { my: horizontalPosition, at: verticalPosition, of: window });
                     });
                 }
             } else {
