@@ -14,16 +14,9 @@ export class PersonaBarTreeInContextMenu extends Component {
     constructor(props) {
         super(props);
         this.showMenu = false;
-        this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(event) {
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
-            this.props.onClose();
-        }
-    }
     componentWillMount() {
-        document.addEventListener("click", this.handleClick, false);
         let { props } = this;
         if (props.item === undefined)// || props.item.id !== props.pageId) 
         {
@@ -33,17 +26,6 @@ export class PersonaBarTreeInContextMenu extends Component {
             this.showMenu = true;
         }
     }
-    componentWillUnmount() {
-        document.removeEventListener("click", this.handleClick, false);
-    }
-    // componentWillReceiveProps(newProps) {
-    //     if (newProps.item === undefined && newProps.item.id !== newProps.pageId) {
-    //         this.showMenu = false;
-    //     }
-    //     else {
-    //         this.showMenu = true;
-    //     }
-    // }
 
     render_default(item) {
         return (
