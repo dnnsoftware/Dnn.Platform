@@ -1,6 +1,6 @@
 {
   "name": "dnn-tooltip",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Display an icon and associated tooltip showing a message from an array parametter",
   "main": "index.js",
   "scripts": {

@@ -1,0 +1,199 @@
+const fs = require("fs");
+const proc = require("child_process");
+const path = require("path");
+
+const skipList = ['GlobalStyles', 'node_modules'];
+
+const unpublishAll = (items) => {
+    items.forEach((item) => {
+        const cwd = `./${item}`;
+        fs.lstat(cwd, (err, stats) => {
+            if (!err) {
+                const packageJson = `${cwd}\\package.json`;
+                if (stats.isDirectory() && fs.existsSync(packageJson)) {
+                    const json = JSON.parse(fs.readFileSync(packageJson));
+                    console.log(`Current module is ${json.name}`);
+                    console.log(`Current directory is ${cwd}`);
+
+                    const cmdOptsUnpublish = `npm unpublish ${json.name} --force`;
+                    let out = proc.execSync(cmdOptsUnpublish, cwd);
+                    console.log(out);
+                }
+            }
+        });
+    });
+};
+
+const installedPkgs = [];
+
+const getFullPackagesList = (items) => {
+    const allPackages = [];
+    items.filter((item) => !skipList.includes(item)).forEach((item) => {
+        const cwd = `./${item}`;
+        const stats = fs.lstatSync(cwd);
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+            const json = getPackageJson(cwd);
+            if (!allPackages.includes(json.name)) {
+                allPackages.push(json.name);
+            }
+        }
+    });
+    return allPackages;
+};
+
+const cleanup = (items) => {
+    const promises = [];
+    items.filter((item) => !skipList.includes(item)).forEach((item) => {
+        const cwd = `./${item}`;
+        const stats = fs.lstatSync(cwd);
+
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+
+            let out = proc.execSync("rimraf node_modules lib", {cwd, shell: true});
+            console.log(`Cleanup folder ${cwd}: ${out.toString()}`);
+        }
+    });
+};
+
+const checkDeps = (pkjs) => {
+    if (pkjs.dependencies) {
+        for (let pkg of Object.keys(pkjs.dependencies)) {
+            const hasDnnDeps = pkg.startsWith('dnn-') && pkg !== 'dnn-global-styles' && pkg !== 'dnn-api' && pkg !== 'dnn-flag' && pkg !== 'dnn-token-service' && !installedPkgs.includes(pkg);
+            if (hasDnnDeps) {
+                console.log(`Error in ${pkjs.name}: missing dependency ${pkg}`);
+                return false; // check failed
+            }
+        }
+    }
+    if (pkjs.devDependencies) {
+        for (let pkg of Object.keys(pkjs.devDependencies)) {
+            const hasDnnDeps = pkg.startsWith('dnn-') && pkg !== 'dnn-global-styles' && pkg !== 'dnn-api' && pkg !== 'dnn-flag' && pkg !== 'dnn-token-service' && !installedPkgs.includes(pkg);
+            const hasEslintDeps = pkg == 'eslint-config-dnn' && !installedPkgs.includes(pkg);
+            if (hasEslintDeps || hasDnnDeps) {
+                console.log(`Error in ${pkjs.name}: missing dependency ${pkg}`);
+                return false; // check failed
+            }
+        }
+    }
+    return true; // passed check
+
+};
+
+const publishAll = (items) => {
+    const promises = [];
+    items.filter((item) => !skipList.includes(item)).forEach((item) => {
+        const cwd = `./${item}`;
+        const stats = fs.lstatSync(cwd);
+
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+
+            const json = getPackageJson(cwd);
+            const canInstall = checkDeps(json);
+            if (canInstall === true && !installedPkgs.includes(json.name)) {
+                console.log(`### INSTALLING ${json.name} ###`);
+
+                try {
+
+                    const removeVersion = getRemoteVersion(json.name, cwd);
+                    let localVersion = json.version;
+
+                    let out = '';
+                    if(compareVersions(localVersion, removeVersion) < 1) {
+                        out = proc.execSync("npm version patch", {cwd, shell: true});
+                        localVersion = stripVersionTagPrefix(out.toString().trim());
+                        console.log(`Version update from ${json.version} to ${localVersion}`);
+                    }
+
+                    console.log(`Installing dependencies of ${json.name}`);
+                    out = proc.execSync("npm i", {cwd, shell: true});
+                    console.log(out.toString());
+
+
+                    const cmdOptsPublish = `npm publish`;
+                    out = proc.execSync(cmdOptsPublish, {cwd, shell: true});
+                    console.log(out.toString());
+
+                    const EXPECTED_VERSION = localVersion;
+                    const p = new Promise((resolve, reject) => {
+                        const itvId = setInterval(() => {
+                            const PUBLISHED_VERSION = getRemoteVersion(json.name, cwd);
+                            if (EXPECTED_VERSION == PUBLISHED_VERSION) {
+                                resolve(json.name);
+                                installedPkgs.push(json.name);
+                                clearInterval(itvId);
+                            } else {
+                                console.log(`Expected version ${EXPECTED_VERSION} current ${PUBLISHED_VERSION}, retry in 5 seconds`);
+                            }
+                        }, 5000);
+                    });
+                    promises.push(p);
+
+                } catch (e) {
+                    console.log(`Error installing ${json.name}: ${e}`);
+                }
+            }
+        }
+    });
+    return promises;
+};
+
+const stripVersionTagPrefix = (version) => {
+    const res = version.replace(/[^\d^\.]/,'');
+    return res;
+};
+
+const getRemoteVersion = (pkg, cwd, prefix = false) => {
+    const cmd = `npm show ${pkg} version`;
+    const out = proc.execSync(cmd, {cwd, shell: true});
+    const version = out.toString().trim();
+    return `${prefix === true ? "v" : ""}${version}`;
+};
+
+const compareVersions = (locale, remote) => {
+  const s1 = locale.split('.');
+  const s2 = remote.split('.');
+
+  for(let i = 0; i < s1.length; i++) {
+      const v1 = s1[i];
+      const v2 = s2[i] != undefined ? s2[i] : 0;
+      if(v1 < v2) {
+          return -1;
+      }
+      if(v1 > v2) {
+          return 1;
+      }
+  }
+  return 0;
+};
+
+const isProjectFolder = (cwd) => {
+    const fullpath = path.resolve(cwd);
+    const pkg = `${fullpath}\\package.json`;
+    return fs.existsSync(pkg);
+};
+
+const getPackageJson = (cwd) => {
+    const fullpath = path.resolve(cwd);
+    const packageJson = `${fullpath}\\package.json`;
+    if (!fs.existsSync(packageJson)) {
+        throw new Error(`File not found ${packageJson}`);
+    }
+
+    const json = JSON.parse(fs.readFileSync(packageJson));
+    return json;
+};
+
+const ctrl = (items) => {
+    const proms = publishAll(items);
+    if (proms.length > 0) {
+        Promise.all(proms).then(([...res]) => {
+            console.log(res);
+            ctrl(items);
+        });
+    }
+};
+
+fs.readdir(".", function (err, items) {
+    cleanup(items);
+    ctrl(items);
+});
