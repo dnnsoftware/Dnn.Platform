@@ -59,10 +59,10 @@
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1",
-    "webpack-node-externals": "^1.5.4"
+    "webpack-node-externals": "^1.5.4",
+    "react": "^15.3.2"
   },
   "dependencies": {
-    "react": "^15.3.2",
     "dnn-button": "0.0.8",
     "dnn-dropdown": "1.0.16",
     "dnn-global-styles": "0.0.5",
@@ -73,7 +73,10 @@
     "react-widgets": "^3.4.4",
     "redux-undo": "^1.0.0-beta9",
     "react-collapse": "^2.3.3",
-    "react-custom-scrollbars": "^4.0.0",
+    "react-custom-scrollbars": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2",
     "react-dom": "^15.3.2"
   }
 }
