@@ -5,6 +5,7 @@ define(['jquery'], function ($) {
         init: function (config) {
             var loadTempl;
             var injectBeacon;
+            var setDialogClass;
 
             loadTempl = function (folder, template, wrapper, params, self, cb) {
                 var callbackInit, moduleFolder, scriptFolder, templateSuffix, cssSuffix, initMethod, moduleJs, loadMethod;
@@ -50,6 +51,15 @@ define(['jquery'], function ($) {
                 var beaconUrl = config.beaconUrl !== undefined ? config.beaconUrl : undefined;
                 if (beaconUrl != undefined && beaconUrl !== "" && template !== "tasks") {
                     (new Image()).src = beaconUrl + "&f=" + encodeURI(template);
+                }
+            };
+
+            setDialogClass = function (dialog) {
+                if (dialog.parent().find('.socialpanel:visible .dnn-persona-bar-page').hasClass('full-width')) {
+                    dialog.addClass('full-width-mode');
+                }
+                else {
+                    dialog.removeClass();
                 }
             };
 
@@ -117,6 +127,7 @@ define(['jquery'], function ($) {
                 },
 
                 confirm: function (text, confirmBtn, cancelBtn, confirmHandler, cancelHandler) {
+                    setDialogClass($('#confirmation-dialog'));
                     $('#confirmation-dialog > p').html(text);
                     $('#confirmation-dialog a#confirmbtn').html(confirmBtn).unbind('click').bind('click', function () {
                         if (typeof confirmHandler === 'function') confirmHandler.apply();
@@ -156,7 +167,7 @@ define(['jquery'], function ($) {
 
                     clearTimeout(self.fadeTimeout);
 
-                    notificationDialog.removeClass();
+                    setDialogClass(notificationDialog);
                     notificationMessage.removeClass().html(text);
                     if (size) {
                         notificationDialog.addClass(size);
@@ -300,7 +311,7 @@ define(['jquery'], function ($) {
                     return moment().startOf('day').add(seconds, 'seconds').format(format);
                 },
                 getApplicationRootPath: function getApplicationRootPath() {
-                    var rootPath = location.protocol + '//' + location.host + (location.port ? (':' + location.port) : '');
+                    var rootPath = location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '');
                     if (rootPath.substr(rootPath.length - 1, 1) === '/') {
                         rootPath = rootPath.substr(0, rootPath.length - 1);
                     }
@@ -349,6 +360,7 @@ define(['jquery'], function ($) {
                             query: menuItem.Query,
                             link: menuItem.Link,
                             css: menuItem.CssClass,
+                            icon: menuItem.IconFile,
                             displayName: menuItem.DisplayName,
                             settings: menuItem.Settings,
                             menuItems: []
@@ -365,6 +377,7 @@ define(['jquery'], function ($) {
                                     query: menuItem.Query,
                                     link: menuItem.Link,
                                     css: menuItem.CssClass,
+                                    icon: menuItem.IconFile,
                                     displayName: menuItem.DisplayName,
                                     settings: menuItem.Settings
                                 }

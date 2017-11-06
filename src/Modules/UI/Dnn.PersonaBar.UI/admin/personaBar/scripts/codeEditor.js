@@ -28,7 +28,9 @@ define(['jquery',
 
                 var editorOptions = $.extend({}, defaultOptions, options);
                 editorOptions.mode = modeMapping[options.mode] || options.mode;
-                return codemirror.fromTextArea(element, editorOptions);
+                var editor = codemirror.fromTextArea(element, editorOptions);
+                $(editor.display.input.textarea).attr('aria-label', 'Editor');
+                return editor;
             }
             return {
                 init: init

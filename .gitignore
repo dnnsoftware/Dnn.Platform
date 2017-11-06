@@ -11,6 +11,7 @@
 *.sln.docstates
 *.local.sln
 applicationhost.config
+.vs/
 
 # Build results
 [Dd]ebug/

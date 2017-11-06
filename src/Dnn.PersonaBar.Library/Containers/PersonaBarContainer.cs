@@ -1,10 +1,32 @@
-﻿using System.Collections.Generic;
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
+
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
 using Dnn.PersonaBar.Library.Common;
 using Dnn.PersonaBar.Library.Controllers;
+using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Application;
 using DotNetNuke.Entities.Host;
@@ -52,6 +74,8 @@ namespace Dnn.PersonaBar.Library.Containers
 
         #region IPersonaBarContainer Implements
 
+        public virtual IList<string> RootItems => new List<string> {"Content", "Manage", "Settings", "Edit"}; 
+
         public virtual bool Visible => true;
 
         public virtual void Initialize(UserControl personaBarControl)
@@ -80,6 +104,7 @@ namespace Dnn.PersonaBar.Library.Containers
             var settings = new Dictionary<string, object>();
             var user = portalSettings.UserInfo;
             var portalId = portalSettings.PortalId;
+            var preferredTimeZone = TimeZoneHelper.GetPreferredTimeZone(user.Profile.PreferredTimeZone);
 
             var menuStructure = PersonaBarController.Instance.GetMenu(portalSettings, user);
 
@@ -96,6 +121,18 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("sku", DotNetNukeContext.Current.Application.SKU);
             settings.Add("debugMode", HttpContext.Current != null && HttpContext.Current.IsDebuggingEnabled);
             settings.Add("portalId", portalId);
+            settings.Add("preferredTimeZone", preferredTimeZone);
+
+            if (!settings.ContainsKey("isAdmin"))
+            {
+                settings.Add("isAdmin", user.IsInRole(portalSettings.AdministratorRoleName));
+            }
+
+            if (!settings.ContainsKey("isHost"))
+            {
+                settings.Add("isHost", user.IsSuperUser);
+            }
+
             if (BeaconService.Instance.IsBeaconEnabledForPersonaBar())
             {
                 settings.Add("beaconUrl", GetBeaconUrl());

@@ -1,4 +1,25 @@
-﻿using System;
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
+
+using System;
 using System.Data;
 using DotNetNuke.Common.Utilities;
 
@@ -9,11 +30,12 @@ namespace Dnn.PersonaBar.Library.Data
         protected static readonly DotNetNuke.Data.DataProvider DataProvider = DotNetNuke.Data.DataProvider.Instance();
 
         public int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
-            string link, string cssClass, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
+            string link, string cssClass, string iconFile, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu", identifier, moduleName, folderName, controller, resourceKey, path,
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu", 
+                identifier, moduleName, folderName, controller, resourceKey, path,
                 Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value),
-                Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId);
+                Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId, Null.GetNull(iconFile, DBNull.Value));
         }
 
         public IDataReader GetPersonaBarMenu()
@@ -91,9 +113,9 @@ namespace Dnn.PersonaBar.Library.Data
             return DataProvider.ExecuteReader("PersonaBar_GetPersonaBarPermissions");
         }
 
-        public void UpdateMenuController(string identifier, string controller)
+        public void UpdateMenuController(string identifier, string controller, int userId)
         {
-            DataProvider.ExecuteNonQuery("PersonaBar_UpdateMenuController", identifier, controller);
+            DataProvider.ExecuteNonQuery("PersonaBar_UpdateMenuController", identifier, controller, userId);
         }
 
         private object GetRoleNull(int roleId)

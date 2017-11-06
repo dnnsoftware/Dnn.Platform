@@ -1,8 +1,30 @@
-﻿using System;
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
+
+using System;
 using System.Threading;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Repository;
+using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
@@ -67,12 +89,28 @@ namespace Dnn.PersonaBar.Library.Attributes
                 }
             }
 
-            var menuItem = GetMenuByIdentifier();
-            if (menuItem != null && portalSettings != null)
+            //if menu identifier defined, then will check the menu permission, multiple identifier should split with ",".
+            if (!string.IsNullOrEmpty(MenuName))
             {
-                //if supported extension defined, then will check the menu permission.
-                return PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
+                if (isAdmin)
+                    return true;
+
+                var hasPermission = false;
+                MenuName.Split(',').ForEach(menuName =>
+                {
+                    if (!hasPermission)
+                    {
+                        var menuItem = GetMenuByIdentifier(menuName);
+                        if (menuItem != null && portalSettings != null)
+                        {
+                            hasPermission = PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
+                        }
+                    }
+                });
+
+                return hasPermission;
             }
+            
 
             //when menu identifier not defined, will check the service scope permission.
             switch (Scope)
@@ -92,14 +130,14 @@ namespace Dnn.PersonaBar.Library.Attributes
             }
         }
 
-        private MenuItem GetMenuByIdentifier()
+        private MenuItem GetMenuByIdentifier(string menuName)
         {
-            if (string.IsNullOrEmpty(MenuName))
+            if (string.IsNullOrEmpty(menuName))
             {
                 return null;
             }
 
-            return PersonaBarRepository.Instance.GetMenuItem(MenuName);
+            return PersonaBarRepository.Instance.GetMenuItem(menuName.Trim());
         }
     }
 }

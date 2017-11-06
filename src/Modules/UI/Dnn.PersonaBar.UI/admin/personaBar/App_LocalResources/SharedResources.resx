@@ -255,4 +255,16 @@
   <data name="AllSites.Text" xml:space="preserve">
     <value>All Sites</value>
   </data>
+  <data name="Prompt_FlagIsRequired.Text" xml:space="preserve">
+    <value>'[0]' is required.\n</value>
+  </data>
+  <data name="Prompt_InvalidType.Text" xml:space="preserve">
+    <value>The value entered for '[0]' is not valid '[1]'.\n</value>
+  </data>
+  <data name="Promp_MainFlagIsRequired.Text" xml:space="preserve">
+    <value>The '[0]' is required. Please use the --[1] flag or pass it as the first argument after the command name.\n</value>
+  </data>
+  <data name="Promp_PositiveValueRequired.Text" xml:space="preserve">
+    <value>'[0]' must be greater than 0.\n</value>
+  </data>
 </root>

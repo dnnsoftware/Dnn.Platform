@@ -5,7 +5,7 @@
   </PropertyGroup>
   <Import Project="MSBuild.Community.Tasks.Targets" />
   <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
-  <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' OR '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' OR '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
+  <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <XmlRead Prefix="n"
                    Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
                    XPath="dotnetnuke/packages/package/@version"
