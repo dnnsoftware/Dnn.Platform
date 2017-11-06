@@ -19,7 +19,7 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     trimName(item) {
-        let maxLength = 20;
+        let maxLength = 18;
         let { name, tabpath } = item;
         let newLength = tabpath.split(/\//).length * 2 + 1;
         newLength--;
