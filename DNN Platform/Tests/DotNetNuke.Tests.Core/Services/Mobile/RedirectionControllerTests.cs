@@ -30,6 +30,7 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
@@ -56,9 +57,10 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private Mock<DataProvider> _dataProvider;
 		private RedirectionController _redirectionController;
-        private Mock<ClientCapabilityProvider> _clientCapabilityProvider;	    
+        private Mock<ClientCapabilityProvider> _clientCapabilityProvider;
+	    private Mock<IHostController> _mockHostController;
 
-		private DataTable _dtRedirections;
+        private DataTable _dtRedirections;
 		private DataTable _dtRules;
 		
         public const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
@@ -115,8 +117,10 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			MockComponentProvider.CreateDataCacheProvider();
 			MockComponentProvider.CreateEventLogController();
             _clientCapabilityProvider = MockComponentProvider.CreateNew<ClientCapabilityProvider>();
+            _mockHostController = new Mock<IHostController>();
+            HostController.RegisterInstance(_mockHostController.Object);
 
-			_redirectionController = new RedirectionController();
+            _redirectionController = new RedirectionController();
 
 			SetupDataProvider();
 			SetupClientCapabilityProvider();
@@ -126,7 +130,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var dataProviderField = tabController.GetType().GetField("_dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
             if (dataProviderField != null)
             {
-                dataProviderField.SetValue(tabController, DataProvider.Instance());
+                dataProviderField.SetValue(tabController, _dataProvider.Object);
             }
         }
 
@@ -147,7 +151,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 _dtRules = null;
             }
             ComponentFactory.Container = null;
-            
         }
 
 		#endregion
