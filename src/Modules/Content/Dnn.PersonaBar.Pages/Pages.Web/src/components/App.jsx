@@ -649,14 +649,11 @@ class App extends Component {
         this.props.selectPageSettingTab(index);
     }
 
-
-    onSaveMultiplePages(){
-        
+    onSaveMultiplePages(){    
         return this.props.onSaveMultiplePages(()=>{
             this.props.getPageList();
         });
     }
-
     
     onCancelAddMultiplePages(){
         const { props } = this;
