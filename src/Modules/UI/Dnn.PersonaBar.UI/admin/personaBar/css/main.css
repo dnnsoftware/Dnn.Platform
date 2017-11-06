@@ -1096,7 +1096,7 @@ transform: rotate(180deg);
 
 .socialpanelheader {
     padding: 28px 30px 10px 30px;
-    position: fixed;
+    position: absolute;
     width: 860px;
     z-index: 1001;
     background-color: #FFF;
@@ -1429,11 +1429,13 @@ ul.tabControl {
 /* View iPad  - landscape */
 
 #personabar-panels.view-ipad.landscape > .socialpanel { width: 700px;}
-#personabar-panels.view-ipad.landscape > .socialpanel  .socialpanelheader {width: 641px;}
+#personabar-panels.view-ipad.landscape > .socialpanel  .socialpanelheader {width: 700px;}
+#personabar.view-ipad.landscape .personabarnav > li#showsite:not(.full-width-mode) { left: 761px; }
 /* View iPad  - Portrait */
 
 #personabar-panels.view-ipad.portrait > .socialpanel { width: 500px;}
-#personabar-panels.view-ipad.portrait > .socialpanel .socialpanelheader {width: 441px;}
+#personabar-panels.view-ipad.portrait > .socialpanel .socialpanelheader {width: 500px;}
+#personabar.view-ipad.portrait .personabarnav > li#showsite:not(.full-width-mode) { left: 561px; }
 
 
 /* customised modal dialog style */

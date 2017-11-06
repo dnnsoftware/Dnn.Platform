@@ -64,6 +64,10 @@ define(['jquery'], function ($) {
             };
 
             return {
+                loaded: function(template) {
+                    return !!initializedModules[template];
+                },
+
                 loadTemplate: function (folder, template, wrapper, params, cb) {
                     var self = this;
                     loadTempl(folder, template, wrapper, params, self, cb, false);
@@ -177,6 +181,9 @@ define(['jquery'], function ($) {
                     }
                     if (type === 'error') {
                         notificationDialog.addClass('errorMessage');
+                    }
+                    else {
+                        notificationDialog.removeClass('errorMessage');
                     }
                     closeNotification.html(closeButtonText)
                     closeNotification.on('click', function () {

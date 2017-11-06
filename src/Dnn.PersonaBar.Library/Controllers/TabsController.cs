@@ -25,6 +25,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Dnn.PersonaBar.Library.DTO.Tabs;
+using Dnn.PersonaBar.Library.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -68,8 +69,8 @@ namespace Dnn.PersonaBar.Library.Controllers
                 ChildTabs = new List<TabDto>(),
                 HasChildren = true
             };
-            List<TabInfo> tabs = new List<TabInfo>();
-            
+            var tabs = new List<TabInfo>();
+
             cultureCode = string.IsNullOrEmpty(cultureCode) ? portalInfo.CultureCode : cultureCode;
             if (portalId > -1)
             {
@@ -78,7 +79,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                         isMultiLanguage
                             ? TabController.GetTabsBySortOrder(portalId, portalInfo.DefaultLanguage, true)
                             : TabController.GetTabsBySortOrder(portalId, cultureCode, true), Null.NullInteger, false,
-                        "<" + Localization.GetString("None_Specified") + ">", true, includeDeleted, true, true, false)
+                        "<" + Localization.GetString("None_Specified") + ">", true, includeDeleted, true, false, false)
                         .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                         .ToList();
 
@@ -102,13 +103,14 @@ namespace Dnn.PersonaBar.Library.Controllers
             tabs = excludeAdminTabs
                 ? tabs.Where(tab => tab.Level == 0 && tab.TabID != portalInfo.AdminTabId).ToList()
                 : tabs.Where(tab => tab.Level == 0).ToList();
-            
+
             if (!string.IsNullOrEmpty(validateTab))
             {
                 tabs = ValidateModuleInTab(tabs, validateTab).ToList();
             }
             var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
             rootNode.HasChildren = tabs.Count > 0;
+            rootNode.Selectable = SecurityService.Instance.IsPagesAdminUser();
             foreach (var tab in tabs)
             {
                 string tooltip;
@@ -121,7 +123,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     Tooltip = tooltip,
                     ParentTabId = tab.ParentId,
                     HasChildren = tab.HasChildren,
-                    Selectable = filterTabs.Contains(tab.TabID),
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
                     ChildTabs = new List<TabDto>()
                 };
                 rootNode.ChildTabs.Add(node);
@@ -133,7 +135,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 : rootNode;
         }
 
-        public TabDto SearchPortalTabs(UserInfo userInfo, string searchText, int portalId, string roles="", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
+        public TabDto SearchPortalTabs(UserInfo userInfo, string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
         {
             var rootNode = new TabDto
             {
@@ -164,8 +166,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                                 (includeDeleted || !tab.Value.IsDeleted) &&
                                 (tab.Value.TabType == TabType.Normal) &&
                                 searchFunc(tab.Value) &&
-                                !tab.Value.IsSystem
-                                && TabPermissionController.CanViewPage(tab.Value))
+                                !tab.Value.IsSystem)
                         .Select(tab => tab.Value).ToList();
 
                 if (userInfo.IsSuperUser && includeHostPages)
@@ -189,6 +190,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
             rootNode.HasChildren = tabs.Any();
+            rootNode.Selectable = SecurityService.Instance.IsPagesAdminUser();
             foreach (var tab in tabs)
             {
                 string tooltip;
@@ -200,7 +202,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     ImageUrl = nodeIcon,
                     ParentTabId = tab.ParentId,
                     HasChildren = false,
-                    Selectable = filterTabs.Contains(tab.TabID)
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab)
                 };
                 rootNode.ChildTabs.Add(node);
             }
@@ -222,7 +224,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         }
         private IEnumerable<TabInfo> ValidateModuleInTab(IEnumerable<TabInfo> tabs, string validateTab)
         {
-            return tabs.Where(tab =>(tab.TabID > 0 && Globals.ValidateModuleInTab(tab.TabID, validateTab)) || tab.TabID == Null.NullInteger);
+            return tabs.Where(tab => (tab.TabID > 0 && Globals.ValidateModuleInTab(tab.TabID, validateTab)) || tab.TabID == Null.NullInteger);
         }
 
         private List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
@@ -230,7 +232,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             var filterTabs = new List<int>();
             if (!string.IsNullOrEmpty(roles))
             {
-                var roleList = roles.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
+                var roleList = roles.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
 
                 filterTabs.AddRange(
                     tabs.Where(
@@ -294,7 +296,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 if (!tabDtos.Exists(x => Convert.ToInt32(x.TabId) == tabId))
                 {
-                    return GetDescendantsForTabs(enumerable.Except(new List<int> {tabId}), tabDtos, selectedTabId,
+                    return GetDescendantsForTabs(enumerable.Except(new List<int> { tabId }), tabDtos, selectedTabId,
                         portalId, cultureCode, isMultiLanguage);
                 }
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
@@ -302,7 +304,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                         isMultiLanguage).ToList();
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).IsOpen = true;
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
-                    GetDescendantsForTabs(enumerable.Except(new List<int> {tabId}),
+                    GetDescendantsForTabs(enumerable.Except(new List<int> { tabId }),
                         tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs, selectedTabId,
                         portalId, cultureCode, isMultiLanguage).ToList();
             }
@@ -318,22 +320,19 @@ namespace Dnn.PersonaBar.Library.Controllers
         private TabDto GetTabByCulture(int tabId, int portalId, Locale locale)
         {
             var tab = TabController.Instance.GetTabByCulture(tabId, portalId, locale);
-            if (TabPermissionController.CanViewPage(tab))
+            string tooltip;
+            var nodeIcon = GetNodeIcon(tab, out tooltip);
+            return new TabDto
             {
-                string tooltip;
-                var nodeIcon = GetNodeIcon(tab, out tooltip);
-                return new TabDto
-                {
-                    Name = tab.TabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
-                    TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                    ImageUrl = nodeIcon,
-                    Tooltip = tooltip,
-                    ParentTabId = tab.ParentId,
-                    HasChildren = tab.HasChildren,
-                    ChildTabs = new List<TabDto>()
-                };
-            }
-            return null;
+                Name = tab.TabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
+                ImageUrl = nodeIcon,
+                Tooltip = tooltip,
+                ParentTabId = tab.ParentId,
+                HasChildren = tab.HasChildren,
+                ChildTabs = new List<TabDto>(),
+                Selectable = TabPermissionController.CanAddPage(tab)
+            };
         }
 
         public TabDto GetTabByCulture(int tabId, int portalId, string cultureCode)
@@ -352,8 +351,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             var tabs =
                 GetExportableTabs(TabController.Instance.GetTabsByPortal(portalId)
                     .WithCulture(cultureCode, true))
-                    .WithParentId(parentId)
-                    .Where(TabPermissionController.CanViewPage).ToList();
+                    .WithParentId(parentId).ToList();
 
 
             if (!string.IsNullOrEmpty(validateTab))
@@ -374,7 +372,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     Tooltip = tooltip,
                     ParentTabId = tab.ParentId,
                     HasChildren = tab.HasChildren,
-                    Selectable = filterTabs.Contains(tab.TabID)
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab)
                 };
                 descendants.Add(node);
             }

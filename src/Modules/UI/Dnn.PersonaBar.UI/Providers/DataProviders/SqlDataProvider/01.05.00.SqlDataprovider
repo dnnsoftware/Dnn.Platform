@@ -1,0 +1,50 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** DNN-9960: Increase RoleNames Column Length for PersonaBarDefaultPermissions. *****/
+ALTER TABLE {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] ALTER COLUMN [RoleNames] NVARCHAR(1024) NOT NULL
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions]
+    @MenuId                     INT,
+    @RoleNames                  NVARCHAR(1024)
+AS
+BEGIN
+    IF EXISTS(SELECT MenuId FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] WHERE MenuId = @MenuId)
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
+            SET 
+                RoleNames = @RoleNames
+            WHERE MenuId = @MenuId
+
+            SELECT Id FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] WHERE MenuId = @MenuId
+    END
+    ELSE
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] (
+            [MenuId],
+            [RoleNames]
+        ) VALUES (
+            @MenuId,
+            @RoleNames
+        )
+
+        SELECT SCOPE_IDENTITY()
+    END
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
