@@ -220,8 +220,12 @@
                             $modal.data('height', $modal.dialog("option", "minHeight"))
                                 .data('width', $modal.dialog("option", "minWidth"));                                                       
 
-                            var maximizedWidthCorrection = $('#personaBar-iframe').width();
-                            newWidth = $window.width() - 40 - maximizedWidthCorrection;
+                            var personaBarIFrameWidth = 0;
+                            if ($('#personaBar-iframe').length) {
+                                personaBarIFrameWidth = $('#personaBar-iframe').width();
+                            }
+
+                            newWidth = $window.width() - 40 - personaBarIFrameWidth;
                             newHeight = $window.height() - 46;
 
                             horizontalPosition = "right center";
