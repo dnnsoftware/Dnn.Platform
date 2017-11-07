@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, {Component, PropTypes} from "react";
 import {Scrollbars} from "react-custom-scrollbars";
 
 const style = {
@@ -10,42 +10,66 @@ const style = {
 };
 
 export default class Suggestions extends Component {
+
     onSelectSuggestion(tag) {
-        if (typeof (this.props.onSelectSuggestion) === "function") {
-            this.props.onSelectSuggestion(tag);    
-        }
+        this.props.onSelectSuggestion(tag);
     }
 
     onScrollUpdate(scroll) {
         if (typeof (this.props.onScrollUpdate) === "function") {
-            this.props.onScrollUpdate(scroll);    
+            this.props.onScrollUpdate(scroll);
         }
     }
 
     getSuggestions() {
-        return this.props.suggestions.map((suggestion, index) => {
-            return <div className="suggestion" key={index} onClick={this.onSelectSuggestion.bind(this, suggestion.value)}>{suggestion.value}</div>;
+        let suggestions = this.props.suggestions.map((suggestion, index) => {
+            let className = this.props.selectedIndex > -1 && index === this.props.selectedIndex ? "selected" : "";
+            return <div ref={(itemRef) => this.itemRef = index === 0 ? itemRef : null} className={`suggestion ${className}`} key={index}
+                        onClick={this.onSelectSuggestion.bind(this, suggestion.value)}>{suggestion.value}</div>;
         });
+        return suggestions;
+    }
+
+    keySelectionHandler(scrollBars) {
+        const selectedIndex = this.props.selectedIndex;
+        if (!scrollBars) return;
+        if (this.itemRef) {
+            const viewHeight = scrollBars.getClientHeight();
+            const h = this.itemRef.clientHeight;
+            const selectedItemScroll = h * selectedIndex;
+            const currentScroll = scrollBars.getScrollTop();
+            setTimeout(() => {
+                if (selectedItemScroll < currentScroll) {
+                    scrollBars.scrollTop(currentScroll - viewHeight);
+                } else if (selectedItemScroll + h > (currentScroll + viewHeight )) {
+                    scrollBars.scrollTop(selectedItemScroll + h + currentScroll + viewHeight);
+                }
+            });
+        }
     }
 
     render() {
         const suggestions = this.getSuggestions();
-
+        const keySelectionHandler = this.keySelectionHandler.bind(this);
         return (<div className="suggestions">
-                <Scrollbars style={style.list}
+            <Scrollbars ref={keySelectionHandler}
+                        style={style.list}
                         onUpdate={this.onScrollUpdate.bind(this)}>
-                    {suggestions}
-                </Scrollbars>
-            </div>);
+                {suggestions}
+            </Scrollbars>
+        </div>);
     }
 }
+
 
 Suggestions.propTypes = {
     onSelectSuggestion: PropTypes.func.isRequired,
     suggestions: PropTypes.array,
-    onScrollUpdate: PropTypes.func
+    onScrollUpdate: PropTypes.func,
+    selectedIndex: PropTypes.number.isRequired
 };
 
 Suggestions.defaultProps = {
-    suggestions: []
+    suggestions: [],
+    selectedIndex: -1
 };
