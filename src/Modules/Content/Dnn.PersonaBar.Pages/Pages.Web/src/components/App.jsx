@@ -246,7 +246,7 @@ class App extends Component {
 
     onCreatePage() {
         this.props.onCreatePage((page) => {
-            if (page && page.canAddContentToPage || utils.getIsSuperUser()) {
+            if (page && page.canAddContentToPage || page && page.pageType !== "normal" || utils.getIsSuperUser()) {
                 page.selected = true;
                 if (page.parentId && page.parentId !== -1) {
                     this._traverse((item, list, updateStore) => {
@@ -255,8 +255,19 @@ class App extends Component {
                                 case item.childCount > 0 && !item.childListItems:
                                     this.props.getChildPageList(item.id).then((data) => {
                                         item.isOpen = true;
+                                        data.map(child => {
+                                            if (child.id === page.id) {
+                                                child.selected = true;
+                                            }
+                                            return child;
+                                        });
                                         item.childListItems = data;
                                         updateStore(list);
+                                        if (page.canAddContentToPage)
+                                            this.onLoadPage(page.id);
+                                        else {
+                                            this.onNoPermissionSelection(page.id);
+                                        }
                                     });
                                     break;
                                 case item.childCount === 0 && !item.childListItems:
