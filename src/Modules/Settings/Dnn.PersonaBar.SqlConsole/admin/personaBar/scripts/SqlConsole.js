@@ -663,14 +663,15 @@ define(['jquery',
                     var response = eval('(' + xhr.responseText + ')');
                     if (response['Error'] || response['Message']) {
                         message = response['Error'] || response['Message'];
-                        message = message.replace(/\r\n/gi, '<br />');
                     }
                 }
                 viewModel.loading(false);
-                utility.notifyError(message, { clickToClose: true});
+                utility.notifyError(htmlDecode(message), { clickToClose: true});
             });
         }
-
+        function htmlDecode(textToDecode) {
+            return $('<div />').text(textToDecode).html();
+        }
         var queryChanged = function (data) {
             queryEditor.setValue(data);
         }
