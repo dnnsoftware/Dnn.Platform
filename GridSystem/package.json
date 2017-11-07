@@ -45,5 +45,8 @@
   "dependencies": {
     "dnn-grid-cell": "0.0.4",
     "react": "^15.3.2"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }

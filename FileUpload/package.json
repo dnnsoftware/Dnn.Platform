@@ -52,5 +52,9 @@
     "react": "^15.6.2",
     "react-custom-scrollbars": "^4.1.2",
     "react-dom": "^15.6.2"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   }
 }

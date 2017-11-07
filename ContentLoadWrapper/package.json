@@ -47,5 +47,8 @@
     "scroll": "^2.0.0",
     "dnn-svg-icons": "0.1.20",
     "dnn-global-styles": "0.0.5"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }

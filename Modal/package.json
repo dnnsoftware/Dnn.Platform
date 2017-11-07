@@ -48,5 +48,8 @@
     "react": "^15.3.2",
     "react-custom-scrollbars": "^4.1.2",
     "react-modal": "^3.0.3"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }

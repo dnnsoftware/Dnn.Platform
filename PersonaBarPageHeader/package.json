@@ -45,5 +45,8 @@
     "react": "^15.3.2",
     "dnn-global-styles": "0.0.5",
     "dnn-text-overflow-wrapper-new": "0.0.7"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }

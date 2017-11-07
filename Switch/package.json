@@ -46,5 +46,8 @@
     "react": "^15.3.2",
     "dnn-tooltip": "0.2.1",
     "dnn-global-styles": "0.0.5"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }
