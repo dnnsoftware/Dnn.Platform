@@ -22,6 +22,21 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
         }
 
+        public DnnUrlHelper(RequestContext requestContext, IDnnController controller)
+        {
+            Requires.NotNull("controller", controller);
+
+            UrlHelper = new UrlHelper(requestContext);
+            _controller = controller;
+
+            if (_controller == null)
+            {
+                throw new InvalidOperationException("The DnnUrlHelper class can only be used in Views that inherit from DnnWebViewPage");
+            }
+
+            ModuleContext = _controller.ModuleContext;
+        }
+
         public DnnUrlHelper(ViewContext viewContext, RouteCollection routeCollection)
         {
             Requires.NotNull("viewContext", viewContext);
