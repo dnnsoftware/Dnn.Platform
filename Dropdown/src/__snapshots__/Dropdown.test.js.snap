@@ -95,7 +95,7 @@ exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
             }
           }
         >
-          <Motion
+          <Component
             defaultStyle={
               Object {
                 "height": 0,
@@ -250,7 +250,7 @@ exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
                 </div>
               </div>
             </div>
-          </Motion>
+          </Component>
         </Collapse>
       </UnmountClosed>
     </div>
@@ -464,7 +464,7 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
             }
           }
         >
-          <Motion
+          <Component
             defaultStyle={
               Object {
                 "height": 0,
@@ -619,7 +619,7 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
                 </div>
               </div>
             </div>
-          </Motion>
+          </Component>
         </Collapse>
       </UnmountClosed>
     </div>
@@ -2759,7 +2759,7 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
             }
           }
         >
-          <Motion
+          <Component
             defaultStyle={
               Object {
                 "height": 0,
@@ -2914,7 +2914,7 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
                 </div>
               </div>
             </div>
-          </Motion>
+          </Component>
         </Collapse>
       </UnmountClosed>
     </div>
