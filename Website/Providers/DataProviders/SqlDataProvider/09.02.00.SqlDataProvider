@@ -659,6 +659,27 @@ BEGIN
 END
 GO
 
+/***** DNN-4350: Clear the PortalAliasId in TabUrls when delete the portal alias. *****/
+UPDATE u SET PortalAliasId = NULL
+    FROM {databaseOwner}[{objectQualifier}TabUrls] u
+    LEFT JOIN {databaseOwner}[{objectQualifier}PortalAlias] a ON a.PortalAliasId = u.PortalAliasId
+    WHERE u.PortalAliasId IS NOT NULL AND a.PortalAliasID IS NULL
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeletePortalAlias]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePortalAlias
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}DeletePortalAlias]
+    @PortalAliasID INT
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalAlias]
+        WHERE PortalAliasID = @PortalAliasID
+        
+    UPDATE 	{databaseOwner}[{objectQualifier}TabUrls]
+        SET PortalAliasID = NULL WHERE PortalAliasID = @PortalAliasID
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
