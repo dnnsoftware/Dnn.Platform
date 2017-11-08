@@ -58,10 +58,16 @@ namespace DotNetNuke.Entities.Portals
 
         #region Private Methods
 
-        private static void ClearCache(bool refreshServiceRoutes)
+        private static void ClearCache(bool refreshServiceRoutes, int portalId = -1)
         {
             DataCache.RemoveCache(DataCache.PortalAliasCacheKey);
             CacheController.FlushPageIndexFromCache();
+
+            if (portalId > Null.NullInteger)
+            {
+                DataCache.ClearTabsCache(portalId);
+            }
+
             if (refreshServiceRoutes)
             {
                 ServicesRoutingManager.ReRegisterServiceRoutesWhileSiteIsRunning();
@@ -198,7 +204,7 @@ namespace DotNetNuke.Entities.Portals
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_DELETED);
 
             //clear portal alias cache
-            ClearCache(false);
+            ClearCache(false, portalAlias.PortalID);
         }
 
         public PortalAliasInfo GetPortalAlias(string alias)
