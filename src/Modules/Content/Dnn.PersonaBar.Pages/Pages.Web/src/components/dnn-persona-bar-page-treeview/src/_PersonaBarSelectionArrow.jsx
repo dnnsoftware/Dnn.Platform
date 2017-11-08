@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import GridCell from "dnn-grid-cell";
 import { PropTypes } from "prop-types";
 import { ArrowForward, MoreMenuIcon } from "dnn-svg-icons";
 import { PersonaBarTreeInContextMenu } from "./_PersonaBarTreeInContextMenu";
@@ -16,7 +15,7 @@ export default class PersonaBarSelectionArrow extends Component {
     }
 
     hasAtLeastOnePermission(item){
-        switch(true){
+        switch (true) {
             case item.canViewPage:
             case item.canManagePage:
             case item.canEditPage:
@@ -38,22 +37,36 @@ export default class PersonaBarSelectionArrow extends Component {
         });
         updateReduxStore(pageList);
     }
-    toggleInContextMenu() {
-        const show = !this.state.showMenu;
-        this.setState({ showMenu: show });
+
+    onMouseEnter() {
+        this.setState({ showMenu: true });
     }
+
+    onMouseLeave() {
+        this.setState({ showMenu: false });
+    }
+
     /* eslint-disable react/no-danger */
+    renderMoreActions() {
+        return <div className={this.state.showMenu ? "dots active" : "dots"}
+            onMouseEnter={this.onMouseEnter.bind(this)}
+            onMouseLeave={this.onMouseLeave.bind(this)}>
+                <div dangerouslySetInnerHTML={{ __html: MoreMenuIcon }} ></div>
+                {this.state.showMenu && 
+                    <PersonaBarTreeInContextMenu {...this.props} onClose={this.onMouseLeave.bind(this)} />
+                }
+        </div>;
+    }
+
     render() {
         const { item } = this.props;
         /*eslint-disable react/no-danger*/
-
         return (
-            <div id={`menu-item-${item.name} ${item.selected}`} className="selection-arrow">
+            <div id={`menu-item-${item.name} ${item.selected}`} 
+            className="selection-arrow">
                 {item.selected ? <div dangerouslySetInnerHTML={{ __html: ArrowForward }} /> : <div></div>}
-                {item.selected ? <div className={this.state.showMenu ? "dots active" : "dots"} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }} onClick={() => this.toggleInContextMenu()} /> : <div></div>}
-                {this.state.showMenu && <PersonaBarTreeInContextMenu {...this.props} onClose={this.toggleInContextMenu.bind(this)} />}
+                {item.selected ? this.renderMoreActions() : <div></div>}                
             </div>
-
         );
     }
 }
