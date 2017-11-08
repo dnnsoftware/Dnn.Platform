@@ -6,7 +6,7 @@ const Button = ({children, className, size, type, onClick, style, disabled}) => 
         <button className={"dnn-ui-common-button" + (className ? (" " + className) : "") + (" " + size)} style={style} 
             role={type} onClick={onClick} disabled={disabled}>
             {children}
-        </button> 
+        </button>
     );
 };
 

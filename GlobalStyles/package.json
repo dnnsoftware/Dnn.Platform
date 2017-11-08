@@ -7,7 +7,9 @@
         "build": "echo \"No build required\""
     },
     "contributors": [
-        { "name": "Miguel Gatmaytan" }
+        {
+            "name": "Miguel Gatmaytan"
+        }
     ],
     "repository": {
         "type": "git",

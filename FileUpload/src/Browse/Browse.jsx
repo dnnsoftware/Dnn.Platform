@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import FolderPicker from "./FolderPicker";
 import FilePicker from "./FilePicker";
+import helper from "../helper";
 
 import "./style.less";
 const KEY = {
@@ -11,8 +12,8 @@ const KEY = {
 function findKey(thisObject, id) {
     let p, tRet;
     for (p in thisObject) {
-        if (p == "data") {
-            if (thisObject[p].key == id) {
+        if (p === "data") {
+            if (thisObject[p].key === id) {
                 return thisObject;
             }
         } else if (thisObject[p] instanceof Object) {
@@ -113,7 +114,7 @@ export default class Browse extends Component {
 
     setFolders(result) {
         this.setState({ folders: result.Tree });
-        if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder && this.state.selectedFolder.value == "0") {
+        if (this.state.selectedFile && !this.state.selectedFolder || this.state.selectedFolder && this.state.selectedFolder.value === "0") {
             const selectedFolder = result.Tree.children[0].data;
             this.setState({ selectedFolder });
         }
@@ -142,24 +143,38 @@ export default class Browse extends Component {
         this.setState({ folders });
     }
 
+    renderActions(){
+        const {props} = this;
+
+        return helper.renderActions(props.browseActionText, {
+            "save": this.onSave.bind(this),
+            "cancel": props.onCancel
+        });
+    }
+
     render() {
         /* eslint-disable react/no-danger */
         return <div className="file-upload-container">
-            <h4>Folder</h4>
+            <h4>{this.props.folderText}</h4>
             <FolderPicker
+                notSpecifiedText = {this.props.notSpecifiedText}
+                searchFoldersPlaceHolderText = {this.props.searchFoldersPlaceHolderText}
                 selectedFolder={this.state.selectedFolder}
                 folders={this.state.folders}
                 searchFolder={this.getFolders.bind(this)}
                 onFolderClick={this.onFolderClick.bind(this) }
-                getChildren={this.getChildrenFolders.bind(this) }/>
-            <h4>File</h4>
+                getChildren={this.getChildrenFolders.bind(this) }
+                />
+            <h4>{this.props.fileText}</h4>
             <FilePicker
+                notSpecifiedText = {this.props.notSpecifiedText}
+                searchFilesPlaceHolderText = {this.props.searchFilesPlaceHolderText}
                 selectedFile={this.state.selectedFile}
                 files={this.state.files}
                 onFileClick={this.onFileClick.bind(this) }
-                getFiles={this.getFiles.bind(this) }
+                getFiles={this.getFiles.bind(this) }                
                 />
-            <span>Press <strong onClick={this.onSave.bind(this) }>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
+            <span>{this.renderActions()}</span>
         </div>;
     }
 }
@@ -171,7 +186,14 @@ Browse.propTypes = {
     selectedFolder: PropTypes.object.isRequired,
     fileFormats: PropTypes.array,
     onSave: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired,
+
+    browseActionText: PropTypes.string,
+    fileText: PropTypes.string,
+    folderText: PropTypes.string,
+    notSpecifiedText: PropTypes.string,
+    searchFoldersPlaceHolderText: PropTypes.string,
+    searchFilesPlaceHolderText: PropTypes.string
 };
 
 Browse.defaultProps = {

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import helper from "./helper";
 
 const KEY = {
     ENTER: 13,
@@ -41,12 +42,25 @@ export default class LinkInput extends Component {
         this.setState({ url: e.target.value });
     }
 
+    renderActions(){
+        const {props} = this;
+
+        return helper.renderActions(props.linkInputActionText, {
+            "save": this.onSave.bind(this),
+            "cancel": this.props.onCancel
+        });
+    }
+
     render() {
         return <div className="file-upload-container">
-            <h4>{"URL Link"}</h4>
+            <h4>{this.props.linkInputTitleText}</h4>
             <div className="textarea-container">
-                <textarea value={this.state.url} onChange={this.onChange.bind(this) } placeholder="http://example.com/imagename.jpg" aria-label="Link" />
-                <span>Press <strong onClick={this.onSave.bind(this)}>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
+                <textarea 
+                    value={this.state.url} 
+                    onChange={this.onChange.bind(this) } 
+                    placeholder={this.props.linkInputPlaceholderText} 
+                    aria-label="Link" />
+                <span>{this.renderActions()}</span>
             </div>
         </div>;
     }
@@ -55,5 +69,9 @@ export default class LinkInput extends Component {
 LinkInput.propTypes = {
     linkPath: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired,
+
+    linkInputTitleText: PropTypes.string,
+    linkInputPlaceholderText: PropTypes.string,
+    linkInputActionText: PropTypes.string
 };

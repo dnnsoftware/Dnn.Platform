@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-dnn",
-  "version": "0.0.5",
+  "version": "0.0.8",
   "description": "Shared ESLint config for Dnn projects",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
   },
-  "peerDependencies": {
+  "dependencies": {
     "eslint-import-resolver-webpack": "^0.3.2",
     "eslint-plugin-filenames": "^1.0.0",
     "eslint-plugin-import": "^1.10.1",

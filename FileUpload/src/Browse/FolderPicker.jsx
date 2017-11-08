@@ -64,7 +64,7 @@ export default class FolderPicker extends Component {
 
     render() {
         /* eslint-disable react/no-danger */
-        const selectedFolderText = this.props.selectedFolder ? this.props.selectedFolder.value : "<Not Specified>";
+        const selectedFolderText = this.props.selectedFolder ? this.props.selectedFolder.value : this.props.notSpecifiedText;
 
         return <div className="drop-down">
             <div className="selected-item" onClick={this.onFoldersClick.bind(this) }>
@@ -73,7 +73,7 @@ export default class FolderPicker extends Component {
             <div className={"item-picker-container" + (this.state.showFolderPicker ? " show" : "") } >
                 <div className="inner-box">
                     <div className="search">
-                        <input type="text" value={this.state.searchFolderText} onChange={this.onChangeSearchFolderText.bind(this) } placeholder="Search Folders..." aria-label="Search" />
+                        <input type="text" value={this.state.searchFolderText} onChange={this.onChangeSearchFolderText.bind(this) } placeholder={this.props.searchFoldersPlaceHolderText} aria-label="Search" />
                         {this.state.searchFolderText && <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>}
                         <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
                     </div>
@@ -100,5 +100,8 @@ FolderPicker.propTypes = {
     onFolderClick: PropTypes.func.isRequired,
     getChildren: PropTypes.func.isRequired,
     selectedFolder: PropTypes.object.isRequired,
-    searchFolder: PropTypes.func.isRequired
+    searchFolder: PropTypes.func.isRequired,
+
+    notSpecifiedText: PropTypes.string,
+    searchFoldersPlaceHolderText: PropTypes.string
 };

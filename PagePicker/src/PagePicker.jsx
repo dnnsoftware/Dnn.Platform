@@ -49,14 +49,11 @@ class PagePicker extends Component {
                 this.initialize(newProps);
             });
         }
-        else if (newProps.ResetSelected && !this.props.IsMultiSelect && newProps.IsInDropDown && this._isMounted) {
-            this.setDefaultPage(newProps);
+        else if (!this.props.IsMultiSelect && newProps.IsInDropDown && this._isMounted) {
+            if (newProps.selectedTabId !== this.props.selectedTabId) {
+                this.setDefaultPage(newProps);
+            }
         }
-        
-        this.setState({
-            selectedPage: newProps.defaultLabel,
-            selectedTabId: newProps.selectedTabId
-        });
     }
 
     componentDidMount() {
@@ -258,9 +255,9 @@ class PagePicker extends Component {
             });
     }
 
-    getSelected(page) {
+    getSelected(page, isCurrentOrDescendant) {
         let className = "page-value";
-        if (page.Selectable)
+        if (page.Selectable && !isCurrentOrDescendant)      
             className += (page.CheckedState !== 1 ? " selected" : "");
         else
             className += " non-selectable";
@@ -268,20 +265,22 @@ class PagePicker extends Component {
     }
 
     /* eslint-disable react/no-danger */
-    getChildItems(children) {
+    getChildItems(children, isCurrentOrDescendant) {
         if (!children) {
             return [];
-        }
+        }        
         return children.map((page) => {
             const {props} = this;
             const checkboxIcon = this.getCheckboxIcon(page.CheckedState);
             const pageIcon = PagesIcon;
             const textClass = props.IsMultiSelect && props.ShowIcon ? " text-with-page-icon" : (!props.IsMultiSelect && !props.ShowIcon ? "no-icon" : "");
             const pageClass = props.IsMultiSelect && props.ShowIcon ? " page-icon" : "";
+            const parentNotSelectable = isCurrentOrDescendant ? isCurrentOrDescendant : this.props.currentTabId === parseInt(page.TabId);
+            
             return <li className={"page-item page-" + page.TabId + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
                 {(!page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
                 {(page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
-                <div className={this.getSelected(page) } onClick={page.Selectable ? this.onPageSelect.bind(this, page) : void (0) }>
+                <div className={this.getSelected(page, parentNotSelectable) } onClick={page.Selectable && !parentNotSelectable ? this.onPageSelect.bind(this, page) : void (0) }>
                     { props.ShowIcon &&
                         <div className={pageClass } dangerouslySetInnerHTML={{ __html: pageIcon }}></div>
                     }
@@ -290,7 +289,7 @@ class PagePicker extends Component {
                 </div>
                 {page.ChildTabs !== null && page.ChildTabs.length > 0 &&
                     <ul className={"child-pages" + (page.IsOpen ? " opened" : "") }>
-                        {this.getChildItems(page.ChildTabs) }
+                        {this.getChildItems(page.ChildTabs, parentNotSelectable) }
                     </ul>
                 }
             </li>;
@@ -377,6 +376,11 @@ class PagePicker extends Component {
                     selectedPage = tab.Results.Name;
                     this.setState({ selectedPage });
                 });
+            }
+            else if (props.selectedTabId === -1) {
+                let {selectedPage} = this.state;
+                selectedPage = props.noneSpecifiedText;
+                this.setState({ selectedPage });
             }
         }
     }
@@ -659,9 +663,6 @@ PagePicker.propTypes = {
     //Tells the component to reload. Use this if circumstances have changed at UI end and need the page picker to reload with new props. e.g. cultureCode code changed.
     Reload: PropTypes.bool,
 
-    //Reset the selected page to the props one.  This will work only in case of IsMultiSelect=false and IsInDropDown=true
-    ResetSelected: PropTypes.bool,
-
     //Selection mode of the tree. Default is "Single"
     IsMultiSelect: PropTypes.bool,
 
@@ -685,7 +686,9 @@ PagePicker.propTypes = {
     //Service Framework controller
     controller: PropTypes.string,
 
-    serviceFramework: PropTypes.object
+    serviceFramework: PropTypes.object,
+
+    currentTabId: PropTypes.number
 };
 
 PagePicker.defaultProps = {
@@ -697,7 +700,6 @@ PagePicker.defaultProps = {
     ShowIcon: true,
     IsInDropDown: true,
     Reload: false,
-    ResetSelected: false,
     noneSpecifiedText: "< None Specified >",
     withIcon: true,
     withBorder: true,

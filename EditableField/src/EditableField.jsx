@@ -5,7 +5,6 @@ import Input from "dnn-single-line-input-with-error";
 import { EditIcon } from "dnn-svg-icons";
 import "./style.less";
 
-
 class EditableField extends Component {
     constructor() {
         super();
