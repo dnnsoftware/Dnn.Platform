@@ -27,6 +27,7 @@
     ]
   },
   "devDependencies": {
+    "react": "^15.3.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -46,8 +47,7 @@
     "dnn-global-styles": "0.0.5",
     "dnn-label": "0.0.8",
     "dnn-single-line-input": "1.0.5",
-    "dnn-tooltip": "0.2.1",
-    "react": "^15.3.2"
+    "dnn-tooltip": "0.2.1"
   },
   "peerDependencies": {
     "react": "^15.3.0"

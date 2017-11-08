@@ -27,6 +27,8 @@
     ]
   },
   "devDependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -44,13 +46,11 @@
   },
   "dependencies": {
     "dnn-global-styles": "0.0.5",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
     "react-portal-tooltip": "^0.14.2",
     "react-tooltip": "^3.4.0"
   },
   "peerDependencies": {
     "react": "^15.3.0",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.0"
   }
 }
