@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Security.Permissions;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Pages.Services.Dto;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.FileSystem;
 using Newtonsoft.Json.Linq;
 
 namespace Dnn.PersonaBar.Pages.Components.Security
@@ -133,10 +136,10 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             var tabId = pageSettings.TabId;
             var pageType = pageSettings.PageType;
             var parentId = pageSettings.ParentId ?? 0;
-            var creatingPage = parentId > 0 && tabId <= 0 && pageType == "normal";
-            var updatingPage = tabId > 0 && pageType == "normal";
+            var creatingPage = tabId <= 0;
+            var updatingPage = tabId > 0;
             var creatingTemplate = tabId <= 0 && pageSettings.TemplateTabId > 0 && pageType == "template";
-            var duplicatingPage = tabId <= 0 && pageSettings.TemplateTabId > 0 && pageType == "normal";
+            var duplicatingPage = tabId <= 0 && pageSettings.TemplateTabId > 0;
             var updatingParentPage = false;
             if (updatingPage)
             {
@@ -149,7 +152,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
             return (
                 IsPageAdminUser() ||
-                creatingPage && CanAddPage(parentId) ||
+                creatingPage && CanAddPage(parentId) && !creatingTemplate ||
                 creatingTemplate && CanExportPage(pageSettings.TemplateTabId) ||
                 updatingPage && CanManagePage(tabId) && !updatingParentPage ||
                 updatingParentPage && CanManagePage(tabId) && CanAddPage(parentId) ||

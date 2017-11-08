@@ -46,6 +46,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using PermissionsNotMetException = DotNetNuke.Entities.Tabs.PermissionsNotMetException;
@@ -486,6 +487,44 @@ namespace Dnn.PersonaBar.Pages.Components
                 errorMessage = Localization.GetString("StartDateAfterEndDate");
                 invalidField = "endDate";
                 return false;
+            }
+            switch (pageSettings.PageType)
+            {
+                case "tab":
+                    var existingTabRedirectionId = 0;
+                    int.TryParse(pageSettings.ExistingTabRedirection, out existingTabRedirectionId);
+                    if (existingTabRedirectionId <= 0)
+                    {
+                        errorMessage = Localization.GetString("TabToRedirectIsRequired");
+                        invalidField = "ExistingTabRedirection";
+                        return false;
+                    }
+                    if (!TabPermissionController.CanViewPage(TabController.Instance.GetTab(existingTabRedirectionId,
+                        PortalSettings.Current.PortalId)))
+                    {
+                        errorMessage = Localization.GetString("NoPermissionViewRedirectPage");
+                        invalidField = "ExistingTabRedirection";
+                        return false;
+                    }
+                    break;
+                case "url":
+                    if (string.IsNullOrEmpty(pageSettings.ExternalRedirection))
+                    {
+                        errorMessage = Localization.GetString("ExternalRedirectionUrlRequired");
+                        invalidField = "ExternalRedirection";
+                        return false;
+                    }
+                    break;
+                case "file":
+                    var fileIdRedirectionId = pageSettings.FileIdRedirection ?? 0;
+                    var file = pageSettings.FileIdRedirection != null ? FileManager.Instance.GetFile(pageSettings.FileIdRedirection.Value) : null;
+                    if (fileIdRedirectionId <= 0 || file == null)
+                    {
+                        errorMessage = Localization.GetString("ValidFileIsRequired");
+                        invalidField = "FileIdRedirection";
+                        return false;
+                    }
+                    break;
             }
 
             return ValidatePageUrlSettings(pageSettings, tab, ref invalidField, ref errorMessage);
