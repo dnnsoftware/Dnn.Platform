@@ -274,12 +274,20 @@ class App extends Component {
                                     item.childCount++;
                                     item.childListItems = [];
                                     item.childListItems.push(page);
-                                    this.onLoadPage(page.id);
+                                    if (page.canAddContentToPage)
+                                        this.onLoadPage(page.id);
+                                    else {
+                                        this.onNoPermissionSelection(page.id);
+                                    }
                                     break;
                                 case Array.isArray(item.childListItems) === true:
                                     item.childCount++;
                                     item.childListItems.push(page);
-                                    this.onLoadPage(page.id);
+                                    if (page.canAddContentToPage)
+                                        this.onLoadPage(page.id);
+                                    else {
+                                        this.onNoPermissionSelection(page.id);
+                                    }
                                     break;
                             }
                             item.isOpen = true;
@@ -294,7 +302,11 @@ class App extends Component {
                                 item.isOpen = true;
                                 item.selected = true;
                                 updateStore(list);
-                                this.onLoadPage(page.id);
+                                if (page.canAddContentToPage)
+                                    this.onLoadPage(page.id);
+                                else {
+                                    this.onNoPermissionSelection(page.id);
+                                }
                             }
                         });
                     });
