@@ -39,6 +39,10 @@ class SiteLanguageSelector extends Component {
                 props.dispatch(SearchActions.getCultureList(state.portalId));
             }
         });
+
+        document.addEventListener("reloadPortalList", (e) => {
+            props.dispatch(SiteInfoActions.getPortals());
+        }, false);
     }
 
     componentWillReceiveProps(props) {

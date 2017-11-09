@@ -34,8 +34,10 @@ class ListView extends Component {
     }
     onSetting(portal /*, index*/) {
         let event = document.createEvent("Event");
-
         event.initEvent("portalIdChanged", true, true);
+
+        let event2 = document.createEvent("Event");
+        event2.initEvent("reloadPortalList", true, true);
 
         let settings = {
             portalId: portal.PortalID,
@@ -52,6 +54,7 @@ class ListView extends Component {
         });
 
         document.dispatchEvent(event);
+        document.dispatchEvent(event2);
     }
     onPreview(portal /*, index*/) {
         if (portal.PortalAliases && portal.PortalAliases.length > 0) {
