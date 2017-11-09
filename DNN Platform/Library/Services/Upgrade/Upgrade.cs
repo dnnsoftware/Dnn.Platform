@@ -5552,6 +5552,12 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
 
             RemoveAdminPages("//Admin//SearchEngineSiteMap");
+            RemoveAdminPages("//Admin//Solutions");
+            RemoveAdminPages("//Admin//BulkEmail");
+
+            RemoveHostPage("Marketplace");
+            RemoveHostPage("Module Definitions");
+            RemoveHostPage("Portals");
 
             if (!HostTabExists("Superuser Accounts"))
             {
