@@ -45,7 +45,7 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "dnn-global-styles": "0.0.5",
+    "dnn-global-styles": "^0.0.5",
     "react-portal-tooltip": "^0.14.2",
     "react-tooltip": "^3.4.0"
   },

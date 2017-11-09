@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "react-slider": "0.6.1",
-    "dnn-global-styles": "0.0.5"
+    "dnn-global-styles": "^0.0.5"
   },
   "peerDependencies": {
     "react": "^15.3.0"

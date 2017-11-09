@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "lodash": "4.17.4",
-    "dnn-global-styles": "0.0.5"
+    "dnn-global-styles": "^0.0.5"
   },
   "peerDependencies": {
     "react": "^15.3.0"

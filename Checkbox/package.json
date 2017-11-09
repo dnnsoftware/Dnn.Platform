@@ -44,8 +44,8 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "dnn-label": "0.0.8",
-    "dnn-global-styles": "0.0.5"
+    "dnn-label": "^0.0.8",
+    "dnn-global-styles": "^0.0.5"
   },
   "peerDependencies": {
     "react": "^15.3.0"

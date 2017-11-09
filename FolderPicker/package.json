@@ -48,7 +48,7 @@
     "eslint-plugin-spellcheck": "0.0.7"
   },
   "dependencies": {
-    "dnn-global-styles": "0.0.5",
+    "dnn-global-styles": "^0.0.5",
     "raw-loader": "0.5.1",
     "react-custom-scrollbars": "^4.1.2"
   },

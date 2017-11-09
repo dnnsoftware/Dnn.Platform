@@ -51,8 +51,8 @@
     "react-addons-test-utils": "^15.6.2"
   },
   "dependencies": {
-    "dnn-global-styles": "0.0.5",
-    "dnn-svg-icons": "0.1.20",
+    "dnn-global-styles": "^0.0.5",
+    "dnn-svg-icons": "^0.1.20",
     "lodash": "4.17.4",
     "react-collapse": "~4.0.3",
     "react-custom-scrollbars": "^4.2.1",
