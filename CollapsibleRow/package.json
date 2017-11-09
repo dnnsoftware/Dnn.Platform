@@ -1,6 +1,6 @@
 {
   "name": "dnn-collapsible-row",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "DNN Collapsible Row",
   "main": "index.js",
   "scripts": {
@@ -36,6 +36,7 @@
     "babel-preset-react": "6.5.0",
     "cpy-cli": "^1.0.1",
     "eslint": "2.10.2",
+    "eslint-config-defaults": "^9.0.0",
     "eslint-config-dnn": "^0.0.7",
     "eslint-import-resolver-node": "^0.3.1",
     "eslint-plugin-babel": "^4.1.2",
