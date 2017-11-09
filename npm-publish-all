@@ -7,20 +7,20 @@ const skipList = ['GlobalStyles', 'node_modules'];
 const unpublishAll = (items) => {
     items.forEach((item) => {
         const cwd = `./${item}`;
-        fs.lstat(cwd, (err, stats) => {
-            if (!err) {
-                const packageJson = `${cwd}\\package.json`;
-                if (stats.isDirectory() && fs.existsSync(packageJson)) {
-                    const json = JSON.parse(fs.readFileSync(packageJson));
-                    console.log(`Current module is ${json.name}`);
-                    console.log(`Current directory is ${cwd}`);
+        const stats = fs.lstatSync(cwd);
 
-                    const cmdOptsUnpublish = `npm unpublish ${json.name} --force`;
-                    let out = proc.execSync(cmdOptsUnpublish, cwd);
-                    console.log(out);
-                }
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+            const packageJson = `${cwd}\\package.json`;
+            if (stats.isDirectory() && fs.existsSync(packageJson)) {
+                const json = JSON.parse(fs.readFileSync(packageJson));
+                console.log(`Current module is ${json.name}`);
+                console.log(`Current directory is ${cwd}`);
+
+                const cmdOptsUnpublish = `npm unpublish ${json.name} --force`;
+                let out = proc.execSync(cmdOptsUnpublish, cwd);
+                console.log(out.toString());
             }
-        });
+        }
     });
 };
 
@@ -94,14 +94,18 @@ const publishAll = (items) => {
 
                 try {
 
-                    const removeVersion = getRemoteVersion(json.name, cwd);
                     let localVersion = json.version;
+                    try {
+                        const remoteVersion = getRemoteVersion(json.name, cwd);
 
-                    let out = '';
-                    if(compareVersions(localVersion, removeVersion) < 1) {
-                        out = proc.execSync("npm version patch", {cwd, shell: true});
-                        localVersion = stripVersionTagPrefix(out.toString().trim());
-                        console.log(`Version update from ${json.version} to ${localVersion}`);
+                        let out = '';
+                        if (compareVersions(localVersion, remoteVersion) < 1) {
+                            out = proc.execSync("npm version patch", {cwd, shell: true});
+                            localVersion = stripVersionTagPrefix(out.toString().trim());
+                            console.log(`Version update from ${json.version} to ${localVersion}`);
+                        }
+                    } catch (e) {
+                        console.log(`No version in remote repo ${json.name}, using local: ${localVersion}`);
                     }
 
                     console.log(`Installing dependencies of ${json.name}`);
@@ -116,13 +120,17 @@ const publishAll = (items) => {
                     const EXPECTED_VERSION = localVersion;
                     const p = new Promise((resolve, reject) => {
                         const itvId = setInterval(() => {
-                            const PUBLISHED_VERSION = getRemoteVersion(json.name, cwd);
-                            if (EXPECTED_VERSION == PUBLISHED_VERSION) {
-                                resolve(json.name);
-                                installedPkgs.push(json.name);
-                                clearInterval(itvId);
-                            } else {
-                                console.log(`Expected version ${EXPECTED_VERSION} current ${PUBLISHED_VERSION}, retry in 5 seconds`);
+                            try {
+                                const PUBLISHED_VERSION = getRemoteVersion(json.name, cwd);
+                                if (EXPECTED_VERSION == PUBLISHED_VERSION) {
+                                    resolve(json.name);
+                                    installedPkgs.push(json.name);
+                                    clearInterval(itvId);
+                                } else {
+                                    console.log(`Expected version ${EXPECTED_VERSION} current ${PUBLISHED_VERSION}, retry in 5 seconds`);
+                                }
+                            } catch (e) {
+                                console.error(`No version installed remotely yet. Package: ${json.name}`);
                             }
                         }, 5000);
                     });
@@ -138,7 +146,7 @@ const publishAll = (items) => {
 };
 
 const stripVersionTagPrefix = (version) => {
-    const res = version.replace(/[^\d^\.]/,'');
+    const res = version.replace(/[^\d^\.]/, '');
     return res;
 };
 
@@ -150,20 +158,20 @@ const getRemoteVersion = (pkg, cwd, prefix = false) => {
 };
 
 const compareVersions = (locale, remote) => {
-  const s1 = locale.split('.');
-  const s2 = remote.split('.');
+    const s1 = locale.split('.');
+    const s2 = remote.split('.');
 
-  for(let i = 0; i < s1.length; i++) {
-      const v1 = s1[i];
-      const v2 = s2[i] != undefined ? s2[i] : 0;
-      if(v1 < v2) {
-          return -1;
-      }
-      if(v1 > v2) {
-          return 1;
-      }
-  }
-  return 0;
+    for (let i = 0; i < s1.length; i++) {
+        const v1 = s1[i];
+        const v2 = s2[i] != undefined ? s2[i] : 0;
+        if (v1 < v2) {
+            return -1;
+        }
+        if (v1 > v2) {
+            return 1;
+        }
+    }
+    return 0;
 };
 
 const isProjectFolder = (cwd) => {
@@ -194,6 +202,7 @@ const ctrl = (items) => {
 };
 
 fs.readdir(".", function (err, items) {
+    // unpublishAll(items);
     cleanup(items);
     ctrl(items);
 });
