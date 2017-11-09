@@ -22,6 +22,16 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
         }
 
+        public DnnUrlHelper(RequestContext requestContext, IDnnController controller)
+        {
+            Requires.NotNull("requestContext", requestContext);
+            Requires.NotNull("controller", controller);
+
+            UrlHelper = new UrlHelper(requestContext);
+            _controller = controller;
+            ModuleContext = _controller.ModuleContext;
+        }
+
         public DnnUrlHelper(ViewContext viewContext, RouteCollection routeCollection)
         {
             Requires.NotNull("viewContext", viewContext);
@@ -77,7 +87,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public virtual string Action()
         {
-            return _viewContext.RequestContext.HttpContext.Request.RawUrl;
+            return UrlHelper.RequestContext.HttpContext.Request.RawUrl;
         }
 
         public virtual string Action(string actionName)

@@ -22,8 +22,8 @@
 #endregion
 
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
+using System.Web.Routing;
 
 namespace DotNetNuke.Tests.Web.Mvc.Fakes
 {
@@ -43,5 +43,13 @@ namespace DotNetNuke.Tests.Web.Mvc.Fakes
         {
             return View("Action3", "Master3", dog);
         }
+
+        public void MockInitialize(RequestContext requestContext)
+        {
+            // Mocking out the entire MvcHandler and Controller lifecycle proved to be difficult
+            // This method executes the initialization logic that occurs on every request which is
+            // executed from the Execute method.
+            Initialize(requestContext);
+        }    
     }
 }
