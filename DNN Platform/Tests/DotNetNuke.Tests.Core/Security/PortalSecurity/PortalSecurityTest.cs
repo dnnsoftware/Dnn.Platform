@@ -113,7 +113,7 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
         [TestCase("<source src=\"https://google.com\">Source with attribute</source>", 
             "<source src=\"https://google.com\">Source with attribute</source>",
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoAngleBrackets)]
-        public void Html_Source_Tag_Should_Not_Be_Allowed(string html, string expectedOutput, 
+        public void Source_Tag_Should_Not_Be_Allowed(string html, string expectedOutput, 
             DotNetNuke.Security.PortalSecurity.FilterFlag markup)
         {
             //Arrange
