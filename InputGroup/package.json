@@ -1,6 +1,6 @@
 {
   "name": "dnn-input-group",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Input Group",
   "main": "index.js",
   "scripts": {

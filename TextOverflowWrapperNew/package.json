@@ -1,6 +1,6 @@
 {
   "name": "dnn-text-overflow-wrapper-new",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "DNN Text Overflow Wrapper New. Appends ellipsis and adds tooltip.",
   "main": "index.js",
   "scripts": {

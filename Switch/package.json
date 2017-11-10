@@ -1,6 +1,6 @@
 {
   "name": "dnn-switch",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "DNN Switch Component",
   "main": "index.js",
   "scripts": {

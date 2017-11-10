@@ -1,6 +1,6 @@
 {
   "name": "dnn-content-load-wrapper",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "DNN Content Load Wrapper",
   "main": "index.js",
   "scripts": {

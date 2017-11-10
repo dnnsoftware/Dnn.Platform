@@ -1,6 +1,6 @@
 {
   "name": "dnn-slider",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "DNN Slider",
   "main": "index.js",
   "scripts": {

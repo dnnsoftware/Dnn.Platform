@@ -1,6 +1,6 @@
 {
   "name": "dnn-label",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "DNN Label",
   "main": "index.js",
   "scripts": {
