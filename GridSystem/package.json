@@ -1,6 +1,6 @@
 {
   "name": "dnn-grid-system",
-  "version": "0.0.7",
+  "version": "0.0.6",
   "description": "DNN Grid System",
   "main": "index.js",
   "scripts": {

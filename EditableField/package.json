@@ -1,6 +1,6 @@
 {
   "name": "dnn-editable-field",
-  "version": "0.0.17",
+  "version": "0.0.16",
   "description": "DNN Editable Field",
   "main": "index.js",
   "scripts": {
