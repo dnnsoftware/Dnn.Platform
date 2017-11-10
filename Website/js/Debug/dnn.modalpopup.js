@@ -191,9 +191,7 @@
                     closingUrl: closingUrl,
 					open: dialogOpened,
                     close: function() { window.dnnModal.closePopUp(refresh, closingUrl); }
-                })
-                    .width(width - 11)
-                    .height(height - 11);
+                });
 
                 if ($modal.parent().find('.ui-dialog-title').next('a.dnnModalCtrl').length === 0) {
                     var $dnnModalCtrl = $('<a class="dnnModalCtrl"></a>');
@@ -206,13 +204,12 @@
 
                         var $window = $(window),
                             newHeight,
-                            newWidth,
-                            JQUERY_UI_HEIGHT_SHRINK_OFFSET = 100,
+                            newWidth,                            
                             horizontalPosition = "center",
                             verticalPosition = "center";                            
 
                         if ($modal.data('isMaximized')) {
-                            newHeight = $modal.data('height') + JQUERY_UI_HEIGHT_SHRINK_OFFSET;
+                            newHeight = $modal.data('height');
                             newWidth = $modal.data('width');
                             $modal.data('isMaximized', false);
 
@@ -222,14 +219,21 @@
 
                             var personaBarIFrameWidth = 0;
                             if ($('#personaBar-iframe').length) {
-                                personaBarIFrameWidth = $('#personaBar-iframe').width();
+                                personaBarIFrameWidth = $('#personaBar-iframe').outerWidth();
                             }
 
-                            newWidth = $window.width() - 40 - personaBarIFrameWidth;
-                            newHeight = $window.height() - 46;
+                            var closeButtonWidthCorrection = 0;
+                            var closeButtonHeightCorrection = 0;
+                            if ($('button.ui-dialog-titlebar-close').length) {
+                                closeButtonHeightCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').height();
+                                closeButtonWidthCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').width();
+                            }
 
-                            horizontalPosition = "right center";
-                            verticalPosition = "right center";
+                            newWidth = $window.outerWidth() - personaBarIFrameWidth - (closeButtonWidthCorrection / 7.5) - 40;
+                            newHeight = $window.height() - closeButtonHeightCorrection;
+
+                            horizontalPosition = "right-" + (closeButtonWidthCorrection / 5.5) + " center";
+                            verticalPosition = "right center-" + (closeButtonHeightCorrection / 11);
                             $modal.data('isMaximized', true);
                         }
 
