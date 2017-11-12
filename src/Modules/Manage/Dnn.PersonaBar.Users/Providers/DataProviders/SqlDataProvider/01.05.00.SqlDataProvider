@@ -42,7 +42,7 @@ BEGIN
 
 	SELECT COUNT(*) AS TotalRecords
 	FROM {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
-	INNER JOIN {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK) ON UP.UserId = U.UserID AND (@IncludeSuperUsers = 1 or U.PortalId = @PortalId)
+	INNER JOIN {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK) ON UP.UserId = U.UserID AND (U.PortalId = @PortalId OR (@IncludeSuperUsers = 1 AND U.portalId IS NULL))
 	WHERE UP.PortalId = @PortalId
 	AND (@IncludeSuperUsers = 1 OR (@IncludeSuperUsers = 0 and U.IsSuperUser = 0))
 	AND (
@@ -75,7 +75,7 @@ BEGIN
 		FROM {databaseOwner}{objectQualifier}vw_Users U WITH (NOLOCK)
 		INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP WITH (NOLOCK)
 			ON U.UserID = UP.UserId
-			AND (@IncludeSuperUsers = 1 or U.PortalId = @PortalId)
+			AND (U.PortalId = @PortalId OR (@IncludeSuperUsers = 1 AND U.portalId IS NULL))
 		WHERE UP.PortalId = @PortalId
 		AND (@IncludeSuperUsers = 1 OR (@IncludeSuperUsers = 0 and U.IsSuperUser = 0))
 		AND (

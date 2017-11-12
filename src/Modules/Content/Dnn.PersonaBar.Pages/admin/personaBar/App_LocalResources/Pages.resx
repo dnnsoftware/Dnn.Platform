@@ -1654,4 +1654,16 @@
   <data name="WrongFormat.Text" xml:space="preserve">
     <value>Wrong Format</value>
   </data>
+  <data name="ExternalRedirectionUrlRequired.Text" xml:space="preserve">
+    <value>The URL is required.</value>
+  </data>
+  <data name="NoPermissionViewRedirectPage.Text" xml:space="preserve">
+    <value>You don't have permission to view the redirect page.</value>
+  </data>
+  <data name="TabToRedirectIsRequired.Text" xml:space="preserve">
+    <value>Page to redirect to is required.</value>
+  </data>
+  <data name="ValidFileIsRequired.Text" xml:space="preserve">
+    <value>Valid file is required.</value>
+  </data>
 </root>

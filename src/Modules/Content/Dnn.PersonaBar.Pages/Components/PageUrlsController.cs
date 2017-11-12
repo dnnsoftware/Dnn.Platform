@@ -383,8 +383,10 @@ namespace Dnn.PersonaBar.Pages.Components
                     var urlLocale = locales.Value.Values.FirstOrDefault(local => local.Code == url.CultureCode);
                     var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId)
                         .SingleOrDefault(p => p.PortalAliasID == url.PortalAliasId);
-
-                    AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
+                    if (alias != null)
+                    {
+                        AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
+                    }
                 }
             }
 
