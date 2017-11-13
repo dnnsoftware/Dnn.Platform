@@ -45,9 +45,10 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "dnn-button": "^0.0.8",
+    "dnn-button": "0.0.8",
+    "dnn-global-styles": "0.0.5",
     "react-collapse": "^4.0.3",
-    "dnn-global-styles": "^0.0.5"
+    "react-motion": "^0.5.2"
   },
   "peerDependencies": {
     "react": "^15.3.0",
