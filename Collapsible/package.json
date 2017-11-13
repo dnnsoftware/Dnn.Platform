@@ -41,18 +41,13 @@
     "eslint-import-resolver-node": "^0.3.1",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-import": "^2.8.0",
-    "npm-run-all": "^4.1.2",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0"
+    "npm-run-all": "^4.1.2"
   },
   "dependencies": {
     "interact.js": "1.2.6",
     "react-collapse": "^2.3.3",
-<<<<<<< HEAD
-=======
     "react-height": "^2.2.1",
     "react-motion": "^0.4.8",
->>>>>>> master
     "scroll": "1.0.0"
   },
   "peerDependencies": {
