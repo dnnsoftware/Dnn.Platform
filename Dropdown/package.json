@@ -1,6 +1,6 @@
 {
   "name": "dnn-dropdown",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "DNN Dropdown Component",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,8 @@
     ]
   },
   "devDependencies": {
+    "react": "15.6.2",
+    "react-dom": "15.6.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -49,14 +51,16 @@
     "react-addons-test-utils": "^15.6.2"
   },
   "dependencies": {
-    "dnn-global-styles": "0.0.5",
-    "dnn-svg-icons": "0.1.20",
+    "dnn-global-styles": "^0.0.5",
+    "dnn-svg-icons": "^0.1.20",
     "lodash": "4.17.4",
-    "react": "^15.6.2",
     "react-collapse": "~4.0.3",
     "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "^15.6.2",
     "react-motion": "^0.4.4",
     "scroll": "^2.0.0"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "dnn-tree-control-interactor",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Renders are selectable stateful tree",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     ]
   },
   "devDependencies": {
+    "react": "^15.3.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -47,11 +48,13 @@
     "shortid": "^2.2.8",
     "lodash": "4.17.4",
     "react-portal-tooltip": "^1.1.4",
-    "react": "^15.3.2",
     "prop-types": "~15.5.2",
-    "dnn-global-styles": "0.0.5",
+    "dnn-global-styles": "^0.0.5",
     "react-custom-scrollbars": "4.0.0-beta.1",
     "raw-loader": "^0.5.1",
-    "dnn-text-overflow-wrapper-new": "0.0.7"
+    "dnn-text-overflow-wrapper-new": "^0.0.7"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }

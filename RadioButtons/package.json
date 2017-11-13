@@ -1,6 +1,6 @@
 {
   "name": "dnn-radio-buttons",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "DNN Radio Buttons",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     ]
   },
   "devDependencies": {
+    "react": "^15.3.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -43,8 +44,10 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "react": "^15.3.2",
-    "dnn-global-styles": "0.0.5",
-    "dnn-tooltip": "0.2.1"
+    "dnn-global-styles": "^0.0.5",
+    "dnn-tooltip": "^0.2.1"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }

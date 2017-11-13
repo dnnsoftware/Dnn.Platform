@@ -1,6 +1,6 @@
 {
   "name": "dnn-folder-picker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Folder Picker",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,8 @@
     ]
   },
   "devDependencies": {
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -46,10 +48,12 @@
     "eslint-plugin-spellcheck": "0.0.7"
   },
   "dependencies": {
-    "dnn-global-styles": "0.0.5",
+    "dnn-global-styles": "^0.0.5",
     "raw-loader": "0.5.1",
-    "react": "^15.6.2",
-    "react-custom-scrollbars": "^4.1.2",
-    "react-dom": "^15.6.2"
+    "react-custom-scrollbars": "^4.1.2"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   }
 }

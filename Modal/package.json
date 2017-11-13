@@ -1,6 +1,6 @@
 {
   "name": "dnn-modal",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "DNN Modal",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     ]
   },
   "devDependencies": {
+    "react": "^15.3.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -43,10 +44,12 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "dnn-global-styles": "0.0.5",
-    "dnn-svg-icons": "0.1.20",
-    "react": "^15.3.2",
+    "dnn-global-styles": "^0.0.5",
+    "dnn-svg-icons": "^0.1.20",
     "react-custom-scrollbars": "^4.1.2",
     "react-modal": "^3.0.3"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }

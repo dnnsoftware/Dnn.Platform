@@ -1,6 +1,6 @@
 {
   "name": "dnn-input-group",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Input Group",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     ]
   },
   "devDependencies": {
+    "react": "^15.3.2",
     "babel-cli": "^6.18.0",
     "babel-core": "6.24.0",
     "babel-eslint": "^8.0.1",
@@ -42,7 +43,7 @@
     "eslint-plugin-import": "^2.8.0",
     "npm-run-all": "^4.1.1"
   },
-  "dependencies": {
-    "react": "^15.3.2"
+  "peerDependencies": {
+    "react": "^15.3.0"
   }
 }
