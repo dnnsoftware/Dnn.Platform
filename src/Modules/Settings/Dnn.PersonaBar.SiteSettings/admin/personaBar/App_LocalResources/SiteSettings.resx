@@ -1066,7 +1066,7 @@
     <value>Enable Localized Content</value>
   </data>
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
-    <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
+    <value />
   </data>
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
     <value>Click Cancel now if you want to change the current site default.</value>
@@ -1319,5 +1319,8 @@
   </data>
   <data name="WrongFormat.Text" xml:space="preserve">
     <value>Wrong Format</value>
+  </data>
+  <data name="Host.Text" xml:space="preserve">
+    <value>Host</value>
   </data>
 </root>
