@@ -3,6 +3,7 @@ import resx from "resources";
 import SingleLineInput from "dnn-single-line-input";
 import SearchBox from "dnn-search-box";
 import GridCell from "dnn-grid-cell";
+import ResourceEditor from "./resourceEditor";
 import utilities from "utils";
 
 const rowSizes = [30, 35, 35];
@@ -49,6 +50,7 @@ class ResourceList extends Component {
             searchText
         });
     }
+
     /* eslint-disable react/no-danger */
     render() {
         const { props } = this;
@@ -82,16 +84,23 @@ class ResourceList extends Component {
                 </GridCell>
                 <GridCell className="resource-rows">
                     {searchedList.map((key) => {
-                        const shouldBeHighlighted = (props.highlightPendingTranslations && this.props.list[key].First === this.props.list[key].Second);
+                        const shouldBeHighlighted = props.highlightPendingTranslations 
+                            && this.props.list[key].First === this.props.list[key].Second;
+
                         return <GridCell className="resource-row">
                             <GridCell className="row-detail" columnSize={rowSizes[0]}>
                                 <div className="key-name">{key}</div>
                             </GridCell>
                             <GridCell className="row-detail" columnSize={rowSizes[1]}>
-                                <SingleLineInput value={this.props.list[key].Second} enabled={false} />
+                                <ResourceEditor 
+                                    value={this.props.list[key].Second} 
+                                    enabled={false} />
                             </GridCell>
                             <GridCell className="row-detail" columnSize={rowSizes[2]}>
-                                <SingleLineInput className={(shouldBeHighlighted ? "highlight" : "") } value={this.props.list[key].First} onChange={this.onChange.bind(this, key, "First") } />
+                                <ResourceEditor 
+                                    className={(shouldBeHighlighted ? "highlight" : "")} 
+                                    value={this.props.list[key].First} 
+                                    onChange={this.onChange.bind(this, key, "First") } />
                             </GridCell>
                         </GridCell>;
                     }) }
