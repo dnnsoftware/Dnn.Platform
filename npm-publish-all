@@ -42,7 +42,6 @@ const getFullPackagesList = (items) => {
 };
 
 const cleanup = (items) => {
-    const promises = [];
     items.filter((item) => !skipList.includes(item)).forEach((item) => {
         const cwd = `./${item}`;
         const stats = fs.lstatSync(cwd);
@@ -55,10 +54,14 @@ const cleanup = (items) => {
     });
 };
 
+const isCommonComponent = (name) => {
+    return name.startsWith('dnn-') && name !== 'dnn-global-styles' && name !== 'dnn-api' && name !== 'dnn-flag' && name !== 'dnn-token-service';
+};
+
 const checkDeps = (pkjs) => {
     if (pkjs.dependencies) {
         for (let pkg of Object.keys(pkjs.dependencies)) {
-            const hasDnnDeps = pkg.startsWith('dnn-') && pkg !== 'dnn-global-styles' && pkg !== 'dnn-api' && pkg !== 'dnn-flag' && pkg !== 'dnn-token-service' && !installedPkgs.includes(pkg);
+            const hasDnnDeps = isCommonComponent(pkg) && !installedPkgs.includes(pkg);
             if (hasDnnDeps) {
                 console.log(`Error in ${pkjs.name}: missing dependency ${pkg}`);
                 return false; // check failed
@@ -67,7 +70,7 @@ const checkDeps = (pkjs) => {
     }
     if (pkjs.devDependencies) {
         for (let pkg of Object.keys(pkjs.devDependencies)) {
-            const hasDnnDeps = pkg.startsWith('dnn-') && pkg !== 'dnn-global-styles' && pkg !== 'dnn-api' && pkg !== 'dnn-flag' && pkg !== 'dnn-token-service' && !installedPkgs.includes(pkg);
+            const hasDnnDeps = isCommonComponent(pkg) && !installedPkgs.includes(pkg);
             const hasEslintDeps = pkg == 'eslint-config-dnn' && !installedPkgs.includes(pkg);
             if (hasEslintDeps || hasDnnDeps) {
                 console.log(`Error in ${pkjs.name}: missing dependency ${pkg}`);
@@ -77,6 +80,38 @@ const checkDeps = (pkjs) => {
     }
     return true; // passed check
 
+};
+
+/**
+ * experimental
+ * Update dependencies from common components to the latest version
+ * @param pkjs
+ */
+const updateDeps = (pkjs) => {
+    if(pkjs.dependencies) {
+        for (let pkg of Object.keys(pkjs.dependencies)) {
+            const isUpToDate = isCommonComponent(pkg) && installedPkgs.includes(pkg);
+            if (isUpToDate) {
+                const latestVersion = getRemoteVersion(pkg);
+                pkjs.dependencies[pkg] = latestVersion;
+            }
+        }
+    }
+    if (pkjs.devDependencies) {
+        for (let pkg of Object.keys(pkjs.devDependencies)) {
+            const isUpToDate = isCommonComponent(pkg) && installedPkgs.includes(pkg);
+            if(isUpToDate) {
+                const latestVersion = getRemoteVersion(pkg);
+                pkjs.devDependencies[pkg] = latestVersion;
+            }
+        }
+    }
+    try {
+        const json = JSON.stringify(pkjs, null, 2);
+        fs.writeFileSync(`${packagesPathsCache[pkjs.name]}/package.json`, json);
+    } catch (e) {
+        console.log(`WARINING: Cannot update dependencies of ${pkjs.nam}: ${e}`);
+    }
 };
 
 const publishAll = (items) => {
@@ -103,6 +138,8 @@ const publishAll = (items) => {
                         localVersion = stripVersionTagPrefix(out.toString().trim());
                         console.log(`Version update from ${json.version} to ${localVersion}`);
                     }
+
+                    updateDeps(json.name);
 
                     console.log(`Installing dependencies of ${json.name}`);
                     out = proc.execSync("npm i", {cwd, shell: true});
@@ -142,7 +179,7 @@ const stripVersionTagPrefix = (version) => {
     return res;
 };
 
-const getRemoteVersion = (pkg, cwd, prefix = false) => {
+const getRemoteVersion = (pkg, cwd = '.', prefix = false) => {
     const cmd = `npm show ${pkg} version`;
     const out = proc.execSync(cmd, {cwd, shell: true});
     const version = out.toString().trim();
@@ -193,7 +230,26 @@ const ctrl = (items) => {
     }
 };
 
+const packagesPathsCache = {};
+const packagesPaths = (items) => {
+    items.forEach((item) => {
+        const cwd = `./${item}`;
+        const stats = fs.lstatSync(cwd);
+
+        if (stats.isDirectory() && isProjectFolder(cwd)) {
+            try {
+                const packageJson = getPackageJson(cwd);
+                packagesPathsCache[packageJson.name] = cwd;
+            } catch (e) {
+                console.log(`package ${cwd}/package.json doesn't exist`);
+            }
+        }
+    });
+};
+
 fs.readdir(".", function (err, items) {
+    packagesPaths(items);
+    // unpublishAll(items);
     cleanup(items);
     ctrl(items);
 });
