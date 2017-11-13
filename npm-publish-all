@@ -4,6 +4,12 @@ const path = require("path");
 
 const skipList = ['GlobalStyles', 'node_modules'];
 
+// --cleanup
+const CLEANUP_FIRST = process.argv.includes('--cleanup');
+const UNPUBLISH_FIRST = process.argv.includes('--publish-first');
+const UPDATE_CROSS_DEPS = process.argv.includes('--update-crossdeps');
+const PUBLISH = process.argv.includes('--publish');
+
 const unpublishAll = (items) => {
     items.forEach((item) => {
         const cwd = `./${item}`;
@@ -139,7 +145,7 @@ const publishAll = (items) => {
                         console.log(`Version update from ${json.version} to ${localVersion}`);
                     }
 
-                    updateDeps(json.name);
+                    if(UPDATE_CROSS_DEPS === true) updateDeps(json.name);
 
                     console.log(`Installing dependencies of ${json.name}`);
                     out = proc.execSync("npm i", {cwd, shell: true});
@@ -249,7 +255,11 @@ const packagesPaths = (items) => {
 
 fs.readdir(".", function (err, items) {
     packagesPaths(items);
-    // unpublishAll(items);
-    cleanup(items);
-    ctrl(items);
+
+    console.log(`UNPUBLISH ${UNPUBLISH_FIRST}, CLEANUP ${CLEANUP_FIRST}, PUBLISH ${PUBLISH} UPDATE CROSS-DEPS ${UPDATE_CROSS_DEPS}`);
+
+    if(UNPUBLISH_FIRST === true) unpublishAll(items);
+    if(CLEANUP_FIRST === true) cleanup(items);
+    if(PUBLISH === true) ctrl(items);
+
 });
