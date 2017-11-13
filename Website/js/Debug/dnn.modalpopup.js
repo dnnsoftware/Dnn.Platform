@@ -228,11 +228,15 @@
                                 closeButtonHeightCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').height();
                                 closeButtonWidthCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').width();
                             }
-
+                            
+                            // closeButtonWidthCorrection is whole width of buttons modal on top right of maximized mode
+                            // 7.5 is proportional width for IE-FF-CH, this needs to be substracted
                             newWidth = $window.outerWidth() - personaBarIFrameWidth - (closeButtonWidthCorrection / 7.5) - 40;
                             newHeight = $window.height() - closeButtonHeightCorrection;
 
-                            horizontalPosition = "right-" + (closeButtonWidthCorrection / 5.5) + " center";
+                            // need to move top right corner into view port caring of Persona bar on left
+                            // 5.5 is proportional right padding and 11 is same from top padding 
+                            horizontalPosition = "right-" + (closeButtonWidthCorrection / 5.5) + " center";                            
                             verticalPosition = "right center-" + (closeButtonHeightCorrection / 11);
                             $modal.data('isMaximized', true);
                         }
