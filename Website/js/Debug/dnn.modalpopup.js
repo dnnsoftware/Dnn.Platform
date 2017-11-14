@@ -191,7 +191,9 @@
                     closingUrl: closingUrl,
 					open: dialogOpened,
                     close: function() { window.dnnModal.closePopUp(refresh, closingUrl); }
-                });
+                })
+                    .width(width - 11)
+                    .height(height - 11);
 
                 if ($modal.parent().find('.ui-dialog-title').next('a.dnnModalCtrl').length === 0) {
                     var $dnnModalCtrl = $('<a class="dnnModalCtrl"></a>');
@@ -204,12 +206,28 @@
 
                         var $window = $(window),
                             newHeight,
-                            newWidth,                            
+                            newWidth,
+                            JQUERY_UI_HEIGHT_SHRINK_OFFSET = 100,
                             horizontalPosition = "center",
-                            verticalPosition = "center";                            
+                            verticalPosition = "center";
+
+                        var closeButtonWidthCorrection = 0;
+                        var closeButtonHeightCorrection = 0;
+
+                        if ($('button.ui-dialog-titlebar-close').length) {
+                            closeButtonHeightCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').height();
+                            closeButtonWidthCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').width();
+                        }
 
                         if ($modal.data('isMaximized')) {
-                            newHeight = $modal.data('height');
+
+                            var appliedHeight = $modal.data('height') + JQUERY_UI_HEIGHT_SHRINK_OFFSET;
+                            if (appliedHeight >= $window.height()) {
+                                appliedHeight = $modal.data('height');
+                            }
+
+                            newHeight = appliedHeight - closeButtonHeightCorrection;
+
                             newWidth = $modal.data('width');
                             $modal.data('isMaximized', false);
 
@@ -219,16 +237,9 @@
 
                             var personaBarIFrameWidth = 0;
                             if ($('#personaBar-iframe').length) {
-                                personaBarIFrameWidth = $('#personaBar-iframe').outerWidth();
+                                personaBarIFrameWidth = $('#personaBar-iframe').width();
                             }
 
-                            var closeButtonWidthCorrection = 0;
-                            var closeButtonHeightCorrection = 0;
-                            if ($('button.ui-dialog-titlebar-close').length) {
-                                closeButtonHeightCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').height();
-                                closeButtonWidthCorrection = $('button.ui-dialog-titlebar-close').parent('.dnnModalCtrl').width();
-                            }
-                            
                             // closeButtonWidthCorrection is whole width of buttons modal on top right of maximized mode
                             // 7.5 is proportional width for IE-FF-CH, this needs to be substracted
                             newWidth = $window.outerWidth() - personaBarIFrameWidth - (closeButtonWidthCorrection / 7.5) - 40;
@@ -236,7 +247,7 @@
 
                             // need to move top right corner into view port caring of Persona bar on left
                             // 5.5 is proportional right padding and 11 is same from top padding 
-                            horizontalPosition = "right-" + (closeButtonWidthCorrection / 5.5) + " center";                            
+                            horizontalPosition = "right-" + (closeButtonWidthCorrection / 5.5) + " center";
                             verticalPosition = "right center-" + (closeButtonHeightCorrection / 11);
                             $modal.data('isMaximized', true);
                         }
