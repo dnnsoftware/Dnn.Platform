@@ -4,9 +4,7 @@ Project Description
 ==================
 DNN® ( formerly DotNetNuke® ) is the leading open source web content management platform (CMS) in the Microsoft ecosystem. The product is used to build professional looking and easy-to-use commercial websites, social intranets, community portals, or partner extranets. Containing dynamic content of all types, DNN sites are easy to deploy and update. The DNN Platform has been downloaded more than 8 million times and powers more than 750,000 websites globally. A community of more than 1 million members forms a powerful support network. 
 
-Thousands of commercial extensions, apps and skins are available at the [DNN Store](http://store.dnnsoftware.com/) that make extending a DNN site fast and affordable.
-
-Free open source extensions are also available from the [DNN Extensions Forge](http://www.dnnsoftware.com/Community/Download/DNN-Forge).
+Thousands of free and commercial extensions, apps and skins are available at the [DNN Store](http://store.dnnsoftware.com/) that make extending a DNN site fast and affordable.
 
 In addition to robust content management, the free, open source DNN Platform includes the following built-in features:
 
@@ -25,13 +23,14 @@ In addition to robust content management, the free, open source DNN Platform inc
 Quick Links
 -----------
 * [DNN on Facebook](http://www.facebook.com/DNNsoftware)
+* [DNN on Twitter](http://www.Twitter.com/DNN)
 * [Community](http://www.dnnsoftware.com/Community)
+* [DNN Digest](http://www.dnnsoftware.com/community/participate/subscribe-to-dnn-digest)
 * [Questions & Answers](http://answers.dnnsoftware.com/)
 * [Discussion Forums](http://forums.dnnsoftware.com/)
 * [Video Library](http://www.dnnsoftware.com/videos)
 * [News](http://www.dnnsoftware.com/About/In-The-News/Press-Releases)
 * [Community Blogs](http://www.dnnsoftware.com/community-blog)
-* [Extensions Forge](http://www.dnnsoftware.com/Community/Download/DNN-Forge)
 * [DNN Store](http://store.dnnsoftware.com/)
 
 How to Contribute
