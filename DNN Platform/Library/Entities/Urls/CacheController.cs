@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -249,7 +250,7 @@ namespace DotNetNuke.Entities.Urls
         /// <remarks>
         /// </remarks>
         internal void GetFriendlyUrlIndexFromCache(out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
-                                                   out List<int> urlPortals,
+                                                   out ConcurrentBag<int> urlPortals,
                                                    out SharedDictionary<string, string> customAliasTabs)
         {
             urlDict = null;
@@ -257,7 +258,7 @@ namespace DotNetNuke.Entities.Urls
             customAliasTabs = null;
             object rawDict = DataCache.GetCache(UrlDictKey); //contains a dictionary of tabs for all portals
             object rawPortals = DataCache.GetCache(UrlPortalsKey);
-            //contas a list of portals for which we have retrieved the tabs
+            //contains a list of portals for which we have retrieved the tabs
             object rawCustomAliasTabs = DataCache.GetCache(CustomAliasTabsKey);
             //contains a dictionary of tabs with custom aliases, for all portals
             if (rawDict != null)
@@ -266,7 +267,7 @@ namespace DotNetNuke.Entities.Urls
             }
             if (rawPortals != null)
             {
-                urlPortals = (List<int>)rawPortals;
+                urlPortals = (ConcurrentBag<int>)rawPortals;
             }
             if (rawCustomAliasTabs != null)
             {
@@ -526,7 +527,7 @@ namespace DotNetNuke.Entities.Urls
         /// <remarks>
         /// </remarks>
         internal void StoreFriendlyUrlIndexInCache(SharedDictionary<int, SharedDictionary<string, string>> urlDict,
-                                                List<int> urlPortals,
+                                                ConcurrentBag<int> urlPortals,
                                                 SharedDictionary<string, string> customAliasTabs,
                                                 FriendlyUrlSettings settings,
                                                 string reason)
@@ -543,7 +544,6 @@ namespace DotNetNuke.Entities.Urls
             LogRemovedReason = settings.LogCacheMessages;
 
             SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(GetTabsCacheDependency(urlPortals)), settings, onRemovePageIndex);
-
             SetPageCache(UrlPortalsKey, urlPortals, settings);
             SetPageCache(CustomAliasTabsKey, customAliasTabs, settings);
 
