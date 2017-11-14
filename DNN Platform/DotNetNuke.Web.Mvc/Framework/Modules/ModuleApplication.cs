@@ -119,8 +119,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ViewEngineCollectionEx = ViewEngines;
                 // Execute the controller and capture the result
-                // if our ActionFilter does not explicitly flip the ExceptionHandled bit this will throw an exception
-                // we could wrap this in a try catch block but we should figure out a more optimal way if we want that behavior.
+                // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
+                // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
                 moduleController.Execute(RequestContext);
                 var result = moduleController.ResultOfLastExecute;
 
