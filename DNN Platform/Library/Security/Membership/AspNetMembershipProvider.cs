@@ -726,12 +726,24 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNull("userId", userId);
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
-            _dataProvider.ChangeUsername(userId, newUsername);
+            var userName = PortalSecurity.Instance.InputFilter(newUsername,
+                                                      PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+
+            if (!userName.Equals(newUsername))
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
+            _dataProvider.ChangeUsername(userId, userName);
+
             EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
+
             DataCache.ClearCache();          
         }
 

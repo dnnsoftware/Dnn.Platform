@@ -80,27 +80,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         [Test]
         public void Password_Should_Saved_In_History_During_Create_User()
         {
-            var username = $"{Constants.RuFirstName}{DateTime.Now.Ticks}";
-            var email = $"{username}@dnn.com";
-
-            var user = new UserInfo
-            {
-                PortalID = Constants.PORTAL_Zero,
-                UserID = Null.NullInteger,
-                Username = username,
-                Email = email,
-                FirstName = username,
-                LastName = string.Empty,
-                Membership = new UserMembership
-                {
-                    Approved = true,
-                    Password = Constants.DefaultPassword
-                }
-
-            };
-            var status = UserController.CreateUser(ref user);
-
-            Assert.AreEqual(UserCreateStatus.Success, status);
+            var user = CreateNewUser();
 
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", AppDomain.CurrentDomain.BaseDirectory);
             simulator.SimulateRequest(new Uri(WebsiteAppPath));
@@ -110,6 +90,29 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
             var isPasswordInHistory = new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
 
             Assert.AreEqual(true, isPasswordInHistory);
+        }
+
+        [Test]
+        public void ChangeUserName_Should_Success_With_Valid_Username()
+        {
+            var user = CreateNewUser();
+
+            var newUsername = $"{user.Username}_new";
+            UserController.ChangeUsername(user.UserID, newUsername);
+        }
+
+        [TestCase("<script>")]
+        [TestCase("<div>")]
+        [TestCase("<img>")]
+        [TestCase("<img onerror=alert(1)>")]
+        [TestCase("<img onload=document.write(1)>")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ChangeUserName_Should_Throw_Exception_With_Invalid_Username(string invalidParts)
+        {
+            var user = CreateNewUser();
+
+            var newUsername = $"{user.Username}{invalidParts}";
+            UserController.ChangeUsername(user.UserID, newUsername);
         }
 
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
@@ -133,6 +136,33 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
                     ComponentFactory.RegisterComponentInstance<TAbstract>(name, new TConcrete());
                 }
             }
+        }
+
+        private static UserInfo CreateNewUser()
+        {
+            var username = $"{Constants.RuFirstName}{DateTime.Now.Ticks}";
+            var email = $"{username}@dnn.com";
+
+            var user = new UserInfo
+            {
+                PortalID = Constants.PORTAL_Zero,
+                UserID = Null.NullInteger,
+                Username = username,
+                Email = email,
+                FirstName = username,
+                LastName = string.Empty,
+                Membership = new UserMembership
+                {
+                    Approved = true,
+                    Password = Constants.DefaultPassword
+                }
+
+            };
+            var status = UserController.CreateUser(ref user);
+
+            Assert.AreEqual(UserCreateStatus.Success, status);
+
+            return user;
         }
     }
 }
