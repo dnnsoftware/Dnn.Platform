@@ -100,7 +100,6 @@
     <Compile Include="Helpers\DnnHelperTests.cs" />
     <Compile Include="Helpers\ViewResultExtensionsTests.cs" />
     <Compile Include="MockHelper.cs" />
-    <Compile Include="Modules\ResultCapturingActionInvokerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultAssert.cs" />
     <Compile Include="Routing\HttpContextExtensionsTests.cs" />
