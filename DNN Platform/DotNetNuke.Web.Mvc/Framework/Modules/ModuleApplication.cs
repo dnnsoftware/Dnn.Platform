@@ -119,7 +119,14 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ViewEngineCollectionEx = ViewEngines;
                 // Execute the controller and capture the result
-                moduleController.Execute(RequestContext);
+                try
+                {
+                    moduleController.Execute(RequestContext);
+                }
+                catch(Exception ex)
+                {
+                    // todo - figure out if we still need this
+                }
                 var result = moduleController.ResultOfLastExecute;
 
                 // Return the final result
