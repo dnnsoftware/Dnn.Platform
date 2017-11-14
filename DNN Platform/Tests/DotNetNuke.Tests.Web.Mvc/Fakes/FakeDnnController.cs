@@ -24,6 +24,8 @@
 using System.Web.Mvc;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using System.Web.Routing;
+using DotNetNuke.Tests.Web.Mvc.Fakes.Filters;
+using System;
 
 namespace DotNetNuke.Tests.Web.Mvc.Fakes
 {
@@ -42,6 +44,24 @@ namespace DotNetNuke.Tests.Web.Mvc.Fakes
         public ActionResult Action3(Dog dog)
         {
             return View("Action3", "Master3", dog);
+        }
+
+        [FakeHandleExceptionRedirect]
+        public ActionResult ActionWithExceptionFilter()
+        {
+            throw new Exception();
+        }
+
+        [FakeOnExecutingRedirect]
+        public ActionResult ActionWithOnExecutingFilter()
+        {
+            return View("Action1");
+        }
+
+        [FakeOnExecutedRedirect]
+        public ActionResult ActionWithOnExecutedFilter()
+        {
+            return View("Action1");
         }
 
         public void MockInitialize(RequestContext requestContext)

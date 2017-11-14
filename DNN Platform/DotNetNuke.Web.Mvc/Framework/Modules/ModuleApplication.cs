@@ -119,14 +119,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ViewEngineCollectionEx = ViewEngines;
                 // Execute the controller and capture the result
-                try
-                {
-                    moduleController.Execute(RequestContext);
-                }
-                catch(Exception ex)
-                {
-                    // todo - figure out if we still need this
-                }
+                // if our ActionFilter does not explicitly flip the ExceptionHandled bit this will throw an exception
+                // we could wrap this in a try catch block but we should figure out a more optimal way if we want that behavior.
+                moduleController.Execute(RequestContext);
                 var result = moduleController.ResultOfLastExecute;
 
                 // Return the final result

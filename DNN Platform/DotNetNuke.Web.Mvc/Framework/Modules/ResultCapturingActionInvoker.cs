@@ -28,11 +28,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     public class ResultCapturingActionInvoker : ControllerActionInvoker
     {
         public ActionResult ResultOfLastInvoke { get; set; }
-
-        protected override ActionResult InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
-        {
-            return base.InvokeActionMethod(controllerContext, actionDescriptor, parameters);
-        }
         protected override ActionExecutedContext InvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
         {
             var context = base.InvokeActionMethodWithFilters(controllerContext, filters, actionDescriptor, parameters);
