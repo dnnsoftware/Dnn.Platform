@@ -158,8 +158,8 @@ const getRemoteVersion = (pkg, cwd, prefix = false) => {
 };
 
 const compareVersions = (locale, remote) => {
-    const s1 = locale.split('.');
-    const s2 = remote.split('.');
+    const s1 = Number(locale.split('.'));
+    const s2 = Number(remote.split('.'));
 
     for (let i = 0; i < s1.length; i++) {
         const v1 = s1[i];
