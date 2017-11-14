@@ -1,6 +1,6 @@
 {
   "name": "dnn-dropdown",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "DNN Dropdown Component",
   "main": "index.js",
   "scripts": {
@@ -51,7 +51,7 @@
     "react-dom": "^15.6.2"
   },
   "dependencies": {
-    "dnn-global-styles": "0.0.5",
+    "dnn-global-styles": "^0.0.5",
     "dnn-svg-icons": "0.1.20",
     "lodash": "4.17.4",
     "react-collapse": "~4.0.3",

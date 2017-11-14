@@ -6,13 +6,14 @@ const skipList = ['GlobalStyles', 'node_modules'];
 
 // --cleanup
 const CLEANUP_FIRST = process.argv.includes('--cleanup');
-const UNPUBLISH_FIRST = process.argv.includes('--unpublish-first');
+const UNPUBLISH_LATEST_VERSION = process.argv.includes('--unpublish-latest-version');
+const UNPUBLISH_ALL = process.argv.includes('--unpublish-all');
 const UPDATE_CROSS_DEPS = process.argv.includes('--update-crossdeps') || true;
 const PUBLISH = process.argv.includes('--publish') || true;
 const FORCE_UPDATE = process.argv.includes('--force-update') || false;
 const HELP = process.argv.includes('-h') || process.argv.length == 2 || false;
 
-const unpublishAll = (items) => {
+const unpublishAll = (items, all = false) => {
     items.forEach((item) => {
         const cwd = `./${item}`;
         fs.lstat(cwd, (err, stats) => {
@@ -23,7 +24,8 @@ const unpublishAll = (items) => {
                     console.log(`Current module is ${json.name}`);
                     console.log(`Current directory is ${cwd}`);
 
-                    const cmdOptsUnpublish = `npm unpublish ${json.name} --force`;
+                    const latest = getRemoteVersion(json.name, cwd);
+                    const cmdOptsUnpublish = all === true ? `npm unpublish ${json.name} --force` : `npm unpublish ${json.name}@${latest}`;
                     let out = proc.execSync(cmdOptsUnpublish, cwd);
                     console.log(out);
                 }
@@ -289,7 +291,7 @@ const packagesPaths = (items) => {
 fs.readdir(".", function (err, items) {
     packagesPaths(items);
 
-    console.log(`UNPUBLISH ${UNPUBLISH_FIRST}, CLEANUP ${CLEANUP_FIRST}, PUBLISH ${PUBLISH} UPDATE CROSS-DEPS ${UPDATE_CROSS_DEPS}, FORCE_UPDATE == ${FORCE_UPDATE}`);
+    console.log(`UNPUBLISH ${UNPUBLISH_LATEST_VERSION},PUBLISH_ALL ${UNPUBLISH_ALL}, CLEANUP ${CLEANUP_FIRST}, PUBLISH ${PUBLISH} UPDATE CROSS-DEPS ${UPDATE_CROSS_DEPS}, FORCE_UPDATE == ${FORCE_UPDATE}`);
 
     if(HELP === true) {
         console.log(`
@@ -300,11 +302,13 @@ fs.readdir(".", function (err, items) {
             --cleanup remove each node_modules before to install/update a component
             --force-update re-install and upgrade build number all components, regardless of actual changes
             --publish components to the current NPM registry (use carefully)
-            --unpublish-first Unpublish the components from the current NPM registry (use carefully)
+            --unpublish-latest-version Unpublish latest version of components from the current NPM registry (use carefully)
+            --unpublish-all Unpublish componenents totally from the current NPM registry (use carefully)
             --update-crossdeps Update dependencies to Common Components to the latest available to avoid obsolete dependencies
         `);
     } else {
-        if (UNPUBLISH_FIRST === true) unpublishAll(items);
+        if (UNPUBLISH_LATEST_VERSION === true) unpublishAll(items);
+        if (UNPUBLISH_ALL === true) unpublishAll(items, true);
         if (CLEANUP_FIRST === true) cleanup(items);
         if (PUBLISH === true) ctrl(items);
     }

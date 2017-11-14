@@ -44,11 +44,11 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "dnn-dropdown": "1.0.18",
-    "dnn-global-styles": "0.0.5",
-    "dnn-svg-icons": "0.1.20"
+    "dnn-dropdown": "^1.0.19",
+    "dnn-global-styles": "^0.0.5",
+    "dnn-svg-icons": "^0.1.20"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.0"
   }
 }

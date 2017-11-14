@@ -327,7 +327,6 @@ class Dropdown extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        //const options = this.initOptions();
         return (
             <div className={this.getClassName()} style={props.style}>
                 <div className={"collapsible-label" + this.getIsMultiLineLabel()}

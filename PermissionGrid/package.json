@@ -63,12 +63,12 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "dnn-button": "0.0.8",
-    "dnn-dropdown": "1.0.18",
-    "dnn-global-styles": "0.0.5",
-    "dnn-grid-cell": "0.0.4",
-    "dnn-label": "0.0.8",
-    "dnn-svg-icons": "0.1.20",
+    "dnn-button": "^0.0.8",
+    "dnn-dropdown": "^1.0.19",
+    "dnn-global-styles": "^0.0.5",
+    "dnn-grid-cell": "^0.0.4",
+    "dnn-label": "^0.0.8",
+    "dnn-svg-icons": "^0.1.20",
     "throttle-debounce": "^1.0.1",
     "react-widgets": "^3.4.4",
     "redux-undo": "^1.0.0-beta9",
@@ -76,7 +76,7 @@
     "react-custom-scrollbars": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   }
 }
