@@ -30,7 +30,6 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web;
 using System.Xml;
 
@@ -212,7 +211,6 @@ namespace DotNetNuke.Entities.Tabs
         {
 			try
 			{
-			    SetCloneTabContext();
 				Logger.TraceFormat("Localizing TabId: {0}, TabPath: {1}, Locale: {2}", originalTab.TabID, originalTab.TabPath, locale.Code);
 				var defaultLocale = LocaleController.Instance.GetDefaultLocale(originalTab.PortalID);
 
@@ -310,11 +308,6 @@ namespace DotNetNuke.Entities.Tabs
 			{
 				ClearCache(originalTab.PortalID);
 			}
-        }
-
-        private static void SetCloneTabContext()
-        {
-            Thread.SetData(Thread.GetNamedDataSlot("CloneTabContext"), bool.TrueString);
         }
 
         private void ClearTabSettingsCache(int tabId)
