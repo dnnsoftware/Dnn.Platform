@@ -58,7 +58,7 @@ const cleanup = (items) => {
 
         if (stats.isDirectory() && isProjectFolder(cwd)) {
 
-            let out = proc.execSync("rimraf node_modules lib", {cwd, shell: true});
+            let out = proc.execSync("rimraf node_modules lib package-lock.json yarn.lock", {cwd, shell: true});
             console.log(`Cleanup folder ${cwd}: ${out.toString()}`);
         }
     });
@@ -128,6 +128,7 @@ const updateDeps = (name) => {
 function getNextVersion(localVersion, remoteVersion, json) {
     const VERSION_COMPARE = compareVersions(localVersion, remoteVersion);
     if (FORCE_UPDATE === true || VERSION_COMPARE > 0) {
+
         const newVer = upgradeVersion(json.name, remoteVersion); //proc.execSync("npm version patch", {cwd, shell: true});
         localVersion = stripVersionTagPrefix(newVer);
         console.log(`Version update from ${json.version} to ${localVersion}`);
