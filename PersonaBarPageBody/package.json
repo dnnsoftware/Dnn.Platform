@@ -1,6 +1,6 @@
 {
   "name": "dnn-persona-bar-page-body",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "DNN Persona Bar Page Body",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "dnn-transition-modal",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "DNN Transition Modal",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "dnn-permission-grid",
-  "version": "0.0.16",
+  "version": "0.0.18",
   "description": "DNN Permission Grid",
   "main": "index.js",
   "scripts": {

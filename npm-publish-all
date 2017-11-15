@@ -2,7 +2,7 @@ const fs = require("fs");
 const proc = require("child_process");
 const path = require("path");
 
-const skipList = ['GlobalStyles', 'node_modules'];
+const skipList = ['GlobalStyles', 'node_modules', 'EslintConfigDnn'];
 
 const unpublishAll = (items) => {
     items.forEach((item) => {
@@ -99,11 +99,11 @@ const publishAll = (items) => {
                         const remoteVersion = getRemoteVersion(json.name, cwd);
 
                         let out = '';
-                        if (compareVersions(localVersion, remoteVersion) < 1) {
-                            out = proc.execSync("npm version patch", {cwd, shell: true});
-                            localVersion = stripVersionTagPrefix(out.toString().trim());
-                            console.log(`Version update from ${json.version} to ${localVersion}`);
-                        }
+                        // if (compareVersions(localVersion, remoteVersion) < 1) {
+                        //     out = proc.execSync("npm version patch", {cwd, shell: true});
+                        //     localVersion = stripVersionTagPrefix(out.toString().trim());
+                        //     console.log(`Version update from ${json.version} to ${localVersion}`);
+                        // }
                     } catch (e) {
                         console.log(`No version in remote repo ${json.name}, using local: ${localVersion}`);
                     }

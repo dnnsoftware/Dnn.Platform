@@ -1,6 +1,6 @@
 {
   "name": "dnn-page-picker",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "DNN Page Picker",
   "main": "index.js",
   "scripts": {

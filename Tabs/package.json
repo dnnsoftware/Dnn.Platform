@@ -1,6 +1,6 @@
 {
   "name": "dnn-tabs",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "DNN Tabs",
   "main": "index.js",
   "scripts": {
