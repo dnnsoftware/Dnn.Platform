@@ -1,6 +1,6 @@
 {
   "name": "dnn-draggable",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "DNN Draggable Component",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
