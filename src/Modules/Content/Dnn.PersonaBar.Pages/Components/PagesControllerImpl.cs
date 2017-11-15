@@ -60,6 +60,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IPageUrlsController _pageUrlsController;
         private readonly ITemplateController _templateController;
         private readonly IDefaultPortalThemeController _defaultPortalThemeController;
+        private readonly ICloneModuleExecutionContext _cloneModuleExecutionContext;
 
         public const string PageTagsVocabulary = "PageTags";
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
@@ -71,6 +72,7 @@ namespace Dnn.PersonaBar.Pages.Components
             _pageUrlsController = PageUrlsController.Instance;
             _templateController = TemplateController.Instance;
             _defaultPortalThemeController = DefaultPortalThemeController.Instance;
+            _cloneModuleExecutionContext = CloneModuleExecutionContext.Instance;
         }
 
         public bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage)
@@ -1326,10 +1328,18 @@ namespace Dnn.PersonaBar.Pages.Components
                             var o = objObject as IPortable;
                             if (o != null)
                             {
-                                var content = Convert.ToString(o.ExportModule(module.Id));
-                                if (!string.IsNullOrEmpty(content))
+                                try
                                 {
-                                    o.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
+                                    _cloneModuleExecutionContext.SetCloneModuleContext(true);
+                                    var content = Convert.ToString(o.ExportModule(module.Id));
+                                    if (!string.IsNullOrEmpty(content))
+                                    {
+                                        o.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
+                                    }
+                                }
+                                finally
+                                {
+                                    _cloneModuleExecutionContext.SetCloneModuleContext(false);
                                 }
                             }
                         }
