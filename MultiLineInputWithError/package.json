@@ -58,9 +58,9 @@
   },
   "dependencies": {
     "dnn-global-styles": "^0.0.5",
-    "dnn-multi-line-input": "^1.0.7",
-    "dnn-tooltip": "^0.2.1",
-    "dnn-label": "^0.0.8"
+    "dnn-multi-line-input": "1.0.9",
+    "dnn-tooltip": "0.2.4",
+    "dnn-label": "0.0.10"
   },
   "peerDependencies": {
     "react": "^15.3.0"

@@ -59,8 +59,8 @@
   },
   "dependencies": {
     "dnn-global-styles": "^0.0.5",
-    "dnn-search-box": "^1.0.5",
-    "dnn-svg-icons": "^0.1.20",
+    "dnn-search-box": "1.0.8",
+    "dnn-svg-icons": "0.1.22",
     "react-collapse": "2.3.3",
     "react-custom-scrollbars": "4.0.0-beta.1"
   },

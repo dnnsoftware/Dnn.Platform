@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "dnn-global-styles": "^0.0.5",
-    "dnn-svg-icons": "^0.1.20",
+    "dnn-svg-icons": "0.1.22",
     "react-custom-scrollbars": "^4.1.2",
     "react-modal": "^3.0.3"
   },

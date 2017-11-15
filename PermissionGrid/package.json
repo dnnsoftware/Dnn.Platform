@@ -63,12 +63,12 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "dnn-button": "^0.0.8",
-    "dnn-dropdown": "^1.0.16",
+    "dnn-button": "0.0.11",
+    "dnn-dropdown": "1.0.19",
     "dnn-global-styles": "^0.0.5",
-    "dnn-grid-cell": "^0.0.4",
-    "dnn-label": "^0.0.8",
-    "dnn-svg-icons": "^0.1.20",
+    "dnn-grid-cell": "0.0.6",
+    "dnn-label": "0.0.10",
+    "dnn-svg-icons": "0.1.22",
     "throttle-debounce": "^1.0.1",
     "react-widgets": "^3.4.4",
     "redux-undo": "^1.0.0-beta9",

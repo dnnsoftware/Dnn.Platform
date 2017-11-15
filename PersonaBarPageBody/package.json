@@ -58,8 +58,8 @@
   },
   "dependencies": {
     "dnn-global-styles": "^0.0.5",
-    "dnn-grid-cell": "^0.0.4",
-    "dnn-back-to-link": "^0.0.3"
+    "dnn-grid-cell": "0.0.6",
+    "dnn-back-to-link": "0.0.5"
   },
   "peerDependencies": {
     "react": "^15.3.0"

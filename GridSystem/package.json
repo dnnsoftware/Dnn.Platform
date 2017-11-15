@@ -57,7 +57,7 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "dnn-grid-cell": "^0.0.4"
+    "dnn-grid-cell": "0.0.6"
   },
   "peerDependencies": {
     "react": "^15.3.0"

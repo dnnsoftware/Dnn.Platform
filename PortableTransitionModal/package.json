@@ -58,7 +58,7 @@
     "npm-run-all": "^4.1.1"
   },
   "dependencies": {
-    "dnn-button": "^0.0.8",
+    "dnn-button": "0.0.11",
     "dnn-global-styles": "^0.0.5"
   },
   "peerDependencies": {

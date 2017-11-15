@@ -65,7 +65,7 @@
     "dnn-global-styles": "^0.0.5",
     "react-custom-scrollbars": "4.0.0-beta.1",
     "raw-loader": "^0.5.1",
-    "dnn-text-overflow-wrapper-new": "^0.0.7"
+    "dnn-text-overflow-wrapper-new": "0.0.9"
   },
   "peerDependencies": {
     "react": "^15.3.0"
