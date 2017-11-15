@@ -73,6 +73,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var cultureCode = portalLocales.Where(l => l.Value.KeyID == dto.LocaleKey)
                                 .Select(l => l.Value.Code)
                                 .SingleOrDefault();
+            cultureCode = cultureCode ?? portalSettings.CultureCode;
 
             var portalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage;
             if (portalAliasUsage == PortalAliasUsageType.Default)
