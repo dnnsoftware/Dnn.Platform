@@ -27,6 +27,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Web.Http;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -656,10 +657,18 @@ namespace DotNetNuke.Web.InternalServices
                         object objObject = DotNetNuke.Framework.Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
                         if (objObject is IPortable)
                         {
-                            string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
-                            if (!string.IsNullOrEmpty(content))
+                            try
                             {
-                                ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                SetCloneModuleContext(true);
+                                string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
+                                if (!string.IsNullOrEmpty(content))
+                                {
+                                    ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                }
+                            }
+                            finally
+                            {
+                                SetCloneModuleContext(false);
                             }
                         }
                     }
@@ -713,6 +722,12 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return -1;
+        }
+
+        private static void SetCloneModuleContext(bool cloneModuleContext)
+        {
+            Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
+                cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
         private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)

@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 
@@ -499,10 +500,18 @@ namespace DotNetNuke.UI.ControlPanel
                         object objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
                         if (objObject is IPortable)
                         {
-                            string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
-                            if (!string.IsNullOrEmpty(content))
+                            try
                             {
-                                ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                SetCloneModuleContext(true);
+                                string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
+                                if (!string.IsNullOrEmpty(content))
+                                {
+                                    ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                }
+                            }
+                            finally
+                            {
+                                SetCloneModuleContext(false);
                             }
                         }
                     }
@@ -540,6 +549,12 @@ namespace DotNetNuke.UI.ControlPanel
                 EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
             }
         }
+
+	    private static void SetCloneModuleContext(bool cloneModuleContext)
+	    {
+	        Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
+	            cloneModuleContext ? bool.TrueString : bool.FalseString);
+	    }
 
         private static void DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
