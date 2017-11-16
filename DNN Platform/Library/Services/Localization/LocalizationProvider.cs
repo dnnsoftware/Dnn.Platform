@@ -97,7 +97,19 @@ namespace DotNetNuke.Services.Localization
                 Logger.WarnFormat("Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
-            return string.IsNullOrEmpty(resourceValue) ? string.Empty : resourceValue;
+            return string.IsNullOrEmpty(resourceValue) ? string.Empty : RemoveHttpUrlsIfSiteisSSLEnabled(resourceValue);
+        }
+
+        private string RemoveHttpUrlsIfSiteisSSLEnabled(string resourceValue)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+
+            if (portalSettings.SSLEnabled)
+            {
+                resourceValue = resourceValue.Replace(@"http:", @"https:");
+            }
+
+            return resourceValue;
         }
 
         /// <summary>
