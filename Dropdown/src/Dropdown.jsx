@@ -269,18 +269,18 @@ class Dropdown extends Component {
     }
 
     onArrowDown(eventKey) {
-        const maxIndex = this.optionItems ? this.optionItems.length : 0;
+        const maxIndex = this.optionItems ? this.optionItems.length -1 : 0;
         let currentIndex = this.getCurrentIndex();
         const nextIndex = currentIndex < maxIndex ? currentIndex++ : currentIndex;
         const option = this.getOption(currentIndex);
-        this.setState({currentIndex, selectedOption: option, closestValue: null});
+        this.setState({currentIndex, selectedOption: option, closestValue: null, ignorePreselection: true});
         this.scrollToSelectedItem(nextIndex, eventKey);
     }
 
     onArrowUp(eventKey) {
         let currentIndex = this.getCurrentIndex();
         const nextIndex = currentIndex > 0 ? currentIndex-- : currentIndex;
-        this.setState({currentIndex, selectedOption: this.getOption(currentIndex), closestValue: null});
+        this.setState({currentIndex, selectedOption: this.getOption(currentIndex), closestValue: null, ignorePreselection: true});
         this.scrollToSelectedItem(nextIndex, eventKey);
     }
 
@@ -301,9 +301,9 @@ class Dropdown extends Component {
         const {props, state} = this;
         const currentIndex = this.getCurrentIndex();
         const isCurrentIndex = index === currentIndex;
-        const isPreselected = props.value != null && (option.value === props.value && state.closestValue === null && currentIndex < 0);
+        const isPreselected = !this.state.ignorePreselection && props.value != null && (option.value === props.value && state.closestValue === null && currentIndex < 0);
         const isSearchResult = state.closestValue != null && (option.value === state.closestValue);
-        const selected = isCurrentIndex || isSearchResult || isPreselected;
+        const selected = currentIndex === -1 ? isPreselected : (isCurrentIndex || isSearchResult);
         return selected ? "dnn-dropdown-option selected" : "dnn-dropdown-option";
     }
 
@@ -327,7 +327,6 @@ class Dropdown extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        const options = this.initOptions();
         return (
             <div className={this.getClassName()} style={props.style}>
                 <div className={"collapsible-label" + this.getIsMultiLineLabel()}
@@ -355,7 +354,6 @@ class Dropdown extends Component {
                                         onClick={this.toggleDropdown.bind(this)}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
-                        keepCollapsedContent={true}
                         isOpened={state.dropDownOpen}>
                         <div>
                             <Scrollbars
@@ -367,7 +365,7 @@ class Dropdown extends Component {
                                 onUpdate={this.props.onScrollUpdate}
                                 renderTrackHorizontal={() => <div/>}>
                                 <ul className="dnn-dropdown-options" ref={(ul) => this.dropDownListElement = ul}>
-                                    {options}
+                                    {this.initOptions()}
                                 </ul>
                             </Scrollbars>
                         </div>
