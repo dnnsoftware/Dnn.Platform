@@ -58,7 +58,7 @@ const cleanup = (items) => {
 
         if (stats.isDirectory() && isProjectFolder(cwd)) {
 
-            let out = proc.execSync("rimraf node_modules lib", {cwd, shell: true});
+            let out = proc.execSync("rimraf node_modules lib package-lock.json yarn.lock", {cwd, shell: true});
             console.log(`Cleanup folder ${cwd}: ${out.toString()}`);
         }
     });
