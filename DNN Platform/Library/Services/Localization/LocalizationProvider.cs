@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Localization
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            if (portalSettings.SSLEnabled)
+            if (portalSettings.SSLEnabled || portalSettings.SSLEnforced)
             {
                 resourceValue = resourceValue.Replace(@"http:", @"https:");
             }
