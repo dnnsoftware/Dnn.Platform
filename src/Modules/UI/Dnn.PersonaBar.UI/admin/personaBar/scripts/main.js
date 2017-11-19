@@ -209,6 +209,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                 if (!params.settings) {
                     params.settings = util.findMenuSettings(params.identifier);
+                } else {
+                    params.settings = $.extend({}, util.findMenuSettings(params.identifier), params.settings);
                 }
 
                 if (!params.moduleName) {

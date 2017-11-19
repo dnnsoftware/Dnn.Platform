@@ -182,6 +182,9 @@ define(['jquery'], function ($) {
                     if (type === 'error') {
                         notificationDialog.addClass('errorMessage');
                     }
+                    else {
+                        notificationDialog.removeClass('errorMessage');
+                    }
                     closeNotification.html(closeButtonText)
                     closeNotification.on('click', function () {
                         notificationDialog.fadeOut(200, 'linear');
