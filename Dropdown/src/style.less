@@ -107,7 +107,7 @@
                 color: @rollingStone;
                 white-space:nowrap;
                 text-overflow: ellipsis;
-                overflow-x: hidden;
+                overflow: hidden;
                 /*
                  * Chrome hack
                  */
@@ -116,6 +116,7 @@
                 box-sizing: border-box;
                 &.selected {
                     color: @curiousBlue;
+                    font-weight: bold;
                 }
                 &:hover {
                     background-color: @gallery;

@@ -228,7 +228,7 @@ class Dropdown extends Component {
             const domElement = ReactDOM.findDOMNode(optionRef);
             let offset = domElement.offsetTop;
             if (eventKey == "ArrowUp") {
-                offset = domElement.offsetBottom;
+                offset = domElement.offsetTop - domElement.clientHeight*2;
             }
             scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], offset);
         }
