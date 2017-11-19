@@ -128,7 +128,6 @@ const updateDeps = (name) => {
 function getNextVersion(localVersion, remoteVersion, json) {
     const VERSION_COMPARE = compareVersions(localVersion, remoteVersion);
     if (FORCE_UPDATE === true || VERSION_COMPARE > 0) {
-
         const newVer = upgradeVersion(json.name, remoteVersion); //proc.execSync("npm version patch", {cwd, shell: true});
         localVersion = stripVersionTagPrefix(newVer);
         console.log(`Version update from ${json.version} to ${localVersion}`);
