@@ -160,7 +160,7 @@ namespace Dnn.PersonaBar.UI.Services
                         return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
