@@ -183,7 +183,7 @@ namespace Dnn.EditBar.UI.Controllers
                     var templateContainer = updatePanel.ContentTemplateContainer;
                     templateContainer.Controls.Add(pane);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     SupportAjax = false;
                     return;
