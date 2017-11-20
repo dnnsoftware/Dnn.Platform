@@ -377,9 +377,10 @@
         $(function() {
             var overrideFile = $('#<%= this.OverrideFile.ClientID %>').is(':checked');
             var maxFileSize = <%= this.MaxUploadSize %>;
+            var fileUploaderURL = "FileUploader.ashx?portalid=<%= HttpContext.Current.Request.QueryString["PortalID"] %>";
 
             $('#fileupload').fileupload({
-                url: "FileUploader.ashx",
+                url: fileUploaderURL,
                 acceptFileTypes: new RegExp('(\.|\/)(' + '<%= this.AcceptFileTypes %>' + ')', 'i'),
                 maxFileSize: maxFileSize,
                 done: function() {
