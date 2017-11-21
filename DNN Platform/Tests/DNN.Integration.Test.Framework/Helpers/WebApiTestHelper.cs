@@ -16,6 +16,7 @@ namespace DNN.Integration.Test.Framework.Helpers
     {
         private static IWebApiConnector _anonymousConnector;
         private static readonly Dictionary<string, IWebApiConnector> CachedConnections = new Dictionary<string, IWebApiConnector>();
+        private static readonly Random Rnd = new Random();
 
         private static readonly string HostGuid = HostSettingsHelper.GetHostSettingValue("GUID");
 
@@ -34,6 +35,45 @@ namespace DNN.Integration.Test.Framework.Helpers
             url = url ?? AppConfigHelper.SiteUrl;
             return _anonymousConnector ??
                 (_anonymousConnector = WebApiConnector.GetWebConnector(url, null));
+        }
+
+        public static IDictionary<string, string> GetRequestHeaders(string moduleName, int portalId = 0)
+        {
+            var tabId = DatabaseHelper.ExecuteScalar<int>($"SELECT * FROM {{objectQualifier}}Tabs WHERE TabPath = '//ActivityFeed' AND PortalId = {portalId}");
+            var moduleId = DatabaseHelper.ExecuteScalar<int>(
+                $@"
+SELECT TOP 1 m.ModuleID FROM {{objectQualifier}}TabModules tm
+	INNER JOIN {{objectQualifier}}modules m ON m.ModuleID = tm.ModuleID
+	INNER JOIN {{objectQualifier}}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID
+WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
+
+            return new Dictionary<string, string>
+            {
+                {"TabId", tabId.ToString()},
+                {"ModuleId", moduleId.ToString()}
+            };
+        }
+
+        public static IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId, int portalId = 0)
+        {
+            username = $"testuser{Rnd.Next(1000, 9999)}";
+            var email = $"{username}@dnn.com";
+
+            WebApiTestHelper.Register(username, AppConfigHelper.HostPassword, username, email);
+
+            userId = DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE Username = '{username}'");
+
+            var connector = WebApiTestHelper.LoginHost();
+            var url = $"/API/PersonaBar/Users/UpdateAuthorizeStatus?userId={userId}&authorized=true";
+            connector.PostJson(url, new { });
+            connector.Logout();
+
+            var userConnector = WebApiTestHelper.LoginUser(username);
+            userConnector.UploadUserFile("Files\\Test.png", true, userId);
+
+            fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MAX(FileId) FROM {{objectQualifier}}Files WHERE FileName = 'Test.png' AND CreatedByUserID = {userId} AND PortalId = {portalId}");
+
+            return userConnector;
         }
 
         /// <summary>
