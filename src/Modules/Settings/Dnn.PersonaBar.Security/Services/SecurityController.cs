@@ -360,6 +360,7 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.AdminMembershipResetLinkValidity,
                             Host.EnablePasswordHistory,
                             Host.MembershipNumberPasswords,
+                            Host.MembershipDaysBeforePasswordReuse,
                             Host.EnableBannedList,
                             Host.EnableStrengthMeter,
                             Host.EnableIPChecking,
@@ -398,6 +399,7 @@ namespace Dnn.PersonaBar.Security.Services
                 HostController.Instance.Update("MembershipResetLinkValidity", request.MembershipResetLinkValidity.ToString(), false);
                 HostController.Instance.Update("AdminMembershipResetLinkValidity", request.AdminMembershipResetLinkValidity.ToString(), false);
                 HostController.Instance.Update("MembershipNumberPasswords", request.MembershipNumberPasswords.ToString(), false);
+                HostController.Instance.Update("MembershipDaysBeforePasswordReuse", request.MembershipDaysBeforePasswordReuse.ToString(), false);
                 HostController.Instance.Update("PasswordExpiry", request.PasswordExpiry.ToString());
                 HostController.Instance.Update("PasswordExpiryReminder", request.PasswordExpiryReminder.ToString());
 

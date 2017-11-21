@@ -43,6 +43,8 @@ namespace Dnn.PersonaBar.Security.Services.Dto
 
         public int MembershipNumberPasswords { get; set; }
 
+        public int MembershipDaysBeforePasswordReuse { get; set; }
+
         public bool EnableBannedList { get; set; }
 
         public bool EnableStrengthMeter { get; set; }
