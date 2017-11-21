@@ -16,20 +16,61 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
     [MenuPermission(MenuName = "Dnn.Prompt")]
     [RequireHost]
-    public class CommandController : ControllerBase
+    public class CommandController : ControllerBase, IServiceRouteMapper
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
         private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
-        [HttpGet]
-        public HttpResponseMessage List()
+        private int portalId = -1;
+        private new int PortalId
         {
-            return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommands().Values);
+            get
+            {
+                if (portalId == -1)
+                {
+                    portalId = base.PortalId;
+                }
+                return portalId;
+            }
+            set
+            {
+                portalId = value;
+            }
+        }
+        private PortalSettings portalSettings;
+        private new PortalSettings PortalSettings
+        {
+            get
+            {
+                if (portalSettings == null)
+                {
+                    portalSettings = base.PortalSettings;
+                }
+                return portalSettings;
+            }
+            set
+            {
+                portalSettings = value;
+            }
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public HttpResponseMessage Cmd(int portalId, [FromBody] CommandInputModel command)
+        {
+            if (portalId != base.PortalId)
+            {
+                PortalId = portalId;
+                var portal = PortalController.Instance.GetPortal(PortalId);
+                PortalSettings = new PortalSettings(PortalId);
+            }
+            return Cmd(command);
         }
 
         [ValidateAntiForgeryToken]
@@ -187,6 +228,11 @@ namespace Dnn.PersonaBar.Prompt.Services
                 args[args.TakeWhile(arg => arg.Replace("-", "") != lowerKey).Count() + 1] = "******";
             }
             return string.Join(" ", args);
+        }
+
+        public void RegisterRoutes(IMapRoute mapRouteManager)
+        {
+            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
         }
     }
 }
