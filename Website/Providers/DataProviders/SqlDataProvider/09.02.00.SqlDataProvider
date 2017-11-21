@@ -680,6 +680,55 @@ AS
         SET PortalAliasID = NULL WHERE PortalAliasID = @PortalAliasID
 GO
 
+/*************************************************************************/
+/***** DNN-4350: add encryption capability for PortalSettings values *****/
+/*************************************************************************/
+
+IF NOT EXISTS( SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}PortalSettings' AND  COLUMN_NAME = N'IsSecure' )
+   BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] ADD
+            IsSecure BIT NOT NULL DEFAULT(0)
+    END
+GO
+
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]') IS NOT NULL)
+
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+--  covers delete, add and update scenarios:
+	@PortalID       Int,		   -- Key, Not Null (unless for delete)
+	@SettingName    nVarChar( 50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(Max), -- Not Null
+	@UserID			Int,		   -- Not Null (editing user)
+	@CultureCode    nVarChar( 10), -- Key, Null|'' for neutral language
+	@IsSecure       Bit = 0        -- NotNUll default 0
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+		 WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+		   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@PortalID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		 USING (SELECT @PortalID PID, @CultureCode CC, @SettingName SN, @SettingValue SV, @IsSecure Sec) Q
+		    ON (S.PortalID = Q.PID AND IsNull(S.CultureCode, N'') = IsNull(Q.CC, N'') AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN
+		    INSERT ( PortalID,  SettingName,  SettingValue, CultureCode,               CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@PortalID, @SettingName, @SettingValue, NULLIF(@CultureCode, N''), IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+		-- Saving a neutral setting overwrites all localized settings with same name (for current portal):
+		IF IsNull(@CultureCode, N'') = N''
+			DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+			 WHERE PortalID = @PortalID AND SettingName = @SettingName AND CultureCode IS Not Null;
+	END; -- Else If
+END; -- Procedure
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

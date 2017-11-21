@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\PortalSettings\PortalSettingsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Executers\Builders\PageSettingsBuilder.cs" />
     <Compile Include="Executers\Builders\TabPermissionsBuilder.cs" />
@@ -142,7 +143,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="App.config">
+    <None Include="..\App.config">
+      <Link>App.config</Link>
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config">
