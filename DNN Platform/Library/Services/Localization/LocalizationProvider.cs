@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Localization
         private string RemoveHttpUrlsIfSiteisSSLEnabled(PortalSettings portalSettings, string resourceValue)
         {
 
-            if (portalSettings.SSLEnabled || portalSettings.SSLEnforced)
+            if (portalSettings != null && (portalSettings.SSLEnabled || portalSettings.SSLEnforced))
             {
                 resourceValue = resourceValue.Replace(@"http:", @"https:");
             }
