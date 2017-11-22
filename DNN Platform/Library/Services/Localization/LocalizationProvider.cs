@@ -97,12 +97,11 @@ namespace DotNetNuke.Services.Localization
                 Logger.WarnFormat("Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
-            return string.IsNullOrEmpty(resourceValue) ? string.Empty : RemoveHttpUrlsIfSiteisSSLEnabled(resourceValue);
+            return string.IsNullOrEmpty(resourceValue) ? string.Empty : RemoveHttpUrlsIfSiteisSSLEnabled(portalSettings, resourceValue);
         }
 
-        private string RemoveHttpUrlsIfSiteisSSLEnabled(string resourceValue)
+        private string RemoveHttpUrlsIfSiteisSSLEnabled(PortalSettings portalSettings, string resourceValue)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             if (portalSettings.SSLEnabled || portalSettings.SSLEnforced)
             {
