@@ -684,6 +684,13 @@ GO
 /***** DNN-4350: add encryption capability for PortalSettings values *****/
 /*************************************************************************/
 
+IF EXISTS( SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}Portals' AND  COLUMN_NAME = N'ProcessorPassword' )
+   BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}Portals]
+            ALTER COLUMN ProcessorPassword nvarchar(100)
+    END
+GO
+
 IF NOT EXISTS( SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}PortalSettings' AND  COLUMN_NAME = N'IsSecure' )
    BEGIN
         ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] ADD

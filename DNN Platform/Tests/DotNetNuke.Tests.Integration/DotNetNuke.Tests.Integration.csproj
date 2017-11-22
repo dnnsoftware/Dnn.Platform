@@ -95,7 +95,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests\PortalSettings\PortalSettingsTests.cs" />
+    <Compile Include="Tests\Portals\PortalInfoTests.cs" />
+    <Compile Include="Tests\Portals\PortalSettingsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Executers\Builders\PageSettingsBuilder.cs" />
     <Compile Include="Executers\Builders\TabPermissionsBuilder.cs" />

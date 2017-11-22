@@ -1003,7 +1003,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetString("ProcessorPassword");
+                return HostController.Instance.GetEncryptedString("ProcessorPassword", Config.GetDecryptionkey());
             }
         }
 

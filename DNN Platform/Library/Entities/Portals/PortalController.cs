@@ -1968,6 +1968,12 @@ namespace DotNetNuke.Entities.Portals
 
         private void UpdatePortalInternal(PortalInfo portal, bool clearCache)
         {
+            var processorPassword = portal.ProcessorPassword;
+            if (!string.IsNullOrEmpty(processorPassword))
+            {
+                processorPassword = Security.FIPSCompliant.EncryptAES(processorPassword, Config.GetDecryptionkey(), Host.Host.GUID);
+            }
+
             DataProvider.Instance().UpdatePortalInfo(portal.PortalID,
                                             portal.PortalGroupID,
                                             portal.PortalName,
@@ -1984,7 +1990,7 @@ namespace DotNetNuke.Entities.Portals
                                             portal.UserQuota,
                                             portal.PaymentProcessor,
                                             portal.ProcessorUserId,
-                                            portal.ProcessorPassword,
+                                            processorPassword,
                                             portal.Description,
                                             portal.KeyWords,
                                             portal.BackgroundFile,
