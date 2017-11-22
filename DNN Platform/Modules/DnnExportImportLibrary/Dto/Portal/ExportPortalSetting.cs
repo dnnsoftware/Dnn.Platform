@@ -40,5 +40,6 @@ namespace Dnn.ExportImport.Dto.Portal
         public string LastModifiedByUserName { get; set; } //This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
         public string CultureCode { get; set; }
+        public bool IsSecure { get; set; }
     }
 }

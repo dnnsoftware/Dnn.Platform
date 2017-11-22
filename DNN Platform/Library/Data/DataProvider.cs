@@ -693,9 +693,9 @@ namespace DotNetNuke.Data
         }
 
         public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,
-                                                string cultureCode)
+                                                string cultureCode, bool isSecure)
         {
-            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode);
+            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode, isSecure);
         }
 
         public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
