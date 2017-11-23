@@ -223,6 +223,7 @@ small {
     font-size: 12px;
     font-weight: normal;
     line-height: 18px;
+    word-wrap: break-word;
 }
 
 /* disabled text styles */
@@ -231,10 +232,7 @@ small {
     color: #999;
 }
 
-/* CSS3 to wrap at possible break point */
-.Normal {
-    word-wrap: break-word
-}
+
 
 /* text style used for help text rendered by modules */
 .Help {

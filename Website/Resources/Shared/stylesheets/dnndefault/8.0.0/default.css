@@ -45,6 +45,7 @@ input[type="image"] + span.Head, input[type="image"] + span.SubHead {
     font-size: 12px;
     font-weight: normal;
     line-height: 18px;
+    word-wrap: break-word;
 }
 
 /* disabled text styles */
