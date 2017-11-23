@@ -223,6 +223,7 @@ small {
     font-size: 12px;
     font-weight: normal;
     line-height: 18px;
+    word-wrap: break-word;
 }
 
 /* disabled text styles */
@@ -230,6 +231,8 @@ small {
 .NormalDeleted {
     color: #999;
 }
+
+
 
 /* text style used for help text rendered by modules */
 .Help {
