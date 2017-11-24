@@ -38,33 +38,33 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.1.1.70\lib\ClientDependency.Core.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.234\lib\ClientDependency.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke">
-      <HintPath>..\packages\DotNetNuke.Core.9.0.1.128\lib\net40\DotNetNuke.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Core.9.2.0.234\lib\net40\DotNetNuke.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
-      <HintPath>..\packages\DotNetNuke.Instrumentation.9.0.1.128\lib\net40\DotNetNuke.Instrumentation.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.2.0.234\lib\net40\DotNetNuke.Instrumentation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\packages\DotNetNuke.Instrumentation.9.0.1.128\lib\net40\DotNetNuke.Log4Net.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.2.0.234\lib\net40\DotNetNuke.Log4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web">
-      <HintPath>..\packages\DotNetNuke.Web.9.0.1.128\lib\net40\DotNetNuke.Web.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Web.9.2.0.234\lib\net40\DotNetNuke.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>..\packages\DotNetNuke.Web.Client.9.0.1.128\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Web.Client.9.2.0.234\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\packages\DotNetNuke.Web.9.0.1.128\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Web.9.2.0.234\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
-      <HintPath>..\packages\DotNetNuke.Core.9.0.1.128\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Core.9.2.0.234\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
