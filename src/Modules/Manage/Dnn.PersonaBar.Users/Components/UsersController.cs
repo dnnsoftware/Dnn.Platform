@@ -32,7 +32,6 @@ using System.Threading;
 using System.Web.Security;
 using Dnn.PersonaBar.Users.Components.Contracts;
 using Dnn.PersonaBar.Users.Components.Dto;
-using Dnn.PersonaBar.Users.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
@@ -40,12 +39,8 @@ using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
-using DotNetNuke.Services.Search.Controllers;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
@@ -69,11 +64,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
-            return !string.IsNullOrEmpty(usersContract.SearchText)
-                        && usersContract.Filter == UserFilters.Authorized
-                        && !HostController.Instance.GetBoolean("DisableUserCrawling", false)
-                ? GetUsersFromLucene(usersContract, isSuperUser, out totalRecords)
-                : GetUsersFromDb(usersContract, isSuperUser, out totalRecords);
+            return GetUsersFromDb(usersContract, isSuperUser, out totalRecords) ?? new List<UserBasicDto>();
         }
 
         public IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false)
@@ -390,64 +381,51 @@ namespace Dnn.PersonaBar.Users.Components
         private static IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             totalRecords = 0;
-            List<UserBasicDto> users = null;
-            IEnumerable<UserInfo> userInfos = null;
+            IEnumerable<UserBasicDto> users = null;
 
             var portalId = usersContract.PortalId;
             var pageIndex = usersContract.PageIndex;
             var pageSize = usersContract.PageSize;
-            var paged = false;
 
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-                    users = GetUsers(usersContract, true, true, isSuperUser, out totalRecords);
-                    paged = true;
+                    users = GetUsers(usersContract, null, null, isSuperUser ? null : (bool?)false, out totalRecords);
                     break;
                 case UserFilters.Authorized:
-                    users = GetUsers(usersContract, false, false, isSuperUser, out totalRecords);
-                    paged = true;
+                    users = GetUsers(usersContract, true, null, isSuperUser ? null : (bool?)false, out totalRecords);
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        var dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
-                        userInfos = dbUsers?.OfType<UserInfo>().ToList();
+                        users = GetUsers(usersContract, null, null, true, out totalRecords);
                     }
-                    paged = true;
                     break;
                 case UserFilters.UnAuthorized:
-                    users = GetUsers(usersContract, true, false, isSuperUser, out totalRecords);
-                    paged = true;
+                    users = GetUsers(usersContract, false, null, isSuperUser ? null : (bool?)false, out totalRecords);
                     break;
                 case UserFilters.Deleted:
-                    users = GetUsers(usersContract, true, true, isSuperUser, out totalRecords);
-                    paged = true;
+                    users = GetUsers(usersContract, null, true, isSuperUser ? null : (bool?)false, out totalRecords);
                     break;
-                //                    case UserFilters.Online:
-                //                        dbUsers = UserController.GetOnlineUsers(usersContract.PortalId);
-                //                        break;
                 case UserFilters.RegisteredUsers:
-                    userInfos = RoleController.Instance.GetUsersByRole(portalId,
-                        PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
-                    if (!isSuperUser)
                     {
-                        userInfos = userInfos?.Where(x => !x.IsSuperUser);
+                        IList<UserInfo> userInfos = RoleController.Instance.GetUsersByRole(portalId,
+                            PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
+                        if (!isSuperUser)
+                        {
+                            userInfos = (IList<UserInfo>)userInfos?.Where(x => !x.IsSuperUser);
+                        }
+                        if (userInfos != null)
+                        {
+                            totalRecords = userInfos.Count;
+                            users = GetSortedUsers(
+                                GetPagedUsers(userInfos, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo),
+                                usersContract.SortColumn, usersContract.SortAscending);
+                        }
+                        break;
                     }
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
-            }
-            if (users == null && userInfos != null)
-            {
-                var enumerable = userInfos as UserInfo[] ?? userInfos.ToArray();
-                totalRecords = paged ? totalRecords : enumerable.Length;
-                users =
-                    GetSortedUsers(
-                        paged
-                            ? enumerable.Select(UserBasicDto.FromUserInfo)
-                            : GetPagedUsers(enumerable, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo),
-                        usersContract.SortColumn, usersContract.SortAscending).ToList();
             }
             return users;
         }
@@ -479,38 +457,6 @@ namespace Dnn.PersonaBar.Users.Components
                 users.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        private static IList<UserBasicDto> GetUsersFromLucene(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
-        {
-            var query = new SearchQuery
-            {
-                KeyWords = usersContract.SearchText,
-                PortalIds = new List<int> { usersContract.PortalId },
-                PageIndex = usersContract.PageIndex + 1, // Lucene's search page index starts at 1 and not 0
-                PageSize = Math.Min(usersContract.PageSize, 100),
-                SearchTypeIds = new List<int> { SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId },
-                WildCardSearch = true,
-                CultureCode = null
-            };
-            if (!isSuperUser)
-            {
-                query.NumericKeys.Add("superuser", 0);
-            }
-
-            var searchResults = SearchController.Instance.SiteSearch(query);
-            var userIds = searchResults.Results.Select(r =>
-            {
-                int userId;
-                int.TryParse(r.UniqueKey?.Split('_')[0], out userId);
-                return userId;
-            }).Where(u => u > 0);
-
-            var currentIds = string.Join(",", userIds);
-            var users = UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds)
-                .Where(u => UserController.GetUserById(usersContract.PortalId, u.UserId).Membership.Approved).ToList();
-            totalRecords = searchResults.TotalHits;
-            return GetSortedUsers(users, usersContract.SortColumn, usersContract.SortAscending).ToList();
-        }
-
         private bool CanUpdateUsername(UserInfo user)
         {
             //can only update username if a host/admin and account being managed is not a superuser
@@ -537,32 +483,29 @@ namespace Dnn.PersonaBar.Users.Components
             return false;
         }
 
-
         private static bool IsAdmin(UserInfo user, PortalSettings portalSettings)
         {
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
 
-        private static List<UserBasicDto> GetUsers(GetUsersContract usersContract, bool includeUnauthorized, bool includeDeleted, bool includeSuperUsers, out int totalRecords)
+        private static IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract,
+            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, out int totalRecords)
         {
-            totalRecords = 0;
-            var reader = DataProvider.Instance()
-                            .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
-                                string.IsNullOrEmpty(usersContract.SortColumn) ? "Joined" : usersContract.SortColumn,
-                                usersContract.SortAscending,
-                                usersContract.PageIndex,
-                                usersContract.PageSize,
-                                string.IsNullOrEmpty(usersContract.SearchText) ? "" : usersContract.SearchText.TrimEnd('%') + "%",
-                                includeUnauthorized,
-                                includeDeleted,
-                                includeSuperUsers,
-                                usersContract.Filter);
-            if (reader.Read())
-            {
-                totalRecords = reader.GetInt32(0);
-                reader.NextResult();
-            }
-            return CBO.FillCollection<UserBasicDto>(reader);
+            List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
+                DataProvider.Instance().ExecuteReader(
+                    "Personabar_GetUsersBySearchTerm",
+                    usersContract.PortalId,
+                    string.IsNullOrEmpty(usersContract.SortColumn) ? "Joined" : usersContract.SortColumn,
+                    usersContract.SortAscending,
+                    usersContract.PageIndex,
+                    usersContract.PageSize,
+                    string.IsNullOrEmpty(usersContract.SearchText) ? "" : usersContract.SearchText.TrimEnd('%') + "%",
+                    includeAuthorized,
+                    includeDeleted,
+                    includeSuperUsers));
+
+            totalRecords = records.Count == 0 ? 0 : records[0].TotalCount;
+            return records;
         }
 
         #endregion

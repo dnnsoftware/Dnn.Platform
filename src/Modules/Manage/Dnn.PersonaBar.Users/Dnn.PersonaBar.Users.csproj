@@ -109,6 +109,7 @@
     <Compile Include="Components\Dto\ChangePasswordDto.cs" />
     <Compile Include="Components\Dto\RelationshipDto.cs" />
     <Compile Include="Components\Dto\ProfileVisibilityDto.cs" />
+    <Compile Include="Components\Dto\UserBasicDto2.cs" />
     <Compile Include="Components\Dto\UserDetailDto.cs" />
     <Compile Include="Components\Dto\UserBasicDto.cs" />
     <Compile Include="Components\Dto\UserFilters.cs" />

@@ -310,8 +310,6 @@ namespace Dnn.PersonaBar.Users.Services
                 if (user.Membership.Approved == authorized)//Do nothing if the new status is same as current status.
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
-                user.Membership.Approved = authorized;
-
                 Components.UsersController.Instance.UpdateAuthorizeStatus(user, PortalId, authorized);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
