@@ -71,7 +71,7 @@ class FromManifest extends Component {
             props.onSelectModuleFolder({
                 ownerFolder: state.newModule.ownerFolder.value,
                 moduleFolder: option.value,
-                type: 3 //.dnn files
+                type: 2 //.dnn files
             });
         }
         if (newModule[key].required) {
