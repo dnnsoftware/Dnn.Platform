@@ -11,14 +11,14 @@ namespace DeployClient
 {
     class API
     {
-        private static string APIKey = Properties.Settings.Default.APIKey;
+        private static string APIKey = Program.Options.APIKey;
 
         private static HttpClient BuildClient()
         {
             HttpClient client = new HttpClient();
 
-            client.BaseAddress = new Uri(new Uri(Properties.Settings.Default.TargetUri), "DesktopModules/PolyDeploy/API/");
-            client.DefaultRequestHeaders.Add("x-api-key", Properties.Settings.Default.APIKey);
+            client.BaseAddress = new Uri(new Uri(Program.Options.TargetUri), "DesktopModules/PolyDeploy/API/");
+            client.DefaultRequestHeaders.Add("x-api-key", APIKey);
             client.Timeout = TimeSpan.FromSeconds(25);
 
             return client;

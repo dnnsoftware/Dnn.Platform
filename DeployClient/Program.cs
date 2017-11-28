@@ -10,8 +10,7 @@ namespace DeployClient
 {
     class Program
     {
-        private static bool IsSilent = false;
-        private static bool NoPrompt = false;
+        internal static CommandLineOptions Options = new CommandLineOptions();
 
         enum ExitCode : int
         {
@@ -26,44 +25,28 @@ namespace DeployClient
         {
             try
             {
-                foreach (string arg in args)
-                {
-                    if (arg.ToLower().Contains("--silent"))
-                    {
-                        IsSilent = true;
-                    }
-
-                    if (arg.ToLower().Contains("--no-prompt"))
-                    {
-                        NoPrompt = true;
-                    }
-                }
+                GetSettings(args);
 
                 // Output start.
                 WriteLine("*** Polly Deployment Client ***");
                 WriteLine();
-
-                // Get the properties we need.
-                string targetUri = Properties.Settings.Default.TargetUri;
-                string apiKey = Properties.Settings.Default.APIKey;
-                string encryptionKey = Properties.Settings.Default.EncryptionKey;
-
+                
                 // Do we have a target uri.
-                if (targetUri.Equals(string.Empty))
+                if (Options.TargetUri.Equals(string.Empty))
                 {
-                    throw new Exception("No target uri has been set.");
+                    throw new ArgumentException("No target uri has been set.");
                 }
 
                 // Do we have an api key?
-                if (apiKey.Equals(string.Empty))
+                if (Options.APIKey.Equals(string.Empty))
                 {
-                    throw new Exception("No api key has been set.");
+                    throw new ArgumentException("No api key has been set.");
                 }
 
                 // Do we have an encryption key?
-                if (encryptionKey.Equals(string.Empty))
+                if (Options.EncryptionKey.Equals(string.Empty))
                 {
-                    throw new Exception("No encryption key has been set.");
+                    throw new ArgumentException("No encryption key has been set.");
                 }
 
                 // Output identifying module archives.
@@ -92,7 +75,7 @@ namespace DeployClient
                 }
                 WriteLine();
 
-                if (!NoPrompt)
+                if (!Options.NoPrompt)
                 {
                     // Prompt to continue.
                     WriteLine("Would you like to continue? (y/n)");
@@ -125,7 +108,7 @@ namespace DeployClient
                         WriteLine(string.Format("\t{0}", Path.GetFileName(zipFile)));
                         Write("\t\t...encrypting...");
 
-                        using (Stream es = Crypto.Encrypt(fs, Properties.Settings.Default.EncryptionKey))
+                        using (Stream es = Crypto.Encrypt(fs, Options.EncryptionKey))
                         {
                             Write("uploading...");
 
@@ -163,7 +146,7 @@ namespace DeployClient
 
                         // Is there a status key?
                         if (response.ContainsKey("Status"))
-                        {   
+                        {
                             // Yes, get the status.
                             status = response["Status"];
                         }
@@ -180,7 +163,7 @@ namespace DeployClient
                         {
                             // Build feedback.
                             string print = BuildUpdateString(results);
-                            
+
                             // Same as previous feedback?
                             if (print != previousPrint)
                             {
@@ -205,7 +188,7 @@ namespace DeployClient
                     string print = BuildUpdateString(results);
 
                     // Print feedback.
-                    WriteLine(print);   
+                    WriteLine(print);
                 }
 
                 // Finished install.
@@ -220,6 +203,33 @@ namespace DeployClient
 
                 ReadLine();
                 Environment.Exit((int)ExitCode.Error);
+            }
+        }
+
+        private static void GetSettings(string[] args)
+        {
+            if (!CommandLine.Parser.Default.ParseArguments(args, Options))
+            {
+                // Can't use custom WriteLine method as IsSilent is not properly available
+                Console.WriteLine("Could not parse command line arguments");
+                Environment.Exit((int)ExitCode.Error);
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(Options.TargetUri))
+                {
+                    Options.TargetUri = Properties.Settings.Default.TargetUri;
+                }
+
+                if (string.IsNullOrWhiteSpace(Options.APIKey))
+                {
+                    Options.APIKey = Properties.Settings.Default.APIKey;
+                }
+
+                if (string.IsNullOrWhiteSpace(Options.EncryptionKey))
+                {
+                    Options.EncryptionKey = Properties.Settings.Default.EncryptionKey;
+                }
             }
         }
 
@@ -266,7 +276,7 @@ namespace DeployClient
 
         private static void Write(string message)
         {
-            if(IsSilent)
+            if(Options.IsSilent)
             {
                 return;
             }
@@ -276,7 +286,7 @@ namespace DeployClient
 
         private static void WriteLine(string message = "")
         {
-            if(IsSilent)
+            if(Options.IsSilent)
             {
                 return;
             }
@@ -286,7 +296,7 @@ namespace DeployClient
 
         private static string ReadLine()
         {
-            if (IsSilent || NoPrompt)
+            if (Options.IsSilent || Options.NoPrompt)
             {
                 return null;
             }
@@ -296,7 +306,7 @@ namespace DeployClient
 
         private static bool Confirm()
         {
-            if (IsSilent || NoPrompt)
+            if (Options.IsSilent || Options.NoPrompt)
             {
                 return true;
             }
