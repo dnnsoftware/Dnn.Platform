@@ -13,6 +13,7 @@ namespace DNN.Integration.Test.Framework
         CookieContainer SessionCookies { get; }
         DateTime LoggedInAtTime { get;  }
         TimeSpan Timeout { get; set; }
+        Uri Domain { get; }
         string UserAgentValue { get; set; }
 
         void Logout();
