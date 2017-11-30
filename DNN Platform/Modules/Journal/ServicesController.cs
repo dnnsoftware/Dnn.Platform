@@ -117,7 +117,6 @@ namespace DotNetNuke.Modules.Journal
 
                 checkGroupAccess(postData);
 
-                // JI
                 var journalItem = prepareJournalItem(postData, mentionedUsers);
 
                 JournalController.Instance.SaveJournalItem(journalItem, ActiveModule);
