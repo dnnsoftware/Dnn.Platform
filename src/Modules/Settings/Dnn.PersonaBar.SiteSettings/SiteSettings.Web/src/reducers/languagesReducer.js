@@ -19,6 +19,12 @@ export default function languages(state = {
             };
         case ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_SETTINGS:
             return { ...state,
+                languageList: action.data.languageList.map((language) => {
+                    return { 
+                        ...language,
+                        IsDefault: action.data.siteDefaultLanguage === language.Code
+                    };
+                }),
                 languageSettingsClientModified: action.data.languageSettingsClientModified
             };
         case ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGES:

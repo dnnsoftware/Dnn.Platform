@@ -32,12 +32,14 @@ const languagesActions = {
             });
         };
     },
-    updateLanguageSettings(payload, callback, failureCallback) {
+    updateLanguageSettings(payload, languageList, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.updateLanguageSettings(payload, data => {
                 dispatch({
                     type: ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_SETTINGS,
                     data: {
+                        languageList: languageList,
+                        siteDefaultLanguage: payload.SiteDefaultLanguage,
                         languageSettingsClientModified: false
                     }
                 });

@@ -108,7 +108,7 @@ class LanguageSettingsPanelBody extends Component {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(LanguagesActions.updateLanguageSettings(state.languageSettings, () => {
+        props.dispatch(LanguagesActions.updateLanguageSettings(state.languageSettings, props.languageList, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
             defaultAllowContentLocalization = state.languageSettings.AllowContentLocalization;
             this.setState({
@@ -388,7 +388,8 @@ LanguageSettingsPanelBody.propTypes = {
     cultureCode: PropTypes.string,
     openLanguageVerifier: PropTypes.func,
     openLanguagePack: PropTypes.func,
-    openLocalizedContent: PropTypes.func
+    openLocalizedContent: PropTypes.func,
+    languageList: PropTypes.array
 };
 
 function mapStateToProps(state) {
@@ -397,7 +398,8 @@ function mapStateToProps(state) {
         languageSettings: state.languages.languageSettings,
         languages: state.languages.languages,
         languageDisplayModes: state.languages.languageDisplayModes,
-        languageSettingsClientModified: state.languages.languageSettingsClientModified
+        languageSettingsClientModified: state.languages.languageSettingsClientModified,
+        languageList: state.languages.languageList
     };
 }
 
