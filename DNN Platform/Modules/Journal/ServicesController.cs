@@ -98,8 +98,45 @@ namespace DotNetNuke.Modules.Journal
             return !string.IsNullOrEmpty(url) && !url.Contains("//");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+		[DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage Create(CreateDTO postData)
+        {
+            try
+            {
+                int UserID = UserInfo.UserID;
+                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
+
+                if (postData.ProfileId == -1)
+                {
+                    postData.ProfileId = UserID;
+                }
+
+                checkProfileAccess(postData.ProfileId, UserInfo);
+
+                checkGroupAccess(postData);
+
+                // JI
+                var ji = prepareJournalItem(postData, mentionedUsers);
+
+                JournalController.Instance.SaveJournalItem(ji, ActiveModule);
+
+                var originalSummary = ji.Summary;
+                SendMentionNotifications(mentionedUsers, ji, originalSummary);
+
+                return Request.CreateResponse(HttpStatusCode.OK, ji);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         // Check if a user can post content on a specific profile's page
-        private void checkProfileAccess(int profileId, UserInfo currentUser) {
+        private void checkProfileAccess(int profileId, UserInfo currentUser)
+        {
             if (profileId != currentUser.UserID)
             {
                 var profileUser = UserController.Instance.GetUser(PortalSettings.PortalId, profileId);
@@ -110,7 +147,7 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        private void checkGroupAccess(ref CreateDTO postData)
+        private void checkGroupAccess(CreateDTO postData)
         {
             if (postData.GroupId > 0)
             {
@@ -132,7 +169,7 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        private JournalItem prepareJournalItem(ref CreateDTO postData, ref IDictionary<string, UserInfo>  mentionedUsers)
+        private JournalItem prepareJournalItem(CreateDTO postData, IDictionary<string, UserInfo> mentionedUsers)
         {
             var journalTypeId = 1;
             switch (postData.JournalType)
@@ -174,7 +211,7 @@ namespace DotNetNuke.Modules.Journal
 
             //parse the mentions context in post data
             var originalSummary = ji.Summary;
-            
+
             ji.Summary = ParseMentions(ji.Summary, postData.Mentions, ref mentionedUsers);
 
             if (ji.Summary.Length > 2000)
@@ -224,42 +261,6 @@ namespace DotNetNuke.Modules.Journal
             return ji;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-		[DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage Create(CreateDTO postData)
-        {
-            try
-            {
-                int UserID = UserInfo.UserID;
-                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
-
-                if (postData.ProfileId == -1)
-                {
-                    postData.ProfileId = UserID;
-                }
-
-                checkProfileAccess(postData.ProfileId, UserInfo);
-
-                checkGroupAccess(ref postData);
-
-                // JI
-                var ji = prepareJournalItem(ref postData, ref mentionedUsers);
-
-                JournalController.Instance.SaveJournalItem(ji, ActiveModule);
-
-                var originalSummary = ji.Summary;
-                SendMentionNotifications(mentionedUsers, ji, originalSummary);
-
-                return Request.CreateResponse(HttpStatusCode.OK, ji);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
- 
         public class JournalIdDTO
         {
             public int JournalId { get; set; }
