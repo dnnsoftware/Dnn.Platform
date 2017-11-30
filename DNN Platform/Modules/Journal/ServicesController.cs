@@ -118,14 +118,14 @@ namespace DotNetNuke.Modules.Journal
                 checkGroupAccess(postData);
 
                 // JI
-                var ji = prepareJournalItem(postData, mentionedUsers);
+                var journalItem = prepareJournalItem(postData, mentionedUsers);
 
-                JournalController.Instance.SaveJournalItem(ji, ActiveModule);
+                JournalController.Instance.SaveJournalItem(journalItem, ActiveModule);
 
-                var originalSummary = ji.Summary;
-                SendMentionNotifications(mentionedUsers, ji, originalSummary);
+                var originalSummary = journalItem.Summary;
+                SendMentionNotifications(mentionedUsers, journalItem, originalSummary);
 
-                return Request.CreateResponse(HttpStatusCode.OK, ji);
+                return Request.CreateResponse(HttpStatusCode.OK, journalItem);
             }
             catch (Exception exc)
             {
