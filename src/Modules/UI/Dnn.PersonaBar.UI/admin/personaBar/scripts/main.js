@@ -1018,7 +1018,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         util.closePersonaBar(function () {
                                             toogleUserMode('EDIT', function() {
                                                 function reloadPage() {
-                                                    window.parent.location.reload();
+                                                    window.top.location.replace(window.top.location.href);
                                                 }
                                                 saveBtnEditSettings(reloadPage, reloadPage);
                                             });
