@@ -736,6 +736,90 @@ BEGIN
 END; -- Procedure
 GO
 
+/*************************************/
+/***** DNN-8014: login cookies   *****/
+/*************************************/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthCookies]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}AuthCookies](
+		[CookieId]    [int] IDENTITY(1,1) NOT NULL,
+		[CookieValue] [nvarchar](200) NOT NULL,
+		[ExpiresOn]   [datetime] NOT NULL, -- in UTC
+		[UserId]      [int] NOT NULL,
+		[CreatedOn]   [datetime], -- UTC
+		[UpdatedOn]   [datetime], -- UTC
+		CONSTRAINT [PK_{objectQualifier}AuthCookies] PRIMARY KEY CLUSTERED([CookieId] DESC)
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthCookies]')
+				AND name = N'IX_{objectQualifier}AuthCookies_CookieValue')
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}AuthCookies_CookieValue]
+		ON {databaseOwner}[{objectQualifier}AuthCookies] ([CookieValue])
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Update]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Update]
+GO
+
+-- Adds new or Updates existing entry
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Update]
+    @CookieValue  nvarchar(200),
+	@ExpiresOn   datetime, -- in UTC
+	@UserId		  int
+AS
+BEGIN
+	MERGE INTO {databaseOwner}[{objectQualifier}AuthCookies] AC
+		USING (SELECT @CookieValue CVal, @UserId [UID], @ExpiresOn EXPDT) Q
+		ON (AC.CookieValue = Q.CVal)
+		WHEN MATCHED AND AC.ExpiresOn <> Q.EXPDT THEN -- update only, if there is a change, user ID shouldn't change
+		UPDATE SET ExpiresOn = @ExpiresOn, UpdatedOn = GetUtcDate()
+		WHEN NOT MATCHED THEN
+		INSERT ( CookieValue,  UserId, ExpiresOn,  CreatedOn,    UpdatedOn )
+		VALUES (@CookieValue, @UserId, @ExpiresOn, GetUtcDate(), GetUtcDate());
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Find]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Find]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Find]
+    @CookieValue  nvarchar(200)
+AS
+BEGIN
+	SELECT TOP(1) * FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE CookieValue = @CookieValue
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]
+    @CookieValue  nvarchar(200)
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE CookieValue = @CookieValue
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+	@CutoffDate   datetime -- in UTC
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE ExpiresOn < @CutoffDate
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

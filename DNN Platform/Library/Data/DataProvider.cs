@@ -4290,6 +4290,30 @@ namespace DotNetNuke.Data
 
         #endregion
 
+        #region User Cookies persistence
+
+        public virtual void UpdateAuthCookie(string cookieValue, DateTime utcExpiry, int userId)
+        {
+            ExecuteNonQuery("AuthCookies_Update", cookieValue, FixDate(utcExpiry), userId);
+        }
+
+        public virtual IDataReader FindAuthCookie(string cookieValue)
+        {
+            return ExecuteReader("AuthCookies_Find", cookieValue);
+        }
+
+        public virtual void DeleteAuthCookie(string cookieValue)
+        {
+            ExecuteNonQuery("AuthCookies_DeleteByValue", cookieValue);
+        }
+
+        public virtual void DeleteExpiredAuthCookies(DateTime utcExpiredBefore)
+        {
+            ExecuteNonQuery("AuthCookies_DeleteOld", FixDate(utcExpiredBefore));
+        }
+
+        #endregion
+
         #endregion
 
         #region Obsolete Methods
