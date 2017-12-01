@@ -871,7 +871,7 @@
     <value>The language has been added.</value>
   </data>
   <data name="DefaultLanguage.Text" xml:space="preserve">
-    <value>*NOTE: This Language is the System Default</value>
+    <value>*NOTE: This Language is the Site Default</value>
   </data>
   <data name="plEnableContentLocalization.Help" xml:space="preserve">
     <value>Check this box to allow Administrators to enable content localization for their site.</value>
