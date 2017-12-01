@@ -105,12 +105,12 @@ namespace DotNetNuke.Modules.Journal
         {
             try
             {
-                int UserID = UserInfo.UserID;
+                int userId = UserInfo.UserID;
                 IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
 
                 if (postData.ProfileId == -1)
                 {
-                    postData.ProfileId = UserID;
+                    postData.ProfileId = userId;
                 }
 
                 checkProfileAccess(postData.ProfileId, UserInfo);
