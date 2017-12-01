@@ -574,7 +574,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		        var name = User.Username;
 		        var valid = name.Length >= 5 &&
 		                    name == name.Trim() &&
-		                    name.Any(ch => ch < ' ') &&
+		                    name.All(ch => ch >= ' ') &&
 		                    name.IndexOfAny(unallowedAscii) < 0;
 		        if (!valid)
 		            CreateStatus = UserCreateStatus.InvalidUserName;
