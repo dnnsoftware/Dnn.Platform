@@ -573,8 +573,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		        char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
 		        var name = User.Username;
 		        var valid = name.Length >= 5 &&
-		                    !name.StartsWith(" ") &&
-		                    !name.EndsWith(" ") &&
+		                    name == name.Trim() &&
 		                    name.Any(ch => ch < ' ') &&
 		                    name.IndexOfAny(unallowedAscii) < 0;
 		        if (!valid)
