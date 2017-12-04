@@ -393,7 +393,7 @@ namespace Dnn.PersonaBar.Users.Components
                     users = GetUsers(usersContract, null, null, isSuperUser ? null : (bool?)false, out totalRecords);
                     break;
                 case UserFilters.Authorized:
-                    users = GetUsers(usersContract, true, null, isSuperUser ? null : (bool?)false, out totalRecords);
+                    users = GetUsers(usersContract, true, false, isSuperUser ? null : (bool?)false, out totalRecords);
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
@@ -402,7 +402,7 @@ namespace Dnn.PersonaBar.Users.Components
                     }
                     break;
                 case UserFilters.UnAuthorized:
-                    users = GetUsers(usersContract, false, null, isSuperUser ? null : (bool?)false, out totalRecords);
+                    users = GetUsers(usersContract, false, false, isSuperUser ? null : (bool?)false, out totalRecords);
                     break;
                 case UserFilters.Deleted:
                     users = GetUsers(usersContract, null, true, isSuperUser ? null : (bool?)false, out totalRecords);
