@@ -17,7 +17,7 @@ IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{o
 GO
 
 IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}Personabar_GetUsersBySearchTerm]'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersBySearchterm]
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Personabar_GetUsersBySearchterm]
 GO
 
 /************************************************************/
