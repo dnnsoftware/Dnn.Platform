@@ -86,6 +86,7 @@ const logActions = {
     },
     emailLogItems(payload, callback) {
         return (dispatch) => {
+            payload.Email = payload.Email.split(/[ ,;]+/).filter((v) => { return v.trim().length > 0; }).join();
             ApplicationService.emailLogItems(payload, data => {
                 dispatch({
                     type: ActionTypes.EMAILED_LOG_ITEMS,
