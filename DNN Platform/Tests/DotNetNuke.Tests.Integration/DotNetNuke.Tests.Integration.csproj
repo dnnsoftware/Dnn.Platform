@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\PersonaBar\Pages\PageUrlsTests.cs" />
     <Compile Include="Tests\Portals\PortalInfoTests.cs" />
     <Compile Include="Tests\Portals\PortalSettingsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
