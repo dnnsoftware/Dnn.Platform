@@ -1501,31 +1501,42 @@ namespace DotNetNuke.Services.Localization
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList customArray,
                                               IDictionary customDictionary, string customCaption, int accessingUserID)
         {
-            string strMessageValue = GetString(messageName, resourceFile, portalSettings, strLanguage);
-            if (!String.IsNullOrEmpty(strMessageValue))
+            try
             {
-                if (String.IsNullOrEmpty(customCaption))
+                string strMessageValue = GetString(messageName, resourceFile, portalSettings, strLanguage);
+                if (!String.IsNullOrEmpty(strMessageValue))
                 {
-                    customCaption = "Custom";
-                }
-                var objTokenReplace = new TokenReplace(Scope.SystemMessages, strLanguage, portalSettings, userInfo);
-                if ((accessingUserID != -1) && (userInfo != null))
-                {
-                    if (userInfo.UserID != accessingUserID)
+                    if (String.IsNullOrEmpty(customCaption))
                     {
-                        objTokenReplace.AccessingUser = UserController.Instance.GetUser(portalSettings.PortalId, accessingUserID);
+                        customCaption = "Custom";
+                    }
+                    var objTokenReplace = new TokenReplace(Scope.SystemMessages, strLanguage, portalSettings, userInfo);
+                    if ((accessingUserID != -1) && (userInfo != null))
+                    {
+                        if (userInfo.UserID != accessingUserID)
+                        {
+                            objTokenReplace.AccessingUser =
+                                UserController.Instance.GetUser(portalSettings.PortalId, accessingUserID);
+                        }
+                    }
+                    if (customArray != null)
+                    {
+                        strMessageValue =
+                            objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customArray, customCaption);
+                    }
+                    else
+                    {
+                        strMessageValue =
+                            objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customDictionary, customCaption);
                     }
                 }
-                if (customArray != null)
-                {
-                    strMessageValue = objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customArray, customCaption);
-                }
-                else
-                {
-                    strMessageValue = objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customDictionary, customCaption);
-                }
+                return strMessageValue;
             }
-            return strMessageValue;
+            catch (NullReferenceException ex)
+            {
+                Logger.Error(ex);
+                return messageName;
+            }
         }
 
         #endregion
