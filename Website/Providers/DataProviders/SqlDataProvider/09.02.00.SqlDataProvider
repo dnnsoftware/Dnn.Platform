@@ -736,6 +736,90 @@ BEGIN
 END; -- Procedure
 GO
 
+/******************************************************************************************************************/
+/***** Fix DNN-10557: Fix xml storage for comment & comment moderation in case of longer than 2000 characters *****/
+/******************************************************************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Comment_Save]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+	@JournalId int,
+	@CommentId int,
+	@UserId int,
+	@Comment nvarchar(max),
+	@CommentXML xml,
+	@DateUpdated datetime
+AS
+
+DECLARE @cxml xml
+DECLARE @xml xml
+DECLARE @cdataComment nvarchar(max)
+
+IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId AND CommentId = @CommentId)
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET Comment = @Comment,
+			CommentXML = @CommentXML,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId
+	END
+	ELSE
+	BEGIN		
+		IF @CommentXML IS NULL
+			SET @cxml = '<root></root>';
+		ELSE
+			SET @cxml = @CommentXML
+
+		IF NOT(@cxml.exist('/root/comment') = 1)
+			SET @cxml.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		SET @cxml.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")')
+		
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET CommentXML = @cxml,
+			Comment = NULL,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId
+	END
+END
+ELSE
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, @Comment, @CommentXML, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()
+	END
+	ELSE
+	BEGIN
+		IF @CommentXML IS NULL
+			SET @cxml = '<root></root>';
+		ELSE
+			SET @cxml = @CommentXML
+
+		IF NOT(@cxml.exist('/root/comment') = 1)
+			SET @cxml.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		SET @cxml.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")')
+		
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, NULL, @cxml, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()
+	END		
+END
+SELECT @CommentId
+GO
+
 /*************************************/
 /***** DNN-8014: login cookies   *****/
 /*************************************/
