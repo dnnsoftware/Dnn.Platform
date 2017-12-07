@@ -230,7 +230,7 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage SearchPages(string searchKey = "", string pageType = "", string tags = "", string publishStatus = "All",
             string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
         {
-            var totalRecords = 0;
+            int totalRecords;
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
             var pages = from p in _pagesController.SearchPages(out totalRecords, searchKey, pageType, tags, publishStatus, publishDateStart, publishDateEnd, workflowId, pageIndex, pageSize)
@@ -487,7 +487,34 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 bulkPage.Clean();
-                var bulkPageResponse = _bulkPagesController.AddBulkPages(bulkPage);
+                var bulkPageResponse = _bulkPagesController.AddBulkPages(bulkPage, validateOnly: false);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Status = 0,
+                    Response = bulkPageResponse
+                });
+            }
+            catch (PageValidationException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, ex.Field, ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
+        public HttpResponseMessage PreSaveBulkPagesValidate(BulkPage bulkPage)
+        {
+            if (!_securityService.IsPageAdminUser())
+            {
+                return GetForbiddenResponse();
+            }
+
+            try
+            {
+                bulkPage.Clean();
+                var bulkPageResponse = _bulkPagesController.AddBulkPages(bulkPage, validateOnly: true);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
