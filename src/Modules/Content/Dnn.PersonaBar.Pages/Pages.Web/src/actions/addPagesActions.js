@@ -26,7 +26,7 @@ const addPagesActions = {
         };
     },
 
-    addPages() {
+    addPages(callback) {
         return (dispatch, getState) => {
             const {addPages} = getState();
             dispatch({
@@ -47,6 +47,8 @@ const addPagesActions = {
                         response 
                     }
                 });
+                
+                callback();
 
             }).catch((error) => {
                 dispatch({

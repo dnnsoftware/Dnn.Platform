@@ -4,13 +4,13 @@ import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
     pageActions as PageActions,
     addPagesActions as AddPagesActions,
     templateActions as TemplateActions,
     visiblePanelActions as VisiblePanelActions,
+    visiblePageSettingsActions as VisiblePageSettingsActions,
     languagesActions as LanguagesActions,
     pageHierarchyActions as PageHierarchyActions
 } from "../actions";
@@ -26,15 +26,13 @@ import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
-import cloneDeep from 'lodash/clonedeep';
+import cloneDeep from "lodash/clonedeep";
 import GridCell from "dnn-grid-cell";
 import OverflowText from "dnn-text-overflow-wrapper";
-import PageDetails from "./PageDetails/PageDetails";
 import Promise from "promise";
 
 import { PagesSearchIcon, PagesVerticalMore, CalendarIcon, ArrowBack, EyeIcon, TreeEdit, TreeAnalytics } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
-import DayPicker from "./DayPicker/src/DayPicker";
 import { XIcon } from "dnn-svg-icons";
 
 import "./style.less";
@@ -93,7 +91,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const { props } = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
         window.dnn.utility.setConfirmationDialogPosition();
@@ -101,11 +98,7 @@ class App extends Component {
         this.props.getPageList();
         const selectedPageId = utils.getCurrentPageId();
         selectedPageId && !utils.getIsAdminHostSystemPage() && this.onLoadPage(selectedPageId);
-        // , (data) => {
-        //     this.shouldRunRecursive = false;
-        //     this.buildTree(selectedPageId);
-        // });
-
+       
         if (viewName === "edit") {
             this.onLoadPage(utils.getCurrentPageId());
         }
@@ -240,7 +233,6 @@ class App extends Component {
     }
 
     onPageSettings(pageId) {
-        const { props } = this;
         this.onLoadPage(pageId);
     }
 
@@ -323,7 +315,6 @@ class App extends Component {
         this.shouldRunRecursive = false;
         return new Promise((resolve) => {
             const update = (input && input.tabId) ? input : this.props.selectedPage;
-            let newList = null;
             let cachedItem = null;
 
             const removeFromOldParent = () => {
@@ -466,12 +457,29 @@ class App extends Component {
         });
     }
 
-    onAddPage(parentPage) {
+    onAddMultiplePage() {
         this.clearEmptyStateMessage();
         this.selectPageSettingTab(0);
+        this.props.clearSelectedPage();
 
+        this.props.onLoadAddMultiplePages();
+        
+    }
+    /**
+     * When on edit mode
+     */
+    onEditMode(){
+        const {selectedPage, selectedView} = this.props;
+        return (selectedPage && selectedPage.tabId === 0 
+            || selectedView === panels.SAVE_AS_TEMPLATE_PANEL
+            || selectedView === panels.ADD_MULTIPLE_PAGES_PANEL 
+            || selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL);
+    }
+
+    onAddPage(parentPage) {
+        this.clearEmptyStateMessage();
+        this.selectPageSettingTab(0); 
         const addPage = () => {
-
             const { props } = this;
             const { selectedPage } = props;
             let runUpdateStore = null;
@@ -486,6 +494,7 @@ class App extends Component {
             runUpdateStore(pageList);
             const onConfirm = () => { this.props.changeSelectedPagePath(""); this.props.getNewPage(parentPage); };
             if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
+
                 utils.confirm(
                     Localization.get("CancelWithoutSaving"),
                     Localization.get("Close"),
@@ -637,44 +646,24 @@ class App extends Component {
     }
 
     getSettingsButtons() {
-        const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel } = this.props;
+        const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPageSettings, onHidePageSettings } = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
-        const deleteAction = this.onDeleteSettings.bind(this);
-
+        
         return (
             <div className="heading-buttons">
-                <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true} selectedPage={selectedPage}>
-                    <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                </Sec>
                 <Sec permission={permissionTypes.EXPORT_PAGE} selectedPage={selectedPage}>
                     <SaveAsTemplateButton
                         type="secondary"
                         size="large"
+                        disabled={this.onEditMode()}
                         onClick={onLoadSavePageAsTemplate}
-                        onShowPanelCallback={onShowPanel}
-                        onHidePanelCallback={onHidePanel}
+                        onShowPageSettingsCallback={onShowPageSettings}
+                        onHidePageSettings={onHidePageSettings}
                         onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
                         {Localization.get("SaveAsTemplate")}
                     </SaveAsTemplateButton>
                 </Sec>
-                <Sec permission={permissionTypes.COPY_PAGE} selectedPage={selectedPage}>
-                    <Button
-                        type="secondary"
-                        size="large"
-                        onClick={onDuplicatePage}>
-                        {Localization.get("DuplicatePage")}
-                    </Button>
-                </Sec>
-                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage) &&
-                    <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true} selectedPage={selectedPage}>
-                        <Button
-                            type="secondary"
-                            size="large"
-                            onClick={deleteAction}>
-                            {Localization.get("Delete")}
-                        </Button>
-                    </Sec>
-                }
+
             </div>
         );
     }
@@ -683,66 +672,84 @@ class App extends Component {
         this.props.selectPageSettingTab(index);
     }
 
+    onSaveMultiplePages(){    
+        return this.props.onSaveMultiplePages(()=>{
+            this.props.getPageList();
+        });
+    }
+    
+    onCancelAddMultiplePages(){
+        const { props } = this;
+        
+        if (props.dirtyBulkPage) {
+            const onConfirm = () => {
+                props.onCancelAddMultiplePages();
+            };
+
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                onConfirm);
+        } else {
+            props.onCancelAddMultiplePages();
+        }    
+    }
 
     getAddPages() {
         const { props } = this;
-
-        return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL} fullWidth={true}>
-            <PersonaBarPageHeader title={Localization.get("AddMultiplePages")}>
-            </PersonaBarPageHeader>
-            <PersonaBarPageBody backToLinkProps={{
-                text: securityService.isSuperUser() && Localization.get("BackToPages"),
-                onClick: props.onCancelAddMultiplePages
-            }}>
+        return (
                 <AddPages
                     bulkPage={props.bulkPage}
-                    onCancel={props.onCancelAddMultiplePages}
-                    onSave={props.onSaveMultiplePages}
+                    onCancel={this.onCancelAddMultiplePages.bind(this)}
+                    onSave={this.onSaveMultiplePages.bind(this)}
                     onChangeField={props.onChangeAddMultiplePagesField}
-                    components={props.multiplePagesComponents} />
-            </PersonaBarPageBody>
-        </PersonaBarPage>);
+                    components={props.multiplePagesComponents} />);
+    }
+
+    onCancelSaveCustomDetail(onCancelSave) {
+        return ((isDirty) =>{
+            if (isDirty) {
+                const onConfirm = () => {
+                    onCancelSave();
+                };
+
+                utils.confirm(
+                    Localization.get("CancelWithoutSaving"),
+                    Localization.get("Close"),
+                    Localization.get("Cancel"),
+                    onConfirm);
+            } else {
+                onCancelSave();
+            }
+        });
+    }
+
+    
+    onCancelSavePageAsTemplate() {
+        const { props } = this;
+        
+        if (props.dirtyTemplate) {
+            const onConfirm = () => {
+                props.onCancelSavePageAsTemplate();
+            };
+
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                onConfirm);
+        } else {
+            props.onCancelSavePageAsTemplate();
+        }
     }
 
     getSaveAsTemplatePage() {
-        const { props } = this;
-        const pageName = props.selectedPage && props.selectedPage.name;
-        const backToLabel = Localization.get("BackToPageSettings") + ": " + pageName;
-
-        return (<PersonaBarPage isOpen={props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL}>
-            <PersonaBarPageHeader title={Localization.get("SaveAsTemplate")}>
-            </PersonaBarPageHeader>
-            <PersonaBarPageBody backToLinkProps={{
-                text: backToLabel,
-                onClick: props.onCancelSavePageAsTemplate
-            }}>
+        return (
                 <SaveAsTemplate
-                    onCancel={props.onCancelSavePageAsTemplate} />
-            </PersonaBarPageBody>
-        </PersonaBarPage>);
+                    onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
     }
 
-    getAdditionalPanels() {
-        const additionalPanels = [];
-        const { props } = this;
-
-        if (props.additionalPanels) {
-            for (let i = 0; i < props.additionalPanels.length; i++) {
-                const panel = props.additionalPanels[i];
-                if (props.selectedView === panel.panelId) {
-                    const Component = panel.component;
-                    additionalPanels.push(
-                        <Component
-                            onCancel={props.onCancelSavePageAsTemplate}
-                            selectedPage={props.selectedPage}
-                            store={panel.store} />
-                    );
-                }
-            }
-        }
-
-        return additionalPanels;
-    }
 
     _traverse(comparator, pageListCopy) {
         let listItems = pageListCopy || JSON.parse(JSON.stringify(this.props.pageList));
@@ -1117,6 +1124,10 @@ class App extends Component {
     onBreadcrumbSelect(name) {
     }
 
+    isOnInsertMode(){
+        return false;
+    }
+
     render_PagesDetailEditor() {
 
         const render_emptyState = () => {
@@ -1161,6 +1172,7 @@ class App extends Component {
                     onGetCachedPageCount={props.onGetCachedPageCount}
                     onClearCache={props.onClearCache}
                     onModuleCopyChange={props.onModuleCopyChange}
+                    customPageSettingsComponents={props.customPageSettingsComponents}
                 />
             );
         };
@@ -1468,16 +1480,47 @@ class App extends Component {
             </GridCell>
         );
     }
+    
+    getAdditionalPageSettings() {
+        const additionalPageSettings = [];
 
+        const { props } = this;
+        
+        if (props.customPageSettingsComponents) {
+            for (let i = 0; i < props.customPageSettingsComponents.length; i++) {
+                const customPageSettings = props.customPageSettingsComponents[i];
+                if (props.selectedCustomPageSettings.pageSettingsId === customPageSettings.panelId) {
+                    const Component = customPageSettings.component;
+                    additionalPageSettings.push(
+                        <Component
+                            onCancel={this.onCancelSaveCustomDetail(this.props.onCancelSavePageAsTemplate)} 
+                            selectedPage={props.selectedPage}
+                            disabled={this.onEditMode()}
+                            store={customPageSettings.store} />
+                    );
+                }
+            }
+        }
+
+        return additionalPageSettings;
+    }
+    
     render_details() {
-        const { selectedPage } = this.props;
-        const { inSearch } = this.state;
+        const {selectedPage} = this.props;
+        const {inSearch} = this.state;
+        const {selectedView} = this.props;
 
-        switch (true) {
+        switch (true){
             case inSearch:
                 return this.render_searchResults();
             case selectedPage && selectedPage.tabId === 0:
                 return this.render_addPageEditor();
+            case selectedView === panels.ADD_MULTIPLE_PAGES_PANEL:
+                return this.getAddPages();
+            case selectedView === panels.SAVE_AS_TEMPLATE_PANEL:
+                return this.getSaveAsTemplatePage();
+            case selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL:
+                return this.getAdditionalPageSettings();
             case !selectedPage:
             default:
                 return this.render_PagesDetailEditor();
@@ -1539,24 +1582,24 @@ class App extends Component {
         const { selectedPage } = props;
         const { inSearch, headerDropdownSelection, toggleSearchMoreFlyout, searchTerm } = this.state;
 
-
-        const additionalPanels = this.getAdditionalPanels();
         const isListPagesAllowed = securityService.canSeePagesList();
-        let defaultLabel = "Save Page Template";
-        const options = [{ value: true, label: "Evoq Page Template" }, { value: true, label: "Export as XML" }];
-        const onSelect = (selected) => this.setState({ headerDropdownSelection: selected.label });
-
-        /* eslint-disable react/no-danger */
+       
+         /* eslint-disable react/no-danger */
         return (
 
             <div className="pages-app personaBar-mainContainer">
-                {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
-                    <PersonaBarPage fullWidth={true} isOpen={props.selectedView === panels.MAIN_PANEL}>
+                { isListPagesAllowed &&
+                    <PersonaBarPage fullWidth={true} isOpen={true}>
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
-                            {securityService.isSuperUser() && <Button type="primary" disabled={((selectedPage && selectedPage.tabId === 0) || inSearch) ? true : false} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>}
-                            {
-                                selectedPage && <Dropdown options={options} className="header-dropdown" label={defaultLabel} onSelect={(data) => onSelect(data)} withBorder={true} />
+                            {securityService.isSuperUser() &&
+                                <div> 
+                                    <Button type="primary" disabled={ this.onEditMode() } size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={ this.onEditMode() } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                </div>
                             }
+                            { 
+                                selectedPage && this.getSettingsButtons()
+                            }                            
                             {!inSearch && <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />}
                         </PersonaBarPageHeader>
                         {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
@@ -1603,7 +1646,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 30px 30px 30px" }} >
                             <GridCell columnSize={1096} type={"px"} className="page-container">
-                                <div className={((selectedPage && selectedPage.tabId === 0) || inSearch) ? "tree-container disabled" : "tree-container"}>
+                                <div className={((selectedPage && selectedPage.tabId === 0) || this.onEditMode()) ? "tree-container disabled" : "tree-container"}>
                                     <PersonaBarPageTreeviewInteractor
                                         clearSelectedPage={this.props.clearSelectedPage}
                                         Localization={Localization}
@@ -1635,16 +1678,7 @@ class App extends Component {
                         </GridCell>
                     </PersonaBarPage>
                 }
-                {props.selectedView === panels.PAGE_SETTINGS_PANEL && props.selectedPage &&
-                    this.getSettingsPage()
-                }
-                {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL &&
-                    this.getAddPages()
-                }
-                {props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL &&
-                    this.getSaveAsTemplatePage()
-                }
-                {additionalPanels}
+               
             </div>
         );
     }
@@ -1662,7 +1696,9 @@ App.propTypes = {
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
     selectedPageDirty: PropTypes.boolean,
+    selectedTemplateDirty: PropTypes.boolean,
     bulkPage: PropTypes.object,
+    dirtyBulkPage : PropTypes.boolean, 
     editingSettingModuleId: PropTypes.number,
     onCancelPage: PropTypes.func.isRequired,
     onCreatePage: PropTypes.func.isRequired,
@@ -1699,6 +1735,8 @@ App.propTypes = {
     additionalPanels: PropTypes.array.isRequired,
     onShowPanel: PropTypes.func.isRequired,
     onHidePanel: PropTypes.func.isRequired,
+    onShowPageSettings: PropTypes.func,
+    onHidePageSettings: PropTypes.func,
     isContentLocalizationEnabled: PropTypes.object.isRequired,
     getContentLocalizationEnabled: PropTypes.func.isRequired,
     selectPage: PropTypes.func.isRequired,
@@ -1709,19 +1747,23 @@ App.propTypes = {
     clearSelectedPage: PropTypes.func.isRequired,
     onModuleCopyChange: PropTypes.func,
     workflowList: PropTypes.array.isRequired,
+    customPageSettingsComponents: PropTypes.array,
     getPageHierarchy: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-
     return {
         pageList: state.pageList.pageList,
         searchList: state.searchList.searchList,
         selectedView: state.visiblePanel.selectedPage,
+        selectedCustomPageSettings : state.visiblePageSettings.panelId,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
         selectedPageDirty: state.pages.dirtyPage,
+        dirtyTemplate: state.template.dirtyTemplate,
+        dirtyEvoqTemplate: state.template.dirtyEvoqTemplate,
         bulkPage: state.addPages.bulkPage,
+        dirtyBulkPage : state.addPages.dirtyBulkPage,
         editingSettingModuleId: state.pages.editingSettingModuleId,
         error: state.errors.error,
         multiplePagesComponents: state.extensions.multiplePagesComponents,
@@ -1733,7 +1775,8 @@ function mapStateToProps(state) {
         additionalPanels: state.extensions.additionalPanels,
         isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled,
         selectedPagePath: state.pageHierarchy.selectedPagePath,
-        workflowList: state.pages.workflowList
+        workflowList: state.pages.workflowList,
+        customPageSettingsComponents : state.extensions.pageSettingsComponent
     };
 }
 
@@ -1769,8 +1812,10 @@ function mapDispatchToProps(dispatch) {
         onLoadSavePageAsTemplate: TemplateActions.loadSavePageAsTemplate,
         onCancelSavePageAsTemplate: TemplateActions.cancelSavePageAsTemplate,
         onDuplicatePage: PageActions.duplicatePage,
-        onShowPanel: VisiblePanelActions.showPanel,
+        onShowPanel: VisiblePanelActions.showPanel, 
         onHidePanel: VisiblePanelActions.hidePanel,
+        onShowPageSettings: VisiblePageSettingsActions.showCustomPageSettings,
+        onHidePageSettings: VisiblePageSettingsActions.hideCustomPageSettings,
         getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
         selectPage: PageHierarchyActions.selectPage,
         changeSelectedPagePath: PageHierarchyActions.changeSelectedPagePath,

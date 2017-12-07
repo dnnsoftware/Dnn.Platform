@@ -5,6 +5,7 @@ import pageHierarchyActions from "./pageHierarchyActions";
 import pageSeoActions from "./pageSeoActions";
 import templateActions from "./templateActions";
 import visiblePanelActions from "./visiblePanelActions";
+import visiblePageSettingsActions from "./visiblePageSettingsActions";
 import languagesActions from "./languagesActions";
 
 export {
@@ -15,5 +16,6 @@ export {
     pageSeoActions,
     templateActions,
     visiblePanelActions,
+    visiblePageSettingsActions,
     languagesActions
 };
