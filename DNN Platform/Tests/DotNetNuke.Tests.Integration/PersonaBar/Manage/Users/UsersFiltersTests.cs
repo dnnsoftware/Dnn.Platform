@@ -22,6 +22,7 @@
 using System;
 using DNN.Integration.Test.Framework;
 using DNN.Integration.Test.Framework.Helpers;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
@@ -29,45 +30,94 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
     [TestFixture]
     public class UsersFiltersTests : IntegrationTestBase
     {
-        private int[] _users = new int[10];
-        private string[] _names = new string[10];
+        private const string UnauthorizeApi = "/API/PersonaBar/Users/UpdateAuthorizeStatus?userId={0}&authorized=false";
+        private const string DeleteApi = "/API/PersonaBar/Users/SoftDeleteUser?userId={0}";
+        private const string MakeAdminApi = "/API/PersonaBar/Users/SaveUserRole?notifyUser=true&isOwner=false";
+
+        private const int MaxUsers = 8;
+        private int[] _userIds = new int[MaxUsers];
+        private string[] _userNames = new string[MaxUsers];
 
         [TestFixtureSetUp]
         public override void TestFixtureSetUp()
         {
-            var hostUserName = AppConfigHelper.GetAppSetting("hostUserName");
-
-            // clean up users
+            // clear all existing users except the HOST superuser
             DatabaseHelper.ExecuteNonQuery("DELETE FROM {objectQualifier}UserRelationships");
             DatabaseHelper.ExecuteNonQuery("DELETE FROM {objectQualifier}UserPortals");
-            DatabaseHelper.ExecuteNonQuery($"DELETE FROM {{objectQualifier}}Users WHERE Username <> '{hostUserName}'");
+            DatabaseHelper.ExecuteNonQuery("DELETE FROM {objectQualifier}Users WHERE UserID > 1");
 
-            // create new users
-            for (var i = 0; i < _names.Length; i++)
+            // create MaxUsers new users
+            for (var i = 0; i < MaxUsers; i++)
             {
-                int user, file;
-                string name;
-                var connector = WebApiTestHelper.PrepareNewUser(out user, out name, out file);
-                _users[i] = connector.UserId;
-                _names[i] = connector.UserName;
-                Console.WriteLine(@"Test users => {0}: {1}", connector.UserId, connector.UserName);
+                int userId;
+                string userName;
+                WebApiTestHelper.PrepareNewUser(out userId, out userName, out _);
+                _userIds[i] = userId;
+                _userNames[i] = userName;
+                Console.WriteLine(@"Created test users => id: {0}, username: {1}", userId, userName);
             }
+
+            var hostConnector = WebApiTestHelper.LoginHost();
+            var userIdx = 0;
+
+            // make first user as admin
+            var makeAdminItem = new { RoleId = 0, UserId = _userIds[userIdx] };
+            var response = hostConnector.PostJson(MakeAdminApi, makeAdminItem).Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<dynamic>(response);
+            Assert.AreEqual(_userNames[userIdx], result.displayName.ToString());
+
+            // Unauthorize the next 2 new users
+            for (userIdx = 1; userIdx <= 2; userIdx++)
+            {
+                var unauthorizeLink = string.Format(UnauthorizeApi, _userIds[userIdx]);
+                response = hostConnector.PostJson(unauthorizeLink, "").Content.ReadAsStringAsync().Result;
+                result = JsonConvert.DeserializeObject<dynamic>(response);
+                Assert.IsTrue(bool.Parse(result.Success.ToString()));
+            }
+
+            // soft delete the next new user
+            var deleteLink = string.Format(DeleteApi, _userIds[userIdx]);
+            response = hostConnector.PostJson(deleteLink, "").Content.ReadAsStringAsync().Result;
+            result = JsonConvert.DeserializeObject<dynamic>(response);
+            Assert.IsTrue(bool.Parse(result.Success.ToString()));
         }
 
-        [Test]
-        [Ignore("Until DNN-10547 is fixed")]
-        public void GetUsersWithVariousFiltersShoudlReturnExpectedResult()
+        [TestCase("All", MaxUsers, "/API/PersonaBar/Users/GetUsers?searchText=&filter=5&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Authorized", MaxUsers - 3, "/API/PersonaBar/Users/GetUsers?searchText=&filter=0&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Unauthorized", 2, "/API/PersonaBar/Users/GetUsers?searchText=&filter=1&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Deleted", 1, "/API/PersonaBar/Users/GetUsers?searchText=&filter=2&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Superusers", 1, "/API/PersonaBar/Users/GetUsers?searchText=&filter=3&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        public void GetUsersAsHostWithVariousFiltersShoudlReturnExpectedResult(string actionName, int expectedTotal, string apiMethod)
         {
-            // Arrange
-            // clear all existing users except superusers
-            // create 10 users and unauthorize 2 and delete 1 then use this API
-            // /API/PersonaBar/Users/GetUsers?searchText=&filter=0&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true
-            // with various parameters to validate the returned results.
+            // Arrange: all is done in TestFixtureSetUp()
 
-            // After deleting all users the PrepareNewUser fails due to DNN-10547;
-            // therefore, I couldn't complete writing the intended integration tests.
+            // Act
+            var hostConnector = WebApiTestHelper.LoginHost();
+            var response = hostConnector.GetContent(apiMethod, null).Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<dynamic>(response);
 
-            Assert.Fail();
+            // Assert
+            var totalResults = int.Parse(result.TotalResults.ToString());
+            Assert.AreEqual(expectedTotal, totalResults, $"Total results {totalResults} is incorrect for action [{actionName}]");
+        }
+
+        [TestCase("All", MaxUsers, "/API/PersonaBar/Users/GetUsers?searchText=&filter=5&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Authorized", MaxUsers - 3, "/API/PersonaBar/Users/GetUsers?searchText=&filter=0&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Unauthorized", 2, "/API/PersonaBar/Users/GetUsers?searchText=&filter=1&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Deleted", 1, "/API/PersonaBar/Users/GetUsers?searchText=&filter=2&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        [TestCase("Superusers", 0, "/API/PersonaBar/Users/GetUsers?searchText=&filter=3&pageIndex=0&pageSize=10&sortColumn=&sortAscending=false&resetIndex=true")]
+        public void GetUsersAsAdminWithVariousFiltersShoudlReturnExpectedResult(string actionName, int expectedTotal, string apiMethod)
+        {
+            // Arrange: all is done in TestFixtureSetUp()
+
+            // Act
+            var adminConnector = WebApiTestHelper.LoginUser(_userNames[0]);
+            var response = adminConnector.GetContent(apiMethod, null).Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<dynamic>(response);
+
+            // Assert
+            var totalResults = int.Parse(result.TotalResults.ToString());
+            Assert.AreEqual(expectedTotal, totalResults, $"Total results {totalResults} is incorrect for action [{actionName}]");
         }
     }
 }
