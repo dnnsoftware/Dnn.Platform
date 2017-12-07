@@ -761,15 +761,9 @@ IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE
 BEGIN
 	IF (LEN(@Comment) < 2000)
 	BEGIN
-		IF @CommentXML IS NOT NULL
-		BEGIN
-			SET @cxml = @CommentXML
-			SET @cxml.modify('delete /root/comment')
-		END
-		
 		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
 		SET Comment = @Comment,
-			CommentXML = @cxml,
+			CommentXML = @CommentXML,
 			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
 		WHERE JournalId = @JournalId AND CommentId = @CommentId
 	END
