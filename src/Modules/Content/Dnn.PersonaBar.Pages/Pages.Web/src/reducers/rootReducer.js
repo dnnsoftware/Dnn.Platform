@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import pagination from "./paginationReducer";
 import visiblePanel from "./visiblePanelReducer";
+import visiblePageSettings from "./visiblePageSettingsReducer";
 import pages from "./pagesReducer";
 import addPages from "./addPagesReducer";
 import theme from "./themeReducer";
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     searchList,
     pagination,
     visiblePanel,
+    visiblePageSettings,
     pages,
     addPages,
     theme,

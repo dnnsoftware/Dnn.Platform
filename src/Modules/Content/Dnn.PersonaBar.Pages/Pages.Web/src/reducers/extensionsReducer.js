@@ -3,6 +3,7 @@ import ActionTypes from "../constants/actionTypes/extensionsActionTypes";
 export default function extensionsReducer(state = {
     toolbarComponents: [],
     multiplePagesComponents: [],
+    pageSettingsComponents: [],
     pageDetailsFooterComponents: [],
     settingsButtonComponents: {},
     pageTypeSelectorComponents: [],
@@ -20,6 +21,13 @@ export default function extensionsReducer(state = {
         newPageInContextComponents = newPageInContextComponents.concat(component.component);
         return newPageInContextComponents;
     }
+
+    function addPageSettingsComponent(component){
+        let newPageSettingsComponents = [...state.pageSettingsComponents];
+        newPageSettingsComponents = newPageSettingsComponents.concat(component);
+        return newPageSettingsComponents;
+    }
+
     switch (action.type) {
         case ActionTypes.REGISTER_TOOLBAR_COMPONENT:
             return {
@@ -30,6 +38,11 @@ export default function extensionsReducer(state = {
             return {
                 ...state,
                 multiplePagesComponents: [...state.multiplePagesComponents, action.data.component]
+            };
+        case ActionTypes.REGISTER_PAGE_SETTINGS_COMPONENT:
+            return {
+                ...state,
+                pageSettingsComponent : addPageSettingsComponent(action.data.component)
             };
         case ActionTypes.REGISTER_PAGE_DETAILS_FOOTER_COMPONENT:
             return {
@@ -45,11 +58,6 @@ export default function extensionsReducer(state = {
             return {
                 ...state,
                 pageTypeSelectorComponents: [...state.pageTypeSelectorComponents, action.data.component]
-            };
-        case ActionTypes.REGISTER_ADDITIONAL_PANEL:
-            return {
-                ...state,
-                additionalPanels: [...state.additionalPanels, action.data.panel]
             };
         case ActionTypes.REGISTER_INCONTEXTMENU_COMPONENT:
             return {

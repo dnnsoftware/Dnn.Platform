@@ -767,10 +767,8 @@ window.dnn.pages = window.dnn.pages || {};
                                 var targetDataPosition, targetData, index, sourceParentId, sourceParentFind, sourceParentData;
 
                                 if (data.Status > 0) {
-                                    // Error: inform
                                     handler.utility.notifyError(handler.resx['Error_' + data.Message]);
 
-                                    // TODO test if elment is restored
                                     viewModel.pagesList()[sourceFind.level].pages.splice(sourceFind.index, 0, sourceData);
 
                                     draggingJqObj = null;
@@ -831,13 +829,12 @@ window.dnn.pages = window.dnn.pages || {};
                             };
 
                             movePageErrorCallback = function (data) {
-                                // Error: inform - handler.resx.workflows_unknown_error
                                 handler.utility.notifyError('Unknown error');
 
                                 draggingJqObj = null;
                                 uiOnDragStart = null;
 
-                                // TODO test if elment is restored
+
                                 viewModel.pagesList()[sourceFind.level].pages.splice(sourceIndex, 0, sourceData);
 
                                 dropOnDroppable = false;

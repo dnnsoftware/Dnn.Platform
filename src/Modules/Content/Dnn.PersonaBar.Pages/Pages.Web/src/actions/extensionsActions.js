@@ -19,6 +19,12 @@ const extensionsActions = {
             data: { component }
         };
     },
+    registerPageSettingsComponent(component) {
+        return {
+            type: ActionTypes.REGISTER_PAGE_SETTINGS_COMPONENT,
+            data: { component }
+        };
+    },
     registerPageDetailFooterComponent(component) {
         return {
             type: ActionTypes.REGISTER_PAGE_DETAILS_FOOTER_COMPONENT,
@@ -35,12 +41,6 @@ const extensionsActions = {
         return {
             type: ActionTypes.REGISTER_PAGE_TYPE_SELECTOR_COMPONENT,
             data: { component }
-        };
-    },
-    registerAdditionalPanel(panel) {
-        return {
-            type: ActionTypes.REGISTER_ADDITIONAL_PANEL,
-            data: { panel }
         };
     }
 };

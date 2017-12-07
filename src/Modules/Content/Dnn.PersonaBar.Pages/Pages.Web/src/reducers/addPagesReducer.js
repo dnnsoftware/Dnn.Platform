@@ -28,12 +28,14 @@ export default function addPagesReducer(state = {
     switch (action.type) {
         case ActionTypes.LOAD_ADD_MULTIPLE_PAGES:
             return { ...state,                
-                bulkPage: getEmptyBulkPage()
+                bulkPage: getEmptyBulkPage(),
+                dirtyBulkPage:false
             };
         
         case ActionTypes.CHANGE_MULTIPLE_PAGE_VALUE:
             return { ...state,
-                bulkPage: changeField(state, action.field, action.value)           
+                bulkPage: changeField(state, action.field, action.value),
+                dirtyBulkPage:true           
             };
 
         default:
