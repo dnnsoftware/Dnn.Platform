@@ -666,8 +666,9 @@ namespace DotNetNuke.Framework
             if (Request.IsAuthenticated && string.IsNullOrEmpty(Request.QueryString["runningDefault"]) == false)
             {
                 var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
+                var usernameLower = userInfo?.Username?.ToLower();
                 //only show message to default users
-                if ((userInfo.Username.ToLower() == "admin") || (userInfo.Username.ToLower() == "host"))
+                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
                 {
                     var messageText = RenderDefaultsWarning();
                     var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);

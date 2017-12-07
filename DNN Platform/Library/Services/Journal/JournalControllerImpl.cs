@@ -302,6 +302,7 @@ namespace DotNetNuke.Services.Journal
             {
                 throw new ArgumentException("journalItem.UserId must be for a real user");
             }
+
             UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
             if (currentUser == null)
             {
