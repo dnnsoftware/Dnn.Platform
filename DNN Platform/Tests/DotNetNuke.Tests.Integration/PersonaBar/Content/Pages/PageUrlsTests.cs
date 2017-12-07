@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using DNN.Integration.Test.Framework;
 using DNN.Integration.Test.Framework.Helpers;
 using DotNetNuke.Tests.Integration.Executers;
@@ -7,7 +6,7 @@ using DotNetNuke.Tests.Integration.Executers.Builders;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Integration.Modules.PersonaBar.Pages
+namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
 {
     [TestFixture]
     public class PageUrlsTests : IntegrationTestBase
