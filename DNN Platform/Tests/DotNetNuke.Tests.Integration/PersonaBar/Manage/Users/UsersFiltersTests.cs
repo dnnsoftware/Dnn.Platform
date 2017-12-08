@@ -49,9 +49,9 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             // create MaxUsers new users
             for (var i = 0; i < MaxUsers; i++)
             {
-                int userId;
+                int userId, fileId;
                 string userName;
-                WebApiTestHelper.PrepareNewUser(out userId, out userName, out _);
+                WebApiTestHelper.PrepareNewUser(out userId, out userName, out fileId);
                 _userIds[i] = userId;
                 _userNames[i] = userName;
                 Console.WriteLine(@"Created test users => id: {0}, username: {1}", userId, userName);
