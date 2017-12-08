@@ -22,7 +22,7 @@ function processValidateResponse(response) {
     const mainMessage = Localization.get("BulkPageValidateResponseTotalMessage")
         .replace("[PAGES_TOTAL]", totalCount) + "<br/><br/>";
     const errors = response.pages
-        .filter(p => p.errorMessage !== null)
+        .filter(p => p.errorMessage !== null && p.errorMessage !== "")
         .map(p => "<strong>" + p.pageName + "</strong>: " + p.errorMessage + "<br/>");
 
     return mainMessage + errors;
@@ -83,7 +83,7 @@ const addPagesActions = {
                     return;
                 }
                 
-                if (response.Response.pages.filter(p => p.errorMessage !== null).length > 0) {                    
+                if (response.Response.pages.filter(p => p.errorMessage !== null && p.errorMessage !== "").length > 0) {                    
                     utils.notifyError(processValidateResponse(response.Response), { clickToClose: true });
                 }
                 else {
