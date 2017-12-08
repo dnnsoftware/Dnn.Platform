@@ -98,8 +98,8 @@ class AddPages extends Component {
                             <div className="column-heading">
                                 {Localization.get("BulkPagesToAdd")}
                             </div>
-                            <Label
-                                label={Localization.get("BulkPagesLabel")} />
+                            {/* white space no wrap to keep this label in single line */}
+                            <Label label={Localization.get("BulkPagesLabel")} style={{"white-space":"nowrap"}} />
                             <MultiLineInput
                                 onChange={(event) => this.onChangeEvent("bulkPages", event)}
                                 value={bulkPage.bulkPages}
