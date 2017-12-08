@@ -1669,4 +1669,7 @@
   <data name="ValidFileIsRequired.Text" xml:space="preserve">
     <value>Valid file is required.</value>
   </data>
+  <data name="BulkPageValidateResponseTotalMessage.Text" xml:space="preserve">
+    <value>[PAGES_TOTAL] pages were validated.</value>
+  </data>
 </root>

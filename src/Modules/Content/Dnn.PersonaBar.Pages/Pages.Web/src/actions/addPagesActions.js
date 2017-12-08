@@ -17,6 +17,17 @@ function processResponse(response) {
     return mainMessage + errors;
 }
 
+function processValidateResponse(response) {
+    const totalCount = response.pages.length;    
+    const mainMessage = Localization.get("BulkPageValidateResponseTotalMessage")
+        .replace("[PAGES_TOTAL]", totalCount) + "<br/><br/>";
+    const errors = response.pages
+        .filter(p => p.errorMessage !== null)
+        .map(p => "<strong>" + p.pageName + "</strong>: " + p.errorMessage + "<br/>");
+
+    return mainMessage + errors;
+}
+
 const addPagesActions = {
 
     loadAddMultiplePages() {
@@ -61,21 +72,26 @@ const addPagesActions = {
 
     validatePages(callback) {
         return (dispatch, getState) => {
-            const {validatePages} = getState();
+            const {addPages} = getState();
             dispatch({
                 type: ActionTypes.VALIDATE_ADD_MULTIPLE_PAGES
             });    
 
-            PagesService.validatePages(validatePages.bulkPage).then(response => {
+            PagesService.validatePages(addPages.bulkPage).then(response => {
                 if (response.Status === responseStatus.ERROR) {
                     utils.notifyError(response.Message, 3000);
                     return;
                 }
-
-                utils.notify(processResponse(response.Response), 5000);
+                
+                if (response.Response.pages.filter(p => p.errorMessage !== null).length > 0) {                    
+                    utils.notifyError(processValidateResponse(response.Response), { clickToClose: true });
+                }
+                else {
+                    utils.notify(processValidateResponse(response.Response));
+                }
 
                 dispatch({
-                    type: ActionTypes.VALIDATE_MULTIPLE_PAGES,
+                    type: ActionTypes.VALIDATE_ADD_MULTIPLE_PAGES,
                     data: {
                         response 
                     }

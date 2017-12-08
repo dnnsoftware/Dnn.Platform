@@ -201,6 +201,7 @@ const PageService = function () {
         savePage,
         deletePage,
         addPages,
+        validatePages,
         getNewPage,
         getCacheProviderList,
         deletePageModule,
