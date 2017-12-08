@@ -62,14 +62,14 @@ function areEqualInvariantCase(a, b) {
     return a.toLowerCase() === b.toLowerCase();
 }
 
-function notify(message) {
+function notify(message, options) {
     checkInit();
-    return utilities.notify(message);
+    return utilities.notify(message, options);
 }
 
-function notifyError(message) {
+function notifyError(message, options) {
     checkInit();
-    return utilities.notifyError(message);
+    return utilities.notifyError(message, options);
 }
 
 function confirm(message, confirmText, cancelText, confirmHandler, cancelHandler) {

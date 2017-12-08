@@ -16,6 +16,7 @@ export default function visiblePanel(state = {
         case PageActionTypes.SAVED_PAGE:
         case PageActionTypes.CANCEL_PAGE:
         case AddPagesActionTypes.CANCEL_ADD_MULTIPLE_PAGES:
+        case AddPagesActionTypes.VALIDATE_MULTIPLE_PAGES:
         case AddPagesActionTypes.SAVED_MULTIPLE_PAGES:
         case VisiblePageSettingsActionTypes.HIDE_CUSTOM_PAGE_SETTINGS:
         case VisiblePanelActionTypes.HIDE_PANEL:

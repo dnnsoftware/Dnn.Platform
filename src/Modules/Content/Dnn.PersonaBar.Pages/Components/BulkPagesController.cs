@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
         private const string DefaultPageTemplate = "Default.page.template";
 
-        public BulkPageResponse AddBulkPages(BulkPage page)
+        public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var portalId = portalSettings.PortalId;
@@ -73,14 +73,18 @@ namespace Dnn.PersonaBar.Pages.Components
                     string errorMessage = null;
                     if (oTab.Level == 0)
                     {
-                        oTab.TabID = CreateTabFromParent(rootTab, oTab, parentId, out errorMessage);
+                        oTab.TabID = CreateTabFromParent(portalSettings, rootTab, oTab, parentId, validateOnly, out errorMessage);
+                    }
+                    else if (validateOnly)
+                    {
+                        errorMessage = string.Empty;
                     }
                     else
                     {
                         var parentTabId = GetParentTabId(tabs, currentIndex, oTab.Level - 1);
                         if (parentTabId != Null.NullInteger)
                         {
-                            oTab.TabID = CreateTabFromParent(rootTab, oTab, parentTabId, out errorMessage);
+                            oTab.TabID = CreateTabFromParent(portalSettings, rootTab, oTab, parentTabId, validateOnly, out errorMessage);
                         }
                     }
                     bulkPageItems.Add(ToBulkPageResponseItem(oTab, errorMessage));
@@ -106,9 +110,8 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
-        private int CreateTabFromParent(TabInfo objRoot, TabInfo oTab, int parentId, out string errorMessage)
+        private int CreateTabFromParent(PortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tab = new TabInfo
             {
                 PortalID = portalSettings.PortalId,
@@ -214,6 +217,9 @@ namespace Dnn.PersonaBar.Pages.Components
                 tab.IsSecure = objRoot.IsSecure;
                 tab.PermanentRedirect = objRoot.PermanentRedirect;
             }
+
+            if (validateOnly)
+                return -1;
 
             tab.TabID = TabController.Instance.AddTab(tab);
             ApplyDefaultTabTemplate(tab);
