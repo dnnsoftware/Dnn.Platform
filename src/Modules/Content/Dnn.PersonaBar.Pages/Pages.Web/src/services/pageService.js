@@ -41,6 +41,11 @@ const PageService = function () {
         return api.post("SaveBulkPages", bulkPage);
     };
 
+    const validatePages = function (bulkPage) {
+        const api = getOverridablePagesApi();
+        return api.post("PreSaveBulkPagesValidate", bulkPage);
+    };
+
     const movePage = function (payload) {
         const api = getOverridablePagesApi();
         return api.post("MovePage", payload);

@@ -462,6 +462,9 @@
   <data name="AddPages.Text" xml:space="preserve">
     <value>Add Page(s)</value>
   </data>
+  <data name="ValidatePages.Text" xml:space="preserve">
+    <value>Validate Page(s)</value>
+  </data>
   <data name="NoContainers.Text" xml:space="preserve">
     <value>This Theme does not have any Containers</value>
   </data>

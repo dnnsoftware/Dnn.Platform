@@ -59,6 +59,39 @@ const addPagesActions = {
         };
     },
 
+    validatePages(callback) {
+        return (dispatch, getState) => {
+            const {validatePages} = getState();
+            dispatch({
+                type: ActionTypes.VALIDATE_ADD_MULTIPLE_PAGES
+            });    
+
+            PagesService.validatePages(validatePages.bulkPage).then(response => {
+                if (response.Status === responseStatus.ERROR) {
+                    utils.notifyError(response.Message, 3000);
+                    return;
+                }
+
+                utils.notify(processResponse(response.Response), 5000);
+
+                dispatch({
+                    type: ActionTypes.VALIDATE_MULTIPLE_PAGES,
+                    data: {
+                        response 
+                    }
+                });
+                
+                callback();
+
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_VALIDATE_MULTIPLE_PAGES,
+                    data: {error}
+                });
+            });     
+        };
+    },
+
     cancelAddMultiplePages() {
         return {
             type: ActionTypes.CANCEL_ADD_MULTIPLE_PAGES,

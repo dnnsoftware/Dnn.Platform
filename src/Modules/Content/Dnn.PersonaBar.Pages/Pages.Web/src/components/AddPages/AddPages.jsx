@@ -82,7 +82,7 @@ class AddPages extends Component {
     
  
     render() {
-        const {bulkPage, onCancel, onSave} = this.props;
+        const {bulkPage, onCancel, onValidate, onSave} = this.props;
 
         return (
             <div className={styles.addPages}>
@@ -114,6 +114,12 @@ class AddPages extends Component {
                             {Localization.get("Cancel")}
                         </Button>
                         <Button
+                            type="secondary"
+                            onClick={onValidate}
+                            disabled={!bulkPage.bulkPages}>
+                            {Localization.get("ValidatePages")}
+                        </Button>
+                        <Button
                             type="primary"
                             onClick={onSave}
                             disabled={!bulkPage.bulkPages}>
@@ -129,6 +135,7 @@ class AddPages extends Component {
 AddPages.propTypes = {
     bulkPage: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
+    onValidate: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired, 
     components: PropTypes.array.isRequired

@@ -678,6 +678,12 @@ class App extends Component {
         });
     }
     
+    onValidateMultiplePages(){    
+        return this.props.onValidateMultiplePages(()=>{
+            // stay on same page
+        });
+    }
+    
     onCancelAddMultiplePages(){
         const { props } = this;
         
@@ -702,6 +708,7 @@ class App extends Component {
                 <AddPages
                     bulkPage={props.bulkPage}
                     onCancel={this.onCancelAddMultiplePages.bind(this)}
+                    onValidate={this.onValidateMultiplePages.bind(this)}
                     onSave={this.onSaveMultiplePages.bind(this)}
                     onChangeField={props.onChangeAddMultiplePagesField}
                     components={props.multiplePagesComponents} />);
@@ -1710,6 +1717,7 @@ App.propTypes = {
     getNewPage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
     onCancelAddMultiplePages: PropTypes.func.isRequired,
+    onValidateMultiplePages: PropTypes.func.isRequired,
     onSaveMultiplePages: PropTypes.func.isRequired,
     onLoadAddMultiplePages: PropTypes.func.isRequired,
     onChangeAddMultiplePagesField: PropTypes.func.isRequired,
@@ -1798,6 +1806,7 @@ function mapDispatchToProps(dispatch) {
         selectPageSettingTab: PageActions.selectPageSettingTab,
         onLoadPage: PageActions.loadPage,
         onSaveMultiplePages: AddPagesActions.addPages,
+        onValidateMultiplePages: AddPagesActions.validatePages,
         onCancelAddMultiplePages: AddPagesActions.cancelAddMultiplePages,
         onLoadAddMultiplePages: AddPagesActions.loadAddMultiplePages,
         onChangeAddMultiplePagesField: AddPagesActions.changeAddMultiplePagesField,
