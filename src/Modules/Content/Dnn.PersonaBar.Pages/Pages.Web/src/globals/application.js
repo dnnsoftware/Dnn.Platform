@@ -4,6 +4,7 @@ import ExtensionsActions from "../actions/extensionsActions";
 import PageActions from "../actions/pageActions";
 import utils from "../utils";
 import securityService from "../services/securityService";
+import { languagesActions } from "../actions/index";
 
 const application = {
     init(initCallback) {
@@ -22,6 +23,9 @@ const application = {
     load(options) {
         utilities.load(options);
         const viewName = utils.getViewName();
+
+        //Check if page translation is enabled 
+        application.dispatch(languagesActions.getContentLocalizationEnabled());
 
         if (viewName === "edit") {
             application.dispatch(PageActions.loadPage(utils.getCurrentPageId()));
