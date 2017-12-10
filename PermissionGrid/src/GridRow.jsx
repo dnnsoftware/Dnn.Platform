@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
+import ReactDOM from "react-dom";
 import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import Label from "dnn-label";
 import StatusSwitch from "./StatusSwitch";
 import IconButton from "./IconButton/IconButton";
 
@@ -11,20 +10,21 @@ class GridRow extends Component {
 
         this.state = {
         };
+        this.columnHeight = 40;
     }
 
-    componentWillMount() {
-        const {props, state} = this;
+    componentDidMount(){
+        this.columnHeight = ReactDOM.findDOMNode(this).offsetHeight;
     }
 
     getHeaderColumnText() {
-        const {props, state} = this;
+        const {props} = this;
 
         return props.type === "role" ? props.permission.roleName : props.permission.displayName;
     }
 
     onStatusChanged(def, status) {
-        const {props, state} = this;
+        const {props} = this;
 
         let permission = Object.assign({}, props.permission);
         permission.permissions = Object.assign([], props.permission.permissions.filter(p => {
@@ -43,7 +43,7 @@ class GridRow extends Component {
     }
 
     onDelete() {
-        const {props, state} = this;
+        const {props} = this;
 
         if (typeof props.onDeletePermisson === "function") {
             props.onDeletePermisson(props.permission);
@@ -51,7 +51,7 @@ class GridRow extends Component {
     }
 
     fixPermissionsStatus(permission, def, status) {
-        const {props, state} = this;
+        const {props} = this;
 
         if (def.fullControl) {
             if (status === 0) {
@@ -96,7 +96,7 @@ class GridRow extends Component {
                 //if other permissions are set to true must have View
                 if (status === 1) {
                     let permissionName = def.permissionName.toLowerCase();
-                    if (permissionName !== 'navigate' && permissionName !== 'browse') {
+                    if (permissionName !== "navigate" && permissionName !== "browse") {
                         props.definitions.forEach(function (d) {
                             if (!d.view) {
                                 return;
@@ -162,10 +162,10 @@ class GridRow extends Component {
         const {props} = this;
         const {roleColumnWidth, columnWidth, actionsWidth} = props;
         let self = this;
-        let headerLength = this.getHeaderColumnText().match(/ /g)?this.getHeaderColumnText().match(/ /g).length:0;
+       
         return (
             <GridCell className="grid-row">
-                <GridCell style={{"text-overflow": "ellipsis", "overflow":"hidden"}} columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
+                <GridCell columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
                 {props.definitions.map(function (def) {
                     let permission = props.permission.permissions.filter(p => {
                         return p.permissionId == def.permissionId;
@@ -181,12 +181,13 @@ class GridRow extends Component {
                     }
 
                     return (
-                        <GridCell style={{"display":"table-cell","height":((40+(headerLength*4)+"px"))}} columnSize={columnWidth}>
+                        
+                        <GridCell style={{"height":self.columnHeight+"px"}} columnSize={columnWidth} >
                             <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def) } />
                         </GridCell>
                     );
                 }) }
-                <GridCell style={{"display":"table-cell","height":((40+(headerLength*4)+"px"))}} columnSize={actionsWidth} className="col-actions">
+                <GridCell style={{"height":self.columnHeight+"px"}} columnSize={actionsWidth} className="col-actions">
                     {!props.permission.default && <IconButton type="trash" onClick={this.onDelete.bind(this) } />}
                 </GridCell>
             </GridCell>
