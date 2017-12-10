@@ -179,6 +179,9 @@ define(['jquery'], function ($) {
                     if (clickToClose !== true) {
                         notificationDialog.addClass('close-hidden');
                     }
+					else {
+						notificationDialog.removeClass('close-hidden');
+					}
                     if (type === 'error') {
                         notificationDialog.addClass('errorMessage');
                     }

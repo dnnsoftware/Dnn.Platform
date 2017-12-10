@@ -107,13 +107,15 @@
     <!-- end extra -->
     <script type="text/javascript">
         (function injectboostrap() {
-            var debugMode = window.parent['personaBarSettings']['debugMode'] === true;
-            var cdv = window.parent['personaBarSettings']['buildNumber'];
-            var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '');
-            var body = document.getElementsByTagName('body')[0];
-            var boostrapScript = document.createElement('script');
-            boostrapScript.setAttribute('src', 'scripts/bootstrap.js' + version);
-            body.appendChild(boostrapScript);
+            if (window.parent['personaBarSettings']) {
+                var debugMode = window.parent['personaBarSettings']['debugMode'] === true;
+                var cdv = window.parent['personaBarSettings']['buildNumber'];
+                var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '');
+                var body = document.getElementsByTagName('body')[0];
+                var boostrapScript = document.createElement('script');
+                boostrapScript.setAttribute('src', 'scripts/bootstrap.js' + version);
+                body.appendChild(boostrapScript);
+            }
         })();
     </script>
 </body>
