@@ -353,6 +353,7 @@ namespace DNNConnect.CKEditorProvider
             if (IsAllInstances ? UserController.Instance.GetCurrentUserInfo().IsSuperUser : Utility.IsInRoles(_portalSettings.AdministratorRoleName, _portalSettings))
             {
                 _portalSettings = GetPortalSettings();
+                listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
 
                 if (Page.IsPostBack)
                 {
