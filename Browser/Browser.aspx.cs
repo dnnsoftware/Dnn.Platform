@@ -1753,14 +1753,13 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Parent Node(Tab)
         /// </param>
         /// <param name="iParentTabId">
-        /// Parent Tab ID        
+        /// Parent Tab ID
         /// </param>
-        /// <param name="allPortalTabs">
-        /// Tabs for portal
-        /// </param>
-        private void RenderTabLevels(TreeNode nodeParent, int iParentTabId, HashSet<TabInfo> allPortalTabs)
+        private void RenderTabLevels(TreeNode nodeParent, int iParentTabId)
         {
-            foreach (TabInfo objTab in allPortalTabs)
+            foreach (TabInfo objTab in
+                TabController.GetPortalTabs(
+                    _portalSettings.PortalId, -1, false, null, true, false, true, true, false))
             {
                 if (!objTab.ParentId.Equals(iParentTabId))
                 {
@@ -1788,7 +1787,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     nodeTab.ImageUrl = ResolveUrl(objTab.IconFile);
                 }
 
-                RenderTabLevels(nodeTab, objTab.TabID, allPortalTabs);
+                RenderTabLevels(nodeTab, objTab.TabID);
             }
         }
 
@@ -1847,9 +1846,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 return;
             }
 
-            var allPortalTabsList = TabController.GetPortalTabs(this._portalSettings.PortalId, -1, false, null, true, false, true, true, false);
-            var allPortalTabs = new HashSet<TabInfo>(allPortalTabsList);
-            RenderTabLevels(null, -1, allPortalTabs);
+            RenderTabLevels(null, -1);
         }
 
         /// <summary>

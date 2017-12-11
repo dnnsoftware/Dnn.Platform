@@ -489,4 +489,16 @@
   <data name="UploadFileLimitLabel.Text" xml:space="preserve">
     <value>Upload File Limits:</value>
   </data>
+  <data name="AllPortals.Text" xml:space="preserve">
+    <value>Wszystkie portale</value>
+  </data>
+  <data name="HostHasSettingLabel.Text" xml:space="preserve">
+    <value>Zawiera ustawienia hosta</value>
+  </data>
+  <data name="HostNoSettingLabel.Text" xml:space="preserve">
+    <value>Nie zawiera żadnych ustawień hosta</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>
