@@ -72,10 +72,10 @@ namespace DotNetNuke.Services.Log.EventLog
         public string MailFromAddress
         {
             get {                
-                var portalSetings = Globals.GetPortalSettings();
+                var portalSettings = Globals.GetPortalSettings();
                 return 
                     string.IsNullOrWhiteSpace(_mailFromAddress) 
-                    ? (portalSetings == null ? string.Empty : portalSetings.Email) 
+                    ? (portalSettings == null ? string.Empty : portalSettings.Email) 
                     : _mailFromAddress; }
             set { _mailFromAddress = value; }
         }
