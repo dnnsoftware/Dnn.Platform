@@ -35,6 +35,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Scheduling;
+using System.Text;
 
 #endregion
 
@@ -220,21 +221,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                    logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {
-                        if (LockNotif.TryEnterWriteLock(ReaderLockTimeout))
-                        {
-                            try
-                            {
-                                if (logTypeConfigInfo.NotificationThreshold == 0)
-                                {
-                                    string str = logQueueItem.LogInfo.Serialize();
-                                    Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(str)));
-                                }
-                            }
-                            finally
-                            {
-                                LockNotif.ExitWriteLock();
-                            }
-                        }
+                        SendLogNotification(logTypeConfigInfo);
                     }
                 }
             }
@@ -266,7 +253,7 @@ namespace DotNetNuke.Services.Log.EventLog
             if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false 
                 || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
             {
-                WriteLog(logQueueItem);
+                WriteLog(logQueueItem);               
             }
             else
             {
@@ -442,7 +429,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     //by another thread simultaneously
                     if (logQueueItem != null)
                     {
-                        WriteLog(logQueueItem);
+                        WriteLog(logQueueItem);                      
                         LogQueue.Remove(logQueueItem);
                     }
                 }
@@ -459,21 +446,30 @@ namespace DotNetNuke.Services.Log.EventLog
             List<LogTypeConfigInfo> configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
             foreach (LogTypeConfigInfo typeConfigInfo in configInfos)
             {
-                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
-                string log = "";
-                try
+                SendLogNotification(typeConfigInfo);
+            }
+        }
+
+        private static void SendLogNotification(LogTypeConfigInfo typeConfigInfo)
+        {
+            IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));            
+            StringBuilder log = new StringBuilder();
+            try
+            {
+                while (dr.Read())
                 {
-                    while (dr.Read())
-                    {
-                        LogInfo logInfo = FillLogInfo(dr);
-                        log += logInfo.Serialize() + Environment.NewLine + Environment.NewLine;
-                    }
+                    LogInfo logInfo = FillLogInfo(dr);
+                    log.Append(logInfo.Serialize() + Environment.NewLine + Environment.NewLine);
                 }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log)));
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            if (log.Length != 0)
+            {
+                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log.ToString())));
                 DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
             }
         }

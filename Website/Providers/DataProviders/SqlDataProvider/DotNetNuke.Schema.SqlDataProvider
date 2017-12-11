@@ -11335,7 +11335,7 @@ AS
 GO
 PRINT N'Creating {databaseOwner}[{objectQualifier}AddEventLog]'
 GO
-CREATE PROCEDURE  {databaseOwner}[{objectQualifier}AddEventLog]
+CREATE PROCEDURE  {databaseOwner}[{objectQualifier}AddEventLog] 
 	@LogGUID varchar(36),
 	@LogTypeKey nvarchar(35),
 	@LogUserID int,
@@ -11382,7 +11382,7 @@ BEGIN
 	IF @NotificationActive=1
 	BEGIN
 
-		DECLARE @NotificationThreshold bit
+		DECLARE @NotificationThreshold int
 		DECLARE @ThresholdQueue int
 		DECLARE @NotificationThresholdTime int
 		DECLARE @NotificationThresholdTimeType int
@@ -11390,7 +11390,7 @@ BEGIN
 		DECLARE @CurrentDateTime smalldatetime
 
 		SET @CurrentDateTime = getDate()
-
+		
 		SELECT TOP 1 @NotificationThreshold = NotificationThreshold,
 			@NotificationThresholdTime = NotificationThresholdTime,
 			@NotificationThresholdTimeType = NotificationThresholdTimeType,
@@ -11412,7 +11412,9 @@ BEGIN
 		FROM  {databaseOwner}[{objectQualifier}EventLog] el
 			INNER JOIN  {databaseOwner}[{objectQualifier}EventLogConfig] elc
 				ON  el.LogConfigID =  elc.ID
-		WHERE LogCreateDate > @MinDateTime
+		WHERE LogCreateDate > @MinDateTime 
+			  AND el.LogNotificationPending IS NULL 
+			  AND elc.ID = @LogConfigID
 
 		IF @ThresholdQueue >= @NotificationThreshold
 		BEGIN

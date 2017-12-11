@@ -23,6 +23,7 @@
 using System;
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common;
 
 #endregion
 
@@ -43,6 +44,8 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         #endregion
+
+        private string _mailFromAddress;
 
         public DateTime StartDateTime
         {
@@ -66,7 +69,17 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public bool EmailNotificationIsActive { get; set; }
 
-        public string MailFromAddress { get; set; }
+        public string MailFromAddress
+        {
+            get {                
+                var portalSetings = Globals.GetPortalSettings();
+                return 
+                    string.IsNullOrWhiteSpace(_mailFromAddress) 
+                    ? (portalSetings == null ? string.Empty : portalSetings.Email) 
+                    : _mailFromAddress; }
+            set { _mailFromAddress = value; }
+        }
+
 
         public string MailToAddress { get; set; }
 
