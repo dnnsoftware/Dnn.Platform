@@ -27,36 +27,36 @@ namespace Dnn.PersonaBar.Prompt.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
         private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
-        private int portalId = -1;
+        private int _portalId = -1;
         private new int PortalId
         {
             get
             {
-                if (portalId == -1)
+                if (_portalId == -1)
                 {
-                    portalId = base.PortalId;
+                    _portalId = base.PortalId;
                 }
-                return portalId;
+                return _portalId;
             }
             set
             {
-                portalId = value;
+                _portalId = value;
             }
         }
-        private PortalSettings portalSettings;
+        private PortalSettings _portalSettings;
         private new PortalSettings PortalSettings
         {
             get
             {
-                if (portalSettings == null)
+                if (_portalSettings == null)
                 {
-                    portalSettings = base.PortalSettings;
+                    _portalSettings = base.PortalSettings;
                 }
-                return portalSettings;
+                return _portalSettings;
             }
             set
             {
-                portalSettings = value;
+                _portalSettings = value;
             }
         }
 
