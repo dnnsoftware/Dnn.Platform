@@ -736,6 +736,19 @@ namespace DotNetNuke.Security.Membership
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }
 
+            // Validate username against bad characters; it must not start or end with space, 
+            // must not containg control characters, and not contain special puctuations
+            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+		    char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+		    var valid = userName.Length >= 5 &&
+                        userName == userName.Trim() &&
+                        userName.All(ch => ch >= ' ') &&
+                        userName.IndexOfAny(unallowedAscii) < 0;
+		    if (!valid)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
             _dataProvider.ChangeUsername(userId, userName);
 
             EventLogController.Instance.AddLog("userId",
