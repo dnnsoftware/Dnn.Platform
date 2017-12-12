@@ -8,26 +8,12 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Modules.HTMLEditorProvider;
-using DotNetNuke.Modules.NavigationProvider;
 using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Profile;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.ClientCapability;
-using DotNetNuke.Services.Cryptography;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.OutputCache;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search;
-using DotNetNuke.Services.Sitemap;
-using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Core.Providers.Membership
@@ -77,6 +63,8 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         {
         }
 
+        //TODO: Must be moved to integration tests.
+        //Note: this is the only test in core unit testing project that requires a working db connection to run.
         [Test]
         public void Password_Should_Saved_In_History_During_Create_User()
         {

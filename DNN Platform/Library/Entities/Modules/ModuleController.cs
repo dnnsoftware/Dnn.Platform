@@ -27,6 +27,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
@@ -668,11 +669,20 @@ namespace DotNetNuke.Entities.Modules
                         var portableModule = businessController as IPortable;
                         if (portableModule != null)
                         {
-                            string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
-                            if (!string.IsNullOrEmpty(moduleContent))
+                            try
                             {
-                                portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
+                                SetCloneModuleContext(true);
+                                string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
+                                if (!string.IsNullOrEmpty(moduleContent))
+                                {
+                                    portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
+                                }
                             }
+                            finally
+                            {
+                                SetCloneModuleContext(false);
+                            }
+                            
                         }
                     }
                     catch (Exception ex)
@@ -689,6 +699,12 @@ namespace DotNetNuke.Entities.Modules
             }
 
             return moduleId;
+        }
+
+        private static void SetCloneModuleContext(bool cloneModuleContext)
+        {
+            Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
+                cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
         private static Hashtable ParsedLocalizedModuleGuid

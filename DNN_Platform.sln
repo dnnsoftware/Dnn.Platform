@@ -79,6 +79,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client Capability", "Client Capability", "{C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{973A675B-1CF8-42E0-8566-09B4EFD3E83E}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{88E649D7-1379-430F-B794-1F3B9B442C80}"
 EndProject

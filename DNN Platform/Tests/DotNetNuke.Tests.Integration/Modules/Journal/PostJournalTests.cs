@@ -432,28 +432,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         #endregion
 
         #region Private Methods
+        private static readonly Random rnd = new Random();
 
         private IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId)
         {
-            username = $"testuser{DateTime.Now.Ticks}";
-            var email = $"{username}@dnn.com";
-
-            WebApiTestHelper.Register(username, _hostPass, username, email);
-
-            userId = DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE Username = '{username}'");
-
-            var connector = WebApiTestHelper.LoginHost();
-
-            var url = $"/API/PersonaBar/Users/UpdateAuthorizeStatus?userId={userId}&authorized=true";
-            connector.PostJson(url, new {});
-            connector.Logout();
-
-            var userConnector = WebApiTestHelper.LoginUser(username);
-            userConnector.UploadUserFile("Files\\Test.png", true, userId);
-
-            fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MAX(FileId) FROM {{objectQualifier}}Files WHERE FileName = 'Test.png' AND CreatedByUserID = {userId} AND PortalId = {PortalId}");
-
-            return userConnector;
+            return WebApiTestHelper.PrepareNewUser(out userId, out username, out fileId, PortalId);
         }
 
         private int CreateNewGroup(string roleName)
@@ -492,20 +475,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
 
         private IDictionary<string, string> GetRequestHeaders(string moduleName = "Journal")
         {
-            var tabId = DatabaseHelper.ExecuteScalar<int>($"SELECT * FROM {{objectQualifier}}Tabs WHERE TabPath = '//ActivityFeed' AND PortalId = {PortalId}");
-            var moduleId =
-                DatabaseHelper.ExecuteScalar<int>(
-                    $@"
-SELECT TOP 1 m.ModuleID FROM {{objectQualifier}}TabModules tm
-	INNER JOIN {{objectQualifier}}modules m ON m.ModuleID = tm.ModuleID
-	INNER JOIN {{objectQualifier}}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID
-WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'
-");
-            return new Dictionary<string, string>
-            {
-                {"TabId", tabId.ToString()},
-                {"ModuleId", moduleId.ToString()}
-            };
+            return WebApiTestHelper.GetRequestHeaders(moduleName, PortalId);
         }
 
         #endregion

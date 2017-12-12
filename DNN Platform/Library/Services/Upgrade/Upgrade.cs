@@ -5576,6 +5576,15 @@ namespace DotNetNuke.Services.Upgrade
                     AddModuleToPage(newPage, moduleDefId, "SuperUser Accounts", "~/Icons/Sigma/Users_32X32_Standard.png");
                 }
             }
+
+            var portalController = PortalController.Instance;
+            foreach (PortalInfo portal in portalController.GetPortals())
+            {
+                if (!string.IsNullOrEmpty(portal.ProcessorPassword))
+                {
+                    portalController.UpdatePortalInfo(portal);
+                }
+            }
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)

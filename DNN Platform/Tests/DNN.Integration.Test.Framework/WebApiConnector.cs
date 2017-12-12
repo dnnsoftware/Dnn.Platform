@@ -85,22 +85,22 @@ namespace DNN.Integration.Test.Framework
 
         public const string RqVerifTokenName = "__RequestVerificationToken";
         public const string RqVerifTokenNameNoUndescrores = "RequestVerificationToken";
-        private readonly Uri _domain;
         private CookieContainer _sessionCookiesContainer;
         private Cookie _cookieVerificationToken;
         private string _inputFieldVerificationToken;
         private string _currentTabId;
 
         public TimeSpan Timeout { get; set; }
+        public Uri Domain { get; }
 
         private WebApiConnector(string siteUrl)
         {
             Timeout = TimeSpan.FromMinutes(1);
-            _domain = new Uri(siteUrl);
+            Domain = new Uri(siteUrl);
             IsLoggedIn = false;
             ResetUserId();
             _sessionCookiesContainer = new CookieContainer();
-            _cookieVerificationToken = new Cookie(RqVerifTokenName, string.Empty, "/", _domain.Host);
+            _cookieVerificationToken = new Cookie(RqVerifTokenName, string.Empty, "/", Domain.Host);
             AvoidCaching = false;
         }
 
@@ -139,7 +139,7 @@ namespace DNN.Integration.Test.Framework
                 ResetUserId();
                 try
                 {
-                    var requestUriString = CombineUrlPath(_domain, LogoffPath);
+                    var requestUriString = CombineUrlPath(Domain, LogoffPath);
                     var httpWebRequest1 = (HttpWebRequest) WebRequest.Create(requestUriString);
                     httpWebRequest1.Method = "GET";
                     httpWebRequest1.KeepAlive = false;
@@ -156,7 +156,7 @@ namespace DNN.Integration.Test.Framework
                     _cookieVerificationToken = null;
                     _sessionCookiesContainer = new CookieContainer();
 
-                    var url = CombineUrlPath(_domain, "/");
+                    var url = CombineUrlPath(Domain, "/");
                     CachedWebPage cachedPage;
                     if (!AvoidCaching && CachedPages.TryGetValue(url, out cachedPage) &&
                         cachedPage.FetchDateTime < DateTime.Now.AddMinutes(-19.5))
@@ -383,7 +383,7 @@ namespace DNN.Integration.Test.Framework
             using (var client = new HttpClient(clientHandler))
             {
                 clientHandler.CookieContainer = _sessionCookiesContainer;
-                client.BaseAddress = _domain;
+                client.BaseAddress = Domain;
                 client.Timeout = Timeout;
 
                 var rqHeaders = client.DefaultRequestHeaders;
@@ -426,7 +426,8 @@ namespace DNN.Integration.Test.Framework
 
         #endregion
 
-        #region uploading content
+
+        #region API requests / uploading content
 
         public HttpResponseMessage PostJson(string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
@@ -456,7 +457,7 @@ namespace DNN.Integration.Test.Framework
                     }
                 }
 
-                var requestUriString = CombineUrlPath(_domain, relativeUrl);
+                var requestUriString = CombineUrlPath(Domain, relativeUrl);
                 var result = client.PostAsJsonAsync(requestUriString, content).Result;
                 return !waitHttpResponse
                     ? result
@@ -492,7 +493,7 @@ namespace DNN.Integration.Test.Framework
                     }
                 }
 
-                var requestUriString = CombineUrlPath(_domain, relativeUrl);
+                var requestUriString = CombineUrlPath(Domain, relativeUrl);
                 var result = client.PutAsJsonAsync(requestUriString, content).Result;
                 return !waitHttpResponse
                     ? result
@@ -508,10 +509,10 @@ namespace DNN.Integration.Test.Framework
                 CookieContainer = _sessionCookiesContainer,
             };
 
-            var url = CombineUrlPath(_domain, path);
+            var url = CombineUrlPath(Domain, path);
             var client = new HttpClient(clientHandler)
             {
-                BaseAddress = _domain,
+                BaseAddress = Domain,
                 Timeout = Timeout
             };
 
@@ -538,7 +539,7 @@ namespace DNN.Integration.Test.Framework
         private string[] GetPageInputFields(HttpClient client, string path)
         {
             CachedWebPage cachedPage = null;
-            var url = CombineUrlPath(_domain, path);
+            var url = CombineUrlPath(Domain, path);
             if (!IsLoggedIn || AvoidCaching ||
                 (!CachedPages.TryGetValue(url, out cachedPage) ||
                 cachedPage.FetchDateTime < DateTime.Now.AddMinutes(-19.5)))
@@ -603,7 +604,7 @@ namespace DNN.Integration.Test.Framework
             string[] inputFields;
             using (var client = new HttpClient(clientHandler)
             {
-                BaseAddress = _domain,
+                BaseAddress = Domain,
                 Timeout = Timeout
             })
             {
@@ -698,7 +699,7 @@ namespace DNN.Integration.Test.Framework
 
             if (postParameters.Count > 0)
             {
-                var url = CombineUrlPath(_domain, relativeUrl);
+                var url = CombineUrlPath(Domain, relativeUrl);
                 return MultipartFormDataPost(url, UserAgentValue, postParameters, null, followRedirect);
             }
 
@@ -712,7 +713,7 @@ namespace DNN.Integration.Test.Framework
 
         public HttpWebResponse MultipartFormDataPost(string relativeUrl, IDictionary<string, object> postParameters, IDictionary<string, string> headers = null, bool followRedirect = false)
         {
-            var url = CombineUrlPath(_domain, relativeUrl);
+            var url = CombineUrlPath(Domain, relativeUrl);
             return MultipartFormDataPost(url, UserAgentValue, postParameters, headers, followRedirect);
         }
 
@@ -884,7 +885,7 @@ namespace DNN.Integration.Test.Framework
                     }
                 }
 
-                var requestUriString = CombineUrlPath(_domain, relativeUrl);
+                var requestUriString = CombineUrlPath(Domain, relativeUrl);
                 var uri = new Uri(requestUriString);
                 var result = client.GetAsync(uri.AbsoluteUri).Result;
                 return !waitHttpResponse

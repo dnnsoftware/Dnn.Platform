@@ -29,9 +29,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 
 #endregion
 
@@ -748,7 +746,8 @@ namespace DotNetNuke.Entities.Portals
 
         #endregion
 
-        [XmlIgnore, Obsolete("Deprecated in DNN 6.0.")]
+        [XmlIgnore]
+        [Obsolete("Deprecated in DNN 6.0.")]
         public int TimeZoneOffset { get; set; }
 
         #region IHydratable Members
@@ -799,7 +798,18 @@ namespace DotNetNuke.Entities.Portals
             GUID = new Guid(Null.SetNullString(dr["GUID"]));
             PaymentProcessor = Null.SetNullString(dr["PaymentProcessor"]);
             ProcessorUserId = Null.SetNullString(dr["ProcessorUserId"]);
-            ProcessorPassword = Null.SetNullString(dr["ProcessorPassword"]);
+            var p = Null.SetNullString(dr["ProcessorPassword"]);
+            try
+            {
+                ProcessorPassword = string.IsNullOrEmpty(p)
+                    ? p
+                    : Security.FIPSCompliant.DecryptAES(p, Config.GetDecryptionkey(), Host.Host.GUID);
+            }
+            catch(FormatException)
+            {
+                // for backward compatibility
+                ProcessorPassword = p;
+            }
             SplashTabId = Null.SetNullInteger(dr["SplashTabID"]);
             HomeTabId = Null.SetNullInteger(dr["HomeTabID"]);
             LoginTabId = Null.SetNullInteger(dr["LoginTabID"]);

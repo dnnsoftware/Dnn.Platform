@@ -680,6 +680,230 @@ AS
         SET PortalAliasID = NULL WHERE PortalAliasID = @PortalAliasID
 GO
 
+/*************************************************************************/
+/***** DNN-4350: add encryption capability for PortalSettings values *****/
+/*************************************************************************/
+
+IF EXISTS( SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}Portals' AND  COLUMN_NAME = N'ProcessorPassword' )
+   BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}Portals]
+            ALTER COLUMN ProcessorPassword nvarchar(100)
+    END
+GO
+
+IF NOT EXISTS( SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}PortalSettings' AND  COLUMN_NAME = N'IsSecure' )
+   BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] ADD
+            IsSecure BIT NOT NULL DEFAULT(0)
+    END
+GO
+
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]') IS NOT NULL)
+
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+--  covers delete, add and update scenarios:
+	@PortalID       Int,		   -- Key, Not Null (unless for delete)
+	@SettingName    nVarChar( 50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(Max), -- Not Null
+	@UserID			Int,		   -- Not Null (editing user)
+	@CultureCode    nVarChar( 10), -- Key, Null|'' for neutral language
+	@IsSecure       Bit = 0        -- NotNUll default 0
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+		 WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+		   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@PortalID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		 USING (SELECT @PortalID PID, @CultureCode CC, @SettingName SN, @SettingValue SV, @IsSecure Sec) Q
+		    ON (S.PortalID = Q.PID AND IsNull(S.CultureCode, N'') = IsNull(Q.CC, N'') AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN
+		    INSERT ( PortalID,  SettingName,  SettingValue, CultureCode,               CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@PortalID, @SettingName, @SettingValue, NULLIF(@CultureCode, N''), IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+		-- Saving a neutral setting overwrites all localized settings with same name (for current portal):
+		IF IsNull(@CultureCode, N'') = N''
+			DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+			 WHERE PortalID = @PortalID AND SettingName = @SettingName AND CultureCode IS Not Null;
+	END; -- Else If
+END; -- Procedure
+GO
+
+/******************************************************************************************************************/
+/***** Fix DNN-10557: Fix xml storage for comment & comment moderation in case of longer than 2000 characters *****/
+/******************************************************************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Comment_Save]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Comment_Save]
+	@JournalId int,
+	@CommentId int,
+	@UserId int,
+	@Comment nvarchar(max),
+	@CommentXML xml,
+	@DateUpdated datetime
+AS
+
+DECLARE @cxml xml
+DECLARE @xml xml
+DECLARE @cdataComment nvarchar(max)
+
+IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Journal_Comments] WHERE JournalId = @JournalId AND CommentId = @CommentId)
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET Comment = @Comment,
+			CommentXML = @CommentXML,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId
+	END
+	ELSE
+	BEGIN		
+		IF @CommentXML IS NULL
+			SET @cxml = '<root></root>';
+		ELSE
+			SET @cxml = @CommentXML
+
+		IF NOT(@cxml.exist('/root/comment') = 1)
+			SET @cxml.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		SET @cxml.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")')
+		
+		UPDATE {databaseOwner}[{objectQualifier}Journal_Comments]
+		SET CommentXML = @cxml,
+			Comment = NULL,
+			DateUpdated = IsNull(@DateUpdated, GETUTCDATE())
+		WHERE JournalId = @JournalId AND CommentId = @CommentId
+	END
+END
+ELSE
+BEGIN
+	IF (LEN(@Comment) < 2000)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, @Comment, @CommentXML, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()
+	END
+	ELSE
+	BEGIN
+		IF @CommentXML IS NULL
+			SET @cxml = '<root></root>';
+		ELSE
+			SET @cxml = @CommentXML
+
+		IF NOT(@cxml.exist('/root/comment') = 1)
+			SET @cxml.modify('insert <comment>NULL</comment> as last into (/root)[1]') 
+
+		SET @cdataComment = '<![CDATA[' + @Comment + ']]>'
+		SET @cxml.modify('replace value of (/root/comment[1]/text())[1] with sql:variable("@cdataComment")')
+		
+		INSERT INTO {databaseOwner}[{objectQualifier}Journal_Comments]
+			(JournalId, UserId, Comment, CommentXML, DateCreated, DateUpdated)
+			VALUES
+			(@JournalId, @UserId, NULL, @cxml, GETUTCDATE(), GETUTCDATE())
+		SET @CommentId = SCOPE_IDENTITY()
+	END		
+END
+SELECT @CommentId
+GO
+
+/*************************************/
+/***** DNN-8014: login cookies   *****/
+/*************************************/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthCookies]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}AuthCookies](
+		[CookieId]    [int] IDENTITY(1,1) NOT NULL,
+		[CookieValue] [nvarchar](200) NOT NULL,
+		[ExpiresOn]   [datetime] NOT NULL, -- in UTC
+		[UserId]      [int] NOT NULL,
+		[CreatedOn]   [datetime], -- UTC
+		[UpdatedOn]   [datetime], -- UTC
+		CONSTRAINT [PK_{objectQualifier}AuthCookies] PRIMARY KEY CLUSTERED([CookieId] DESC)
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthCookies]')
+				AND name = N'IX_{objectQualifier}AuthCookies_CookieValue')
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}AuthCookies_CookieValue]
+		ON {databaseOwner}[{objectQualifier}AuthCookies] ([CookieValue])
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Update]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Update]
+GO
+
+-- Adds new or Updates existing entry
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Update]
+    @CookieValue  nvarchar(200),
+	@ExpiresOn   datetime, -- in UTC
+	@UserId		  int
+AS
+BEGIN
+	MERGE INTO {databaseOwner}[{objectQualifier}AuthCookies] AC
+		USING (SELECT @CookieValue CVal, @UserId [UID], @ExpiresOn EXPDT) Q
+		ON (AC.CookieValue = Q.CVal)
+		WHEN MATCHED AND AC.ExpiresOn <> Q.EXPDT THEN -- update only, if there is a change, user ID shouldn't change
+		UPDATE SET ExpiresOn = @ExpiresOn, UpdatedOn = GetUtcDate()
+		WHEN NOT MATCHED THEN
+		INSERT ( CookieValue,  UserId, ExpiresOn,  CreatedOn,    UpdatedOn )
+		VALUES (@CookieValue, @UserId, @ExpiresOn, GetUtcDate(), GetUtcDate());
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Find]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Find]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Find]
+    @CookieValue  nvarchar(200)
+AS
+BEGIN
+	SELECT TOP(1) * FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE CookieValue = @CookieValue
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]
+    @CookieValue  nvarchar(200)
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE CookieValue = @CookieValue
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+	@CutoffDate   datetime -- in UTC
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE ExpiresOn < @CutoffDate
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

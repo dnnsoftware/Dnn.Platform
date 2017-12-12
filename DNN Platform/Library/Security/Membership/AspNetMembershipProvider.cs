@@ -1602,8 +1602,12 @@ namespace DotNetNuke.Security.Membership
 
 			//Get AspNet MembershipUser
 			MembershipUser aspnetUser = GetMembershipUser(user);
+            if (aspnetUser.IsLockedOut)
+            {
+                aspnetUser.UnlockUser();
+            }
 
-			string resetPassword = ResetPassword(user, answer);
+            string resetPassword = ResetPassword(user, answer);
 			return aspnetUser.ChangePassword(resetPassword, newPassword);
 		}
 
