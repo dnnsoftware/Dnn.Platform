@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import debounce from "lodash/debounce";
 import SingleLineInput from "dnn-single-line-input";
 import MultiLineInput from "dnn-multi-line-input";
 import FullEditor from "./fullEditor";
@@ -12,12 +13,34 @@ class ResourceEditor extends Component {
     constructor() {
         super();
         this.state = {
-            inFullMode: false
+            inFullMode: false,
+            content: ""
         };
     }
 
-    renderMulti(){
+    componentWillMount() {
         const { props } = this;
+
+        this.debouncedOnChange = debounce(this.changeContent, 500);
+        this.setState({content: props.value});
+    }
+
+    onChange(e){
+        this.setState({content: e.target.value}, () => {
+            this.debouncedOnChange();
+        });  
+    }
+
+    changeContent(){
+        const { props } = this;
+
+        if(props.enabled){
+            props.onChange(this.state.content);
+        }
+    }
+
+    renderMulti(){
+        const { props, state } = this;
 
         let lines = props.value.length / 30;
         if(props.value.length % 30 !== 0){
@@ -31,20 +54,20 @@ class ResourceEditor extends Component {
 
         return (<MultiLineInput 
             className={props.className} 
-            value={props.value} 
+            value={state.content} 
             enabled={props.enabled}
             style={{height: height + "px"}}
-            onChange={props.enabled ? props.onChange : null} />);
+            onChange={this.onChange.bind(this)} />);
     }
 
     renderSingle(){
-        const { props } = this;
+        const { props, state } = this;
 
         return (<SingleLineInput 
             className={props.className} 
-            value={props.value} 
+            value={state.content} 
             enabled={props.enabled}
-            onChange={props.enabled ? props.onChange : null} />);
+            onChange={this.onChange.bind(this)} />);
     }
 
     onEnterFullMode(){
@@ -72,6 +95,10 @@ class ResourceEditor extends Component {
 
         this.onExitFullMode();
     }
+
+    onFullEditorCancel(value){
+        this.onExitFullMode();
+    }
     
     /* eslint-disable react/no-danger */
     render() {
@@ -97,7 +124,9 @@ class ResourceEditor extends Component {
                 >
                 <FullEditor 
                     value={props.value} 
-                    onChange={this.onFullEditorChange.bind(this)} />
+                    onChange={this.onFullEditorChange.bind(this)}
+                    onCancel={this.onFullEditorCancel.bind(this)}
+                     />
             </Modal>
             }
             </div>);

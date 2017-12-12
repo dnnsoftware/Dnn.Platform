@@ -42,6 +42,12 @@ class FullEditor extends Component {
         }
     }
 
+    onCancel(){
+        const { props } = this;
+
+        props.onCancel();
+    }
+
     /* eslint-disable react/no-danger */
     renderToolbar(){
         const { props } = this;
@@ -79,9 +85,14 @@ class FullEditor extends Component {
     }
 
     renderButtons(){
-        return <Button type="secondary" onClick={this.onSave.bind(this)}>
-                    <TextOverflowWrapper text={resx.get("Save") } maxWidth={100} />
-                </Button>;
+        return [
+            <Button type="secondary" onClick={this.onCancel.bind(this)}>
+                <TextOverflowWrapper text={resx.get("Cancel") } maxWidth={100} />
+            </Button>,
+            <Button type="primary" onClick={this.onSave.bind(this)}>
+                <TextOverflowWrapper text={resx.get("Save") } maxWidth={100} />
+            </Button>
+        ];
     }
 
     render() {
