@@ -41,7 +41,7 @@
     "dnn-multi-line-input-with-error": "0.1.5",
     "dnn-page-picker": "0.0.21",
     "dnn-pager": "0.0.17",
-    "dnn-permission-grid": "0.0.18",
+    "dnn-permission-grid": "0.0.20",
     "dnn-persona-bar-page": "0.0.6",
     "dnn-persona-bar-page-body": "0.0.6",
     "dnn-persona-bar-page-header": "0.0.33",
@@ -96,5 +96,8 @@
     "webpack": "1.13.0",
     "webpack-bundle-analyzer": "^2.8.2",
     "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "react-redux": "^5.0.6"
   }
 }

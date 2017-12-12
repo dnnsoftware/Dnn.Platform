@@ -21,9 +21,12 @@ module.exports = {
 
     module: {
         loaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
-            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" }
+            { test: /\.(js|jsx)$/ , exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
+            { test: /\.(less|css)$/, loader: "style-loader!css-loader!less-loader" },
+            { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: "url-loader?mimetype=application/font-woff" },     
+            { test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" },
+            { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" }
+
         ],
 
         preLoaders: [
