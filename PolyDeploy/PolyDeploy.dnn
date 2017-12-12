@@ -111,6 +111,9 @@
             <assembly>
               <name>Cantarus.Modules.PolyDeploy.dll</name>
             </assembly>
+            <assembly>
+              <name>Cantarus.Libraries.Encryption.dll</name>
+            </assembly>
           </assemblies>
         </component>
       </components>
