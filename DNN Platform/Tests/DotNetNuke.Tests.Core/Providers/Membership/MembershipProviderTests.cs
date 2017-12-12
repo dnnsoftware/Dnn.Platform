@@ -103,49 +103,31 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
             UserController.ChangeUsername(user.UserID, newUsername);
         }
 
-        private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
-        {
-            RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>("");
-        }
-
-        private static void RegisterIfNotAlreadyRegistered<TAbstract, TConcrete>(string name)
-           where TAbstract : class
-           where TConcrete : class, new()
-        {
-            var provider = ComponentFactory.GetComponent<TAbstract>();
-            if (provider == null)
-            {
-                if (String.IsNullOrEmpty(name))
-                {
-                    ComponentFactory.RegisterComponentInstance<TAbstract>(new TConcrete());
-                }
-                else
-                {
-                    ComponentFactory.RegisterComponentInstance<TAbstract>(name, new TConcrete());
-                }
-            }
-        }
-
         private static UserInfo CreateNewUser()
         {
             var username = $"{Constants.RuFirstName}{DateTime.Now.Ticks}";
             var email = $"{username}@dnn.com";
 
-            var user = new UserInfo
-            {
-                PortalID = Constants.PORTAL_Zero,
-                UserID = Null.NullInteger,
-                Username = username,
-                Email = email,
-                FirstName = username,
-                LastName = string.Empty,
-                Membership = new UserMembership
-                {
-                    Approved = true,
-                    Password = Constants.DefaultPassword
-                }
+            UserInfo user = null;
 
-            };
+            Assert.DoesNotThrow(() =>
+            {
+                user = new UserInfo
+                {
+                    PortalID = Constants.PORTAL_Zero,
+                    UserID = Null.NullInteger,
+                    Username = username,
+                    Email = email,
+                    FirstName = username, // accessing this and others requires Profile property access
+                    LastName = string.Empty,
+                    Membership = new UserMembership
+                    {
+                        Approved = true,
+                        Password = Constants.DefaultPassword
+                    }
+                };
+            }, "Make sure your connection string is set correctly in the App.config file");
+
             var status = UserController.CreateUser(ref user);
 
             Assert.AreEqual(UserCreateStatus.Success, status);
