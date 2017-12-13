@@ -25,6 +25,10 @@ class ResourceEditor extends Component {
         this.setState({content: props.value});
     }
 
+    componentWillReceiveProps(newProps){
+        this.setState({content: newProps.value});
+    }
+
     onChange(e){
         this.setState({content: e.target.value}, () => {
             this.debouncedOnChange();
