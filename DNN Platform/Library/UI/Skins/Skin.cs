@@ -471,11 +471,13 @@ namespace DotNetNuke.UI.Skins
             {
 				//If request localized page which haven't complete translate yet, redirect to default language version.
 	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
-				Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.PortalId);
+                
+                // Current locale will use default if did'nt find any
+                Locale currentLocale = LocaleController.Instance.GetCurrentLocale(PortalSettings.PortalId);
 	            if (PortalSettings.ContentLocalizationEnabled &&
-	                TabController.CurrentPage.CultureCode != defaultLocale.Code)
+	                TabController.CurrentPage.CultureCode != currentLocale.Code)
 	            {
-		            redirectUrl = new LanguageTokenReplace {Language = defaultLocale.Code}.ReplaceEnvironmentTokens("[URL]");
+		            redirectUrl = new LanguageTokenReplace {Language = currentLocale.Code}.ReplaceEnvironmentTokens("[URL]");
 	            }
 
 				Response.Redirect(redirectUrl, true);
