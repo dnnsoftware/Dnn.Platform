@@ -1745,52 +1745,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             return tnFolder;
         }
-
-        /// <summary>
-        /// Render all Tabs including Child Tabs
-        /// </summary>
-        /// <param name="nodeParent">
-        /// Parent Node(Tab)
-        /// </param>
-        /// <param name="iParentTabId">
-        /// Parent Tab ID
-        /// </param>
-        private void RenderTabLevels(TreeNode nodeParent, int iParentTabId)
-        {
-            foreach (TabInfo objTab in
-                TabController.GetPortalTabs(
-                    _portalSettings.PortalId, -1, false, null, true, false, true, true, false))
-            {
-                if (!objTab.ParentId.Equals(iParentTabId))
-                {
-                    continue;
-                }
-
-                TreeNode nodeTab = new TreeNode();
-
-                if (nodeParent != null)
-                {
-                    nodeParent.ChildNodes.Add(nodeTab);
-                }
-                else
-                {
-                    dnntreeTabs.Nodes.Add(nodeTab);
-                }
-
-                nodeTab.Text = objTab.TabName;
-                nodeTab.Value = objTab.TabID.ToString();
-                nodeTab.ImageUrl = "Images/Page.gif";
-
-                // nodeTab.ExpandedImageUrl = "Images/folderOpen.gif";
-                if (!string.IsNullOrEmpty(objTab.IconFile))
-                {
-                    nodeTab.ImageUrl = ResolveUrl(objTab.IconFile);
-                }
-
-                RenderTabLevels(nodeTab, objTab.TabID);
-            }
-        }
-
+        
         /// <summary>
         /// Gets the language list, and sets the default locale if Content Localization is Enabled
         /// </summary>
