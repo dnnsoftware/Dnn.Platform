@@ -442,7 +442,7 @@
     <value>Last Name:</value>
   </data>
   <data name="Notify.Text" xml:space="preserve">
-    <value>Send An Email To New User.</value>
+    <value>Send An Email To New User</value>
   </data>
   <data name="Password.Help" xml:space="preserve">
     <value>Enter a password for this user.</value>
