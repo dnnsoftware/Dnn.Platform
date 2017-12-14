@@ -1320,4 +1320,7 @@
   <data name="WrongFormat.Text" xml:space="preserve">
     <value>Wrong Format</value>
   </data>
+  <data name="Host.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
 </root>

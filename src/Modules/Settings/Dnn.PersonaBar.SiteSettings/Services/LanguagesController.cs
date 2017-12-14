@@ -778,7 +778,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             var selectSingleNode = n.SelectSingleNode("value");
                             if (selectSingleNode != null)
                             {
-                                var val = selectSingleNode.InnerXml;
+                                var val = HttpUtility.HtmlDecode(selectSingleNode.InnerXml);
                                 if (n.Attributes != null)
                                 {
                                     if (ht[n.Attributes["name"].Value] == null)

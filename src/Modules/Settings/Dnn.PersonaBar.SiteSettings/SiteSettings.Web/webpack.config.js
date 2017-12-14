@@ -29,7 +29,8 @@ module.exports = {
         loaders: [
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" }
+            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
+            { test: /\.(svg)$/, exclude: /node_modules/, loader: "raw-loader" }
         ],
 
         preLoaders: [
