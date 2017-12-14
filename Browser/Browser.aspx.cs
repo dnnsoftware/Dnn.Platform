@@ -1846,7 +1846,20 @@ namespace DNNConnect.CKEditorProvider.Browser
                 return;
             }
 
-            RenderTabLevels(null, -1);
+            var allPortalTabsList = TabController.GetPortalTabs(this._portalSettings.PortalId, -1, false, null, true, false, true, true, false);
+            var allPortalTabs = new HashSet<TabInfo>(allPortalTabsList);
+
+            Func<TabInfo, int> getNodeId = x => x.TabID;
+            Func<TabInfo, int> getParentId = x => x.ParentId;
+            Func<TabInfo, string> getNodeText = x => x.TabName;
+            Func<int, bool> getParentIdCheck = x => x != -1;
+            Func<TabInfo, string> getNodeImageURL = x =>
+                string.IsNullOrWhiteSpace(x.IconFile)
+                ? "Images/Page.gif"
+                : this.ResolveUrl(x.IconFile);
+
+            TreeViewHelper<int> tvh = new TreeViewHelper<int>();
+            tvh.LoadNodes(allPortalTabs, dnntreeTabs.Nodes, getNodeId, getParentId, getNodeText, getNodeImageURL, getParentIdCheck);
         }
 
         /// <summary>
