@@ -130,7 +130,7 @@
     <value>Are you sure you want to delete the {0} Folder Type Definition?</value>
   </data>
   <data name="Description.Text" xml:space="preserve">
-    <value>Manage the folder types available on this site. The default types - Standard, Secure and Database - may not be edited or deleted. Non default types could be reordered by selecting and moving them to the desired position. The order will be considered while resolving conflicts during folder synchronizations.</value>
+    <value>Manage the folder types available on this site. The default types (Standard, Secure and Database) cannot be edited or deleted. Non default types can be reordered by selecting and moving them to a new position. The order will be considered while resolving conflicts during folder synchronizations.</value>
   </data>
   <data name="Name.Header" xml:space="preserve">
     <value>Name</value>

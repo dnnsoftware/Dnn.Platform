@@ -3,8 +3,11 @@
     <ul>
         <%  if (!IsAuthenticated)
             {
+                if (CanRegister)
+                {
         %> 
                 <li class="userRegister"><asp:HyperLink ID="registerLink" runat="server"><% =LocalizeString("Register") %></asp:HyperLink>
+        <%      } %>
                 <li class="userLogin"><asp:HyperLink ID="loginLink" runat="server"><% =LocalizeString("Login") %></asp:HyperLink>
         <%  }
             else

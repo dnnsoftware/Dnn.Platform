@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -50,6 +50,15 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             Details = Localization.Localization.GetString("CreateSuperUser", LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
+
+            //if any super user (even deleted) is found - exit
+            var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
+            if (superUsers != null && superUsers.Count > 0)
+            {
+                Details = "...";
+                Status = StepStatus.Done;
+                return;
+            }
 
             //Set admin user to be a superuser
             var adminSuperUser = UserController.GetUserByName(0, installConfig.SuperUser.UserName);

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,7 +46,6 @@ namespace DotNetNuke.Services.Sitemap
         private float minPagePriority;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreSitemapProvider));
 
-        private PortalSettings ps;
         private bool useLevelBasedPagePriority;
 
         /// <summary>
@@ -68,9 +67,12 @@ namespace DotNetNuke.Services.Sitemap
             minPagePriority = float.Parse(PortalController.GetPortalSetting("SitemapMinPriority", portalId, "0.1"), CultureInfo.InvariantCulture);
             includeHiddenPages = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", portalId, "True"));
 
-            this.ps = ps;
-            var currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
-	        var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
+            var currentLanguage = ps.CultureCode;
+            if (string.IsNullOrEmpty(currentLanguage))
+            {
+                currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
+            }
+            var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
 	        var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
 						.Where(t => !t.IsSystem
 									&& !ps.ContentLocalizationEnabled || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.InvariantCultureIgnoreCase)));
@@ -86,7 +88,7 @@ namespace DotNetNuke.Services.Sitemap
 	                    {
 							try
 							{
-								pageUrl = GetPageUrl(tab, currentLanguage);
+								pageUrl = GetPageUrl(tab, currentLanguage, ps);
 								urls.Add(pageUrl);
 							}
 							catch (Exception)
@@ -115,10 +117,15 @@ namespace DotNetNuke.Services.Sitemap
         /// <returns>A SitemapUrl object for the current page</returns>
         /// <remarks>
         /// </remarks>
-        private SitemapUrl GetPageUrl(TabInfo objTab, string language)
+        private SitemapUrl GetPageUrl(TabInfo objTab, string language, PortalSettings ps)
         {
             var pageUrl = new SitemapUrl();
-            pageUrl.Url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
+            var url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
+            if ((ps.SSLEnforced || (objTab.IsSecure && ps.SSLEnabled)) && url.StartsWith("http://"))
+            {
+                url = "https://" + url.Substring("http://".Length);
+            }
+            pageUrl.Url = url;
             pageUrl.Priority = GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
             foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(objTab.TabID).Values)

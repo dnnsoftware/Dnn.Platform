@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -277,6 +277,9 @@ namespace DotNetNuke.Entities.Controllers
         {
             try
             {
+                var dbProvider = DataProvider.Instance();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 var settings = GetSettingsFromDatabase();
                 if (settings.ContainsKey(config.Key))
                 {
@@ -284,21 +287,21 @@ namespace DotNetNuke.Entities.Controllers
                     settings.TryGetValue(config.Key, out currentconfig);
                     if (currentconfig != null && currentconfig.Value != config.Value)
                     {
-                        DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                        dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
                         EventLogController.Instance.AddLog(config.Key,
                                            config.Value,
-                                           PortalController.Instance.GetCurrentPortalSettings(),
-                                           UserController.Instance.GetCurrentUserInfo().UserID,
+                                           portalSettings,
+                                           userId,
                                            EventLogController.EventLogType.HOST_SETTING_UPDATED);
                     }
                 }
                 else
                 {
-                    DataProvider.Instance().AddHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                    dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
                     EventLogController.Instance.AddLog(config.Key,
                                        config.Value,
-                                       PortalController.Instance.GetCurrentPortalSettings(),
-                                       UserController.Instance.GetCurrentUserInfo().UserID,
+                                       portalSettings,
+                                       userId,
                                        EventLogController.EventLogType.HOST_SETTING_CREATED);
                 }
             }
@@ -307,7 +310,7 @@ namespace DotNetNuke.Entities.Controllers
                 Exceptions.LogException(ex);
             }
 
-            if ((clearCache))
+            if (clearCache)
             {
                 DataCache.RemoveCache(DataCache.HostSettingsCacheKey);
             }

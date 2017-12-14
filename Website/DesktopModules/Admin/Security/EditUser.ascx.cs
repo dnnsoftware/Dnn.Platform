@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -32,7 +31,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Admin.Security;
@@ -54,12 +52,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/13/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    ///     [cnurse]    2/21/2005   Updated to use new User UserControl
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class EditUser : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
@@ -70,10 +62,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets whether to display the Manage Services tab
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/11/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool DisplayServices
         {
             get
@@ -87,10 +75,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the Redirect URL (after successful registration)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string RedirectURL
         {
             get
@@ -103,11 +87,10 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         //return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (_RedirectURL.Contains("://"))
-                        {
-                            _RedirectURL = "";
-                        }
+
+                        //clean the return url to avoid possible XSS attack.
+                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+
                         if (_RedirectURL.Contains("?returnurl"))
                         {
                             string baseURL = _RedirectURL.Substring(0, _RedirectURL.IndexOf("?returnurl"));
@@ -134,10 +117,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the Return Url for the page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string ReturnUrl
         {
             get
@@ -150,10 +129,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets and sets the Filter to use
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected string UserFilter
         {
             get
@@ -186,10 +161,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets and sets the current Page No
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public int PageNo
         {
             get
@@ -401,19 +372,13 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
-            cmdHMACGenerate.Click += cmdHMACGenerate_Click;
-            //updateProfileUrl.Click += updateProfileUrl_Click;
-
+            
             ctlServices.SubscriptionUpdated += SubscriptionUpdated;
             ctlProfile.ProfileUpdateCompleted += ProfileUpdateCompleted;
             ctlPassword.PasswordUpdated += PasswordUpdated;
@@ -450,49 +415,15 @@ namespace DotNetNuke.Modules.Admin.Users
             if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
             {
                 displayName.Enabled = false;
-            }
-
-            //hmac values
-           HMACAppId.Text= User.HmacAppId;
-           if (!String.IsNullOrEmpty(HMACAppId.Text))
-           {
-               cmdHMACGenerate.Visible = false;
-           }
-           HMACAppSecret.Text = User.HmacAppSecret;
+            }            
         }
-
-        private void cmdHMACGenerate_Click(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(HMACAppId.Text))
-            {
-                Guid hmacAppId;
-                hmacAppId = Guid.NewGuid();
-                using (var cryptoProvider = new RNGCryptoServiceProvider())
-                {
-                    byte[] secretKeyByteArray = new byte[32]; //256 bit
-                    cryptoProvider.GetBytes(secretKeyByteArray);
-                    var APIKey = Convert.ToBase64String(secretKeyByteArray);
-                    UserInfo user = User;
-                    user.HmacAppId = hmacAppId.ToString();
-                    user.HmacAppSecret = APIKey;
-                    UserController.UpdateUser(UserPortalID, User);
-                }
-                
-            }
-            Response.Redirect(Request.RawUrl, true);
-            
-        }
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -517,7 +448,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //DNN-26777 
-            new PortalSecurity().SignOut();
+            PortalSecurity.Instance.SignOut();
             Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId));
         }
 
@@ -554,8 +485,11 @@ namespace DotNetNuke.Modules.Admin.Users
                         {
                             UserController.ChangeUsername(User.UserID, User.Email);
 
-                            //note that this effectively will cause a signout due to the cookie not matching anymore.
-                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                            //after username changed, should redirect to login page to let user authenticate again.
+                            var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(Request.RawUrl), false);
+                            var spliter = loginUrl.Contains("?") ? "&" : "?";
+                            loginUrl = $"{loginUrl}{spliter}username={User.Email}&usernameChanged=true";
+                            Response.Redirect(loginUrl, true);
                         }
                     }
 
@@ -583,10 +517,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/09/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void PasswordQuestionAnswerUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (IsUserOrAdmin == false)
@@ -610,10 +540,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/08/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (IsUserOrAdmin == false)
@@ -658,10 +584,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	3/20/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ProfileUpdateCompleted(object sender, EventArgs e)
         {
             if (IsUserOrAdmin == false)

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,8 @@
 #region Usings
 
 using System;
+using System.Text.RegularExpressions;
+using DotNetNuke.Common.Utilities;
 
 #endregion
 
@@ -29,6 +31,9 @@ namespace DotNetNuke.Entities.Urls.Config
     [Serializable]
     public class RewriterRule
     {
+       [NonSerialized]
+       private Regex _matchRx;
+
         private string _lookFor;
         private string _sendTo;
 
@@ -40,7 +45,11 @@ namespace DotNetNuke.Entities.Urls.Config
             }
             set
             {
-                _lookFor = value;
+                if (_lookFor != value)
+                {
+                    _lookFor = value;
+                    _matchRx = null;
+                }
             }
         }
 
@@ -54,6 +63,15 @@ namespace DotNetNuke.Entities.Urls.Config
             {
                 _sendTo = value;
             }
+        }
+
+        //HACK: we cache this in the first call assuming applicationPath never changes during the whole lifetime of the application
+        // also don't worry about locking; the worst case this will be created more than once
+        public Regex GetRuleRegex(string applicationPath)
+        {
+            return _matchRx ?? (_matchRx =
+                RegexUtils.GetCachedRegex("^" + RewriterUtils.ResolveUrl(applicationPath, LookFor) + "$",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));
         }
     }
 }

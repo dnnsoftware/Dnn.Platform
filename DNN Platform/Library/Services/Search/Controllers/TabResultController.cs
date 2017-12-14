@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,8 +21,9 @@
 #region Usings
 
 using System;
-
+using System.Linq;
 using DotNetNuke.Common.Internal;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
@@ -38,6 +39,8 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class TabResultController : BaseResultController
     {
+        private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
+
         #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
@@ -60,11 +63,28 @@ namespace DotNetNuke.Services.Search.Controllers
             var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
             if (TabPermissionController.CanViewPage(tab))
             {
-                url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+                if (searchResult.PortalId != PortalSettings.Current.PortalId)
+                {
+                    var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(searchResult.PortalId)
+                                    .OrderByDescending(a => a.IsPrimary)
+                                    .FirstOrDefault();
+
+                    if (alias != null)
+                    {
+                        var portalSettings = new PortalSettings(searchResult.PortalId, alias);
+                        url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, portalSettings, string.Empty, searchResult.QueryString);
+                    }
+                }
+                else
+                {
+                    url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+                }
             }
             
             return url;
         }
+
+        public override string LocalizedSearchTypeName => Localization.Localization.GetString("Crawler_tab", LocalizedResxFile);
 
         #endregion
     }

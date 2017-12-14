@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,9 +32,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	08/23/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ContainerInstaller : SkinInstaller
     {
@@ -43,9 +40,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Collection Node ("containerFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -60,9 +54,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Item Node ("containerFile")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -77,9 +68,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the SkinName Node ("containerName")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string SkinNameNodeName
         {
@@ -94,9 +82,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the RootName of the Skin
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string SkinRoot
         {
@@ -111,9 +96,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Type of the Skin
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/06/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string SkinType
         {

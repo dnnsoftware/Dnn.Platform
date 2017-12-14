@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,6 +41,8 @@ namespace DotNetNuke.Services.Installer
     [Serializable]
     public class InstallFile
     {
+        private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
+
 		#region Private Members
 
         #endregion
@@ -329,7 +331,7 @@ namespace DotNetNuke.Services.Installer
                         }
                         else
                         {
-                            Type = Regex.IsMatch(Name, Util.REGEX_Version + ".txt") ? InstallFileType.CleanUp : InstallFileType.Other;
+                            Type = FileTypeMatchRegex.IsMatch(Name) ? InstallFileType.CleanUp : InstallFileType.Other;
                         }
                         break;
                 }

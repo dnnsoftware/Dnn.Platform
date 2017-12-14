@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,10 +43,6 @@ namespace DotNetNuke.Framework
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[Nik Kalyani]	10/15/2004	Replaced brackets in parameter names
-    /// 	[cnurse]	    10/13/2005	Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Reflection
     {
@@ -60,9 +56,6 @@ namespace DotNetNuke.Framework
         /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
         /// <returns>The created Object</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType)
         {
@@ -77,9 +70,6 @@ namespace DotNetNuke.Framework
         /// <param name="UseCache">Caching switch</param>
         /// <returns>The created Object</returns>
         /// <remarks>Overload for creating an object from a Provider configured in web.config</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, bool UseCache)
         {
@@ -96,9 +86,6 @@ namespace DotNetNuke.Framework
         /// <returns>The created Object</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and 
         /// AssemblyName ( this allows derived providers to share the same config )</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectNamespace, string ObjectAssemblyName)
         {
@@ -116,9 +103,6 @@ namespace DotNetNuke.Framework
         /// <returns>The created Object</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and 
         /// AssemblyName ( this allows derived providers to share the same config )</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectNamespace, string ObjectAssemblyName, bool UseCache)
         {
@@ -136,9 +120,6 @@ namespace DotNetNuke.Framework
         /// <returns>The created Object</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, 
         /// AssemblyName and ProviderName</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectProviderName, string ObjectNamespace, string ObjectAssemblyName)
         {
@@ -157,9 +138,6 @@ namespace DotNetNuke.Framework
         /// <returns>The created Object</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, 
         /// AssemblyName and ProviderName</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectProviderName, string ObjectNamespace, string ObjectAssemblyName, bool UseCache)
         {
@@ -179,9 +157,6 @@ namespace DotNetNuke.Framework
         /// <returns>The created Object</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace, 
         /// AssemblyName and ProviderName</remarks>
-        /// <history>
-        /// 	[benz]	    2/16/2012	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectProviderName, string ObjectNamespace, string ObjectAssemblyName, bool UseCache, bool fixAssemblyName)
         {
@@ -245,9 +220,6 @@ namespace DotNetNuke.Framework
         /// <param name="CacheKey">The Cache Key</param>
         /// <returns>The created Object</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string TypeName, string CacheKey)
         {
@@ -263,9 +235,6 @@ namespace DotNetNuke.Framework
         /// <param name="UseCache">Caching switch</param>
         /// <returns>The created Object</returns>
         /// <remarks>Overload that takes a fully-qualified typename and a Cache Key</remarks>
-        /// <history>
-        /// 	[cnurse]	    10/13/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string TypeName, string CacheKey, bool UseCache)
         {

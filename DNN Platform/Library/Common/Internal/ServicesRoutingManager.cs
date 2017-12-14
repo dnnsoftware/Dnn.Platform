@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,11 +36,15 @@ namespace DotNetNuke.Common.Internal
             try
             {
                 //new ServicesRoutingManager().RegisterRoutes();
-                var instance = Activator.CreateInstance("DotNetNuke.Web",
-                                                        "DotNetNuke.Web.Api.Internal.ServicesRoutingManager");
+                var instance = Activator.CreateInstance("DotNetNuke.Web", "DotNetNuke.Web.Api.Internal.ServicesRoutingManager");
 
                 var method = instance.Unwrap().GetType().GetMethod("RegisterRoutes");
                 method.Invoke(instance.Unwrap(), new object[0]);
+
+                var instanceMvc = Activator.CreateInstance("DotNetNuke.Web.Mvc", "DotNetNuke.Web.Mvc.Routing.MvcRoutingManager");
+
+                var methodMvc = instanceMvc.Unwrap().GetType().GetMethod("RegisterRoutes");
+                methodMvc.Invoke(instanceMvc.Unwrap(), new object[0]);
             }
             catch (Exception e)
             {

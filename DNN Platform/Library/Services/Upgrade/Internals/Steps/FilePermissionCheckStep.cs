@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -57,33 +57,15 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                                     new FileSystemPermissionVerifier(HttpContext.Current.Server.MapPath("~/App_Data"))
                                 };
 
-            //FolderCreate
-            Details = Localization.Localization.GetString("FolderCreateCheck", LocalInstallResourceFile);
+            Details = Localization.Localization.GetString("FolderCreateCheck", LocalInstallResourceFile)
+                    + Localization.Localization.GetString("FileCreateCheck", LocalInstallResourceFile)
+                    + Localization.Localization.GetString("FileDeleteCheck", LocalInstallResourceFile)
+                    + Localization.Localization.GetString("FolderDeleteCheck", LocalInstallResourceFile);
             Logger.TraceFormat("FilePermissionCheck - {0}", Details);
-            if(!verifiers.All(v => v.VerifyFolderCreate()))
-                Errors.Add(string.Format(Localization.Localization.GetString("StepFailed", LocalInstallResourceFile),Details));
-            Percentage += 20;
 
-            //FileCreate
-            Details = Localization.Localization.GetString("FileCreateCheck", LocalInstallResourceFile);
-            Logger.TraceFormat("FilePermissionCheck - {0}", Details);
-            if (!verifiers.All(v => v.VerifyFileCreate()))
+            if (!verifiers.All(v => v.VerifyAll()))
                 Errors.Add(string.Format(Localization.Localization.GetString("StepFailed", LocalInstallResourceFile), Details));
-            Percentage += 20;
-
-            //FileDelete
-            Details = Localization.Localization.GetString("FileDeleteCheck", LocalInstallResourceFile);
-            Logger.TraceFormat("FilePermissionCheck - {0}", Details);
-            if (!verifiers.All(v => v.VerifyFileDelete()))
-                Errors.Add(string.Format(Localization.Localization.GetString("StepFailed", LocalInstallResourceFile), Details));
-            Percentage += 20;
-
-            //FolderDelete
-            Details = Localization.Localization.GetString("FolderDeleteCheck", LocalInstallResourceFile);
-            Logger.TraceFormat("FilePermissionCheck - {0}", Details);
-            if (!verifiers.All(v => v.VerifyFolderDelete()))
-                Errors.Add(string.Format(Localization.Localization.GetString("StepFailed", LocalInstallResourceFile), Details));
-            Percentage += 20;
+            Percentage = 100;
 
             Status = Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
             Logger.TraceFormat("FilePermissionCheck Status - {0}", Status);

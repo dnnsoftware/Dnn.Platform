@@ -124,25 +124,25 @@
     <value>Date</value>
   </data>
   <data name="lblAdvancedDates.Help" xml:space="preserve">
-    <value>Limit the search results modified within the specified time </value>
+    <value>Limit the search results modified within the specified time.</value>
   </data>
   <data name="lblAdvancedDates.Text" xml:space="preserve">
-    <value>Last modified:</value>
+    <value>Last Modified:</value>
   </data>
   <data name="lblAdvancedScope.Help" xml:space="preserve">
-    <value>Limit the search results from the specified source</value>
+    <value>Limit the search results from the specified source.</value>
   </data>
   <data name="lblAdvancedScope.Text" xml:space="preserve">
     <value>Filter:</value>
   </data>
   <data name="lblAdvancedTags.Help" xml:space="preserve">
-    <value>Limit the search results with the specified tags</value>
+    <value>Limit the search results with the specified tags.</value>
   </data>
   <data name="lblAdvancedTags.Text" xml:space="preserve">
-    <value>Filter by tags:</value>
+    <value>Filter by Tags:</value>
   </data>
   <data name="NoResults.Text" xml:space="preserve">
-    <value>No Results Found</value>
+    <value>No results found.</value>
   </data>
   <data name="optionAll.Text" xml:space="preserve">
     <value>All</value>
@@ -166,7 +166,7 @@
     <value>Relevance</value>
   </data>
   <data name="ResultPerPage.Text" xml:space="preserve">
-    <value>Results Per Page:</value>
+    <value>Results per Page:</value>
   </data>
   <data name="Source.Text" xml:space="preserve">
     <value>Source:</value>
@@ -181,7 +181,7 @@
     <value>Search</value>
   </data>
   <data name="lblAdvancedExactSearch.Help" xml:space="preserve">
-    <value>Search results must exactly contain the keywords</value>
+    <value>Search results must be an exact match for the keywords.</value>
   </data>
   <data name="lblAdvancedExactSearch.Text" xml:space="preserve">
     <value>Exact Search:</value>

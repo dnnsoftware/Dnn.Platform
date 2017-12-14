@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,9 +44,6 @@ namespace DotNetNuke.Security.Roles
     /// <summary>
     /// The RoleGroupInfo class provides the Entity Layer RoleGroup object
     /// </summary>
-    /// <history>
-    ///     [cnurse]    01/03/2006  made compatible with .NET 2.0
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class RoleGroupInfo : BaseEntityInfo, IHydratable, IXmlSerializable
@@ -158,9 +155,6 @@ namespace DotNetNuke.Security.Roles
         /// Gets the Roles for this Role Group
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, RoleInfo> Roles
         {
@@ -183,9 +177,6 @@ namespace DotNetNuke.Security.Roles
         /// Fills a RoleGroupInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -203,9 +194,6 @@ namespace DotNetNuke.Security.Roles
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	03/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -227,9 +215,6 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Gets an XmlSchema for the RoleGroupInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -241,9 +226,6 @@ namespace DotNetNuke.Security.Roles
         /// Reads a RoleGroupInfo from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -291,9 +273,6 @@ namespace DotNetNuke.Security.Roles
         /// Writes a RoleGroupInfo to an XmlWriter
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
@@ -339,9 +318,6 @@ namespace DotNetNuke.Security.Roles
         /// Reads a Roles from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadRoles(XmlReader reader)
         {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -315,7 +315,7 @@ namespace DotNetNuke.Common.Utilities
                             if (propType.BaseType.Equals(typeof (Enum)))
                             {
 								//check if value is numeric and if not convert to integer ( supports databases like Oracle )
-                                if (Regex.IsMatch(coloumnValue.ToString(), "^\\d+$"))
+                                if (Globals.NumberMatchRegex.IsMatch(coloumnValue.ToString()))
                                 {
                                     objPropertyInfo.SetValue(hydratedObject,
                                                              Enum.ToObject(propType, Convert.ToInt32(coloumnValue)),
@@ -473,9 +473,6 @@ namespace DotNetNuke.Common.Utilities
         /// CloneObject clones an object
         /// </summary>
         /// <param name="objObject">The Object to Clone</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object CloneObject(object objObject)
         {
@@ -541,7 +538,7 @@ namespace DotNetNuke.Common.Utilities
 			//close datareader
             if (dr != null && closeReader)
             {
-                dr.Close();
+                using (dr) { dr.Close(); }
             }
         }
 
@@ -556,9 +553,6 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TObject">The type of object to create.</typeparam>
         /// <param name="initialise">A flag that indicates whether to initialise the
         /// object.</param>
-        /// <history>
-        /// 	[cnurse]	11/30/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static TObject CreateObject<TObject>(bool initialise)
         {
@@ -619,9 +613,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="dr">The Data Reader</param>
         /// <param name="objType">The type of the Object</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, Type objType)
         {
@@ -635,9 +626,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="dr">The Data Reader</param>
         /// <param name="objType">The type of the Object</param>
         /// <param name="closeReader">Flag that indicates whether the Data Reader should be closed.</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, Type objType, bool closeReader)
         {
@@ -651,9 +639,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="dr">The Data Reader</param>
         /// <param name="objType">The type of the Object</param>
         /// <param name="objToFill">An IList to fill</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static IList FillCollection(IDataReader dr, Type objType, ref IList objToFill)
         {
@@ -666,9 +651,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <typeparam name="TItem">The type of object</typeparam>
         /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static List<TItem> FillCollection<TItem>(IDataReader dr)
         {
@@ -682,9 +664,6 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TItem">The type of object</typeparam>
         /// <param name="objToFill">The List to fill</param>
         /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static IList<TItem> FillCollection<TItem>(IDataReader dr, ref IList<TItem> objToFill)
         {
@@ -699,9 +678,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="objToFill">The List to fill</param>
         /// <param name="dr">The Data Reader</param>
         /// <param name="closeReader">A flag that indicates whether the DataReader should be closed</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static IList<TItem> FillCollection<TItem>(IDataReader dr, IList<TItem> objToFill, bool closeReader)
         {
@@ -718,9 +694,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="totalRecords">The total No of records</param>
         /// <returns>A List of custom business objects</returns>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cnurse]	01/28/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, ref Type objType, ref int totalRecords)
         {
@@ -755,9 +728,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="totalRecords"></param>
         /// <returns>A List of custom business objects</returns>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cnurse]	10/10/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static List<T> FillCollection<T>(IDataReader dr, ref int totalRecords)
         {
@@ -821,9 +791,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="objDictionary">The Dictionary to fill</param>
         /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)
         {
@@ -840,9 +807,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <typeparam name="TObject">The type of the object</typeparam>
         /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr)
         {
@@ -856,9 +820,6 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TObject">The type of the object</typeparam>
         /// <param name="dr">The Data Reader</param>
         /// <param name="closeReader">A flag that indicates the reader should be closed</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr, bool closeReader)
         {
@@ -880,9 +841,6 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TValue">The value for the SortedList Item</typeparam>
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr)
         {
@@ -913,10 +871,6 @@ namespace DotNetNuke.Common.Utilities
         ///<param name = "elementName">The name of the new element created</param>
         ///<remarks>
         ///</remarks>
-        ///<history>
-        ///  [jlucarino]	09/18/2009	created
-        ///  [kbeigi] updated to IDictionary
-        ///</history>
         public static void SerializeSettings(IDictionary dictionary, XmlDocument document, string targetPath,
                                              string elementName)
         {
@@ -960,9 +914,6 @@ namespace DotNetNuke.Common.Utilities
         /// cache AND to fetch the item if the cache has expired</param>
         /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
         /// the cache if the item has expired</param>
-        /// <history>
-        /// 	[cnurse]	01/13/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
@@ -983,9 +934,6 @@ namespace DotNetNuke.Common.Utilities
         /// GetProperties gets a Dictionary of the Properties for an object
         /// </summary>
         /// <typeparam name="TObject">The type of the object</typeparam>
-        /// <history>
-        /// 	[cnurse]	01/17/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, PropertyInfo> GetProperties<TObject>()
         {
@@ -997,9 +945,6 @@ namespace DotNetNuke.Common.Utilities
         /// GetProperties gets a Dictionary of the Properties for an object
         /// </summary>
         /// <param name="objType">The type of the object</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, PropertyInfo> GetProperties(Type objType)
         {
@@ -1016,9 +961,6 @@ namespace DotNetNuke.Common.Utilities
         /// Null Values.
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void InitializeObject(object objObject)
         {
@@ -1039,9 +981,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
         /// <param name="objType">The type of the object</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static object InitializeObject(object objObject, Type objType)
         {
@@ -1066,9 +1005,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
         /// <param name="fileName">A filename for the resulting serialized xml</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SerializeObject(object objObject, string fileName)
         {
@@ -1086,17 +1022,17 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
         /// <param name="document">An XmlDocument to serialize to</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SerializeObject(object objObject, XmlDocument document)
         {
             var sb = new StringBuilder();
-            //Serialize the object
-            SerializeObject(objObject, XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)));
-            //Load XmlDocument
-            document.LoadXml(sb.ToString());
+            using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)))
+            {
+                //Serialize the object
+                SerializeObject(objObject, writer);
+                //Load XmlDocument
+                document.LoadXml(sb.ToString());
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -1105,9 +1041,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
         /// <param name="stream">A Stream to serialize to</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SerializeObject(object objObject, Stream stream)
         {
@@ -1125,9 +1058,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
         /// <param name="textWriter">A TextWriter to serialize to</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SerializeObject(object objObject, TextWriter textWriter)
         {
@@ -1146,9 +1076,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
         /// <param name="writer">An XmlWriter to serialize to</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SerializeObject(object objObject, XmlWriter writer)
         {

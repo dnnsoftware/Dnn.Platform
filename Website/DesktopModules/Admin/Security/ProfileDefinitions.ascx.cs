@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,9 +48,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/16/2006  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
@@ -76,9 +73,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets whether we are dealing with SuperUsers
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/11/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool IsSuperUser
         {
@@ -92,9 +86,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the collection of Profile Proeprties
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/03/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected ProfilePropertyDefinitionCollection ProfileProperties
         {
@@ -108,9 +99,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the Return Url for the page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ReturnUrl
         {
@@ -144,9 +132,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the Portal Id whose Users we are managing
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/11/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected int UsersPortalId
         {
@@ -202,9 +187,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Helper function that determines whether the client-side functionality is possible
         /// </summary>
-        /// <history>
-        ///     [Jon Henning]	03/12/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool SupportsRichClient()
         {
@@ -216,9 +198,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// Deletes a property
         /// </summary>
         /// <param name="index">The index of the Property to delete</param>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void DeleteProperty(int index)
         {
@@ -233,9 +212,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <param name="index">The index of the Property to move</param>
         /// <param name="destIndex">The new index of the Property</param>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void MoveProperty(int index, int destIndex)
         {
@@ -259,9 +235,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// Moves a property down in the ViewOrder
         /// </summary>
         /// <param name="index">The index of the Property to move</param>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void MovePropertyDown(int index)
         {
@@ -273,9 +246,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// Moves a property up in the ViewOrder
         /// </summary>
         /// <param name="index">The index of the Property to move</param>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void MovePropertyUp(int index)
         {
@@ -286,9 +256,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Binds the Property Collection to the Grid
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindGrid()
         {
@@ -335,9 +302,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Refresh the Property Collection to the Grid
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void RefreshGrid()
         {
@@ -349,9 +313,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Updates any "dirty" properties
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void UpdateProperties()
         {
@@ -374,9 +335,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// This method is responsible for taking in posted information from the grid and
         /// persisting it to the property definition collection
         /// </summary>
-        /// <history>
-        ///     [Jon Henning]	03/12/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ProcessPostBack()
         {
@@ -487,9 +445,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/16/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -571,9 +526,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/23/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdRefresh_Click(object sender, EventArgs e)
         {
@@ -587,9 +539,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/23/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void grdProfileProperties_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
@@ -636,9 +585,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/23/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void grdProfileProperties_ItemCommand(object source, DataGridCommandEventArgs e)
         {
@@ -666,9 +612,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [Jon Henning]	03/12/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void grdProfileProperties_ItemCreated(object sender, DataGridItemEventArgs e)
         {
@@ -703,9 +646,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/06/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void grdProfileProperties_ItemDataBound(object sender, DataGridItemEventArgs e)
         {

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,13 +40,6 @@ namespace DotNetNuke.Entities.Users
         UserInfo GetUserByDisplayname(int portalId, string displayName);
 
         /// <summary>
-        /// Get a user based on their HMAC AppId
-        /// </summary>
-        /// <param name="appId">HMAC AppId</param>
-        /// <returns>The User as a UserInfo object</returns>
-        UserInfo GetUserByHmacAppId(string appId);
-
-        /// <summary>
         /// GetUser retrieves a User from the DataStore
         /// </summary>
         /// <remarks>
@@ -73,8 +66,8 @@ namespace DotNetNuke.Entities.Users
         /// <param name="propertyValues">list of property values to filter</param>
         /// <returns>Users as a list of UserInfo objects</returns>
         IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
-                                                    bool isAdmin, int pageIndex, int pageSize, string sortColumn,
-                                                    bool sortAscending, string propertyNames, string propertyValues);
+            bool isAdmin, int pageIndex, int pageSize, string sortColumn,
+            bool sortAscending, string propertyNames, string propertyValues);
 
         /// <summary>
         /// Get a filtered list of users based on a set of simple filters - utilised for basic searches
@@ -88,6 +81,31 @@ namespace DotNetNuke.Entities.Users
         /// <param name="propertyValue">list of property values to filter</param>
         /// <returns>Users as a list of UserInfo objects</returns>
         IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
-                                                bool sortAscending, string propertyName, string propertyValue);
+            bool sortAscending, string propertyName, string propertyValue);
+
+        /// <summary>
+        /// Return User Profile Picture relative Url
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <param name="width">Width in pixel</param>
+        /// <param name="height">Height in pixel</param>
+        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal</returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32)
+        /// </remarks>
+        string GetUserProfilePictureUrl(int userId, int width, int height);
+
+        /// <summary>
+        /// Return User Profile Picture relative Url
+        /// </summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <param name="userId">User Id</param>
+        /// <param name="width">Width in pixel</param>
+        /// <param name="height">Height in pixel</param>
+        /// <returns>Relative url, e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal</returns>
+        /// <remarks>IMPORTANT NOTE: this overloaded method does not depend on the current portal setting so it can be used
+        /// in background threads or scheduler jobs. 
+        /// </remarks>
+        string GetUserProfilePictureUrl(int portalId, int userId, int width, int height);
     }
 }

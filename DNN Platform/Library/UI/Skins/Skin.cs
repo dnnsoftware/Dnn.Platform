@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -35,6 +36,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -74,9 +76,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/04/2005	Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Skin : UserControlBase
     {
@@ -111,10 +110,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        ///     [cnurse]    04/17/2009  Refactored from Skin
-        /// </history>
         /// -----------------------------------------------------------------------------
         internal Control ControlPanel
         {
@@ -133,9 +128,6 @@ namespace DotNetNuke.UI.Skins
         /// Gets the ModuleCommunicate instance for the skin
         /// </summary>
         /// <returns>The ModuleCommunicate instance for the Skin</returns>
-        /// <history>
-        /// 	[cnurse]	01/12/2009  created
-        /// </history>
         internal ModuleCommunicate Communicator
         {
             get
@@ -152,9 +144,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, Pane> Panes
         {
@@ -168,9 +157,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets an ArrayList of ActionEventListeners
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ArrayList ActionEventListeners
         {
@@ -189,9 +175,6 @@ namespace DotNetNuke.UI.Skins
         /// Gets the Path for this skin
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string SkinPath
         {
@@ -206,9 +189,6 @@ namespace DotNetNuke.UI.Skins
         /// Gets the Source for this skin
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string SkinSrc { get; set; }
 
@@ -300,7 +280,7 @@ namespace DotNetNuke.UI.Skins
                     if (controlPanel.IncludeInControlHierarchy)
                     {
                         //inject ControlPanel control into skin
-                        if (ControlPanel == null)
+                        if (ControlPanel == null || HostController.Instance.GetBoolean("IgnoreControlPanelWrapper", false))
                         {
                             if (form != null)
                             {
@@ -313,28 +293,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            if (form != null)
-                            {
-                                if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
-                                {
-                                    form.Controls.AddAt(0, controlPanel);
-                                }
-                                else
-                                {
-                                    ControlPanel.Controls.Add(controlPanel);
-                                }
-                            }
-                            else
-                            {
-                                if (Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
-                                {
-                                    Page.Controls.AddAt(0, controlPanel);
-                                }
-                                else
-                                {
-                                    ControlPanel.Controls.Add(controlPanel);
-                                }
-                            }
+                            ControlPanel.Controls.Add(controlPanel);
                         }
 
                         //register admin.css
@@ -512,11 +471,13 @@ namespace DotNetNuke.UI.Skins
             {
 				//If request localized page which haven't complete translate yet, redirect to default language version.
 	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
-				Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.PortalId);
+                
+                // Current locale will use default if did'nt find any
+                Locale currentLocale = LocaleController.Instance.GetCurrentLocale(PortalSettings.PortalId);
 	            if (PortalSettings.ContentLocalizationEnabled &&
-	                TabController.CurrentPage.CultureCode != defaultLocale.Code)
+	                TabController.CurrentPage.CultureCode != currentLocale.Code)
 	            {
-		            redirectUrl = new LanguageTokenReplace {Language = defaultLocale.Code}.ReplaceEnvironmentTokens("[URL]");
+		            redirectUrl = new LanguageTokenReplace {Language = currentLocale.Code}.ReplaceEnvironmentTokens("[URL]");
 	            }
 
 				Response.Redirect(redirectUrl, true);
@@ -614,11 +575,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// OnInit runs when the Skin is initialised.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/04/2005	Documented
-        ///     [cnurse]    12/05/2007  Refactored
-        ///     [cnurse]    04/17/2009  Refactored to use SkinAdapter
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -675,9 +631,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// OnLoad runs when the Skin is loaded.
         /// </summary>
-        /// <history>
-        ///     [cnurse]    04/17/2009  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -690,9 +643,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// OnLoad runs just before the Skin is rendered.
         /// </summary>
-        /// <history>
-        ///     [cnurse]    04/17/2009  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
@@ -739,9 +689,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// OnUnLoad runs when the Skin is unloaded.
         /// </summary>
-        /// <history>
-        ///     [cnurse]    04/17/2009  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnUnload(EventArgs e)
         {
@@ -771,9 +718,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="message">The Message Text</param>
         /// <param name="control">The current control</param>
         /// <param name="moduleMessageType">The type of the message</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddModuleMessage(Control control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -788,9 +732,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="message">The Message Text</param>
         /// <param name="control">The current control</param>
         /// <param name="moduleMessageType">The type of the message</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -805,9 +746,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="iconSrc">The Icon to diplay</param>
         /// <param name="message">The Message Text</param>
         /// <param name="page">The Page</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Page page, string heading, string message, string iconSrc)
         {
@@ -822,9 +760,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="iconSrc">The Icon to diplay</param>
         /// <param name="message">The Message Text</param>
         /// <param name="skin">The skin</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Skin skin, string heading, string message, string iconSrc)
         {
@@ -839,9 +774,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="message">The Message Text</param>
         /// <param name="skin">The skin</param>
         /// <param name="moduleMessageType">The type of the message</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Skin skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -856,9 +788,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="message">The Message Text</param>
         /// <param name="page">The Page</param>
         /// <param name="moduleMessageType">The type of the message</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -872,9 +801,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading</param>
         /// <param name="message">The Message Text</param>
         /// <param name="iconImage">The Message Icon</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, string iconImage)
         {
@@ -888,9 +814,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading</param>
         /// <param name="message">The Message Text</param>
         /// <param name="moduleMessageType">The type of message</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -905,9 +828,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="message">The Message Text</param>
         /// <param name="iconImage">The Message Icon</param>
         /// <param name="moduleMessageType">The type of message</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconImage)
         {
@@ -928,9 +848,6 @@ namespace DotNetNuke.UI.Skins
         /// GetParentSkin gets the Parent Skin for a control
         /// </summary>
         /// <param name="module">The control whose Parent Skin is requested</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(PortalModuleBase module)
         {
@@ -942,9 +859,6 @@ namespace DotNetNuke.UI.Skins
         /// GetParentSkin gets the Parent Skin for a control
         /// </summary>
         /// <param name="control">The control whose Parent Skin is requested</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(Control control)
         {
@@ -956,9 +870,6 @@ namespace DotNetNuke.UI.Skins
         /// GetPopUpSkin gets the Skin that is used in modal popup.
         /// </summary>
         /// <param name="page">The Page</param>
-        /// <history>
-        /// 	[vnguyen]   06/07/2011      Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Skin GetPopUpSkin(PageBase page)
         {
@@ -997,9 +908,6 @@ namespace DotNetNuke.UI.Skins
         /// GetSkin gets the Skin
         /// </summary>
         /// <param name="page">The Page</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Skin GetSkin(PageBase page)
         {
@@ -1063,10 +971,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="module">The module to inject</param>
         /// <param name="pane">The pane</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        ///     [cnurse]    04/17/2009  Refactored to use SkinAdapter
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool InjectModule(Pane pane, ModuleInfo module)
         {
@@ -1089,6 +993,10 @@ namespace DotNetNuke.UI.Skins
                 }
 
             }
+            catch (ThreadAbortException)
+            {
+                //Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
+            }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
@@ -1103,16 +1011,38 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="moduleId">The ID of the module</param>
         /// <param name="e">An Action Event Handler</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void RegisterModuleActionEvent(int moduleId, ActionEventHandler e)
         {
             ActionEventListeners.Add(new ModuleActionEventListener(moduleId, e));
         }
 
+        private static bool isFallbackSkin(string skinPath)
+        {
+            SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
+            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", "\\");
+            if (defaultSkinPath.EndsWith("\\"))
+            {
+                defaultSkinPath = defaultSkinPath.Substring(0, defaultSkinPath.Length - 1);
+            }
+            return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
+        }
 
+        public static List<InstalledSkinInfo> GetInstalledSkins()
+        {
+            var list = new List<InstalledSkinInfo>();
+            foreach (string folder in Directory.GetDirectories(Path.Combine(Globals.HostMapPath, "Skins")))
+            {
+                if (!folder.EndsWith(Globals.glbHostSkinFolder))
+                {
+                    var skin = new InstalledSkinInfo();
+                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
+                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, "");
+                    list.Add(skin);
+                }
+            }
+            return list;
+        }
 
         #endregion
     }

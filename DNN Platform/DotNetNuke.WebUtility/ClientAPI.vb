@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2014
+' Copyright (c) 2002-2017
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ Imports System.Web.UI.WebControls
 Imports System.Reflection
 Imports System.Globalization
 Imports System.Collections.Generic
+Imports System.Text.RegularExpressions
 Imports DotNetNuke.Web.Client
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 
@@ -55,6 +56,7 @@ Namespace DotNetNuke.UI.Utilities
         Public Const SCRIPT_CALLBACKSTATUSDESCID As String = "__DNNCAPISCSDI"
 
         Public Const DNNVARIABLE_CONTROLID As String = "__dnnVariable"
+
 #End Region
 
 #Region "Public Enums"
@@ -547,12 +549,11 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetSafeJSString(ByVal strString As String) As String
-            If Len(strString) > 0 Then
-                'Return System.Text.RegularExpressions.Regex.Replace(strString, "(['""])", "\$1")
-                Return System.Text.RegularExpressions.Regex.Replace(strString, "(['""\\])", "\$1")
-            Else
-                Return strString
+            If String.IsNullOrEmpty(strString) Then
+                Return String.Empty
             End If
+
+            Return HttpUtility.JavaScriptStringEncode(strString)
         End Function
 
         Public Shared Function IsInCallback(ByVal objPage As Page) As Boolean

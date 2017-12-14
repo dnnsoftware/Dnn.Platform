@@ -1,18 +1,15 @@
 ﻿Test,								ForceLowerCaseRegex,	Scheme,		Page Name,		Test Url,											Expected Url,										Status,		Final Url,										RedirectReason
-Home,								,						http://,	Home,			http://{alias}/,									{defaultPage}?TabId={tabId}&language=en-US,			200
+Home,								,						http://,	Home,			http://{alias}/,									{defaultPage}?TabId={tabId},			200
 About Us,							,						http://,	About Us,		http://{alias}/about-us.aspx,						{defaultPage}?TabId={tabId},						200
-Admin,								,						http://,	Site Settings,	http://{alias}/admin/site-settings.aspx,			{defaultPage}?TabId={tabId},						200
 Profile Messages,					,						http://,	Messages,		http://{alias}/activity-feed/messages.aspx,			{defaultPage}?TabId={tabId},						200
 Terms,								,						http://,	Home,			http://{alias}/terms.aspx,							{defaultPage}?PortalId={portalId}&ctl=Terms,		200
 Login,								,						http://,	About Us,		http://{alias}/login.aspx,							{defaultPage}?PortalId={portalId}&ctl=Login,		200
 Edit Page Home,						,						http://,	Home,			http://{alias}/home/ctl/edit/mid/100.aspx,			{defaultPage}?TabId={tabId}&ctl=edit&mid=100,		200
 Edit Page About Us,					,						http://,	About Us,		http://{alias}/about-us/ctl/edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=edit&mid=200,		200
 About Us Wrong Case,				,						http://,	About Us,		http://{alias}/About-Us.aspx,						{defaultPage}?TabId={tabId},						301,		http://{alias}/about-us.aspx,					Not_Lower_Case
-Admin Wrong Case,					,						http://,	Site Settings,	http://{alias}/Admin/Site-Settings.aspx,			{defaultPage}?TabId={tabId},						301,		http://{alias}/admin/site-settings.aspx,		Not_Lower_Case
 Profile Messages Wrong Case,		,						http://,	Messages,		http://{alias}/Activity-Feed/Messages.aspx,			{defaultPage}?TabId={tabId},						301,		http://{alias}/activity-feed/messages.aspx,		Not_Lower_Case
 Terms Wrong Case,					,						http://,	Home,			http://{alias}/Terms.aspx,							{defaultPage}?PortalId={portalId}&ctl=Terms,		200
 Login Wrong Case,					,						http://,	About Us,		http://{alias}/Login.aspx,							{defaultPage}?PortalId={portalId}&ctl=Login,		200
 Edit Page Home Wrong Case,			,						http://,	Home,			http://{alias}/Home/ctl/Edit/mid/100.aspx,			{defaultPage}?TabId={tabId}&ctl=Edit&mid=100,		301,		http://{alias}/home/ctl/edit/mid/100.aspx,		Not_Lower_Case
 Edit Page About Us Wrong Case,		,						http://,	About Us,		http://{alias}/About-Us/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		301,		http://{alias}/about-us/ctl/edit/mid/200.aspx,	Not_Lower_Case
-Admin regex,						site-settings,			http://,	Site Settings,	http://{alias}/Admin/Site-Settings.aspx,			{defaultPage}?TabId={tabId},						200
 Edit Page About Us regex,			edit,					http://,	About Us,		http://{alias}/About-Us/ctl/Edit/mid/200.aspx,		{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		200

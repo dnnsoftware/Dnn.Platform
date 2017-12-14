@@ -1,6 +1,6 @@
 #region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // All Rights Reserved
 #endregion
@@ -9,12 +9,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -24,8 +27,14 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     public partial class Toast : SkinObjectBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
+        private static readonly string ToastCacheKey = "DNN_Toast_Config";
 
         private const string MyFileName = "Toast.ascx";
+
+        protected string ServiceModuleName { get; private set; }
+
+        protected string ServiceAction { get; private set; }
 
         public bool IsOnline()
         {
@@ -106,6 +115,77 @@ namespace DotNetNuke.UI.Skins.Controls
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
 			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
 
+            InitializeConfig();
+        }
+
+        private void InitializeConfig()
+        {
+            ServiceModuleName = "InternalServices";
+            ServiceAction = "NotificationsService/GetToasts";
+
+            try
+            {
+                var toastConfig = DataCache.GetCache<IDictionary<string, string>>(ToastCacheKey);
+                if (toastConfig == null)
+                {
+                    var configFile = Server.MapPath(Path.Combine(TemplateSourceDirectory, "Toast.config"));
+                    
+                    if (File.Exists(configFile))
+                    {
+                        var xmlDocument = new XmlDocument();
+                        xmlDocument.Load(configFile);
+                        var moduleNameNode = xmlDocument.DocumentElement?.SelectSingleNode("moduleName");
+                        var actionNode = xmlDocument.DocumentElement?.SelectSingleNode("action");
+                        var scriptsNode = xmlDocument.DocumentElement?.SelectSingleNode("scripts");
+
+                        if (moduleNameNode != null && !string.IsNullOrEmpty(moduleNameNode.InnerText))
+                        {
+                            ServiceModuleName = moduleNameNode.InnerText;
+                        }
+
+                        if (actionNode != null && !string.IsNullOrEmpty(actionNode.InnerText))
+                        {
+                            ServiceAction = actionNode.InnerText;
+                        }
+
+                        if (scriptsNode != null && !string.IsNullOrEmpty(scriptsNode.InnerText))
+                        {
+                            addtionalScripts.Text = scriptsNode.InnerText;
+                            addtionalScripts.Visible = true;
+                        }
+                    }
+
+                    var config = new Dictionary<string, string>()
+                    {
+                        {"ServiceModuleName", ServiceModuleName },
+                        {"ServiceAction", ServiceAction },
+                        {"AddtionalScripts", addtionalScripts.Text },
+                    };
+                    DataCache.SetCache(ToastCacheKey, config);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(toastConfig["ServiceModuleName"]))
+                    {
+                        ServiceModuleName = toastConfig["ServiceModuleName"];
+                    }
+
+                    if (!string.IsNullOrEmpty(toastConfig["ServiceAction"]))
+                    {
+                        ServiceAction = toastConfig["ServiceAction"];
+                    }
+
+                    if (!string.IsNullOrEmpty(toastConfig["AddtionalScripts"]))
+                    {
+                        addtionalScripts.Text = toastConfig["AddtionalScripts"];
+                        addtionalScripts.Visible = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
     }
 }

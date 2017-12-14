@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -108,13 +108,13 @@ namespace DotNetNuke.Security.Membership
         {
             return null;
         }
-
-        public virtual UserInfo GetUserByHmacAppId(int portalId, string appId)
+        
+        public virtual UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
             return null;
         }
 
-        public virtual UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
+        public virtual UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
         {
             return null;
         }
@@ -184,31 +184,6 @@ namespace DotNetNuke.Security.Membership
         }
 
 
-        #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public abstract ArrayList GetUnAuthorizedUsers(int portalId, bool isHydrated);
-        
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public abstract UserInfo GetUser(int portalId, int userId, bool isHydrated);
-        
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public abstract UserInfo GetUserByUserName(int portalId, string username, bool isHydrated);
-        
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public abstract ArrayList GetUsers(int portalId, bool isHydrated, int pageIndex, int pageSize, ref int totalRecords);
-        
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public abstract ArrayList GetUsersByEmail(int portalId, bool isHydrated, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords);
-        
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public abstract ArrayList GetUsersByUserName(int portalId, bool isHydrated, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords);
-        
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public abstract ArrayList GetUsersByProfileProperty(int portalId, bool isHydrated, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords);
-        
         #endregion
     }
 }

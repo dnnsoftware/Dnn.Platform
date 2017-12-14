@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,12 +19,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 
@@ -47,7 +51,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFolderManager> _folderManager;
         private Mock<IFileManager> _fileManager;
         private Mock<IPathUtils> _pathUtils;
-
+        private Mock<IPortalController> _portalControllerMock;
+        private Mock<CryptographyProvider> _cryptographyProviderMock;
+        private Mock<ILocaleController> _localeControllerMock;
         #endregion
 
         #region Setup
@@ -63,12 +69,46 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderManager = new Mock<IFolderManager>();
             _fileManager = new Mock<IFileManager>();
             _pathUtils = new Mock<IPathUtils>();
+            _portalControllerMock = new Mock<IPortalController>();
+            _portalControllerMock.Setup(p => p.GetPortalSettings(Constants.CONTENT_ValidPortalId))
+                .Returns(GetPortalSettingsDictionaryMock());
+            _portalControllerMock.Setup(p => p.GetCurrentPortalSettings()).Returns(GetPortalSettingsMock());
+            _cryptographyProviderMock = new Mock<CryptographyProvider>();
+            _cryptographyProviderMock.Setup(c => c.EncryptParameter(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Guid.NewGuid().ToString("N"));
+            _localeControllerMock = new Mock<ILocaleController>();
+            _localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string,Locale>
+            {
+                {"en-us", new Locale()}
+            });
 
             FileWrapper.RegisterInstance(_fileWrapper.Object);
             DirectoryWrapper.RegisterInstance(_directoryWrapper.Object);
             FolderManager.RegisterInstance(_folderManager.Object);
             FileManager.RegisterInstance(_fileManager.Object);
             PathUtils.RegisterInstance(_pathUtils.Object);
+            PortalController.SetTestableInstance(_portalControllerMock.Object);
+            ComponentFactory.RegisterComponentInstance<CryptographyProvider>("CryptographyProviderMock", _cryptographyProviderMock.Object);
+            LocaleController.RegisterInstance(_localeControllerMock.Object);
+        }
+
+        private Dictionary<string, string> GetPortalSettingsDictionaryMock()
+        {
+            var portalSettingsDictionary = new Dictionary<string,string>();
+            portalSettingsDictionary.Add("AddCachebusterToResourceUris", true.ToString());
+
+            return portalSettingsDictionary;
+        }
+        
+        private PortalSettings GetPortalSettingsMock()
+        {
+            var portalSettingsMock = new Mock<PortalSettings>();
+            portalSettingsMock.Object.HomeDirectory = "/portals/" + Constants.CONTENT_ValidPortalId;
+            portalSettingsMock.Object.PortalId = Constants.CONTENT_ValidPortalId;
+            portalSettingsMock.Object.EnableUrlLanguage = false;
+            portalSettingsMock.Object.GUID = Guid.NewGuid();
+
+            return portalSettingsMock.Object;
         }
 
         [TearDown]
@@ -562,6 +602,56 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CollectionAssert.AreEqual(expectedSubFolders, result);
         }
 
+        #endregion
+
+        #region GetFilesUrl
+
+        [Test]
+        [TestCase("(")]
+        [TestCase(")")]
+        [TestCase("")]        
+        public void GetFileUrl_ReturnsStandardUrl_WhenFileUrlDoesNotContainInvalidCharactes(string fileNameChar)
+        {
+            //Arrange
+            var sfp = new Mock<StandardFolderProvider> { CallBase = true };
+            var portalSettingsMock = GetPortalSettingsMock();
+            sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
+            _fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
+            _fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            
+            //Act
+            var fileUrl = sfp.Object.GetFileUrl(_fileInfo.Object);
+
+            //Assert
+            Assert.IsFalse(fileUrl.ToLowerInvariant().Contains("linkclick"));
+        }
+        
+        [Test]
+        [TestCase("?")]
+        [TestCase("&")]
+        [TestCase("+")]
+        [TestCase(";")]
+        [TestCase(":")]
+        [TestCase("@")]
+        [TestCase("=")]
+        [TestCase("$")]
+        [TestCase(",")]
+        [TestCase("%")]
+        public void GetFileUrl_ReturnsLinkclickUrl_WhenFileUrlContainsInvalidCharactes(string fileNameChar)
+        {
+            //Arrange
+            var sfp = new Mock<StandardFolderProvider> { CallBase = true };
+            var portalSettingsMock = GetPortalSettingsMock();
+            sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
+            _fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
+            _fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+
+            //Act
+            var fileUrl = sfp.Object.GetFileUrl(_fileInfo.Object);
+
+            //Assert
+            Assert.IsTrue(fileUrl.ToLowerInvariant().Contains("linkclick"));
+        }
         #endregion
 
         #region IsInSync

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -59,9 +59,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 10
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int AutoAccountUnlockDuration
         {
@@ -78,9 +75,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to HttpCacheability.ServerAndNoCache
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	03/05/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string AuthenticatedCacheability
         {
@@ -117,9 +111,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to True
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool CheckUpgrade
         {
@@ -136,9 +127,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to glbDefaultControlPanel constant
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ControlPanel
         {
@@ -165,9 +153,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Indicates whether Composite Files are enabled at the host level.
         /// </summary>
-        /// <history>
-        ///   [irobinson]	02/25/2012 Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool CrmEnableCompositeFiles
         {
@@ -181,9 +166,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Indicates whether CSS Minification is enabled at the host level.
         /// </summary>
-        /// <history>
-        ///   [irobinson]	02/25/2012 Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool CrmMinifyCss
         {
@@ -197,9 +179,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Indicates whether JS Minification is enabled at the host level.
         /// </summary>
-        /// <history>
-        ///   [irobinson]	02/25/2012 Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool CrmMinifyJs
         {
@@ -216,9 +195,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 1
         /// </remarks>
-        /// <history>
-        ///   [irobinson]	02/25/2012 Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int CrmVersion
         {
@@ -232,9 +208,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Default Admin Container
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string DefaultAdminContainer
         {
@@ -253,9 +226,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Default Admin Skin
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string DefaultAdminSkin
         {
@@ -274,9 +244,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Default Doc Type
         /// </summary>
-        /// <history>
-        ///   [cnurse]	07/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string DefaultDocType
         {
@@ -310,9 +277,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Default Portal Container
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string DefaultPortalContainer
         {
@@ -331,9 +295,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Default Portal Skin
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string DefaultPortalSkin
         {
@@ -355,9 +316,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to -1
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int DemoPeriod
         {
@@ -374,9 +332,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	04/14/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool DemoSignup
         {
@@ -393,9 +348,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to True
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	05/19/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool DisplayBetaNotice
         {
@@ -412,9 +364,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to True
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	03/05/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool DisplayCopyright
         {
@@ -443,9 +392,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to True
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	02/19/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableBrowserLanguage
         {
@@ -469,9 +415,6 @@ namespace DotNetNuke.Entities.Host
         ///   by the framework and extensions alike to write more verbose logs/onscreen
         ///   information, etc. It is set in the host settings page.
         /// </summary>
-        /// <history>
-        ///   [pdonker]  10/02/2013   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool DebugMode
         {
@@ -483,14 +426,24 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets whether the installation participates in the improvements program.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static bool ParticipateInImprovementProg
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("DnnImprovementProgram", true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Gets whether a css class based on the Module Name is automatically rendered
         /// </summary>
         /// <remarks>
         ///   Defaults to True
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	06/30/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableCustomModuleCssClass
         {
@@ -538,22 +491,6 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets whether The Getting Started Page is Enabled
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to True
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        public static bool EnableGettingStartedPage
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("EnableGettingStartedPage", true);
-            }
-        }
-
         /// <summary>
         /// enable whether the IP address of the user is checked against a list during login
         /// </summary>
@@ -572,9 +509,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableModuleOnLineHelp
         {
@@ -591,9 +525,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableRequestFilters
         {
@@ -632,9 +563,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to True
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	02/19/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableUrlLanguage
         {
@@ -651,9 +579,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableUsersOnline
         {
@@ -670,9 +595,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EnableSMTPSSL
         {
@@ -693,9 +615,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool EventLogBuffer
         {
@@ -720,9 +639,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the GUID
         /// </summary>
-        /// <history>
-        ///   [cnurse]	12/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GUID
         {
@@ -736,9 +652,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Help URL
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string HelpURL
         {
@@ -755,9 +668,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to USD
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string HostCurrency
         {
@@ -776,9 +686,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Host Email
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string HostEmail
         {
@@ -795,9 +702,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 0
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static double HostFee
         {
@@ -814,9 +718,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to Null.NullInteger
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int HostPortalID
         {
@@ -833,9 +734,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 0
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static double HostSpace
         {
@@ -849,9 +747,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Host Title
         /// </summary>
-        /// <history>
-        ///   [cnurse]	12/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string HostTitle
         {
@@ -865,9 +760,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Host URL
         /// </summary>
-        /// <history>
-        ///   [cnurse]	04/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string HostURL
         {
@@ -884,9 +776,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to Null.NullInteger(None)
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int HttpCompressionAlgorithm
         {
@@ -946,6 +835,17 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
+        /// Gets the number of days that must pass before a password can be reused - default is 0 (i.e. password reuse is only governed by <see cref="EnablePasswordHistory"/> and <see cref="MembershipNumberPasswords"/>)
+        /// </summary>
+        public static int MembershipDaysBeforePasswordReuse
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("MembershipDaysBeforePasswordReuse", 0);
+            }
+        }
+
+        /// <summary>
         /// sets the HTTP Status code returned if IP address filtering is enabled on login
         /// and the users IP does not meet criteria -default is 403
         /// </summary>
@@ -963,9 +863,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Module Caching method
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ModuleCachingMethod
         {
@@ -979,9 +876,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Page Caching method
         /// </summary>
-        /// <history>
-        ///   [jbrinkman]	11/17/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string PageCachingMethod
         {
@@ -998,9 +892,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 0
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int PageQuota
         {
@@ -1014,9 +905,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the PageState Persister
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string PageStatePersister
         {
@@ -1038,9 +926,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 0
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int PasswordExpiry
         {
@@ -1057,9 +942,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 7 (1 week)
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int PasswordExpiryReminder
         {
@@ -1073,9 +955,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Payment Processor
         /// </summary>
-        /// <history>
-        ///   [cnurse]	04/14/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string PaymentProcessor
         {
@@ -1094,9 +973,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to PerformanceSettings.ModerateCaching
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Globals.PerformanceSettings PerformanceSetting
         {
@@ -1122,15 +998,12 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Payment Processor Password
         /// </summary>
-        /// <history>
-        ///   [cnurse]	04/14/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ProcessorPassword
         {
             get
             {
-                return HostController.Instance.GetString("ProcessorPassword");
+                return HostController.Instance.GetEncryptedString("ProcessorPassword", Config.GetDecryptionkey());
             }
         }
 
@@ -1138,9 +1011,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Payment Processor User Id
         /// </summary>
-        /// <history>
-        ///   [cnurse]	04/14/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ProcessorUserId
         {
@@ -1154,9 +1024,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Proxy Server Password
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ProxyPassword
         {
@@ -1170,9 +1037,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Proxy Server Port
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int ProxyPort
         {
@@ -1186,9 +1050,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Proxy Server
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ProxyServer
         {
@@ -1202,9 +1063,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the Proxy Server UserName
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ProxyUsername
         {
@@ -1221,9 +1079,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	04/14/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool RememberCheckbox
         {
@@ -1240,9 +1095,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to SchedulerMode.TIMER_METHOD
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static SchedulerMode SchedulerMode
         {
@@ -1279,9 +1131,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool SearchIncludeCommon
         {
@@ -1298,9 +1147,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool SearchIncludeNumeric
         {
@@ -1317,9 +1163,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 25
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SearchMaxWordlLength
         {
@@ -1336,9 +1179,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 3
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SearchMinWordlLength
         {
@@ -1355,9 +1195,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to ""
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   09/03/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SearchIncludedTagInfoFilter
         {
@@ -1385,9 +1222,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 1
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in 8.0.0")]
         public static int SiteLogBuffer
@@ -1405,9 +1239,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to -1
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in 8.0.0")]
         public static int SiteLogHistory
@@ -1425,9 +1256,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to "D"
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	03/05/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in 8.0.0")]
         public static string SiteLogStorage
@@ -1442,10 +1270,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the SMTP Authentication
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        ///   [ohine]	02/01/2009   modifed for portal based smtp
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPAuthentication
         {
@@ -1460,7 +1284,7 @@ namespace DotNetNuke.Entities.Host
         /// Gets the SMTP mode (portal|host)
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private static bool SMTPPortalEnabled
+        internal static bool SMTPPortalEnabled
         {
             get
             {
@@ -1568,9 +1392,6 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the SMTP Connection Limit
         /// </summary>
-        /// <history>
-        ///   [evi]	03/05/2014   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SMTPConnectionLimit
         {
@@ -1578,18 +1399,15 @@ namespace DotNetNuke.Entities.Host
             {
                 if (SMTPPortalEnabled)
                 {
-                    return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 1);
+                    return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 2);
                 }
-                return HostController.Instance.GetInteger("SMTPConnectionLimit", 1);
+                return HostController.Instance.GetInteger("SMTPConnectionLimit", 2);
             }
         }
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the SMTP MaxIdleTime
         /// </summary>
-        /// <history>
-        ///   [evi]	03/05/2014   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SMTPMaxIdleTime
         {
@@ -1597,9 +1415,9 @@ namespace DotNetNuke.Entities.Host
             {
                 if (SMTPPortalEnabled)
                 {
-                    return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 0);
+                    return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 100000);
                 }
-                return HostController.Instance.GetInteger("SMTPMaxIdleTime", 0);
+                return HostController.Instance.GetInteger("SMTPMaxIdleTime", 100000);
             }
         }
         /// -----------------------------------------------------------------------------
@@ -1609,9 +1427,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	07/24/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool ThrowCBOExceptions
         {
@@ -1628,9 +1443,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool UseFriendlyUrls
         {
@@ -1647,9 +1459,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool UseCustomErrorMessages
         {
@@ -1666,9 +1475,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 0
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int UserQuota
         {
@@ -1685,9 +1491,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 15
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/29/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int UsersOnlineTimeWindow
         {
@@ -1704,9 +1507,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to 10000
         /// </remarks>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int WebRequestTimeout
         {
@@ -1722,9 +1522,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [jbrinkman]    09/30/2008    Created
-        /// </history>
         [Obsolete("This is managed through the JavaScript Library package")]
         public static bool jQueryDebug
         {
@@ -1740,9 +1537,6 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// <history>
-        ///   [jbrinkman]    09/30/2008    Created
-        /// </history>
         [Obsolete("This is managed through the JavaScript Library package")]
         public static bool jQueryHosted
         {
@@ -1841,6 +1635,7 @@ namespace DotNetNuke.Entities.Host
 		/// <remarks>
 		///   Defaults to False
 		/// </remarks>
+		[Obsolete("Not used anymore")]
 		public static bool EnableTelerikCdn
 		{
 			get
@@ -1849,10 +1644,11 @@ namespace DotNetNuke.Entities.Host
 			}
 		}
 
-		/// <summary>
-		/// Get Telerik CDN Basic Path.
-		/// </summary>
-	    public static string TelerikCdnBasicUrl
+        /// <summary>
+        /// Get Telerik CDN Basic Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnBasicUrl
 	    {
 			get
 			{
@@ -1860,10 +1656,11 @@ namespace DotNetNuke.Entities.Host
 			}
 	    }
 
-		/// <summary>
-		/// Get Telerik CDN Secure Path.
-		/// </summary>
-		public static string TelerikCdnSecureUrl
+        /// <summary>
+        /// Get Telerik CDN Secure Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnSecureUrl
 		{
 			get
 			{
@@ -1887,149 +1684,6 @@ namespace DotNetNuke.Entities.Host
 				return timeout;
 			}
 		}
-
-        #endregion
-
-        #region Obsolete Members
-
-        [Obsolete("Replaced in DotNetNuke 6.0 by AllowedExtensionWhitelist")]
-        public static string FileExtensions
-        {
-            get
-            {
-                return HostController.Instance.GetString("FileExtensions");
-            }
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSettingsDictionary()")]
-        public static Dictionary<string, string> GetHostSettingsDictionary()
-        {
-            var dicSettings = DataCache.GetCache<Dictionary<string, string>>(DataCache.UnSecureHostSettingsCacheKey);
-
-            if (dicSettings == null)
-            {
-                dicSettings = new Dictionary<string, string>();
-                IDataReader dr = DataProvider.Instance().GetHostSettings();
-                try
-                {
-                    while (dr.Read())
-                    {
-                        if (!dr.IsDBNull(1))
-                        {
-                            dicSettings.Add(dr.GetString(0), dr.GetString(1));
-                        }
-                    }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-
-                //Save settings to cache
-                DNNCacheDependency objDependency = null;
-                DataCache.SetCache(DataCache.UnSecureHostSettingsCacheKey,
-                                   dicSettings,
-                                   objDependency,
-                                   Cache.NoAbsoluteExpiration,
-                                   TimeSpan.FromMinutes(DataCache.HostSettingsCacheTimeOut),
-                                   DataCache.HostSettingsCachePriority,
-                                   null);
-            }
-
-            return dicSettings;
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSecureHostSetting()")]
-        public static string GetSecureHostSetting(string key)
-        {
-            return HostController.Instance.GetString(key);
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSecureHostSettingsDictionary()")]
-        public static Dictionary<string, string> GetSecureHostSettingsDictionary()
-        {
-            var dicSettings = DataCache.GetCache<Dictionary<string, string>>(DataCache.SecureHostSettingsCacheKey);
-
-            if (dicSettings == null)
-            {
-                dicSettings = new Dictionary<string, string>();
-                IDataReader dr = DataProvider.Instance().GetHostSettings();
-                try
-                {
-                    while (dr.Read())
-                    {
-                        if (!Convert.ToBoolean(dr[2]))
-                        {
-                            string settingName = dr.GetString(0);
-                            if (settingName.ToLower().IndexOf("password") == -1)
-                            {
-                                if (!dr.IsDBNull(1))
-                                {
-                                    dicSettings.Add(settingName, dr.GetString(1));
-                                }
-                                else
-                                {
-                                    dicSettings.Add(settingName, "");
-                                }
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-
-                //Save settings to cache
-                DNNCacheDependency objDependency = null;
-                DataCache.SetCache(DataCache.SecureHostSettingsCacheKey,
-                                   dicSettings,
-                                   objDependency,
-                                   Cache.NoAbsoluteExpiration,
-                                   TimeSpan.FromMinutes(DataCache.HostSettingsCacheTimeOut),
-                                   DataCache.HostSettingsCachePriority,
-                                   null);
-            }
-
-            return dicSettings;
-        }
-
-        [Obsolete("Deprecated in 5.5.  This setting was never used and has been replaced in 5.5 by a Portal Setting as Content Localization is Portal based.")]
-        public static bool ContentLocalization
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("ContentLocalization", false);
-            }
-        }
-
-        [Obsolete("property obsoleted in 5.4.0 - code updated to use portalcontroller method")]
-        public static string ContentLocale
-        {
-            get
-            {
-                return "en-us";
-            }
-        }
-
-        [Obsolete("MS AJax is now required for DotNetNuke 5.0 and above")]
-        public static bool EnableAJAX
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("EnableAJAX", true);
-            }
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.1")]
-        public static bool WhitespaceFilter
-        {
-            get
-            {
-                return false;
-            }
-        }
-
 
         #endregion
     }

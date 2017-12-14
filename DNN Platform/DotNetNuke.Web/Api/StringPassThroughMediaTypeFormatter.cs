@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -61,19 +61,23 @@ namespace DotNetNuke.Web.Api
 
         public override Task<object> ReadFromStreamAsync(Type type, Stream readStream, System.Net.Http.HttpContent content, IFormatterLogger formatterLogger)
         {
-            var reader = new StreamReader(readStream);
-            string value = reader.ReadToEnd();
+            using (var reader = new StreamReader(readStream))
+            {
+                string value = reader.ReadToEnd();
 
-            var completionSource = new TaskCompletionSource<object>();
-            completionSource.SetResult(value);
-            return completionSource.Task;
+                var completionSource = new TaskCompletionSource<object>();
+                completionSource.SetResult(value);
+                return completionSource.Task;
+            }
         }
 
         public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, System.Net.Http.HttpContent content, TransportContext transportContext)
         {
-            var writer = new StreamWriter(writeStream);
-            writer.Write((string)value);
-            writer.Flush();
+            using (var writer = new StreamWriter(writeStream))
+            {
+                writer.Write((string)value);
+                writer.Flush();
+            }
 
             var completionSource = new TaskCompletionSource<object>();
             completionSource.SetResult(null);

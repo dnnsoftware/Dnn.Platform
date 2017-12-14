@@ -102,17 +102,19 @@
                 $wrap.data('fileManagerInitialized', true);
             }
 	        
-            composeMessageDialog.find('.fileUploadArea').dnnUserFileUpload({
-				maxFileSize: opts.maxFileSize,
-				serverErrorMessage: opts.serverErrorText,
-				addImageServiceUrl: opts.servicesFramework.getServiceRoot('CoreMessaging') + 'FileUpload/UploadFile',
-				beforeSend: opts.servicesFramework.setModuleHeaders,
-				callback: attachFile,
-				complete: function() {
-					composeMessageDialog.find('.fileUploadArea input:file').data("wrapper").get(0).childNodes[0].nodeValue = opts.uploadText;
-				}
-			});
-
+	        if ($.fn.dnnUserFileUpload && typeof $.fn.dnnUserFileUpload === "function") {
+				composeMessageDialog.find('.fileUploadArea').dnnUserFileUpload({
+					maxFileSize: opts.maxFileSize,
+					serverErrorMessage: opts.serverErrorText,
+					addImageServiceUrl: opts.servicesFramework.getServiceRoot('CoreMessaging') + 'FileUpload/UploadFile',
+					beforeSend: opts.servicesFramework.setModuleHeaders,
+					callback: attachFile,
+					complete: function() {
+						composeMessageDialog.find('.fileUploadArea input:file').data("wrapper").get(0).childNodes[0].nodeValue = opts.uploadText;
+					}
+				});
+	        }
+	        
 	        composeMessageDialog.find('#to').tokenInput(opts.serviceurlbase + "Search", {
 				// We can set the tokenLimit here
 				theme: "facebook",
@@ -149,7 +151,10 @@
 				},
 				onError: function (xhr, status) {
 					displayMessage(composeMessageDialog, opts.autoSuggestErrorText + status);
-				}
+				},
+	            onReady: function() {
+	                composeMessageDialog.find('input[id^=token-input]').attr('aria-label', 'Token Input');
+	            }
 			});
 
 			composeMessageDialog.find('#subject').keyup(function () {
@@ -164,13 +169,18 @@
                     to.tokenInput("add", value);
                 });
             }
+            
+            var minWidth = $(window).width() > 650 ? 650 : $(window).width() - 40;
+            var maxWidth = $(window).width() - minWidth > 40 ? minWidth : $(window).width() - 40; // 36px is padding around the compose box. So we decrease the max width by 40 to show full message box in smaller window, if required.
 
             composeMessageDialog.dialog({
-                minWidth: 650,
+                maxWidth: maxWidth,
+                minWidth: minWidth,
                 modal: true,
                 resizable: false,
                 open: function () {
                     composeMessageDialog.dialog("widget").find('.ui-dialog-buttonpane :button').removeClass().addClass('dnnTertiaryAction');
+                    composeMessageDialog.dialog("widget").find('.ui-dialog-titlebar-close').attr('aria-label', 'Close');
                     messageId = -1;
 
                     canSend = false;
@@ -218,9 +228,9 @@
                             var params = {
                                 subject: encodeURIComponent(composeMessageDialog.find('#subject').val()),
                                 body: encodeURIComponent(composeMessageDialog.find('#bodytext').val()),
-                                roleIds: (roles.length > 0 ? JSON.stringify(roles) : {}),
-                                userIds: (users.length > 0 ? JSON.stringify(users) : {}),
-                                fileIds: (attachments.length > 0 ? JSON.stringify(attachments) : {})
+                                roleIds: JSON.stringify(roles),
+                                userIds: JSON.stringify(users),
+                                fileIds: JSON.stringify(attachments)
                             };
                             $.ajax(
                                 {   

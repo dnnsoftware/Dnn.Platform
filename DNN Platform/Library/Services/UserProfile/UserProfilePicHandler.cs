@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -120,8 +120,8 @@ namespace DotNetNuke.Services.UserProfile
                         if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                         {
                             using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
+                            using (var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension))
                             {
-                                var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
                                 FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
                             }
                         }
@@ -145,9 +145,11 @@ namespace DotNetNuke.Services.UserProfile
 
                     }
 
-                    var memoryStream = new MemoryStream();
-                    content.CopyTo(memoryStream);
-                    memoryStream.WriteTo(context.Response.OutputStream);
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        content.CopyTo(memoryStream);
+                        memoryStream.WriteTo(context.Response.OutputStream);
+                    }
 
                     photoLoaded = true;
                 }
@@ -163,16 +165,7 @@ namespace DotNetNuke.Services.UserProfile
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(1));
             context.Response.Cache.SetMaxAge(new TimeSpan(0, 1, 0));
             context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
-
-	        try
-	        {
-				context.Response.End();
-	        }
-			catch (ThreadAbortException)//if ThreadAbortException will shown, should catch it and do nothing.
-			{
-
-			}
-            
+            context.ApplicationInstance.CompleteRequest();
         }
 
         //whether current user has permission to view target user's photo.

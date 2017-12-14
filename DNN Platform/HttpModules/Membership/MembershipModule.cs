@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,8 +24,9 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Web;
-
+using System.Web.Security;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -40,6 +41,7 @@ using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -50,6 +52,8 @@ namespace DotNetNuke.HttpModules.Membership
     /// </summary>
     public class MembershipModule : IHttpModule
     {
+        private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
+
         private static string _cultureCode;
         /// <summary>
         /// Gets the name of the module.
@@ -87,6 +91,7 @@ namespace DotNetNuke.HttpModules.Membership
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += OnAuthenticateRequest;
+            application.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
         /// <summary>
@@ -103,6 +108,31 @@ namespace DotNetNuke.HttpModules.Membership
             var application = (HttpApplication) sender;
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
+
+        //DNN-6973: if the authentication cookie set by cookie slide in membership,
+        //then use SignIn method instead if current portal is in portal group.
+        private void OnPreSendRequestHeaders(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
+                                    && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
+            if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
+            {
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
+                if (isInPortalGroup)
+                {
+                    var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
+                    if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
+                    {
+                        application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                        PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Called when unverified user skin initialize.
@@ -136,46 +166,15 @@ namespace DotNetNuke.HttpModules.Membership
 
             bool isActiveDirectoryAuthHeaderPresent = false;
             var auth = request.Headers.Get("Authorization");
-            if(!string.IsNullOrEmpty(auth))
+            if (!string.IsNullOrEmpty(auth))
             {
-                if(auth.StartsWith("Negotiate"))
+                if (auth.StartsWith("Negotiate"))
                 {
                     isActiveDirectoryAuthHeaderPresent = true;
                 }
             }
 
-            //DNN-6673 START
-            //check if it's Windows Authentication request, and try to authenticate it
-            if (request.IsAuthenticated
-                && context.User != null
-                && portalSettings != null
-                && (context.User is WindowsPrincipal || isActiveDirectoryAuthHeaderPresent))
-            {
-                string userName = string.Empty;
-                //get WinAuth username from context 
-                if (context != null && context.User != null && context.User.Identity != null)
-                {
-                    var rgx = new System.Text.RegularExpressions.Regex(@"\w+[\\]+(?=)");
-                    userName = rgx.Replace(context.User.Identity.Name, string.Empty);
-                }
-
-                UserInfo userInfo = UserController.GetCachedUser(portalSettings.PortalId, userName);
-
-                //save userinfo object in context
-                if (context.Items["UserInfo"] != null)
-                {
-                    context.Items["UserInfo"] = userInfo ?? new UserInfo(); //update
-                }
-                else
-                {
-                    context.Items.Add("UserInfo", userInfo = userInfo ?? new UserInfo()); //set new
-                }
-                //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                if (userInfo != null)
-                    Localization.SetLanguage(userInfo.Profile.PreferredLocale);
-            }//DNN-6673 END
-
-            else if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
+            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
                 //if current login is from windows authentication, the ignore the process
@@ -189,7 +188,7 @@ namespace DotNetNuke.HttpModules.Membership
                     || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
                     || user.Username.ToLower() != context.User.Identity.Name.ToLower())
                 {
-                    var portalSecurity = new PortalSecurity();
+                    var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
 
                     //Remove user from cache
@@ -219,7 +218,7 @@ namespace DotNetNuke.HttpModules.Membership
                 {
                     //update LastActivityDate and IP Address for user
                     user.Membership.LastActivityDate = DateTime.Now;
-                    user.LastIPAddress = request.UserHostAddress;
+                    user.LastIPAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
                     UserController.UpdateUser(portalSettings.PortalId, user, false, false);
                 }
 
@@ -236,10 +235,17 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 //save userinfo object in context
-                context.Items.Add("UserInfo", user);
-                
+                if (context.Items["UserInfo"] != null)
+                {
+                    context.Items["UserInfo"] = user;
+                }
+                else
+                {
+                    context.Items.Add("UserInfo", user);
+                }
+
                 //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                if (!ServicesModule.ServiceApi.IsMatch(request.RawUrl))
+                if (request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
                     Localization.SetLanguage(user.Profile.PreferredLocale);
                 }

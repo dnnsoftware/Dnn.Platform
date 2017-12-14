@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,6 +38,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -51,9 +52,6 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/21/2006  Created
-    /// </history>
     public partial class SendPassword : UserModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SendPassword));
@@ -71,9 +69,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Gets the Redirect URL (after successful sending of password)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/11/2008  Created
-        /// </history>
         protected string RedirectURL
         {
             get
@@ -95,13 +90,10 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         //return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (_RedirectURL.Contains("://") &&
-                            !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-                                StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            _RedirectURL = "";
-                        }
+
+                        //clean the return url to avoid possible XSS attack.
+                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+
                         if (_RedirectURL.Contains("?returnurl"))
                         {
                             string baseURL = _RedirectURL.Substring(0,
@@ -132,9 +124,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Gets whether the Captcha control is used to validate the login
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
         protected bool UseCaptcha
         {
             get
@@ -167,7 +156,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private void GetUser()
         {
             ArrayList arrUsers;
-			if (MembershipProviderConfig.RequiresUniqueEmail && !String.IsNullOrEmpty(txtEmail.Text.Trim()) && (String.IsNullOrEmpty(txtUsername.Text.Trim()) || divUsername.Visible == false))
+			if (ShowEmailField && !String.IsNullOrEmpty(txtEmail.Text.Trim()) && (String.IsNullOrEmpty(txtUsername.Text.Trim()) || divUsername.Visible == false))
             {
                 arrUsers = UserController.GetUsersByEmail(PortalSettings.PortalId, txtEmail.Text, 0, Int32.MaxValue, ref _userCount);
                 if (arrUsers != null && arrUsers.Count == 1)
@@ -229,9 +218,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -239,11 +225,7 @@ namespace DotNetNuke.Modules.Admin.Security
             cmdSendPassword.Click += OnSendPasswordClick;
 			cancelButton.Click += cancelButton_Click;
 
-            if (Request.UserHostAddress != null)
-            {
-                _ipAddress = Request.UserHostAddress;
-            }
-
+            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));            
 
 			divEmail.Visible = ShowEmailField;
 			divUsername.Visible = !UsernameDisabled;
@@ -261,9 +243,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
         protected void OnSendPasswordClick(Object sender, EventArgs e)
         {
             //pretty much alwasy display the same message to avoid hinting on the existance of a user name
@@ -391,7 +370,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void LogResult(string message)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
 
 			var log = new LogInfo
             {
@@ -419,7 +398,7 @@ namespace DotNetNuke.Modules.Admin.Security
 			
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect(RedirectURL, true);
+            Response.Redirect(Globals.NavigateURL(), true);
         }
 
         #endregion

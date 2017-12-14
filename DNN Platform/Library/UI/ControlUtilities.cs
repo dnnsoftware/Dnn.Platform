@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -97,9 +97,6 @@ namespace DotNetNuke.UI
         /// <param name="ControlSrc">The source for the control.  This can either be a User Control (.ascx) or a compiled
         /// control.</param>
         /// <returns>A Control of type T</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static T LoadControl<T>(TemplateControl containerControl, string ControlSrc) where T : Control
         {

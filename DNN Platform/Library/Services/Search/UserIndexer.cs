@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,6 +34,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using Lucene.Net.QueryParsers;
@@ -54,16 +55,13 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [vnguyen]   05/27/2013 
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class UserIndexer : IndexingProvider
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
         internal const string ValueSplitFlag = "$$$";
 
-        internal static Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
+        internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
 
         #region Private Properties
 
@@ -83,13 +81,13 @@ namespace DotNetNuke.Services.Search
         /// <returns>Count of indexed records</returns>
         /// -----------------------------------------------------------------------------
         public override int IndexSearchDocuments(int portalId,
-            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = BatchSize;
             var totalIndexed = 0;
             var checkpointModified = false;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new Dictionary<string, SearchDocument>();
 
             var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
@@ -111,7 +109,7 @@ namespace DotNetNuke.Services.Search
             try
             {
                 int startUserId;
-                var checkpointData = GetLastCheckpointData(portalId, scheduleId);
+                var checkpointData = GetLastCheckpointData(portalId, schedule.ScheduleID);
                 if (string.IsNullOrEmpty(checkpointData) || !int.TryParse(checkpointData, out startUserId))
                 {
                     startUserId = Null.NullInteger;
@@ -130,8 +128,8 @@ namespace DotNetNuke.Services.Search
                         DeleteDocuments(portalId, indexedUsers);
                         var values = searchDocuments.Values;
                         totalIndexed += IndexCollectedDocs(indexer, values);
-                        SetLastCheckpointData(portalId, scheduleId, startUserId.ToString());
-                        SetLocalTimeOfLastIndexedItem(portalId, scheduleId, values.Last().ModifiedTimeUtc.ToLocalTime());
+                        SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
+                        SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
                         searchDocuments.Clear();
                         checkpointModified = true;
                     }
@@ -153,14 +151,15 @@ namespace DotNetNuke.Services.Search
             }
             catch (Exception ex)
             {
+                checkpointModified = false;
                 Exceptions.Exceptions.LogException(ex);
             }
 
             if (checkpointModified)
             {
                 // at last reset start user pointer
-                SetLastCheckpointData(portalId, scheduleId, Null.NullInteger.ToString());
-                SetLocalTimeOfLastIndexedItem(portalId, scheduleId, DateTime.Now);
+                SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
+                SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
             }
             return totalIndexed;
         }
@@ -221,8 +220,8 @@ namespace DotNetNuke.Services.Search
                             continue;
                         }
 
-							//DNN-5740: replace split flag if it included in property value.
-	                        propertyValue = propertyValue.Replace("[$][$][$]", "$$$");
+                        //DNN-5740 / DNN-9040: replace split flag if it included in property value.
+                        propertyValue = propertyValue.Replace("[$]", "$");
                         var uniqueKey = string.Format("{0}_{1}", userSearch.UserId, visibilityMode).ToLowerInvariant();
                         if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
                         {
@@ -431,7 +430,7 @@ namespace DotNetNuke.Services.Search
 
         #region Obsoleted Methods
 
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             return null;

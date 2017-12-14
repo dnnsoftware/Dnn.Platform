@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -61,8 +61,14 @@ namespace DotNetNuke.Services.FileSystem
 
             if (content != null)
             {
-                var originalPosition = content.Position;
-                content.Position = 0;
+                var restorePosition = content.CanSeek;
+                long originalPosition = Null.NullInteger;
+
+                if (restorePosition)
+                {
+                    originalPosition = content.Position;
+                    content.Position = 0;
+                }
 
                 var buffer = new byte[16 * 1024];
 
@@ -78,7 +84,10 @@ namespace DotNetNuke.Services.FileSystem
                     fileContent = ms.ToArray();
                 }
 
-                content.Position = originalPosition;
+                if (restorePosition)
+                {
+                    content.Position = originalPosition;
+                }
             }
 
             UpdateFileContent(fileId, fileContent);
@@ -139,7 +148,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.PropertyNotNull("fileName", fileName);
 
-            return (FileManager.Instance.GetFile(folder, fileName) != null);
+            return (FileManager.Instance.GetFile(folder, fileName, true) != null);
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
@@ -181,7 +190,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            var file = FileManager.Instance.GetFile(folder, fileName);
+            var file = FileManager.Instance.GetFile(folder, fileName, true);
 
             return file != null ? GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId)) : null;
         }
@@ -253,7 +262,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            var file = FileManager.Instance.GetFile(folder, fileName);
+            var file = FileManager.Instance.GetFile(folder, fileName, true);
 
             if (file == null) return;
 

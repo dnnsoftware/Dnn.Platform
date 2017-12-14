@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -85,6 +85,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 e = e.InnerException;
             }
+
             var st = new StackTrace(e, true);
             StackFrame sf = st.GetFrame(0);
             if (sf != null)
@@ -305,14 +306,23 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     var ctrlModule = ctrl as IModuleControl;
                     ModuleLoadException lex = null;
+                    var friendlyMessageOverride = exc.Message;
+
+                    if (Host.DebugMode && exc is HttpParseException)
+                    {
+                        var httpParseError = ((HttpParseException)exc);
+                        friendlyMessageOverride = string.Concat(exc.Message, " in ", httpParseError.VirtualPath, ":line ", httpParseError.Line);
+                    }
+
                     if (ctrlModule == null)
                     {
-                        lex = new ModuleLoadException(exc.Message, exc);
+                        lex = new ModuleLoadException(friendlyMessageOverride, exc);
                     }
                     else
                     {
-                        lex = new ModuleLoadException(exc.Message, exc, ctrlModule.ModuleContext.Configuration);
+                        lex = new ModuleLoadException(friendlyMessageOverride, exc, ctrlModule.ModuleContext.Configuration);
                     }
+
                     //publish the exception
                     var objExceptionLog = new ExceptionLogController();
                     objExceptionLog.AddLog(lex);

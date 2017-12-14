@@ -1,22 +1,22 @@
 #region Copyright
 
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+//
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
 #endregion
@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -35,7 +36,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -43,27 +43,26 @@ namespace DotNetNuke.Modules.SearchResults
 {
     public partial class SearchResults : PortalModuleBase
     {
+        private const int DefaultPageIndex = 1;
+        private const int DefaultPageSize = 15;
+        private const int DefaultSortOption = 0;
+
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
 
-        protected string SearchDisplayTerm
-        {
-            get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"].Replace("\"", "")) : string.Empty; }
-        }
-
         protected string SearchTerm
         {
-            get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"]) : string.Empty; }
+            get { return Request.QueryString["Search"] ?? string.Empty; }
         }
 
         protected string TagsQuery
         {
-            get { return Request.QueryString["Tag"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Tag"].Replace("\"", "")) : string.Empty; }
+            get { return Request.QueryString["Tag"] ?? string.Empty; }
         }
 
         protected string SearchScopeParam
         {
-            get { return Request.QueryString["Scope"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Scope"]) : string.Empty; }
+            get { return Request.QueryString["Scope"] ?? string.Empty; }
         }
 
         protected string [] SearchScope
@@ -77,7 +76,64 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected string LastModifiedParam
         {
-            get { return Request.QueryString["LastModified"] != null ? HttpUtility.HtmlEncode(Request.QueryString["LastModified"]) : string.Empty; }
+            get { return Request.QueryString["LastModified"] ?? string.Empty; }
+        }
+
+        protected int PageIndex
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Page"]))
+                {
+                    return DefaultPageIndex;
+                }
+
+                int pageIndex;
+                if (Int32.TryParse(Request.QueryString["Page"], out pageIndex))
+                {
+                    return pageIndex;
+                }
+
+                return DefaultPageIndex;
+            }
+        }
+
+        protected int PageSize
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Size"]))
+                {
+                    return DefaultPageSize;
+                }
+
+                int pageSize;
+                if (Int32.TryParse(Request.QueryString["Size"], out pageSize))
+                {
+                    return pageSize;
+                }
+
+                return DefaultPageSize;
+            }
+        }
+
+        protected int SortOption
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Request.QueryString["Sort"]))
+                {
+                    return DefaultSortOption;
+                }
+
+                int sortOption;
+                if (Int32.TryParse(Request.QueryString["Sort"], out sortOption))
+                {
+                    return sortOption;
+                }
+
+                return DefaultSortOption;
+            }
         }
 
         protected string CheckedExactSearch
@@ -300,12 +356,18 @@ namespace DotNetNuke.Modules.SearchResults
 
             foreach (string o in SearchContentSources)
             {
-                var item = new RadComboBoxItem(o, o) {Checked = CheckedScopeItem(o)};
+                var item = new ListItem(o, o) {Selected = CheckedScopeItem(o)};
                 SearchScopeList.Items.Add(item);
             }
 
-            SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
+            SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString("AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
+
+            var pageSizeItem = ResultsPerPageList.FindItemByValue(PageSize.ToString());
+            if (pageSizeItem != null)
+            {
+                pageSizeItem.Selected = true;
+            }
 
             SetLastModifiedFilter();
         }
@@ -322,7 +384,7 @@ namespace DotNetNuke.Modules.SearchResults
 
             if (!string.IsNullOrEmpty(lastModifiedParam))
             {
-                var item = AdvnacedDatesList.Items.FirstOrDefault(x => x.Value == lastModifiedParam);
+                var item = AdvnacedDatesList.Items.Cast<ListItem>().FirstOrDefault(x => x.Value == lastModifiedParam);
                 if (item != null)
                 {
                     item.Selected = true;

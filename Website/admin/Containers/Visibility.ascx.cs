@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,11 +48,6 @@ namespace DotNetNuke.UI.Containers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[sun1]	    2/1/2004	Created
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Visibility : SkinObjectBase
     {

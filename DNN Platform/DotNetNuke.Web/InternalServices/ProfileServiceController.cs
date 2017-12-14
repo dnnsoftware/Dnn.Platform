@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,6 +37,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Services.Registration;
 
 #endregion
 
@@ -45,45 +46,17 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class ProfileServiceController : DnnApiController
     {
-        private static void AddProperty(ICollection<SearchResult> results, string field, string searchTerm)
-        {
-            if (field.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant().Trim()))
-            {
-                results.Add(new SearchResult { id = field, name = field });
-            }
-        }
-
         [HttpGet]
-        [DnnExceptionFilter]
         public HttpResponseMessage Search(string q)
         {
-            var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
-
-            var controller = new ListController();
-
-			ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
-
-            IList<SearchResult> results = new List<SearchResult>();
-            foreach (var definition in ProfileController.GetPropertyDefinitionsByPortal(portalId)
-                                        .Cast<ProfilePropertyDefinition>()
-										.Where(definition => definition.DataType != imageType.EntryID))
-            {
-                AddProperty(results, definition.PropertyName, q);
-            }
-
-            AddProperty(results, "Email", q);
-            AddProperty(results, "DisplayName", q);
-            AddProperty(results, "Username", q);
-            AddProperty(results, "Password", q);
-            AddProperty(results, "PasswordConfirm", q);
-            AddProperty(results, "PasswordQuestion", q);
-            AddProperty(results, "PasswordAnswer", q);
-
-            return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.id));
+            var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(PortalSettings.PortalId), q);
+            return Request.CreateResponse(HttpStatusCode.OK,
+                        results.OrderBy(sr => sr)
+                        .Select(field => new { id = field, name = field })
+                    );
         }
 
         [HttpPost]
-        [DnnExceptionFilter]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateVanityUrl(VanityUrlDTO vanityUrl)
         {
@@ -130,17 +103,7 @@ namespace DotNetNuke.Web.InternalServices
             //Url is clean and validated so we can update the User
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
-
-        private class SearchResult
-        {
-            // ReSharper disable InconsistentNaming
-            // ReSharper disable NotAccessedField.Local
-            public string id;
-            public string name;
-            // ReSharper restore NotAccessedField.Local
-            // ReSharper restore InconsistentNaming
-        }
-
+        
         public class VanityUrlDTO
         {
             public string Url { get; set; }

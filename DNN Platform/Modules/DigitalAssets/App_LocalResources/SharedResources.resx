@@ -139,7 +139,7 @@
     <value>Cannot create folder ({0}), folder already exists in this location.</value>
   </data>
   <data name="FolderFileNameHasInvalidcharacters.Error" xml:space="preserve">
-    <value>The name contains invalid character(s). Please specify a name without {0}</value>
+    <value>The name contains invalid character(s).  Please specify a name without {0}.</value>
   </data>
   <data name="RefreshFolderToolBarButtonExtensionPoint.AltText" xml:space="preserve">
     <value>Refresh</value>
@@ -157,13 +157,13 @@
     <value>Upload Files</value>
   </data>
   <data name="UserHasNoPermissionToDeleteFiles.Error" xml:space="preserve">
-    <value>The user has no permission to delete files on this folder</value>
+    <value>The user does not have permission to delete files on this folder.</value>
   </data>
   <data name="UserHasNoPermissionToDeleteFolder.Error" xml:space="preserve">
-    <value>The user has no permission to delete this folder</value>
+    <value>The user does not have permission to delete this folder.</value>
   </data>
   <data name="UserHasNoPermissionToDownload.Error" xml:space="preserve">
-    <value>The user has no permission to download this file</value>
+    <value>The user does not have permission to download this file.</value>
   </data>
   <data name="RenameToolBarButtonExtensionPoint.AltText" xml:space="preserve">
     <value>Rename</value>
@@ -178,7 +178,7 @@
     <value>Copy</value>
   </data>
   <data name="FileAlreadyExists.Error" xml:space="preserve">
-    <value>The file already exists on the destination</value>
+    <value>The file already exists on the destination.</value>
   </data>
   <data name="MoveToolBarButtonExtensionPoint.AltText" xml:space="preserve">
     <value>Move</value>
@@ -193,13 +193,13 @@
     <value>Toggle</value>
   </data>
   <data name="DestinationFolderCannotMatchSourceFolder.Error" xml:space="preserve">
-    <value>Destination folder cannot match the source folder</value>
+    <value>Destination folder cannot match the source folder.</value>
   </data>
   <data name="UserHasNoPermissionToCopyFolder.Error" xml:space="preserve">
-    <value>The user has no permission to copy from this folder</value>
+    <value>The user does not have permission to copy from this folder</value>
   </data>
   <data name="UserHasNoPermissionToMoveFolder.Error" xml:space="preserve">
-    <value>The user has no permission to move from this folder</value>
+    <value>The user does not have permission to move from this folder.</value>
   </data>
   <data name="GetUrlToolBarButtonExtensionPoint.AltText" xml:space="preserve">
     <value>Get URL</value>
@@ -244,16 +244,16 @@
     <value>Preview</value>
   </data>
   <data name="FolderNameRequired.ErrorMessage" xml:space="preserve">
-    <value>Folder Name is required</value>
+    <value>Folder Name is required.</value>
   </data>
   <data name="ZoomImage.AltText" xml:space="preserve">
     <value>Open the file in a new tab</value>
   </data>
   <data name="UserHasNoPermissionToReadFile.Error" xml:space="preserve">
-    <value>The user has no permission to read this file</value>
+    <value>The user does not have permission to read this file.</value>
   </data>
   <data name="UserHasNoPermissionToReadFolder.Error" xml:space="preserve">
-    <value>The user has no permission to read this folder</value>
+    <value>The user does not have permission to read this folder.</value>
   </data>
   <data name="FieldCreated.DisplayName" xml:space="preserve">
     <value>Created</value>
@@ -268,7 +268,7 @@
     <value>Modified By</value>
   </data>
   <data name="UserHasNoPermissionToBrowseFolder.Error" xml:space="preserve">
-    <value>The user has no permission to browse this folder</value>
+    <value>The user does not have permission to browse this folder.</value>
   </data>
   <data name="RefreshMenuItemExtensionPoint.Text" xml:space="preserve">
     <value>Refresh</value>
@@ -298,16 +298,16 @@
     <value>Unzip file</value>
   </data>
   <data name="MappedPathRegExValidator.ErrorMessage" xml:space="preserve">
-    <value>MappedPath cannot be an absolute path</value>
+    <value>MappedPath cannot be an absolute path.</value>
   </data>
   <data name="MoveNotAllowedBetweenFolderTypes.Error" xml:space="preserve">
-    <value>Move Folder operation between this two folder types is not allowed</value>
+    <value>Move Folder operation between this two folder types is not allowed.</value>
   </data>
   <data name="FolderDoesNotExists.Error" xml:space="preserve">
-    <value>The folder does not exist</value>
+    <value>The folder does not exist.</value>
   </data>
   <data name="FileDoesNotExists.Error" xml:space="preserve">
-    <value>The file does not exist</value>
+    <value>The file does not exist.</value>
   </data>
   <data name="MyFolder.Text" xml:space="preserve">
     <value>My Folder</value>
@@ -325,6 +325,6 @@
     <value>Unlink</value>
   </data>
   <data name="UserHasNoPermissionToUnlinkFolder.Error" xml:space="preserve">
-    <value>The user has no permission to unlink this folder</value>
+    <value>The user does not have permission to unlink this folder.</value>
   </data>
 </root>

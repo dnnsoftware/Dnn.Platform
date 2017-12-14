@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,8 +36,6 @@ namespace DotNetNuke.Security.Permissions
     ///   DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo 
     ///   Permissions
     /// </summary>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class WorkflowStatePermissionInfo : PermissionInfoBase, IHydratable
@@ -53,8 +51,6 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         ///   Constructs a new WorkflowStatePermissionInfo
         /// </summary>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo()
         {
@@ -69,8 +65,6 @@ namespace DotNetNuke.Security.Permissions
         ///   Constructs a new WorkflowStatePermissionInfo
         /// </summary>
         /// <param name = "permission">A PermissionInfo object</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo(PermissionInfo permission) : this()
         {
@@ -90,8 +84,6 @@ namespace DotNetNuke.Security.Permissions
         ///   Gets and sets the WorkflowState Permission ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int WorkflowStatePermissionID
         {
@@ -110,8 +102,6 @@ namespace DotNetNuke.Security.Permissions
         ///   Gets and sets the State ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int StateID
         {
@@ -142,8 +132,6 @@ namespace DotNetNuke.Security.Permissions
         ///   WorkflowStatePermissionCollection.Contains will use this method to check if a given permission
         ///   is already included in the collection.
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
@@ -192,8 +180,6 @@ namespace DotNetNuke.Security.Permissions
         ///   Fills a WorkflowStatePermissionInfo from a Data Reader
         /// </summary>
         /// <param name = "dr">The Data Reader to use</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -209,8 +195,6 @@ namespace DotNetNuke.Security.Permissions
         ///   Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {

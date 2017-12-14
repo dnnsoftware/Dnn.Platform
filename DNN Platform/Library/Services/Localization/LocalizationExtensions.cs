@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Localization
     public static class LocalizationExtensions
     {
         public const string ResxFileLocaleRegex = "(?i)(.*)\\.((\\w\\w-)?\\w{2,3}-\\w{2,3})(\\.resx)$(?-i)";
+        private static readonly Regex FileNameMatchRegex = new Regex(ResxFileLocaleRegex, RegexOptions.Compiled);
 
         /// <summary>
         /// Gets the name of the locale code from a resource file.
@@ -37,12 +38,8 @@ namespace DotNetNuke.Services.Localization
         /// <returns>Microsoft compatible locale code</returns>
         public static string GetLocaleCodeFromFileName(this string fileName)
         {
-            var m = Regex.Match(fileName, ResxFileLocaleRegex);
-            if (m.Success)
-            {
-                return m.Groups[2].Value;
-            }
-            return string.Empty;
+            var m = FileNameMatchRegex.Match(fileName);
+            return m.Success ? m.Groups[2].Value : string.Empty;
         }
 
         /// <summary>
@@ -53,12 +50,8 @@ namespace DotNetNuke.Services.Localization
         /// <returns>File name stripped of culture code or extension</returns>
         public static string GetFileNameFromLocalizedResxFile(this string fileName)
         {
-            var m = Regex.Match(fileName, ResxFileLocaleRegex);
-            if (m.Success)
-            {
-                return m.Groups[1].Value;
-            }
-            return string.Empty;
+            var m = FileNameMatchRegex.Match(fileName);
+            return m.Success ? m.Groups[1].Value : string.Empty;
         }
 
     }

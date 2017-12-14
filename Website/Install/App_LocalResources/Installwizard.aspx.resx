@@ -177,6 +177,17 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>User Defined</value>
   </data>
+  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
+    <value>Product Improvement Program</value>
+  </data>
+  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
+    <value>The product improvement program allows us to better understand how we can
+improve DNN for you. The data will help us analyze usage and what is important
+for people using the product. All of the data is anonymous and for internal use only. Learn more about the &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Product Improvement Program&lt;/a&gt;.</value>
+  </data>
+  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
+    <value>Send anonymous usage information to DNN</value>
+  </data>
   <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
     <value>Checking File and Folder Permissions</value>
   </data>
@@ -304,7 +315,7 @@
     <value>The name of your database server.</value>
   </data>
   <data name="DatabaseSetup.Help" xml:space="preserve">
-    <value>Standard or Advanced Database Setup.</value>
+    <value>Choose a Standard or Advanced Database Setup.</value>
   </data>
   <data name="DatabaseType.Help" xml:space="preserve">
     <value>Type of database you want to use for installation.</value>
@@ -319,7 +330,7 @@
     <value>The password for the SuperUser account.</value>
   </data>
   <data name="UserName.Help" xml:space="preserve">
-    <value>The username for the SuperUser account.</value>
+    <value>The username for the Super User account.</value>
   </data>
   <data name="WebsiteName.Help" xml:space="preserve">
     <value>Enter the name you want to use for your website.</value>
@@ -343,7 +354,7 @@
     <value>See Logs</value>
   </data>
   <data name="SuperUserCreation.Text" xml:space="preserve">
-    <value>SuperUser Creation</value>
+    <value>Super User Creation</value>
   </data>
   <data name="VisitWebsite.Text" xml:space="preserve">
     <value>Visit Website</value>
@@ -352,13 +363,13 @@
     <value>Website Creation</value>
   </data>
   <data name="CreateSuperUser.Text" xml:space="preserve">
-    <value>Create SuperUser</value>
+    <value>Create Super User</value>
   </data>
   <data name="CreatingSite.Text" xml:space="preserve">
     <value>Creating Site [{0}]</value>
   </data>
   <data name="CreatingSuperUser.Text" xml:space="preserve">
-    <value>Creating SuperUser</value>
+    <value>Creating Super User</value>
   </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Deleting Older Files for </value>
@@ -520,11 +531,11 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   <data name="InstallVersion.Text" xml:space="preserve">
     <value>Adding InstallVersion</value>
   </data>
-    <data name="FcnMode.Text" xml:space="preserve">
+  <data name="FcnMode.Text" xml:space="preserve">
     <value>Adding FcnMode</value>
   </data>
   <data name="Email.Help" xml:space="preserve">
-    <value>Enter an emaila ddress for this user.</value>
+    <value>Enter an email address for this user.</value>
   </data>
   <data name="Email.Invalid" xml:space="preserve">
     <value>The email address entered is not valid</value>
@@ -534,5 +545,11 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   </data>
   <data name="Email.Text" xml:space="preserve">
     <value>Email address:</value>
+  </data>
+  <data name="AcceptTerms.Text" xml:space="preserve">
+    <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
+  </data>
+  <data name="AcceptTerms.Required" xml:space="preserve">
+    <value>Accept the terms of the license agreement to continue.</value>
   </data>
 </root>

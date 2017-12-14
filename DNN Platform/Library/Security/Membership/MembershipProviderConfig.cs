@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Security.Membership
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	03/02/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class MembershipProviderConfig
     {
@@ -58,9 +55,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets whether the Provider Properties can be edited
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public static bool CanEditProviderProperties
@@ -76,9 +70,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets the maximum number of invlaid attempts to login are allowed
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(8), Category("Password")]
         public static int MaxInvalidPasswordAttempts
@@ -98,9 +89,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets the Mimimum no of Non AlphNumeric characters required
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// <history>
-        ///     [cnurse]	02/07/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(5), Category("Password")]
         public static int MinNonAlphanumericCharacters
@@ -120,9 +108,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets the Mimimum Password Length
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// <history>
-        ///     [cnurse]	02/07/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(4), Category("Password")]
         public static int MinPasswordLength
@@ -142,9 +127,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets the window in minutes that the maxium attempts are tracked for
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(9), Category("Password")]
         public static int PasswordAttemptWindow
@@ -164,9 +146,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets the Password Format
         /// </summary>
         /// <returns>A PasswordFormat enumeration.</returns>
-        /// <history>
-        ///     [cnurse]	02/07/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(1), Category("Password")]
         public static PasswordFormat PasswordFormat
@@ -186,9 +165,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets whether the Users's Password can be reset
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(3), Category("Password")]
         public static bool PasswordResetEnabled
@@ -208,9 +184,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets whether the Users's Password can be retrieved
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(2), Category("Password")]
         public static bool PasswordRetrievalEnabled
@@ -234,12 +207,9 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a Regular Expression that deermines the strength of the password
+        /// Gets and sets a Regular Expression that determines the strength of the password
         /// </summary>
         /// <returns>A String.</returns>
-        /// <history>
-        ///     [cnurse]	02/07/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(7), Category("Password")]
         public static string PasswordStrengthRegularExpression
@@ -259,9 +229,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets whether a Question/Answer is required for Password retrieval
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// <history>
-        ///     [cnurse]	02/07/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(6), Category("Password")]
         public static bool RequiresQuestionAndAnswer
@@ -281,9 +248,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets whether a Unique Email is required
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// <history>
-        ///     [cnurse]	02/06/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(0), Category("User")]
         public static bool RequiresUniqueEmail

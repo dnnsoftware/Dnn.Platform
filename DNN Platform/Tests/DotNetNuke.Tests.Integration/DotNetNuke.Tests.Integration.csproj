@@ -62,65 +62,80 @@
     <Reference Include="DotNetNuke.Instrumentation">
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Lucene.Net">
-      <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Lucene.Net.Contrib.FastVectorHighlighter, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
       <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NTestDataBuilder">
+      <HintPath>..\..\..\Packages\NTestDataBuilder.1.0.2\lib\NET40\NTestDataBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Externals\AJAX\bin\System.Web.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="PersonaBar\Content\Pages\AddPageTests.cs" />
+    <Compile Include="PersonaBar\Content\Pages\PageUrlsTests.cs" />
+    <Compile Include="PersonaBar\Manage\Users\UsersFiltersTests.cs" />
+    <Compile Include="Tests\Portals\PortalInfoTests.cs" />
+    <Compile Include="Tests\Portals\PortalSettingsTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Executers\Builders\PageSettingsBuilder.cs" />
+    <Compile Include="Executers\Builders\TabPermissionsBuilder.cs" />
+    <Compile Include="Executers\Dto\CopyModuleItem.cs" />
+    <Compile Include="Executers\Dto\PageSettings.cs" />
+    <Compile Include="Executers\Dto\Permission.cs" />
+    <Compile Include="Executers\Dto\RolePermission.cs" />
+    <Compile Include="Executers\Dto\TabPermissions.cs" />
+    <Compile Include="Executers\Dto\UserPermission.cs" />
+    <Compile Include="Executers\PagesExecuter.cs" />
+    <Compile Include="Executers\WebApiExecuter.cs" />
+    <Compile Include="Modules\DDRMenu\DDRMenuTests.cs" />
+    <Compile Include="Modules\Journal\PostJournalTests.cs" />
+    <Compile Include="Tests\DotNetNukeWeb\DotNetNukeWebTests.cs" />
+    <Compile Include="Tests\Jwt\JwtAuthTest.cs" />
+    <Compile Include="Data\FluentMapperTests.cs" />
     <Compile Include="Data\PetaPocoDataContextTests.cs" />
     <Compile Include="Data\PetaPocoMapperTests.cs" />
     <Compile Include="Data\PetaPocoRepositoryTests.cs" />
     <Compile Include="Data\PetaPocoIntegrationTests.cs" />
     <Compile Include="Services\Installer\XmlMergeTests.cs" />
     <Compile Include="TestSetup.cs" />
+    <Compile Include="Tests\Security\AuthCookieTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
-      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
-      <Name>DotNetNuke.Log4Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNN.Integration.Test.Framework\DNN.Integration.Test.Framework.csproj">
+      <Project>{8f727796-7c6c-4f42-b385-67b06ecd358e}</Project>
+      <Name>DNN.Integration.Test.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Data\DotNetNuke.Tests.Data.csproj">
       <Project>{2595aade-d3e0-4205-b8af-109cb23f4223}</Project>
@@ -131,34 +146,15 @@
       <Name>DotNetNuke.Tests.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="..\App.config">
+      <Link>App.config</Link>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Services\Installer\MergeFiles\AddWithLocationTarget.xml" />
@@ -193,6 +189,15 @@
     <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithKeyInLocationTarget.xml" />
     <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithTargetPathMerge.xml" />
     <EmbeddedResource Include="Services\Installer\MergeFiles\UpdateWithTargetPathTarget.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\Test.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ShouldChangeOnOverwriteMerge.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ShouldChangeOnOverwriteTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\NoChangeOnOverwriteTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\NoChangeOnOverwriteMerge.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

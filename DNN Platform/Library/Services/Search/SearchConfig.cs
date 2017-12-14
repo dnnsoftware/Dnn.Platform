@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Search
     /// <summary>
     /// The SearchConfig class provides a configuration class for Search
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	07/10/2007  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
     [Serializable]
@@ -78,9 +75,6 @@ namespace DotNetNuke.Services.Search
         /// Gets whether to inlcude Common Words in the Search Index
         /// </summary>
         /// <remarks>Defaults to False</remarks>
-        /// <history>
-        /// 	[cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool SearchIncludeCommon
         {
@@ -95,9 +89,6 @@ namespace DotNetNuke.Services.Search
         /// Gets whether to inlcude Numbers in the Search Index
         /// </summary>
         /// <remarks>Defaults to False</remarks>
-        /// <history>
-        /// 	[cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool SearchIncludeNumeric
         {
@@ -112,9 +103,6 @@ namespace DotNetNuke.Services.Search
         /// Gets the maximum Search Word length to index
         /// </summary>
         /// <remarks>Defaults to 25</remarks>
-        /// <history>
-        /// 	[cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int SearchMaxWordlLength
         {
@@ -129,9 +117,6 @@ namespace DotNetNuke.Services.Search
         /// Gets the maximum Search Word length to index
         /// </summary>
         /// <remarks>Defaults to 3</remarks>
-        /// <history>
-        /// 	[cnurse]	03/10/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int SearchMinWordlLength
         {

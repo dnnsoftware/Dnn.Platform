@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>
     /// The CheckBoxColumn control provides a Check Box column for a Data Grid
     /// </summary>
-    /// <history>
-    ///     [cnurse]	02/16/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CheckBoxColumn : TemplateColumn
     {
@@ -59,9 +56,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Constructs the CheckBoxColumn
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public CheckBoxColumn() : this(false)
         {
@@ -73,9 +67,6 @@ namespace DotNetNuke.UI.WebControls
         /// of state of a check box causes a Post Back)
         /// </summary>
         /// <param name="autoPostBack">Optional set the checkboxes to postback</param>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public CheckBoxColumn(bool autoPostBack)
         {
@@ -93,9 +84,6 @@ namespace DotNetNuke.UI.WebControls
         /// changed
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool AutoPostBack
         {
@@ -114,9 +102,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets whether the checkbox is checked (unless DataBound) 
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Checked { get; set; }
 
@@ -126,9 +111,6 @@ namespace DotNetNuke.UI.WebControls
         /// changed
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string DataField
         {
@@ -149,9 +131,6 @@ namespace DotNetNuke.UI.WebControls
         /// changed
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Enabled
         {
@@ -171,9 +150,6 @@ namespace DotNetNuke.UI.WebControls
         /// changed
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string EnabledField
         {
@@ -193,9 +169,6 @@ namespace DotNetNuke.UI.WebControls
         /// the checkboxes
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	07/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool HeaderCheckBox
         {
@@ -224,9 +197,6 @@ namespace DotNetNuke.UI.WebControls
         /// Creates a CheckBoxColumnTemplate
         /// </summary>
         /// <returns>A CheckBoxColumnTemplate</returns>
-        /// <history>
-        ///     [cnurse]	02/16/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private CheckBoxColumnTemplate CreateTemplate(ListItemType type)
         {
@@ -259,9 +229,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Centralised Event that is raised whenever a check box is changed.
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/16/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void OnCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
@@ -281,9 +248,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Initialises the Column
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/16/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Initialize()
         {

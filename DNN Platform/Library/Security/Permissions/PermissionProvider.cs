@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,8 +24,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.Web.Services.Description;
+using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -34,6 +33,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -96,10 +96,54 @@ namespace DotNetNuke.Security.Permissions
             return ComponentFactory.GetComponent<PermissionProvider>();
         }
 
+        private static SharedDictionary<int, DNNCacheDependency> _cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
+
+        private static DNNCacheDependency GetCacheDependency(int portalId)
+        {
+            DNNCacheDependency dependency;
+            using (_cacheDependencyDict.GetReadLock())
+            {
+                _cacheDependencyDict.TryGetValue(portalId, out dependency);
+            }
+
+            if (dependency == null)
+            {
+                var startAt = DateTime.UtcNow;
+                var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
+                DataCache.SetCache(cacheKey, portalId); // no expiration set for this
+                dependency = new DNNCacheDependency(null, new[] {cacheKey}, startAt);
+                using (_cacheDependencyDict.GetWriteLock())
+                {
+                    _cacheDependencyDict[portalId] = dependency;
+                }
+            }
+            return dependency;
+        }
+
+        internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
+        {
+            // first execute the cache clear action then check the dependency change
+            cacehClearAction.Invoke();
+            DNNCacheDependency dependency;
+            using (_cacheDependencyDict.GetReadLock())
+            {
+                _cacheDependencyDict.TryGetValue(portalId, out dependency);
+            }
+            if (dependency != null)
+            {
+                using (_cacheDependencyDict.GetWriteLock())
+                {
+                    _cacheDependencyDict.Remove(portalId);
+                }
+                dependency.Dispose();
+            }
+        }
+
         #endregion
 
         #region Private Methods
 
+#if false
         private object GetFolderPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
             var PortalID = (int)cacheItemArgs.ParamList[0];
@@ -153,6 +197,7 @@ namespace DotNetNuke.Security.Permissions
                 CBO.GetCachedObject<Dictionary<string, FolderPermissionCollection>>(
                     new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority, PortalID), GetFolderPermissionsCallBack);
         }
+#endif
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -160,9 +205,6 @@ namespace DotNetNuke.Security.Permissions
         /// Module.
         /// </summary>
         /// <param name="tabID">The ID of the tab</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabID)
         {
@@ -178,9 +220,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -229,9 +268,6 @@ namespace DotNetNuke.Security.Permissions
         /// Tab.
         /// </summary>
         /// <param name="portalID">The ID of the portal</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
         {
@@ -247,9 +283,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -361,9 +394,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
         /// DesktopModule.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
         {
@@ -378,9 +408,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -393,9 +420,6 @@ namespace DotNetNuke.Security.Permissions
         /// dataReader
         /// </summary>
         /// <param name="dr">The IDataReader</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, DesktopModulePermissionCollection> FillDesktopModulePermissionDictionary(IDataReader dr)
         {
@@ -444,7 +468,7 @@ namespace DotNetNuke.Security.Permissions
             };
         } 
 
-        #endregion
+#endregion
 
         #region Protected Methods
 
@@ -476,6 +500,16 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool SupportsFullControl()
         {
             return true;
+        }
+
+        /// <summary>
+        /// The portal editor can edit whole site's content, it should be only administrators by default.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsPortalEditor()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
         #region FolderPermission Methods
@@ -561,6 +595,7 @@ namespace DotNetNuke.Security.Permissions
 
         public virtual FolderPermissionCollection GetFolderPermissionsCollectionByFolder(int PortalID, string Folder)
         {
+#if fale
             string dictionaryKey = Folder;
             if (string.IsNullOrEmpty(dictionaryKey))
             {
@@ -578,6 +613,34 @@ namespace DotNetNuke.Security.Permissions
                 folderPermissions = new FolderPermissionCollection();
             }
             return folderPermissions;
+#else
+            var cacheKey = string.Format(DataCache.FolderPathPermissionCacheKey, PortalID, Folder);
+            return CBO.GetCachedObject<FolderPermissionCollection>(
+                new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority)
+                {
+                    CacheDependency = GetCacheDependency(PortalID)
+                },
+                _ =>
+                {
+                    var collection = new FolderPermissionCollection();
+                    try
+                    {
+                        using (var dr = dataProvider.GetFolderPermissionsByPortalAndPath(PortalID, Folder))
+                        {
+                            while (dr.Read())
+                            {
+                                var folderPermissionInfo = CBO.FillObject<FolderPermissionInfo>(dr, false);
+                                collection.Add(folderPermissionInfo);
+                            }
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        Exceptions.LogException(exc);
+                    }
+                    return collection;
+                });
+#endif
         }
 
         public virtual bool HasFolderPermission(FolderPermissionCollection objFolderPermissions, string PermissionKey)
@@ -599,9 +662,6 @@ namespace DotNetNuke.Security.Permissions
         /// SaveFolderPermissions updates a Folder's permissions
         /// </summary>
         /// <param name="folder">The Folder to update</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual void SaveFolderPermissions(IFolderInfo folder)
         {
@@ -760,9 +820,6 @@ namespace DotNetNuke.Security.Permissions
         /// DeleteModulePermissionsByUser deletes a user's Module Permission in the Database
         /// </summary>
         /// <param name="user">The user</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual void DeleteModulePermissionsByUser(UserInfo user)
         {
@@ -855,11 +912,7 @@ namespace DotNetNuke.Security.Permissions
                             else
                             {
                                 // Need to check if it was denied at Tab level
-                                if (IsDeniedTabPermission(tab, "CONTENT,EDIT"))
-                                {
-                                    isAuthorized = false;
-                                }
-                                else
+                                if (!IsDeniedTabPermission(tab, "CONTENT,EDIT"))
                                 {
                                     isAuthorized = HasModulePermission(moduleConfiguration, permissionKey);
                                 }
@@ -1144,20 +1197,28 @@ namespace DotNetNuke.Security.Permissions
             TabPermissionCollection objCurrentTabPermissions = GetTabPermissions(tab.TabID, tab.PortalID);
             if (!objCurrentTabPermissions.CompareTo(tab.TabPermissions))
             {
-                dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
-                if (tab.TabPermissions != null)
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+
+                if (objCurrentTabPermissions.Count > 0)
+                {
+                    dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+                }
+
+                if (tab.TabPermissions != null && tab.TabPermissions.Count > 0)
                 {
                     foreach (TabPermissionInfo objTabPermission in tab.TabPermissions)
                     {
-                        dataProvider.AddTabPermission(tab.TabID,
-                                                      objTabPermission.PermissionID,
-                                                      objTabPermission.RoleID,
-                                                      objTabPermission.AllowAccess,
-                                                      objTabPermission.UserID,
-                                                      UserController.Instance.GetCurrentUserInfo().UserID);
-                        EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
+                        objTabPermission.TabPermissionID = dataProvider.AddTabPermission(
+                            tab.TabID,
+                            objTabPermission.PermissionID,
+                            objTabPermission.RoleID,
+                            objTabPermission.AllowAccess,
+                            objTabPermission.UserID,
+                            userId);
                     }
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
                 }
             }
         }
@@ -1171,9 +1232,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermission gets a DesktopModule Permission from the Database
         /// </summary>
         /// <param name="desktopModulePermissionId">The ID of the DesktopModule Permission</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionInfo GetDesktopModulePermission(int desktopModulePermissionId)
         {
@@ -1185,9 +1243,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection
         /// </summary>
         /// <param name="portalDesktopModuleId">The ID of the DesktopModule</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleId)
         {
@@ -1211,9 +1266,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="desktopModulePermissions">The Permissions for the DesktopModule</param>
         /// <param name="permissionKey">The Permission to check</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)
         {

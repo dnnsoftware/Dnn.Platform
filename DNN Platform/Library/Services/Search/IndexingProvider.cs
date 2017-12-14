@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 
@@ -31,33 +32,37 @@ using DotNetNuke.Services.Search.Internals;
 
 namespace DotNetNuke.Services.Search
 {
+    /// <summary>A base class for search indexers</summary>
     public abstract class IndexingProvider
     {
-        /// <summary>
-        /// This method must save search docuents in batches to minimize memory usage instead of returning all documents ollection at once.
-        /// </summary>
-        /// <param name="portalId">Portal ID to index</param>
+        /// <summary>This method must save search documents in batches to minimize memory usage instead of returning all documents at once.</summary>
+        /// <param name="portalId">ID of the portal for which to index items</param>
         /// <param name="startDateLocal">Minimum modification date of items that need to be indexed</param>
         /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing</param>
-        /// <returns></returns>
+        /// <returns>The number of documents indexed</returns>
         public virtual int IndexSearchDocuments(int portalId,
-            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             throw new NotImplementedException();
         }
 
-        [Obsolete("Depricated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.")]
+        [Obsolete("Deprecated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.")]
         public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             return Enumerable.Empty<SearchDocument>();
         }
 
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public abstract SearchItemInfoCollection GetSearchIndexItems(int portalId);
 
         private const string TimePostfix = "UtcTime";
         private const string DataPostfix = "Data";
 
+        /// <summary>Retrieves the date/time of the last item to be indexed</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="scheduleId">The schedule ID.</param>
+        /// <param name="localTime">The local time passed to <see cref="IndexSearchDocuments" />.</param>
+        /// <returns>Either <paramref name="localTime"/> or the stored index time, whichever is earlier</returns>
         protected DateTime GetLocalTimeOfLastIndexedItem(int portalId, int scheduleId, DateTime localTime)
         {
             var lastTime = SearchHelper.Instance.GetIndexerCheckpointUtcTime(
@@ -65,23 +70,29 @@ namespace DotNetNuke.Services.Search
             return lastTime < localTime ? lastTime : localTime;
         }
 
+        /// <summary>Stores the date/time of the last item to be indexed.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="scheduleId">The schedule ID.</param>
+        /// <param name="localTime">The local time to store.</param>
         protected void SetLocalTimeOfLastIndexedItem(int portalId, int scheduleId, DateTime localTime)
         {
             SearchHelper.Instance.SetIndexerCheckpointUtcTime(
                 scheduleId, ScheduleItemSettingKey(portalId, TimePostfix), localTime.ToUniversalTime());
         }
 
-        /// <summary>
-        /// This can be any free format data that can help the indexer to perform its job
-        /// </summary>
+        /// <summary>Retrieves free format data to help the indexer to perform its job</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="scheduleId">The schedule ID.</param>
+        /// <returns>The checkpoint data</returns>
         protected string GetLastCheckpointData(int portalId, int scheduleId)
         {
             return SearchHelper.Instance.GetIndexerCheckpointData(scheduleId, ScheduleItemSettingKey(portalId, DataPostfix));
         }
 
-        /// <summary>
-        /// This can be any free format data that can help the indexer to perform its job
-        /// </summary>
+        /// <summary>Stores free format data to help the indexer to perform its job</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="scheduleId">The schedule ID.</param>
+        /// <param name="data">The data to store.</param>
         protected void SetLastCheckpointData(int portalId, int scheduleId, string data)
         {
             SearchHelper.Instance.SetIndexerCheckpointData(scheduleId, ScheduleItemSettingKey(portalId, DataPostfix), data);
@@ -91,6 +102,8 @@ namespace DotNetNuke.Services.Search
         /// Creates a unique name for the IndexingProvider implementation that can be used
         /// to save/retrieve scheduler item {key,name} setting pairs per portal and feature.
         /// </summary>
+        /// <param name="portalId">The ID of the portal</param>
+        /// <param name="propertyId">The name of the property</param>
         /// <remarks>
         /// Note that changing the class name in derived classes will cause this key to differ
         /// from the names stored in the database; therefore, don't change the derived class
@@ -105,6 +118,7 @@ namespace DotNetNuke.Services.Search
         /// </ol>
         /// </para>
         /// </remarks>
+        /// <returns>The setting key</returns>
         private string ScheduleItemSettingKey(int portalId, string propertyId)
         {
             Requires.NotNullOrEmpty("propertyId", propertyId);

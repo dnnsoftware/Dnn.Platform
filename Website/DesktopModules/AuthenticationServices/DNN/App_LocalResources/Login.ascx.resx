@@ -124,13 +124,13 @@
     <value>Standard</value>
   </data>
   <data name="InvalidVerificationCode.Text" xml:space="preserve">
-    <value>Invalid verification code</value>
+    <value>Invalid verification code.</value>
   </data>
   <data name="UserAlreadyVerified.Text" xml:space="preserve">
-    <value>User already verified</value>
+    <value>User already verified.</value>
   </data>
   <data name="UserDoesNotExist.Text" xml:space="preserve">
-    <value>User does not exist</value>
+    <value>User does not exist.</value>
   </data>
   <data name="Email.Text" xml:space="preserve">
     <value>Email Address:</value>

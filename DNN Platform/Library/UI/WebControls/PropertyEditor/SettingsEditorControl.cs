@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,9 +42,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/14/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:SettingsEditorControl runat=server></{0}:SettingsEditorControl>")]
     public class SettingsEditorControl : PropertyEditorControl
@@ -56,9 +53,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the Underlying DataSource
         /// </summary>
         /// <value>An IEnumerable</value>
-        /// <history>
-        /// 	[cnurse]	03/09/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override IEnumerable UnderlyingDataSource
         {
@@ -77,9 +71,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the CustomEditors that are used by this control
         /// </summary>
         /// <value>The CustomEditors object</value>
-        /// <history>
-        /// 	[cnurse]	03/23/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public Hashtable CustomEditors { get; set; }
@@ -89,9 +80,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Visibility values that are used by this control
         /// </summary>
         /// <value>The CustomEditors object</value>
-        /// <history>
-        /// 	[cnurse]	08/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Hashtable Visibility { get; set; }
 
@@ -103,9 +91,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetSettings converts the DataSource into an ArrayList (IEnumerable)
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private ArrayList GetSettings()
         {
@@ -152,9 +137,6 @@ namespace DotNetNuke.UI.WebControls
         /// GetRowVisibility determines the Visibility of a row in the table
         /// </summary>
         /// <param name="obj">The property</param>
-        /// <history>
-        ///     [cnurse]	03/08/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override bool GetRowVisibility(object obj)
         {

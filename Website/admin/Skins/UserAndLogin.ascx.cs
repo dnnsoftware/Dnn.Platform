@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -33,7 +32,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Social.Messaging.Internal;
@@ -46,13 +44,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string MyFileName = "UserAndLogin.ascx";
 
-        protected string AvatarImageUrl
-        {
-            get
-            {
-                return string.Format(Globals.UserProfilePicRelativeUrl(), PortalSettings.UserId, 32, 32); 
-            }
-        }
+        protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(PortalSettings.UserId, 32, 32);
 
         protected bool CanRegister
         {

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -223,7 +223,13 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal"></param>
         void UpdatePortalInfo(PortalInfo portal);
 
+        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead")]
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
+
+        /// <summary>
+        /// Adds or Updates or Deletes a portal setting value.
+        /// </summary>
+        void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
     }
 }
         

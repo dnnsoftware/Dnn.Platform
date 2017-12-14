@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,15 +48,12 @@ namespace DotNetNuke.Services.Installer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/23/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class LegacyUtil
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LegacyUtil));
         private static string AdminModules =
-            "Adsense, MarketShare, Authentication, Banners, FeedExplorer, FileManager, HostSettings, Lists, LogViewer, Newsletters, PortalAliases, Portals, RecycleBin, Scheduler, SearchAdmin, SearchInput, SearchResults, Security, SiteLog, SiteWizard, SkinDesigner, Solutions, SQL, Tabs, Vendors,";
+            "Adsense, MarketShare, Authentication, Banners, FeedExplorer, FileManager, HostSettings, Lists, LogViewer, Newsletters, PortalAliases, Portals, RecycleBin, Scheduler, SearchAdmin, SearchInput, SearchResults, Security, SiteLog, SiteWizard, SQL, Tabs, Vendors,";
 
         private static string CoreModules =
             "DNN_Announcements, Blog, DNN_Documents, DNN_Events, DNN_FAQs, DNN_Feedback, DNN_Forum, Help, DNN_HTML, DNN_IFrame, DNN_Links, DNN_Media, DNN_NewsFeeds, DNN_Reports, Repository, Repository Dashboard, Store Admin, Store Account, Store Catalog, Store Mini Cart, Store Menu, DNN_Survey, DNN_UserDefinedTable, DNN_UsersOnline, Wiki, DNN_XML,";
@@ -175,33 +172,35 @@ namespace DotNetNuke.Services.Installer
 			
             //Create a writer to create the processed manifest
             var sb = new StringBuilder();
-            XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
-            PackageWriterBase.WriteManifestStartElement(writer);
-            if (isCombi)
+            using (XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
             {
-                if (Directory.Exists(Path.Combine(tempInstallFolder, "Skins")))
+                PackageWriterBase.WriteManifestStartElement(writer);
+                if (isCombi)
                 {
-					//Add Skin Package Fragment
-                    CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Skins");
+                    if (Directory.Exists(Path.Combine(tempInstallFolder, "Skins")))
+                    {
+                        //Add Skin Package Fragment
+                        CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Skins");
+                    }
+                    if (Directory.Exists(Path.Combine(tempInstallFolder, "Containers")))
+                    {
+                        //Add Container PAckage Fragment
+                        CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Containers");
+                    }
                 }
-                if (Directory.Exists(Path.Combine(tempInstallFolder, "Containers")))
+                else
                 {
-					//Add Container PAckage Fragment
-                    CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Containers");
+                    //Add Package Fragment
+                    CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "");
                 }
-            }
-            else
-            {
-				//Add Package Fragment
-                CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "");
-            }
-            PackageWriterBase.WriteManifestEndElement(writer);
+                PackageWriterBase.WriteManifestEndElement(writer);
 
-            //Close XmlWriter
-            writer.Close();
+                //Close XmlWriter
+                writer.Close();
 
-            //Return new manifest
-            return sb.ToString();
+                //Return new manifest
+                return sb.ToString();
+            }
         }
 
         public static void ParsePackageName(PackageInfo package)
@@ -215,9 +214,7 @@ namespace DotNetNuke.Services.Installer
             {
                 ParsePackageName(package, "_");
             }
-            if (package.PackageType == "Module" && AdminModules.Contains(package.Name + ",") || package.PackageType == "Module" && CoreModules.Contains(package.Name + ",") ||
-                (package.PackageType == "Container" || package.PackageType == "Skin") && KnownSkins.Contains(package.Name + ",") ||
-                package.PackageType == "SkinObject" && KnownSkinObjects.Contains(package.Name + ","))
+            if (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && AdminModules.Contains(package.Name + ",") || package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && CoreModules.Contains(package.Name + ",") || (package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)) && KnownSkins.Contains(package.Name + ",") || package.PackageType.Equals("SkinObject", StringComparison.OrdinalIgnoreCase) && KnownSkinObjects.Contains(package.Name + ","))
             {
                 if (string.IsNullOrEmpty(package.Owner))
                 {

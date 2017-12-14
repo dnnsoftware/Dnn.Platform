@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// The VersionEditControl control provides a standard UI component for editing
     /// System.Version properties.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	02/21/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:VersionEditControl runat=server></{0}:VersionEditControl>")]
     public class VersionEditControl : EditControl
@@ -51,9 +48,6 @@ namespace DotNetNuke.UI.WebControls
         /// StringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
-        /// <history>
-        ///     [cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -111,9 +105,6 @@ namespace DotNetNuke.UI.WebControls
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
@@ -130,9 +121,6 @@ namespace DotNetNuke.UI.WebControls
         /// OnPreRender runs just before the control is rendered.  It forces a postback to the
         /// Control.
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
@@ -149,9 +137,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderEditMode renders the Edit mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
@@ -181,9 +166,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderViewMode renders the View (readonly) mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {

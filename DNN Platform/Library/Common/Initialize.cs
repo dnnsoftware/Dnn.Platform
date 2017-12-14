@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,9 +24,7 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
@@ -37,6 +35,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
@@ -44,6 +43,8 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Services.Installer.Blocker;
+using Microsoft.Win32;
 
 #endregion
 
@@ -57,21 +58,6 @@ namespace DotNetNuke.Common
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Initialize));
         private static bool InitializedAlready;
         private static readonly object InitializeLock = new object();
-
-        private static void CacheMappedDirectory()
-        {
-            //This code is only retained for binary compatability.
-#pragma warning disable 612,618
-            var objFolderController = new FolderController();
-            ArrayList arrPortals = PortalController.Instance.GetPortals();
-            int i;
-            for (i = 0; i <= arrPortals.Count - 1; i++)
-            {
-                var objPortalInfo = (PortalInfo)arrPortals[i];
-                objFolderController.SetMappedDirectory(objPortalInfo, HttpContext.Current);
-            }
-#pragma warning restore 612,618
-        }
 
         private static string CheckVersion(HttpApplication app)
         {
@@ -188,7 +174,52 @@ namespace DotNetNuke.Common
                     Logger.Error(exc);
                 }
             }
+            else if (version == "4.0")
+            {
+                var release = GetReleaseFromRegistry();
+                if (release >= 394254)
+                {
+                    version = "4.6.1";
+                }
+                else if (release >= 393295)
+                {
+                    version = "4.6";
+                }
+                else if (release >= 379893)
+                {
+                    version = "4.5.2";
+                }
+                else if (release >= 378675)
+                {
+                    version = "4.5.1";
+                }
+                else if (release >= 378389)
+                {
+                    version = "4.5";
+                }
+            }
+
             return new Version(version);
+        }
+
+        private static int GetReleaseFromRegistry()
+        {
+            try
+            {
+                using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+                    .OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"))
+                {
+                    if (ndpKey?.GetValue("Release") != null)
+                    {
+                        return (int)ndpKey.GetValue("Release");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
+            return -1;
         }
 
         private static string InitializeApp(HttpApplication app, ref bool initialized)
@@ -203,12 +234,9 @@ namespace DotNetNuke.Common
             {
                 //Check whether the current App Version is the same as the DB Version
                 redirect = CheckVersion(app);
-                if (string.IsNullOrEmpty(redirect))
+                if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
                 {
                     Logger.Info("Application Initializing");
-
-                    //Cache Mapped Directory(s)
-                    CacheMappedDirectory();
                     //Set globals
                     Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                     Globals.OperatingSystemVersion = Environment.OSVersion.Version;
@@ -216,6 +244,7 @@ namespace DotNetNuke.Common
                     Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
                     //Try and Upgrade to Current Framewok
                     Upgrade.TryUpgradeNETFramework();
+                    Upgrade.CheckFipsCompilanceAssemblies();
 
                     //Log Server information
                     ServerController.UpdateServerActivity(new ServerInfo());
@@ -230,6 +259,8 @@ namespace DotNetNuke.Common
 
                     ModuleInjectionManager.RegisterInjectionFilters();
 
+                    ConnectionsManager.Instance.RegisterConnections();
+
                     //Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
 
@@ -242,6 +273,8 @@ namespace DotNetNuke.Common
             {
                 //NET Framework version is neeed by Upgrade
                 Globals.NETFrameworkVersion = GetNETFrameworkVersion();
+                Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
+                Globals.OperatingSystemVersion = Environment.OSVersion.Version;
             }
             return redirect;
         }
@@ -310,7 +343,7 @@ namespace DotNetNuke.Common
             try
             {
                 ApplicationShutdownReason shutdownReason = HostingEnvironment.ShutdownReason;
-                string shutdownDetail = "";
+                string shutdownDetail;
                 switch (shutdownReason)
                 {
                     case ApplicationShutdownReason.BinDirChangeOrDirectoryRename:
@@ -356,7 +389,7 @@ namespace DotNetNuke.Common
                         shutdownDetail = "The AppDomain shut down because of a call to UnloadAppDomain.";
                         break;
                     default:
-                        shutdownDetail = "No shutdown reason provided.";
+                        shutdownDetail = "Shutdown reason: " + shutdownReason;
                         break;
                 }
                 var log = new LogInfo
@@ -367,7 +400,29 @@ namespace DotNetNuke.Common
                 log.AddProperty("Shutdown Details", shutdownDetail);
                 LogController.Instance.AddLog(log);
 
-                Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                // enhanced shutdown logging
+                var runtime = typeof(HttpRuntime).InvokeMember("_theRuntime",
+                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
+                    null, null, null) as HttpRuntime;
+
+                if (runtime == null)
+                {
+                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                }
+                else
+                {
+                    var shutDownMessage = runtime.GetType().InvokeMember("_shutDownMessage",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    var shutDownStack = runtime.GetType().InvokeMember("_shutDownStack",
+                        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
+                        null, runtime, null) as string;
+
+                    Logger.Info("Application shutting down. Reason: " + shutdownDetail
+                                + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
+                                + Environment.NewLine + shutDownStack);
+                }
             }
             catch (Exception exc)
             {
@@ -438,11 +493,16 @@ namespace DotNetNuke.Common
         /// <summary>
         /// StartScheduler starts the Scheduler
         /// </summary>
+        /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public static void StartScheduler()
+        public static void StartScheduler(bool resetAppStartElapseTime = false)
         {
+            if (resetAppStartElapseTime)
+            {
+                Globals.ResetAppStartElapseTime();
+            }
             var scheduler = SchedulingProvider.Instance();
             scheduler.RunEventSchedule(EventName.APPLICATION_START);
 

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,12 +26,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-
+using System.Threading;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -144,14 +145,14 @@ namespace DotNetNuke.Common.Lists
         /// <returns></returns>
         public int AddListEntry(ListEntryInfo listEntry)
         {
-            bool EnableSortOrder = (listEntry.SortOrder > 0);
+            bool enableSortOrder = listEntry.SortOrder > 0;
             ClearListCache(listEntry.PortalID);
             int entryId = DataProvider.Instance().AddListEntry(listEntry.ListName,
                                                         listEntry.Value,
                                                         listEntry.TextNonLocalized,
                                                         listEntry.ParentID,
                                                         listEntry.Level,
-                                                        EnableSortOrder,
+                                                        enableSortOrder,
                                                         listEntry.DefinitionID,
                                                         listEntry.Description,
                                                         listEntry.PortalID,
@@ -162,15 +163,15 @@ namespace DotNetNuke.Common.Lists
             {
                 EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
             }
-            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name != DotNetNuke.Services.Localization.Localization.SystemLocale && !NonLocalizedLists.Contains(listEntry.ListName))
+            if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !NonLocalizedLists.Contains(listEntry.ListName))
             {
 				if (string.IsNullOrEmpty(listEntry.ParentKey))
 				{
-					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+					LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
 				}
 				else
 				{
-					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+					LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
 				}
             }
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
@@ -363,22 +364,21 @@ namespace DotNetNuke.Common.Lists
         /// <param name="listEntry">The list entry info item to update.</param>
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
-            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale || NonLocalizedLists.Contains(listEntry.ListName))
+            if (Thread.CurrentThread.CurrentCulture.Name == Localization.SystemLocale || NonLocalizedLists.Contains(listEntry.ListName))
             {
                 DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID); // look up existing db record to be able to just update the value or description and not touch the en-US text value
+                var oldItem = GetListEntryInfo(listEntry.EntryID); // look up existing db record to be able to just update the value or description and not touch the en-US text value
                 DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
-				if (string.IsNullOrEmpty(listEntry.ParentKey))
-				{
-					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
-				}
-				else
-				{
-					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
-				}
+
+                var key = string.IsNullOrEmpty(listEntry.ParentKey)
+                    ? listEntry.Value + ".Text"
+                    : listEntry.ParentKey + "." + listEntry.Value + ".Text";
+
+                LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot, 
+                    Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
             }
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
             ClearListCache(listEntry.PortalID);

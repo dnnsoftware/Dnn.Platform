@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.RadEditorProvider" type="Provider" version="08.00.00">
+    <package name="DotNetNuke.RadEditorProvider" type="Provider" version="09.01.00">
       <friendlyName>RadEditor Manager</friendlyName>
       <description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke RadEditor Provider.</description>
       <owner>
@@ -13,7 +13,7 @@
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">06.00.00</dependency>
+        <dependency type="CoreVersion">07.00.00</dependency>
       </dependencies>
       <components>
         <component type="Module">

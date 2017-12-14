@@ -1,0 +1,297 @@
+﻿DELETE FROM {databaseOwner}[{objectQualifier}EventLog] WHERE [LogTypeKey] = N'SITE_EXPORT'
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_EXPORT'
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT'
+
+DELETE FROM {databaseOwner}[{objectQualifier}EventLog] WHERE [LogTypeKey] = N'SITE_IMPORT'
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_IMPORT'
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_IMPORT'
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_Settings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddSetting]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddSetting]
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportSettings]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportSettings]
+GO
+
+IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
+			WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule
+	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport'
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Remove]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Remove]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetById]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetById]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs]
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportCheckpoints]
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportJobs]
+GO
+
+-- Users Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserName]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserName]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserIdByUsername]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserIdByUsername]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserType]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulkData]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulkData]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserDataType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserDataType]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserRoleType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserRoleType]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserProfileType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserProfileType]
+GO
+
+--Profile Properties
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
+GO
+
+-- Taxonomy Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+GO
+
+-- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleIdByName]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleIdByName]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]
+GO
+
+--Portals Export/Import
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLanguages]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
+GO
+
+-- Assets
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFiles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderMappings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
+GO
+
+-- Pages / Tabs
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Tabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Tabs]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabSettings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabPermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermissions]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabUrls]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabUrls]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Modules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModuleSettings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModulePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModulePermissions]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPermissionInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPermissionInfo]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabSpecificData]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabSpecificData]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetUserDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetUserDeleted]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflows]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflows]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStates]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ContentWorkflowStatePermissions]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUniqueId]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUniqueId]
+GO

@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AssociateHelp.Text" xml:space="preserve">
-    <value>You can associate your Login with an existing User account by entering your username and password.</value>
+    <value>You can associate your login information with an existing user account by entering your user name and password.</value>
   </data>
   <data name="AssociateTitle.Text" xml:space="preserve">
     <value>Associate with Existing Account</value>
   </data>
   <data name="AuthenticatedHelp.Text" xml:space="preserve">
-    <value>You have been successfully authenticated.  However, this authenticated Identity is not a member of this site.  You can either associate the Identity with an existing user (by providing the username and password) or you can register as a new member.</value>
+    <value>You have been successfully authenticated, however this identity is not a member of this site.  You can either associate this identity with an existing user account by providing the user name and password, or you can register as a new member.</value>
   </data>
   <data name="AuthenticatedTitle.Text" xml:space="preserve">
     <value>Authenticated</value>
@@ -133,7 +133,7 @@
     <value>Associate with User Account</value>
   </data>
   <data name="cmdCreate.Text" xml:space="preserve">
-    <value>Create a new Account</value>
+    <value>Create a New Account</value>
   </data>
   <data name="cmdForgotPassword.Text" xml:space="preserve">
     <value>Forgot Password?</value>
@@ -142,7 +142,7 @@
     <value>Retrieve Password</value>
   </data>
   <data name="cmdProceed.Text" xml:space="preserve">
-    <value>Proceed Anyway (Change password later)</value>
+    <value>Proceed Anyway (Change Password Later)</value>
   </data>
   <data name="cmdRegister.Text" xml:space="preserve">
     <value>Register</value>
@@ -166,10 +166,10 @@
     <value>Invalid Verification Code</value>
   </data>
   <data name="IPAddressBanned.Text" xml:space="preserve">
-    <value>You cannot login to the website from this IP address.</value>
+    <value>You cannot login to the site from this IP address.</value>
   </data>
   <data name="LoginFailed.Text" xml:space="preserve">
-    <value>Login Failed. Please remember that passwords are case sensitive</value>
+    <value>Login Failed. Please remember that passwords are case sensitive.</value>
   </data>
   <data name="PasswordExpired.Text" xml:space="preserve">
     <value>Your password expired on {0}.  Please update your password before continuing.</value>
@@ -178,31 +178,31 @@
     <value>Your password will expire on {0}.  Please update your password before continuing.</value>
   </data>
   <data name="PasswordInvalid.Text" xml:space="preserve">
-    <value>You must enter a valid password.  Please check with the Website Administrator if you do not know the password requirements.</value>
+    <value>You must enter a valid password.  Please contact the Site Administrator if you do not know the password requirements.</value>
   </data>
   <data name="PasswordMismatch.Text" xml:space="preserve">
-    <value>Password Values Entered Do Not Match.</value>
+    <value>Password values entered do not match.</value>
   </data>
   <data name="PasswordMissing.Text" xml:space="preserve">
     <value>You must provide your current password in order to change the password.</value>
   </data>
   <data name="PasswordNotDifferent.Text" xml:space="preserve">
-    <value>The new password is the same as the old password.  Please enter a different password</value>
+    <value>The new password is the same as the old password.  Please enter a different password.</value>
   </data>
   <data name="PasswordSent.Text" xml:space="preserve">
-    <value>Password Has Been Sent To&lt;br&gt;Your Email Address.</value>
+    <value>Password has been sent to&lt;br&gt;your email address.</value>
   </data>
   <data name="PasswordUpdate.Text" xml:space="preserve">
     <value>Please update your password before continuing.</value>
   </data>
   <data name="plToken.Help" xml:space="preserve">
-    <value>The unique token that identifies the User.</value>
+    <value>The unique token that identifies the user.</value>
   </data>
   <data name="plToken.Text" xml:space="preserve">
     <value>User Token:</value>
   </data>
   <data name="plType.Help" xml:space="preserve">
-    <value>The type of Authentication</value>
+    <value>The type of authentication</value>
   </data>
   <data name="plType.Text" xml:space="preserve">
     <value>Type:</value>
@@ -217,18 +217,18 @@
     <value>Remember Login</value>
   </data>
   <data name="UserLockedOut.Text" xml:space="preserve">
-    <value>This account has been locked out after too many unsuccessful login attempts. Please wait {0} minutes before trying to login again. If you have forgotten your password, please try the Password Reminder option before contacting an Administrator.</value>
+    <value>This account has been locked out after too many unsuccessful login attempts.  Please wait {0} minutes before trying to login again. If you have forgotten your password, please try the Password Reminder option before contacting the Site Administrator.</value>
   </data>
   <data name="UsernameError.Text" xml:space="preserve">
-    <value>Username Does Not Exist</value>
+    <value>User name does not exist.</value>
   </data>
   <data name="UserNotAuthorized.Text" xml:space="preserve">
     <value>You are not currently authorized to login to this site.</value>
   </data>
   <data name="AssociationFailed.Text" xml:space="preserve">
-    <value>Error associating identity with user.  Remember that usernames and passwords are case-sensitive.</value>
+    <value>Error associating identity with user.  Remember that user names and passwords are case-sensitive.</value>
   </data>
   <data name="UserLockedOut_ContactAdmin.Text" xml:space="preserve">
-    <value>This account has been locked out after too many unsuccessful login attempts. Please contact your administrator.</value>
+    <value>This account has been locked out after too many unsuccessful login attempts.  Please contact the Site Administrator.</value>
   </data>
 </root>

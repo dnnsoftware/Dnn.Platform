@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -377,9 +377,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             else
             {
-                request = WebRequest.CreateDefault(String.IsNullOrEmpty(parameters) 
-                            ? new Uri(uri.ToString()) 
-                            : new Uri(uri + "?" + parameters));
+                request = WebRequest.CreateDefault(GenerateRequestUri(uri.ToString(), parameters));
             }
 
             //Add Headers
@@ -553,6 +551,16 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             authTokenCookie.Expires = DateTime.Now.Add(AuthTokenExpiry);
             HttpContext.Current.Response.SetCookie(authTokenCookie);
+        }
+
+        private Uri GenerateRequestUri(string url, string parameters)
+        {
+            if (string.IsNullOrEmpty(parameters))
+            {
+                return new Uri(url);
+            }
+
+            return new Uri(string.Format("{0}{1}{2}", url, url.Contains("?") ? "&" : "?", parameters));
         }
 
         #endregion
@@ -739,11 +747,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 return null;
             }
 
+            var accessToken = string.IsNullOrEmpty(AccessToken) ? "access_token=" + AuthToken : AccessToken + "=" + AuthToken;
             string responseText = (OAuthVersion == "1.0")
                             ? ExecuteAuthorizedRequest(HttpMethod.GET, MeGraphEndpoint)
-                            : string.IsNullOrEmpty(AccessToken)
-                                ? ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + "access_token=" + AuthToken), null, String.Empty)
-                                : ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + AccessToken + "=" + AuthToken), null, String.Empty);
+                            : ExecuteWebRequest(HttpMethod.GET, GenerateRequestUri(MeGraphEndpoint.ToString(), accessToken), null, String.Empty);
             var user = Json.Deserialize<TUserData>(responseText);
             return user;
         }

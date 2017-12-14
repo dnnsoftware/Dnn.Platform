@@ -1,7 +1,7 @@
 ﻿; if (typeof window.dnn === "undefined" || window.dnn === null) { window.dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // All Rights Reserved
 
@@ -501,6 +501,7 @@
                 url: this._uploadFromLocalUrl(),
                 beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
+                pasteZone: null,
                 sequentialUpload: true,
                 progressInterval: 20,
                 autoUpload: false
@@ -586,6 +587,7 @@
             this._$fileUploadStatuses = this._$fileUploadStatusesContainer.find('.fu-fileupload-statuses').empty();
             this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
             this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: isMultiple, "data-text": this.options.resources.dragAndDropAreaTitle });
+            this._$inputFileControl.attr('aria-label', 'File');
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
 
             this._$inputFileControl.appendTo(this._$dragAndDropArea.find('.fu-dialog-drag-and-drop-area-message')).dnnFileInput(
@@ -634,6 +636,33 @@
         this.init();
     };
 
+    var fuDialogWidth;
+    var setFileUploadDialogWidth = function () {
+        var fuScreenWidth = $(window).width();
+        switch (true) {
+            case (fuScreenWidth < 400):
+                fuDialogWidth = 350;
+                break;
+            case (fuScreenWidth < 480):
+                fuDialogWidth = 400;
+                break;
+            case (fuScreenWidth < 600):
+                fuDialogWidth = 500;
+                break;
+            case (fuScreenWidth < 800):
+                fuDialogWidth = 780;
+                break;
+            default:
+                fuDialogWidth = 780;
+                break;
+        }
+    };
+
+    $(window).resize(function () {
+        setFileUploadDialogWidth();
+    });
+    setFileUploadDialogWidth();
+    
     FileUploadDialog.prototype = {
         constructor: FileUploadDialog,
 
@@ -668,7 +697,7 @@
                 dialogClass: "dnnFormPopup " + this.options.dialogCss,
                 title: this.options.resources.title,
                 resizable: false,
-                width: this.options.width,
+                width: fuDialogWidth,
                 height: this.options.height,
                 close: $.proxy(function() {
                     $panel.empty().remove();
@@ -686,7 +715,7 @@
 
     FileUploadDialog._defaults = {
         dialogCss: "fu-dialog",
-        width: 780,
+        width: fuDialogWidth,
         height: 630
     };
 

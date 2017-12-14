@@ -145,10 +145,10 @@
     <value>Register</value>
   </data>
   <data name="ToolTip.Text" xml:space="preserve">
-    <value>Click Here To Go Your Profile Page.</value>
+    <value>Click here to visit your profile page.</value>
   </data>
   <data name="ToolTipNewMessages.Text" xml:space="preserve">
-    <value>You have {0} New message(s). Click Here To Go Your Profile Page.</value>
+    <value>You have {0} new message(s). Click here to visit your profile page.</value>
   </data>
   <data name="VisitMyProfile.Text" xml:space="preserve">
     <value>Visit My Profile</value>

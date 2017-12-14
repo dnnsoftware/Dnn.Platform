@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,9 +38,6 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>
     /// The TextColumnTemplate provides a Template for the TextColumn
     /// </summary>
-    /// <history>
-    ///     [cnurse]	02/20/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class TextColumnTemplate : ITemplate
     {
@@ -70,9 +67,6 @@ namespace DotNetNuke.UI.WebControls
 		/// The Data Field is the field that binds to the Text Column
 		/// </summary>
 		/// <value>A String</value>
-		/// <history>
-		/// 	[cnurse]	02/20/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public string DataField { get; set; }
 
@@ -81,9 +75,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets or sets the Design Mode of the Column
 		/// </summary>
 		/// <value>A Boolean</value>
-		/// <history>
-		/// 	[cnurse]	02/24/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
@@ -92,9 +83,6 @@ namespace DotNetNuke.UI.WebControls
         /// The type of Template to Create
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/20/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ListItemType ItemType
         {
@@ -113,9 +101,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets or sets the Text (for Header/Footer Templates)
 		/// </summary>
 		/// <value>A String</value>
-		/// <history>
-		/// 	[cnurse]	02/20/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
@@ -124,9 +109,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets or sets the Width of the Column
 		/// </summary>
 		/// <value>A Unit</value>
-		/// <history>
-		/// 	[cnurse]	02/20/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public Unit Width { get; set; }
 		
@@ -141,9 +123,6 @@ namespace DotNetNuke.UI.WebControls
         /// <remarks>
         /// </remarks>
         ///	<param name="container">The parent container (DataGridItem)</param>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -179,9 +158,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the value of the Data Field
         /// </summary>
         ///	<param name="container">The parent container (DataGridItem)</param>
-        /// <history>
-        /// 	[cnurse]	02/20/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string GetValue(DataGridItem container)
         {
@@ -215,9 +191,6 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         /// <param name="sender"> The object that triggers the event</param>
         /// <param name="e">An EventArgs object</param>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void Item_DataBinding(object sender, EventArgs e)
         {

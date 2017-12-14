@@ -120,16 +120,7 @@
   <data name="All.Text" xml:space="preserve">
     <value>All</value>
   </data>
-  <data name="Crawler_document.Text" xml:space="preserve">
-    <value>Documents</value>
-  </data>
-  <data name="Crawler_file.Text" xml:space="preserve">
-    <value>Documents</value>
-  </data>
   <data name="Crawler_tab.Text" xml:space="preserve">
-    <value>Pages</value>
-  </data>
-  <data name="Crawler_url.Text" xml:space="preserve">
     <value>Pages</value>
   </data>
   <data name="Crawler_user.Text" xml:space="preserve">
@@ -152,5 +143,8 @@
   </data>
   <data name="Module_Text/HTML.Text" xml:space="preserve">
     <value>Pages</value>
+  </data>
+  <data name="Module_Group Directory.Text" xml:space="preserve">
+    <value>Group Directory</value>
   </data>
 </root>

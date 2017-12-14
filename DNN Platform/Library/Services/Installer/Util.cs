@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,17 +21,19 @@
 #region Usings
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml.XPath;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.UI.Modules;
+using System.Threading;
 
 #endregion
 
@@ -45,10 +47,6 @@ namespace DotNetNuke.Services.Installer
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/05/2007	created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class Util
     {
         #region Constants
@@ -141,6 +139,14 @@ namespace DotNetNuke.Services.Installer
         public static string MODULE_ReadSuccess = GetLocalizedString("MODULE_ReadSuccess");
         public static string MODULE_Registered = GetLocalizedString("MODULE_Registered");
         public static string MODULE_UnRegistered = GetLocalizedString("MODULE_UnRegistered");
+        public static string MODULE_AdminPageAdded = GetLocalizedString("MODULE_AdminPageAdded");
+        public static string MODULE_AdminPagemoduleAdded = GetLocalizedString("MODULE_AdminPagemoduleAdded");
+        public static string MODULE_AdminPageRemoved = GetLocalizedString("MODULE_AdminPageRemoved");
+        public static string MODULE_AdminPagemoduleRemoved = GetLocalizedString("MODULE_AdminPagemoduleRemoved");
+        public static string MODULE_HostPageAdded = GetLocalizedString("MODULE_HostPageAdded");
+        public static string MODULE_HostPagemoduleAdded = GetLocalizedString("MODULE_HostPagemoduleAdded");
+        public static string MODULE_HostPageRemoved = GetLocalizedString("MODULE_HostPageRemoved");
+        public static string MODULE_HostPagemoduleRemoved = GetLocalizedString("MODULE_HostPagemoduleRemoved");
         public static string PACKAGE_NoLicense = GetLocalizedString("PACKAGE_NoLicense");
         public static string PACKAGE_NoReleaseNotes = GetLocalizedString("PACKAGE_NoReleaseNotes");
         public static string PACKAGE_UnRecognizable = GetLocalizedString("PACKAGE_UnRecognizable");
@@ -182,6 +188,7 @@ namespace DotNetNuke.Services.Installer
         public static string WRITER_SavedFile = GetLocalizedString("WRITER_SavedFile");
         public static string WRITER_SaveFileError = GetLocalizedString("WRITER_SaveFileError");
         public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
+        public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
         // ReSharper restore InconsistentNaming
         #endregion
 
@@ -193,10 +200,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="sourceStream">The Source Stream</param>
         /// <param name="destStream">The Destination Stream</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static void StreamToStream(Stream sourceStream, Stream destStream)
         {
             var buf = new byte[1024];
@@ -251,11 +254,7 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to backup</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static void BackupFile(InstallFile installFile, string basePath, Logger log)
+       public static void BackupFile(InstallFile installFile, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, installFile.FullName);
             string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
@@ -278,10 +277,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to copy</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void CopyFile(InstallFile installFile, string basePath, Logger log)
         {
             string filePath = Path.Combine(basePath, installFile.Path);
@@ -307,10 +302,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to delete</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void DeleteFile(InstallFile installFile, string basePath, Logger log)
         {
             DeleteFile(installFile.FullName, basePath, log);
@@ -323,10 +314,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="fileName">The file to delete</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, fileName);
@@ -351,10 +338,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="key">The localization key</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string GetLocalizedString(string key)
         {
             return Localization.Localization.GetString(key, Localization.Localization.SharedResourceFile);
@@ -385,10 +368,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="tabId">The id of the tab you are on</param>
         /// <param name="type">The type of package you are installing</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	07/26/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string InstallURL(int tabId, string type)
         {
             var parameters = new string[2];
@@ -455,11 +434,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="context">The ModuleContext of the module</param>
         /// <param name="packageId">The id of the package you are packaging</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        ///     [vnguyen]   05/24/2011  updated: calls NavigateUrl of Module Context to handle popups
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string PackageWriterURL(ModuleInstanceContext context, int packageId)
         {
             var parameters = new string[3];
@@ -473,7 +447,7 @@ namespace DotNetNuke.Services.Installer
         public static string ParsePackageIconFileName(PackageInfo package)
         {
             var filename = string.Empty;
-            if ((package.IconFile != null) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
+            if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
                 filename = package.IconFile.StartsWith("~/" + package.FolderName) ? package.IconFile.Remove(0, ("~/" + package.FolderName).Length).TrimStart('/') : package.IconFile;
             }
@@ -483,7 +457,7 @@ namespace DotNetNuke.Services.Installer
         public static string ParsePackageIconFile(PackageInfo package)
         {
             var iconFile = string.Empty;
-            if ((package.IconFile != null) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
+            if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
                 iconFile = !package.IconFile.StartsWith("~/") ? "~/" + package.FolderName + "/" + package.IconFile : package.IconFile;
             }
@@ -503,6 +477,34 @@ namespace DotNetNuke.Services.Installer
         public static string ReadAttribute(XPathNavigator nav, string attributeName, bool isRequired, Logger log, string logmessage, string defaultValue)
         {
             return ValidateNode(nav.GetAttribute(attributeName, ""), isRequired, log, logmessage, defaultValue);
+        }
+
+        public static string GetPackageBackupName(PackageInfo package)
+        {
+            var packageName = package.Name;
+            var version = package.Version;
+            var packageType = package.PackageType;
+
+            var fileName = $"{packageType}_{packageName}_{version}.resources";
+            if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) > Null.NullInteger)
+            {
+                fileName = Globals.CleanFileName(fileName);
+            }
+
+            return fileName;
+        }
+
+        public static string GetPackageBackupPath(PackageInfo package)
+        {
+            var fileName = GetPackageBackupName(package);
+            var folderPath = Path.Combine(Globals.ApplicationMapPath, Util.BackupInstallPackageFolder);
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            return Path.Combine(folderPath, fileName);
         }
 
         #endregion
@@ -536,10 +538,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to restore</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void RestoreFile(InstallFile installFile, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, installFile.FullName);
@@ -559,11 +557,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="tabId">The id of the tab you are on</param>
         /// <param name="packageId">The id of the package you are uninstalling</param>
         /// <returns>The localized string</returns>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        ///     [vnguyen]   05/24/2011  updated: calls NavigateUrl of Module Context to handle popups
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static string UnInstallURL(int tabId, int packageId)
         {
             var parameters = new string[2];
@@ -579,10 +572,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="sourceStream">The Source Stream</param>
         /// <param name="destFileName">The Destination file</param>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void WriteStream(Stream sourceStream, string destFileName)
         {
             //Delete the file
@@ -590,15 +579,85 @@ namespace DotNetNuke.Services.Installer
 
             var file = new FileInfo(destFileName);
             if (file.Directory != null && !file.Directory.Exists)
-            {
                 file.Directory.Create();
+
+            TryToCreateAndExecute(destFileName, (f) => StreamToStream(sourceStream, f), 1000);
+
+        }
+
+        /// <summary>
+        /// Try to create file and perform an action on a file until a specific amount of time
+        /// </summary>
+        /// <param name="path">Path of the file</param>
+        /// <param name="action">Action to execute on file</param>
+        /// <param name="milliSecondMax">Maimum amount of time to try to do the action</param>
+        /// <returns>true if action occur and false otherwise</returns>
+        public static bool TryToCreateAndExecute(string path, Action<FileStream> action, int milliSecondMax = Timeout.Infinite)
+        {
+            bool result = false;
+            DateTime dateTimestart = DateTime.Now;
+            Tuple < AutoResetEvent, FileSystemWatcher > tuple = null;
+
+            while (true)
+            {
+                try
+                {
+                    using (var file = File.Open(path,
+                        FileMode.Create,
+                        FileAccess.ReadWrite,
+                        FileShare.Write))
+                    {
+                        action(file);
+                        result = true;
+                        break;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    // Init only once and only if needed. Prevent against many instantiation in case of multhreaded 
+                    // file access concurrency (if file is frequently accessed by someone else). Better memory usage.
+                    if (tuple == null)
+                    {
+                        var autoResetEvent = new AutoResetEvent(true);
+                        var fileSystemWatcher = new FileSystemWatcher(Path.GetDirectoryName(path))
+                        {
+                            EnableRaisingEvents = true
+                        };
+
+                        fileSystemWatcher.Changed +=
+                            (o, e) =>
+                            {
+                                if (Path.GetFullPath(e.FullPath) == Path.GetFullPath(path))
+                                {
+                                    autoResetEvent.Set();
+                                }
+                            };
+
+                        tuple = new Tuple<AutoResetEvent, FileSystemWatcher>(autoResetEvent, fileSystemWatcher);
+                    }
+
+                    int milliSecond = Timeout.Infinite;
+                    if (milliSecondMax != Timeout.Infinite)
+                    {
+                        milliSecond = (int) (DateTime.Now - dateTimestart).TotalMilliseconds;
+                        if (milliSecond >= milliSecondMax)
+                        {
+                            result = false;
+                            break;
+                        }
+                    }
+
+                    tuple.Item1.WaitOne(milliSecond);
+                }
             }
-            Stream fileStrm = file.Create();
 
-            StreamToStream(sourceStream, fileStrm);
+            if (tuple != null && tuple.Item1 != null) // Dispose of resources now (don't wait the GC).
+            {
+                tuple.Item1.Dispose();
+                tuple.Item2.Dispose();
+            }
 
-            //Close the stream
-            fileStrm.Close();
+            return result;
         }
 
         public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST, string UserAgent,

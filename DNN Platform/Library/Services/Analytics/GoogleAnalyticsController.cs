@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,9 +44,6 @@ namespace DotNetNuke.Services.Analytics
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [vnguyen]   10/08/2010   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class GoogleAnalyticsController
     {
@@ -58,9 +55,6 @@ namespace DotNetNuke.Services.Analytics
         /// <param name = "Version"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   10/08/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void UpgradeModule(string Version)
         {
@@ -71,26 +65,29 @@ namespace DotNetNuke.Services.Analytics
             {
                 case "05.06.00":
                     //previous module versions
-                    StreamReader fileReader = GetConfigFile();
-
-                    if (fileReader != null)
+                    using (StreamReader fileReader = GetConfigFile())
                     {
-                        var fileEncoding = new ASCIIEncoding();
-                        var md5 = new MD5CryptoServiceProvider();
-                        string currFileHashValue = "";
-
-                        //calculate md5 hash of existing file
-                        currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
-                        fileReader.Close();
-
-                        IEnumerable<string> result = (from h in TRADITIONAL_FILEHASHES where h == currFileHashValue select h);
-
-                        //compare md5 hash
-                        if (result.Count() > 0)
+                        if (fileReader != null)
                         {
-                            //Copy new config file from \Config
-                            //True causes .config to be overwritten
-                            Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics, true);
+                            var fileEncoding = new ASCIIEncoding();
+                            using (var md5 = new MD5CryptoServiceProvider())
+                            {
+                                string currFileHashValue = "";
+
+                                //calculate md5 hash of existing file
+                                currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
+                                fileReader.Close();
+
+                                IEnumerable<string> result = (from h in TRADITIONAL_FILEHASHES where h == currFileHashValue select h);
+
+                                //compare md5 hash
+                                if (result.Any())
+                                {
+                                    //Copy new config file from \Config
+                                    //True causes .config to be overwritten
+                                    Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics, true);
+                                }
+                            }
                         }
                     }
                     break;
@@ -104,9 +101,6 @@ namespace DotNetNuke.Services.Analytics
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   10/08/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private StreamReader GetConfigFile()
         {

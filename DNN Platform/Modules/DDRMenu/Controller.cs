@@ -18,7 +18,12 @@ namespace DotNetNuke.Web.DDRMenu
 		private const string ddrMenuModuleName = "DDRMenu";
 		private const string ddrMenuMmoduleDefinitionName = "DDR Menu";
 
-		public string UpgradeModule(string version)
+        public static readonly Regex AscxText1Regex = new Regex(Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        public static readonly Regex AscxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        public static readonly Regex AscxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        public static readonly Regex AscxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        public string UpgradeModule(string version)
 		{
 			UpdateWebConfig();
 
@@ -38,17 +43,17 @@ namespace DotNetNuke.Web.DDRMenu
 
 			var settings = new Settings
 			               {
-			               	MenuStyle = moduleSettings["MenuStyle"].ToString(),
-			               	NodeXmlPath = moduleSettings["NodeXmlPath"].ToString(),
-			               	NodeSelector = moduleSettings["NodeSelector"].ToString(),
-			               	IncludeNodes = moduleSettings["IncludeNodes"].ToString(),
-			               	ExcludeNodes = moduleSettings["ExcludeNodes"].ToString(),
-			               	NodeManipulator = moduleSettings["NodeManipulator"].ToString(),
+			               	MenuStyle = Convert.ToString(moduleSettings["MenuStyle"]),
+			               	NodeXmlPath = Convert.ToString(moduleSettings["NodeXmlPath"]),
+			               	NodeSelector = Convert.ToString(moduleSettings["NodeSelector"]),
+			               	IncludeNodes = Convert.ToString(moduleSettings["IncludeNodes"]),
+			               	ExcludeNodes = Convert.ToString(moduleSettings["ExcludeNodes"]),
+			               	NodeManipulator = Convert.ToString(moduleSettings["NodeManipulator"]),
 			               	IncludeContext = Convert.ToBoolean(moduleSettings["IncludeContext"]),
 			               	IncludeHidden = Convert.ToBoolean(moduleSettings["IncludeHidden"]),
-			               	ClientOptions = Settings.ClientOptionsFromSettingString(moduleSettings["ClientOptions"].ToString()),
+			               	ClientOptions = Settings.ClientOptionsFromSettingString(Convert.ToString(moduleSettings["ClientOptions"])),
 			               	TemplateArguments =
-			               		Settings.TemplateArgumentsFromSettingString(moduleSettings["TemplateArguments"].ToString())
+			               		Settings.TemplateArgumentsFromSettingString(Convert.ToString(moduleSettings["TemplateArguments"]))
 			               };
 			return settings.ToXml();
 		}
@@ -168,7 +173,7 @@ namespace DotNetNuke.Web.DDRMenu
 			}
 		}
 
-		private static void CheckSkinReferences()
+        private static void CheckSkinReferences()
 		{
 			var server = HttpContext.Current.Server;
 			var portalsRoot = server.MapPath("~/Portals/");
@@ -180,26 +185,11 @@ namespace DotNetNuke.Web.DDRMenu
 					{
 						var ascxText = File.ReadAllText(skinControl);
 						var originalText = ascxText;
-						ascxText = Regex.Replace(
-							ascxText,
-							Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""),
-							@"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""",
-							RegexOptions.IgnoreCase);
-						ascxText = Regex.Replace(
-							ascxText,
-							Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""),
-							@"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""",
-							RegexOptions.IgnoreCase);
-						ascxText = Regex.Replace(
-							ascxText,
-							Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""),
-							@"Assembly=""DotNetNuke.Web.DDRMenu""",
-							RegexOptions.IgnoreCase);
-						ascxText = Regex.Replace(
-							ascxText,
-							Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""),
-							@"Assembly=""DotNetNuke.Web.DDRMenu""",
-							RegexOptions.IgnoreCase);
+                        ascxText = AscxText1Regex.Replace(ascxText, @"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""");
+					    ascxText = AscxText2Regex.Replace(ascxText, @"Namespace=""DotNetNuke.Web.DDRMenu.TemplateEngine""");
+                        ascxText = AscxText3Regex.Replace(ascxText, @"Assembly=""DotNetNuke.Web.DDRMenu""");
+					    ascxText = AscxText4Regex.Replace(ascxText, @"Assembly=""DotNetNuke.Web.DDRMenu""");
+
 						if (!ascxText.Equals(originalText))
 						{
 							File.WriteAllText(skinControl, ascxText);

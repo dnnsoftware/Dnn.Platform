@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,9 +40,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	08/22/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinInstaller : FileInstaller
     {
@@ -63,9 +60,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Collection Node ("skinFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/22/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -80,9 +74,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Item Node ("skinFile")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/22/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -97,9 +88,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the PhysicalBasePath for the skin files
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string PhysicalBasePath
         {
@@ -119,16 +107,13 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the root folder for the Skin
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string RootPath
         {
             get
             {
                 string _RootPath = Null.NullString;
-                if (Package.InstallerInfo.PortalID == Null.NullInteger)
+                if (Package.InstallerInfo.PortalID == Null.NullInteger && Package.PortalID == Null.NullInteger)
                 {
                     _RootPath = Globals.HostMapPath;
                 }
@@ -145,9 +130,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the collection of Skin Files
         /// </summary>
         /// <value>A List(Of InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	08/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected ArrayList SkinFiles
         {
@@ -162,9 +144,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the SkinName Node ("skinName")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinNameNodeName
         {
@@ -179,9 +158,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the RootName of the Skin
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/22/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinRoot
         {
@@ -196,9 +172,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Type of the Skin
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/06/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinType
         {
@@ -217,9 +190,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -238,9 +208,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The DeleteSkinPackage method deletes the Skin Package
         /// from the data Store.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/08/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void DeleteSkinPackage()
         {
@@ -270,9 +237,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="file">The file represented by the node</param>
         /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -298,9 +262,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The ReadCustomManifest method reads the custom manifest items
         /// </summary>
         /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <history>
-        /// 	[cnurse]	08/22/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
@@ -319,9 +280,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The UnInstallFile method unInstalls a single file.
         /// </summary>
         /// <param name="unInstallFile">The InstallFile to unInstall.</param>
-        /// <history>
-        /// 	[cnurse]	02/11/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
@@ -345,9 +303,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the skin component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/06/2008  created
-        /// </history>
         public override void Install()
         {
             bool bAdd = Null.NullBoolean;
@@ -433,9 +388,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Rollback method undoes the installation of the component in the event 
         /// that one of the other components fails
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/06/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -459,9 +411,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The UnInstall method uninstalls the skin component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/06/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

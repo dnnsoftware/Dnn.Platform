@@ -1,7 +1,7 @@
 ﻿ #region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -41,6 +41,8 @@ using Moq;
 using NUnit.Framework;
 using Constants = DotNetNuke.Services.Search.Internals.Constants;
 using DotNetNuke.Entities.Controllers;
+
+using Lucene.Net.Documents;
 
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
@@ -2426,7 +2428,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             //Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "Hello World" };
-            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Tags = new List<string> { "cow" } };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Tags = new List<string> { "cow", "hello", "world" } };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "random text" };
 
             //Act
@@ -2434,8 +2436,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _internalSearchController.AddSearchDocument(doc2);
             _internalSearchController.AddSearchDocument(doc3);
             _internalSearchController.Commit();
-
-
             var result = SearchForKeyword("cow");
 
             //Assert

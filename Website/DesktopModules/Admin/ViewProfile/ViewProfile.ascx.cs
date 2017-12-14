@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -80,8 +80,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			//throw 404 so that deleted profile is not reindexed
 			if(ProfileUser == null || ProfileUser.IsDeleted)
 			{
-    		    throw new HttpException(404, "Not Found");
-			}
+                UrlUtils.Handle404Exception(Response, PortalSettings.Current);
+            }
 
             ProcessQuerystring();
 
@@ -156,9 +156,17 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     noPropertiesLabel.Visible = true;
                     profileOutput.Visible = false;
+                    pnlScripts.Visible = false;
                 }
                 else
                 {
+                    if (template.IndexOf("[PROFILE:PHOTO]") > -1)
+                    {
+                        var profileImageHandlerBasedURL =
+                            UserController.Instance?.GetUserProfilePictureUrl(ProfileUserId, 120, 120);
+                        template = template.Replace("[PROFILE:PHOTO]", profileImageHandlerBasedURL);
+                    }
+
                     var token = new TokenReplace { User = ProfileUser, AccessingUser = ModuleContext.PortalSettings.UserInfo };
                     profileOutput.InnerHtml = token.ReplaceEnvironmentTokens(template);
                     noPropertiesLabel.Visible = false;
@@ -171,6 +179,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 foreach (ProfilePropertyDefinition property in ProfileUser.Profile.ProfileProperties)
                 {
+                    var displayDataType = ProfilePropertyAccess.DisplayDataType(property).ToLowerInvariant();
                     string value = propertyAccess.GetProperty(property.PropertyName,
                                                               String.Empty,
                                                               Thread.CurrentThread.CurrentUICulture,
@@ -184,9 +193,14 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     sb.Append("\"");
                     if (!string.IsNullOrEmpty(value))
                     {
-                        value = Localization.GetSafeJSString(Server.HtmlDecode(value));
-                        value = value.Replace("\r", string.Empty).Replace("\n", " ");
-                        value = value.Replace(";", string.Empty).Replace("//", string.Empty);
+                        value = Localization.GetSafeJSString(displayDataType == "richtext" ? value : Server.HtmlDecode(value));
+                        value = value
+                            .Replace("\r", string.Empty)
+                            .Replace("\n", " ")
+                            .Replace(";", string.Empty)
+                            .Replace("://", ":||") //protect http protocols won't be replaced in next step
+                            .Replace("//", string.Empty)
+                            .Replace(":||", "://"); //restore http protocols
                     }
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
@@ -290,10 +304,10 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                                 NotificationsController.Instance.DeleteNotificationRecipient(notifications[0].NotificationID, currentUser.UserID);
                             }
                         }
-                        catch 
-                        {}
-
-
+                        catch
+                        {
+                            //ignore
+                        }
                     }                    
                 }
 
@@ -301,6 +315,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             }
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -10,20 +10,15 @@ namespace ClientDependency.Core
     {
         public BundleDefinition(
             ClientDependencyType type,
-            string name, 
-            int priority = Constants.DefaultPriority, int group = Constants.DefaultGroup)
+            string name)
         {
             if (name == null) throw new ArgumentNullException("name");
             Type = type;
             Name = name;
-            Group = group;
-            Priority = priority;
         }
 
         public ClientDependencyType Type { get; private set; }
         public string Name { get; private set; }
-        public int Group { get; set; }
-        public int Priority { get; set; }
 
         protected bool Equals(BundleDefinition other)
         {

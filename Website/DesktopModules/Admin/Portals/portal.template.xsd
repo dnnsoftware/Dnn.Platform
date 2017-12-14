@@ -572,8 +572,9 @@
       <xs:enumeration value="usertab"/>
       <xs:enumeration value="logintab"/>
       <xs:enumeration value="splashtab"/>
-      <xs:enumeration value="gettingStartedTab"/>
-      <xs:enumeration value="404Tab"/>
+      <xs:enumeration value="404tab"/>
+	  <xs:enumeration value="500tab"/>
+	  <xs:enumeration value="searchtab"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="alignmentEnum">

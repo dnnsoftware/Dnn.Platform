@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,8 +47,22 @@ namespace DotNetNuke.UI.Modules.Html5
             {
                 case "moduleid":
                     return _moduleContext.ModuleId.ToString();
+                case "tabmoduleid":
+                    return _moduleContext.TabModuleId.ToString();
+                case "tabid":
+                    return _moduleContext.TabId.ToString();
+                case "portalid":
+                    return _moduleContext.Configuration.OwnerPortalID.ToString();
                 case "issuperuser":
                     return _moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
+                case "editmode":
+                    return _moduleContext.EditMode.ToString();
+                default:
+                    if (_moduleContext.Settings.ContainsKey(propertyName))
+                    {
+                        return (string)_moduleContext.Settings[propertyName];
+                    }
+                    break;
             }
 
             propertyNotFound = true;

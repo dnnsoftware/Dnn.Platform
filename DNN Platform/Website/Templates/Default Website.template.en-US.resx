@@ -204,9 +204,6 @@
   <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.ActivityFeed.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.ActivityFeed.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -240,18 +237,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.ActivityFeed.Title.Text" xml:space="preserve">
     <value>Activity Feed</value>
-  </data>
-  <data name="Tab.AdvancedSettings.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Description.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Name.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
-  </data>
-  <data name="Tab.AdvancedSettings.Title.Text" xml:space="preserve">
-    <value>Advanced Configuration Settings</value>
   </data>
   <data name="Tab.AdvUrlManagement.ContentPane.Module.Title.Text" xml:space="preserve">
     <value>Advanced URL Management</value>
@@ -310,32 +295,17 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Extensions.Title.Text" xml:space="preserve">
     <value>Extensions</value>
   </data>
-  <data name="Tab.GoogleAnalytics.Content.Text" xml:space="preserve">
-    <value>Google Analytics</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Google Analytics</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.Description.Text" xml:space="preserve">
-    <value>Configure Site Google Analytics settings.</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.Name.Text" xml:space="preserve">
-    <value>Google Analytics</value>
-  </data>
-  <data name="Tab.GoogleAnalytics.Title.Text" xml:space="preserve">
-    <value>Google Analytics</value>
-  </data>
   <data name="Tab.Home.CompanyIntro.Text" xml:space="preserve">
-    <value>DNN (formerly DotNetNuke) provides a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees.  DNN products and technology are the foundation for 750,000+ websites worldwide.  In addition to our commercial CMS and Social Community solutiosn, DNN is the steward of the DotNetNuke Open Source Project.</value>
+    <value>DNN (formerly DotNetNuke) provides a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees.  DNN products and technology are the foundation for 750,000+ websites worldwide.  In addition to our commercial CMS and Social Community solutions, DNN is the steward of the DotNetNuke Open Source Project.</value>
   </data>
   <data name="Tab.Home.Header.Content" xml:space="preserve">
-    <value>DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; makes it easy for you to install and use the DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; Platform.  We have multiple options to suit your needs, whether you want to try the CMS out in the cloud, install it on your own server, or use it on your desktop for development.  You are just a click away from getting started with DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt;.</value>
+    <value>Welcome to your new DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; installation! DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; makes it easy for you to install and use the DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt; Platform.  We have multiple options to suit your needs, whether you want to try the CMS out in the cloud, install it on your own server, or use it on your desktop for development.  You are just a click away from getting started with DNN&lt;sup&gt;&amp;reg;&lt;/sup&gt;.</value>
   </data>
   <data name="Tab.Home.Header.Title" xml:space="preserve">
     <value>Every journey begins with the first step. </value>
   </data>
   <data name="Tab.Home.Main.Blog.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/community-blog?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=blog&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/community-blog?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=blog&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.Blog.Title" xml:space="preserve">
     <value>Blog</value>
@@ -344,7 +314,7 @@ Fax: (555) 555-4564</value>
     <value>Informative and entertaining, challenging and educational, the DNN Community Blog always has fresh content, fresh ideas and new opinions.  Dive right in.</value>
   </data>
   <data name="Tab.Home.Main.Forums.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/forums?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=forums&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/forums?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=forums&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.Forums.Title" xml:space="preserve">
     <value>Forums</value>
@@ -353,7 +323,7 @@ Fax: (555) 555-4564</value>
     <value>The ancient Roman Forum was a venue for public speeches, commercial transactions and gladiatorial matches.  The DNN Forum is just as important to participate.</value>
   </data>
   <data name="Tab.Home.Main.LeaderBoard.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/leaderboard?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=leaderboard&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/leaderboard?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=leaderboard&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.LeaderBoard.Title" xml:space="preserve">
     <value>Leaderboard</value>
@@ -362,7 +332,7 @@ Fax: (555) 555-4564</value>
     <value>Contributions earn recognition.  See where you land on the leaderboard.  Contribute a little, leap others in the race.  Everyone loves a little friendly competition.</value>
   </data>
   <data name="Tab.Home.Main.OnlineHelp.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/help?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=online-help&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/help?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=online-help&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.OnlineHelp.Title" xml:space="preserve">
     <value>Online Help</value>
@@ -371,7 +341,7 @@ Fax: (555) 555-4564</value>
     <value>You just can't get by without a little help from your friends.  Or a little help from the extensive DNN library.</value>
   </data>
   <data name="Tab.Home.Main.QA.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/answers?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=q%26a&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/answers?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=q%26a&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.QA.Title" xml:space="preserve">
     <value>Q &amp; A</value>
@@ -380,7 +350,7 @@ Fax: (555) 555-4564</value>
     <value>You can't get to this point without a few questions.  You might even have a few answers to contribute.  Either way, you're headed to the Q&amp;A page.</value>
   </data>
   <data name="Tab.Home.Main.Shop.Link" xml:space="preserve">
-    <value>http://store.dnnsoftware.com/?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=shop&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://store.dnnsoftware.com/?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=shop&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.Shop.Title" xml:space="preserve">
     <value>Shop</value>
@@ -392,7 +362,7 @@ Fax: (555) 555-4564</value>
     <value>Join the Community to Interact and Learn</value>
   </data>
   <data name="Tab.Home.Main.Videos.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/videos?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=videos&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/videos?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=videos&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.Videos.Title" xml:space="preserve">
     <value>Videos</value>
@@ -401,7 +371,7 @@ Fax: (555) 555-4564</value>
     <value>Everyone is a visual learner.  What's better is that you can watch online video and still be working.  The DNN Video library is a vast treasure of how-to information.</value>
   </data>
   <data name="Tab.Home.Main.Webinars.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/about/resources/webinars?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=webinars&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/about/resources/webinars?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=webinars&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.Webinars.Title" xml:space="preserve">
     <value>Webinars</value>
@@ -410,7 +380,7 @@ Fax: (555) 555-4564</value>
     <value>Enter the world of DNN Webinars where knowledgeable people share their knowledge.  That's a lot of knowledge, and it's there for you to learn.</value>
   </data>
   <data name="Tab.Home.Main.Wikis.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/wiki?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=wiki&amp;utm_content=7.3-tile&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/wiki?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=wiki&amp;utm_content=default-install-tile&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Main.Wikis.Title" xml:space="preserve">
     <value>Wiki</value>
@@ -425,7 +395,7 @@ Fax: (555) 555-4564</value>
     <value>Home</value>
   </data>
   <data name="Tab.Home.Product.Content.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/solutions/evoq-content-management-system?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=evoq-content&amp;utm_content=7.3-banner&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/products/evoq-content?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=evoq-content&amp;utm_content=side-banner&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Product.Content.Link.Title" xml:space="preserve">
     <value>CREATE &amp; MANAGE CONTENT</value>
@@ -434,7 +404,7 @@ Fax: (555) 555-4564</value>
     <value>Richer content, stronger&lt;br /&gt;security and improved&lt;br /&gt;SEO is right at&lt;br /&gt;your fingertips</value>
   </data>
   <data name="Tab.Home.Product.Social.Link" xml:space="preserve">
-    <value>http://www.dnnsoftware.com/solutions/evoq-social-online-community-management?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=evoq-social&amp;utm_content=7.3-banner&amp;utm_campaign=dnn-platform-home</value>
+    <value>http://www.dnnsoftware.com/products/evoq-engage?utm_source=dnn-platform-install&amp;utm_medium=web-link&amp;utm_term=evoq-social&amp;utm_content=side-banner&amp;utm_campaign=dnn-platform-home</value>
   </data>
   <data name="Tab.Home.Product.Social.Link.Title" xml:space="preserve">
     <value>BUILD &amp; GROW COMMUNITIES</value>
@@ -443,7 +413,7 @@ Fax: (555) 555-4564</value>
     <value>Grow users, crowdsource content and engage your audience through online communities.</value>
   </data>
   <data name="Tab.Home.SocialLinks.Facebook.Link" xml:space="preserve">
-    <value>http://facebook.com/dotnetnuke</value>
+    <value>http://facebook.com/DNNsoftware</value>
   </data>
   <data name="Tab.Home.SocialLinks.LinkedIn.Link" xml:space="preserve">
     <value>http://www.linkedin.com/company/207975</value>
@@ -562,9 +532,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyFriends.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyFriends.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyFriends.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -665,9 +632,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyMessages.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyMessages.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyMessages.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -765,9 +729,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyProfile.FooterLeftPane.Module.Content.5.Text" xml:space="preserve">
     <value>Bike Warranty</value>
   </data>
-  <data name="Tab.MyProfile.FooterLeftPane.Module.Content.6.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
   <data name="Tab.MyProfile.FooterLeftPane.Module.Title.Text" xml:space="preserve">
     <value>Customer Support</value>
   </data>
@@ -807,21 +768,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
     <value>My Profile</value>
-  </data>
-  <data name="Tab.Newsletters.Content.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.Description.Text" xml:space="preserve">
-    <value>Send email messages to users, security roles and specific email addresses.</value>
-  </data>
-  <data name="Tab.Newsletters.Name.Text" xml:space="preserve">
-    <value>Newsletters</value>
-  </data>
-  <data name="Tab.Newsletters.Title.Text" xml:space="preserve">
-    <value>Newsletters</value>
   </data>
   <data name="Tab.PageManagement.Content.Text" xml:space="preserve">
     <value>Page Management</value>
@@ -1069,13 +1015,16 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Home.Main.Wikis.SubLink.Text" xml:space="preserve">
     <value>Read the DNN Wiki</value>
   </data>
-  <data name="Tab.DCCManager.Description.Text" xml:space="preserve">
-    <value>Manage the Dynamic Content Types for your Site</value>
+  <data name="Tab.Home.SocialLinks.Facebook.Text" xml:space="preserve">
+    <value>Facebook</value>
   </data>
-  <data name="Tab.DCCmanager.Name.Text" xml:space="preserve">
-    <value>Dynamic Content Type Manager</value>
+  <data name="Tab.Home.SocialLinks.LinkedIn.Text" xml:space="preserve">
+    <value>LinkedIn</value>
   </data>
-  <data name="Tab.DCCManager.Title.Text" xml:space="preserve">
-    <value>Dynamic Content Type Manager</value>
+  <data name="Tab.Home.SocialLinks.Twitter.Text" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.Youtube.Text" xml:space="preserve">
+    <value>Youtube</value>
   </data>
 </root>

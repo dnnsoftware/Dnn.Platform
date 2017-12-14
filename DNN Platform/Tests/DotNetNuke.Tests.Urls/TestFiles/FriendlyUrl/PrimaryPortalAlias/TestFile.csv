@@ -1,7 +1,6 @@
 ﻿Test,					Language,	RedirectMode,	DefaultAlias,		Scheme,		Page Name,		Params,								Expected Url,
 Home,					fr-FR,		REDIRECT,		fr.dnntest.com,		http://,	Home,			&language=fr-FR,					http://{usealias}/
 About Us,				fr-FR,		REDIRECT,		fr.dnntest.com,		http://,	About Us,		&language=fr-FR,					http://{usealias}/AboutUs
-Admin,					fr-FR,		REDIRECT,		fr.dnntest.com,		http://,	Site Settings,	&language=fr-FR,					http://{usealias}/Admin/SiteSettings
 Profile Messages,		fr-FR,		REDIRECT,		fr.dnntest.com,		http://,	Messages,		&language=fr-FR,					http://{usealias}/ActivityFeed/Messages
 Terms,					fr-FR,		REDIRECT,		fr.dnntest.com,		http://,	Home,			&language=fr-FR&ctl=Terms,			http://{usealias}/Terms
 Login,					fr-FR,		REDIRECT,		fr.dnntest.com,		http://,	About Us,		&language=fr-FR&ctl=Login,			http://{usealias}/Login

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,7 +58,10 @@ namespace DotNetNuke.Tests.Utilities
         public const string UserDisplayName_Admin = "Administrator Account";
         public const string UserDisplayName_User12 = "User 12";
         public const string UserDisplayName_FirstSocialGroupOwner = "First Social Group Owner";
-        
+        public const string RuFirstName = "TestUser";
+        public const string RuLastName = "Automation";
+        public const string DefaultPassword = "dnnhost";
+
 
         #endregion
 
@@ -345,6 +348,7 @@ namespace DotNetNuke.Tests.Utilities
         public const int FOLDER_OtherValidFolderId = 7;
         public const int FOLDER_ValidFolderMappingID = 5;
         public const string FOLDER_ValidFileName = "file.txt";
+        public const string FOLDER_ValidSvgFileName = "file.svg";
         public const string FOLDER_ValidFilePath = "C:\\folder\\file.txt";
         public const string FOLDER_ValidFolderName = "folder";
         public const string FOLDER_ValidFolderPath = "C:\\folder";
@@ -440,7 +444,7 @@ namespace DotNetNuke.Tests.Utilities
         public const string Messaging_NotificationTypeActionNameResourceKey = "Accept";
         public const string Messaging_NotificationTypeActionDescriptionResourceKey = "Accept a friend request";
         public const string Messaging_NotificationTypeActionConfirmResourceKey = "Are you sure you want to accept this friend?";
-        public const string Messaging_NotificationTypeActionAPICall = "~/DesktopModules/ModuleName/API/ModuleService.ashx/Accept";
+        public const string Messaging_NotificationTypeActionAPICall = "~/API/ModuleName/ModuleService.ashx/Accept";
         public const int Messaging_NotificationActionId = 4;
         public const string Messaging_NotificationActionKey = "{F:1}{U:2}";
         public const string Messaging_NotificationSubject = "Friend Request Received";

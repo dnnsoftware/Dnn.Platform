@@ -8,23 +8,32 @@ namespace DotNetNuke.Services.Exceptions
     {
         public static string Hash(this Exception exc)
         {
-            var ex = exc ?? new Exception();
-            var sb = new StringBuilder()
-                .AppendLine(DateTime.UtcNow.ToString("O")) // make it unique in case two exact exceptions were thrown
-                .AppendLine(ex.Source)
-                .AppendLine(ex.ToString());
-
-            while (ex.InnerException != null)
+            if (exc == null)
             {
-                ex = ex.InnerException;
-                sb.AppendLine(ex.ToString());
+                return string.Empty;
             }
 
-            using (var hasher = new MD5CryptoServiceProvider())
+            var sb = new StringBuilder();
+
+            AddException(sb, exc);
+
+            if (exc.InnerException != null)
             {
-                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(sb.ToString()));
+                AddException(sb, exc.InnerException);
+            }
+
+            // DNN-8845: using a FIPS compliant HashAlgorithm
+            using (var hasher = new HMACSHA1())
+            {
+                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(sb.ToString().ToLower()));
                 return Convert.ToBase64String(byteArray);
             }
+        }
+
+        private static void AddException(StringBuilder sb, Exception ex)
+        {
+            if (!string.IsNullOrEmpty(ex.Message)) sb.AppendLine(ex.Message);
+            if (!string.IsNullOrEmpty(ex.StackTrace)) sb.AppendLine(ex.StackTrace);
         }
     }
 }

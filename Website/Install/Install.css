@@ -1,10 +1,10 @@
 
 body {
-    background: #f4f4f4 url(../portals/_default/skins/Gravity/images/body_bg.jpg) repeat-x 0 0; 
+    background: #f4f4f4 url(body_bg.jpg) repeat-x 0 0; 
     width: 900px;
-    margin-right: auto;
-    margin-left: auto;
     text-align: left;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .dnnForm {
@@ -71,6 +71,14 @@ hr {
 .dnnFormItem .fullWidth {
     width: 100%;
     text-align: left;
+}
+.dnnFormItem .information {
+    width: 55%;
+    margin-left: 22%;
+    text-align: left;
+}
+.dnnFormItem.information-checkbox .dnnLabel{
+    margin-left: -7%;
 }
 .dnnFormItem .databaseRadioButtons label {
     width: auto;
@@ -294,4 +302,41 @@ a.videoLink {
 }
 a.videoLink:hover {
 	text-decoration: underline;
+}
+.accept-terms {
+    position: relative;
+}
+.accept-terms input#chkAcceptTerms + span {
+    margin: 8px 0 0 20px;
+}
+.accept-terms input#chkAcceptTerms + span + span {
+    cursor: default;
+}
+.accept-terms input#chkAcceptTerms + span + span + span.dnnFormMessage.dnnFormError {
+    display: block;
+    position: absolute;
+    overflow: visible;
+    bottom: 95%;
+    right: 12%;
+    width: 200px;
+    margin-bottom: 0;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background: rgba(255,0,0,0.75);
+    font-size: 12px;
+    color: #fff;
+    text-align: left;
+}
+.accept-terms input#chkAcceptTerms + span + span + span.dnnFormMessage.dnnFormError:after {
+    position: absolute;
+    bottom: -7px;
+    left: 15px;
+    content: "";
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid red;
 }

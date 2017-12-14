@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -45,7 +45,11 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		private const string ModuleFolder = "~/DesktopModules/Admin/RadEditorProvider";
 		private const string ResourceFile = ModuleFolder + "/App_LocalResources/ProviderConfig.ascx.resx";
 
-		/// <summary>
+        private static readonly Regex HostNameRegex = new Regex("\\.host", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex AdminNameRegex = new Regex("\\.admin", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex RegisteredNameRegex = new Regex("\\.registered", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        /// <summary>
 		/// 
 		/// </summary>
 		/// <param name="Version"></param>
@@ -190,25 +194,25 @@ namespace DotNetNuke.Providers.RadEditorProvider
             }
         }
 
-	    private void UpdateFileNameWithRoleId(string file)
+        private void UpdateFileNameWithRoleId(string file)
 	    {
 	        var newPath = file;
             if(file.ToLowerInvariant().Contains(".host"))
             {
                 var rolePart = ".RoleId." + Globals.glbRoleSuperUser;
-                newPath = Regex.Replace(file, "\\.host", rolePart, RegexOptions.IgnoreCase);
+                newPath = HostNameRegex.Replace(file, rolePart);
             }
             else if (file.ToLowerInvariant().Contains(".admin"))
             {
                 var portalSettings = new PortalSettings(Host.HostPortalID);
                 var rolePart = ".RoleId." + portalSettings.AdministratorRoleId;
-                newPath = Regex.Replace(file, "\\.admin", rolePart, RegexOptions.IgnoreCase);
+                newPath = AdminNameRegex.Replace(file, rolePart);
             }
             else if (file.ToLowerInvariant().Contains(".registered"))
             {
                 var portalSettings = new PortalSettings(Host.HostPortalID);
                 var rolePart = ".RoleId." + portalSettings.RegisteredRoleId;
-                newPath = Regex.Replace(file, "\\.registered", rolePart, RegexOptions.IgnoreCase);
+                newPath = RegisteredNameRegex.Replace(file, rolePart);
             }
 
 	        if (newPath != file)

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,8 +51,10 @@ namespace DotNetNuke.Services.Assets
         private const string FolderAlreadyExistsDefaultMessage = "Cannot create folder ({0}), folder already exists in this location";
         private const string FolderFileNameHasInvalidcharactersDefaultMessage = "The name contains invalid character(s). Please specify a name without {0}";
         private const string DefaultMessageDefaultMessage = "The folder does not exist";
-
+        
         #endregion
+
+        private static readonly Regex MappedPathRegex = new Regex(@"^(?!\s*[\\/]).*$", RegexOptions.Compiled);
 
         public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
         {
@@ -318,7 +320,7 @@ namespace DotNetNuke.Services.Assets
 
             mappedPath = PathUtils.Instance.FormatFolderPath(mappedPath);
 
-            if (!Regex.IsMatch(mappedPath, @"^(?!\s*[\\/]).*$"))
+            if (!MappedPathRegex.IsMatch(mappedPath))
             {
                 throw new AssetManagerException(Localization.Localization.GetExceptionMessage("InvalidMappedPath", InvalidMappedPathDefaultMessage));
             }
@@ -396,7 +398,7 @@ namespace DotNetNuke.Services.Assets
 
         private bool IsInvalidName(string itemName)
         {
-            var invalidFilenameChars = new Regex("[" + Regex.Escape(GetInvalidChars()) + "]");
+            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(GetInvalidChars()) + "]");
 
             return invalidFilenameChars.IsMatch(itemName);
         }

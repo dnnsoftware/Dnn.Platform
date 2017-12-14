@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Workflow.Exceptions;
 using DotNetNuke.Framework;
@@ -80,20 +81,25 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         public Entities.Workflow GetWorkflow(int workflowId)
         {
-            Entities.Workflow workflow;
-            using(var context = DataContext.Instance())
-            {
-                var rep = context.GetRepository<Entities.Workflow>();
-                workflow = rep.Find("WHERE WorkflowID = @0", workflowId).SingleOrDefault();
-            }
-            
-            if (workflow == null)
-            {
-                return null;
-            }
+            return CBO.GetCachedObject<Entities.Workflow>(new CacheItemArgs(
+                GetWorkflowItemKey(workflowId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
+                _ =>
+                {
+                    Entities.Workflow workflow;
+                    using (var context = DataContext.Instance())
+                    {
+                        var rep = context.GetRepository<Entities.Workflow>();
+                        workflow = rep.Find("WHERE WorkflowID = @0", workflowId).SingleOrDefault();
+                    }
 
-            workflow.States = _stateRepository.GetWorkflowStates(workflowId);
-            return workflow;
+                    if (workflow == null)
+                    {
+                        return null;
+                    }
+
+                    workflow.States = _stateRepository.GetWorkflowStates(workflowId);
+                    return workflow;
+                });
         }
 
         public Entities.Workflow GetWorkflow(ContentItem item)
@@ -115,8 +121,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 }
                 rep.Insert(workflow);
             }
+
+            CacheWorkflow(workflow);
         }
-        
+
         // TODO: validation
         public void UpdateWorkflow(Entities.Workflow workflow)
         {
@@ -130,6 +138,9 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 }
                 rep.Update(workflow);
             }
+
+            DataCache.RemoveCache(GetWorkflowItemKey(workflow.WorkflowID));
+            CacheWorkflow(workflow);
         }
 
         public void DeleteWorkflow(Entities.Workflow workflow)
@@ -139,6 +150,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 var rep = context.GetRepository<Entities.Workflow>();
                 rep.Delete(workflow);
             }
+
+            DataCache.RemoveCache(GetWorkflowItemKey(workflow.WorkflowID));
         }
         #endregion
 
@@ -149,6 +162,21 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 "WHERE IsDeleted = 0 AND (PortalId = @0 OR PortalId IS NULL) AND WorkflowName = @1 AND WorkflowID != @2",
                 workflow.PortalID, workflow.WorkflowName, workflow.WorkflowID).SingleOrDefault() != null;
         }
+
+        internal static string GetWorkflowItemKey(int workflowId)
+        {
+            return string.Format(DataCache.ContentWorkflowCacheKey, workflowId);
+        }
+
+        private static void CacheWorkflow(Entities.Workflow workflow)
+        {
+            if (workflow.WorkflowID > 0)
+            {
+                CBO.GetCachedObject<Entities.Workflow>(new CacheItemArgs(GetWorkflowItemKey(workflow.WorkflowID),
+                    DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority), _ => workflow);
+            }
+        }
+
         #endregion
 
         #region Service Locator

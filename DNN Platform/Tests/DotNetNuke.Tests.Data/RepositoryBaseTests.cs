@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,7 +23,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Web.Caching;
 using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -221,6 +221,193 @@ namespace DotNetNuke.Tests.Data
             //Assert
             var baseRepo = repo as RepositoryBase<CacheableCat>;
             Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<CacheableCat>, string>(baseRepo, "Scope"));
+        }
+
+        #endregion
+
+        #region Initialize Tests
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_CacheArgs_Null_If_Not_Cacheable()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(String.Empty);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.IsNull(Util.GetPrivateMember<RepositoryBase<Dog>, CacheItemArgs>(baseRepo, "CacheArgs"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_CacheArgs_If_Cacheable()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(Constants.CACHE_DogsKey);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.IsNotNull(Util.GetPrivateMember<RepositoryBase<Dog>, CacheItemArgs>(baseRepo, "CacheArgs"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_Valid_CacheArgs_If_Cacheable()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(Constants.CACHE_DogsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority);
+
+            //Assert
+            var cacheArgs = Util.GetPrivateMember<FakeRepository<Dog>, CacheItemArgs>(repo, "CacheArgs");
+            Assert.AreEqual(Constants.CACHE_DogsKey, cacheArgs.CacheKey);
+            Assert.AreEqual(Constants.CACHE_Priority, cacheArgs.CachePriority);
+            Assert.AreEqual(Constants.CACHE_TimeOut, cacheArgs.CacheTimeOut);
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_IsCacheable_False_If_Not_Cacheable()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsCacheable"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_IsCacheable_True_If_Cacheable()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(Constants.CACHE_DogsKey);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsCacheable"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_IsScoped_False_If_Not_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(String.Empty);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsScoped"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_IsScoped_False_If_Cacheable_And_Not_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(Constants.CACHE_DogsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsScoped"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_IsScoped_True_If_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Cat>();
+            repo.Initialize(String.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Cat>;
+            Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Cat>, bool>(baseRepo, "IsScoped"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_IsScoped_True_If_Cacheable_And_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Cat>();
+            repo.Initialize(Constants.CACHE_CatsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority, Constants.CACHE_ScopeModule);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Cat>;
+            Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Cat>, bool>(baseRepo, "IsScoped"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_Scope_Empty_If_Not_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(String.Empty);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_Scope_Empty_If_Cacheable_And_Not_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Dog>();
+            repo.Initialize(Constants.CACHE_DogsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Dog>;
+            Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_Scope_If_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Cat>();
+            repo.Initialize(String.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Cat>;
+            Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<Cat>, string>(baseRepo, "Scope"));
+        }
+
+        [Test]
+        public void RepositoryBase_Initialize_Sets_Scope_If_Cacheable_And_Scoped()
+        {
+            //Arrange
+
+            //Act
+            var repo = new FakeRepository<Cat>();
+            repo.Initialize(Constants.CACHE_CatsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority, Constants.CACHE_ScopeModule);
+
+            //Assert
+            var baseRepo = repo as RepositoryBase<Cat>;
+            Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<Cat>, string>(baseRepo, "Scope"));
         }
 
         #endregion

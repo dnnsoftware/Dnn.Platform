@@ -38,7 +38,8 @@
         var $module;
 
         var getModuleId = function ($mod) {
-            return $mod.find("a").first().attr("name");
+            var result = $mod.attr("class").match(/DnnModule-([0-9]+)/);
+            return (result && result.length === 2) ? result[1] : null;
         };
 
         var getModuleIndex = function (moduleId, $pane) {
@@ -104,17 +105,18 @@
         for (var moduleNo = 0; moduleNo < $modules.length; moduleNo++) {
             $module = $($modules[moduleNo]);
             mid = getModuleId($module);
+            if (!$module.hasClass("DnnModule-Admin")) {
+                //Add a drag handle
+                if ($module.find(".dnnDragHint").length === 0) {
+                    $module.prepend("<div class=\"dnnDragHint\"></div>");
+                }
 
-            //Add a drag handle
-            if ($module.find(".dnnDragHint").length === 0) {
-                $module.prepend("<div class=\"dnnDragHint\"></div>");
+                //Add a drag hint
+                $module.find(".dnnDragHint").dnnHelperTip({
+                    helpContent: settings.dragHintText,
+                    holderId: "ModuleDragToolTip-" + mid
+                });
             }
-
-            //Add a drag hint
-            $module.find(".dnnDragHint").dnnHelperTip({
-                helpContent: settings.dragHintText,
-                holderId: "ModuleDragToolTip-" + mid
-            });
         }
 
         //call jQuery UI Sortable plugin

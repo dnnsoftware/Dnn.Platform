@@ -136,7 +136,7 @@
     <value>My Folder</value>
   </data>
   <data name="NoPermission.Text" xml:space="preserve">
-    <value>You do not have permissions to view any files on the file system</value>
+    <value>You do not have permissions to view any files on the file system.</value>
   </data>
   <data name="Ok.Text" xml:space="preserve">
     <value>Ok</value>
@@ -165,26 +165,17 @@
   <data name="PasswordStrengthWeak.Text" xml:space="preserve">
     <value>weak</value>
   </data>
-  <data name="CriteriaOneUpperCaseLetter.Text" xml:space="preserve">
-    <value>One upper-case letter</value>
-  </data>
-  <data name="CriteriaOneLowerCaseLetter.Text" xml:space="preserve">
-    <value>One lower-case letter</value>
-  </data>
-  <data name="CriteriaSpecialChar.Text" xml:space="preserve">
-    <value>Special character (!,@,#,%)</value>
+  <data name="CriteriaValidationExpression.Text" xml:space="preserve">
+    <value>Validation Expression: {0}</value>
   </data>
   <data name="CriteriaAtLeastNSpecialChars.Text" xml:space="preserve">
-    <value>At least {0} special characters (!,@,#,%)</value>
-  </data>
-  <data name="CriteriaOneNumber.Text" xml:space="preserve">
-    <value>One number</value>
+    <value>At least {0} non-alphanumeric characters</value>
   </data>
   <data name="CriteriaAtLeastNChars.Text" xml:space="preserve">
     <value>At least {0} characters</value>
   </data>
   <data name="PasswordRulesHeadText.Text" xml:space="preserve">
-    <value>Password Rules:</value>
+    <value>Password Policy:</value>
   </data>
   <data name="PasswordRulesBodyText.Text" xml:space="preserve">
     <value>Contains at least {0} characters, 1 uppercase letter, 1 number and {1}.</value>
@@ -220,7 +211,7 @@
     <value>Decompressing File</value>
   </data>
   <data name="FileUpload.FileIsTooLarge.Error" xml:space="preserve">
-    <value>File size bigger than {0}</value>
+    <value>File size bigger than {0}.</value>
   </data>
   <data name="FileUpload.FileUploadCancelled.Error" xml:space="preserve">
     <value>Upload cancelled</value>
@@ -232,16 +223,16 @@
     <value>File uploaded</value>
   </data>
   <data name="FileUpload.EmptyFileUpload.Error" xml:space="preserve">
-    <value>Your browser does not support empty file uploads</value>
+    <value>Your browser does not support empty file uploads.</value>
   </data>
   <data name="FileUpload.FileAlreadyExists.Error" xml:space="preserve">
-    <value>The file you want to upload already exists in this folder</value>
+    <value>The file you want to upload already exists in this folder.</value>
   </data>
   <data name="FileUpload.UploadStopped.Text" xml:space="preserve">
     <value>File upload stopped</value>
   </data>
   <data name="FileUpload.UrlTooltip.Text" xml:space="preserve">
-    <value>Enter Resource Url like http://SomeWebSite.com/Images/About.png</value>
+    <value>Enter Resource URL like http://SomeWebSite.com/Images/About.png</value>
   </data>
   <data name="FileUpload.KeepButton.Text" xml:space="preserve">
     <value>Keep</value>
@@ -265,7 +256,7 @@
     <value>Items &lt;b&gt;1&lt;/b&gt;-&lt;b&gt;{0}&lt;/b&gt; out of &lt;b&gt;{1}&lt;/b&gt;</value>
   </data>
   <data name="FileUpload.TooManyFiles.Error" xml:space="preserve">
-    <value>You connot upload more than {0} file(s) at once.</value>
+    <value>You cannot upload more than {0} file(s) at once.</value>
   </data>
   <data name="FileUpload.InvalidFileExtensions.Error" xml:space="preserve">
     <value>Some selected files with invalid extensions are excluded from upload.  You can only upload files with the following extensions: {0}.</value>

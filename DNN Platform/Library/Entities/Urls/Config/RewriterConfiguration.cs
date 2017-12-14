@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -124,23 +124,22 @@ namespace DotNetNuke.Entities.Urls.Config
 				var ser = new XmlSerializer(typeof (RewriterConfiguration));
                 
 				//Create a FileStream for the Config file
-				string filePath = Globals.ApplicationMapPath + "\\SiteUrls.config";
+                var filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);
                 if (File.Exists(filePath))
                 {
 					//make sure file is not read-only
                     File.SetAttributes(filePath, FileAttributes.Normal);
                 }
-                var fileWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write);
+                using (var fileWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
+                using (var writer = new StreamWriter(fileWriter))
+                {
+                    //Serialize the RewriterConfiguration
+                    ser.Serialize(writer, config);
 
-                //Open up the file to serialize
-                var writer = new StreamWriter(fileWriter);
-
-                //Serialize the RewriterConfiguration
-                ser.Serialize(writer, config);
-
-                //Close the Writers
-                writer.Close();
-                fileWriter.Close();
+                    //Close the Writers
+                    writer.Close();
+                    fileWriter.Close();
+                }
 
                 //Set Cache
                 DataCache.SetCache("RewriterConfig", config, new DNNCacheDependency(filePath));

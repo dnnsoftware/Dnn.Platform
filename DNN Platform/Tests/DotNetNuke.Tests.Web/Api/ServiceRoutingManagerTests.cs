@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -198,7 +198,31 @@ namespace DotNetNuke.Tests.Web.Api
             var route = (Route)routeCollection[0];
             Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
             route = (Route)routeCollection[1];
-            Assert.AreEqual("folder-another-0", route.DataTokens["Name"]);
+            Assert.AreEqual("folder-default-0-old", route.DataTokens["Name"]);
+        }
+
+        [Test]
+        public void RoutesShouldHaveBackwardCompability()
+        {
+            //Arrange
+            var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
+            _mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
+            var mockPac = new Mock<IPortalAliasController>();
+            mockPac.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
+            PortalAliasController.SetTestableInstance(mockPac.Object);
+
+            var routeCollection = new RouteCollection();
+            var srm = new ServicesRoutingManager(routeCollection);
+
+            //Act
+            srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
+
+            //Assert
+            var route = (Route)routeCollection[0];
+            Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
+            route = (Route)routeCollection[1];
+            Assert.AreEqual("folder-default-0-old", route.DataTokens["Name"]);
+            Assert.IsTrue(route.Url.StartsWith("DesktopModules"));
         }
     }
 }

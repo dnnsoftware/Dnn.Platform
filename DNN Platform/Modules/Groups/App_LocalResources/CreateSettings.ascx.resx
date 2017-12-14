@@ -124,7 +124,7 @@
     <value>Select the page where users will view the list of groups.</value>
   </data>
   <data name="GroupModeration.Help" xml:space="preserve">
-    <value>Select this option if you wish for groups to be approved prior being public.</value>
+    <value>Check this box if groups require Administrator approval before they are visible.</value>
   </data>
   <data name="GroupModeration.Text" xml:space="preserve">
     <value>Groups Require Approval</value>

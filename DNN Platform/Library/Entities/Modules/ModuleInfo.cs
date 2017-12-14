@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,9 +54,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// ModuleInfo provides the Entity Layer for Modules
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [XmlRoot("module", IsNullable = false)]
     [Serializable]
@@ -75,7 +72,6 @@ namespace DotNetNuke.Entities.Modules
         private ModuleDefinitionInfo _moduleDefinition;
         private ModulePermissionCollection _modulePermissions;
         private TabInfo _parentTab;
-        private TabPermissionCollection _tabPermissions;
         private Hashtable _moduleSettings;
         private Hashtable _tabModuleSettings;
 
@@ -147,9 +143,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Associated Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public DesktopModuleInfo DesktopModule
@@ -167,9 +160,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Associated Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int DesktopModuleID { get; set; }
@@ -257,9 +247,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Associated Module Definition
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int ModuleDefID { get; set; }
@@ -269,9 +256,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Associated Module Definition
         /// </summary>
         /// <returns>A ModuleDefinitionInfo</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public ModuleDefinitionInfo ModuleDefinition
@@ -554,9 +538,6 @@ namespace DotNetNuke.Entities.Modules
         /// Fills a ModuleInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
@@ -653,9 +634,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public override int KeyID
@@ -964,6 +942,16 @@ namespace DotNetNuke.Entities.Modules
                     propertyNotFound = false;
                     result = (PropertyAccess.Boolean2LocalizedYesNo(DesktopModule.IsUpgradeable, formatProvider));
                     break;
+                case "adminpage":
+                    isPublic = false;
+                    propertyNotFound = false;
+                    result = PropertyAccess.FormatString(DesktopModule.AdminPage, format);
+                    break;
+                case "hostpage":
+                    isPublic = false;
+                    propertyNotFound = false;
+                    result = PropertyAccess.FormatString(DesktopModule.HostPage, format);
+                    break;
             }
             if (!isPublic && currentScope != Scope.Debug)
             {
@@ -1118,329 +1106,5 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
         }
-
-        #region Obsolete Members
-
-        [Obsolete("Deprecated in DNN 5.1. All permission checks are done through Permission Collections")]
-        [XmlIgnore]
-        public string AuthorizedEditRoles
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_authorizedEditRoles))
-                {
-                    _authorizedEditRoles = ModulePermissions.ToString("EDIT");
-                }
-                return _authorizedEditRoles;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. All permission checks are done through Permission Collections")]
-        [XmlIgnore]
-        public string AuthorizedViewRoles
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_authorizedViewRoles))
-                {
-                    _authorizedViewRoles = InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabID, PortalID).ToString("VIEW") : ModulePermissions.ToString("VIEW");
-                }
-                return _authorizedViewRoles;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.ModuleName")]
-        [XmlIgnore]
-        public string ModuleName
-        {
-            get
-            {
-                return DesktopModule.ModuleName;
-            }
-            set
-            {
-                DesktopModule.ModuleName = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.FriendlyName")]
-        [XmlIgnore]
-        public string FriendlyName
-        {
-            get
-            {
-                return DesktopModule.FriendlyName;
-            }
-            set
-            {
-                DesktopModule.FriendlyName = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.FolderName")]
-        [XmlIgnore]
-        public string FolderName
-        {
-            get
-            {
-                return DesktopModule.FolderName;
-            }
-            set
-            {
-                DesktopModule.FolderName = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.Description")]
-        [XmlIgnore]
-        public string Description
-        {
-            get
-            {
-                return DesktopModule.Description;
-            }
-            set
-            {
-                DesktopModule.Description = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by by DesktopModule.Version")]
-        [XmlIgnore]
-        public string Version
-        {
-            get
-            {
-                return DesktopModule.Version;
-            }
-            set
-            {
-                DesktopModule.Version = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.IsPremium")]
-        [XmlIgnore]
-        public bool IsPremium
-        {
-            get
-            {
-                return DesktopModule.IsPremium;
-            }
-            set
-            {
-                DesktopModule.IsPremium = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.IsAdmin")]
-        [XmlIgnore]
-        public bool IsAdmin
-        {
-            get
-            {
-                return DesktopModule.IsAdmin;
-            }
-            set
-            {
-                DesktopModule.IsAdmin = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.BusinessControllerClass")]
-        [XmlIgnore]
-        public string BusinessControllerClass
-        {
-            get
-            {
-                return DesktopModule.BusinessControllerClass;
-            }
-            set
-            {
-                DesktopModule.BusinessControllerClass = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.SupportedFeatures")]
-        [XmlIgnore]
-        public int SupportedFeatures
-        {
-            get
-            {
-                return DesktopModule.SupportedFeatures;
-            }
-            set
-            {
-                DesktopModule.SupportedFeatures = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.IsPortable")]
-        [XmlIgnore]
-        public bool IsPortable
-        {
-            get
-            {
-                return DesktopModule.IsPortable;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.IsSearchable")]
-        [XmlIgnore]
-        public bool IsSearchable
-        {
-            get
-            {
-                return DesktopModule.IsSearchable;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.IsUpgradeable")]
-        [XmlIgnore]
-        public bool IsUpgradeable
-        {
-            get
-            {
-                return DesktopModule.IsUpgradeable;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.CompatibleVersions")]
-        [XmlIgnore]
-        public string CompatibleVersions
-        {
-            get
-            {
-                return DesktopModule.CompatibleVersions;
-            }
-            set
-            {
-                DesktopModule.CompatibleVersions = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.Dependencies")]
-        [XmlIgnore]
-        public string Dependencies
-        {
-            get
-            {
-                return DesktopModule.Dependencies;
-            }
-            set
-            {
-                DesktopModule.Dependencies = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by DesktopModule.Permisssions")]
-        [XmlIgnore]
-        public string Permissions
-        {
-            get
-            {
-                return DesktopModule.Permissions;
-            }
-            set
-            {
-                DesktopModule.Permissions = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by ModuleDefinition.DefaultCacheTime")]
-        [XmlIgnore]
-        public int DefaultCacheTime
-        {
-            get
-            {
-                return ModuleDefinition.DefaultCacheTime;
-            }
-            set
-            {
-                ModuleDefinition.DefaultCacheTime = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by ModuleControl.ControlSrc")]
-        [XmlIgnore]
-        public string ControlSrc
-        {
-            get
-            {
-                return ModuleControl.ControlSrc;
-            }
-            set
-            {
-                ModuleControl.ControlSrc = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by ModuleControl.ControlType")]
-        [XmlIgnore]
-        public SecurityAccessLevel ControlType
-        {
-            get
-            {
-                return ModuleControl.ControlType;
-            }
-            set
-            {
-                ModuleControl.ControlType = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by ModuleControl.ControlTitle")]
-        [XmlIgnore]
-        public string ControlTitle
-        {
-            get
-            {
-                return ModuleControl.ControlTitle;
-            }
-            set
-            {
-                ModuleControl.ControlTitle = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by ModuleControl.HelpUrl")]
-        [XmlIgnore]
-        public string HelpUrl
-        {
-            get
-            {
-                return ModuleControl.HelpURL;
-            }
-            set
-            {
-                ModuleControl.HelpURL = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by ModuleControl.SupportsPartialRendering")]
-        [XmlIgnore]
-        public bool SupportsPartialRendering
-        {
-            get
-            {
-                return ModuleControl.SupportsPartialRendering;
-            }
-            set
-            {
-                ModuleControl.SupportsPartialRendering = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.")]
-        [XmlIgnore]
-        protected TabPermissionCollection TabPermissions
-        {
-            get {
-                return _tabPermissions ??
-                       (_tabPermissions = TabPermissionController.GetTabPermissions(TabID, PortalID));
-            }
-        }
-
-        #endregion
     }
 }

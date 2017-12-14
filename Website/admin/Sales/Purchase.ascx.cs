@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -208,7 +208,6 @@ namespace DotNetNuke.Modules.Admin.Sales
         private double ConvertCurrency(string Amount, string FromCurrency, string ToCurrency)
         {
             string strPost = "Amount=" + Amount + "&From=" + FromCurrency + "&To=" + ToCurrency;
-            StreamWriter objStream;
             double retValue = 0;
             try
             {
@@ -217,20 +216,22 @@ namespace DotNetNuke.Modules.Admin.Sales
                 objRequest.ContentLength = strPost.Length;
                 objRequest.ContentType = "application/x-www-form-urlencoded";
 
-                objStream = new StreamWriter(objRequest.GetRequestStream());
-                objStream.Write(strPost);
-                objStream.Close();
+                using (var objStream = new StreamWriter(objRequest.GetRequestStream()))
+                {
+                    objStream.Write(strPost);
+                    objStream.Close();
+                }
+
 
                 var objResponse = (HttpWebResponse) objRequest.GetResponse();
-                StreamReader sr;
-                sr = new StreamReader(objResponse.GetResponseStream());
-                string strResponse = sr.ReadToEnd();
-                sr.Close();
+                using (var sr = new StreamReader(objResponse.GetResponseStream()))
+                {
+                    string strResponse = sr.ReadToEnd();
+                    int intPos1 = strResponse.IndexOf(ToCurrency + "</B>");
+                    int intPos2 = strResponse.LastIndexOf("<B>", intPos1);
 
-                int intPos1 = strResponse.IndexOf(ToCurrency + "</B>");
-                int intPos2 = strResponse.LastIndexOf("<B>", intPos1);
-
-                retValue = Convert.ToDouble(strResponse.Substring(intPos2 + 3, (intPos1 - intPos2) - 4));
+                    retValue = Convert.ToDouble(strResponse.Substring(intPos2 + 3, (intPos1 - intPos2) - 4));
+                }
             }
             catch (Exception exc) //Module failed to load
             {

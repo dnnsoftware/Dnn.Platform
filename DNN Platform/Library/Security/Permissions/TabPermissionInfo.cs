@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>
     /// TabPermissionInfo provides the Entity Layer for Tab Permissions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("permission")]
@@ -61,9 +58,6 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// Constructs a new TabPermissionInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
        public TabPermissionInfo()
         {
@@ -76,9 +70,6 @@ namespace DotNetNuke.Security.Permissions
         /// Constructs a new TabPermissionInfo
         /// </summary>
         /// <param name="permission">A PermissionInfo object</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public TabPermissionInfo(PermissionInfo permission) : this()
         {
@@ -98,9 +89,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Tab Permission ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("tabpermissionid")]
         public int TabPermissionID
@@ -120,9 +108,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Tab ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("tabid")]
         public int TabID
@@ -146,9 +131,6 @@ namespace DotNetNuke.Security.Permissions
         /// Fills a TabPermissionInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -163,9 +145,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID

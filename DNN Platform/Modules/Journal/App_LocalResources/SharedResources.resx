@@ -124,7 +124,7 @@
     <value>Comments</value>
   </data>
   <data name="journal_status.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt;[JournalItem:Summary]&lt;/p&gt;
@@ -171,7 +171,7 @@
   </data>
   <data name="journal_link.Text" xml:space="preserve">
     <value>&lt;div class="author"&gt;
-	&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;
+	&lt;img src="[JournalProfile:relativeurl|32]" /&gt;
 &lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
@@ -192,7 +192,7 @@
   </data>
   <data name="journal_photo.Text" xml:space="preserve">
     <value>&lt;div class="author"&gt;
-	&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;
+	&lt;img src="[JournalProfile:relativeurl|32]" /&gt;
 &lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
@@ -214,7 +214,7 @@
   </data>
   <data name="journal_file.Text" xml:space="preserve">
     <value>&lt;div class="author"&gt;
-	&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;
+	&lt;img src="[JournalProfile:relativeurl|32]" /&gt;
 &lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
@@ -252,7 +252,7 @@
     <value>Forum Topics</value>
   </data>
   <data name="journal_forum_reply.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt;replied to: &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -266,7 +266,7 @@
 	&lt;/div&gt;</value>
   </data>
   <data name="journal_forum_topic.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt;created the topic: &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -283,7 +283,7 @@
     <value>Blogs</value>
   </data>
   <data name="journal_blog.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt;&lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -303,7 +303,7 @@
     <value>Groups Joined</value>
   </data>
   <data name="journal_groupcreate.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt;created the group &lt;a href="[journaldata:Url]"&gt;[JournalItem:Title]&lt;/a&gt;&lt;div class="dnnClear"&gt;&lt;i&gt;[journalitem:Summary]&lt;/i&gt;&lt;/div&gt;&lt;/p&gt;
@@ -315,7 +315,7 @@
 	&lt;/div&gt;</value>
   </data>
   <data name="journal_groupjoin.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt;joined the group &lt;a href="[journaldata:Url]"&gt;[JournalItem:Title]&lt;/a&gt;&lt;div class="dnnClear"&gt;&lt;i&gt;[journalitem:Summary]&lt;/i&gt;&lt;/div&gt;&lt;/p&gt;
@@ -387,7 +387,7 @@
     <value>Updated Ideas</value>
   </data>
   <data name="journal_generic.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt; [journalitem:action] &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -484,7 +484,7 @@
     <value>Badges Received</value>
   </data>
   <data name="journal_badge.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt; [journalitem:action] &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -497,7 +497,7 @@
 &lt;/div&gt;</value>
   </data>
   <data name="journal_comment.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt; [journalitem:action] &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -510,7 +510,7 @@
 &lt;/div&gt;</value>
   </data>
   <data name="journal_ideaadd.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt; [journalitem:action] &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -523,7 +523,7 @@
 &lt;/div&gt;</value>
   </data>
   <data name="journal_ideaupdate.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt; [journalitem:action] &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;
@@ -536,7 +536,7 @@
 &lt;/div&gt;</value>
   </data>
   <data name="journal_vote.Text" xml:space="preserve">
-    <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
+    <value>&lt;div class="author"&gt;&lt;img src="[JournalProfile:relativeurl|32]" /&gt;&lt;/div&gt;
 &lt;div class="journalitem"&gt;
 	&lt;p&gt;
 		&lt;span class="authorname"&gt;[JournalControl:AUTHORNAMELINK]&lt;/span&gt; [journalitem:action] &lt;a href="[journaldata:Url]"&gt;[journalitem:Title]&lt;/a&gt;

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,7 +40,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Services.Vendors;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.WebControls;
 
@@ -74,7 +73,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets whether we are in Add User mode
         /// </summary>
-        protected bool AddUser
+        protected virtual bool AddUser
         {
             get
             {
@@ -471,12 +470,6 @@ namespace DotNetNuke.Entities.Modules
                         UserController.UserLogin(PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", PortalSettings.PortalName, "", ref loginStatus, false);
                         break;
                 }
-                //affiliate
-                if (!Null.IsNull(User.AffiliateID))
-                {
-                    var objAffiliates = new AffiliateController();
-                    objAffiliates.UpdateAffiliateStats(newUser.AffiliateID, 0, 1);
-                }
                 //store preferredlocale in cookie
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);
                 if (IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
@@ -505,28 +498,6 @@ namespace DotNetNuke.Entities.Modules
             }
            
             return strMessage;
-        }
-
-
-        [Obsolete("In DotNetNuke 5.0 there is no longer the concept of an Admin Page.  All pages are controlled by Permissions")]
-        protected bool IsAdminTab
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        [Obsolete("In DotNetNuke 5.2 replaced by UserController.GetDefaultUserSettings().")]
-        public static Hashtable GetDefaultSettings()
-        {
-            return UserController.GetDefaultUserSettings();
-        }
-
-        [Obsolete("In DotNetNuke 5.2 replaced by UserController.GetUserSettings(settings).")]
-        public static Hashtable GetSettings(Hashtable settings)
-        {
-            return UserController.GetUserSettings(PortalController.Instance.GetCurrentPortalSettings().PortalId, settings);
         }
 
         #region Private methods

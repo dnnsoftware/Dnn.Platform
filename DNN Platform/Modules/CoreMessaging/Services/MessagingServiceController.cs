@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -248,6 +248,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 foreach (var notification in notificationsDomainModel)
                 {
+                    var user = UserController.Instance.GetUser(PortalSettings.PortalId, notification.SenderUserID);
+                    var displayName = (user != null ? user.DisplayName : "");
+
                     var notificationViewModel = new NotificationViewModel
                     {
                         NotificationId = notification.NotificationID,
@@ -255,8 +258,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         From = notification.From,
                         Body = notification.Body,
                         DisplayDate = Common.Utilities.DateUtils.CalculateDateForDisplay(notification.CreatedOnDate),
-                        SenderAvatar = string.Format(Globals.UserProfilePicRelativeUrl(), notification.SenderUserID, 64, 64),
+                        SenderAvatar = UserController.Instance.GetUserProfilePictureUrl(notification.SenderUserID, 64, 64),
                         SenderProfileUrl = Globals.UserProfileURL(notification.SenderUserID),
+                        SenderDisplayName = displayName,
                         Actions = new List<NotificationActionViewModel>()
                     };
 
@@ -283,7 +287,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                             Name = Localization.GetString("Dismiss.Text"),
                             Description = Localization.GetString("DismissNotification.Text"),
                             Confirm = "",
-                            APICall = "DesktopModules/InternalServices/API/NotificationsService/Dismiss"
+                            APICall = "API/InternalServices/NotificationsService/Dismiss"
                         });
                     }
 

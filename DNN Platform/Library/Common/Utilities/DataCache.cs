@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,6 +31,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
@@ -55,9 +56,6 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>
     /// The DataCache class is a facade class for the CachingProvider Instance's
     /// </summary>
-    /// <history>
-    ///     [cnurse]	12/01/2007	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DataCache
     {
@@ -151,6 +149,8 @@ namespace DotNetNuke.Common.Utilities
 
         public const string TabModuleCacheKey = "TabModules{0}";
         public const string TabModuleSettingsCacheKey = "TabModuleSettings{0}";
+        public const string SingleTabModuleCacheKey = "SingleTabModule{0}";
+        public const string TabModuleSettingsNameCacheKey = "TabModuleSettingsName:{0}:{1}";
         public const CacheItemPriority TabModuleCachePriority = CacheItemPriority.AboveNormal;
         public const int TabModuleCacheTimeOut = 20;
 
@@ -167,6 +167,18 @@ namespace DotNetNuke.Common.Utilities
         public const int ModuleCacheTimeOut = 20;
         public const CacheItemPriority ModuleCachePriority = CacheItemPriority.AboveNormal;
 
+        public const string SharedModulesByPortalCacheKey = "SharedModulesByPortal{0}";
+        public const int SharedModulesByPortalCacheTimeOut = 20;
+        public const CacheItemPriority SharedModulesByPortalCachePriority = CacheItemPriority.Normal;
+
+        public const string ContentItemsCacheKey = "ContentItems{0}";
+        public const int ContentItemsCacheTimeOut = 20;
+        public const CacheItemPriority ContentItemsCachePriority = CacheItemPriority.Normal;
+
+        public const string SharedModulesWithPortalCacheKey = "SharedModulesWithPortal{0}";
+        public const int SharedModulesWithPortalCacheTimeOut = 20;
+        public const CacheItemPriority SharedModulesWithPortalCachePriority = CacheItemPriority.Normal;
+
         public const string FolderCacheKey = "Folders{0}";
         public const int FolderCacheTimeOut = 20;
         public const CacheItemPriority FolderCachePriority = CacheItemPriority.Normal;
@@ -179,7 +191,8 @@ namespace DotNetNuke.Common.Utilities
         public const int FolderMappingCacheTimeOut = 20;
         public const CacheItemPriority FolderMappingCachePriority = CacheItemPriority.High;
 
-        public const string FolderPermissionCacheKey = "FolderPermissions{0}";
+        public const string FolderPermissionCacheKey = "FolderPermissions{0}"; // parent cache dependency key
+        public const string FolderPathPermissionCacheKey = "FolderPathPermissions|{0}|{1}";
         public const CacheItemPriority FolderPermissionCachePriority = CacheItemPriority.Normal;
         public const int FolderPermissionCacheTimeOut = 20;
 
@@ -194,6 +207,18 @@ namespace DotNetNuke.Common.Utilities
         public const string UserCacheKey = "UserInfo|{0}|{1}";
         public const int UserCacheTimeOut = 1;
         public const CacheItemPriority UserCachePriority = CacheItemPriority.Normal;
+
+        public const string UserProfileCacheKey = "UserProfile|{0}|{1}";
+        public const int UserProfileCacheTimeOut = UserCacheTimeOut;
+
+        public const string UserNotificationsConversationCountCacheKey = "UserNitifConversationCount|{0}|{1}";
+        public const string UserNotificationsCountCacheKey = "UserNotificationsCount|{0}|{1}";
+        public const string UserNewThreadsCountCacheKey = "UserNewThreadsCount|{0}|{1}";
+        public const int NotificationsCacheTimeInSec = 30;
+
+        public const string UserPersonalizationCacheKey = "UserPersonalization|{0}|{1}";
+        public const int UserPersonalizationCacheTimeout = 5;
+        public const CacheItemPriority UserPersonalizationCachePriority = CacheItemPriority.Normal;
 
         public const string UserLookupCacheKey = "UserLookup|{0}";
         public const int UserLookupCacheTimeOut = 20;
@@ -213,6 +238,11 @@ namespace DotNetNuke.Common.Utilities
         public const string ResourceFileLookupDictionaryCacheKey = "ResourceFileLookupDictionary";
         public const CacheItemPriority ResourceFileLookupDictionaryCachePriority = CacheItemPriority.NotRemovable;
         public const int ResourceFileLookupDictionaryTimeOut = 200;
+
+        public const string SpaModulesContentHtmlFileCacheKey = "SpaModulesContentHtmlFile|{0}";
+        public const string SpaModulesFileExistsCacheKey = "SpaModulesFileExists|{0}";
+        public const CacheItemPriority SpaModulesHtmlFileCachePriority = CacheItemPriority.Normal;
+        public const int SpaModulesHtmlFileTimeOut = 200;
 
         public const string SkinsCacheKey = "GetSkins{0}";
 
@@ -286,26 +316,33 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
         public const int CaptchaCacheTimeout = 2;
 
-        public const string HmacCacheKey = "HMAC_{0}";
-        public const CacheItemPriority HmacCachePriority = CacheItemPriority.NotRemovable;
-        public const int HmacCacheTimeout =5;
+        public const string ContentWorkflowCacheKey = "ContentWorkflows:{0}";
+        public const string ContentWorkflowStateCacheKey = "ContentWorkflowStates_{0}";
+        public const CacheItemPriority WorkflowsCachePriority = CacheItemPriority.Low;
+        public const int WorkflowsCacheTimeout = 2;
 
         private static string _CachePersistenceEnabled = "";
 
-        private static readonly ReaderWriterLock dictionaryLock = new ReaderWriterLock();
+        public const string ScopeTypesCacheKey = "ScopeTypes";
+        public const string VocabularyCacheKey = "Vocabularies";
+        public const string TermCacheKey = "Terms_{0}";
+
+        internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_{0}";
+
+        private static readonly ReaderWriterLockSlim dictionaryLock = new ReaderWriterLockSlim();
         private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
 
-        private static readonly SharedDictionary<string, Object> dictionaryCache = new SharedDictionary<string, Object>();
+        private static readonly SharedDictionary<string, object> dictionaryCache = new SharedDictionary<string, object>();
 
         public static bool CachePersistenceEnabled
         {
             get
             {
-                if (string.IsNullOrEmpty(_CachePersistenceEnabled))
+                if (String.IsNullOrEmpty(_CachePersistenceEnabled))
                 {
                     _CachePersistenceEnabled = Config.GetSetting("EnableCachePersistence") ?? "false";
                 }
-                return bool.Parse(_CachePersistenceEnabled);
+                return Boolean.Parse(_CachePersistenceEnabled);
             }
         }
 
@@ -314,9 +351,9 @@ namespace DotNetNuke.Common.Utilities
             return CachingProvider.GetCacheKey(CacheKey);
         }
 
-        private static string CleanCacheKey(string CacheKey)
+        private static string CleanCacheKey(string cacheKey)
         {
-            return CachingProvider.CleanCacheKey(CacheKey);
+            return CachingProvider.CleanCacheKey(cacheKey);
         }
 
         internal static void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
@@ -356,7 +393,7 @@ namespace DotNetNuke.Common.Utilities
         public static void ClearCache()
         {
             CachingProvider.Instance().Clear("Prefix", "DNN_");
-            using (ISharedCollectionLock writeLock = dictionaryCache.GetWriteLock())
+            using (dictionaryCache.GetWriteLock())
             {
                 dictionaryCache.Clear();
             }
@@ -404,6 +441,10 @@ namespace DotNetNuke.Common.Utilities
                         outputProvider.Remove(TabId);
                     }
                 }
+
+                var portalId = portals[TabId];
+                RemoveCache(String.Format(SharedModulesByPortalCacheKey, portalId));
+                RemoveCache(String.Format(SharedModulesWithPortalCacheKey, portalId));
             }
         }
 
@@ -424,7 +465,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearDefinitionsCache(int PortalId)
         {
-            RemoveCache(string.Format(ProfileDefinitionsCacheKey, PortalId));
+            RemoveCache(String.Format(ProfileDefinitionsCacheKey, PortalId));
         }
 
         public static void ClearDesktopModulePermissionsCache()
@@ -434,33 +475,39 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearFolderPermissionsCache(int PortalId)
         {
-            RemoveCache(string.Format(FolderPermissionCacheKey, PortalId));
+            PermissionProvider.ResetCacheDependency(PortalId,
+                () => RemoveCache(String.Format(FolderPermissionCacheKey, PortalId)));
         }
 
         public static void ClearListsCache(int PortalId)
         {
-            RemoveCache(string.Format(ListsCacheKey, PortalId));
+            RemoveCache(String.Format(ListsCacheKey, PortalId));
         }
 
         public static void ClearModulePermissionsCache(int TabId)
         {
-            RemoveCache(string.Format(ModulePermissionCacheKey, TabId));
+            RemoveCache(String.Format(ModulePermissionCacheKey, TabId));
         }
 
         public static void ClearTabPermissionsCache(int PortalId)
         {
-            RemoveCache(string.Format(TabPermissionCacheKey, PortalId));
+            RemoveCache(String.Format(TabPermissionCacheKey, PortalId));
         }
 
         public static void ClearUserCache(int PortalId, string username)
         {
-            RemoveCache(string.Format(UserCacheKey, PortalId, username));
+            RemoveCache(String.Format(UserCacheKey, PortalId, username));
+            RemoveCache(String.Format(UserProfileCacheKey, PortalId, username));
         }
 
+        public static void ClearUserPersonalizationCache(int portalId, int userId)
+        {
+            RemoveCache(String.Format(UserPersonalizationCacheKey, portalId, userId));
+        }
 
 		public static void ClearPackagesCache(int portalId)
 		{
-			RemoveCache(string.Format(PackagesCacheKey, portalId));
+			RemoveCache(String.Format(PackagesCacheKey, portalId));
 		}
 
         private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
@@ -534,7 +581,7 @@ namespace DotNetNuke.Common.Utilities
             object cachedObject;
 
             bool isFound;
-            using (ISharedCollectionLock readLock = dictionaryCache.GetReadLock())
+            using (dictionaryCache.GetReadLock())
             {
                 isFound = dictionaryCache.TryGetValue(cacheItemArgs.CacheKey, out cachedObject);
             }
@@ -552,7 +599,7 @@ namespace DotNetNuke.Common.Utilities
                     Exceptions.LogException(ex);
                 }
 
-                using (ISharedCollectionLock writeLock = dictionaryCache.GetWriteLock())
+                using (dictionaryCache.GetWriteLock())
                 {
                     if (!dictionaryCache.ContainsKey(cacheItemArgs.CacheKey))
                     {
@@ -587,39 +634,45 @@ namespace DotNetNuke.Common.Utilities
             return (TObject)objObject;
         }
 
+        private static readonly TimeSpan _5seconds = new TimeSpan(0, 0, 5);
+
         private static object GetUniqueLockObject(string key)
         {
             object @lock = null;
-            dictionaryLock.AcquireReaderLock(new TimeSpan(0, 0, 5));
-            try
+            if (dictionaryLock.TryEnterReadLock(_5seconds))
             {
-                //Try to get lock Object (for key) from Dictionary
-                if (lockDictionary.ContainsKey(key))
-                {
-                    @lock = lockDictionary[key];
-                }
-            }
-            finally
-            {
-                dictionaryLock.ReleaseReaderLock();
-            }
-            if (@lock == null)
-            {
-                dictionaryLock.AcquireWriterLock(new TimeSpan(0, 0, 5));
                 try
                 {
-                    //Double check dictionary
-                    if (!lockDictionary.ContainsKey(key))
+                    //Try to get lock Object (for key) from Dictionary
+                    if (lockDictionary.ContainsKey(key))
                     {
-                        //Create new lock
-                        lockDictionary[key] = new object();
+                        @lock = lockDictionary[key];
                     }
-                    //Retrieve lock
-                    @lock = lockDictionary[key];
                 }
                 finally
                 {
-                    dictionaryLock.ReleaseWriterLock();
+                    dictionaryLock.ExitReadLock();
+                }
+            }
+            if (@lock == null)
+            {
+                if (dictionaryLock.TryEnterWriteLock(_5seconds))
+                {
+                    try
+                    {
+                        //Double check dictionary
+                        if (!lockDictionary.ContainsKey(key))
+                        {
+                            //Create new lock
+                            lockDictionary[key] = new object();
+                        }
+                        //Retrieve lock
+                        @lock = lockDictionary[key];
+                    }
+                    finally
+                    {
+                        dictionaryLock.ExitWriteLock();
+                    }
                 }
             }
             return @lock;
@@ -627,7 +680,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static void RemoveUniqueLockObject(string key)
         {
-            dictionaryLock.AcquireWriterLock(new TimeSpan(0, 0, 5));
+            if (!dictionaryLock.TryEnterWriteLock(_5seconds)) return;
             try
             {
                 //check dictionary
@@ -639,7 +692,7 @@ namespace DotNetNuke.Common.Utilities
             }
             finally
             {
-                dictionaryLock.ReleaseWriterLock();
+                dictionaryLock.ExitWriteLock();
             }
         }
 
@@ -665,7 +718,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void RemoveFromPrivateDictionary(string DnnCacheKey)
         {
-            using (ISharedCollectionLock writeLock = dictionaryCache.GetWriteLock())
+            using (dictionaryCache.GetWriteLock())
             {
                 dictionaryCache.Remove(CleanCacheKey(DnnCacheKey));
             }
@@ -673,8 +726,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void SetCache(string CacheKey, object objObject)
         {
-            DNNCacheDependency objDependency = null;
-            SetCache(CacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
         }
 
         public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency)
@@ -684,14 +736,12 @@ namespace DotNetNuke.Common.Utilities
 
         public static void SetCache(string CacheKey, object objObject, DateTime AbsoluteExpiration)
         {
-            DNNCacheDependency objDependency = null;
-            SetCache(CacheKey, objObject, objDependency, AbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(CacheKey, objObject, (DNNCacheDependency)null, AbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
         }
 
         public static void SetCache(string CacheKey, object objObject, TimeSpan SlidingExpiration)
         {
-            DNNCacheDependency objDependency = null;
-            SetCache(CacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+            SetCache(CacheKey, objObject, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
         }
 
         public static void SetCache(string CacheKey, object objObject, DNNCacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration)
@@ -712,101 +762,5 @@ namespace DotNetNuke.Common.Utilities
                 CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
             }
         }
-
-        #region "Obsolete Methods"
-
-        [Obsolete("Deprecated in DNN 5.0 - Replace by ClearHostCache(True)")]
-        public static void ClearModuleCache()
-        {
-            ClearHostCache(true);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static object GetPersistentCacheItem(string CacheKey, Type objType)
-        {
-            return CachingProvider.Instance().GetItem(GetDnnCacheKey(CacheKey));
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.1 - Should have been declared Friend")]
-        public static void ClearDesktopModuleCache(int PortalId)
-        {
-            RemoveCache(string.Format(DesktopModuleCacheKey, PortalId));
-            RemoveCache(ModuleDefinitionCacheKey);
-            RemoveCache(ModuleControlsCacheKey);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.1 - Should have been declared Friend")]
-        public static void ClearHostSettingsCache()
-        {
-            RemoveCache(HostSettingsCacheKey);
-            RemoveCache(SecureHostSettingsCacheKey);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void RemovePersistentCacheItem(string CacheKey)
-        {
-            CachingProvider.Instance().Remove(GetDnnCacheKey(CacheKey));
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, bool PersistAppRestart)
-        {
-            DNNCacheDependency objDependency = null;
-            SetCache(CacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, DateTime AbsoluteExpiration, bool PersistAppRestart)
-        {
-            DNNCacheDependency objDependency = null;
-            SetCache(CacheKey, objObject, objDependency, AbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Cache Persistence is not supported")]
-        public static void SetCache(string CacheKey, object objObject, TimeSpan SlidingExpiration, bool PersistAppRestart)
-        {
-            DNNCacheDependency objDependency = null;
-            SetCache(CacheKey, objObject, objDependency, Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - SetCache(ByVal CacheKey As String, ByVal objObject As Object, ByVal objDependency As DotNetNuke.Services.Cache.DNNCacheDependency, ByVal AbsoluteExpiration As Date, ByVal SlidingExpiration As System.TimeSpan)")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - SetCache(ByVal CacheKey As String, ByVal objObject As Object, ByVal objDependency As DotNetNuke.Services.Cache.DNNCacheDependency, ByVal AbsoluteExpiration As Date, ByVal SlidingExpiration As System.TimeSpan, ByVal Priority As CacheItemPriority, ByVal OnRemoveCallback As CacheItemRemovedCallback)")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, CacheItemPriority Priority,
-                                    CacheItemRemovedCallback OnRemoveCallback, bool PersistAppRestart)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Use new overload that uses a DNNCacheDependency")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Use new overload that uses a DNNCacheDependency")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1 - Use new overload that uses a DNNCacheDependency")]
-        public static void SetCache(string CacheKey, object objObject, CacheDependency objDependency, DateTime AbsoluteExpiration, TimeSpan SlidingExpiration, CacheItemPriority Priority,
-                                    CacheItemRemovedCallback OnRemoveCallback)
-        {
-            SetCache(CacheKey, objObject, new DNNCacheDependency(objDependency), AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
-        }
-
-        #endregion
     }
 }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,8 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 
@@ -38,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class ComponentInstallerBase
     {
@@ -54,9 +52,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual string AllowableFiles
         {
@@ -71,9 +66,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Completed flag
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Completed { get; set; }
 
@@ -82,9 +74,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the InstallMode
         /// </summary>
         /// <value>An InstallMode value</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallMode InstallMode
         {
@@ -99,9 +88,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Logger
         /// </summary>
         /// <value>An Logger object</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Logger Log
         {
@@ -116,9 +102,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the associated Package
         /// </summary>
         /// <value>An PackageInfo object</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInfo Package { get; set; }
 
@@ -127,9 +110,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a Dictionary of Files that are included in the Package
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> PackageFiles
         {
@@ -144,9 +124,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PhysicalSitePath
         {
@@ -156,6 +133,80 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        public EventMessage ReadEventMessageNode(XPathNavigator manifestNav)
+        {
+            EventMessage eventMessage = null;
+
+            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
+            if (eventMessageNav != null)
+            {
+                eventMessage = new EventMessage
+                                    {
+                                        Priority = MessagePriority.High,
+                                        ExpirationDate = DateTime.Now.AddYears(-1),
+                                        SentDate = DateTime.Now,
+                                        Body = "",
+                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing),
+                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing)
+                                    };
+                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
+                {
+                    var attribName = attributeNav.Name;
+                    var attribValue = attributeNav.Value;
+                    if (attribName == "upgradeVersionsList")
+                    {
+                        if (!String.IsNullOrEmpty(attribValue))
+                        {
+                            string[] upgradeVersions = attribValue.Split(',');
+                            attribValue = "";
+                            foreach (string version in upgradeVersions)
+                            {
+                                switch (version.ToLowerInvariant())
+                                {
+                                    case "install":
+                                        if (Package.InstalledVersion == new Version(0, 0, 0))
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        break;
+                                    case "upgrade":
+                                        if (Package.InstalledVersion > new Version(0, 0, 0))
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        break;
+                                    default:
+                                        Version upgradeVersion = null;
+                                        try
+                                        {
+                                            upgradeVersion = new Version(version);
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
+                                        }
+
+                                        if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) //To allow when fresh installing or installresources
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        else if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion)
+                                        {
+                                            attribValue += version + ",";
+                                        }
+                                        break;
+                                }
+
+                            }
+                            attribValue = attribValue.TrimEnd(',');
+                        }
+                    }
+                    eventMessage.Attributes.Add(attribName, attribValue);
+                }
+            }
+            return eventMessage;
+        }
+
         public bool Skipped { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -163,9 +214,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets whether the Installer supports Manifest only installs
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/29/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual bool SupportsManifestOnlyInstall
         {
@@ -180,9 +228,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets and sets the Type of the component
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Type { get; set; }
 
@@ -191,9 +236,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Version of the Component
         /// </summary>
         /// <value>A System.Version</value>
-        /// <history>
-        /// 	[cnurse]	02/29/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Version Version { get; set; }
 

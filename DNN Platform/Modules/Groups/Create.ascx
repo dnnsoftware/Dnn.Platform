@@ -15,8 +15,8 @@
                         </label>
                     </div>
                     <asp:TextBox ID="txtGroupName" runat="server" MaxLength="50"/>
-                    <asp:RequiredFieldValidator ID="reqGroupName" runat="server" ControlToValidate="txtGroupName" CssClass="dnnFormMessage dnnFormError" ResourceKey="GroupName.Required" Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="valGroupName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="GroupName.Invalid" ControlToValidate="txtGroupName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>\(\)¿¡«»!\.:\*'\[\]]*" />
+                    <asp:RequiredFieldValidator ValidationGroup="CreateGroupWizard" ID="reqGroupName" runat="server" ControlToValidate="txtGroupName" CssClass="dnnFormMessage dnnFormError" ResourceKey="GroupName.Required" Display="Dynamic" />
+                    <asp:RegularExpressionValidator ValidationGroup="CreateGroupWizard" ID="valGroupName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="GroupName.Invalid" ControlToValidate="txtGroupName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>\(\)¿¡«»!\.:\*'\[\]]*" />
                     <asp:Label id="lblInvalidGroupName" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="GroupNameDuplicate" Visible="false" />
                 </div>
                 <!--close dnnFormItem-->
@@ -78,7 +78,7 @@
                 </div>
                 <!--close dnnFormItem-->
                 <ul class="dnnActions dnnClear">
-                    <li><asp:LinkButton ID="btnCreate" runat="server" CssClass="dnnPrimaryAction" Text="Create Group" resourcekey="CreateGroupButton" /> </li>
+                    <li><asp:LinkButton ID="btnCreate" runat="server" CssClass="dnnPrimaryAction" Text="Create Group" resourcekey="CreateGroupButton" ValidationGroup="CreateGroupWizard" /> </li>
                     <li><asp:LinkButton ID="btnCancel" runat="server" CssClass="dnnSecondaryAction" Text="Cancel" resourcekey="Cancel" CausesValidation="False" /></li>
                 </ul>
                 <!--close dnnActions-->
@@ -99,6 +99,12 @@
         $('#<%=rdAccessTypePrivate.ClientID %>').change(function () {
             $('#trMem').hide();
 
+        });
+        $('.wizardStepBody').find('.dnnPrimaryAction').click(function () {
+            var btn = $(this);
+            if (Page_ClientValidate("CreateGroupWizard")) {
+                btn.attr('disabled', true);
+            }
         });
     });
 </script>

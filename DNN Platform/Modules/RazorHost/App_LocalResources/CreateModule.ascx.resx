@@ -139,7 +139,7 @@
     <value>Add Test Page?</value>
   </data>
   <data name="plDescription.Help" xml:space="preserve">
-    <value>You can provide a description for your module.</value>
+    <value>Enter a description for the module.</value>
   </data>
   <data name="plDescription.Text" xml:space="preserve">
     <value>Description:</value>
@@ -151,7 +151,7 @@
     <value>Folder:</value>
   </data>
   <data name="plName.Help" xml:space="preserve">
-    <value>Enter a Friendly Name for your module.</value>
+    <value>Enter a friendly name for the module.</value>
   </data>
   <data name="plName.Text" xml:space="preserve">
     <value>Module Name:</value>
@@ -169,7 +169,7 @@
     <value>The name is required.&lt;br/&gt;</value>
   </data>
   <data name="FolderExists.Text" xml:space="preserve">
-    <value>The folder you selected already exists. Please select another name.</value>
+    <value>The folder you selected already exists.  Please select another name.</value>
   </data>
   <data name="ManifestCreationError.Text" xml:space="preserve">
     <value>There was an unexpected error creating the manifest.  Please check the Event Viewer for more information.</value>
@@ -242,7 +242,7 @@
     <value>&lt;%@ Control AutoEventWireup="false" Inherits="DotNetNuke.Web.Razor.RazorModuleBase" %&gt;</value>
   </data>
   <data name="ScriptCopyError.Text" xml:space="preserve">
-    <value>There was an unexpected error copying the script to the target folder. Please check the Event Viewer for more information.</value>
+    <value>There was an unexpected error copying the script to the target folder.  Please check the Event Viewer for more information.</value>
   </data>
   <data name="ImportControl.ErrorMessage" xml:space="preserve">
     <value>There was an error importing the module control, please see the event log for further details</value>

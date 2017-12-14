@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -63,12 +63,29 @@ namespace DotNetNuke.Web.Api.Internal
             request.GetHttpContext().Items["PortalSettings"] = portalSettings;
             return portalSettings;
         }
-
-        private static bool TabIsInPortal(int tabId, int portalId)
+        
+        private static bool TabIsInPortalOrHost(int tabId, int portalId)
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);
 
-            return tab != null;
+            return tab != null && (IsHostTab(tab) || tab.PortalID == portalId || InSamePortalGroup(tab.PortalID, portalId));
+        }
+
+        private static bool InSamePortalGroup(int portalId1, int portalId2)
+        {
+            var portal1 = PortalController.Instance.GetPortal(portalId1);
+            var portal2 = PortalController.Instance.GetPortal(portalId2);
+
+            return portal1 != null
+                       && portal2 != null
+                       && portal1.PortalGroupID > Null.NullInteger
+                       && portal2.PortalGroupID > Null.NullInteger
+                       && portal1.PortalGroupID == portal2.PortalGroupID;
+        }
+
+        private static bool IsHostTab(TabInfo tab)
+        {
+            return tab.PortalID == Null.NullInteger;
         }
 
         private static void ValidateTabAndModuleContext(HttpRequestMessage request, int portalId, out int tabId)
@@ -77,7 +94,7 @@ namespace DotNetNuke.Web.Api.Internal
 
             if (tabId != Null.NullInteger)
             {
-                if (!TabIsInPortal(tabId, portalId))
+                if (!TabIsInPortalOrHost(tabId, portalId))
                 {
                     throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("TabNotInPortal", Localization.ExceptionsResourceFile)));
                 }

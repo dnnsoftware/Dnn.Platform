@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,9 +34,6 @@ namespace DotNetNuke.Services.Authentication
     /// The AuthenticationLogoffBase class provides a base class for Authentiication 
     /// Logoff controls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	07/10/2007  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLogoffBase : UserModuleBase
     {
@@ -47,9 +44,6 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>
         /// Gets and Sets the Type of Authentication associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/10/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType
         {

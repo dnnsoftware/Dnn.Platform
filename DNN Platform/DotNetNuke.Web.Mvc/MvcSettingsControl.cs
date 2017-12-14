@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -16,6 +16,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Web.Mvc
@@ -24,15 +25,19 @@ namespace DotNetNuke.Web.Mvc
     {
         public MvcSettingsControl() : base("Settings")
         {
-            
+            ExecuteModuleImmediately = false;
         }
 
         public void LoadSettings()
         {
+            ExecuteModule();
         }
 
         public void UpdateSettings()
         {
+            ExecuteModule();
+
+            ModuleController.Instance.UpdateModule(ModuleContext.Configuration);
         }
     }
 }

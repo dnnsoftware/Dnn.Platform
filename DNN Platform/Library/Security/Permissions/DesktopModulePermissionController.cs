@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,9 +44,6 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>
     /// DesktopModulePermissionController provides the Business Layer for DesktopModule Permissions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/15/2008   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModulePermissionController
@@ -57,9 +54,6 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// ClearPermissionCache clears the DesktopModule Permission Cache
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static void ClearPermissionCache()
         {
@@ -73,9 +67,6 @@ namespace DotNetNuke.Security.Permissions
         /// AddDesktopModulePermission adds a DesktopModule Permission to the Database
         /// </summary>
         /// <param name="objDesktopModulePermission">The DesktopModule Permission to add</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
@@ -99,9 +90,6 @@ namespace DotNetNuke.Security.Permissions
         /// DeleteDesktopModulePermission deletes a DesktopModule Permission in the Database
         /// </summary>
         /// <param name="DesktopModulePermissionID">The ID of the DesktopModule Permission to delete</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermission(int DesktopModulePermissionID)
         {
@@ -120,9 +108,6 @@ namespace DotNetNuke.Security.Permissions
         /// DesktopModule Permission in the Database
         /// </summary>
         /// <param name="portalDesktopModuleID">The ID of the DesktopModule to delete</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermissionsByPortalDesktopModuleID(int portalDesktopModuleID)
         {
@@ -140,9 +125,6 @@ namespace DotNetNuke.Security.Permissions
         /// DeleteDesktopModulePermissionsByUserID deletes a user's DesktopModule Permission in the Database
         /// </summary>
         /// <param name="objUser">The user</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermissionsByUserID(UserInfo objUser)
         {
@@ -160,9 +142,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermission gets a DesktopModule Permission from the Database
         /// </summary>
         /// <param name="DesktopModulePermissionID">The ID of the DesktopModule Permission</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionInfo GetDesktopModulePermission(int DesktopModulePermissionID)
         {
@@ -174,9 +153,6 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection
         /// </summary>
         /// <param name="portalDesktopModuleID">The ID of the DesktopModule</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleID)
         {
@@ -189,9 +165,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="objDesktopModulePermissions">The Permissions for the DesktopModule</param>
         /// <param name="permissionKey">The Permission to check</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool HasDesktopModulePermission(DesktopModulePermissionCollection objDesktopModulePermissions, string permissionKey)
         {
@@ -203,9 +176,6 @@ namespace DotNetNuke.Security.Permissions
         /// UpdateDesktopModulePermission updates a DesktopModule Permission in the Database
         /// </summary>
         /// <param name="objDesktopModulePermission">The DesktopModule Permission to update</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void UpdateDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {

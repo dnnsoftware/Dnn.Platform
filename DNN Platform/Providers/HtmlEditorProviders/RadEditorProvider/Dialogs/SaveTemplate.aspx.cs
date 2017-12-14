@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,8 +43,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
 	public partial class SaveTemplate : DotNetNuke.Framework.PageBase
 	{
 
@@ -212,20 +210,22 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				newFile.FolderId = folder.FolderID;
 				newFile.Folder = FileSystemUtils.FormatFolderPath(folder.FolderPath);
 
-				var memStream = new MemoryStream();
-				byte[] fileDataBytes = Encoding.UTF8.GetBytes(fileContents);
-				memStream.Write(fileDataBytes, 0, fileDataBytes.Length);
-				memStream.Flush();
-				memStream.Position = 0;
+                using (var memStream = new MemoryStream())
+                {
+                    byte[] fileDataBytes = Encoding.UTF8.GetBytes(fileContents);
+                    memStream.Write(fileDataBytes, 0, fileDataBytes.Length);
+                    memStream.Flush();
+                    memStream.Position = 0;
 
-				if (newFile.FileId != Null.NullInteger)
-				{
-					FileManager.Instance.UpdateFile(newFile, memStream);
-				}
-				else
-				{
-					FileManager.Instance.AddFile(folder, newFileName, memStream, true);
-				}
+                    if (newFile.FileId != Null.NullInteger)
+                    {
+                        FileManager.Instance.UpdateFile(newFile, memStream);
+                    }
+                    else
+                    {
+                        FileManager.Instance.AddFile(folder, newFileName, memStream, true);
+                    }
+                }
 
 				ShowSaveTemplateMessage(string.Empty);
 			}

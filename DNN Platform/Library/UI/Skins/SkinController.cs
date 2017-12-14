@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,16 +54,16 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[willhsc]	3/3/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SkinController));
-		private const string GlobalSkinPrefix = "[G]";
-		private const string PortalSystemSkinPrefix = "[S]";
-		private const string PortalSkinPrefix = "[L]";
+        private const string GlobalSkinPrefix = "[G]";
+        private const string PortalSystemSkinPrefix = "[S]";
+        private const string PortalSkinPrefix = "[L]";
+        private static readonly Regex GdirRegex = new Regex("\\[g]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 		#region Public Shared Properties
 		
@@ -251,16 +251,16 @@ namespace DotNetNuke.UI.Skins
             string strSkinSrc = skinSrc;
             if (!String.IsNullOrEmpty(strSkinSrc))
             {
-                switch (strSkinSrc.ToLowerInvariant().Substring(0, 3))
+                switch (strSkinSrc.Substring(0, 3).ToLowerInvariant())
                 {
                     case "[g]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[g]", Globals.HostPath, RegexOptions.IgnoreCase);
+                        strSkinSrc = GdirRegex.Replace(strSkinSrc, Globals.HostPath);
                         break;
                     case "[s]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[s]", portalSettings.HomeSystemDirectory, RegexOptions.IgnoreCase);
+                        strSkinSrc = SdirRegex.Replace(strSkinSrc, portalSettings.HomeSystemDirectory);
                         break;
                     case "[l]": //to be compliant with all versions
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeDirectory, RegexOptions.IgnoreCase);
+                        strSkinSrc = LdirRegex.Replace(strSkinSrc, portalSettings.HomeDirectory);
                         break;
                 }
             }
@@ -328,9 +328,6 @@ namespace DotNetNuke.UI.Skins
         /// </remarks>
         /// <param name="skinFolder">The Folder Name</param>
         /// <param name="skinFile">The File Name without extension</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
             if (skinFolder.ToLower() == "_default")
@@ -361,9 +358,6 @@ namespace DotNetNuke.UI.Skins
         /// passed as a parameter.  Using this method abstracts knowledge of the actual location
         /// of skins in the file system.
         /// </remarks>
-        /// <history>
-        ///     [Joe Brinkman]	10/20/2007	Created
-        /// </history>
         public static bool IsGlobalSkin(string skinSrc)
         {
             return skinSrc.Contains(Globals.HostPath);
@@ -483,27 +477,31 @@ namespace DotNetNuke.UI.Skins
                         //process embedded zip files
 						if (objZipEntry.Name.ToLower() == RootSkin.ToLower() + ".zip")
                         {
-                            var objMemoryStream = new MemoryStream();
-                            intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                            while (intSize > 0)
+                            using (var objMemoryStream = new MemoryStream())
                             {
-                                objMemoryStream.Write(arrData, 0, intSize);
                                 intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
+                                while (intSize > 0)
+                                {
+                                    objMemoryStream.Write(arrData, 0, intSize);
+                                    intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
+                                }
+                                objMemoryStream.Seek(0, SeekOrigin.Begin);
+                                strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                             }
-                            objMemoryStream.Seek(0, SeekOrigin.Begin);
-                            strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                         }
                         else if (objZipEntry.Name.ToLower() == RootContainer.ToLower() + ".zip")
                         {
-                            var objMemoryStream = new MemoryStream();
-                            intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                            while (intSize > 0)
+                            using(var objMemoryStream = new MemoryStream())
                             {
-                                objMemoryStream.Write(arrData, 0, intSize);
                                 intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
+                                while (intSize > 0)
+                                {
+                                    objMemoryStream.Write(arrData, 0, intSize);
+                                    intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
+                                }
+                                objMemoryStream.Seek(0, SeekOrigin.Begin);
+                                strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
                             }
-                            objMemoryStream.Seek(0, SeekOrigin.Begin);
-                            strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
                         }
                         else
                         {
@@ -584,25 +582,6 @@ namespace DotNetNuke.UI.Skins
 
             }
             return strMessage;
-        }
-		
-		#endregion
-
-		#region Obsolete
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, string path)
-        {
-            var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
-            string strMessage = UploadLegacySkin(rootPath, skinRoot, skinName, fileStream);
-            fileStream.Close();
-            return strMessage;
-        }
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, Stream inputStream)
-        {
-            return UploadLegacySkin(rootPath, skinRoot, skinName, inputStream);
         }
 		
 		#endregion

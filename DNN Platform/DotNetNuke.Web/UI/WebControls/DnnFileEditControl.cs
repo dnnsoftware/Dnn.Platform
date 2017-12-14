@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,9 +46,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         ///   Gets or sets the current file extension filter.
         /// </summary>
-        /// <history>
-        ///   [anurse]	08/11/2006 documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FileFilter { get; set; }
 
@@ -56,9 +53,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         ///   Gets or sets the current file path.
         /// </summary>
-        /// <history>
-        ///   [cnurse]	07/02/2007 created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FilePath { get; set; }
 
@@ -70,9 +64,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         ///   Creates the control contained within this control
         /// </summary>
-        /// <history>
-        ///   [cnurse]	07/31/2006 created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
@@ -109,9 +100,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         ///   Runs before the control is rendered.
         /// </summary>
-        /// <history>
-        ///   [cnurse]	07/31/2006 created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
@@ -130,9 +118,6 @@ namespace DotNetNuke.Web.UI.WebControls
         ///   Renders the control in edit mode
         /// </summary>
         /// <param name = "writer">An HtmlTextWriter to render the control to</param>
-        /// <history>
-        ///   [cnurse]	04/20/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
@@ -154,9 +139,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </remarks>
         /// <param name = "postDataKey">A key to the PostBack Data to load</param>
         /// <param name = "postCollection">A name value collection of postback data</param>
-        /// <history>
-        ///   [cnurse]	08/01/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {

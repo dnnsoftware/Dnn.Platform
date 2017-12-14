@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -275,8 +275,9 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 else
                 {
+                    cultureCode = cultureCode.ToLowerInvariant();
                     List<TabInfo> tabs;
-                    if (!_localizedTabs.TryGetValue(cultureCode.ToLowerInvariant(), out tabs))
+                    if (!_localizedTabs.TryGetValue(cultureCode, out tabs))
                     {
                         collection = new TabCollection(new List<TabInfo>());
                     }
@@ -284,7 +285,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         collection = !includeNeutral 
                                         ? new TabCollection(from t in tabs 
-                                                            where t.CultureCode.ToLowerInvariant() == cultureCode.ToLowerInvariant() 
+                                                            where t.CultureCode.ToLowerInvariant() == cultureCode
                                                             select t) 
                                         : new TabCollection(tabs);
                     }

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,10 +54,6 @@ namespace DotNetNuke.Security.Roles
     /// <summary>
     /// The RoleInfo class provides the Entity Layer Role object
     /// </summary>
-    /// <history>
-    ///     [cnurse]    05/23/2005  made compatible with .NET 2.0
-    ///     [cnurse]    01/03/2006  added RoleGroupId property
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class RoleInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPropertyAccess
@@ -339,9 +335,6 @@ namespace DotNetNuke.Security.Roles
         /// Fills a RoleInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
@@ -423,9 +416,6 @@ namespace DotNetNuke.Security.Roles
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	03/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {
@@ -675,9 +665,6 @@ namespace DotNetNuke.Security.Roles
         /// Writes a RoleInfo to an XmlWriter
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {

@@ -11,7 +11,7 @@
 			//hover event
 			function hoverOver($m, opacity, effectMenu) {
 				var $border = $m.children('.' + opts.borderClassName);
-				if ($border.size() === 0) {
+				if ($border.length === 0) {
 					$border = $('<div class="' + opts.borderClassName + '"></div>').prependTo($m).css({ opacity: 0 });
 				}
 				$m.attr('style', 'z-index:904;');
@@ -72,7 +72,7 @@
 				$menuBody.position({ my: myPosition.x + " " + myPosition.y, at: targetPosition.x + " " + targetPosition.y, of: $menuContainer, collision: 'none' });
 			}
 
-			if ($module.find(opts.menuSelector).size() > 0) {
+			if ($module.find(opts.menuSelector).length > 0) {
 
 				$module.hoverIntent({
 					sensitivity: opts.hoverSensitivity,

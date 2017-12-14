@@ -4,8 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Web.Api.Internal.Auth;
-using Moq;
+using DotNetNuke.Web.Api.Auth;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Web.Api
@@ -27,12 +26,12 @@ namespace DotNetNuke.Tests.Web.Api
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
 
             //Act
-            var handler = new DigestAuthMessageHandler();
+            var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
             //Assert
             Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
-            Assert.IsTrue(response.Headers.WwwAuthenticate.First().Parameter.Contains("realm=\"DNNAPI\""));
+            StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
         }
 
         [Test]
@@ -43,11 +42,42 @@ namespace DotNetNuke.Tests.Web.Api
             response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "XmlHttpRequest");
 
             //Act
-            var handler = new DigestAuthMessageHandler();
+            var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
             //Assert
             CollectionAssert.IsEmpty(response.Headers.WwwAuthenticate);
+        }
+
+        [Test]
+        public void MissingXmlHttpRequestValueDoesntThrowNullException()
+        {
+            //Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
+            response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "");
+
+            //Act
+            var handler = new DigestAuthMessageHandler(true, false);
+            handler.OnOutboundResponse(response, new CancellationToken());
+
+            //Assert
+            Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
+            StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
+        }
+
+        [Test]
+        public void ResponseWithNullRequestReturnsUnauthorized()
+        {
+            //Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = null };
+
+            //Act
+            var handler = new DigestAuthMessageHandler(true, false);
+            handler.OnOutboundResponse(response, new CancellationToken());
+
+            //Assert
+            Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
+            StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
         }
 
         //todo unit test actual authentication code

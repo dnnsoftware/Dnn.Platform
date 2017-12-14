@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/14/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class EditControlFactory
     {
@@ -49,9 +46,6 @@ namespace DotNetNuke.UI.WebControls
         /// TypeDataField
         /// </summary>
         /// <param name="editorInfo">An EditorInfo object</param>
-        /// <history>
-        ///     [cnurse]	03/06/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static EditControl CreateEditControl(EditorInfo editorInfo)
         {
@@ -59,42 +53,27 @@ namespace DotNetNuke.UI.WebControls
 
             if (editorInfo.Editor == "UseSystemType")
             {
-                Type type = Type.GetType(editorInfo.Type);
                 //Use System Type
-
-                switch (type.FullName)
-                {
-                    case "System.DateTime":
-                        propEditor = new DateTimeEditControl();
-                        break;
-                    case "System.Boolean":
-                        propEditor = new CheckEditControl();
-                        break;
-                    case "System.Int32":
-                    case "System.Int16":
-                        propEditor = new IntegerEditControl();
-                        break;
-                    default:
-                        if (type.IsEnum)
-                        {
-                            propEditor = new EnumEditControl(editorInfo.Type);
-                        }
-                        else
-                        {
-                            propEditor = new TextEditControl(editorInfo.Type);
-                        }
-                        break;
-                }
+                propEditor = CreateEditControlInternal(editorInfo.Type);
             }
             else
             {
-				//Use Editor
-                Type editType = Type.GetType(editorInfo.Editor, true, true);
-                propEditor = (EditControl) Activator.CreateInstance(editType);
+                //Use Editor
+                try
+                {
+                    Type editType = Type.GetType(editorInfo.Editor, true, true);
+                    propEditor = (EditControl)Activator.CreateInstance(editType);
+                }
+                catch (TypeLoadException)
+                {
+                    //Use System Type
+                    propEditor = CreateEditControlInternal(editorInfo.Type);
+                }
             }
             propEditor.ID = editorInfo.Name;
             propEditor.Name = editorInfo.Name;
-			propEditor.Category = editorInfo.Category;
+            propEditor.DataField = editorInfo.Name;
+            propEditor.Category = editorInfo.Category;
 
             propEditor.EditMode = editorInfo.EditMode;
             propEditor.Required = editorInfo.Required;
@@ -106,5 +85,42 @@ namespace DotNetNuke.UI.WebControls
 
             return propEditor;
         }
+
+        private static EditControl CreateEditControlInternal(string systemType)
+        {
+            EditControl propEditor = null;
+            try
+            {
+                var type = Type.GetType(systemType);
+                if (type != null)
+                {
+                    switch (type.FullName)
+                    {
+                        case "System.DateTime":
+                            propEditor = new DateTimeEditControl();
+                            break;
+                        case "System.Boolean":
+                            propEditor = new CheckEditControl();
+                            break;
+                        case "System.Int32":
+                        case "System.Int16":
+                            propEditor = new IntegerEditControl();
+                            break;
+                        default:
+                            if (type.IsEnum)
+                            {
+                                propEditor = new EnumEditControl(systemType);
+                            }
+                            break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
+            return propEditor ?? new TextEditControl(systemType);
+        }
     }
 }
+

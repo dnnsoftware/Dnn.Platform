@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,9 +38,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// ControlInfo provides a base class for Module Controls and SkinControls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	03/28/2008   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class ControlInfo : BaseEntityInfo
@@ -55,9 +52,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Control Key
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlKey { get; set; }
 
@@ -66,9 +60,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Control Source
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
 		public string ControlSrc { get; set; }
 
@@ -78,9 +69,6 @@ namespace DotNetNuke.Entities.Modules
         /// Update Panel
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
 		public bool SupportsPartialRendering { get; set; }
 
@@ -89,9 +77,6 @@ namespace DotNetNuke.Entities.Modules
         /// Fills a ControlInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {

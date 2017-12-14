@@ -130,7 +130,7 @@
     border-color: #CED4E0;
     border-style: dashed;
     border-width: 2px;
-    color: #9B9A98;
+    color: #333;
     height: 65px;
     position: relative;
     transition: box-shadow 200ms ease-in-out 0s;
@@ -271,9 +271,7 @@
 
 .fu-file-already-exists-prompt .fu-status-message {
     float: left;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     display: inline-block;
     max-width: 400px;
     line-height: 12px;

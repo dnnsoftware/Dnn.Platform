@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,9 +42,6 @@ namespace DotNetNuke.UI.Containers
     /// <remarks>
     /// ActionBase inherits from CommandButton, and implements the IActionControl Interface.
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	12/23/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ActionCommandButton : CommandButton, IActionControl
     {
@@ -62,9 +59,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and sets the ModuleAction for this Action control
         /// </summary>
         /// <returns>A ModuleAction object</returns>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleAction ModuleAction
         {
@@ -91,9 +85,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ActionManager instance for this Action control
         /// </summary>
         /// <returns>An ActionManager object</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
@@ -112,9 +103,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
@@ -128,9 +116,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// CreateChildControls builds the control tree
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
@@ -146,9 +131,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnAction raises the Action Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
@@ -162,9 +144,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnButtonClick runs when the underlying CommandButton is clicked
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnButtonClick(EventArgs e)
         {
@@ -179,9 +158,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnPreRender runs when just before the Render phase of the Page Lifecycle
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {

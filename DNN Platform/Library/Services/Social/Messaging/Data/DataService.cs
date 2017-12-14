@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of recipients</returns>
         public int CheckReplyHasRecipients(int conversationId, int userId)
         {
-            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CheckReplyHasRecipients", conversationId, userId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CheckReplyHasRecipients", conversationId, userId);
         }
 
         /// <summary>Gets the in box view.</summary>
@@ -233,7 +233,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of new threads for a given user</returns>
         public int CountNewThreads(int userId, int portalId)
         {
-            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountNewThreads", userId, portalId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountNewThreads", userId, portalId);
         }
 
         /// <summary>Counts the total conversations.</summary>
@@ -242,7 +242,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of new conversations for a given user</returns>
         public int CountTotalConversations(int userId, int portalId)
         {
-            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountTotalConversations", userId, portalId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountTotalConversations", userId, portalId);
         }
 
         /// <summary>Counts the messages by conversation.</summary>
@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of new messages for a given conversation</returns>
         public int CountMessagesByConversation(int conversationId)
         {
-            return conversationId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountMessagesByConversation", conversationId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountMessagesByConversation", conversationId);
         }
 
         /// <summary>Counts the archived messages by conversation.</summary>
@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of archived messages for a given conversation</returns>
         public int CountArchivedMessagesByConversation(int conversationId)
         {
-            return conversationId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessagesByConversation", conversationId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessagesByConversation", conversationId);
         }
 
         /// <summary>Counts the sent messages.</summary>
@@ -267,7 +267,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of messages sent for a given user</returns>
         public int CountSentMessages(int userId, int portalId)
         {
-            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountSentMessages", userId, portalId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentMessages", userId, portalId);
         }
 
         /// <summary>Counts the archived messages.</summary>
@@ -276,7 +276,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of archived messages for a given user</returns>
         public int CountArchivedMessages(int userId, int portalId)
         {
-            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
         }
 
         /// <summary>Counts the sent conversations.</summary>
@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of sent conversations for a given user</returns>
         public int CountSentConversations(int userId, int portalId)
         {
-            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
         }
 
         /// <summary>Counts the archived conversations.</summary>
@@ -294,7 +294,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of archived conversations for a given user</returns>
         public int CountArchivedConversations(int userId, int portalId)
         {
-            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
         }
 
         #endregion

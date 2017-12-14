@@ -152,7 +152,7 @@
   <data name="IntroDetail.Text" xml:space="preserve">
     <value>&lt;p&gt;Welcome to the DotNetNuke Upgrade Page.&lt;/p&gt;
 
-&lt;p&gt;The first step is to choose the language you wish to use for the Upgrade.&lt;/p&gt;
+&lt;p&gt;The first step is to choose the language you want to use for the upgrade.&lt;/p&gt;
 
 </value>
   </data>
@@ -166,10 +166,21 @@
     <value>No Installation Log</value>
   </data>
   <data name="Password.Help" xml:space="preserve">
-    <value>The password for the super user account.</value>
+    <value>The password for the Super User account.</value>
   </data>
   <data name="Password.Text" xml:space="preserve">
     <value>Password:</value>
+  </data>
+  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
+    <value>Product Improvement Program</value>
+  </data>
+  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
+    <value>The product improvement program allows us to better understand how we can
+improve DNN for you. The data will help us analyze usage and what is important
+for people using the product. All of the data is anonymous and for internal use only. Learn more about the &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Product Improvement Program&lt;/a&gt;.</value>
+  </data>
+  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
+    <value>Send anonymous usage information to DNN</value>
   </data>
   <data name="Retry.Text" xml:space="preserve">
     <value>Retry</value>
@@ -193,7 +204,7 @@
     <value>Upgrading Database</value>
   </data>
   <data name="Username.Help" xml:space="preserve">
-    <value>The username for the super user account.</value>
+    <value>The username for the Super User account.</value>
   </data>
   <data name="Username.Text" xml:space="preserve">
     <value>Host (SuperUser) Username:</value>
@@ -209,5 +220,11 @@
   </data>
   <data name="UpgradeStarted.Text" xml:space="preserve">
     <value>Upgrade Started at</value>
+  </data>
+  <data name="AcceptTerms.Required" xml:space="preserve">
+    <value>Accept the terms of the license agreement to continue.</value>
+  </data>
+  <data name="AcceptTerms.Text" xml:space="preserve">
+    <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
 </root>

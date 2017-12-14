@@ -13,7 +13,7 @@
 <div class="journalTools">
     <div id="journalEditor">
         <div id="journalClose"></div>
-        <textarea id="journalContent"></textarea>
+        <textarea id="journalContent" aria-label="Content"></textarea>
         <div id="tbar">
             <span id="tbar-perm"></span>
             <% if (AllowFiles) {  %>
@@ -26,16 +26,23 @@
                 <div class="handle"></div>
                 <ul>
                     <li><b><%= LocalizeString("WhoWillSee.Text") %></b></li>
-                    <li><input type="radio" name="privacy" value="E" checked="checked" /><%= LocalizeString("Everyone.Text") %></li>
-                    <li><input type="radio" name="privacy" value="C" /><%= LocalizeString("Community.Text") %></li>
-                    <li><input type="radio" name="privacy" value="F" /><%= LocalizeString("Friends.Text") %></li>
+                    <% if (IsGroup && !IsPublicGroup)
+                    { %>
+                    <li><input type="radio" name="privacy" value="R" checked="checked" aria-label="Security" /><%= LocalizeString("GroupMembers.Text") %></li>
+                    <% }
+                    else
+                    { %>
+                    <li><input type="radio" name="privacy" value="E" checked="checked" aria-label="Security" /><%= LocalizeString("Everyone.Text") %></li>
+                    <li><input type="radio" name="privacy" value="C" aria-label="Security" /><%= LocalizeString("Community.Text") %></li>
+                    <li><input type="radio" name="privacy" value="F" aria-label="Security" /><%= LocalizeString("Friends.Text") %></li>
                     <% if (!IsGroup) { %>
-                    <li><input type="radio" name="privacy" value="U" /><%= LocalizeString("Private.Text") %></li>
+                    <li><input type="radio" name="privacy" value="U" aria-label="Security" /><%= LocalizeString("Private.Text") %></li>
+                    <% } %>
                     <% } %>
                 </ul>
             </div>
         </div>
-        <a href="#" id="btnShare"><%= LocalizeString("Share.Text") %></a>
+        <a href="#" id="btnShare" aria-label="Share"><%= LocalizeString("Share.Text") %></a>
         <div id="journalPlaceholder"><%= LocalizeString("SharePlaceHolder.Text") %></div>
         <div class="dnnClear"></div>
     </div>
@@ -52,7 +59,7 @@
                 </div>
                 <div class="journal_localFileShare">
                     <span class="browser-upload-btn"><%= LocalizeString("UploadFromLocal.Text") %></span>
-                    <input id="uploadFileId" type="file" name="files[]" />
+                    <input id="uploadFileId" type="file" name="files[]" aria-label="Upload" />
                 </div>
                 <div style="clear:both; padding: 0; margin: 0;"></div>
             </div>
@@ -77,7 +84,7 @@
             <div id="linkClose"></div>
             <div id="imagePreviewer">
                 <div id="image">
-                    <img src='' />
+                    <img src='' alt="Preview" />
                 </div>
                 <span id="imgPrev"><<</span><span id="imgCount">1 <%= LocalizeString("Of.Text") %> 10</span><span id="imgNext">>></span>
             </div>
@@ -120,6 +127,7 @@
 
     var pid = <%= Pid.ToString()%>;
     var gid = <%= Gid.ToString()%>;
+    var ispublicgroup = <%= IsPublicGroup ? "true" : "false" %>;
 
     var journalOptions = {};
     journalOptions.servicesFramework = $.ServicesFramework(<%=ModuleId %>);

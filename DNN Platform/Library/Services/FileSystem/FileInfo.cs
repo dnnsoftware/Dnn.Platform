@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,10 +46,6 @@ namespace DotNetNuke.Services.FileSystem
     /// <summary>
     ///   Represents the File object and holds the Properties of that object
     /// </summary>
-    /// <history>
-    ///   [DYNST]     02/01/2004   Created
-    ///   [vnguyen]   04/28/2010   Modified: Added GUID and Version GUID properties
-    /// </history>
     /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
     [Serializable]
@@ -250,7 +246,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (FileId != 0 && string.IsNullOrEmpty(_sha1Hash))
+                if (FileId > 0 && string.IsNullOrEmpty(_sha1Hash))
                 {
                     LoadHashProperty();
                 }
@@ -374,6 +370,8 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         /// <summary>
         /// Gets or sets the date on which the file starts to be published
         /// </summary>
@@ -393,6 +391,11 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets or sets the published version number of the file
         /// </summary>
         public int PublishedVersion { get; set; }
+
+        /// <summary>
+        /// Gets a flag which says whether the file has ever been published
+        /// </summary>
+        public bool HasBeenPublished { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the file is enabled,
@@ -437,11 +440,13 @@ namespace DotNetNuke.Services.FileSystem
             LastModificationTime = Null.SetNullDateTime(dr["LastModificationTime"]);
             FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
             Title = Null.SetNullString(dr["Title"]);
+            Description = Null.SetNullString(dr["Description"]);
             EnablePublishPeriod = Null.SetNullBoolean(dr["EnablePublishPeriod"]);
             StartDate = Null.SetNullDateTime(dr["StartDate"]);
             EndDate  = Null.SetNullDateTime(dr["EndDate"]);
             ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
             PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
+            HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
             FillBaseProperties(dr);
         }
 

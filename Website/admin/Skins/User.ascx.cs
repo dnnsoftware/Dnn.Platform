@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -45,10 +45,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
-    ///                             brackets from property names
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class User : SkinObjectBase
     {
@@ -191,7 +187,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             avatar.ImageUrl = GetAvatarUrl(userInfo);
                             avatar.NavigateUrl = enhancedRegisterLink.NavigateUrl;
-                            avatar.ToolTip = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
+                            avatar.ToolTip = avatar.Text = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
                             avatarGroup.Visible = true;                            
                         }
                         else
@@ -209,23 +205,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private string GetAvatarUrl(UserInfo userInfo)
         {
-            var url = string.Format(Globals.UserProfilePicRelativeUrl(false), userInfo.UserID, 32, 32);
-            if (userInfo.Profile != null)
-            {
-                var photoProperty = userInfo.Profile.GetProperty("Photo");
-
-                int photoFileId;
-                if (photoProperty != null && int.TryParse(photoProperty.PropertyValue, out photoFileId))
-                {
-                    var photoFile = FileManager.Instance.GetFile(photoFileId);
-                    if (photoFile != null)
-                    {
-                        return url + "&cdv="+photoFile.LastModificationTime.Ticks;
-                    }
-                }
-            }
-
-            return url;
+            return UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32);
         }
 
         private int GetMessageTab()

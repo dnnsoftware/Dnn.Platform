@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,7 +38,9 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 
 using Lucene.Net.Documents;
@@ -56,7 +58,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// -----------------------------------------------------------------------------
     internal class InternalSearchControllerImpl : IInternalSearchController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LuceneControllerImpl));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InternalSearchControllerImpl));
         private const string SearchableModuleDefsKey = "{0}-{1}";
         private const string SearchableModuleDefsCacheKey = "SearchableModuleDefs";
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
@@ -70,6 +72,9 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         private static readonly DataProvider DataProvider = DataProvider.Instance();
+
+        private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #region constructor
         public InternalSearchControllerImpl()
@@ -130,11 +135,9 @@ namespace DotNetNuke.Services.Search.Internals
 
                     default:
 
-                        var localizedName = Localization.Localization.GetSafeJSString("Crawler_" + crawler.SearchTypeName, LocalizedResxFile);
-                        if (string.IsNullOrEmpty(localizedName))
-                        {
-                            localizedName = crawler.SearchTypeName;
-                        }
+                        var resultControllerType = Reflection.CreateType(crawler.SearchResultClass);
+                        var resultController = (BaseResultController)Reflection.CreateObject(resultControllerType);                       
+                        var localizedName = Localization.Localization.GetSafeJSString(resultController.LocalizedSearchTypeName);
 
                         results.Add(new SearchContentSource
                         {
@@ -473,10 +476,18 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new NumericField(SearchHelper.Instance.StripTagsNoAttributes(Constants.NumericKeyPrefixTag + kvp.Key, true), Field.Store.YES, true).SetIntValue(kvp.Value));
             }
 
+            bool tagBoostApplied = false;
             foreach (var tag in searchDocument.Tags)
             {
                 var field = new Field(Constants.Tag, SearchHelper.Instance.StripTagsNoAttributes(tag.ToLower(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost) field.Boost = _tagBoost / 10f;
+                if (!tagBoostApplied)
+                {
+                    if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost)
+                    {
+                        field.Boost = _tagBoost / 10f;
+                        tagBoostApplied = true;
+                    }
+                }
                 doc.Add(field);
             }
 
@@ -516,13 +527,13 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Add Field to Doc when supplied fieldValue > 0
         /// </summary>
-        private void AddIntField(Document doc, int fieldValue, string fieldTag)
+        private static void AddIntField(Document doc, int fieldValue, string fieldTag)
         {
             if (fieldValue > 0)
                 doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
         }
 
-        private const string HtmlTagsWithAttrs = "<[A-Za-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
+        private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
         private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private const string AttrText = "[\"'](?<text>.*?)[\"']";
@@ -537,9 +548,9 @@ namespace DotNetNuke.Services.Search.Internals
             if (!String.IsNullOrEmpty(strippedString))
             {
                 // Remove all opening HTML Tags with no attributes
-                strippedString = Regex.Replace(strippedString, @"<\w*\s*>", emptySpace, RegexOptions.IgnoreCase);
+                strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
                 // Remove all closing HTML Tags
-                strippedString = Regex.Replace(strippedString, @"</\w*\s*>", emptySpace, RegexOptions.IgnoreCase);
+                strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
             }
 
             if (!String.IsNullOrEmpty(strippedString))

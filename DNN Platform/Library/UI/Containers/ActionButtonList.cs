@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,11 +31,6 @@ using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.UI.Containers
 {
-    /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionButtonList
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionButtonList provides a list of buttons for a group of actions of the same type.
     /// </summary>
@@ -43,10 +38,6 @@ namespace DotNetNuke.UI.Containers
     /// ActionButtonList inherits from CompositeControl, and implements the IActionControl
     /// Interface.  It uses a single ActionCommandButton for each Action.
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	12/23/2007  created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class ActionButtonList : CompositeControl, IActionControl
     {
 		#region "Private Members"
@@ -67,10 +58,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ModuleActionCollection to bind to the list
         /// </summary>
         /// <value>A ModuleActionCollection</value>
-        /// <history>
-        /// 	[cnurse]	12/23/2007	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected ModuleActionCollection ModuleActions
         {
             get
@@ -93,10 +80,6 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         /// <remarks>Defaults to 2 non-breaking spaces</remarks>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	12/23/2007	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
             get
@@ -115,10 +98,6 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         /// <remarks>Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions</remarks>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	12/23/2007	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public string CommandName
         {
             get
@@ -131,16 +110,12 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets whether the icon is displayed
- /// </summary>
- /// <remarks>Defaults to False</remarks>
- /// <value>A Boolean</value>
- /// <history>
- /// 	[cnurse]	12/23/2007	created
- /// </history>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets whether the icon is displayed
+        /// </summary>
+        /// <remarks>Defaults to False</remarks>
+        /// <value>A Boolean</value>
         public bool DisplayIcon { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -149,10 +124,6 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	12/23/2007	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
             get
@@ -165,16 +136,12 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the Icon used
- /// </summary>
- /// <remarks>Defaults to the icon defined in Action</remarks>
- /// <value>A String</value>
- /// <history>
- /// 	[cnurse]	12/23/2007	created
- /// </history>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Icon used
+        /// </summary>
+        /// <remarks>Defaults to the icon defined in Action</remarks>
+        /// <value>A String</value>
         public string ImageURL { get; set; }
 
         #region IActionControl Members
@@ -186,10 +153,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ActionManager instance for this Action control
         /// </summary>
         /// <returns>An ActionManager object</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
             get
@@ -207,10 +170,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
@@ -223,10 +182,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnAction raises the Action Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (Action != null)
@@ -239,10 +194,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnLoad runs when the control is loaded into the Control Tree
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -286,10 +237,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// ActionButtonClick handles the Action event of the contained ActionCommandButton(s)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void ActionButtonClick(object sender, ActionEventArgs e)
         {
             OnAction(e);

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,6 +30,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 
@@ -149,7 +150,7 @@ namespace DotNetNuke.Entities.Urls
                         parmRedirects.AddRange(allRedirects); //add the 'all' range to the tab range
                         tabId = result.TabId;
                     }
-                    if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLower().Contains("default.aspx"))
+                    if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
                     {
                         //for the default.aspx page
                         if (parmRedirects == null)
@@ -181,7 +182,7 @@ namespace DotNetNuke.Entities.Urls
                             //regex test each replaced to see if there is a match between the parameter string
                             //and the parmRedirect
                             string compareWith = rewrittenUrl;
-                            var redirectRegex = new Regex(parmRedirect.LookFor,
+                            var redirectRegex = RegexUtils.GetCachedRegex(parmRedirect.LookFor,
                                                           RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             Match regexMatch = redirectRegex.Match(compareWith);
                             bool success = regexMatch.Success;

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,8 @@
 #region Usings
 
 using System;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
@@ -133,7 +135,18 @@ namespace DotNetNuke.Services.Log.EventLog
 			log.LogProperties.Add(new LogDetailInfo("DefaultDataProvider", objBasePortalException.DefaultDataProvider));
 			log.LogProperties.Add(new LogDetailInfo("ExceptionGUID", objBasePortalException.ExceptionGUID));
 			log.LogPortalID = objBasePortalException.PortalID;
-			LogController.Instance.AddLog(log);
+
+		    var sqlException = objException as SqlException;
+            if (sqlException != null && (uint)sqlException.ErrorCode == 0x80131904 && sqlException.Number == 4060)
+            {
+                // This is to avoid stack-overflow exception when a database connection exception occurs
+                // bercause the logger will try to write to the database and goes in a loop of failures.
+               Trace.TraceError(log.Serialize());
+            }
+            else
+            {
+                Instance.AddLog(log);
+            }
 
 			//when current user is host user and exception is PageLoadException, try to log the log guid into cookies.
 			//so that this log can be picked and do more action on it later.

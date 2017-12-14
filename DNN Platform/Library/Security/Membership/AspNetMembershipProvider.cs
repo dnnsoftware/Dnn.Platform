@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,12 +26,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration.Provider;
 using System.Data;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Web;
 using System.Web.Security;
 
@@ -66,9 +63,6 @@ namespace DotNetNuke.Security.Membership
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// [skydnn] DNN4016 and DNN4133
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class AspNetMembershipProvider : MembershipProvider
     {
@@ -221,7 +215,7 @@ namespace DotNetNuke.Security.Membership
 
         private UserCreateStatus CreateDNNUser(ref UserInfo user)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             string userName = objSecurity.InputFilter(user.Username,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -243,7 +237,7 @@ namespace DotNetNuke.Security.Membership
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
                                                          PortalSecurity.FilterFlag.NoMarkup);
-            if (displayName.Contains("<"))
+            if (displayName.Contains("<") || displayName.Contains(">"))
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
@@ -263,6 +257,9 @@ namespace DotNetNuke.Security.Membership
                                                           updatePassword,
                                                           isApproved,
                                                           UserController.Instance.GetCurrentUserInfo().UserID));
+
+                //Save the user password history
+                new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
             }
             catch (Exception ex)
             {
@@ -276,7 +273,7 @@ namespace DotNetNuke.Security.Membership
 
         private static UserCreateStatus CreateMemberhipUser(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string userName = portalSecurity.InputFilter(user.Username,
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -530,14 +527,6 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
                         }
-                        if (schema.Select("ColumnName = 'HmacAppId'").Length > 0)
-                        {
-                            user.HmacAppId = Null.SetNullString(dr["HmacAppId"]);
-                        }
-                        if (schema.Select("ColumnName = 'HmacAppSecret'").Length > 0)
-                        {
-                            user.HmacAppSecret = Null.SetNullString(dr["HmacAppSecret"]);
-                        }
                     }
 
                     user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
@@ -637,7 +626,7 @@ namespace DotNetNuke.Security.Membership
 
         private static void UpdateUserMembership(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string email = portalSecurity.InputFilter(user.Email,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -737,12 +726,37 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNull("userId", userId);
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
-            _dataProvider.ChangeUsername(userId, newUsername);
+            var userName = PortalSecurity.Instance.InputFilter(newUsername,
+                                                      PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+
+            if (!userName.Equals(newUsername))
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
+            // Validate username against bad characters; it must not start or end with space, 
+            // must not containg control characters, and not contain special puctuations
+            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+		    char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+		    var valid = userName.Length >= 5 &&
+                        userName == userName.Trim() &&
+                        userName.All(ch => ch >= ' ') &&
+                        userName.IndexOfAny(unallowedAscii) < 0;
+		    if (!valid)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
+            _dataProvider.ChangeUsername(userId, userName);
+
             EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
+
             DataCache.ClearCache();          
         }
 
@@ -814,7 +828,7 @@ namespace DotNetNuke.Security.Membership
 
         private UserCreateStatus ValidateForProfanity(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             var createStatus = UserCreateStatus.AddUser;
 
             Hashtable settings = UserController.GetUserSettings(user.PortalID);
@@ -861,10 +875,6 @@ namespace DotNetNuke.Security.Membership
         /// </remarks>
         /// <param name="user">The user to persist to the Data Store.</param>
         /// <returns>A UserCreateStatus enumeration indicating success or reason for failure.</returns>
-        /// <history>
-        /// DNN-4016 Allow OAuth authenticated user to join more than one portal
-        /// DNN-4133 Prevent duplicate usernames for OAuth email address with same email prefix and different email domain.
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {
@@ -1129,20 +1139,7 @@ namespace DotNetNuke.Security.Membership
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
             return objUserInfo;
         }
-
-        /// <summary>
-        /// Get a user based on their HMAC AppId
-        /// </summary>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="appId">HMAC AppId</param>
-        /// <returns>The User as a UserInfo object</returns>
-        public override UserInfo GetUserByHmacAppId(int portalId, string appId)
-        {
-            IDataReader dr = _dataProvider.GetUserByHmacAppId(appId);
-            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
-            return objUserInfo;
-        }
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUserByUserName retrieves a User from the DataStore
@@ -1155,8 +1152,16 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByUserName(int portalId, string username)
         {
-            IDataReader dr = _dataProvider.GetUserByUsername(portalId, username);
-            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
+            var objUserInfo = CBO.GetCachedObject<UserInfo>(
+                new CacheItemArgs(string.Format(DataCache.UserCacheKey, portalId, username),
+                    DataCache.UserCacheTimeOut, DataCache.UserCachePriority),
+                _ =>
+                {
+                    using (var dr = _dataProvider.GetUserByUsername(portalId, username))
+                    {
+                        return FillUserInfo(portalId, dr, true);
+                    }
+                });
             return objUserInfo;
         }
 
@@ -1176,6 +1181,27 @@ namespace DotNetNuke.Security.Membership
             if (!String.IsNullOrEmpty(vanityUrl))
             {
                 IDataReader dr = _dataProvider.GetUserByVanityUrl(portalId, vanityUrl);
+                user = FillUserInfo(portalId, dr, true);
+            }
+            return user;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetUserByPasswordResetToken retrieves a User from the DataStore
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="resetToken">The password reset token.</param>
+        /// <returns>The User as a UserInfo object</returns>
+        /// -----------------------------------------------------------------------------
+        public override UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
+        {
+            UserInfo user = null;
+            if (!String.IsNullOrEmpty(resetToken))
+            {
+                IDataReader dr = _dataProvider.GetUserByPasswordResetToken(portalId, resetToken);
                 user = FillUserInfo(portalId, dr, true);
             }
             return user;
@@ -1589,8 +1615,12 @@ namespace DotNetNuke.Security.Membership
 
 			//Get AspNet MembershipUser
 			MembershipUser aspnetUser = GetMembershipUser(user);
+            if (aspnetUser.IsLockedOut)
+            {
+                aspnetUser.UnlockUser();
+            }
 
-			string resetPassword = ResetPassword(user, answer);
+            string resetPassword = ResetPassword(user, answer);
 			return aspnetUser.ChangePassword(resetPassword, newPassword);
 		}
 
@@ -1642,7 +1672,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void UpdateUser(UserInfo user)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             string firstName = objSecurity.InputFilter(user.FirstName,
                                                        PortalSecurity.FilterFlag.NoScripting |
                                                        PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -1663,7 +1693,16 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            
+
+            if (!firstName.Equals(user.FirstName))
+            {
+                user.FirstName = firstName;
+            }
+
+            if (!lastName.Equals(user.LastName))
+            {
+                user.LastName = lastName;
+            }
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
@@ -1691,9 +1730,7 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
-                                     UserController.Instance.GetCurrentUserInfo().UserID,
-                                     user.HmacAppId,
-                                     user.HmacAppSecret);
+                                     UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);
@@ -1803,8 +1840,8 @@ namespace DotNetNuke.Security.Membership
                     }
                     else
                     {
-                        var ps = new PortalSecurity();
-                        if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
+                        var ps = PortalSecurity.Instance;
+                        if (verificationCode == ps.Encrypt(Config.GetDecryptionkey(), portalId + "-" + user.UserID))
                         {
                             UserController.ApproveUser(user);
                         }
@@ -1862,57 +1899,5 @@ namespace DotNetNuke.Security.Membership
             }
             return arrUsers;
         }
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUnAuthorizedUsers(int portalId, bool isHydrated)
-        {
-            return GetUnAuthorizedUsers(portalId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUser(int portalId, int userId, bool isHydrated)
-        {
-            return GetUser(portalId, userId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUserByUserName(int portalId, string username, bool isHydrated)
-        {
-            return GetUserByUserName(portalId, username);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsers(int portalId, bool isHydrated, int pageIndex, int pageSize,
-                                           ref int totalRecords)
-        {
-            return GetUsers(portalId, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByEmail(int portalId, bool isHydrated, string emailToMatch, int pageIndex,
-                                                  int pageSize, ref int totalRecords)
-        {
-            return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByUserName(int portalId, bool isHydrated, string userNameToMatch,
-                                                     int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByProfileProperty(int portalId, bool isHydrated, string propertyName,
-                                                            string propertyValue, int pageIndex, int pageSize,
-                                                            ref int totalRecords)
-        {
-            return GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize,
-                                             ref totalRecords);
-        }
-
-        #endregion
     }
 }

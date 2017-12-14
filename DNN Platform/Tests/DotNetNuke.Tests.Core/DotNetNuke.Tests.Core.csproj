@@ -59,13 +59,17 @@
     <NoWarn>1591, 0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Instrumentation, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.log4net">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
@@ -81,22 +85,21 @@
     <Reference Include="Moq">
       <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Externals\AJAX\bin\System.Web.Extensions.dll</HintPath>
@@ -151,9 +154,17 @@
     <Compile Include="Controllers\Messaging\NotificationsControllerTests.cs" />
     <Compile Include="Controllers\Search\SearchQueryStringParserTests.cs" />
     <Compile Include="Controllers\Social\RelationshipControllerTests.cs" />
+    <Compile Include="Entities\Modules\Settings\BaseSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\ComplexType.cs" />
+    <Compile Include="Entities\Modules\Settings\ComplexTypeSerializer.cs" />
+    <Compile Include="Entities\Modules\Settings\ModuleSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\NullableSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\PortalSettingsTests.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleSettingsTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTestFactory.cs" />
     <Compile Include="Entities\Portals\PortalSettingsControllerTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
+    <Compile Include="Entities\Tabs\TabControllerTests.cs" />
     <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />
@@ -169,13 +180,22 @@
     <Compile Include="Providers\Folder\SecureFolderProviderTests.cs" />
     <Compile Include="Providers\Folder\StandardFolderProviderTests.cs" />
     <Compile Include="EscapedStringTest.cs" />
+    <Compile Include="Providers\Membership\MembershipProviderTests.cs" />
     <Compile Include="Providers\Permissions\PermissionTests.cs" />
     <Compile Include="RetryableActionTests.cs" />
+    <Compile Include="Security\PortalSecurity\PortalSecurityTest.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
+    <Compile Include="Services\ClientCapability\TestClientCapability.cs" />
+    <Compile Include="Services\CryptographyProviders\FipsCompilanceCryptographyProviderTests.cs" />
+    <Compile Include="Services\CryptographyProviders\CoreCryptographyProviderTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
+    <Compile Include="Services\Tokens\TokenReplaceTests.cs" />
     <Compile Include="Services\Tokens\PropertyAccessTests.cs" />
+    <Compile Include="FileSystemUtilsTests.cs" />
+    <Compile Include="Services\UtilTest.cs" />
+    <Compile Include="Services\UserRequest\UserRequestIPAddressControllerTest.cs" />
     <Compile Include="TabCollectionTest.cs" />
     <Compile Include="Services\HtmlUtilsTest.cs" />
     <Compile Include="Providers\Caching\DataCacheTests.cs" />
@@ -197,36 +217,32 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="DotNetNuke.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Entities\Portals\TestFiles\SettingValues.csv" />
     <None Include="Entities\Portals\TestFiles\HostSettings.csv" />
     <None Include="Entities\Portals\TestFiles\DefaultValues.csv" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\invalid_onerror.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Resources\invalid_onload.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\invalid_script.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\valid.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

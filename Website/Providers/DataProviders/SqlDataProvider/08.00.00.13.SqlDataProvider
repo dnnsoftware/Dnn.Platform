@@ -1,0 +1,72 @@
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddException]') AND type in (N'P', N'PC'))
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddException
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddException
+	@ExceptionHash varchar(100),
+	@Message nvarchar(500),
+	@StackTrace nvarchar(max),
+	@InnerMessage nvarchar(500),
+	@InnerStackTrace nvarchar(max),
+	@Source nvarchar(500)
+AS
+
+BEGIN TRY
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Exceptions] WHERE ExceptionHash=@ExceptionHash)
+	INSERT INTO {databaseOwner}[{objectQualifier}Exceptions]
+		(ExceptionHash,
+		[Message],
+		StackTrace,
+		InnerMessage,
+		InnerStackTrace,
+		Source)
+	VALUES
+		(@ExceptionHash,
+		@Message,
+		@StackTrace,
+		@InnerMessage,
+		@InnerStackTrace,
+		@Source)
+END TRY
+BEGIN CATCH
+
+END CATCH
+GO
+
+/***** DNN-7694: update admin page value for admin modules *****/
+UPDATE {databaseOwner}[{objectQualifier}DesktopModules] SET AdminPage = 'GoogleAnalytics' WHERE FriendlyName = 'Google Analytics'
+GO
+
+/***** DNN-7761: update the date/datetime control to new type. *****/
+UPDATE {databaseOwner}[{objectQualifier}Lists] SET Text = 'DotNetNuke.Web.UI.WebControls.PropertyEditorControls.DateEditControl, DotNetNuke.Web.Deprecated'
+	WHERE ListName = 'DataType' AND Value = 'Date'
+
+UPDATE {databaseOwner}[{objectQualifier}Lists] SET Text = 'DotNetNuke.Web.UI.WebControls.PropertyEditorControls.DateTimeEditControl, DotNetNuke.Web.Deprecated'
+	WHERE ListName = 'DataType' AND Value = 'DateTime'
+GO
+
+/* DNN-7565: return settings for host tabs. */
+/*********************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+    @PortalId Int
+AS
+	BEGIN
+		SELECT
+			TS.TabID,
+			TS.SettingName,
+			CASE WHEN Lower(TS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
+				 ELSE TS.SettingValue END           
+				 AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabSettings] TS
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] T ON t.TabID = TS.TabID
+		WHERE  (PortalId = @PortalId OR (PortalID IS NULL AND @PortalId IS NULL))
+		ORDER BY TS.TabID
+	END
+GO

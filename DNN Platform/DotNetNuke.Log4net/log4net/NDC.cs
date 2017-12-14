@@ -247,6 +247,44 @@ namespace log4net
 		}
 
 		/// <summary>
+		/// Pushes a new context message.
+		/// </summary>
+		/// <param name="messageFormat">The new context message string format.</param>
+		/// <param name="args">Arguments to be passed into messageFormat.</param>
+		/// <returns>
+		/// An <see cref="IDisposable"/> that can be used to clean up 
+		/// the context stack.
+		/// </returns>
+		/// <remarks>
+		/// <note>
+		/// <para>
+		/// The NDC is deprecated and has been replaced by the <see cref="ThreadContext.Stacks"/>.
+		/// The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+		/// </para>
+		/// </note>
+		/// <para>
+		/// Pushes a new context onto the context stack. An <see cref="IDisposable"/>
+		/// is returned that can be used to clean up the context stack. This
+		/// can be easily combined with the <c>using</c> keyword to scope the
+		/// context.
+		/// </para>
+		/// </remarks>
+		/// <example>Simple example of using the <c>Push</c> method with the <c>using</c> keyword.
+		/// <code lang="C#">
+		/// var someValue = "ExampleContext"
+		/// using(log4net.NDC.PushFormat("NDC_Message {0}", someValue))
+		/// {
+		///		log.Warn("This should have an NDC message");
+		///	}
+		/// </code>
+		/// </example>
+		/*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
+		public static IDisposable PushFormat(string messageFormat, params object[] args)
+		{
+			return Push(string.Format(messageFormat, args));
+		}
+
+		/// <summary>
 		/// Removes the context information for this thread. It is
 		/// not required to call this method.
 		/// </summary>

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -158,7 +158,6 @@ namespace DotNetNuke.Services.Journal
             var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, ThumbnailCallback, IntPtr.Zero);
             var result = new MemoryStream();
             thumbnail.Save(result, image.RawFormat);
-
             return result;
         }
 
@@ -303,6 +302,7 @@ namespace DotNetNuke.Services.Journal
             {
                 throw new ArgumentException("journalItem.UserId must be for a real user");
             }
+
             UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
             if (currentUser == null)
             {
@@ -310,18 +310,18 @@ namespace DotNetNuke.Services.Journal
             }
 
             string xml = null;
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             if (!String.IsNullOrEmpty(journalItem.Title))
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
             }
             if (!String.IsNullOrEmpty(journalItem.Summary))
             {
-                journalItem.Summary = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
-                journalItem.Body = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
             }
 
             if (!String.IsNullOrEmpty(journalItem.Body))
@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.Journal
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
-                    journalItem.ItemData.Description = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting));
+                    journalItem.ItemData.Description = portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
@@ -426,18 +426,18 @@ namespace DotNetNuke.Services.Journal
                 throw new Exception("Unable to locate the current user");
             }
             string xml = null;
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             if (!String.IsNullOrEmpty(journalItem.Title))
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
             }
             if (!String.IsNullOrEmpty(journalItem.Summary))
             {
-                journalItem.Summary = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
-                journalItem.Body = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
             }
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
@@ -465,7 +465,7 @@ namespace DotNetNuke.Services.Journal
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
                     journalItem.ItemData.Description =
-                        HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting));
+                        portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
@@ -575,7 +575,10 @@ namespace DotNetNuke.Services.Journal
 
             if (IsImageFile(fileName) && IsResizePhotosEnabled(module))
             {
-                return FileManager.Instance.AddFile(userFolder, fileName, GetJournalImageContent(fileContent), true);
+                using (var stream = GetJournalImageContent(fileContent))
+                {
+                    return FileManager.Instance.AddFile(userFolder, fileName, stream, true);
+                }
             }
             //todo: deal with the case where the exact file name already exists.            
             return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);                    
@@ -694,12 +697,11 @@ namespace DotNetNuke.Services.Journal
 
         public void SaveComment(CommentInfo comment)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             if (!String.IsNullOrEmpty(comment.Comment))
             {
                 comment.Comment =
-                    HttpUtility.HtmlDecode(portalSecurity.InputFilter(comment.Comment,
-                                                                      PortalSecurity.FilterFlag.NoScripting));
+                    portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoScripting);
             }
             //TODO: enable once the profanity filter is working properly.
             //objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);

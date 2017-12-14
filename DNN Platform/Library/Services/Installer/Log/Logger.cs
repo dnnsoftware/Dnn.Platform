@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Web.UI.HtmlControls;
 
 using DotNetNuke.Common.Utilities;
@@ -38,9 +37,6 @@ namespace DotNetNuke.Services.Installer.Log
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Logger
     {
@@ -54,7 +50,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         public Logger()
         {
-            _logs = new LoggedCollection();
+            _logs = new List<LogEntry>();
             
             _valid = true;
             _hasWarnings = Null.NullBoolean;
@@ -65,9 +61,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets and sets the Css Class used for Error Log Entries
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ErrorClass
         {
@@ -98,9 +91,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets and sets the Css Class used for Log Entries that should be highlighted
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string HighlightClass
         {
@@ -123,9 +113,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets a List of Log Entries
         /// </summary>
         /// <value>A List of LogEntrys</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public IList<LogEntry> Logs
         {
@@ -140,9 +127,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets and sets the Css Class used for normal Log Entries
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string NormalClass
         {
@@ -165,9 +149,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets a Flag that indicates whether the Installation was Valid
         /// </summary>
         /// <value>A List of LogEntrys</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Valid
         {
@@ -183,13 +164,11 @@ namespace DotNetNuke.Services.Installer.Log
         /// </summary>
         /// <remarks>This method also sets the Valid flag to false</remarks>
         /// <param name="failure">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddFailure(string failure)
         {
             _logs.Add(new LogEntry(LogType.Failure, failure));
+            DnnLogger.Error(failure);
             _valid = false;
         }
 
@@ -204,9 +183,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// The AddInfo method adds a new LogEntry of type Info to the Logs collection
         /// </summary>
         /// <param name="info">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddInfo(string info)
         {            
@@ -219,9 +195,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// The AddWarning method adds a new LogEntry of type Warning to the Logs collection
         /// </summary>
         /// <param name="warning">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void AddWarning(string warning)
         {
@@ -235,22 +208,17 @@ namespace DotNetNuke.Services.Installer.Log
         /// The EndJob method adds a new LogEntry of type EndJob to the Logs collection
         /// </summary>
         /// <param name="job">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void EndJob(string job)
         {
             _logs.Add(new LogEntry(LogType.EndJob, job));
+            DnnLogger.Info(job);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetLogsTable formats log entries in an HtmlTable
         /// </summary>
-        /// <history>
-        ///   [jbrinkman] 24/11/2004  Created new method.  Moved from WebUpload.ascx.vb
-        /// </history>
         /// -----------------------------------------------------------------------------
         public HtmlTable GetLogsTable()
         {
@@ -302,28 +270,11 @@ namespace DotNetNuke.Services.Installer.Log
         /// The StartJob method adds a new LogEntry of type StartJob to the Logs collection
         /// </summary>
         /// <param name="job">The description of the LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void StartJob(string job)
         {
             _logs.Add(new LogEntry(LogType.StartJob, job));
-        }
-
-        class LoggedCollection : Collection<LogEntry>
-        {
-            protected override void InsertItem(int index, LogEntry item)
-            {
-				DnnLogger.Debug(item.ToString());
-                base.InsertItem(index, item);
-            }
-
-            protected override void SetItem(int index, LogEntry item)
-            {
-				DnnLogger.Debug(item.ToString());
-                base.InsertItem(index, item);
-            }
+            DnnLogger.Info(job);
         }
     }
 }

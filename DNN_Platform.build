@@ -5,5 +5,6 @@
     <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
     <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <WebsiteSkinInstallPath>$(WebsitePath)\Install\Skin</WebsiteSkinInstallPath>
   </PropertyGroup>
 </Project>

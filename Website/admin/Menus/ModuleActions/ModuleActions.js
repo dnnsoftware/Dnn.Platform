@@ -1,5 +1,4 @@
-﻿
-(function ($) {
+﻿(function ($) {
     $.fn.dnnModuleActions = function (options) {
         var opts = $.extend({}, $.fn.dnnModuleActions.defaultOptions, options);
         var $self = this;
@@ -121,6 +120,8 @@
         }
 
         function closeMenu(ul) {
+            var $menuroot = $('#moduleActions-' + moduleId + ' ul.dnn_mact');
+            $menuroot.removeClass('showhover').data('displayQuickSettings', false);
             if (ul && ul.position()) {
                 if (ul.position().top > 0) {
                     ul.hide('slide', { direction: 'up' }, 80, function () {
@@ -143,12 +144,6 @@
             var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
 
             var ulHeight = ul.height();
-
-            if ($self.hasClass('actionQuickSettings')) {
-                var container = $(".DnnModule-" + moduleId);
-                var containerWidth = container.width();
-                ul.css({ width: containerWidth });
-            }
 
             if (!atViewPortTop) {
                 ul.css({
@@ -175,7 +170,7 @@
         }
 
         function buildMenuRoot(root, rootText, rootClass, rootIcon) {
-            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)'><i class='fa fa-" + rootIcon + "'></a><ul></ul>");
+            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)' aria-label=\"" + rootText + "\"><i class='dnni dnni-" + rootIcon + "' /></a><ul></ul>");
             var parent = root.find("li." + rootClass + " > ul");
 
             return parent;
@@ -215,9 +210,9 @@
                     }
 
                     if (isEnabled(action)) {
-                        htmlString += "<a href=\"" + action.Url + "\"" + (action.NewWindow ? " target=\"_blank\"" : "") + "><img src=\"" + action.Icon + "\"><span>" + action.Title + "</span></a>";
+                        htmlString += "<a href=\"" + action.Url + "\"" + (action.NewWindow ? " target=\"_blank\"" : "") + "><img src=\"" + action.Icon + "\" alt=\"" + action.Title + "\"><span>" + action.Title + "</span></a>";
                     } else {
-                        htmlString += "<img src=\"" + action.Icon + "\"><span>" + action.Title + "</span>";
+                        htmlString += "<img src=\"" + action.Icon + "\" alt=\"" + action.Title + "\"><span>" + action.Title + "</span>";
                     }
 
                     $parent.append(htmlString);
@@ -321,6 +316,7 @@
 
             var $quickSettings = $("#moduleActions-" + moduleId + "-QuickSettings");
             $quickSettings.show();
+            root.addClass('showhover');
 
             $parent.append($quickSettings);
         }
@@ -343,6 +339,8 @@
         function watchResize(mId) {
             var container = $(".DnnModule-" + mId);
             container.data("o-size", { w: container.width(), h: container.height() });
+            var resizeThrottle;
+
             var loopyFunc = function () {
                 var data = container.data("o-size");
                 if (data.w !== container.width() || data.h !== container.height()) {
@@ -350,7 +348,12 @@
                     container.trigger("resize");
                 }
 
-                setTimeout(loopyFunc, 250);
+                if (resizeThrottle) {
+                    clearTimeout(resizeThrottle);
+                    resizeThrottle = null;
+                }
+
+                resizeThrottle = setTimeout(loopyFunc, 250);
             };
 
             container.trigger("resize", function () {
@@ -377,6 +380,7 @@
                 }
                 if (supportsQuickSettings) {
                     buildQuickSettings(menuRoot, "Quick", "actionQuickSettings", "caret-down");
+                    menuRoot.data('displayQuickSettings', displayQuickSettings);
                 }
 
                 if (isShared) {
@@ -390,15 +394,20 @@
 
         $("#moduleActions-" + moduleId + " .dnn_mact > li").hoverIntent({
             over: function () {
-                showMenu($(this).find("ul"));
+                showMenu($(this).find("ul").first());
             },
             out: function () {
-                if (!($(this).hasClass("actionQuickSettings") && displayQuickSettings)) {
-                    closeMenu($(this).find("ul"));
+                if (!($(this).hasClass("actionQuickSettings") && $(this).data('displayQuickSettings'))) {
+                    closeMenu($(this).find("ul").first());
                 }
             },
             timeout: 400,
             interval: 200
+        });
+
+        var $container = $('#moduleActions-' + moduleId + '-QuickSettings');
+        $container.find('select').mouseout(function(e) {
+            e.stopPropagation();
         });
 
         return $self;
@@ -414,50 +423,5 @@
         bottomText: "Bottom",
         movePaneText: "To {0}",
         supportsQuickSettings: false
-    };
-
-    $.fn.dnnQuickSettings = function(options) {
-        var opts = $.extend({}, $.fn.dnnQuickSettings.defaultOptions, options);
-        var onCancel = opts.onCancel;
-        var onSave = opts.onSave;
-
-        var $self = this;
-        var moduleId = opts.moduleId;
-
-        var $container = $("#moduleActions-" + moduleId + "-QuickSettings");
-        var $saveButton = $container.find(".qsFooter a.primarybtn");
-        var $cancelButton = $container.find("a.secondarybtn");
-
-        var closeMenu = function (ul) {
-            if (ul && ul.position()) {
-                if (ul.position().top > 0) {
-                    ul.hide('slide', { direction: 'up' }, 80, function () {
-                        dnn.removeIframeMask(ul[0]);
-                    });
-                } else {
-                    ul.hide('slide', { direction: 'down' }, 80, function () {
-                        dnn.removeIframeMask(ul[0]);
-                    });
-                }
-            }
-        }
-
-        $cancelButton.click(function () {
-            onCancel.call(this);
-            closeMenu($container.parent());
-        });
-
-        $saveButton.click(function () {
-            onSave.call(this);
-            closeMenu($container.parent());
-        });
-
-        return $self;
-    }
-
-    $.fn.dnnQuickSettings.defaultOptions = {
-        moduleId: -1,
-        onCancel: function () { },
-        onSave: function () { }
     };
 })(jQuery);

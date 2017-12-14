@@ -1,18 +1,15 @@
 ﻿Test,							ReplaceSpaceWith,	Scheme,		Page Name,		Params,						Expected Url,	
 About Us Default,				,					http://,	About Us,		,							http://{alias}/AboutUs.aspx
-Admin Site Settings Default,	,					http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings.aspx
 Profile Messages Default,		,					http://,	Messages,		,							http://{alias}/ActivityFeed/Messages.aspx
 Terms Default,					,					http://,	About Us,		&ctl=Terms,					http://{alias}/Terms.aspx
 Login Default,					,					http://,	About Us,		&ctl=Login,					http://{alias}/Login.aspx
 Edit Page About Us Default,		,					http://,	About Us,		&ctl=Edit&mid=200,			http://{alias}/AboutUs/ctl/Edit/mid/200.aspx
 About Us None,					None,				http://,	About Us,		,							http://{alias}/AboutUs.aspx
-Admin Site Settings None,		None,				http://,	Site Settings,	,							http://{alias}/Admin/SiteSettings.aspx
 Profile Messages None,			None,				http://,	Messages,		,							http://{alias}/ActivityFeed/Messages.aspx
 Terms None,						None,				http://,	About Us,		&ctl=Terms,					http://{alias}/Terms.aspx
 Login None,						None,				http://,	About Us,		&ctl=Login,					http://{alias}/Login.aspx
 Edit Page About Us None,		None,				http://,	About Us,		&ctl=Edit&mid=200,			http://{alias}/AboutUs/ctl/Edit/mid/200.aspx
 About Us Character,				_,					http://,	About Us,		,							http://{alias}/About_Us.aspx
-Admin Site Settings Character,	_,					http://,	Site Settings,	,							http://{alias}/Admin/Site_Settings.aspx
 Profile Messages Character,		_,					http://,	Messages,		,							http://{alias}/Activity_Feed/Messages.aspx
 Terms Character,				_,					http://,	About Us,		&ctl=Terms,					http://{alias}/Terms.aspx
 Login Character,				_,					http://,	About Us,		&ctl=Login,					http://{alias}/Login.aspx

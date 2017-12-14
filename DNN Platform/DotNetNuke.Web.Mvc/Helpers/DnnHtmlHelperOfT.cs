@@ -20,9 +20,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
         }
 
-        public new ViewDataDictionary<TModel> ViewData
-        {
-            get { return ((HtmlHelper<TModel>)HtmlHelper).ViewData; }
-        }        
+        internal new HtmlHelper<TModel> HtmlHelper => (HtmlHelper<TModel>)base.HtmlHelper;
+
+        public new object ViewBag => HtmlHelper.ViewBag;
+
+        public new ViewDataDictionary<TModel> ViewData => HtmlHelper.ViewData;
     }
 }

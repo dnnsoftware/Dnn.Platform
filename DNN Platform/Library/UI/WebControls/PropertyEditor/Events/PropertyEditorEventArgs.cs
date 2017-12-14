@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/17/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PropertyEditorEventArgs : EventArgs
     {
@@ -48,9 +45,6 @@ namespace DotNetNuke.UI.WebControls
         /// Constructs a new PropertyEditorEventArgs
         /// </summary>
         /// <param name="name">The name of the property</param>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PropertyEditorEventArgs(string name) : this(name, null, null)
         {
@@ -63,9 +57,6 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="name">The name of the property</param>
         /// <param name="newValue">The new value of the property</param>
         /// <param name="oldValue">The old value of the property</param>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PropertyEditorEventArgs(string name, object newValue, object oldValue)
         {
@@ -79,9 +70,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets whether the proeprty has changed
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Changed { get; set; }
 
@@ -90,9 +78,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Index of the Item
         /// </summary>
         /// <value>An Integer</value>
-        /// <history>
-        /// 	[cnurse]	02/05/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int Index { get; set; }
 
@@ -101,9 +86,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Key of the Item
         /// </summary>
         /// <value>An Object</value>
-        /// <history>
-        /// 	[cnurse]	02/05/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public object Key { get; set; }
 
@@ -112,9 +94,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Name of the Property being changed
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Name { get; set; }
 
@@ -123,9 +102,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the OldValue of the Property being changed
         /// </summary>
         /// <value>An Object</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public object OldValue { get; set; }
 
@@ -134,9 +110,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the String Value of the Property being changed
         /// </summary>
         /// <value>An Object</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string StringValue { get; set; }
 
@@ -145,9 +118,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Value of the Property being changed
         /// </summary>
         /// <value>An Object</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public object Value { get; set; }
     }

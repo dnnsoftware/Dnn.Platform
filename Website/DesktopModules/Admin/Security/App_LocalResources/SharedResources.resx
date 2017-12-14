@@ -121,88 +121,89 @@
     <value>User Name:</value>
   </data>
   <data name="Username.Help" xml:space="preserve">
-    <value>Enter a username.  It must be at least five characters long alphanumeric value</value>
+    <value>Enter a user name.  It must be at least five characters long, must be an alphanumeric value,
+    must not start/end with a space, and must not contain any of these characters !"#$%&amp;'()*+,/:;&lt;=&gt;?@[\]^`{|}</value>
   </data>
   <data name="FirstName.Text" xml:space="preserve">
     <value>First Name:</value>
   </data>
   <data name="FirstName.Help" xml:space="preserve">
-    <value>Enter a First Name</value>
+    <value>Enter a first name.</value>
   </data>
   <data name="LastName.Text" xml:space="preserve">
     <value>Last Name:</value>
   </data>
   <data name="LastName.Help" xml:space="preserve">
-    <value>Enter a Last Name</value>
+    <value>Enter a last name.</value>
   </data>
   <data name="Email.Text" xml:space="preserve">
     <value>Email Address:</value>
   </data>
   <data name="Email.Help" xml:space="preserve">
-    <value>Enter a valid Email address</value>
+    <value>Enter a valid email address.</value>
   </data>
   <data name="DisplayName.Text" xml:space="preserve">
     <value>Display Name:</value>
   </data>
   <data name="DisplayName.Help" xml:space="preserve">
-    <value>Provide a Display Name</value>
+    <value>Enter a display name.</value>
   </data>
   <data name="Username.Required" xml:space="preserve">
-    <value>User name is required</value>
+    <value>User name is required.</value>
   </data>
   <data name="FirstName.Required" xml:space="preserve">
-    <value>First name is required</value>
+    <value>First name is required.</value>
   </data>
   <data name="LastName.Required" xml:space="preserve">
-    <value>Last name is required</value>
+    <value>Last name is required.</value>
   </data>
   <data name="Email.Required" xml:space="preserve">
-    <value>Email is required</value>
+    <value>Email is required.</value>
   </data>
   <data name="Email.RegExError" xml:space="preserve">
-    <value>You must enter a valid email address</value>
+    <value>You must enter a valid email address.</value>
   </data>
   <data name="DisplayName.Required" xml:space="preserve">
-    <value>Display Name is required</value>
+    <value>Display name is required.</value>
   </data>
   <data name="FirstName.RegExError" xml:space="preserve">
-    <value>First Name is invalid</value>
+    <value>First name is invalid.</value>
   </data>
   <data name="LastName.RegExError" xml:space="preserve">
-    <value>Last name is invalid</value>
+    <value>Last name is invalid.</value>
   </data>
   <data name="Username.RegExError" xml:space="preserve">
-    <value>The User name entered is invalid.</value>
+    <value>The user name entered is invalid.</value>
   </data>
   <data name="PasswordAnswer.Help" xml:space="preserve">
-    <value>Enter an Answer to the Password Question.</value>
+    <value>Enter an answer to the password question.</value>
   </data>
   <data name="PasswordAnswer.Text" xml:space="preserve">
     <value>Password Answer:</value>
   </data>
   <data name="PasswordConfirm.Help" xml:space="preserve">
-    <value>Re-Enter the password to confirm you typed it correctly</value>
+    <value>Re-enter the password to confirm.</value>
   </data>
   <data name="PasswordConfirm.Text" xml:space="preserve">
     <value>Confirm Password:</value>
   </data>
   <data name="PasswordQuestion.Help" xml:space="preserve">
-    <value>Enter a Password Question to be used when retrieving the password</value>
+    <value>Enter a password question to be used when retrieving the password.</value>
   </data>
   <data name="PasswordQuestion.Text" xml:space="preserve">
     <value>Password Question:</value>
   </data>
   <data name="City.Help" xml:space="preserve">
-    <value>Enter a City or Location</value>
+    <value>Enter a city or location.</value>
   </data>
   <data name="City.Text" xml:space="preserve">
     <value>City:</value>
   </data>
   <data name="Password.Required" xml:space="preserve">
-    <value>You must provide a password</value>
+    <value>You must provide a password.</value>
   </data>
   <data name="PasswordConfirm.Required" xml:space="preserve">
-    <value>You must provide a password confirmation</value>
+    <value>You must provide a password confirmation.</value>
   </data>
   <data name="InvalidAnswer.Text" xml:space="preserve">
     <value>Invalid Answer</value>
@@ -223,16 +224,16 @@
     <value>The question provided was invalid.</value>
   </data>
   <data name="PasswordMismatch.Text" xml:space="preserve">
-    <value>The new password and confirmation password do not match. The password has not been changed.</value>
+    <value>The new password and confirmation password do not match.  The password has not been changed.</value>
   </data>
   <data name="PasswordMismatch_Detail.Text" xml:space="preserve">
     <value>The password and password confirmation did not match.</value>
   </data>
   <data name="DisplayName.RegExError" xml:space="preserve">
-    <value>The Display Name is invalid</value>
+    <value>The display name is invalid.</value>
   </data>
   <data name="Password.Help" xml:space="preserve">
-    <value>Enter your password</value>
+    <value>Enter your password.</value>
   </data>
   <data name="VanityUrl.Help" xml:space="preserve">
     <value>You can optionally choose a custom URL for your user profile.</value>

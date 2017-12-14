@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -53,9 +53,6 @@ namespace DotNetNuke.UI.WebControls
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]	05/03/2006	created
-	/// </history>
 	[ToolboxData("<{0}:VisibilityControl runat=server></{0}:VisibilityControl>")]
 	public class VisibilityControl : WebControl, IPostBackDataHandler, INamingContainer
 	{
@@ -71,18 +68,12 @@ namespace DotNetNuke.UI.WebControls
 		/// Caption
 		/// </summary>
 		/// <value>A string representing the Name of the property</value>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		public string Caption { get; set; }
 
 		/// <summary>
 		/// Name is the name of the field as a string
 		/// </summary>
 		/// <value>A string representing the Name of the property</value>
-		/// <history>
-		///     [cnurse]	05/03/2006	created
-		/// </history>
 		public string Name { get; set; }
 
         /// <summary>
@@ -94,9 +85,6 @@ namespace DotNetNuke.UI.WebControls
 		/// StringValue is the value of the control expressed as a String
 		/// </summary>
 		/// <value>A string representing the Value</value>
-		/// <history>
-		///     [cnurse]	05/03/2006	created
-		/// </history>
         public object Value { get; set; }
 
 		#endregion
@@ -108,9 +96,6 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <param name="postDataKey">A key to the PostBack Data to load</param>
 		/// <param name="postCollection">A name value collection of postback data</param>
-		/// <history>
-		///     [cnurse]	05/03/2006	created
-		/// </history>
 		public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 		{
 			var dataChanged = false;
@@ -162,9 +147,6 @@ namespace DotNetNuke.UI.WebControls
 		/// RaisePostDataChangedEvent runs when the PostBackData has changed.  It triggers
 		/// a ValueChanged Event
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/03/2006	created
-		/// </history>
 		public void RaisePostDataChangedEvent()
 		{
 			//Raise the VisibilityChanged Event
@@ -189,6 +171,7 @@ namespace DotNetNuke.UI.WebControls
 
             //Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
+            writer.AddAttribute("aria-label", ID);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Value, optionValue);
             if ((Visibility.VisibilityMode == selectedVisibility))
@@ -210,6 +193,7 @@ namespace DotNetNuke.UI.WebControls
 
             //Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
+            writer.AddAttribute("aria-label", ID);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + prefix + value);
             writer.AddAttribute(HtmlTextWriterAttribute.Value, value);
             if (selected)
@@ -269,9 +253,6 @@ namespace DotNetNuke.UI.WebControls
 		/// OnVisibilityChanged runs when the Visibility has changed.  It raises the VisibilityChanged
 		/// Event
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/03/2006	created
-		/// </history>
 		protected virtual void OnVisibilityChanged(PropertyEditorEventArgs e)
 		{
 			if (VisibilityChanged != null)
@@ -284,9 +265,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Render renders the control
 		/// </summary>
 		/// <param name="writer">A HtmlTextWriter.</param>
-		/// <history>
-		///     [cnurse]	05/03/2006	created
-		/// </history>
 		protected override void Render(HtmlTextWriter writer)
 		{
             //Render Div container

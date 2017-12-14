@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,9 +22,11 @@
 #endregion
 
 using System;
+using System.Web;
 using System.Web.Mvc;
 using DotNetNuke.Tests.Web.Mvc.Fakes;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Framework;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Helpers;
 using Moq;
@@ -214,5 +216,44 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             Assert.AreEqual(expectedModel, helper.ViewData.Model);
         }
 
+        [Test]
+        public void EnableClientValidation_Updates_Context()
+        {
+            //Arrange
+            var mockViewPage = new Mock<DnnWebViewPage>() { CallBase = true };
+            var mockController = new Mock<ControllerBase>();
+            var mockDnnController = mockController.As<IDnnController>();
+            var mockViewContext = new Mock<ViewContext>();
+            mockViewContext.SetupProperty(x => x.ClientValidationEnabled);
+            mockViewContext.Setup(c => c.Controller).Returns(mockController.Object);
+            mockViewPage.Object.ViewContext = mockViewContext.Object;
+            mockViewPage.Object.InitHelpers();
+            
+            //Act
+            mockViewPage.Object.Html.EnableClientValidation(true);
+
+            //Assert
+            Assert.IsTrue(mockViewPage.Object.ViewContext.ClientValidationEnabled);
+        }
+
+        [Test]
+        public void EnableUnobtrusiveJavaScript_Updates_Context()
+        {
+            //Arrange
+            var mockViewPage = new Mock<DnnWebViewPage>() { CallBase = true };
+            var mockController = new Mock<ControllerBase>();
+            var mockDnnController = mockController.As<IDnnController>();
+            var mockViewContext = new Mock<ViewContext>();
+            mockViewContext.SetupProperty(x => x.UnobtrusiveJavaScriptEnabled);
+            mockViewContext.Setup(c => c.Controller).Returns(mockController.Object);
+            mockViewPage.Object.ViewContext = mockViewContext.Object;
+            mockViewPage.Object.InitHelpers();
+
+            //Act
+            mockViewPage.Object.Html.EnableUnobtrusiveJavaScript(true);
+
+            //Assert
+            Assert.IsTrue(mockViewPage.Object.ViewContext.UnobtrusiveJavaScriptEnabled);
+        }
     }
 }

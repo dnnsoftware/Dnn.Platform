@@ -121,13 +121,13 @@
     <value>Folder:</value>
   </data>
   <data name="plFolder.Help" xml:space="preserve">
-    <value>Select the export folder where the template will be saved</value>
+    <value>Select the export folder where the template will be saved.</value>
   </data>
   <data name="plFile.Text" xml:space="preserve">
     <value>Template Name:</value>
   </data>
   <data name="plFile.Help" xml:space="preserve">
-    <value>Enter a name for the Page Template</value>
+    <value>Enter a name for the page template.</value>
   </data>
   <data name="cmdExport.Text" xml:space="preserve">
     <value>Export</value>
@@ -139,7 +139,7 @@
     <value>&lt;h1&gt;Export Page&lt;/h1&gt;&lt;p&gt;Administrators can export content for the specified page.&lt;/p&gt;</value>
   </data>
   <data name="Error.Text" xml:space="preserve">
-    <value>An error occurred during the export</value>
+    <value>An error occurred during the export.</value>
   </data>
   <data name="Validation.Text" xml:space="preserve">
     <value>You must specify a folder and template name for export.</value>
@@ -154,13 +154,13 @@
     <value>Description:</value>
   </data>
   <data name="plContent.Help" xml:space="preserve">
-    <value>Check this to include the module content</value>
+    <value>Check this box to include the module content.</value>
   </data>
   <data name="plContent.Text" xml:space="preserve">
     <value>Include Content:</value>
   </data>
   <data name="ExportedMessage.Text" xml:space="preserve">
-    <value>The Page Template Has Been Created to &lt;b&gt;{0}&lt;/b&gt;</value>
+    <value>The page template has been created to &lt;b&gt;{0}&lt;/b&gt;</value>
   </data>
   <data name="valDescription.ErrorMessage" xml:space="preserve">
     <value>You are required to provide a description of the template.</value>

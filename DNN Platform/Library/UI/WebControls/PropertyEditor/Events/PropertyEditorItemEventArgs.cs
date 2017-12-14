@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,9 +37,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/17/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PropertyEditorItemEventArgs : EventArgs
     {
@@ -48,9 +45,6 @@ namespace DotNetNuke.UI.WebControls
         /// Constructs a new PropertyEditorItemEventArgs
         /// </summary>
         /// <param name="editor">The editor created</param>
-        /// <history>
-        ///     [cnurse]	02/20/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PropertyEditorItemEventArgs(EditorInfo editor)
         {
@@ -62,9 +56,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets whether the proeprty has changed
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public EditorInfo Editor { get; set; }
     }

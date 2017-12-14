@@ -124,13 +124,13 @@
     <value>Authorize:</value>
   </data>
   <data name="plAuthorize.Help" xml:space="preserve">
-    <value>Authorize this user</value>
+    <value>Authorize this user.</value>
   </data>
   <data name="plNotify.Text" xml:space="preserve">
     <value>Notify:</value>
   </data>
   <data name="plNotify.Help" xml:space="preserve">
-    <value>Send an email to the user's email address</value>
+    <value>Send an email to the user's email address.</value>
   </data>
   <data name="CreateUser.Text" xml:space="preserve">
     <value>Create User</value>
@@ -139,13 +139,13 @@
     <value>Password:</value>
   </data>
   <data name="plPassword.Help" xml:space="preserve">
-    <value>Enter a password for this user</value>
+    <value>Enter a password for this user.</value>
   </data>
   <data name="plConfirm.Text" xml:space="preserve">
     <value>Confirm Password:</value>
   </data>
   <data name="plConfirm.Help" xml:space="preserve">
-    <value>Re-Enter the password to confirm you typed it correctly</value>
+    <value>Re-enter the password to confirm.</value>
   </data>
   <data name="Password.Text" xml:space="preserve">
     <value>Password</value>
@@ -154,19 +154,19 @@
     <value>Enter a password.</value>
   </data>
   <data name="PasswordHelpAdmin.Text" xml:space="preserve">
-    <value>Optionally enter a password for this user, or allow the system to generate a random password</value>
+    <value>Optionally enter a password for this user or allow the system to generate a random password.</value>
   </data>
   <data name="plRandom.Text" xml:space="preserve">
     <value>Random Password</value>
   </data>
   <data name="plRandom.Help" xml:space="preserve">
-    <value>Check this box to generate a random password</value>
+    <value>Check this box to generate a random password.</value>
   </data>
   <data name="InvalidCaptcha.Text" xml:space="preserve">
     <value>Incorrect Security Code</value>
   </data>
   <data name="CaptchaText.Text" xml:space="preserve">
-    <value>Enter the code shown above in the box below</value>
+    <value>Enter the code shown above in the box below.</value>
   </data>
   <data name="UnRegister.Text" xml:space="preserve">
     <value>UnRegister</value>
@@ -181,25 +181,25 @@
     <value>Restore</value>
   </data>
   <data name="ConfirmUnRegister.Text" xml:space="preserve">
-    <value>Are you sure you want to un-register</value>
+    <value>Are you sure you want to un-register.</value>
   </data>
   <data name="plQuestion.Text" xml:space="preserve">
     <value>Password Question:</value>
   </data>
   <data name="plQuestion.Help" xml:space="preserve">
-    <value>Enter a Password Question to be used when retrieving the password</value>
+    <value>Enter a password question to be used when retrieving the password.</value>
   </data>
   <data name="plAnswer.Text" xml:space="preserve">
     <value>Password Answer:</value>
   </data>
   <data name="plAnswer.Help" xml:space="preserve">
-    <value>Enter an Answer to the Password Question.</value>
+    <value>Enter an answer to the password question.</value>
   </data>
   <data name="ComparePasswordsValidator.ErrorMessage" xml:space="preserve">
-    <value>The Password and Confirmation Password must match</value>
+    <value>The Password and Confirmation Password must match.</value>
   </data>
   <data name="UpdateUserName.Text" xml:space="preserve">
-    <value>Note: This user is registered in {0} sites</value>
+    <value>Note: This user is registered in {0} sites.</value>
   </data>
   <data name="ViewSiteList.Text" xml:space="preserve">
     <value>View list of sites</value>
@@ -208,6 +208,6 @@
     <value>Hide list of sites</value>
   </data>
   <data name="DisplayNameNotUnique.Text" xml:space="preserve">
-    <value>The Display Name you have entered is already in use, please choose a different one.</value>
+    <value>The display name you have entered is already in use, please choose a different one.</value>
   </data>
 </root>

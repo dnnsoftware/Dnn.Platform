@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Modules.Html.Components;
 
 #endregion
 
@@ -37,11 +38,17 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///   [leupold]	    08/12/2007	created
-    /// </history>
     public partial class Settings : ModuleSettingsBase
     {
+        private HtmlModuleSettings _moduleSettings;
+        private new HtmlModuleSettings ModuleSettings
+        {
+            get
+            {
+                return _moduleSettings ?? (_moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
+            }
+        }
+
 
         #region Event Handlers
 
@@ -73,7 +80,7 @@ namespace DotNetNuke.Modules.Html
                     {
                         strDescription = strDescription + " >> " + "<strong>" + objState.StateName + "</strong>";
                     }
-                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo) arrStates[0]).Description;
+                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
                 }
                 lblDescription.Text = strDescription;
             }
@@ -88,8 +95,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         public override void LoadSettings()
         {
             try
@@ -99,15 +104,8 @@ namespace DotNetNuke.Modules.Html
                     var htmlTextController = new HtmlTextController();
                     var workflowStateController = new WorkflowStateController();
 
-                    // get replace token settings
-                    if (ModuleSettings["HtmlText_ReplaceTokens"] != null)
-                    {
-                        chkReplaceTokens.Checked = Convert.ToBoolean(ModuleSettings["HtmlText_ReplaceTokens"]);
-                    }
-
-					//get decoration setting, set to true as default.
-					cbDecorate.Checked = !ModuleSettings.ContainsKey("HtmlText_UseDecorate")
-											|| ModuleSettings["HtmlText_UseDecorate"].ToString() == "1";
+                    chkReplaceTokens.Checked = ModuleSettings.ReplaceTokens;
+                    cbDecorate.Checked = ModuleSettings.UseDecorate;
 
                     // get workflow/version settings
                     var workflows = new ArrayList();
@@ -133,10 +131,7 @@ namespace DotNetNuke.Modules.Html
                         rblApplyTo.Items.FindByValue(workflow.Key).Selected = true;
                     }
 
-					txtSearchDescLength.Text = ModuleSettings.ContainsKey("HtmlText_SearchDescLength") 
-                                                && !string.IsNullOrEmpty(ModuleSettings["HtmlText_SearchDescLength"].ToString())
-								                    ? ModuleSettings["HtmlText_SearchDescLength"].ToString() 
-                                                    : HtmlTextController.MAX_DESCRIPTION_LENGTH.ToString();
+                    txtSearchDescLength.Text = ModuleSettings.SearchDescLength.ToString();
                 }
                 //Module failed to load
             }
@@ -156,9 +151,11 @@ namespace DotNetNuke.Modules.Html
                 var htmlTextController = new HtmlTextController();
 
                 // update replace token setting
-                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_ReplaceTokens", chkReplaceTokens.Checked.ToString());
-                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_UseDecorate", cbDecorate.Checked ? "1" : "0");
-                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_SearchDescLength", txtSearchDescLength.Text);
+                ModuleSettings.ReplaceTokens = chkReplaceTokens.Checked;
+                ModuleSettings.UseDecorate = cbDecorate.Checked;
+                ModuleSettings.SearchDescLength = int.Parse(txtSearchDescLength.Text);
+                var repo = new HtmlModuleSettingsRepository();
+                repo.SaveSettings(this.ModuleConfiguration, ModuleSettings);
 
                 // disable module caching if token replace is enabled
                 if (chkReplaceTokens.Checked)

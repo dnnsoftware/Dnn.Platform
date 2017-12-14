@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FolderMappings.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.FolderMappings" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <div class="dnnForm dnnFolderMappings dnnClear">
     <div class="dnnFormMessage dnnFormInfo"><asp:Label ID="DescriptionLabel" runat="server" resourcekey="Description.Text" /></div>

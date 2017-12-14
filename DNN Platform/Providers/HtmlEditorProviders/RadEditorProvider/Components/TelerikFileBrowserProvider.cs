@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,21 +19,18 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Globalization;
-using System.Web.UI;
-
-using DotNetNuke.Common.Utilities;
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Instrumentation;
-
-using Telerik.Web.UI.Widgets;
-using DotNetNuke.Services.FileSystem;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.FileSystem;
+using Telerik.Web.UI.Widgets;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Providers.RadEditorProvider
@@ -841,29 +838,26 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		private bool CheckSearchPatterns(string dnnFileName, string[] searchPatterns)
 		{
-			if (searchPatterns == null | searchPatterns.Length < 1)
+			if (searchPatterns == null || searchPatterns.Length < 1)
 			{
 				return true;
 			}
 
-			bool returnValue = false;
-			foreach (string pattern in searchPatterns)
+			foreach (var pattern in searchPatterns)
 			{
-				bool result = new System.Text.RegularExpressions.Regex(ConvertToRegexPattern(pattern), System.Text.RegularExpressions.RegexOptions.IgnoreCase).IsMatch(dnnFileName);
-
-				if (result)
+				var rx = RegexUtils.GetCachedRegex(ConvertToRegexPattern(pattern), RegexOptions.IgnoreCase);
+				if (rx.IsMatch(dnnFileName))
 				{
-					returnValue = true;
-					break;
+                    return true;
 				}
 			}
 
-			return returnValue;
+			return false;
 		}
 
         private string ConvertToRegexPattern(string pattern)
 		{
-			string returnValue = System.Text.RegularExpressions.Regex.Escape(pattern);
+			string returnValue = Regex.Escape(pattern);
 			returnValue = returnValue.Replace("\\*", ".*");
 			returnValue = returnValue.Replace("\\?", ".") + "$";
 			return returnValue;

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Social Groups" type="Module" version="08.00.00" isSystem="true">
+    <package name="Social Groups" type="Module" version="09.02.00" isSystem="true">
       <friendlyName>Social Groups</friendlyName>
       <description>DotNetNuke Corporation Social Groups module</description>
       <iconFile>~/DesktopModules/SocialGroups/Images/Social_Groups_32X32.png</iconFile>
@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">06.02.00</dependency>
+        <dependency type="CoreVersion">07.00.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -105,6 +105,16 @@
               <name>Resources.zip</name>
             </resourceFile>
           </resourceFiles>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\SocialGroups</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>09.00.00.SqlDataProvider</name>
+              <version>09.00.00</version>
+            </script>
+          </scripts>
         </component>
       </components>
     </package>

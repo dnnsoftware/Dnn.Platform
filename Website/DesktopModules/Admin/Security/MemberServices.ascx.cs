@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,9 +44,6 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/03/2006
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class MemberServices : UserModuleBase
     {
@@ -72,10 +69,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         ///	<param name="price">The price to format</param>
         ///	<returns>The correctly formatted price</returns>
-        /// <history>
-        /// 	[cnurse]	9/13/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string FormatPrice(float price)
         {
@@ -151,10 +144,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         ///	<param name="expiryDate">The date to format</param>
         ///	<returns>The correctly formatted date</returns>
-        /// <history>
-        /// 	[cnurse]	9/13/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string FormatExpiryDate(DateTime expiryDate)
         {
@@ -188,9 +177,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         ///	<param name="price">The price to format</param>
         ///	<returns>The correctly formatted price</returns>
-        /// <history>
-        /// 	[cnurse]	01/18/2007 Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string FormatPrice(float price, int period, string frequency)
         {
@@ -226,9 +212,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         ///	<param name="price">The price to format</param>
         ///	<returns>The correctly formatted price</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2007 Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string FormatTrial(float price, int period, string frequency)
         {
@@ -266,10 +249,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <remarks>
         /// </remarks>
         ///	<returns>The correctly formatted url</returns>
-        /// <history>
-        /// 	[cnurse]	9/13/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string FormatURL()
         {
@@ -298,10 +277,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         ///	<param name="Subscribed">The service state</param>
         ///	<returns>The correctly formatted text</returns>
-        /// <history>
-        /// 	[cnurse]	9/13/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string ServiceText(bool subscribed, DateTime expiryDate)
         {
@@ -378,14 +353,12 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/13/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
             if (Request.IsAuthenticated)
             {
+                Localization.LocalizeDataGrid(ref grdServices, LocalResourceFile);
                 grdServices.DataSource = RoleController.Instance.GetUserRoles(UserInfo, false);
                 grdServices.DataBind();
 
@@ -402,9 +375,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Raises the SubscriptionUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/17/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
         {
@@ -428,9 +398,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/13/2006
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -438,22 +405,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             cmdRSVP.Click += cmdRSVP_Click;
             grdServices.ItemCommand += grdServices_ItemCommand;
-
-            try
-            {
-                lblRSVP.Text = "";
-
-                //If this is the first visit to the page, localize the datalist
-                if (Page.IsPostBack == false)
-                {
-					//Localize the Headers
-                    Localization.LocalizeDataGrid(ref grdServices, LocalResourceFile);
-                }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            lblRSVP.Text = "";
         }
 
         /// -----------------------------------------------------------------------------
@@ -462,9 +414,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/19/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdRSVP_Click(object sender, EventArgs e)
         {
@@ -517,11 +466,6 @@ namespace DotNetNuke.Modules.Admin.Security
 				//Unsubscribe
                 Subscribe(roleID, true);
             }
-            else if (commandName == Localization.GetString("Unsubscribe", LocalResourceFile))
-            {
-				//Unsubscribe
-                Subscribe(roleID, true);
-            }
             else if (commandName == "UseTrial")
             {
 				//Use Trial
@@ -541,9 +485,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// The SubscriptionUpdatedEventArgs class provides a customised EventArgs class for
         /// the SubscriptionUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/17/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public class SubscriptionUpdatedEventArgs
         {
@@ -552,9 +493,6 @@ namespace DotNetNuke.Modules.Admin.Security
             /// Constructs a new SubscriptionUpdatedEventArgs
             /// </summary>
             /// <param name="cancel">Whether this is a subscription cancellation</param>
-            /// <history>
-            /// 	[cnurse]	01/17/2006  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public SubscriptionUpdatedEventArgs(bool cancel, string roleName)
             {
@@ -566,9 +504,6 @@ namespace DotNetNuke.Modules.Admin.Security
             /// <summary>
             /// Gets and sets whether this was a cancelation
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	01/17/2006  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public bool Cancel { get; set; }
 
@@ -576,9 +511,6 @@ namespace DotNetNuke.Modules.Admin.Security
             /// <summary>
             /// Gets and sets the RoleName that was (un)subscribed to
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	01/17/2006  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public string RoleName { get; set; }
         }

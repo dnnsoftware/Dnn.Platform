@@ -121,7 +121,7 @@
     <value>VBHtml File (VB)</value>
   </data>
   <data name="fileTypeLabel.Help" xml:space="preserve">
-    <value>Select which Razor script file type you would like to create (CSHtml for C# or VBHtml for VB.Net)</value>
+    <value>Select which Razor script file type you want to create (CSHtml for C# or VBHtml for VB.Net)</value>
   </data>
   <data name="CSHTML.Text" xml:space="preserve">
     <value>CSHtml File (C#)</value>
@@ -130,7 +130,7 @@
     <value>File Type:</value>
   </data>
   <data name="fileNameLabel.Help" xml:space="preserve">
-    <value>Enter a file name for the Script file. The file name will be prefixed with an underscore "_".</value>
+    <value>Enter a file name for the Script file.  The file name will be prefixed with an underscore "_".</value>
   </data>
   <data name="fileNameLabel.Text" xml:space="preserve">
     <value>File Name:</value>

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,6 +30,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
@@ -316,8 +317,10 @@ namespace DotNetNuke.UI.Skins.Controls
 				tab = tab.DefaultLanguageTab;
 			}
 
-            return TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale) != null;
-		}
+            var localizedTab = TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale);
+
+            return localizedTab != null && !localizedTab.IsDeleted && TabPermissionController.CanViewPage(localizedTab);
+        }
 
 		#endregion
 
@@ -414,9 +417,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// <history>
-        ///      [erikvb]  20070814	  added
-        /// </history>
         protected void rptLanguages_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             try

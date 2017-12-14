@@ -2,7 +2,8 @@
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/texteditor.ascx" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnncl" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls.Internal" %>
+<%@ Register TagPrefix="dnncl" Assembly="DotNetNuke.Web.Client" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" %>
 
 <dnncl:DnnCssInclude ID="customJS" runat="server" FilePath="DesktopModules/HTML/edit.css" AddTag="false" />
 
@@ -19,7 +20,7 @@
                                 </div>
                             </div>
                         </asp:PlaceHolder>
-                        <dnn:texteditor id="txtContent" runat="server" height="400" width="100%" ChooseMode="false" ></dnn:texteditor>
+                        <dnn:textEditor id="txtContent" runat="server" height="400" width="100%" ChooseMode="false" ></dnn:textEditor>
                     </div>
                     <div class="dnnFormItem" id="divSubmittedContent" runat="server">
                         <div id="Div3" class="html_preview" runat="server">
@@ -66,7 +67,6 @@
                 <h2 id="dnnSitePanelEditHTMLHistory" class="dnnFormSectionHead" runat="server"><a href=""><%=LocalizeString("dshHistory")%></a></h2>
                 <fieldset id="fsEditHtmlHistory" runat="server">
                     <dnnweb:DnnGrid ID="dgHistory" runat="server" AutoGenerateColumns="false">
-                        <mastertableview>
 						<Columns>
 								<dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="CreatedOnDate" />
 								<dnnweb:DnnGridBoundColumn HeaderText="User" DataField="DisplayName"/>
@@ -74,10 +74,9 @@
 								<dnnweb:DnnGridBoundColumn HeaderText="Approved" DataField="Approved" />
 								<dnnweb:DnnGridBoundColumn HeaderText="Comment" DataField="Comment"/>
 						</Columns>
-						<NoRecordsTemplate>
+						<EmptyDataTemplate>
 							<asp:Label ID="lblNoRecords" runat="server" resourcekey="NoHistory" />
-						</NoRecordsTemplate>
-					</mastertableview>
+						</EmptyDataTemplate>
                     </dnnweb:DnnGrid>
                 </fieldset>
             </asp:PlaceHolder>
@@ -89,8 +88,7 @@
                             <asp:Label ID="lblMaxVersions" runat="server" />
                         </div>
                         <dnnweb:DnnGrid ID="dgVersions" runat="server" AutoGenerateColumns="false" AllowPaging="True" PageSize="5">
-                            <pagerstyle mode="NextPrevAndNumeric"></pagerstyle>
-                            <mastertableview>
+                            <PagerSettings Mode="NumericFirstLast"></PagerSettings>
 					        <Columns>
 						        <dnnweb:DnnGridBoundColumn HeaderText="Version" DataField="Version" />
 						        <dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="LastModifiedOnDate"  />
@@ -117,10 +115,9 @@
 							        </ItemTemplate>
 						        </dnnweb:DnnGridTemplateColumn>
 					        </Columns>
-					        <NoRecordsTemplate>
+					        <EmptyDataTemplate>
 						        <asp:Label ID="lblNoRecords1" runat="server" resourcekey="NoVersions" />
-					        </NoRecordsTemplate>
-				        </mastertableview>
+					        </EmptyDataTemplate>
                         </dnnweb:DnnGrid>
                     </div>
                 </fieldset>
@@ -153,8 +150,6 @@
             <li>
                 <div class="dnnFormItem">
                     <asp:DropDownList ID="ddlRender" runat="server" AutoPostBack="true">
-                        <asp:ListItem resourcekey="liRichText" Value="RICH"></asp:ListItem>
-                        <asp:ListItem resourcekey="liBasicText" Value="BASIC"></asp:ListItem>
                     </asp:DropDownList>
                 </div>
             </li>
@@ -199,10 +194,12 @@
             if ($('.ehccContent.EditView').length)
             {
                 // RadEditor
-                var editor = $find($(".RadEditor").attr('id'));
-                if (editor) {
-                    editor.setSize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.divCurrentVersion').height() - $('.ehmContent').height());
-                    $('.ehCurrentContent').css('overflow', 'hidden');
+                if (typeof $find === "function") {
+                    var editor = $find($(".RadEditor").attr('id'));
+                    if (editor) {
+                        editor.setSize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.divCurrentVersion').height() - $('.ehmContent').height());
+                        $('.ehCurrentContent').css('overflow', 'hidden');
+                    }
                 }
                 // CK Editor
                 var editorid = $(".ehCurrentContent textarea.editor").attr('id');
@@ -231,3 +228,6 @@
         });
     }(jQuery, window.Sys));
 </script>
+
+
+

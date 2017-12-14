@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.Journal {
         public int Gid = -1;
         public int Pid = -1;
         public long MaxUploadSize = Config.GetMaxUploadSize();
+        public bool IsPublicGroup = false;
 
         #region Event Handlers
 
@@ -131,6 +132,10 @@ namespace DotNetNuke.Modules.Journal {
                             {
                                 ctlJournalList.Enabled = true;
                             }
+                            if (roleInfo.IsPublic)
+                            {
+                                IsPublicGroup = true;
+                            }
                         } 
                         else 
                         {
@@ -147,7 +152,7 @@ namespace DotNetNuke.Modules.Journal {
                 ctlJournalList.ProfileId = Convert.ToInt32(Request.QueryString["userId"]);
                 if (!UserInfo.IsSuperUser && !isAdmin && ctlJournalList.ProfileId != UserId)
                 {
-                    ShowEditor = ShowEditor && AreFriends(UserController.GetUserById(PortalId, ctlJournalList.ProfileId), UserInfo);                    
+                    ShowEditor = ShowEditor && Utilities.AreFriends(UserController.GetUserById(PortalId, ctlJournalList.ProfileId), UserInfo);                    
                 }
             } 
             else if (GroupId > 0) 
@@ -157,12 +162,6 @@ namespace DotNetNuke.Modules.Journal {
             
             InitializeComponent();
             base.OnInit(e);
-        }
-
-        private bool AreFriends(UserInfo profileUser, UserInfo currentUser)
-        {
-            var friendsRelationShip = RelationshipController.Instance.GetFriendRelationship(profileUser, currentUser);
-            return (friendsRelationShip != null && friendsRelationShip.Status == RelationshipStatus.Accepted);
         }
 
         private void InitializeComponent() {

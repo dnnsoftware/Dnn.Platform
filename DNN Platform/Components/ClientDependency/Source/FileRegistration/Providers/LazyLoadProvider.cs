@@ -41,24 +41,36 @@ namespace ClientDependency.Core.FileRegistration.Providers
                     sb.Append(RenderSingleJsFile(string.Format("'{0}','{1}'", dependency.FilePath, string.Empty), htmlAttributes));
 				}
 			}
-			else
-			{
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in asArray)
+                {
+                    RenderJsComposites(http, htmlAttributes, sb, Enumerable.Repeat(dependency, 1));
+                }
+            }
+            else
+            {
+                RenderJsComposites(http, htmlAttributes, sb, asArray);
+            }
+
+            return sb.ToString();
+		}
+
+	    protected override void RenderJsComposites(HttpContextBase http, IDictionary<string, string> htmlAttributes, StringBuilder sb, IEnumerable<IClientDependencyFile> dependencies)
+        {
+            var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    dependencies,
                     ClientDependencyType.Javascript, 
                     http,
                     ClientDependencySettings.Instance.CompositeFileHandlerPath);
 
-                foreach (var s in comp)
-                {
-                    sb.Append(RenderSingleJsFile(string.Format("'{0}','{1}'", s, string.Empty), htmlAttributes));
-                }   
-			}
+            foreach (var s in comp)
+            {
+                sb.Append(RenderSingleJsFile(string.Format("'{0}','{1}'", s, string.Empty), htmlAttributes));
+            }
+        }
 
-            return sb.ToString();
-		}
-        
-        protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
+	    protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
 		{
             if(!js.StartsWith("'"))
                 js = string.Format("'{0}'", js);
@@ -85,24 +97,36 @@ namespace ClientDependency.Core.FileRegistration.Providers
                     sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
 				}
 			}
-			else
-			{
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
-                    asArray, 
-                    ClientDependencyType.Css, 
-                    http,
-                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
-
-                foreach (var s in comp)
+            else if (DisableCompositeBundling)
+            {
+                foreach (var dependency in asArray)
                 {
-                    sb.Append(RenderSingleCssFile(s, htmlAttributes));
-                }    
+                    RenderCssComposites(http, htmlAttributes, sb, Enumerable.Repeat(dependency, 1));
+                }
+            }
+            else
+			{
+                RenderCssComposites(http, htmlAttributes, sb, asArray);
 			}
 
             return sb.ToString();
 		}
 
-        protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
+	    protected override void RenderCssComposites(HttpContextBase http, IDictionary<string, string> htmlAttributes, StringBuilder sb, IEnumerable<IClientDependencyFile> dependencies)
+	    {
+            var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    dependencies,
+                    ClientDependencyType.Css,
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
+            foreach (var s in comp)
+            {
+                sb.Append(RenderSingleCssFile(s, htmlAttributes));
+            }
+        }
+
+	    protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
 		{
             var strClientLoader = new StringBuilder("CDLazyLoader");
 			strClientLoader.AppendFormat(".AddCss('{0}')", css);

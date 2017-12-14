@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,34 +46,13 @@ namespace DotNetNuke.UI.Containers
     /// <remarks>
     /// ActionBase inherits from UserControl, and implements the IActionControl Interface
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	10/07/2004	Documented
-    ///     [cnurse]    12/15/2007  Refactored 
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public abstract class ActionBase : UserControl, IActionControl
     {
 		#region "Private Members"
 		
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. The concept of an adminControl no longer exists.")]
-        protected bool m_adminControl;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. The concept of an adminModule no longer exists.")]
-        protected bool m_adminModule;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2 Replaced by ActionRoot Property")]
-        protected ModuleAction m_menuActionRoot;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. Replaced by Actions Property")]
-        protected ModuleActionCollection m_menuActions;
-
         protected bool m_supportsIcons = true;
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. No longer neccessary as there is no concept of an Admin Page")]
-        protected bool m_tabPreview;
 		
 		#endregion
 
@@ -84,10 +63,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the Actions Collection
         /// </summary>
         /// <returns>A ModuleActionCollection</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected ModuleActionCollection Actions
         {
             get
@@ -101,10 +76,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ActionRoot
         /// </summary>
         /// <returns>A ModuleActionCollection</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected ModuleAction ActionRoot
         {
             get
@@ -122,10 +93,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ModuleContext
         /// </summary>
         /// <returns>A ModuleInstanceContext</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected ModuleInstanceContext ModuleContext
         {
             get
@@ -139,10 +106,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the PortalSettings
         /// </summary>
         /// <returns>A PortalSettings object</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected PortalSettings PortalSettings
         {
             get
@@ -170,37 +133,6 @@ namespace DotNetNuke.UI.Containers
                 return m_supportsIcons;
             }
         }
-
-        [Obsolete("Obsoleted in DotNetNuke 5.0. Use ModuleContext.Configuration")]
-        public ModuleInfo ModuleConfiguration
-        {
-            get
-            {
-                return ModuleContext.Configuration;
-            }
-        }
-
-        [Obsolete("Obsoleted in DotNetNuke 5.0. Replaced by ModuleControl")]
-        public PortalModuleBase PortalModule
-        {
-            get
-            {
-                return new PortalModuleBase();
-            }
-            set
-            {
-                ModuleControl = value;
-            }
-        }
-
-        [Obsolete("Obsoleted in DotNetNuke 5.1.2. Replaced by Actions Property")]
-        public ModuleActionCollection MenuActions
-        {
-            get
-            {
-                return Actions;
-            }
-        }
 		
 		#endregion
 
@@ -213,10 +145,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ActionManager instance for this Action control
         /// </summary>
         /// <returns>An ActionManager object</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
             get
@@ -234,10 +162,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
-        /// <history>
-        /// 	[cnurse]	12/15/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
@@ -248,10 +172,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// DisplayControl determines whether the control should be displayed
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool DisplayControl(DNNNodeCollection objNodes)
         {
             return ActionManager.DisplayControl(objNodes);
@@ -261,10 +181,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnAction raises the Action Event for this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (Action != null)
@@ -277,10 +193,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// ProcessAction processes the action event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void ProcessAction(string ActionID)
         {
             int output;
@@ -303,10 +215,6 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	05/12/2005	Documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             try

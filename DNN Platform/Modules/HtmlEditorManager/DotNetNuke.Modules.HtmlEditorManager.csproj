@@ -26,6 +26,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Evoq.Content\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,11 +52,11 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
@@ -105,8 +106,8 @@
     <Compile Include="Views\IProviderConfigurationView.cs" />
     <Compile Include="Views\ProviderConfiguration.ascx.cs">
       <DependentUpon>ProviderConfiguration.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\ProviderConfiguration.ascx.designer.cs">
       <DependentUpon>ProviderConfiguration.ascx</DependentUpon>
@@ -134,6 +135,14 @@
     <Content Include="App_LocalResources\ProviderConfiguration.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
       <Name>DotNetNuke.Web</Name>

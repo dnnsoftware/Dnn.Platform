@@ -1,7 +1,6 @@
 ﻿Test,					Scheme,		Page Name,		Test Url,													Expected Url,											Status,		Final Url,										RedirectReason,
-Home,					http://,	Home,			http://{alias}/,											{defaultPage}?TabId={tabId}&language=en-US,				200
+Home,					http://,	Home,			http://{alias}/,											{defaultPage}?TabId={tabId},				200
 About Us,				http://,	About Us,		http://{alias}/About-Us/My_Page.aspx,						{defaultPage}?TabId={tabId}&My_Page,					200
-Admin,					http://,	Site Settings,	http://{alias}/Admin/Site-Settings/My_Page.aspx,			{defaultPage}?TabId={tabId}&My_Page,					200
 Profile Messages,		http://,	Messages,		http://{alias}/Activity-Feed/Messages/My_Page.aspx,			{defaultPage}?TabId={tabId}&My_Page,					200
 Terms,					http://,	Home,			http://{alias}/Terms/My_Page.aspx,							{defaultPage}?PortalId={portalId}&ctl=Terms&My_Page,	200
 Login,					http://,	About Us,		http://{alias}/Login/My_Page.aspx,							{defaultPage}?PortalId={portalId}&ctl=Login&My_Page,	200

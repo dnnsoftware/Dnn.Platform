@@ -1,8 +1,8 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -57,19 +57,6 @@ namespace DotNetNuke.Entities.Users
         }
 
         #region Private Members
-
-        private static string DisplayDataType(ProfilePropertyDefinition definition)
-        {
-            string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
-            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + "";
-            if (strDataType == string.Empty)
-            {
-                var objListController = new ListController();
-                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
-                DataCache.SetCache(cacheKey, strDataType);
-            }
-            return strDataType;
-        }
 
         internal static bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
@@ -209,9 +196,9 @@ namespace DotNetNuke.Entities.Users
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {
             string result = "";
-            if (!String.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).ToLower() == "image")
+            if (!String.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).ToLowerInvariant() == "image")
             {
-                switch (DisplayDataType(property).ToLower())
+                switch (DisplayDataType(property).ToLowerInvariant())
                 {
                     case "truefalse":
                         result = PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(property.PropertyValue), formatProvider);
@@ -255,7 +242,7 @@ namespace DotNetNuke.Entities.Users
                         }
                         break;
                     case "richtext":
-                        var objSecurity = new PortalSecurity();
+                        var objSecurity = PortalSecurity.Instance;
                         result = PropertyAccess.FormatString(objSecurity.InputFilter(HttpUtility.HtmlDecode(property.PropertyValue), PortalSecurity.FilterFlag.NoScripting), formatString);
                         break;
                     default:
@@ -266,5 +253,17 @@ namespace DotNetNuke.Entities.Users
             return result;
         }
 
+        public static string DisplayDataType(ProfilePropertyDefinition definition)
+        {
+            string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
+            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + "";
+            if (strDataType == string.Empty)
+            {
+                var objListController = new ListController();
+                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
+                DataCache.SetCache(cacheKey, strDataType);
+            }
+            return strDataType;
+        }
     }
 }

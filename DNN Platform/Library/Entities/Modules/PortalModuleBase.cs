@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.UI;
 
@@ -32,6 +33,7 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
@@ -54,17 +56,13 @@ namespace DotNetNuke.Entities.Modules
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	09/17/2004	Added Documentation
-    ///								Modified LocalResourceFile to be Writeable
-    ///		[cnurse]	10/21/2004	Modified Settings property to get both
-    ///								TabModuleSettings and ModuleSettings
-    ///     [cnurse]    12/15/2007  Refactored to support the new IModuleControl
-    ///                             Interface
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class PortalModuleBase : UserControlBase, IModuleControl
     {
+        protected static readonly Regex FileInfoRegex = new Regex(
+            @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
 
@@ -98,9 +96,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 01/19/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool EditMode
         {
@@ -231,9 +226,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the underlying base control for this ModuleControl
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/17/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Control Control
         {
@@ -248,9 +240,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Path for this control (used primarily for UserControls)
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlPath
         {
@@ -265,9 +254,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Name for this control
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlName
         {
@@ -282,9 +268,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the local resource file for this control
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
@@ -312,9 +295,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Module Context for this control
         /// </summary>
         /// <returns>A ModuleInstanceContext</returns>
-        /// <history>
-        /// 	[cnurse]	12/16/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
@@ -329,6 +309,23 @@ namespace DotNetNuke.Entities.Modules
         }
 
         #endregion
+
+        protected override void OnInit(EventArgs e)
+        {
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            base.OnInit(e);
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+        }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            base.OnLoad(e);
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+        }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl()
@@ -373,9 +370,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 17/9/2004  Added Documentation
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void AddActionHandler(ActionEventHandler e)
         {
@@ -412,9 +406,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 04/28/2005  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("This property is deprecated.  Plaese use ModuleController.CacheDirectory()")]
         public string CacheDirectory
@@ -432,9 +423,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [cnurse] 04/28/2005  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID)")]
         public string CacheFileName
@@ -460,21 +448,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        // CONVERSION: Obsolete pre 5.0 => Remove in 5.0
-        [ObsoleteAttribute(
-            "The HelpFile() property was deprecated in version 2.2. Help files are now stored in the /App_LocalResources folder beneath the module with the following resource key naming convention: ModuleHelp.Text"
-            )]
-        public string HelpFile { get; set; }
-
-        [Obsolete("ModulePath was renamed to ControlPath and moved to IModuleControl in version 5.0")]
-        public string ModulePath
-        {
-            get
-            {
-                return ControlPath;
-            }
-        }
-
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID)")]
         public string GetCacheFileName(int tabModuleId)
         {
@@ -491,12 +464,6 @@ namespace DotNetNuke.Entities.Modules
             strCacheKey += tabModuleId + ":";
             strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
             return strCacheKey;
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Please use ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, PermissionKey) ")]
-        public bool HasModulePermission(string PermissionKey)
-        {
-            return ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, PermissionKey);
         }
 
         [Obsolete("This method is deprecated.  Plaese use ModuleController.SynchronizeModule(ModuleId)")]

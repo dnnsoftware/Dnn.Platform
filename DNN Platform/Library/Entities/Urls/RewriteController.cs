@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,6 +49,20 @@ namespace DotNetNuke.Entities.Urls
     {
         internal const int SiteRootRewrite = -3;
         internal const int AllTabsRewrite = -1;
+
+        private static readonly Regex TabIdRegex = new Regex(@"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static readonly Regex UrlParamsRegex = new Regex(@"&[^=]+(?:&|$)", RegexOptions.Compiled);
+
+        private static readonly Regex CultureMatchRegex = new Regex("([A-Za-z]{2})-([A-Za-z]{2})",
+            RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static readonly Regex RewriteParamsRegex = new Regex(@"(?:\&|\?)(?:(?<key>.[^\=\&]*)\=(?<val>.[^\=\&]*))",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #region Private Methods
 
@@ -248,7 +262,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     tabId = portal.HomeTabId;
                                 }
-                                if (string.IsNullOrEmpty(culture))
+                                if (culture == null)
                                 {
                                     culture = portal.DefaultLanguage; //set culture to default if not found specifically
                                 }
@@ -361,8 +375,8 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //Check for VanityUrl
-            var doNotRedirectRegex = new Regex(settings.DoNotRedirectRegex);
-            if (!found && !AdvancedUrlRewriter.ServiceApi.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
+            var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
+            if (!found && !Globals.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
             {
                 string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
                 if (urlParams.Length > 1)
@@ -455,7 +469,7 @@ namespace DotNetNuke.Entities.Urls
         internal static string CheckLanguageMatch(ref string url, UrlAction result)
         {
             //ok now scan for the language modifier 
-            Match langMatch = Regex.Match(url, "/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            Match langMatch = LangMatchRegex.Match(url);
 
             //searches for a string like language/en-US/ in the url
             string langParms = "";
@@ -535,7 +549,7 @@ namespace DotNetNuke.Entities.Urls
         {
             //split out found replaced and store tabid, rulePortalId and do301 if found
             result.RewritePath = rewritePath;
-            MatchCollection qsItems = Regex.Matches(rewritePath, @"(?:\&|\?)(?:(?<key>.[^\=\&]*)\=(?<val>.[^\=\&]*))");
+            MatchCollection qsItems = RewriteParamsRegex.Matches(rewritePath);
             foreach (Match itemMatch in qsItems)
             {
                 string val = itemMatch.Groups["val"].Value;
@@ -1125,39 +1139,25 @@ namespace DotNetNuke.Entities.Urls
                 {
                     curAliasPathDepth += 1;
                     //gone too deep 
-                    if ((curAliasPathDepth > maxAliasPathDepth) & (reWritten == false))
+                    if ((curAliasPathDepth > maxAliasPathDepth) && !reWritten)
                     {
                         // no hope of finding it then 
-                        if (triedFixingSubdomain == false && false)
+                        if (!Globals.ServicesFrameworkRegex.IsMatch(url) && result.RedirectAllowed)
                         {
-                            //resplit the new url 
-                            splitUrl = newUrl.Split(Convert.ToChar("/"));
-                            curAliasPathDepth = minAliasPathDepth;
-                            if (result.RedirectAllowed)
+                            //nothing left to try 
+                            result.Action = (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
+                                    ? ActionType.Output404
+                                    : ActionType.Redirect301;
+                            if (result.Action == ActionType.Redirect301)
                             {
-                                result.Action = ActionType.Redirect301;
-                            }
-                            //this should be redirected 
-                            triedFixingSubdomain = true;
-                        }
-                        else
-                        {
-                            if (!AdvancedUrlRewriter.ServiceApi.IsMatch(url) && result.RedirectAllowed)
-                            {
-                                //nothing left to try 
-                                result.Action = (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
-                                        ? ActionType.Output404
-                                        : ActionType.Redirect301;
-                                if (result.Action == ActionType.Redirect301)
-                                {
-                                    result.Reason = RedirectReason.Deleted_Page;
-                                    result.DoRewrite = true;
-                                    result.FinalUrl = Globals.AddHTTP(result.PortalAlias.HTTPAlias + "/");
-                                    reWritten = true;
-                                }
-                                break;
+                                result.Reason = RedirectReason.Deleted_Page;
+                                result.DoRewrite = true;
+                                result.FinalUrl = Globals.AddHTTP(result.PortalAlias.HTTPAlias + "/");
+                                reWritten = true;
                             }
                         }
+
+                        break;
                     }
                 }
             }
@@ -1304,7 +1304,7 @@ namespace DotNetNuke.Entities.Urls
                     url = url.Replace(queryString, "");
                 }
 
-                var rules = RewriterConfiguration.GetConfig().Rules;
+                var rules = rewriterConfig.Rules;
                 if (rules == null)
                 {
                     throw new NullReferenceException("DotNetNuke.HttpModules.Config.RewriterRuleCollection is null");
@@ -1312,8 +1312,7 @@ namespace DotNetNuke.Entities.Urls
                 for (var i = 0; i <= rules.Count - 1; i++)
                 {
                     //iterate the Config Rules looking for a match
-                    var lookFor = "^" + RewriterUtils.ResolveUrl(applicationPath, rules[i].LookFor) + "$";
-                    var re = new Regex(lookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    var re = rules[i].GetRuleRegex(applicationPath);
                     if (re.IsMatch(url))
                     {
                         var sendTo = rules[i].SendTo;
@@ -1449,6 +1448,12 @@ namespace DotNetNuke.Entities.Urls
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portalId);
+
+            //return false if AdminTabId is -1, it could happen when a portal is in the middle of importing
+            if (adminTab == null)
+            {
+                return false;
+            }
             
             string adminPageName = adminTab.TabName;
             //we should be checking that the tab path matches //Admin//pagename or //admin
@@ -1576,7 +1581,7 @@ namespace DotNetNuke.Entities.Urls
                             urlParms = temp.ToArray();
                             //656 : don't allow forced lower case of the culture identifier - always convert the case to aa-AA to match the standard
                             string cultureId = langValues[1];
-                            Match cultureMatch = Regex.Match(cultureId, "([a-z]{2})-([a-z]{2})", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            Match cultureMatch = CultureMatchRegex.Match(cultureId);
                             if (cultureMatch.Success)
                             {
                                 cultureId = cultureMatch.Groups[1].Value + "-" +
@@ -1681,7 +1686,7 @@ namespace DotNetNuke.Entities.Urls
 
                 if (stripLoneParm)
                 {
-                    newUrl = Regex.Replace(newUrl, @"&[^=]+(?:&|$)", "&");
+                    newUrl = UrlParamsRegex.Replace(newUrl, "&");
                     if (newUrl.EndsWith("&"))
                     {
                         newUrl = newUrl.Substring(0, newUrl.Length - 1);
@@ -1730,9 +1735,7 @@ namespace DotNetNuke.Entities.Urls
                 if (rewriteActions != null && rewriteActions.Count > 0)
                 {
                     SharedList<ParameterRewriteAction> tabRewrites = null;
-                    var tabIdRegex = new Regex(@"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
-                                               RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                    Match tabMatch = tabIdRegex.Match(newUrl);
+                    Match tabMatch = TabIdRegex.Match(newUrl);
                     if (tabMatch.Success)
                     {
                         string rawTabId = tabMatch.Groups["tabid"].Value;
@@ -1782,9 +1785,7 @@ namespace DotNetNuke.Entities.Urls
                         //process each one until a match is found
                         foreach (ParameterRewriteAction rewrite in tabRewrites)
                         {
-                            string lookFor = rewrite.LookFor;
-                            //debugInfo += " lookFor:" + lookFor;
-                            var parmRegex = new Regex(lookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            var parmRegex = RegexUtils.GetCachedRegex(rewrite.LookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             //check the match, if a match found, do the replacement
                             if (parmRegex.IsMatch(parms))
                             {

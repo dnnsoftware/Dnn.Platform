@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     {
         public Stream Create(string path)
         {
+            EnsureFileFolderExists(path);
             return File.Create(path);
         }
 
@@ -54,11 +55,13 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
         public void Move(string sourceFileName, string destFileName)
         {
+            EnsureFileFolderExists(destFileName);
             File.Move(sourceFileName, destFileName);
         }
 
         public void Copy(string sourceFileName, string destinationFileName, bool overwrite)
         {
+            EnsureFileFolderExists(destinationFileName);
             File.Copy(sourceFileName, destinationFileName, overwrite);
         }
 
@@ -75,6 +78,15 @@ namespace DotNetNuke.Services.FileSystem.Internal
         public void SetAttributes(string path, FileAttributes fileAttributes)
         {
             File.SetAttributes(path, fileAttributes);
+        }
+
+        private static void EnsureFileFolderExists(string filePath)
+        {
+            var fi = new System.IO.FileInfo(filePath);
+            if (fi.Directory != null && !fi.Directory.Exists)
+            {
+                fi.Directory.Create();
+            }
         }
     }
 }

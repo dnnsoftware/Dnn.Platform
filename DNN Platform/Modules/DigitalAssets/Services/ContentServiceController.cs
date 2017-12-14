@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -49,6 +50,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         protected IDigitalAssetsController DigitalAssetsController { get; private set; }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage GetFolderContent(GetFolderContentRequest r)
         {
             var moduleId = Request.FindModuleId();
@@ -134,7 +136,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         public HttpResponseMessage GetSubFolders(GetSubFolderRequest request)
         {
             var moduleId = Request.FindModuleId();
-            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
+            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, subFolders);
         }
 

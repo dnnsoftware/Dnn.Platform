@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,9 +38,6 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>
     /// The DNNMultiStateBoxColumnTemplate provides a Template for the DNNMultiStateBoxColumn
     /// </summary>
-    /// <history>
-    ///     [cnurse]	02/16/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DNNMultiStateBoxColumnTemplate : ITemplate
     {
@@ -67,9 +64,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets whether the column fires a postback when the control changes
 		/// </summary>
 		/// <value>A Boolean</value>
-		/// <history>
-		/// 	[cnurse]	02/16/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }
 
@@ -78,9 +72,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the selected state of the DNNMultiStateBox (unless DataBound)
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string SelectedStateKey
         {
@@ -99,9 +90,6 @@ namespace DotNetNuke.UI.WebControls
         /// The Data Field that the column should bind to
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string DataField
         {
@@ -120,9 +108,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets or sets the Design Mode of the Column
 		/// </summary>
 		/// <value>A Boolean</value>
-		/// <history>
-		/// 	[cnurse]	02/24/2006	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
@@ -133,9 +118,6 @@ namespace DotNetNuke.UI.WebControls
         /// changed
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Enabled
         {
@@ -155,9 +137,6 @@ namespace DotNetNuke.UI.WebControls
         /// changed
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string EnabledField
         {
@@ -176,9 +155,6 @@ namespace DotNetNuke.UI.WebControls
         /// The type of Template to Create
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ListItemType ItemType
         {
@@ -197,9 +173,6 @@ namespace DotNetNuke.UI.WebControls
         /// The Text to display in a Header Template
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/16/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Text
         {
@@ -218,9 +191,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the image path of the DNNMultiStateBox
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ImagePath
         {
@@ -239,9 +209,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the state collection of the DNNMultiStateBox
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/21/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DNNMultiStateCollection States
         {
@@ -266,9 +233,6 @@ namespace DotNetNuke.UI.WebControls
         /// InstantiateIn is called when the Template is instantiated by the parent control
         /// </summary>
         /// <param name="container">The container control</param>
-        /// <history>
-        ///     [cnurse]	02/16/2006	created
-        /// </history>
 		/// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -296,9 +260,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Called when the template item is Data Bound
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/14/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void Item_DataBinding(object sender, EventArgs e)
         {

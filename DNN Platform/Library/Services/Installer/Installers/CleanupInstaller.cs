@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,16 +38,13 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	09/05/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CleanupInstaller : FileInstaller
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (CleanupInstaller));
 		#region "Private Members"
 
-        private string _FileName;
+        private string _fileName;
 
 		#endregion
 
@@ -58,41 +55,32 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "*";
-            }
-        }
-		
-		#endregion
+        public override string AllowableFiles => "*";
+
+        #endregion
 
 	#region "Private Methods"
 
         private bool ProcessCleanupFile()
         {
             Log.AddInfo(string.Format(Util.CLEANUP_Processing, Version.ToString(3)));
-            bool bSuccess = true;
             try
             {
-                string strListFile = Path.Combine(Package.InstallerInfo.TempInstallFolder, _FileName);
+                var strListFile = Path.Combine(Package.InstallerInfo.TempInstallFolder, _fileName);
                 if (File.Exists(strListFile))
                 {
-                    FileSystemUtils.DeleteFiles(Regex.Split(FileSystemUtils.ReadFile(strListFile), Environment.NewLine));
+                    FileSystemUtils.DeleteFiles(File.ReadAllLines(strListFile));
                 }
-                Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
             }
             catch (Exception ex)
             {
                 Log.AddFailure(ex);
-                bSuccess = false;
+                //DNN-9202: MUST NOT fail installation when cleanup files deletion fails
+                //return false;
             }
-            return bSuccess;
+            Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
+            return true;
         }
 		
 		#endregion
@@ -104,9 +92,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The CleanupFile method cleansup a single file.
         /// </summary>
         /// <param name="insFile">The InstallFile to clean up</param>
-        /// <history>
-        /// 	[cnurse]	09/05/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool CleanupFile(InstallFile insFile)
         {
@@ -136,9 +121,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="file">The file represented by the node</param>
         /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -158,9 +140,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The RollbackFile method rolls back the cleanup of a single file.
         /// </summary>
         /// <param name="installFile">The InstallFile to commit</param>
-        /// <history>
-        /// 	[cnurse]	09/05/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RollbackFile(InstallFile installFile)
         {
@@ -180,9 +159,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Clenup this is not neccessary</remarks>
-        /// <history>
-        /// 	[cnurse]	09/05/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -194,16 +170,13 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method cleansup the files
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	09/05/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
             try
             {
                 bool bSuccess = true;
-                if (string.IsNullOrEmpty(_FileName))
+                if (string.IsNullOrEmpty(_fileName))
                 {
                     foreach (InstallFile file in Files)
                     {
@@ -228,7 +201,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            _FileName = Util.ReadAttribute(manifestNav, "fileName");
+            _fileName = Util.ReadAttribute(manifestNav, "fileName");
             base.ReadManifest(manifestNav);
         }
 
@@ -237,9 +210,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The UnInstall method uninstalls the file component
         /// </summary>
         /// <remarks>There is no uninstall for this component</remarks>
-        /// <history>
-        /// 	[cnurse]	09/05/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

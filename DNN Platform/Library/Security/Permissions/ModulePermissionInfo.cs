@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>
     /// ModulePermissionInfo provides the Entity Layer for Module Permissions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
@@ -61,9 +58,6 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// Constructs a new ModulePermissionInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo()
         {
@@ -76,9 +70,6 @@ namespace DotNetNuke.Security.Permissions
         /// Constructs a new ModulePermissionInfo
         /// </summary>
         /// <param name="permission">A PermissionInfo object</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo(PermissionInfo permission) : this()
         {
@@ -98,9 +89,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Module Permission ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("modulepermissionid")]
         public int ModulePermissionID
@@ -120,9 +108,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Module ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("moduleid")]
         public int ModuleID
@@ -146,9 +131,6 @@ namespace DotNetNuke.Security.Permissions
         /// Fills a ModulePermissionInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -162,9 +144,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
@@ -196,9 +175,6 @@ namespace DotNetNuke.Security.Permissions
         /// ModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	09/01/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Equals(ModulePermissionInfo other)
         {
@@ -226,9 +202,6 @@ namespace DotNetNuke.Security.Permissions
         /// ModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	09/01/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override bool Equals(object obj)
         {

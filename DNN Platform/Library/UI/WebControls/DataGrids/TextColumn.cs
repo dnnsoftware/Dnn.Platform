@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,9 +35,6 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>
     /// The TextColumn control provides a custom Text Column
     /// </summary>
-    /// <history>
-    ///     [cnurse]	02/20/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class TextColumn : TemplateColumn
     {
@@ -46,9 +43,6 @@ namespace DotNetNuke.UI.WebControls
  /// The Data Field is the field that binds to the Text Column
  /// </summary>
  /// <value>A String</value>
- /// <history>
- /// 	[cnurse]	02/20/2006	Created
- /// </history>
  /// -----------------------------------------------------------------------------
         public string DataField { get; set; }
 
@@ -57,9 +51,6 @@ namespace DotNetNuke.UI.WebControls
  /// Gets or sets the Text (for Header/Footer Templates)
  /// </summary>
  /// <value>A String</value>
- /// <history>
- /// 	[cnurse]	02/20/2006	Created
- /// </history>
  /// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
@@ -68,9 +59,6 @@ namespace DotNetNuke.UI.WebControls
  /// Gets or sets the Width of the Column
  /// </summary>
  /// <value>A Unit</value>
- /// <history>
- /// 	[cnurse]	02/20/2006	Created
- /// </history>
  /// -----------------------------------------------------------------------------
         public Unit Width { get; set; }
 
@@ -79,9 +67,6 @@ namespace DotNetNuke.UI.WebControls
         /// Creates a TextColumnTemplate
         /// </summary>
         /// <returns>A TextColumnTemplate</returns>
-        /// <history>
-        ///     [cnurse]	02/16/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private TextColumnTemplate CreateTemplate(ListItemType type)
         {
@@ -112,9 +97,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Initialises the Column
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/16/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Initialize()
         {

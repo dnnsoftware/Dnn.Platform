@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,6 +37,7 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -56,23 +57,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly Dictionary<int, SyncFolderData> SyncFoldersData = new Dictionary<int, SyncFolderData>();
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
-        
-        #region Private Events
-        private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
-        private event EventHandler<FolderChangedEventArgs> FolderAdded;
-        private event EventHandler<FolderMovedEventArgs> FolderMoved;
-        private event EventHandler<FolderRenamedEventArgs> FolderRenamed;
-        private event EventHandler<FileDeletedEventArgs> FileDeleted;
-        #endregion
-
-        #region Constructor
-
-        internal FolderManager()
-        {
-            RegisterEventHandlers();
-        }
-
-        #endregion
+        private static readonly object _threadLocker = new object();
 
         #region Public Properties
 
@@ -87,19 +72,6 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Private Methods
-
-        private void RegisterEventHandlers()
-        {
-            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
-            {
-                FolderDeleted += events.Value.FolderDeleted;
-                FolderRenamed += events.Value.FolderRenamed;
-                FolderMoved += events.Value.FolderMoved;
-                FolderAdded += events.Value.FolderAdded;
-                FileDeleted += events.Value.FileDeleted;
-            }
-        }
-
         private int AddFolderInternal(IFolderInfo folder)
         {
             //Check this is not a duplicate
@@ -295,7 +267,7 @@ namespace DotNetNuke.Services.FileSystem
                 pattern = "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
             }
 
-            return new Regex(pattern, RegexOptions.IgnoreCase);
+            return RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase);
         }
         
         private static bool IsStandardFolderProviderType(FolderMappingInfo folderMappingInfo)
@@ -406,67 +378,53 @@ namespace DotNetNuke.Services.FileSystem
         #region On Folder Events
         private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
         {
-            if (FolderMoved != null)
-            {
-                FolderMoved(this, new FolderMovedEventArgs
-                {
-                    FolderInfo = folderInfo,
-                    UserId = userId,
-                    OldFolderPath = oldFolderPath
-                });
-            }
+            EventManager.Instance.OnFolderMoved(new FolderMovedEventArgs
+                                                        {
+                                                            FolderInfo = folderInfo,
+                                                            UserId = userId,
+                                                            OldFolderPath = oldFolderPath
+                                                        });
         }
 
         private void OnFolderRenamed(IFolderInfo folderInfo, int userId, string oldFolderName)
         {
-            if (FolderRenamed != null)
-            {
-                FolderRenamed(this, new FolderRenamedEventArgs
-                {
-                    FolderInfo = folderInfo,
-                    UserId = userId,
-                    OldFolderName = oldFolderName
-                });
-            }
+            EventManager.Instance.OnFolderRenamed(new FolderRenamedEventArgs
+                                                        {
+                                                            FolderInfo = folderInfo,
+                                                            UserId = userId,
+                                                            OldFolderName = oldFolderName
+                                                        });
         }
 
         private void OnFolderDeleted(IFolderInfo folderInfo, int userId, bool isCascadeDeleting)
         {
-            if (FolderDeleted != null)
-            {
-                FolderDeleted(this, new FolderDeletedEventArgs
-                {
-                    FolderInfo = folderInfo,
-                    UserId = userId,
-                    IsCascadeDeletng = isCascadeDeleting
-                });
-            }
+            EventManager.Instance.OnFolderDeleted(new FolderDeletedEventArgs
+                                                    {
+                                                        FolderInfo = folderInfo,
+                                                        UserId = userId,
+                                                        IsCascadeDeletng = isCascadeDeleting
+                                                    });
         }
 
         private void OnFolderAdded(IFolderInfo folderInfo, int userId)
         {
-            if (FolderAdded != null)
-            {
-                FolderAdded(this, new FolderChangedEventArgs
-                {
-                    FolderInfo = folderInfo,
-                    UserId = userId
-                });
-            }
+            EventManager.Instance.OnFolderAdded(new FolderChangedEventArgs
+                                                        {
+                                                            FolderInfo = folderInfo,
+                                                            UserId = userId
+                                                        });
         }
 
         private void OnFileDeleted(IFileInfo fileInfo, int userId, bool isCascadeDeleting)
         {
-            if (FileDeleted != null)
-            {
-                FileDeleted(this, new FileDeletedEventArgs
-                {
-                    FileInfo = fileInfo,
-                    UserId = userId,
-                    IsCascadeDeleting = isCascadeDeleting
-                });
-            }
+            EventManager.Instance.OnFileDeleted(new FileDeletedEventArgs
+                                                        {
+                                                            FileInfo = fileInfo,
+                                                            UserId = userId,
+                                                            IsCascadeDeleting = isCascadeDeleting
+                                                        });
         }
+
         #endregion
 
         #endregion
@@ -960,7 +918,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderAlreadyExistsException(Localization.Localization.GetExceptionMessage("RenameFolderAlreadyExists", "The destination folder already exists. The folder has not been renamed."));
             }
 
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, GetParentFolder(folder.PortalID, folder.FolderPath).FolderMappingID);
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var provider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
             RenameFolderInFileSystem(folder, newFolderPath);
@@ -1038,6 +996,7 @@ namespace DotNetNuke.Services.FileSystem
 
             int? scriptTimeOut = null;
 
+            Monitor.Enter(_threadLocker);
             try
             {
                 if (HttpContext.Current != null)
@@ -1074,6 +1033,8 @@ namespace DotNetNuke.Services.FileSystem
             }
             finally
             {
+                Monitor.Exit(_threadLocker);
+
                 // Restore original time-out
                 if (HttpContext.Current != null && scriptTimeOut != null)
                 {
@@ -1170,16 +1131,16 @@ namespace DotNetNuke.Services.FileSystem
             FolderPermissionCollection permissions = null;
             if (SyncFoldersData.ContainsKey(threadId))
             {
-                if (SyncFoldersData[threadId].FolderPath == relativePath)
+                if (SyncFoldersData[threadId].FolderPath == relativePath && SyncFoldersData[threadId].PortalId == portalId)
                 {
                     return SyncFoldersData[threadId].Permissions;
                 }                
                 permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
-                SyncFoldersData[threadId] = new SyncFolderData {FolderPath = relativePath, Permissions = permissions};
+                SyncFoldersData[threadId] = new SyncFolderData {PortalId = portalId, FolderPath = relativePath, Permissions = permissions};
                 return permissions;
             }
             permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
-            SyncFoldersData.Add(threadId, new SyncFolderData{FolderPath = relativePath, Permissions = permissions});
+            SyncFoldersData.Add(threadId, new SyncFolderData{ PortalId = portalId, FolderPath = relativePath, Permissions = permissions});
             
             return permissions;
         }
@@ -1684,40 +1645,33 @@ namespace DotNetNuke.Services.FileSystem
                                         ? String.Empty
                                         : (String.IsNullOrEmpty(baseMappedPath))
                                             ? mappedPath
-                                            : new Regex(Regex.Escape(baseMappedPath)).Replace(mappedPath, string.Empty, 1);
+                                            : RegexUtils.GetCachedRegex(Regex.Escape(baseMappedPath)).Replace(mappedPath, string.Empty, 1);
 
                 var folderPath = baseFolderPath + relativePath;
 
-                try
+                if (folderProvider.FolderExists(mappedPath, folderMapping))
                 {
-                    if (folderProvider.FolderExists(mappedPath, folderMapping))
+                    var item = new MergedTreeItem
                     {
-                        var item = new MergedTreeItem
-                        {
-                            FolderID = -1,
-                            FolderMappingID = folderMapping.FolderMappingID,
-                            FolderPath = folderPath,
-                            ExistsInFolderMapping = true,
-                            MappedPath = mappedPath
-                        };
+                        FolderID = -1,
+                        FolderMappingID = folderMapping.FolderMappingID,
+                        FolderPath = folderPath,
+                        ExistsInFolderMapping = true,
+                        MappedPath = mappedPath
+                    };
 
-                        if (!result.ContainsKey(item.FolderPath))
-                        {
-                            result.Add(item.FolderPath, item);
-                        }
+                    if (!result.ContainsKey(item.FolderPath))
+                    {
+                        result.Add(item.FolderPath, item);
+                    }
 
-                        foreach (var subfolderPath in folderProvider.GetSubFolders(mappedPath, folderMapping))
+                    foreach (var subfolderPath in folderProvider.GetSubFolders(mappedPath, folderMapping))
+                    {
+                        if (folderMapping.SyncAllSubFolders || folderProvider.FolderExists(subfolderPath, folderMapping))
                         {
-                            if (folderMapping.SyncAllSubFolders || folderProvider.FolderExists(subfolderPath, folderMapping))
-                            {
-                                stack.Push(subfolderPath);
-                            }
+                            stack.Push(subfolderPath);
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
                 }
             }
 
@@ -1761,8 +1715,11 @@ namespace DotNetNuke.Services.FileSystem
                 //Add any folders from non-core providers
                 if (folderMapping.MappingName != "Standard" && folderMapping.MappingName != "Secure" && folderMapping.MappingName != "Database")
                 {
-                    mergedItem.ExistsInFolderMapping = true;
-                    if (isRecursive)
+                    if (!isRecursive)
+                    {
+                        mergedItem.ExistsInFolderMapping = true;
+                    }
+                    else
                     {
                         var folder = GetFolder(portalId, mergedItem.FolderPath);
                         mappedFolders = MergeFolderLists(mappedFolders, GetFolderMappingFoldersRecursive(folderMapping, folder));
@@ -1960,28 +1917,35 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void ProcessMergedTreeItemInAddMode(MergedTreeItem item, int portalId)
         {
-            if (item.ExistsInFileSystem)
+            try
             {
-                if (!item.ExistsInDatabase)
+                if (item.ExistsInFileSystem)
                 {
-	                var folderMappingId = FindFolderMappingId(item, portalId);
-                    CreateFolderInDatabase(portalId, item.FolderPath, folderMappingId);
-                }
-            }
-            else
-            {
-                if (item.ExistsInDatabase)
-                {
-                    if (item.ExistsInFolderMapping)
+                    if (!item.ExistsInDatabase)
                     {
-                        CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
+                        var folderMappingId = FindFolderMappingId(item, portalId);
+                        CreateFolderInDatabase(portalId, item.FolderPath, folderMappingId);
                     }
                 }
-                else // by exclusion it exists in the Folder Mapping
+                else
                 {
-                    CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
-                    CreateFolderInDatabase(portalId, item.FolderPath, item.FolderMappingID, item.MappedPath);
+                    if (item.ExistsInDatabase)
+                    {
+                        if (item.ExistsInFolderMapping)
+                        {
+                            CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
+                        }
+                    }
+                    else // by exclusion it exists in the Folder Mapping
+                    {
+                        CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(portalId, item.FolderPath));
+                        CreateFolderInDatabase(portalId, item.FolderPath, item.FolderMappingID, item.MappedPath);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(string.Format("Could not create folder {0}. EXCEPTION: {1}", item.FolderPath, ex.Message), ex);
             }
         }
         private void InitialiseSyncFoldersData(int portalId, string relativePath)
@@ -1990,18 +1954,18 @@ namespace DotNetNuke.Services.FileSystem
             var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
             if (SyncFoldersData.ContainsKey(threadId))
             {
-                if (SyncFoldersData[threadId].FolderPath == relativePath)
+                if (SyncFoldersData[threadId].FolderPath == relativePath && SyncFoldersData[threadId].PortalId == portalId)
                 {
                     SyncFoldersData[threadId].Permissions = permissions;
                 }
                 else
                 {
-                    SyncFoldersData[threadId] = new SyncFolderData { FolderPath = relativePath, Permissions = permissions };
+                    SyncFoldersData[threadId] = new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions };
                 }
             }
             else
             {
-                SyncFoldersData.Add(threadId, new SyncFolderData{ FolderPath = relativePath, Permissions = permissions});                
+                SyncFoldersData.Add(threadId, new SyncFolderData{ PortalId = portalId, FolderPath = relativePath, Permissions = permissions});                
             }
         }
 
@@ -2204,6 +2168,19 @@ namespace DotNetNuke.Services.FileSystem
                         folderInfo.MappedPath = folderPath;
                     }
                 }
+                else if (provider.SupportsMappedPaths)
+                {
+                    if (originalFolderPath == folderInfo.MappedPath)
+                    {
+                        folderInfo.MappedPath = folderPath;
+                    }
+                    else if (folderInfo.MappedPath.EndsWith("/" + originalFolderPath, StringComparison.Ordinal))
+                    {
+                        var newMappedPath = PathUtils.Instance.FormatFolderPath(
+                        folderInfo.MappedPath.Substring(0, folderInfo.MappedPath.LastIndexOf("/" + originalFolderPath, StringComparison.Ordinal)) + "/" + folderPath);
+                        folderInfo.MappedPath = newMappedPath;
+                    }
+                }
 
                 UpdateFolderInternal(folderInfo, false);
             }
@@ -2299,6 +2276,7 @@ namespace DotNetNuke.Services.FileSystem
 
     class SyncFolderData
     {
+        public int PortalId { get; set; }
         public string FolderPath { get; set; }
         public FolderPermissionCollection Permissions { get; set; }
     }

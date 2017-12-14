@@ -127,96 +127,96 @@
     <value>Street:</value>
   </data>
   <data name="plStreet.Help" xml:space="preserve">
-    <value>Enter the Street part of your Address (eg 1 Main Street)</value>
+    <value>Enter the street part of your address. E.g. 1 Main Street.</value>
   </data>
   <data name="plUnit.Text" xml:space="preserve">
     <value>Unit #:</value>
   </data>
   <data name="plUnit.Help" xml:space="preserve">
-    <value>Enter the Unit # or Apartment #</value>
+    <value>Enter the unit or apartment number.</value>
   </data>
   <data name="plCity.Text" xml:space="preserve">
     <value>City:</value>
   </data>
   <data name="plCity.Help" xml:space="preserve">
-    <value>Enter the City</value>
+    <value>Enter the city.</value>
   </data>
   <data name="plCountry.Text" xml:space="preserve">
     <value>Country:</value>
   </data>
   <data name="plCountry.Help" xml:space="preserve">
-    <value>Enter the Country</value>
+    <value>Enter the country.</value>
   </data>
   <data name="StreetRequired.Text" xml:space="preserve">
-    <value>Street is required</value>
+    <value>Street is required.</value>
   </data>
   <data name="CityRequired.Text" xml:space="preserve">
-    <value>City is required</value>
+    <value>City is required.</value>
   </data>
   <data name="CountryRequired.Text" xml:space="preserve">
-    <value>Country is required</value>
+    <value>Country is required.</value>
   </data>
   <data name="plState.Help" xml:space="preserve">
-    <value>Select the state from the list</value>
+    <value>Select the state from the list.</value>
   </data>
   <data name="plProvince.Help" xml:space="preserve">
-    <value>Select the province from the list</value>
+    <value>Select the province from the list.</value>
   </data>
   <data name="StateRequired.Text" xml:space="preserve">
-    <value>State is required</value>
+    <value>State is required.</value>
   </data>
   <data name="ProvinceRequired.Text" xml:space="preserve">
-    <value>Province is required</value>
+    <value>Province is required.</value>
   </data>
   <data name="RegionRequired.Text" xml:space="preserve">
-    <value>Region is required</value>
+    <value>Region is required.</value>
   </data>
   <data name="plRegion.Text" xml:space="preserve">
     <value>Region:</value>
   </data>
   <data name="plRegion.Help" xml:space="preserve">
-    <value>Enter the Region</value>
+    <value>Enter the region.</value>
   </data>
   <data name="plPostal.Text" xml:space="preserve">
     <value>Postal Code:</value>
   </data>
   <data name="plPostal.Help" xml:space="preserve">
-    <value>Enter the Postal Code</value>
+    <value>Enter the postal code.</value>
   </data>
   <data name="plZip.Text" xml:space="preserve">
     <value>ZIP Code:</value>
   </data>
   <data name="plZip.Help" xml:space="preserve">
-    <value>Enter the ZIP Code</value>
+    <value>Enter the ZIP code.</value>
   </data>
   <data name="PostalRequired.Text" xml:space="preserve">
-    <value>Postal Code is required</value>
+    <value>Postal code is required.</value>
   </data>
   <data name="plTelephone.Text" xml:space="preserve">
     <value>Telephone:</value>
   </data>
   <data name="plTelephone.Help" xml:space="preserve">
-    <value>Enter Telephone No.</value>
+    <value>Enter the telephone number.</value>
   </data>
   <data name="TelephoneRequired.Text" xml:space="preserve">
-    <value>Telephone Number is required</value>
+    <value>Telephone number is required.</value>
   </data>
   <data name="plCell.Text" xml:space="preserve">
     <value>Cell:</value>
   </data>
   <data name="plCell.Help" xml:space="preserve">
-    <value>Enter Cell Phone No.</value>
+    <value>Enter the cell phone number.</value>
   </data>
   <data name="CellRequired.Text" xml:space="preserve">
-    <value>Cell Phone Number is required</value>
+    <value>Cell phone number is required.</value>
   </data>
   <data name="plFax.Text" xml:space="preserve">
     <value>Fax:</value>
   </data>
   <data name="plFax.Help" xml:space="preserve">
-    <value>Enter Fax No.</value>
+    <value>Enter the fax number.</value>
   </data>
   <data name="FaxRequired.Text" xml:space="preserve">
-    <value>Fax Number is required</value>
+    <value>Fax number is required.</value>
   </data>
 </root>

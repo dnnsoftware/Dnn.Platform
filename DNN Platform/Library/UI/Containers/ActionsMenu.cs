@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,9 +47,6 @@ namespace DotNetNuke.UI.Containers
     /// ActionsMenu inherits from CompositeControl, and implements the IActionControl
     /// Interface. It uses the Navigation Providers to implement the Menu.
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	12/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ActionsMenu : Control, IActionControl
     {
@@ -70,9 +67,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ActionRoot
         /// </summary>
         /// <returns>A ModuleActionCollection</returns>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected ModuleAction ActionRoot
         {
@@ -91,9 +85,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the Provider Control
         /// </summary>
         /// <returns>A NavigationProvider</returns>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected NavigationProvider ProviderControl
         {
@@ -112,9 +103,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and Sets the Expansion Depth for the Control
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int ExpandDepth
         {
@@ -137,9 +125,6 @@ namespace DotNetNuke.UI.Containers
 		/// Gets and Sets the Path to the Script Library for the provider
 		/// </summary>
 		/// <returns>A String</returns>
-		/// <history>
-		/// 	[cnurse]	12/24/2007  created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public string PathSystemScript { get; set; }
 
@@ -148,9 +133,6 @@ namespace DotNetNuke.UI.Containers
 		/// Gets and Sets whether the Menu should be populated from the client
 		/// </summary>
 		/// <returns>A Boolean</returns>
-		/// <history>
-		/// 	[cnurse]	12/24/2007  created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public bool PopulateNodesFromClient { get; set; }
 
@@ -159,9 +141,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and Sets the Name of the provider to use
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ProviderName
         {
@@ -184,9 +163,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets the ActionManager instance for this Action control
         /// </summary>
         /// <returns>An ActionManager object</returns>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
@@ -205,9 +181,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
@@ -223,9 +196,6 @@ namespace DotNetNuke.UI.Containers
         /// BindMenu binds the Navigation Provider to the Node Collection
         /// </summary>
         /// <param name="objNodes">The Nodes collection to bind</param>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindMenu(DNNNodeCollection objNodes)
         {
@@ -247,9 +217,6 @@ namespace DotNetNuke.UI.Containers
 		/// ProcessNodes proceses a single node and its children
 		/// </summary>
 		/// <param name="objParent">The Node to process</param>
-		/// <history>
-		/// 	[cnurse]	12/24/2007  created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         private void ProcessNodes(DNNNode objParent)
         {
@@ -267,9 +234,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// SetMenuDefaults sets up the default values
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SetMenuDefaults()
         {
@@ -313,9 +277,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// BindMenu binds the Navigation Provider to the Node Collection
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void BindMenu()
         {
@@ -326,9 +287,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnAction raises the Action Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
@@ -342,9 +300,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnInit runs during the controls initialisation phase
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/02/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -360,9 +315,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnLoad runs during the controls load phase
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/02/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -379,9 +331,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// OnPreRender runs during the controls pre-render phase
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/02/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
@@ -397,13 +346,10 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// MenuItem_Click handles the Menu Click event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void MenuItem_Click(NavigationEventArgs args)
         {
-            if (Regex.IsMatch(args.ID, "^\\d+$"))
+            if (Globals.NumberMatchRegex.IsMatch(args.ID))
             {
                 ModuleAction action = ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
                 if (!ActionManager.ProcessAction(action))
@@ -417,9 +363,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// ProviderControl_PopulateOnDemand handles the Populate On Demand Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ProviderControl_PopulateOnDemand(NavigationEventArgs args)
         {

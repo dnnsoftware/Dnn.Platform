@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Caching;
 
@@ -31,6 +32,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -68,7 +70,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 foreach (ModuleInfo module in tabModules)
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
-                    if (!module.IsDeleted && !tab.IsDeleted && TabPermissionController.CanViewPage(tab))
+                    if (ModuleIsAvailable(tab, module) && !tab.IsDeleted && TabPermissionController.CanViewPage(tab))
                     {
                         //Check If authorised to View Module
                         if (ModulePermissionController.CanViewModule(module) && HasModuleSearchPermission(module, searchResult))
@@ -194,6 +196,22 @@ namespace DotNetNuke.Services.Search.Controllers
             _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
 
             return controller;
+        }
+
+        private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
+        {
+            return GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
+        }
+
+        private IEnumerable<ModuleInfo> GetModules(TabInfo tab)
+        {
+            int urlVersion;
+            if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+            {
+                return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
+            }
+
+            return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
         }
 
         #endregion

@@ -70,7 +70,7 @@
 </div>
 
 <script language="javascript" type="text/javascript">
-    jQuery(document).ready(function ($) {
+    $(document).ready(function () {
         var md = new MemberDirectory($, ko, {
             userId: <% = (ProfileUserId == -1) ? ModuleContext.PortalSettings.UserId: ProfileUserId %>,
             viewerId: <% = ModuleContext.PortalSettings.UserId %>,

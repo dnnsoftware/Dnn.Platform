@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Urls
                         foreach (ParameterReplaceAction parmReplace in parmReplaces)
                         {
                             //do a regex on the 'lookFor' in the parameter path
-                            var parmRegex = new Regex(parmReplace.LookFor,
+                            var parmRegex = RegexUtils.GetCachedRegex(parmReplace.LookFor,
                                                       RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             if (parmRegex.IsMatch(parameterPath))
                             {

@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboWorkflow;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboWorkflow;
         
         /// <summary>
         /// lblDescription control.

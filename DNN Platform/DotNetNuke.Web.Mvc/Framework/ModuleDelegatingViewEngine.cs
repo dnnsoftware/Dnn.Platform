@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using DotNetNuke.Web.Mvc.Routing;
 
@@ -25,7 +26,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="partialViewName">The name of the partial view.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName));
+            return RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="viewName">The name of the view.</param><param name="masterName">The name of the master.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName));
+            return RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
         }
 
         /// <summary>
@@ -54,17 +55,11 @@ namespace DotNetNuke.Web.Mvc.Framework
 
         private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
         {
-            // Get the current module request
-            ModuleRequestResult moduleRequestResult = GetCurrentModuleRequestResult(controllerContext);
-
-            // No current request => Skip this view engine
-            if (moduleRequestResult == null)
-            {
+            var controller = controllerContext.Controller as IDnnController;
+            if (controller == null || controller.ViewEngineCollectionEx == null)
                 return new ViewEngineResult(new string[0]);
-            }
 
-            // Delegate to the module's view engine collection
-            ViewEngineResult result = engineRequest(moduleRequestResult.ModuleApplication.ViewEngines);
+            var result = engineRequest(controller.ViewEngineCollectionEx);
 
             // If there is a view, store the view<->viewengine mapping so release works correctly
             if (result.View != null)

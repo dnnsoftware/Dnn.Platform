@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Threading;
 using System.Web.Configuration;
 using System.Xml;
 using System.Xml.XPath;
+using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -42,9 +43,6 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2005	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Config
     {
@@ -191,9 +189,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The connection String</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	11/15/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetConnectionString()
         {
@@ -207,9 +202,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="name">Name of Connection String to return</param>
         /// <returns>The connection String</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	11/15/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetConnectionString(string name)
         {
@@ -241,12 +233,8 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string GetDecryptionkey()
         {
-            var configNav = Load();
-            var httpNode = configNav.SelectSingleNode("configuration//system.web//machineKey").CreateNavigator();
-
-            var result = XmlUtils.GetAttributeValue(httpNode, "decryptionKey");
-
-            return result;
+            MachineKeySection key = System.Configuration.ConfigurationManager.GetSection("system.web/machineKey") as MachineKeySection;
+            return key?.DecryptionKey.ToString() ?? string.Empty;
         }
 
         /// -----------------------------------------------------------------------------
@@ -257,13 +245,11 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string GetFcnMode()
         {
-            var configNav = Load();
-            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime").CreateNavigator();
-
-            var result = XmlUtils.GetAttributeValue(httpNode, "fcnMode");
-
-            return result;
+            var section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
+            var mode = section?.FcnMode;
+            return ((ValueType) mode ?? FcnMode.NotSet).ToString();
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Returns the maximum file size allowed to be uploaded to the application in bytes
@@ -365,9 +351,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The connection String</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[smehaffie]	07/13/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetUpgradeConnectionString()
         {
@@ -380,9 +363,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The database owner</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	02/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetDataBaseOwner()
         {
@@ -442,9 +422,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The object qualifier</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	02/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetObjectQualifer()
         {
@@ -507,9 +484,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <returns>The provider path</returns>
         /// <remarks></remarks>
-        /// <history>
-        ///		[cnurse]	02/13/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetProviderPath(string type)
         {
@@ -668,7 +642,8 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now);
+                RetryableAction.Retry5TimesWith2SecondsDelay(
+                    () => File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now), "Touching config file");
                 return true;
             }
             catch (Exception exc)
@@ -760,7 +735,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static XmlDocument UpdateMachineKey(XmlDocument xmlConfig)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string validationKey = portalSecurity.CreateKey(20);
             string decryptionKey = portalSecurity.CreateKey(24);
 
@@ -808,7 +783,7 @@ namespace DotNetNuke.Common.Utilities
             XmlNode xmlMachineKey = xmlConfig.SelectSingleNode("configuration/system.web/machineKey");
             if (xmlMachineKey.Attributes["validationKey"].Value == "F9D1A2D3E1D3E2F7B3D9F90FF3965ABDAC304902")
             {
-                var objSecurity = new PortalSecurity();
+                var objSecurity = PortalSecurity.Instance;
                 string validationKey = objSecurity.CreateKey(20);
                 XmlUtils.UpdateAttribute(xmlMachineKey, "validationKey", validationKey);
             }
@@ -925,35 +900,29 @@ namespace DotNetNuke.Common.Utilities
 
         public static string AddFCNMode(FcnMode fcnMode)
         {
-            const string strError = "";
-            var xmlConfig = new XmlDocument();
             try
             {
-                //open the web.config
-                xmlConfig = Load();
-
+                
                 //check current .net version and if attribute has been added already
-                if ((IsNet45OrNewer()) && String.IsNullOrEmpty(GetFcnMode()))
+                if ((IsNet45OrNewer()) && GetFcnMode() != fcnMode.ToString())
                 {
-                    XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
+                    //open the web.config
+                    var xmlConfig = Load();
+
+                    var xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
                                                 xmlConfig.SelectSingleNode("configuration/location/system.web/httpRuntime");
                     XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
+
+                    //save the web.config
+                    Save(xmlConfig);
                 }
             }
             catch (Exception ex)
             {
                 //in case of error installation shouldn't be stopped, log into log4net
                 Logger.Error(ex);
-                //strError += ex.Message;
             }
-
-            //save the web.config
-            Save(xmlConfig);
-
-            return strError;  
-
+            return "";  
         }
-
-
     }
 }

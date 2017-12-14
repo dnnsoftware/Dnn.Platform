@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class InstallerFactory
     {
@@ -52,9 +49,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The GetInstaller method instantiates the relevant Component Installer
         /// </summary>
         /// <param name="installerType">The type of Installer</param>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(string installerType)
         {
@@ -73,9 +67,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 case "AuthenticationSystem":
                 case "Auth_System":
                     installer = new AuthenticationInstaller();
-                    break;
-                case "DashboardControl":
-                    installer = new DashboardInstaller();
                     break;
                 case "Script":
                     installer = new ScriptInstaller();
@@ -140,9 +131,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="manifestNav">The manifest (XPathNavigator) for the component</param>
         /// <param name="package">The associated PackageInfo instance</param>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)
         {

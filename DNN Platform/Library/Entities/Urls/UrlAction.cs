@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -52,6 +52,12 @@ namespace DotNetNuke.Entities.Urls
                 physicalPath = request.PhysicalPath;
             }
             catch (PathTooLongException)
+            {
+                //don't handle exception, but put something into the physical path
+                physicalPath = request.ApplicationPath; //will be no file for this location
+                VirtualPath = StateBoolean.True;
+            }
+            catch (ArgumentException)
             {
                 //don't handle exception, but put something into the physical path
                 physicalPath = request.ApplicationPath; //will be no file for this location

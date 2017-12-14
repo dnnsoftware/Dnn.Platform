@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -365,6 +365,16 @@ namespace DotNetNuke.Tests.Core.Collections
             var value = collection.GetValue<string>("question");
 
             Expect(value, Is.EqualTo("what is it"));
+        }
+
+        [Test]
+        public void can_get_value_containing_comma_from_namevaluecollection()
+        {
+            var collection = new NameValueCollection { { "question", "what, is it?" } };
+
+            var value = collection.GetValue<string>("question");
+
+            Expect(value, Is.EqualTo("what, is it?"));
         }
 
         [Test]

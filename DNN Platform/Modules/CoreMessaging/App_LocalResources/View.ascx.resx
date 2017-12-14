@@ -163,7 +163,7 @@
     <value>Edit Module</value>
   </data>
   <data name="FileSize.Header" xml:space="preserve">
-    <value>File size:</value>
+    <value>File Size:</value>
   </data>
   <data name="Filter.Text" xml:space="preserve">
     <value>Filter</value>
@@ -202,7 +202,7 @@
     <value>Mark as Unread</value>
   </data>
   <data name="Message.Text" xml:space="preserve">
-    <value>Your message</value>
+    <value>Your Message:</value>
   </data>
   <data name="MessageSent.Text" xml:space="preserve">
     <value>Your message has been sent successfully.</value>
@@ -241,7 +241,7 @@
     <value>Send</value>
   </data>
   <data name="Subject.Text" xml:space="preserve">
-    <value>Subject</value>
+    <value>Subject:</value>
   </data>
   <data name="Throttling.Text" xml:space="preserve">
     <value>Please wait before sending a new message.</value>
@@ -250,7 +250,7 @@
     <value>Compose Message</value>
   </data>
   <data name="To.Text" xml:space="preserve">
-    <value>Send to</value>
+    <value>Send To:</value>
   </data>
   <data name="Type.Header" xml:space="preserve">
     <value>Type</value>
@@ -319,7 +319,7 @@
     <value>Show Previous Replies</value>
   </data>
   <data name="PermissionsNotProperlySet.Text" xml:space="preserve">
-    <value>Module permissions are not properly set. The module shouldn't be visible for unauthenticated users. Please correct this.</value>
+    <value>Module permissions are not properly set. The module shouldn't be visible for unauthenticated users.  Please correct.</value>
   </data>
   <data name="ContentNotAvailable.Text" xml:space="preserve">
     <value>The content of this module cannot be visible by unauthenticated users. Please login in order to see its content.</value>
@@ -349,7 +349,7 @@
     <value>Yes</value>
   </data>
   <data name="ActionNotPerformed.Text" xml:space="preserve">
-    <value>An error occurred while performing the action. Please try again later.</value>
+    <value>An error occurred while performing the action.  Please try again later.</value>
   </data>
   <data name="ActionPerformed.Text" xml:space="preserve">
     <value>The action has been performed successfully.</value>
@@ -358,13 +358,13 @@
     <value>The message no longer has any valid recipients so replies have been disabled.</value>
   </data>
   <data name="ServerError.Text" xml:space="preserve">
-    <value>An error occurred while processing the request. Please try again later.</value>
+    <value>An error occurred while processing the request.  Please try again later.</value>
   </data>
   <data name="ServerErrorWithDescription.Text" xml:space="preserve">
     <value>An error occurred while processing the request: </value>
   </data>
   <data name="CreateMessageError.Text" xml:space="preserve">
-    <value>An error occurred while creating the message. Please try again later.</value>
+    <value>An error occurred while creating the message.  Please try again later.</value>
   </data>
   <data name="CreateMessageErrorWithDescription.Text" xml:space="preserve">
     <value>An error occurred while creating the message:</value>
@@ -391,13 +391,13 @@
     <value>Frequency</value>
   </data>
   <data name="lblMessageFreq.Help" xml:space="preserve">
-    <value>How often you will receive emails informing you of messages from users on the site.</value>
+    <value>Select how frequently you will receive emails informing you of new messages.</value>
   </data>
   <data name="lblMessageFreq.Text" xml:space="preserve">
     <value>Message Digest Frequency:</value>
   </data>
   <data name="lblNotificationFreq.Help" xml:space="preserve">
-    <value>How often you will receive emails informing you of site notifications.</value>
+    <value>Select how frequently you will receive emails informing you of site notifications.</value>
   </data>
   <data name="lblNotificationFreq.Text" xml:space="preserve">
     <value>Notification Digest Frequency:</value>
@@ -406,7 +406,7 @@
     <value>Email Delivery Schedule</value>
   </data>
   <data name="PrefSaved.Text" xml:space="preserve">
-    <value>Your preferences have been updated</value>
+    <value>Your preferences have been updated.</value>
   </data>
   <data name="SearchFilter.Text" xml:space="preserve">
     <value>Search Filter</value>
@@ -421,10 +421,10 @@
     <value>Item</value>
   </data>
   <data name="Unsubscribed.Text" xml:space="preserve">
-    <value>You have been successfully unsubscribed</value>
+    <value>You have been successfully unsubscribed.</value>
   </data>
   <data name="lblSubscriptions.Help" xml:space="preserve">
-    <value>View and manage the items you are subscribed to.</value>
+    <value>View and manage your subscriptions.</value>
   </data>
   <data name="lblSubscriptions.Text" xml:space="preserve">
     <value>Subscriptions:</value>

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,9 +36,6 @@ namespace DotNetNuke.UI.UserControls
     ///   LocaleSelectorControl is a user control that provides all the server code to manage
     ///   localisation selection
     /// </summary>
-    /// <history>
-    ///   [cathal]	30/1/2010	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class LocaleSelectorControl : UserControlBase
     {

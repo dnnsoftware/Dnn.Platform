@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using System.Web.Http;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
@@ -95,6 +96,16 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         var targetUser = UserController.GetUserById(PortalSettings.PortalId, targetUserId);
 
+                        if (targetUser == null)
+                        {
+                            var response = new
+                            {
+                                Message = Localization.GetExceptionMessage("UserDoesNotExist",
+                                    "The user you are trying to follow no longer exists.")
+                            };
+                            return Request.CreateResponse(HttpStatusCode.InternalServerError, response);
+                        }
+
                         FollowersController.Instance.FollowUser(targetUser);
                         NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, UserInfo.UserID);
 
@@ -102,9 +113,20 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
             }
+            catch (UserRelationshipExistsException exc)
+            {
+                Logger.Error(exc);
+                var response = new
+                {
+                    Message = Localization.GetExceptionMessage("AlreadyFollowingUser",
+                        "You are already following this user.")
+                };
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, response);
+            }
             catch (Exception exc)
             {
                 Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
 
             if (success)

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         /// </summary>
         /// <param name="permission">Workflow State Permission entity</param>
         /// <param name="lastModifiedByUserId">User Id who modifies the permissions set</param>
-        void AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId);
+        int AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId);
 
         /// <summary>
         /// Deletes a specific Workflow State Permission entity

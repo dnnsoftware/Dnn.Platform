@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/11/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ScriptComponentWriter : FileComponentWriter
     {
@@ -61,9 +58,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Collection Node ("scripts")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/11/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -78,9 +72,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Component Type ("Script")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/11/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
@@ -95,9 +86,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Item Node ("script")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/11/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {

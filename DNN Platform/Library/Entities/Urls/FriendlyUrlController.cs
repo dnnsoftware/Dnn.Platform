@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -833,16 +833,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
-            //fallback position - all portals match 'Admin'
-            const string adminPageName = "Admin";
-            //we should be checking that the tab path matches //Admin//pagename or //admin
-            //in this way we should avoid partial matches (ie //Administrators
-            if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
-                || String.Compare(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                return true;
-            }
-            return false;
+            return RewriteController.IsAdminTab(portalId, tabPath, settings);
         }
 
         #endregion
@@ -1073,7 +1064,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (isUnique) //check whether have a tab which use the url.
             {
-                var friendlyUrlSettings = new FriendlyUrlSettings(settings.PortalId);
+                var friendlyUrlSettings = GetCurrentSettings(settings.PortalId);
                 var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();
 				//DNN-6492: if content localize enabled, only check tab names in current culture.
 	            if (settings.ContentLocalizationEnabled)

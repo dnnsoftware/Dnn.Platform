@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -141,7 +141,12 @@ namespace DotNetNuke.Services.Search.Controllers
 
             foreach (var tag in searchQuery.Tags)
             {
-                query.Add(new TermQuery(new Term(Constants.Tag, tag.ToLower())), Occur.MUST);
+                var text = tag.ToLower();
+                if (HtmlUtils.ContainsEntity(text))
+                {
+                    text = System.Net.WebUtility.HtmlDecode(text);
+                }
+                query.Add(new TermQuery(new Term(Constants.Tag, text)), Occur.MUST);
             }
 
             foreach (var kvp in searchQuery.CustomKeywords)

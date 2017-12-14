@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,11 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Net.Http;
 using System.Web;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.UserRequest;
 
 namespace DotNetNuke.Web.Api
 {
@@ -87,7 +86,7 @@ namespace DotNetNuke.Web.Api
 
         public static string GetIPAddress(this HttpRequestMessage request)
         {
-            return GetHttpContext(request).Request.UserHostAddress;
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(GetHttpContext(request).Request);
         }
     }
 }

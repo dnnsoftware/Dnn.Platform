@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -101,13 +101,13 @@ namespace DotNetNuke.Modules.Groups.Components
                                 {
                                     NameResourceKey = "Approve",
                                     DescriptionResourceKey = "ApproveGroup",
-                                    APICall = "DesktopModules/SocialGroups/API/ModerationService/ApproveGroup"
+                                    APICall = "API/SocialGroups/ModerationService/ApproveGroup"
                                 });
                 actions.Add(new NotificationTypeAction
                                 {
                                     NameResourceKey = "RejectGroup",
                                     DescriptionResourceKey = "RejectGroup",
-                                    APICall = "DesktopModules/SocialGroups/API/ModerationService/RejectGroup"
+                                    APICall = "API/SocialGroups/ModerationService/RejectGroup"
                                 });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.Groups.Components
                                     NameResourceKey = "RejectGroup",
                                     DescriptionResourceKey = "RejectGroup",
                                     ConfirmResourceKey = "DeleteItem",
-                                    APICall = "DesktopModules/SocialGroups/API/ModerationService/RejectGroup"
+                                    APICall = "API/SocialGroups/ModerationService/RejectGroup"
                                 });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
@@ -153,13 +153,13 @@ namespace DotNetNuke.Modules.Groups.Components
                                     NameResourceKey = "Approve",
                                     DescriptionResourceKey = "ApproveGroupMember",
                                     ConfirmResourceKey = "",
-                                    APICall = "DesktopModules/SocialGroups/API/ModerationService/ApproveMember"
+                                    APICall = "API/SocialGroups/ModerationService/ApproveMember"
                                 });
                 actions.Add(new NotificationTypeAction
                                 {
                                     NameResourceKey = "RejectMember",
                                     DescriptionResourceKey = "RejectGroupMember",
-                                    APICall = "DesktopModules/SocialGroups/API/ModerationService/RejectMember"
+                                    APICall = "API/SocialGroups/ModerationService/RejectMember"
                                 });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);

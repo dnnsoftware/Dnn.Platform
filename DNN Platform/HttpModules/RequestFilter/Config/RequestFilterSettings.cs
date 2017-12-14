@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -75,24 +75,26 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 string filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.DotNetNuke);
 
                 //Create a FileStream for the Config file
-                var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var doc = new XPathDocument(fileReader);
-                XPathNodeIterator ruleList = doc.CreateNavigator().Select("/configuration/blockrequests/rule");
-                while (ruleList.MoveNext())
+                using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    try
+                    var doc = new XPathDocument(fileReader);
+                    XPathNodeIterator ruleList = doc.CreateNavigator().Select("/configuration/blockrequests/rule");
+                    while (ruleList.MoveNext())
                     {
-                        string serverVar = ruleList.Current.GetAttribute("servervar", string.Empty);
-                        string values = ruleList.Current.GetAttribute("values", string.Empty);
-                        var ac = (RequestFilterRuleType) Enum.Parse(typeof (RequestFilterRuleType), ruleList.Current.GetAttribute("action", string.Empty));
-                        var op = (RequestFilterOperatorType) Enum.Parse(typeof (RequestFilterOperatorType), ruleList.Current.GetAttribute("operator", string.Empty));
-                        string location = ruleList.Current.GetAttribute("location", string.Empty);
-                        var rule = new RequestFilterRule(serverVar, values, op, ac, location);
-                        settings.Rules.Add(rule);
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(new Exception(string.Format("Unable to read RequestFilter Rule: {0}:", ruleList.Current.OuterXml), ex));
+                        try
+                        {
+                            string serverVar = ruleList.Current.GetAttribute("servervar", string.Empty);
+                            string values = ruleList.Current.GetAttribute("values", string.Empty);
+                            var ac = (RequestFilterRuleType)Enum.Parse(typeof(RequestFilterRuleType), ruleList.Current.GetAttribute("action", string.Empty));
+                            var op = (RequestFilterOperatorType)Enum.Parse(typeof(RequestFilterOperatorType), ruleList.Current.GetAttribute("operator", string.Empty));
+                            string location = ruleList.Current.GetAttribute("location", string.Empty);
+                            var rule = new RequestFilterRule(serverVar, values, op, ac, location);
+                            settings.Rules.Add(rule);
+                        }
+                        catch (Exception ex)
+                        {
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(new Exception(string.Format("Unable to read RequestFilter Rule: {0}:", ruleList.Current.OuterXml), ex));
+                        }
                     }
                 }
                 if ((File.Exists(filePath)))

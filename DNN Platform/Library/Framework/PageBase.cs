@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,13 +56,14 @@ namespace DotNetNuke.Framework
     /// <summary>
     /// PageBase provides a custom DotNetNuke base class for pages
     /// </summary>
-    /// <history>
-    ///		[cnurse]	11/30/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+
+        private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
+        private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private PageStatePersister _persister;
         #region Private Members
@@ -80,9 +81,6 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Creates the Page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	    11/30/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PageBase()
         {
@@ -98,9 +96,6 @@ namespace DotNetNuke.Framework
         /// PageStatePersister returns an instance of the class that will be used to persist the Page State
         /// </summary>
         /// <returns>A System.Web.UI.PageStatePersister</returns>
-        /// <history>
-        /// 	[cnurse]	    11/30/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {
@@ -222,25 +217,19 @@ namespace DotNetNuke.Framework
             foreach (Control c in controls)
             {
                 ProcessControl(c, affectedControls, true, resourceFileRoot);
+                LogDnnTrace("PageBase.IterateControls","Info", $"ControlId: {c.ID}");
             }
         }
 
-        private void Handle404Exception()
+        private void LogDnnTrace(string origin, string action, string message)
         {
-            if (PortalSettings.ErrorPage404 > Null.NullInteger)
+            var tabId = -1;
+            if (PortalSettings?.ActiveTab != null)
             {
-                Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                tabId = PortalSettings.ActiveTab.TabID;
             }
-            else
-            {
-                Response.ClearContent();
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 404;
-                Response.Status = "404 Not Found";
-                Response.Write("404 Not Found");
-                Response.End();
-            }
-
+            if (_tracelLogger.IsDebugEnabled)
+                _tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
         }
 
         #endregion
@@ -264,22 +253,32 @@ namespace DotNetNuke.Framework
             string strURL = Globals.ApplicationURL();
             if (exc is HttpException && !IsViewStateFailure(exc))
             {
-                //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
-                var statusCode = (exc as HttpException).GetHttpCode();
-                if (statusCode == 404)
+                try
                 {
-                    Handle404Exception();
-                }
+                    //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
+                    var statusCode = (exc as HttpException).GetHttpCode();
+                    if (statusCode == 404)
+                    {
+                        UrlUtils.Handle404Exception(Response, PortalSettings);
+                    }
 
-                if (PortalSettings.ErrorPage500 != -1)
-                {
-                    var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc, false);
-                    HttpContext.Current.Response.Redirect(url);
+                    if (PortalSettings?.ErrorPage500 != -1)
+                    {
+                        var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc,
+                            false);
+                        HttpContext.Current.Response.Redirect(url);
+                    }
+                    else
+                    {
+                        HttpContext.Current.Response.Clear();
+                        HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     HttpContext.Current.Response.Clear();
-                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
+                    var errorMessage = HttpUtility.UrlEncode(Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile));
+                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error="+errorMessage);
                 }
             }
 
@@ -333,10 +332,8 @@ namespace DotNetNuke.Framework
             //{
             //    jQuery.RegisterHoverIntent(Page);
             //}
-
-            JavaScript.Register(Page);
-
-            if(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
+            
+            if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(Page);
             }
@@ -346,10 +343,14 @@ namespace DotNetNuke.Framework
 
         protected override void Render(HtmlTextWriter writer)
         {
+            LogDnnTrace("PageBase.Render", "Start", $"{Page.Request.Url.AbsoluteUri}");
+
             IterateControls(Controls, _localizedControls, LocalResourceFile);
             RemoveKeyAttribute(_localizedControls);
             AJAX.RemoveScriptManager(this);
             base.Render(writer);
+
+            LogDnnTrace("PageBase.Render", "End", $"{Page.Request.Url.AbsoluteUri}");            
         }
 
 
@@ -434,9 +435,7 @@ namespace DotNetNuke.Framework
             var linkButton = control as LinkButton;
             if (linkButton != null)
             {
-                var imgMatches = Regex.Matches(value,
-                    "<(a|link|img|script|input|form).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>",
-                    RegexOptions.IgnoreCase);
+                var imgMatches = LinkItemMatchRegex.Matches(value);
                 foreach (Match match in imgMatches)
                 {
                     if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))
@@ -615,11 +614,15 @@ namespace DotNetNuke.Framework
             var objModuleControl = control as IModuleControl;
             if (objModuleControl == null)
             {
+                //Cache results from reflection calls for performance
                 var pi = control.GetType().GetProperty("LocalResourceFile");
-                if (pi != null && pi.GetValue(control, null) != null)
+                if (pi != null) 
                 {
-                    //If controls has a LocalResourceFile property use this
-                    IterateControls(control.Controls, affectedControls, pi.GetValue(control, null).ToString());
+                    //Attempt to get property value
+                    var pv = pi.GetValue(control, null);
+
+                    //If controls has a LocalResourceFile property use this, otherwise pass the resource file root
+                    IterateControls(control.Controls, affectedControls, pv == null ? resourceFileRoot : pv.ToString());
                 }
                 else
                 {
@@ -657,62 +660,5 @@ namespace DotNetNuke.Framework
         }
 
         #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DNN 6.1. Replaced by ClientResourceManager.RegisterStyleSheet.")]
-        protected static void AddStyleSheetInternal(Page page, string id, string styleSheet, bool isFirst)
-        {
-            Control objCSS = page.FindControl("CSS");
-            if (objCSS != null)
-            {
-                Control objCtrl = page.Header.FindControl(id);
-                if (objCtrl == null)
-                {
-                    var objLink = new HtmlLink { ID = id };
-                    objLink.Attributes["rel"] = "stylesheet";
-                    objLink.Attributes["type"] = "text/css";
-                    objLink.Href = styleSheet;
-                    if (isFirst)
-                    {
-                        int iLink;
-                        for (iLink = 0; iLink <= objCSS.Controls.Count - 1; iLink++)
-                        {
-                            if (objCSS.Controls[iLink] is HtmlLink)
-                            {
-                                break;
-                            }
-                        }
-                        objCSS.Controls.AddAt(iLink, objLink);
-                    }
-                    else
-                    {
-                        objCSS.Controls.Add(objLink);
-                    }
-                }
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.1. Replaced by ClientResourceManager.RegisterStyleSheet.")]
-        public static void RegisterStyleSheet(Page page, string styleSheet)
-        {
-            RegisterStyleSheet(page, styleSheet, false);
-        }
-
-        [Obsolete("Deprecated in DNN 6.1. Replaced by ClientResourceManager.RegisterStyleSheet.")]
-        public static void RegisterStyleSheet(Page page, string styleSheet, bool isFirst)
-        {
-            if (isFirst)
-            {
-                ClientResourceManager.RegisterStyleSheet(page, styleSheet, 0);
-            }
-            else
-            {
-                ClientResourceManager.RegisterStyleSheet(page, styleSheet);
-            }
-        }
-
-        #endregion
-
     }
 }

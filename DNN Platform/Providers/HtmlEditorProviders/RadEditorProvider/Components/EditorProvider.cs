@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -253,7 +253,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                 //if defaultConfigFile is missing there is a big problem
                 //let the error propogate to the module level
-                File.Copy(defaultConfigFile, path);
+                File.Copy(defaultConfigFile, path, true);
             }
         }
 

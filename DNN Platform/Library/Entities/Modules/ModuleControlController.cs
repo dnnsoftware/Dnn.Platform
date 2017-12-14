@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,9 +42,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// ModuleControlController provides the Business Layer for Module Controls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModuleControlController
     {
@@ -56,9 +53,6 @@ namespace DotNetNuke.Entities.Modules
         /// GetModuleControls gets a Dictionary of Module Controls from
         /// the Cache.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, ModuleControlInfo> GetModuleControls()
         {
@@ -75,9 +69,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static object GetModuleControlsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -89,9 +80,6 @@ namespace DotNetNuke.Entities.Modules
         /// AddModuleControl adds a new Module Control to the database
         /// </summary>
         /// <param name="objModuleControl">The Module Control to save</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void AddModuleControl(ModuleControlInfo objModuleControl)
         {
@@ -103,9 +91,6 @@ namespace DotNetNuke.Entities.Modules
         /// DeleteModuleControl deletes a Module Control in the database
         /// </summary>
         /// <param name="moduleControlID">The ID of the Module Control to delete</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteModuleControl(int moduleControlID)
         {
@@ -118,9 +103,6 @@ namespace DotNetNuke.Entities.Modules
         /// GetModuleControl gets a single Module Control from the database
         /// </summary>
         /// <param name="moduleControlID">The ID of the Module Control to fetch</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControl(int moduleControlID)
         {           
@@ -135,9 +117,6 @@ namespace DotNetNuke.Entities.Modules
         /// GetModuleControl gets a Dictionary of Module Controls by Module Definition
         /// </summary>
         /// <param name="moduleDefID">The ID of the Module Definition</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
         {
@@ -151,9 +130,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="controlKey">The key for the control</param>
         /// <param name="moduleDefID">The ID of the Module Definition</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
         {
@@ -170,9 +146,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="moduleControl">The Module Control to save</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SaveModuleControl(ModuleControlInfo moduleControl, bool clearCache)
         {
@@ -220,38 +193,10 @@ namespace DotNetNuke.Entities.Modules
         /// UpdateModuleControl updates a Module Control in the database
         /// </summary>
         /// <param name="objModuleControl">The Module Control to save</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void UpdateModuleControl(ModuleControlInfo objModuleControl)
         {
             SaveModuleControl(objModuleControl, true);
         }
-
-        #region "Obsolete"
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleControlsByModuleDefinitionID(Integer)")]
-        public static ArrayList GetModuleControls(int moduleDefID)
-        {
-            var arrControls = new ArrayList();
-            arrControls.AddRange(GetModuleControlsByModuleDefinitionID(moduleDefID).Values);
-            return arrControls;
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleControlByControlKey(String, Integer)")]
-        public static ArrayList GetModuleControlsByKey(string controlKey, int moduleDefID)
-        {
-            var arrControls = new ArrayList {GetModuleControlByControlKey(controlKey, moduleDefID)};
-            return arrControls;
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleControlByControlKey(String, Integer)")]
-        public static ModuleControlInfo GetModuleControlByKeyAndSrc(int moduleDefID, string controlKey, string controlSrc)
-        {
-            return GetModuleControlByControlKey(controlKey, moduleDefID);
-        }
-
-        #endregion
     }
 }

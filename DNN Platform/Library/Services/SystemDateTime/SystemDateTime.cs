@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.SystemDateTime
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        [Obsolete("Deprecated in DNN 7.1.2.  Replaced by DateUtils.GetDatabaseTime, which includes caching")]
+        [Obsolete("Deprecated in DNN 7.1.2.  Replaced by DateUtils.GetDatabaseUtcTime, which includes caching")]
         public static DateTime GetCurrentTimeUtc()
         {
             return Provider.GetDatabaseTimeUtc();
@@ -72,6 +72,7 @@ namespace DotNetNuke.Services.SystemDateTime
         /// </summary>
         /// <returns>DateTime</returns>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by DateUtils.GetDatabaseLocalTime, which includes caching")]
         public static DateTime GetCurrentTime()
         {
             return Provider.GetDatabaseTime();

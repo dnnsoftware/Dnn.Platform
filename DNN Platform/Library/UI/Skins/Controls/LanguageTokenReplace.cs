@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -227,12 +227,9 @@ namespace DotNetNuke.UI.Skins.Controls
         /// Basically it is just a call to NavigateUrl, with stripped qs parameters
         /// </summary>
         /// <param name="newLanguage"></param>
-        /// <history>
-        ///     [erikvb]   20070814    added
-        /// </history>
         private string NewUrl(string newLanguage)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             var newLocale = LocaleController.Instance.GetLocale(newLanguage);
 
             //Ensure that the current ActiveTab is the culture of the new language

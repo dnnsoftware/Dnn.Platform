@@ -121,7 +121,7 @@
     <value>Permissions:</value>
   </data>
   <data name="plPermissions.Help" xml:space="preserve">
-    <value>Select the View and Edit permissions by checking/unchecking the boxes in the grid.  The module can inherit its permissions from the Page.  To do this check the Inherit View Permissions checkbox.</value>
+    <value>Select the View and Edit permissions by checking/unchecking the boxes in the grid.  Check the Inherit View Permissions box to allow the module to inherit permissions from the page.</value>
   </data>
   <data name="InheritPermissions.Text" xml:space="preserve">
     <value>Inherit &lt;b&gt;View&lt;/b&gt; permissions from &lt;b&gt;Page&lt;/b&gt;</value>

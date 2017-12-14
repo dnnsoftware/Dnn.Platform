@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,9 +34,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [jbrinkman]	02/26/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:MultiLineTextEditControl runat=server></{0}:MultiLineTextEditControl>")]
     public class MultiLineTextEditControl : TextEditControl
@@ -47,6 +44,7 @@ namespace DotNetNuke.UI.WebControls
             ControlStyle.AddAttributesToRender(writer);
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
 			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute("aria-label", "editor");
             writer.RenderBeginTag(HtmlTextWriterTag.Textarea);
             writer.Write(propValue);
             writer.RenderEndTag();

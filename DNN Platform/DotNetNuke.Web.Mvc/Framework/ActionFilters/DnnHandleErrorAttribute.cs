@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,20 +20,14 @@
 #endregion
 
 using System;
-using System.Net;
 using System.Web.Mvc;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     public class DnnHandleErrorAttribute : HandleErrorAttribute
     {
-        public string MessageKey { get; set; }
-
-        public string LocalResourceFile { get; set; }
-
         public override void OnException(ExceptionContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;
@@ -43,21 +37,12 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
             
-            if (filterContext.Exception != null)
-            {
-                var exception = filterContext.Exception;
-                var controllerName = (string)filterContext.RouteData.Values["controller"];
-                var actionName = (string)filterContext.RouteData.Values["action"];
+            LogException(filterContext.Exception);            
+        }
 
-                string key = String.IsNullOrEmpty(MessageKey) ? controllerName + "_" + actionName + ".Error" : MessageKey;
-
-                string localizedMessage = controller.LocalizeString(key);
-
-                //Log Exception
-                Exceptions.LogException(exception);
-
-                throw new Exception(localizedMessage, exception);
-            }
+        protected virtual void LogException(Exception exception)
+        {
+            Exceptions.LogException(exception);
         }
     }
 }

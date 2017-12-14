@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,10 +54,6 @@ namespace DotNetNuke.Services.Mail
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [sleupold]	8/15/2007	created to support tokens and localisation
-    ///     [sleupold]  9/09/2007   refactored interface for enhanced type safety
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SendTokenizedBulkEmail : IDisposable
     {
@@ -351,22 +347,24 @@ namespace DotNetNuke.Services.Mail
 			foreach (var attachment in _attachments)
 			{
 				var buffer = new byte[4096];
-				var memoryStream = new MemoryStream();
-				while (true)
-				{
-					var read = attachment.ContentStream.Read(buffer, 0, 4096);
-					if (read <= 0)
-					{
-						break;
-					}
-					memoryStream.Write(buffer, 0, read);
-				}
+                using (var memoryStream = new MemoryStream())
+                {
+                    while (true)
+                    {
+                        var read = attachment.ContentStream.Read(buffer, 0, 4096);
+                        if (read <= 0)
+                        {
+                            break;
+                        }
+                        memoryStream.Write(buffer, 0, read);
+                    }
 
-			    var newAttachment = new Attachment(memoryStream, attachment.ContentType);
-                newAttachment.ContentStream.Position = 0;
-                attachments.Add(newAttachment);
-                //reset original position
-				attachment.ContentStream.Position = 0;
+                    var newAttachment = new Attachment(memoryStream, attachment.ContentType);
+                    newAttachment.ContentStream.Position = 0;
+                    attachments.Add(newAttachment);
+                    //reset original position
+                    attachment.ContentStream.Position = 0;
+                }
 			}
 
 			return attachments;

@@ -43,7 +43,7 @@
 		<value>Module Help</value>
 	</data>
 	<data name="lblHelp.Text">
-		<value>Help Has Not Been Provided For This Module.</value>
+		<value>Help has not been provided for this module.</value>
 	</data>
 	<data name="cmdHelp.Text">
 		<value>View Online Help</value>

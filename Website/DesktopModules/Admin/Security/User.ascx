@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls.Internal" %>
 
 <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short">
     <Items>
@@ -18,7 +18,7 @@
 </dnn:DnnFormEditor>
 <div class="dnnFormGroup dnnFormItem dnnFormShort" id="renameUserPortals" runat="server" Visible="False">
     <dnn:Label ID="numSites" runat="server"></dnn:Label>
-    <dnn:DnnComboBox CheckBoxes="false" id="cboSites" runat="server" Width="100" DataMember="PortalName" Visible="False" ViewStateMode="Disabled"/>
+    <dnn:DnnComboBox CheckBoxes="false" id="cboSites" runat="server" Width="100" DataMember="PortalName" Visible="False" />
 </div>
 
 <asp:panel id="pnlAddUser" runat="server" visible="False" CssClass="dnnForm dnnFormPassword">
@@ -47,12 +47,12 @@
         <div class="dnnFormItem">
             <dnn:label id="plPassword" runat="server" controlname="txtPassword" cssclass="dnnFormRequired"  />
             <asp:Panel ID="passwordContainer" runat="server">
-    			<asp:textbox id="txtPassword" runat="server" TextMode="Password" size="12" maxlength="20" AutoCompleteType="Disabled" />
+    			<asp:textbox id="txtPassword" runat="server" TextMode="Password" size="12" maxlength="39" AutoCompleteType="Disabled" />
             </asp:Panel>
         </div>
         <div class="dnnFormItem">
             <dnn:label id="plConfirm" runat="server" controlname="txtConfirm" text="Confirm Password:" cssclass="dnnFormRequired"  ></dnn:label>
-			<asp:textbox id="txtConfirm" runat="server" textmode="Password" size="12" maxlength="20" CssClass="password-confirm" />
+			<asp:textbox id="txtConfirm" runat="server" textmode="Password" size="12" maxlength="39" CssClass="password-confirm" />
             <asp:CompareValidator ID="ComparePasswordsValidator" runat="server"
                                   resourcekey = "ComparePasswordsValidator.ErrorMessage" 
                                   CssClass="dnnFormMessage dnnFormError"    

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1013,6 +1013,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void DeleteNotification_Calls_DataService_DeleteNotification()
         {
+            var messageRecipients = new List<MessageRecipient>
+                                        {
+                                            new MessageRecipient()
+                                        };
+
+            _mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
+
             _mockDataService.Setup(ds => ds.DeleteNotification(Constants.Messaging_MessageId_1)).Verifiable();
             _notificationsController.DeleteNotification(Constants.Messaging_MessageId_1);
             _mockDataService.Verify();

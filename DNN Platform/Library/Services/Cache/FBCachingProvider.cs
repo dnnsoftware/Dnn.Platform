@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -159,10 +159,12 @@ namespace DotNetNuke.Services.Cache
         {
             //cache key may contain characters invalid for a filename - this method creates a valid filename
             byte[] FileNameBytes = Encoding.ASCII.GetBytes(CacheKey);
-            var sha256 = new SHA256CryptoServiceProvider();
-            FileNameBytes = sha256.ComputeHash(FileNameBytes);
-            string FinalFileName = ByteArrayToString(FileNameBytes);
-            return Path.GetFullPath(Globals.HostMapPath + CachingDirectory + FinalFileName + CacheFileExtension);
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                FileNameBytes = sha256.ComputeHash(FileNameBytes);
+                string FinalFileName = ByteArrayToString(FileNameBytes);
+                return Path.GetFullPath(Globals.HostMapPath + CachingDirectory + FinalFileName + CacheFileExtension);
+            }
         }
 
         private string PurgeCacheFiles(string Folder)

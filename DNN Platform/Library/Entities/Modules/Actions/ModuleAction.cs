@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// user.  These actions may be presented as a menu, a dropdown list or even a group
     /// of linkbuttons.
     /// <seealso cref="T:DotNetNuke.ModuleActionCollection" /></remarks>
-    /// <history>
-    /// 	[Joe] 	10/9/2003	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public class ModuleAction
     {
@@ -109,10 +106,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <remarks>The moduleaction constructor is used to set the various properties of 
         /// the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> class at the time the instance is created.
         /// </remarks>
-        /// <history>
-        /// 	[Joe] 	        10/26/2003	Created
-        /// 	[Nik Kalyani]	10/15/2004	Created multiple signatures to eliminate Optional parameters
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible,
                             bool newWindow)
@@ -141,9 +134,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// the <see cref="T:DotNetNuke.Containers.Actions"/> control, these subactions are
         /// shown as sub-menus.  If other Action controls are implemented, then
         /// sub-actions may or may not be supported for that control type.</remarks>
-        /// <history>
-        /// 	[Joe] 	10/26/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ModuleActionCollection Actions { get; set; }
 
@@ -155,9 +145,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <value>The integer ID of the current <see cref="T:DotNetNuke.ModuleAction"/>.</value>
         /// <remarks>When building a hierarchy of <see cref="T:DotNetNuke.ModuleAction">ModuleActions</see>, 
         /// the ID is used to link the child and parent actions.</remarks>
-        /// <history>
-        /// 	[Joe] 	10/18/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public int ID { get; set; }
 
@@ -171,9 +158,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// specified by the <see cref="P:DotNetNuke.ModuleAction.Secure"/> property.  By
         /// utilizing a custom method in your module, you can encapsulate specific business
         /// rules to determine if the Action should be visible.</remarks>
-        /// <history>
-        /// 	[Joe] 	10/26/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public bool Visible { get; set; }
 
@@ -186,9 +170,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// to access this <see cref="T:DotNetNuke.ModuleAction" /></value>
         /// <remarks>The security access level determines the roles required by the current user in
         /// order to access this module action.</remarks>
-        /// <history>
-        /// 	[jbrinkman] 	12/27/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public SecurityAccessLevel Secure { get; set; }
 
@@ -203,9 +184,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// property can contain any string set by the programmer. The programmer can then 
         /// identify the command name in code and perform the appropriate tasks.
         /// </remarks>
-        /// <history>
-        /// 	[Joe] 	10/9/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public string CommandName { get; set; }
 
@@ -223,9 +201,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// CommandArgument property to "Ascending" to specify a command to sort in ascending 
         /// order.
         /// </remarks>
-        /// <history>
-        /// 	[Joe] 	10/9/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public string CommandArgument { get; set; }
 
@@ -269,9 +244,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <value>The string value that is displayed to represent the module action.</value>
         /// <remarks>The title property is displayed by the Actions control for each module
         /// action.</remarks>
-        /// <history>
-        /// 	[Joe] 	10/9/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public string Title { get; set; }
 
@@ -282,9 +254,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value>The URL for the icon that is displayed with the module action.</value>
         /// <remarks>The URL for the icon is a simple string and is not checked for formatting.</remarks>
-        /// <history>
-        /// 	[Joe] 	10/9/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public string Icon { get; set; }
 
@@ -298,9 +267,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <remarks>If the URL is present then the Module Action Event is not fired.  
         /// If the URL is empty then the Action Event is fired and is passed the value 
         /// of the associated Command property.</remarks>
-        /// <history>
-        /// 	[Joe] 	10/9/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public string Url { get; set; }
 
@@ -314,9 +280,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// to the postback occuring. If the ClientScript returns false then the postback
         /// is canceled.  If the ClientScript is empty then the Action Event is fired and 
         /// is passed the value of the associated Command property.</remarks>
-        /// <history>
-        /// 	[jbrinkman]	5/21/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ClientScript { get; set; }
 
@@ -331,9 +294,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// the appropriate module.  If the UseActionEvent is false, and the URL property
         /// is set, then the Actions control will redirect the response to the URL.  In
         /// all cases, an ActionEvent is raised if the URL is not set.</remarks>
-        /// <history>
-        /// 	[jbrinkman] 	12/22/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public bool UseActionEvent { get; set; }
 
@@ -344,9 +304,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value>A boolean indicating whether to open a new window.</value>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman] 	12/22/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public bool NewWindow { get; set; }
 
@@ -359,9 +316,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <see cref="P:DotNetNuke.ModuleAction.Actions"/> property.  When displayed via
         /// the <see cref="T:DotNetNuke.Containers.Actions"/> control, these subactions are
         /// shown as sub-menus.</remarks>
-        /// <history>
-        /// 	[Joe] 	10/26/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public bool HasChildren()
         {

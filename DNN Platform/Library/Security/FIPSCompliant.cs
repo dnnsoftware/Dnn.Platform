@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -59,28 +59,32 @@ namespace DotNetNuke.Security
             VerifyAesSettings(passPhrase, salt);
 
             byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
-            var aesProvider = new AesCryptoServiceProvider();
-            var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations);
-            Byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
-            Byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
-            Byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            using (var aesProvider = new AesCryptoServiceProvider())
+            {
+                var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations);
+                Byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
+                Byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
+                Byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
-            aesProvider.KeySize = 256;
-            aesProvider.Padding = PaddingMode.ISO10126;
-            aesProvider.Mode = CipherMode.CBC;
+                aesProvider.KeySize = 256;
+                aesProvider.Padding = PaddingMode.ISO10126;
+                aesProvider.Mode = CipherMode.CBC;
 
-            ICryptoTransform encryptor = aesProvider.CreateEncryptor(derivedKey, derivedInitVector);
-            var memStream = new MemoryStream();
-            var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write);
+                ICryptoTransform encryptor = aesProvider.CreateEncryptor(derivedKey, derivedInitVector);
+                using (var memStream = new MemoryStream())
+                using (var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write))
+                {
+                    cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                    cryptoStream.FlushFinalBlock();
+                    Byte[] cipherTextBytes = memStream.ToArray();
 
-            cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-            cryptoStream.FlushFinalBlock();
-            Byte[] cipherTextBytes = memStream.ToArray();
+                    memStream.Close();
+                    cryptoStream.Close();
 
-            memStream.Close();
-            cryptoStream.Close();
-
-            return Convert.ToBase64String(cipherTextBytes);
+                    return Convert.ToBase64String(cipherTextBytes);
+                    
+                }
+            }
         }
 
         private static void VerifyAesSettings(string passPhrase, string salt)
@@ -117,14 +121,16 @@ namespace DotNetNuke.Security
             aesProvider.Mode = CipherMode.CBC;
 
             ICryptoTransform decryptor = aesProvider.CreateDecryptor(derivedKey, derivedInitVector);
-            var memStream = new MemoryStream(cipherTextBytes);
-            var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read);
-            var plainTextBytes = new Byte[cipherTextBytes.Length];
-            Int32 byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+            using (var memStream = new MemoryStream(cipherTextBytes))
+            using (var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
+            {
+                var plainTextBytes = new Byte[cipherTextBytes.Length];
+                Int32 byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
 
-            memStream.Close();
-            cryptoStream.Close();
-            return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
+                memStream.Close();
+                cryptoStream.Close();
+                return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
+            }
         }
     }
 }

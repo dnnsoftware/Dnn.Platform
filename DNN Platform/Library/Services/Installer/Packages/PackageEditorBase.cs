@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,15 +33,14 @@ namespace DotNetNuke.Services.Installer.Packages
     /// <summary>
     /// The PackageEditorBase class provides a Base Classs for Package Editors
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	02/04/2008	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PackageEditorBase : ModuleUserControlBase, IPackageEditor
     {
         private bool _IsWizard = Null.NullBoolean;
         private PackageInfo _Package;
         private int _PackageID = Null.NullInteger;
+
+        protected string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         protected virtual string EditorID
         {
@@ -78,9 +77,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets and sets the Package ID
         /// </summary>
         /// <value>An Integer</value>
-        /// <history>
-        /// 	[cnurse]	02/04/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PackageID
         {
@@ -99,9 +95,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Gets and sets whether the Editor is in the Wizard
         /// </summary>
         /// <value>An Boolean</value>
-        /// <history>
-        /// 	[cnurse]	08/26/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsWizard
         {
@@ -119,9 +112,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <summary>
         /// Used to Initialize the Control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual void Initialize()
         {
@@ -131,9 +121,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <summary>
         /// Used to Update the Package
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual void UpdatePackage()
         {

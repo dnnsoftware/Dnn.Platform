@@ -95,7 +95,11 @@ namespace log4net.Filter
 		{
 			if (m_stringRegexToMatch != null)
 			{
+#if NETSTANDARD1_3
+				m_regexToMatch = new Regex(m_stringRegexToMatch);
+#else
 				m_regexToMatch = new Regex(m_stringRegexToMatch, RegexOptions.Compiled);
+#endif
 			}
 		}
 

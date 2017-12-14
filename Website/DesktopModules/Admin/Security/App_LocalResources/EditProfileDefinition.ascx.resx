@@ -127,13 +127,13 @@
     <value>Data Type:</value>
   </data>
   <data name="ProfilePropertyDefinition_DataType.Help" xml:space="preserve">
-    <value>Select the Data Type for this field</value>
+    <value>Select the data type for this field.</value>
   </data>
   <data name="ProfilePropertyDefinition_DefaultValue.Text" xml:space="preserve">
     <value>Default Value:</value>
   </data>
   <data name="ProfilePropertyDefinition_DefaultValue.Help" xml:space="preserve">
-    <value>You can provide a default value for this property</value>
+    <value>Optionally provide a default value for this property.</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyCategory.Text" xml:space="preserve">
     <value>Property Category:</value>
@@ -145,25 +145,25 @@
     <value>Property Name:</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyName.Help" xml:space="preserve">
-    <value>Enter a name for the property</value>
+    <value>Enter a name for the property.</value>
   </data>
   <data name="ProfilePropertyDefinition_ValidationExpression.Text" xml:space="preserve">
     <value>Validation Expression:</value>
   </data>
   <data name="ProfilePropertyDefinition_ValidationExpression.Help" xml:space="preserve">
-    <value>You can provide a Regular Expression to validate the data entered for this property</value>
+    <value>You can provide a regular expression to validate the data entered for this property.</value>
   </data>
   <data name="ProfilePropertyDefinition_ViewOrder.Text" xml:space="preserve">
     <value>View Order:</value>
   </data>
   <data name="ProfilePropertyDefinition_ViewOrder.Help" xml:space="preserve">
-    <value>Enter a View Order for this property</value>
+    <value>Enter a number to determine the view order for this property or leave blank to add.</value>
   </data>
   <data name="ProfilePropertyDefinition_Visible.Text" xml:space="preserve">
     <value>Visible:</value>
   </data>
   <data name="ProfilePropertyDefinition_Visible.Help" xml:space="preserve">
-    <value>If left unchecked this property will only be visible to Administrators - the user will not be able to view or edit the property.</value>
+    <value>Check this box if this property can be viewed and edited by the user or leave it unchecked if it is visible to Administrators only.</value>
   </data>
   <data name="ProfilePropertyDefinition_Required.Text" xml:space="preserve">
     <value>Required:</value>
@@ -178,34 +178,34 @@
     <value>Enter the maximum length for this property.  This will only be applicable for specific data types.</value>
   </data>
   <data name="DuplicateName.Text" xml:space="preserve">
-    <value>This Property already exists.  Property Names must be unique.  Please select a different name for this property.</value>
+    <value>This property already exists.  Property names must be unique.  Please select a different name for this property.</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyCategory.Required" xml:space="preserve">
-    <value>The Category is required</value>
+    <value>The category is required.</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyName.Required" xml:space="preserve">
-    <value>The Property Name is required</value>
+    <value>The property name is required.</value>
   </data>
   <data name="plCategoryName.Help" xml:space="preserve">
-    <value>Enter the text for the category's name in the selected language</value>
+    <value>Enter the text for the category's name in the selected language.</value>
   </data>
   <data name="plCategoryName.Text" xml:space="preserve">
     <value>Category Name:</value>
   </data>
   <data name="plLocales.Help" xml:space="preserve">
-    <value>Select the language</value>
+    <value>Select the language.</value>
   </data>
   <data name="plLocales.Text" xml:space="preserve">
     <value>Choose Language:</value>
   </data>
   <data name="plPropertyHelp.Help" xml:space="preserve">
-    <value>in the selected language</value>
+    <value>Enter the Help for this property in the selected language.</value>
   </data>
   <data name="plPropertyHelp.Text" xml:space="preserve">
     <value>Property Help:</value>
   </data>
   <data name="plPropertyName.Help" xml:space="preserve">
-    <value>Enter the text for the property's name in the selected language</value>
+    <value>Enter the text for the property's name in the selected language.</value>
   </data>
   <data name="plPropertyName.Text" xml:space="preserve">
     <value>Property Name:</value>
@@ -217,7 +217,7 @@
     <value>Update Property</value>
   </data>
   <data name="Introduction.Help" xml:space="preserve">
-    <value>The first step in editing a Profile Property Definition is to update the property's details.  Make any changes you need to the fields on this page, and click "Next" to save the changes, and proceed to the next step.</value>
+    <value>The first step in editing a Profile Property Definition is to update the property's details.  Make any changes you need to the fields on this page, and click Next to save the changes, and proceed to the next step.</value>
   </data>
   <data name="Introduction.Title" xml:space="preserve">
     <value>Edit Property Details</value>
@@ -235,7 +235,7 @@
     <value>Add New Property Details</value>
   </data>
   <data name="Localization.Help" xml:space="preserve">
-    <value>The next step is to manage the localization of this property.  Select the language you wish to update, add text or modify the existing text and click "Update"</value>
+    <value>The next step is to manage the localization of this property.  Select the language you want to update, add new text or modify the existing text and then click Update.</value>
   </data>
   <data name="Localization.Title" xml:space="preserve">
     <value>Manage Localization</value>
@@ -244,7 +244,7 @@
     <value>Return to Profile Properties List</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyName.Validation" xml:space="preserve">
-    <value>The property name cannot contain spaces</value>
+    <value>The property name cannot contain spaces.</value>
   </data>
   <data name="plPropertyRequired.Help" xml:space="preserve">
     <value>Enter the error message to display for this field when the property is Required but not present.</value>
@@ -271,7 +271,7 @@
     <value>Default Visibility:</value>
   </data>
   <data name="ProfilePropertyDefinition_ReadOnly.Help" xml:space="preserve">
-    <value>You can make a profile property read only.  A read-onlly property can be edited by the admin and is readon-only to the end-user.</value>
+    <value>Read only profile properties can be edited by the Administrator but are read-only to the user.</value>
   </data>
   <data name="ProfilePropertyDefinition_ReadOnly.Text" xml:space="preserve">
     <value>Read Only:</value>

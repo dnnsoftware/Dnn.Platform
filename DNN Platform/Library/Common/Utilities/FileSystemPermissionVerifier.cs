@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke? - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -70,23 +70,20 @@ namespace DotNetNuke.Common.Utilities
         ///   VerifyFileCreate checks whether a file can be created
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public bool VerifyFileCreate()
+        private bool VerifyFileCreate()
         {
             string verifyPath = Path.Combine(_basePath, "Verify\\Verify.txt");
-            bool verified = VerifyFolderCreate();
+            bool verified = true;
 
-            if (verified)
+            //Attempt to create the File
+            try
             {
-                //Attempt to create the File
-                try
-                {
-					Try(() => FileCreateAction(verifyPath), "Creating verification file");
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                    verified = false;
-                }
+                Try(() => FileCreateAction(verifyPath), "Creating verification file");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                verified = false;
             }
 
             return verified;
@@ -110,23 +107,20 @@ namespace DotNetNuke.Common.Utilities
         ///   VerifyFileDelete checks whether a file can be deleted
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public bool VerifyFileDelete()
+        private bool VerifyFileDelete()
         {
             string verifyPath = Path.Combine(_basePath, "Verify\\Verify.txt");
-            bool verified = VerifyFileCreate();
+            bool verified = true;
 
-            if (verified)
+            //Attempt to delete the File
+            try
             {
-                //Attempt to delete the File
-                try
-                {
-					Try(() => File.Delete(verifyPath), "Deleting verification file");
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                    verified = false;
-                }
+                Try(() => File.Delete(verifyPath), "Deleting verification file");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                verified = false;
             }
 
             return verified;
@@ -137,7 +131,7 @@ namespace DotNetNuke.Common.Utilities
         ///   VerifyFolderCreate checks whether a folder can be created
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public bool VerifyFolderCreate()
+        private bool VerifyFolderCreate()
         {
             string verifyPath = Path.Combine(_basePath, "Verify");
             bool verified = true;
@@ -171,23 +165,20 @@ namespace DotNetNuke.Common.Utilities
         ///   VerifyFolderDelete checks whether a folder can be deleted
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public bool VerifyFolderDelete()
+        private bool VerifyFolderDelete()
         {
             string verifyPath = Path.Combine(_basePath, "Verify");
-            bool verified = VerifyFolderCreate();
+            bool verified = true;
 
-            if (verified)
+            //Attempt to delete the Directory
+            try
             {
-                //Attempt to delete the Directory
-                try
-                {
-					Try(() => Directory.Delete(verifyPath), "Deleting verification folder");
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                    verified = false;
-                }
+                Try(() => Directory.Delete(verifyPath, true), "Deleting verification folder");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                verified = false;
             }
 
             return verified;
@@ -195,7 +186,14 @@ namespace DotNetNuke.Common.Utilities
 
         public bool VerifyAll()
         {
-            return VerifyFileDelete() && VerifyFolderDelete();
+            lock (typeof(FileSystemPermissionVerifier))
+            {
+                // All these steps must be executed in this sequence as one unit
+                return VerifyFolderCreate() &&
+                       VerifyFileCreate() &&
+                       VerifyFileDelete() &&
+                       VerifyFolderDelete();
+            }
         }
 
 		private void Try(Action action, string description)

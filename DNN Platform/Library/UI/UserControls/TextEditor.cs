@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.HTMLEditorProvider;
@@ -47,14 +47,11 @@ namespace DotNetNuke.UI.UserControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	12/13/2004	Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-		#region Private Members
+        #region Private Members
 
         private const string MyFileName = "TextEditor.ascx";
         private HtmlEditorProvider _richTextEditor;
@@ -142,6 +139,11 @@ namespace DotNetNuke.UI.UserControls
                 {
                     strMode = DefaultMode;
                 }
+
+                if (strMode == "RICH" && !IsRichEditorAvailable)
+                {
+                    strMode = "BASIC";
+                }
                 return strMode;
             }
             set
@@ -190,13 +192,16 @@ namespace DotNetNuke.UI.UserControls
                                 //break;
                         }
                     default:
-                        return Encode(RemoveBaseTags(_richTextEditor.Text));
+                        return IsRichEditorAvailable ? Encode(RemoveBaseTags(_richTextEditor.Text)) : Encode(RemoveBaseTags(TxtDesktopHTML.Text));
                 }
             }
             set
             {
 				TxtDesktopHTML.Text = HtmlUtils.ConvertToText(Decode(value));
-				_richTextEditor.Text = Decode(value);
+                if (IsRichEditorAvailable)
+                {
+                    _richTextEditor.Text = Decode(value);
+                }
             }
         }
 
@@ -220,6 +225,14 @@ namespace DotNetNuke.UI.UserControls
 
         ///<summary>Gets/Sets the Width of the control</summary>
 		public Unit Width { get; set; }
+
+        public bool IsRichEditorAvailable
+        {
+            get
+            {
+                return _richTextEditor != null;
+            }
+        }
 
         ///<summary>Allows public access ot the HtmlEditorProvider</summary>
 		public HtmlEditorProvider RichText
@@ -266,9 +279,6 @@ namespace DotNetNuke.UI.UserControls
         /// </remarks>
         /// <param name="strHtml">Html to decode</param>
         /// <returns>The decoded html</returns>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string Decode(string strHtml)
         {
@@ -283,9 +293,6 @@ namespace DotNetNuke.UI.UserControls
         /// </remarks>
         /// <param name="strHtml">Html to encode</param>
         /// <returns>The encoded html</returns>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private string Encode(string strHtml)
         {
@@ -298,9 +305,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void PopulateLists()
         {
@@ -313,7 +317,10 @@ namespace DotNetNuke.UI.UserControls
             if (OptView.Items.Count == 0)
             {
                 OptView.Items.Add(new ListItem(Localization.GetString("BasicTextBox", Localization.GetResourceFile(this, MyFileName)), "BASIC"));
-                OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
+                if (IsRichEditorAvailable)
+                {
+                    OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
+                }
             }
         }
 
@@ -323,9 +330,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/10/2005	created (extracted from Page_load)
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SetPanels()
         {
@@ -369,11 +373,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        private string RemoveBaseTags(String strInput)
+        private static string RemoveBaseTags(String strInput)
 		{
-			//const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
-			const string pattern = "<base[^>]*>";
-            return Regex.Replace(strInput, pattern, " ", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            return Globals.BaseTagRegex.Replace(strInput, " ");
 		}
 		#endregion
 
@@ -399,8 +401,12 @@ namespace DotNetNuke.UI.UserControls
             base.OnInit(e);
 
             _richTextEditor = HtmlEditorProvider.Instance();
-            _richTextEditor.ControlID = ID;
-            _richTextEditor.Initialize();
+
+            if (IsRichEditorAvailable)
+            {
+                _richTextEditor.ControlID = ID;
+                _richTextEditor.Initialize();
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -409,9 +415,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -429,8 +432,12 @@ namespace DotNetNuke.UI.UserControls
                 //UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 //Set the width and height of the controls
-                _richTextEditor.Width = Width;
-                _richTextEditor.Height = Height;
+                if (IsRichEditorAvailable)
+                {
+                    _richTextEditor.Width = Width;
+                    _richTextEditor.Height = Height;
+                }
+
                 TxtDesktopHTML.Height = Height;
                 TxtDesktopHTML.Width = Width;
                 PanelView.Width = Width;
@@ -445,9 +452,13 @@ namespace DotNetNuke.UI.UserControls
                 {
                     DivBasicRender.Visible = false;
                 }
-				
+
                 //Load the editor
-                PlcEditor.Controls.Add(_richTextEditor.HtmlEditorControl);
+                if (IsRichEditorAvailable)
+                {
+                    PlcEditor.Controls.Add(_richTextEditor.HtmlEditorControl);
+                }
+
                 SetPanels();
             }
             catch (Exception exc) //Module failed to load
@@ -462,9 +473,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OptRenderSelectedIndexChanged(Object sender, EventArgs e)
         {
@@ -485,9 +493,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void OptViewSelectedIndexChanged(Object sender, EventArgs e)
         {

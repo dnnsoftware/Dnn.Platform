@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FileAttrbutesLabel.Help" xml:space="preserve">
-    <value>Modify the file attributes</value>
+    <value>Modify the file attributes.</value>
   </data>
   <data name="FileAttributeArchive.Text" xml:space="preserve">
     <value>Archive</value>
@@ -136,12 +136,12 @@
     <value>System</value>
   </data>
   <data name="FileNameLabel.Help" xml:space="preserve">
-    <value>Edit the current File Name</value>
+    <value>Edit the current file name.</value>
   </data>
   <data name="FileNameLabel.Text" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="FileNameRequired.ErrorMessage" xml:space="preserve">
-    <value>File Name is required</value>
+    <value>File name is required.</value>
   </data>
 </root>

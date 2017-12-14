@@ -1,7 +1,6 @@
 ﻿Test,						Scheme,		Page Name,		Params,								Expected Url,	
 Home en-US,					http://,	Home,			&language=en-US,					http://{alias}/
 About Us en-US,				http://,	About Us,		&language=en-US,					http://{alias}/AboutUs.aspx
-Admin Site Settings en-US,	http://,	Site Settings,	&language=en-US,					http://{alias}/Admin/SiteSettings.aspx
 Profile Messages en-US,		http://,	Messages,		&language=en-US,					http://{alias}/ActivityFeed/Messages.aspx
 Terms en-US,				http://,	Home,			&language=en-US&ctl=Terms,			http://{alias}/Terms.aspx
 Login en-US,				http://,	About Us,		&language=en-US&ctl=Login,			http://{alias}/Login.aspx
@@ -9,7 +8,6 @@ Edit Page Home en-US,		http://,	Home,			&language=en-US&ctl=Edit&mid=100,	http:/
 Edit Page About Us en-US,	http://,	About Us,		&language=en-US&ctl=Edit&mid=200,	http://{alias}/AboutUs/ctl/Edit/mid/200.aspx
 Home fr-FR,					http://,	Home,			&language=fr-FR,					http://{alias}/language/fr-FR/Home.aspx
 About Us fr-FR,				http://,	About Us,		&language=fr-FR,					http://{alias}/language/fr-FR/AboutUs.aspx
-Admin Site Settings fr-FR,	http://,	Site Settings,	&language=fr-FR,					http://{alias}/language/fr-FR/Admin/SiteSettings.aspx
 Profile Messages fr-FR,		http://,	Messages,		&language=fr-FR,					http://{alias}/language/fr-FR/ActivityFeed/Messages.aspx
 Terms fr-FR,				http://,	Home,			&language=fr-FR&ctl=Terms,			http://{alias}/language/fr-FR/Terms.aspx
 Login fr-FR,				http://,	About Us,		&language=fr-FR&ctl=Login,			http://{alias}/language/fr-FR/Login.aspx

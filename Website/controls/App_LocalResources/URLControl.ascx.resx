@@ -121,31 +121,31 @@
     <value>Link Type:</value>
   </data>
   <data name="URLType.Text" xml:space="preserve">
-    <value>URL ( A Link To An External Resource )</value>
+    <value>URL (a Link to an External Resource)</value>
   </data>
   <data name="TabType.Text" xml:space="preserve">
-    <value>Page ( A Page On Your Site )</value>
+    <value>Page (A Page on Your Site)</value>
   </data>
   <data name="FileType.Text" xml:space="preserve">
-    <value>File ( A File On Your Site )</value>
+    <value>File (A File on Your Site)</value>
   </data>
   <data name="UserType.Text" xml:space="preserve">
-    <value>User ( A Member Of Your Site )</value>
+    <value>User (A Member of Your Site)</value>
   </data>
   <data name="NoneType.Text" xml:space="preserve">
     <value>None</value>
   </data>
   <data name="URL.Text" xml:space="preserve">
-    <value>Location: ( Enter The Address Of The Link )&lt;br/&gt;</value>
+    <value>Location (Enter the Address of the Link):&lt;br/&gt;</value>
   </data>
   <data name="Select.Text" xml:space="preserve">
-    <value>Select An Existing URL</value>
+    <value>Select an Existing URL</value>
   </data>
   <data name="Add.Text" xml:space="preserve">
-    <value>Add A New URL</value>
+    <value>Add a New URL</value>
   </data>
   <data name="Delete.Text" xml:space="preserve">
-    <value>Delete Selected URL From The List&lt;br/&gt;</value>
+    <value>Delete Selected URL from the List&lt;br/&gt;</value>
   </data>
   <data name="Tab.Text" xml:space="preserve">
     <value>Page:</value>
@@ -163,34 +163,34 @@
     <value>Upload Selected File</value>
   </data>
   <data name="Cancel.Text" xml:space="preserve">
-    <value>Select An Existing File</value>
+    <value>Select an Existing File</value>
   </data>
   <data name="Track.Text" xml:space="preserve">
-    <value>Track Number Of Times This Link Is Clicked?&lt;br/&gt;</value>
+    <value>Track Number of Times This Link Is Clicked&lt;br/&gt;</value>
   </data>
   <data name="Log.Text" xml:space="preserve">
-    <value>Log The User, Date, And Time For Every Link Click?&lt;br/&gt;</value>
+    <value>Log the User, Date, and Time for Every Link Click&lt;br/&gt;</value>
   </data>
   <data name="NewWindow.Text" xml:space="preserve">
-    <value>Open Link In New Browser Window?&lt;br/&gt;</value>
+    <value>Open Link in New Browser Window&lt;br/&gt;</value>
   </data>
   <data name="UploadError.Text" xml:space="preserve">
-    <value>File type {1} is not valid in this context. Valid File Types Include: {0}</value>
+    <value>File type {1} is not valid in this context. Valid file types include: {0}</value>
   </data>
   <data name="NoPermission.Text" xml:space="preserve">
-    <value>You don't have permission to see the files on the site</value>
+    <value>You don't have permission to see the files on this site.</value>
   </data>
   <data name="Root.Text" xml:space="preserve">
     <value>Root</value>
   </data>
   <data name="User.Text" xml:space="preserve">
-    <value>Enter The Username Of A Member Of Your Site:&lt;br/&gt;</value>
+    <value>Enter the User Name of a Member of Your Site:&lt;br/&gt;</value>
   </data>
   <data name="NoUser.Text" xml:space="preserve">
-    <value>Username entered does not match a User in this website.</value>
+    <value>User name entered does not match a user in this site.</value>
   </data>
   <data name="NoWritePermission.Text" xml:space="preserve">
-    <value>You don't have permission to upload files to this site</value>
+    <value>You don't have permission to upload files to this site.</value>
   </data>
   <data name="ImageType.Text" xml:space="preserve">
     <value>System Image</value>

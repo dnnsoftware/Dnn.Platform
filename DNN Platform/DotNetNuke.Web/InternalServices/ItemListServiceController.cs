@@ -1,8 +1,8 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -40,6 +41,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Web.InternalServices
@@ -86,13 +88,13 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage GetPageDescendants(string parentId = null, int sortOrder = 0, 
             string searchText = "", int portalId = -1, bool includeDisabled = false, 
             bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false,
-            string roles = "")
+            string roles = "", bool disabledNotSelectable = false)
         {
             var response = new
             {
                 Success = true,
                 Items = GetPageDescendantsInternal(portalId, parentId, sortOrder, searchText, 
-                    includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
+                    includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable)
             };
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -145,12 +147,12 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet]
 		public HttpResponseMessage GetPages(int sortOrder = 0, int portalId = -1, 
             bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, 
-            bool includeHostPages = false, string roles = "")
+            bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
             var response = new
             {
                 Success = true,
-                Tree = GetPagesInternal(portalId, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
+                Tree = GetPagesInternal(portalId, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable),
                 IgnoreRoot = true
             };
             return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -176,7 +178,7 @@ namespace DotNetNuke.Web.InternalServices
             var response = new
             {
                 Success = true,
-                Tree = string.IsNullOrEmpty(searchText) ? GetPagesInternal(portalId, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
+                Tree = string.IsNullOrEmpty(searchText) ? GetPagesInternal(portalId, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, false)
                             : SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
                 IgnoreRoot = true
             };
@@ -336,7 +338,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private NTree<ItemDto> GetPagesInternal(int portalId, int sortOrder, bool includeDisabled = false, 
             bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false,
-            string roles = "")
+            string roles = "", bool disabledNotSelectable = false)
         {
             if (portalId == -1)
             {
@@ -349,7 +351,7 @@ namespace DotNetNuke.Web.InternalServices
                 return sortedTree;
             }
 
-            var filterTabs = FilterTabsByRole(tabs, roles);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
             var children = ApplySort(GetChildrenOf(tabs, Null.NullInteger, filterTabs), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             sortedTree.Children = children;
             return sortedTree;
@@ -398,16 +400,16 @@ namespace DotNetNuke.Web.InternalServices
 
         private IEnumerable<ItemDto> GetPageDescendantsInternal(int portalId, string parentId, int sortOrder, 
             string searchText, bool includeDisabled = false, bool includeAllTypes = false,
-            bool includeActive = true, bool includeHostPages = false, string roles = "")
+            bool includeActive = true, bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
             int id;
             id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
-            return GetPageDescendantsInternal(portalId, id, sortOrder, searchText, includeDisabled , includeAllTypes, includeActive, includeHostPages, roles);
+            return GetPageDescendantsInternal(portalId, id, sortOrder, searchText, includeDisabled , includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable);
         }
 
         private IEnumerable<ItemDto> GetPageDescendantsInternal(int portalId, int parentId, int sortOrder, 
             string searchText, bool includeDisabled = false, bool includeAllTypes = false,
-            bool includeActive = true, bool includeHostPages = false, string roles = "")
+            bool includeActive = true, bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
             List<TabInfo> tabs;
 
@@ -432,7 +434,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, false, true, false)
+                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
                                  .Where(tab => searchFunc(tab) 
                                             && tab.ParentId == parentId 
                                             && (includeDisabled || !tab.DisableLink) 
@@ -466,7 +468,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var filterTabs = FilterTabsByRole(tabs, roles);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
 
             var pages = tabs.Select(tab => new ItemDto
             {
@@ -481,7 +483,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private NTree<ItemDto> SearchPagesInternal(int portalId, string searchText, int sortOrder, 
             bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true,
-            bool includeHostPages = false, string roles = "")
+            bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
 
@@ -544,7 +546,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var filterTabs = FilterTabsByRole(tabs, roles);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
 
             var pages = tabs.Select(tab => new ItemDto
             {
@@ -793,7 +795,7 @@ namespace DotNetNuke.Web.InternalServices
         private NTree<ItemDto> GetTreePathForPageInternal(int portalId, int selectedItemId, 
             int sortOrder, bool includePortalTree = false, bool includeDisabled = false, 
             bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false,
-            string roles = "")
+            string roles = "", bool disabledNotSelectable = false)
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
 
@@ -829,7 +831,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var parentId = page.ParentId;
             var parentTab = parentId > 0 ? pages.SingleOrDefault(t => t.TabID == parentId) : null;
-            var filterTabs = FilterTabsByRole(pages, roles);
+            var filterTabs = FilterTabsByRole(pages, roles, disabledNotSelectable);
             while (parentTab != null)
             {
                 // load all sibiling
@@ -923,7 +925,7 @@ namespace DotNetNuke.Web.InternalServices
             return ApplySort(portals, sortOrder);
         }
 
-        private List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles)
+        private List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
         {
             var filterTabs = new List<int>();
             if (!string.IsNullOrEmpty(roles))
@@ -935,12 +937,13 @@ namespace DotNetNuke.Web.InternalServices
                         t =>
                             t.TabPermissions.Cast<TabPermissionInfo>()
                                 .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
-                    .Select(t => t.TabID)
+                        .Where(t => !disabledNotSelectable || !t.DisableLink)
+                        .Select(t => t.TabID)
                 );
             }
             else
             {
-                filterTabs.AddRange(tabs.Select(t => t.TabID));
+                filterTabs.AddRange(tabs.Where(t => !disabledNotSelectable || !t.DisableLink).Select(t => t.TabID));
             }
 
             return filterTabs;
@@ -1030,7 +1033,7 @@ namespace DotNetNuke.Web.InternalServices
             if (parentId < 1) return new List<ItemDto> { new ItemDto
                 {
                     Key = parentFolder.FolderID.ToString(CultureInfo.InvariantCulture), 
-                    Value = portalId == -1 ? SharedConstants.HostRootFolder : SharedConstants.RootFolder,
+                    Value = portalId == -1 ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder,
                     HasChildren = HasChildren(parentFolder, permission),
                     Selectable = true
                 } };
@@ -1158,7 +1161,7 @@ namespace DotNetNuke.Web.InternalServices
                 parentId = parentFolder.ParentID;
                 parentFolder = parentId > 0 ? FolderManager.Instance.GetFolder(parentId) : null;
             }
-            selfTree.Data.Value = SharedConstants.RootFolder;
+            selfTree.Data.Value = DynamicSharedConstants.RootFolder;
 
             tree.Children.Add(selfTree);
             return tree;
@@ -1343,7 +1346,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         id = user.UserID,
                         name = user.DisplayName,
-                        iconfile = string.Format(Globals.UserProfilePicRelativeUrl(), user.UserID, 32, 32),
+                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32),
                     }).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
@@ -1353,6 +1356,36 @@ namespace DotNetNuke.Web.InternalServices
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        #endregion
+
+        #region Terms List
+
+        [HttpGet]
+        public HttpResponseMessage GetTerms(string q, bool includeSystem, bool includeTags)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+
+            var vocabRep = Util.GetVocabularyController();
+            var termRep = Util.GetTermController();
+
+            var terms = new ArrayList();
+            var vocabularies = from v in vocabRep.GetVocabularies()
+                               where (v.ScopeType.ScopeType == "Application"
+                                      || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
+                                     && (!v.IsSystem || includeSystem)
+                                     && (v.Name != "Tags" || includeTags)
+                               select v;
+
+            foreach (var v in vocabularies)
+            {
+                terms.AddRange(new[] {from t in termRep.GetTermsByVocabulary(v.VocabularyId)
+                                      where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
+                                        select new {text = t.Name, value = t.TermId}});
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, terms);
         }
 
         #endregion

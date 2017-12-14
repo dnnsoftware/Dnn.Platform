@@ -121,7 +121,7 @@
     <value>Group Module Settings</value>
   </data>
   <data name="DefaultRoleGroup.Help" xml:space="preserve">
-    <value>Select the Role Group that contains the roles you wish to display.</value>
+    <value>Select the Role Group that contains the roles you want to display.</value>
   </data>
   <data name="DefaultRoleGroup.Text" xml:space="preserve">
     <value>Default Role Group</value>
@@ -130,13 +130,13 @@
     <value>Select the page where users will go to create new groups.</value>
   </data>
   <data name="GroupListEnableSearch.Help" xml:space="preserve">
-    <value>Check this box to allow a user to filter the groups displayed.</value>
+    <value>Check this box to allow users to filter groups.</value>
   </data>
   <data name="GroupListEnableSearch.Text" xml:space="preserve">
     <value>Enable Group Search</value>
   </data>
   <data name="GroupListPageSize.Help" xml:space="preserve">
-    <value>Specify the number of groups returned for each page.</value>
+    <value>Enter the number of groups displayed per page.</value>
   </data>
   <data name="GroupListPageSize.Text" xml:space="preserve">
     <value>Group List Page Size</value>
@@ -164,13 +164,13 @@
     <value>Group List Template</value>
   </data>
   <data name="GroupListUserGroups.Help" xml:space="preserve">
-    <value>Check this box to display only the groups that the current user belongs to.</value>
+    <value>Check this box to only display groups that the current user belongs to.</value>
   </data>
   <data name="GroupListUserGroups.Text" xml:space="preserve">
     <value>Display User's Groups Only</value>
   </data>
   <data name="GroupModeration.Help" xml:space="preserve">
-    <value>Check this box to require the creation of new groups to require approval by a Group Moderator.</value>
+    <value>Check this box if new groups to require the approval by a Group Moderator.</value>
   </data>
   <data name="GroupModeration.Text" xml:space="preserve">
     <value>Group Creation Requires Approval</value>

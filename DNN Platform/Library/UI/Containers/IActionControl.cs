@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,9 +35,6 @@ namespace DotNetNuke.UI.Containers
     /// <summary>
     /// IActionControl provides a common INterface for Action Controls
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	12/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public interface IActionControl
     {

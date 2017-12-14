@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,7 +23,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Web.UI;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -33,6 +36,7 @@ using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Services.Installer.Packages;
 
 #endregion
 
@@ -46,14 +50,123 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// DesktopModuleInfo provides the Entity Layer for Desktop Modules
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/11/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModuleInfo : ContentItem, IXmlSerializable
     {
+        #region Inner Classes
+
+        [Serializable]
+        public class PageInfo : IXmlSerializable
+        {
+            [XmlAttribute("type")]
+            public string Type { get; set; }
+
+            [XmlAttribute("common")]
+            public bool IsCommon { get; set; }
+
+            [XmlElement("name")]
+            public string Name { get; set; }
+
+            [XmlElement("icon")]
+            public string Icon { get; set; }
+
+            [XmlElement("largeIcon")]
+            public string LargeIcon { get; set; }
+
+            [XmlElement("description")]
+            public string Description { get; set; }
+
+            public bool HasAdminPage()
+            {
+                return Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+            }
+
+            public bool HasHostPage()
+            {
+                return Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+            }
+
+
+            public XmlSchema GetSchema()
+            {
+                return null;
+            }
+
+            public void ReadXml(XmlReader reader)
+            {
+                while (!reader.EOF)
+                {
+                    if (reader.NodeType == XmlNodeType.EndElement)
+                    {
+                        if (reader.Name == "page")
+                        {
+                            break;
+                        }
+
+                        reader.Read();
+                        continue;
+                    }
+
+                    if (reader.NodeType == XmlNodeType.Whitespace)
+                    {
+                        reader.Read();
+                        continue;
+                    }
+
+                    switch (reader.Name)
+                    {
+                        case "page":
+                            Type = reader.GetAttribute("type");
+                            var commonValue = reader.GetAttribute("common");
+                            if (!string.IsNullOrEmpty(commonValue))
+                            {
+                                IsCommon = commonValue.ToLowerInvariant() == "true";
+                            }
+
+                            reader.Read();
+                            break;
+                        case "name":
+                            Name = reader.ReadElementContentAsString();
+                            break;
+                        case "icon":
+                            Icon = reader.ReadElementContentAsString();
+                            break;
+                        case "largeIcon":
+                            LargeIcon = reader.ReadElementContentAsString();
+                            break;
+                        case "description":
+                            Description = reader.ReadElementContentAsString();
+                            break;
+                        default:
+                            reader.Read();
+                            break;
+                    }
+                }
+            }
+
+            public void WriteXml(XmlWriter writer)
+            {
+                //Write start of main elemenst
+                writer.WriteStartElement("page");
+                writer.WriteAttributeString("type", Type);
+                writer.WriteAttributeString("common", IsCommon.ToString().ToLowerInvariant());
+
+                //write out properties
+                writer.WriteElementString("name", Name);
+                writer.WriteElementString("icon", Icon);
+                writer.WriteElementString("largeIcon", LargeIcon);
+                writer.WriteElementString("description", Description);
+
+                //Write end of main element
+                writer.WriteEndElement();
+            }
+        }
+
+        #endregion
+
         private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
+        private PageInfo _pageInfo;
 
         public DesktopModuleInfo()
         {
@@ -73,9 +186,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int DesktopModuleID { get; set; }
 
@@ -84,20 +194,19 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Package for this Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
+
+        /// <summary>
+        /// returns whether this has an associated Admin page
+        /// </summary>
+        public string AdminPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the BusinessControllerClass of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string BusinessControllerClass { get; set; }
 
@@ -128,9 +237,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the AppCode Folder Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	02/20/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CodeSubDirectory { get; set; }
 
@@ -140,9 +246,6 @@ namespace DotNetNuke.Entities.Modules
         /// that this module is compatible with
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CompatibleVersions { get; set; }
 
@@ -151,9 +254,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets a list of Dependencies for the module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Dependencies { get; set; }
 
@@ -162,9 +262,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the  Description of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
@@ -173,9 +270,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Folder Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FolderName { get; set; }
 
@@ -184,20 +278,19 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Friendly Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
+
+        /// <summary>
+        /// returns whether this has an associated hostpage
+        /// </summary>
+        public string HostPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the Module is an Admin Module
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsAdmin { get; set; }
 
@@ -206,9 +299,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is Portable
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsPortable
         {
@@ -227,9 +317,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is a Premium Module
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsPremium { get; set; }
 
@@ -238,9 +325,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is Searchable
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsSearchable
         {
@@ -259,9 +343,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets whether the Module is Upgradable
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsUpgradeable
         {
@@ -289,9 +370,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the Module Definitions for this Desktop Module
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, ModuleDefinitionInfo> ModuleDefinitions
         {
@@ -317,9 +395,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the  Name of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ModuleName { get; set; }
 
@@ -328,9 +403,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets a list of Permissions for the module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Permissions { get; set; }
 
@@ -339,9 +411,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Supported Features of the Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int SupportedFeatures { get; set; }
 
@@ -350,11 +419,35 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Version of the Desktop Module
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Version { get; set; }
+
+        public PageInfo Page
+        {
+            get
+            {
+                if (_pageInfo == null && PackageID > Null.NullInteger)
+                {
+                    var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
+                    if (package != null && !string.IsNullOrEmpty(package.Manifest))
+                    {
+                        var xmlDocument = new XmlDocument();
+                        xmlDocument.LoadXml(package.Manifest);
+                        var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
+                        if (pageNode != null)
+                        {
+                            _pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
+                        }
+                    }
+                }
+
+                return _pageInfo;
+            }
+            set
+            {
+                _pageInfo = value;
+            }
+        }
 
 		#endregion
 
@@ -365,9 +458,6 @@ namespace DotNetNuke.Entities.Modules
         /// Fills a DesktopModuleInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
@@ -387,6 +477,8 @@ namespace DotNetNuke.Entities.Modules
             Dependencies = Null.SetNullString(dr["Dependencies"]);
             Permissions = Null.SetNullString(dr["Permissions"]);
 		    Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
+            AdminPage = Null.SetNullString(dr["AdminPage"]);
+            HostPage = Null.SetNullString(dr["HostPage"]);
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
@@ -399,9 +491,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets an XmlSchema for the DesktopModule
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -413,9 +502,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a DesktopModuleInfo from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -441,6 +527,10 @@ namespace DotNetNuke.Entities.Modules
                 {
                     ReadModuleSharing(reader);
                 }
+                else if (reader.NodeType == XmlNodeType.Element && reader.Name == "page" && !reader.IsEmptyElement)
+                {
+                    ReadPageInfo(reader);
+                }
                 else
                 {
                     switch (reader.Name)
@@ -458,6 +548,19 @@ namespace DotNetNuke.Entities.Modules
                             break;
                         case "codeSubDirectory":
                             CodeSubDirectory = reader.ReadElementContentAsString();
+                            break;
+                        case "page":
+                            ReadPageInfo(reader);
+
+                            if (Page.HasAdminPage())
+                            {
+                                AdminPage = Page.Name;
+                            }
+
+                            if (Page.HasHostPage())
+                            {
+                                HostPage = Page.Name;
+                            }
                             break;
                         case "isAdmin":
                             bool isAdmin;
@@ -479,15 +582,12 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
         }
-		
+
 		/// -----------------------------------------------------------------------------
         /// <summary>
         /// Writes a DesktopModuleInfo to an XmlWriter
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
 
         public void WriteXml(XmlWriter writer)
@@ -527,6 +627,12 @@ namespace DotNetNuke.Entities.Modules
 
             //Write end of Supported Features
             writer.WriteEndElement();
+
+            //Write admin/host page info.
+            if (Page != null)
+            {
+                Page.WriteXml(writer);
+            }
 
             // Module sharing
 
@@ -569,9 +675,6 @@ namespace DotNetNuke.Entities.Modules
         /// Clears a Feature from the Features
         /// </summary>
         /// <param name="feature">The feature to Clear</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
@@ -584,9 +687,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets a Feature from the Features
         /// </summary>
         /// <param name="feature">The feature to Get</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private bool GetFeature(DesktopModuleSupportedFeature feature)
         {
@@ -598,9 +698,6 @@ namespace DotNetNuke.Entities.Modules
         /// Sets a Feature in the Features
         /// </summary>
         /// <param name="feature">The feature to Set</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SetFeature(DesktopModuleSupportedFeature feature)
         {
@@ -613,9 +710,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="feature">The feature to Set</param>
         /// <param name="isSet">A Boolean indicating whether to set or clear the feature</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void UpdateFeature(DesktopModuleSupportedFeature feature, bool isSet)
         {
@@ -634,9 +728,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a Supported Features from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadSupportedFeatures(XmlReader reader)
         {
@@ -694,9 +785,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a Module Definitions from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadModuleDefinitions(XmlReader reader)
         {
@@ -715,6 +803,23 @@ namespace DotNetNuke.Entities.Modules
                 ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
             } while (reader.ReadToNextSibling("moduleDefinition"));
 		}
+
+        private void ReadPageInfo(XmlReader reader)
+        {
+            Page = new PageInfo();
+            //Load it from the Xml
+            Page.ReadXml(reader.ReadSubtree());
+
+            if (Page.HasAdminPage())
+            {
+                AdminPage = Page.Name;
+            }
+
+            if (Page.HasHostPage())
+            {
+                HostPage = Page.Name;
+            }
+        }
 
 		#endregion
 	}

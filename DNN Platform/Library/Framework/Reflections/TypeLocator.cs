@@ -1,7 +1,5 @@
-#region Copyright
-// 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -17,13 +15,15 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using DotNetNuke.Framework.Internal.Reflection;
+
+// ReSharper disable ConvertPropertyToExpressionBody
 
 namespace DotNetNuke.Framework.Reflections
 {
@@ -66,16 +66,72 @@ namespace DotNetNuke.Framework.Reflections
             }
         }
 
+        private bool CanScan(Assembly assembly)
+        {
+            string[] ignoreAssemblies = new string[]
+                                                {
+                                                    "DotNetNuke.Authentication.Facebook",
+                                                    "DotNetNuke.Authentication.Google",
+                                                    "DotNetNuke.Authentication.LiveConnect",
+                                                    "DotNetNuke.Authentication.Twitter",
+                                                    "DotNetNuke.ASP2MenuNavigationProvider",
+                                                    "DotNetNuke.DNNDropDownNavigationProvider",
+                                                    "DotNetNuke.DNNMenuNavigationProvider",
+                                                    "DotNetNuke.DNNTreeNavigationProvider",
+                                                    "DotNetNuke.SolpartMenuNavigationProvider",
+                                                    "DotNetNuke.HttpModules",
+                                                    "DotNetNuke.Instrumentation",
+                                                    "DotNetNuke.Log4Net",
+                                                    "DotNetNuke.Modules.Groups",
+                                                    "DotNetNuke.Modules.Html",
+                                                    "DotNetNuke.Modules.HtmlEditorManager",
+                                                    "DotNetNuke.Modules.MobileManagement",
+                                                    "DotNetNuke.Modules.PreviewProfileManagement",
+                                                    "DotNetNuke.Modules.RazorHost",
+                                                    "DotNetNuke.Modules.Taxonomy",
+                                                    "DotNetNuke.Modules.UrlManagement",
+                                                    "DotNetNuke.RadEditorProvider",
+                                                    "DotNetNuke.Services.Syndication",
+                                                    "DotNetNuke.Web.Client",
+                                                    "DotNetNuke.Web.DDRMenu",
+                                                    "DotNetNuke.Web.Razor",
+                                                    "DotNetNuke.Web.Mvc",
+                                                    "DotNetNuke.WebControls",
+                                                    "DotNetNuke.WebUtility",
+                                                };
+
+            //First eliminate by "class"
+            var assemblyName = assembly.FullName.ToLowerInvariant();
+            bool canScan = !(assemblyName.StartsWith("clientdependency.core") || assemblyName.StartsWith("countrylistbox")
+                || assemblyName.StartsWith("icsharpcode") || assemblyName.StartsWith("fiftyone")
+                || assemblyName.StartsWith("lucene") || assemblyName.StartsWith("microsoft")
+                || assemblyName.StartsWith("newtonsoft") || assemblyName.StartsWith("petapoco")
+                || assemblyName.StartsWith("sharpziplib") || assemblyName.StartsWith("system")
+                || assemblyName.StartsWith("telerik") || assemblyName.StartsWith("webformsmvp")
+                || assemblyName.StartsWith("webmatrix") || assemblyName.StartsWith("solpart")
+                );
+
+            if (canScan)
+            {
+                //Next eliminate specific assemblies
+                if (ignoreAssemblies.Any(ignoreAssembly => assemblyName == ignoreAssembly.ToLowerInvariant()))
+                {
+                    canScan = false;
+                }
+            }
+
+            return canScan;
+        }
+
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
         {
             //this method is not readily testable as the assemblies in the current app domain
             //will vary depending on the test runner and test configuration
             get
             {
-                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                {
-                    yield return new AssemblyWrapper(assembly);
-                }
+                return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                    where CanScan(assembly)
+                    select new AssemblyWrapper(assembly));
             }
         }
     }

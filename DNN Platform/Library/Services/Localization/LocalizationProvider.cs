@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Web.Hosting;
 using System.Xml;
@@ -94,6 +95,17 @@ namespace DotNetNuke.Services.Localization
             if (!keyFound)
             {
                 Logger.WarnFormat("Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
+            }
+
+            return string.IsNullOrEmpty(resourceValue) ? string.Empty : RemoveHttpUrlsIfSiteisSSLEnabled(portalSettings, resourceValue);
+        }
+
+        private string RemoveHttpUrlsIfSiteisSSLEnabled(PortalSettings portalSettings, string resourceValue)
+        {
+
+            if (portalSettings != null && (portalSettings.SSLEnabled || portalSettings.SSLEnforced))
+            {
+                resourceValue = resourceValue.Replace(@"http:", @"https:");
             }
 
             return resourceValue;
@@ -181,7 +193,75 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
+        public Dictionary<string, string> GetCompiledResourceFile(PortalSettings portalSettings, string resourceFile, string locale)
+        {
+            return
+                CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs("Compiled-" + resourceFile + "-" + locale + "-" + portalSettings.PortalId,
+                        DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority, resourceFile, locale,
+                        portalSettings), GetCompiledResourceFileCallBack, true);
+        }
+
         #endregion
+
+        private static object GetCompiledResourceFileCallBack(CacheItemArgs cacheItemArgs)
+        {
+            string resourceFile = (string)cacheItemArgs.Params[0];
+            string locale = (string)cacheItemArgs.Params[1];
+            PortalSettings portalSettings = (PortalSettings)cacheItemArgs.Params[2];
+            string systemLanguage = Localization.SystemLocale;
+            string defaultLanguage = portalSettings.DefaultLanguage;
+            string fallbackLanguage = Localization.SystemLocale;
+            Locale targetLocale = LocaleController.Instance.GetLocale(locale);
+            if (!String.IsNullOrEmpty(targetLocale.Fallback))
+            {
+                fallbackLanguage = targetLocale.Fallback;
+            }
+
+            // get system default and merge the specific ones one by one
+            var res = GetResourceFile(resourceFile);
+            if (res == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            //clone the dictionart so that when merge values into dictionart, it won't
+            //affect the cache data.
+            res = res.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            res = MergeResourceFile(res, GetResourceFileName(resourceFile, systemLanguage, portalSettings.PortalId));
+            if (defaultLanguage != systemLanguage)
+            {
+                res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage));
+                res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage, portalSettings.PortalId));
+            }
+            if (fallbackLanguage != defaultLanguage)
+            {
+                res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage));
+                res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage, portalSettings.PortalId));
+            }
+            if (locale != fallbackLanguage)
+            {
+                res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale));
+                res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale, portalSettings.PortalId));
+            }
+            return res;
+        }
+
+        private static Dictionary<string, string> MergeResourceFile(Dictionary<string, string> current, string resourceFile)
+        {
+            var resFile = GetResourceFile(resourceFile);
+            if (resFile == null)
+            {
+                return current;
+            }
+            foreach (string key in current.Keys.ToList())
+            {
+                if (resFile.ContainsKey(key))
+                {
+                    current[key] = resFile[key];
+                }
+            }
+            return current;
+        }
 
         /// <summary>
         /// Adds one of either a "resheader" or "data" element to resxRoot (which should be the root element of the resx file). 
@@ -288,6 +368,16 @@ namespace DotNetNuke.Services.Localization
             return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(resourceFile, DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority),
                                                                    GetResourceFileCallBack,
                                                                    true);
+        }
+
+        private static string GetResourceFileName(string resourceFileRoot, string language, int portalId)
+        {
+            string resourceFile = GetResourceFileName(resourceFileRoot, language);
+            if (portalId != -1)
+            {
+                resourceFile = resourceFile.Replace(".resx", ".Portal-" + portalId + ".resx");
+            }
+            return resourceFile;
         }
 
         private static string GetResourceFileName(string resourceFileRoot, string language)

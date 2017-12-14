@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,6 +46,10 @@ namespace DotNetNuke.Data
                 {
                     // intentionally adding an extra @ before parameter name, so PetaPoco won't try to match it to a passed-in arg
                     parameterFormat = " @{1}=@{0}";
+                    if (param.Direction == ParameterDirection.Output)
+                    { // Add output for output params
+                        parameterFormat += " output";
+                    }
                     parameterName = param.ParameterName;
                 }
 

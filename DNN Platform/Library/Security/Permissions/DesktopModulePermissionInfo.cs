@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Security.Permissions
     /// DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
     /// Permissions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/15/2008   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModulePermissionInfo : PermissionInfoBase, IHydratable
@@ -60,9 +57,6 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// Constructs a new DesktopModulePermissionInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
 		public DesktopModulePermissionInfo()
         {
@@ -75,9 +69,6 @@ namespace DotNetNuke.Security.Permissions
         /// Constructs a new DesktopModulePermissionInfo
         /// </summary>
         /// <param name="permission">A PermissionInfo object</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionInfo(PermissionInfo permission) : this()
         {
@@ -97,9 +88,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the DesktopModule Permission ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int DesktopModulePermissionID
         {
@@ -118,9 +106,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the PortalDesktopModule ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PortalDesktopModuleID
         {
@@ -143,9 +128,6 @@ namespace DotNetNuke.Security.Permissions
         /// Fills a DesktopModulePermissionInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -159,9 +141,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -192,9 +171,6 @@ namespace DotNetNuke.Security.Permissions
         /// DesktopModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Equals(DesktopModulePermissionInfo other)
         {
@@ -222,9 +198,6 @@ namespace DotNetNuke.Security.Permissions
         /// DesktopModulePermissionCollection.Contains will use this method to check if a given permission
         /// is already included in the collection.
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override bool Equals(object obj)
         {

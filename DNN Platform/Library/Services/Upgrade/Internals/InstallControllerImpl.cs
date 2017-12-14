@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,9 +51,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     internal class InstallControllerImpl : IInstallController
     {
         #region IInstallController Members
@@ -234,10 +231,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     settingsNode = AppendNewXmlNode(ref installTemplate, ref dotnetnukeNode, "settings", null);
                 }
-                else
-                {
-                    settingsNode.RemoveAll();
-                }
+                // DNN-8833: for this node specifically we should append/overwrite existing but not clear all
+                //else
+                //{
+                //    settingsNode.RemoveAll();
+                //}
 
                 foreach (HostSettingConfig setting in installConfig.Settings)
                 {
@@ -312,6 +310,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
             if (rootNode != null)
             {
                 installConfig.Version = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "version");
+                installConfig.SupportLocalization = XmlUtils.GetNodeValueBoolean(rootNode.CreateNavigator(), "supportLocalization");
+                installConfig.DisplayBanners = XmlUtils.GetNodeValueBoolean(rootNode.CreateNavigator(), "displayBanners");
                 installConfig.InstallCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture") ?? Localization.Localization.SystemLocale;
             }
 
@@ -584,8 +584,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         public string TestDatabaseConnection(ConnectionConfig config)
         {
             DbConnectionStringBuilder builder = DataProvider.Instance().GetConnectionStringBuilder();

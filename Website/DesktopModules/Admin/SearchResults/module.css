@@ -29,7 +29,7 @@
     background-color: #ddd;
 }
 
-    .dnnSearchResultPanel .RadComboBox {
+    .dnnSearchResultPanel .selectize-control {
         width: 100px;
     }
 
@@ -244,7 +244,7 @@
         margin-bottom: 5px;
     }
 
-    #dnnSearchResultAdvancedForm.dnnForm .dnnFormItem > .RadComboBox_Default {
+    #dnnSearchResultAdvancedForm.dnnForm .dnnFormItem > .selectize-control {
         width: 235px;
         margin-bottom: 0;
     }
@@ -264,4 +264,65 @@
     width: 100%;
     background-color: #fff;
     border-collapse: collapse;
+}
+
+@media only screen and (max-width: 715px) {
+    .dnnSearchBox_advanced_dropdown {             
+        width: 420px;       
+        left: -254px;     
+    }
+}
+
+@media only screen and (max-width: 580px) {
+
+    #dnnSearchResultAdvancedForm {
+        width: 250px; 
+    }
+
+    .dnnSearchBox_advanced_dropdown {
+        left:-150px !important;
+        width: 250px;            
+    }
+
+    #dnnSearchResultAdvancedForm .dnnLabel {
+        white-space: nowrap;
+        margin-right: 1em;
+        text-align: left;
+        float:none;
+        display:block;
+        width:100%;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnLabel label {
+        margin-right:.3em;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnFormHelp {
+        position:relative !important;
+        width:20px;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnTooltip {
+        left:30% !important;
+        white-space:normal;
+    }
+
+    #dnnSearchResultAdvancedForm .dnnCheckbox {
+        position: absolute;
+        top: -8px;
+        left: 135px;
+    }
+}
+
+@media only screen and (max-width: 475px) {
+    .dnnSearchBox_advanced_dropdown {            
+        left: -48px !important;
+    }    
+}
+
+
+@media only screen and (max-width: 390px) {
+    .dnnSearchBox_advanced_dropdown {
+        left: -5px !important;
+    }
 }

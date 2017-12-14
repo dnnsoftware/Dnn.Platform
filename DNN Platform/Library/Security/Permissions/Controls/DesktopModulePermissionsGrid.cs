@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -67,9 +67,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the Permissions Collection
         /// </summary>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionCollection Permissions
         {
@@ -87,9 +84,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets and Sets the Id of the PortalDesktopModule
         /// </summary>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PortalDesktopModuleID
         {
@@ -116,9 +110,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the DesktopModulePermissions from the Data Store
         /// </summary>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void GetDesktopModulePermissions()
         {
@@ -130,9 +121,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Parse the Permission Keys used to persist the Permissions in the ViewState
         /// </summary>
         /// <param name="Settings">A string array of settings</param>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private DesktopModulePermissionInfo ParseKeys(string[] Settings)
         {
@@ -177,9 +165,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </summary>
         /// <param name="permissions">The permissions collection</param>
         /// <param name="user">The user to add</param>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
@@ -236,9 +221,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the permissions from the Database
         /// </summary>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
@@ -250,9 +232,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Load the ViewState
         /// </summary>
         /// <param name="savedState">The saved state</param>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void LoadViewState(object savedState)
         {
@@ -303,9 +282,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Saves the ViewState
         /// </summary>
-        /// <history>
-        ///     [cnurse]    02/22/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override object SaveViewState()
         {
@@ -349,9 +325,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// returns whether or not the derived grid supports Deny permissions
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {

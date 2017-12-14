@@ -1,9 +1,9 @@
 ﻿<div class="License">
 	<h3>License</h3>
 	<p class="Owner">
-		DotNetNuke Corporation  <a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a></br>
-		Copyright (c) 2002-2014</br>	
-		by DotNetNuke Corporation</br>
+		DotNetNuke Corporation  <a href=http://www.dnnsoftware.com>http://www.dnnsoftware.com</a></br>
+		Copyright (c) 2002-2017</br>	
+		by DNN Corporation</br>
 	</p>
     <p>
         Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 

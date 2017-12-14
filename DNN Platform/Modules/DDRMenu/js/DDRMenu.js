@@ -70,7 +70,7 @@ DDRjQuery(function ($) {
 							chElt.covering = covering;
 							chElt.coveringHere = coveringHere;
 							covering.css({ "width": "0", "height": "0" });
-							coveringHere.bind("mouseenter", function () {
+							coveringHere.on("mouseenter", function () {
 								m.coverings.each(function (chElt) {
 									if (chElt.moveCovering) {
 										var chOffset = chElt.coveringHere.offset();
@@ -169,7 +169,7 @@ DDRjQuery(function ($) {
 				menuElt.showMenu = function (instant) {
 					if (this.style.display == "none") {
 						jqMenu.stop(true, true);
-						menu.childItems.allRendered().stop(true, true).unbind('mouseenter mouseleave');
+						menu.childItems.allRendered().stop(true, true).off('mouseenter mouseleave');
 						me.positionMenu(menu);
 						if (instant || (me.showEffectSpeed == 0)) {
 							jqMenu.show();
@@ -393,7 +393,7 @@ DDRjQuery(function ($) {
 	}
 
 	DDR.Menu.getCSS = function (elt, css) {
-		return parseFloat("0" + $.curCSS(elt, css, true));
+	    return parseFloat("0" + $(elt).css(css));
 	};
 
 	if (!Array.prototype.each)

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,7 +26,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Upgrade;
 using System.Collections.Generic;
 
@@ -44,21 +43,23 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/16/2004	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class HtmlUtils
     {
-        private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled);
         private static readonly Regex StripWhiteSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
         private static readonly Regex StripNonWordRegex = new Regex("\\W*", RegexOptions.Compiled);
-        private static readonly Regex StripTagsRegex = new Regex("<[^>]*>", RegexOptions.Compiled);
-        private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.Singleline);
-          
+        private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.Compiled);
+        private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline);
+         
         //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
-        private readonly static Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
+        private static readonly Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
 
+        //Create Regular Expression objects
+        private const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
+        private static readonly Regex AfterRegEx = new Regex(PunctuationMatch + "\\s", RegexOptions.Compiled);
+        private static readonly Regex BeforeRegEx = new Regex("\\s" + PunctuationMatch, RegexOptions.Compiled);
+        private static readonly Regex EntityRegEx = new Regex("&[^;]+;", RegexOptions.Compiled);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -71,10 +72,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The Html to clean</param>
         /// <param name="RemovePunctuation">A flag indicating whether to remove punctuation</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	created
-        ///     [galatrash] 05/31/2013  added fix for double html-encoding
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string Clean(string HTML, bool RemovePunctuation)
         {
@@ -117,9 +114,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The cleaned up string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   09/02/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string CleanWithTagInfo(string html, string tagsFilter, bool removePunctuation)
         {
@@ -153,9 +147,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="Email">The email address to format</param>
         /// <returns>The formatted email address</returns>
-        /// <history>
-        ///		[cnurse]	09/29/2005	moved from Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatEmail(string Email)
         {
@@ -169,16 +160,13 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="Email">The email address to format</param>
         /// <param name="cloak">A flag that indicates whether the text should be cloaked</param>
         /// <returns>The formatted email address</returns>
-        /// <history>
-        ///		[cnurse]	09/29/2005	moved from Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatEmail(string Email, bool cloak)
         {
             string formatEmail = "";
             if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Email.Trim()))
             {
-                if (Email.IndexOf("@") != -1)
+                if (Email.IndexOf("@", StringComparison.Ordinal) != -1)
                 {
                     formatEmail = string.Format("<a href=\"mailto:{0}\">{0}</a>", Email);
                 }
@@ -203,9 +191,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Whether ratain Space</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	12/13/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatText(string HTML, bool RetainSpace)
         {
@@ -221,9 +206,6 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         /// <param name = "strText">Text to format</param>
         /// <returns>The formatted html</returns>
-        /// <history>
-        ///   [cnurse]	12/13/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ConvertToHtml(string strText)
         {
@@ -248,9 +230,6 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         /// <param name = "strHtml">Html to format</param>
         /// <returns>The formatted text</returns>
-        /// <history>
-        ///   [cnurse]	12/13/2004	Documented and modified to use HtmlUtils methods
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string ConvertToText(string strHtml)
         {
@@ -276,9 +255,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="Website">The domain name to format</param>
         /// <returns>The formatted domain name</returns>
-        /// <history>
-        ///		[cnurse]	09/29/2005	moved from Globals
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string FormatWebsite(object Website)
         {
@@ -287,10 +263,10 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (!String.IsNullOrEmpty(Website.ToString().Trim()))
                 {
-                    if (Website.ToString().IndexOf(".") > -1)
+                    if (Website.ToString().IndexOf(".", StringComparison.Ordinal) > -1)
                     {
                         formatWebsite = string.Format("<a href=\"{1}{0}\">{0}</a>", Website,
-                            (Website.ToString().IndexOf("://") > -1 ? "" : "http://"));
+                            (Website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? "" : "http://"));
                     }
                     else
                     {
@@ -311,9 +287,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="length">The max number of characters to return</param>
         /// <param name="suffix">An optional suffic to append to the shortened string</param>
         /// <returns>The shortened string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string Shorten(string txt, int length, string suffix)
         {
@@ -334,24 +307,27 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Entity by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode")]
         public static string StripEntities(string HTML, bool RetainSpace)
         {
-            string RepString;
-            if (RetainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
+            var repString = RetainSpace ? " " : "";
             //Replace Entities by replacement String and return mofified string
-            return Regex.Replace(HTML, "&[^;]*;", RepString);
+            return EntityRegEx.Replace(HTML, repString);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Checks whether the string contains any HTML Entity or not
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="html">The HTML content to clean up</param>
+        /// <returns>True if the string contains any entity</returns>
+        /// -----------------------------------------------------------------------------
+        public static bool ContainsEntity(string html)
+        {
+            return !string.IsNullOrEmpty(html) && EntityRegEx.IsMatch(html);
         }
 
         /// <summary>
@@ -373,14 +349,10 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Tag by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
-            string RepString = RetainSpace ? " " : "";
-            return StripTagsRegex.Replace(HTML, RepString);
+            return StripTagsRegex.Replace(HTML, RetainSpace ? " " : "");
         }
 
 
@@ -395,9 +367,6 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The cleaned up string</returns>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///   [vnguyen]   09/02/2010   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripUnspecifiedTags(string html, string specifiedTags, bool retainSpace)
         {
@@ -409,18 +378,10 @@ namespace DotNetNuke.Common.Utilities
             var result = new StringBuilder();
 
             //Set up Replacement String
-            string RepString = null;
-            if (retainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
+            var repString = retainSpace ? " " : "";
 
             //Stripped HTML
-            result.Append(Regex.Replace(html, "<[^>]*>", RepString));
+            result.Append(StripTagsRegex.Replace(html, repString));
 
             //Adding Tag info from specified tags
             foreach (Match m in Regex.Matches(html, "(?<=(" + specifiedTags + ")=)\"(?<a>.*?)\""))
@@ -444,9 +405,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Punctuation by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	11/16/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripPunctuation(string HTML, bool RetainSpace)
         {
@@ -455,31 +413,18 @@ namespace DotNetNuke.Common.Utilities
                 return string.Empty;
             }
 
-            //Create Regular Expression objects
-            const string punctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
-            var afterRegEx = new Regex(punctuationMatch + "\\s");
-            var beforeRegEx = new Regex("\\s" + punctuationMatch);
-
             //Define return string
             string retHTML = HTML + " "; //Make sure any punctuation at the end of the String is removed
 
             //Set up Replacement String
-            string RepString;
-            if (RetainSpace)
+            var repString = RetainSpace ? " " : "";
+            while (BeforeRegEx.IsMatch(retHTML))
             {
-                RepString = " ";
+                retHTML = BeforeRegEx.Replace(retHTML, repString);
             }
-            else
+            while (AfterRegEx.IsMatch(retHTML))
             {
-                RepString = "";
-            }
-            while (beforeRegEx.IsMatch(retHTML))
-            {
-                retHTML = beforeRegEx.Replace(retHTML, RepString);
-            }
-            while (afterRegEx.IsMatch(retHTML))
-            {
-                retHTML = afterRegEx.Replace(retHTML, RepString);
+                retHTML = AfterRegEx.Replace(retHTML, repString);
             }
             // Return modified string after trimming leading and ending quotation marks
             return retHTML.Trim('"');
@@ -495,9 +440,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the WhiteSpace by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	12/13/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripWhiteSpace(string HTML, bool RetainSpace)
         {
@@ -516,9 +458,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="HTML">The HTML content to clean up</param>
         /// <param name="RetainSpace">Indicates whether to replace the Non-Word Character by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
-        /// <history>
-        ///		[cnurse]	1/28/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string StripNonWord(string HTML, bool RetainSpace)
         {
@@ -555,9 +494,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="response">The ASP.Net Response object</param>
         /// <param name="file">The filename where the Error Occurred</param>
         /// <param name="message">The error message</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteError(HttpResponse response, string file, string message)
         {
@@ -579,10 +515,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="response">The ASP.Net Response object</param>
         /// <param name="indent">The indent for this feedback message</param>
         /// <param name="message">The feedback message</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        ///     [gve] 	    07/14/2006	added extra overload (showtime) to show or hide the upgrade runtime
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message)
         {
@@ -599,35 +531,35 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="indent">The indent for this feedback message</param>
         /// <param name="message">The feedback message</param>
         /// <param name="showtime">Show the timespan before the message</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        ///     [gve] 	    07/14/2006	added extra overload (showtime) to show or hide the upgrade runtime
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, Int32 indent, string message, bool showtime)
         {
-            bool showInstallationMessages = true;
-            string ConfigSetting = Config.GetSetting("ShowInstallationMessages");
-            if (ConfigSetting != null)
+            try
             {
-                showInstallationMessages = bool.Parse(ConfigSetting);
+                bool showInstallationMessages;
+                string configSetting = Config.GetSetting("ShowInstallationMessages") ?? "true";
+                if (bool.TryParse(configSetting, out showInstallationMessages) && showInstallationMessages)
+                {
+                    //Get the time of the feedback
+                    TimeSpan timeElapsed = Upgrade.RunTime;
+                    string strMessage = "";
+                    if (showtime)
+                    {
+                        strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
+                    }
+                    for (int i = 0; i <= indent; i++)
+                    {
+                        strMessage += "&nbsp;";
+                    }
+                    strMessage += message;
+                    response.Write(strMessage);
+                    response.Flush();
+                }
             }
-            if (showInstallationMessages)
+            catch (HttpException ex)
             {
-                //Get the time of the feedback
-                TimeSpan timeElapsed = Upgrade.RunTime;
-                string strMessage = "";
-                if (showtime)
-                {
-                    strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".") + 4) + " -";
-                }
-                for (int i = 0; i <= indent; i++)
-                {
-                    strMessage += "&nbsp;";
-                }
-                strMessage += message;
-                response.Write(strMessage);
-                response.Flush();
+                // Swallowing this for when requests have timed out. Log in case a listener is implemented
+                System.Diagnostics.Trace.TraceError(ex.ToString());
             }
         }
 
@@ -655,9 +587,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// </remarks>
         /// <param name="response">The ASP.Net Response object</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteFooter(HttpResponse response)
         {
@@ -674,9 +603,6 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         /// <param name="response">The ASP.Net Response object</param>
         /// <param name="mode">The mode Install/Upgrade etc</param>
-        /// <history>
-        ///		[cnurse]	02/21/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void WriteHeader(HttpResponse response, string mode)
         {
@@ -699,10 +625,10 @@ namespace DotNetNuke.Common.Utilities
             switch (mode)
             {
                 case "install":
-                    response.Write("<h1>Installing DotNetNuke</h1>");
+                    response.Write("<h1>Installing DNN</h1>");
                     break;
                 case "upgrade":
-                    response.Write("<h1>Upgrading DotNetNuke</h1>");
+                    response.Write("<h1>Upgrading DNN</h1>");
                     break;
                 case "addPortal":
                     response.Write("<h1>Adding New Portal</h1>");
@@ -717,10 +643,10 @@ namespace DotNetNuke.Common.Utilities
                     response.Write("<h1>Nothing To Install At This Time</h1>");
                     break;
                 case "noDBVersion":
-                    response.Write("<h1>New DotNetNuke Database</h1>");
+                    response.Write("<h1>New DNN Database</h1>");
                     break;
                 case "error":
-                    response.Write("<h1>Error Installing DotNetNuke</h1>");
+                    response.Write("<h1>Error Installing DNN</h1>");
                     break;
                 default:
                     response.Write("<h1>" + mode + "</h1>");
@@ -731,14 +657,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void WriteSuccessError(HttpResponse response, bool bSuccess)
         {
-            if (bSuccess)
-            {
-                WriteFeedback(response, 0, "<font color='green'>Success</font><br>", false);
-            }
-            else
-            {
-                WriteFeedback(response, 0, "<font color='red'>Error!</font><br>", false);
-            }
+            WriteFeedback(response, 0, bSuccess ? "<font color='green'>Success</font><br>" : "<font color='red'>Error!</font><br>", false);
         }
 
         public static void WriteScriptSuccessError(HttpResponse response, bool bSuccess, string strLogFile)
@@ -749,7 +668,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                WriteFeedback(response, 0, "<font color='red'>Error! (see " + strLogFile + " for more information)</font><br>", false);
+                WriteFeedback(response, 0, "<font color='red'>Error!</font> (see " + strLogFile + " for more information)<br>", false);
             }
         }
 
@@ -774,7 +693,7 @@ namespace DotNetNuke.Common.Utilities
                     searchAlias = string.Format("{0}/", portalAlias);
                 }
 
-                Regex exp = new Regex(string.Format("((?:href|src)=&quot;)https?://{0}(.*?&quot;)", searchAlias), RegexOptions.IgnoreCase);
+                var exp = new Regex("((?:href|src)=&quot;)https?://" + searchAlias + "(.*?&quot;)", RegexOptions.IgnoreCase);
 
                 if (portalAlias.Contains("/"))
                 {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,12 +39,10 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class AssemblyInstaller : FileInstaller
     {
+        private static readonly Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
 		#region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
@@ -52,10 +50,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Collection Node ("assemblies")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -69,10 +63,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the default Path for the file - if not present in the manifest
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/10/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override string DefaultPath
         {
             get
@@ -86,10 +76,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Item Node ("assembly")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -103,10 +89,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the PhysicalBasePath for the assemblies
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override string PhysicalBasePath
         {
             get
@@ -124,15 +106,11 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get
             {
-                return "dll";
+                return "dll,pdb";
             }
         }
 		
@@ -146,10 +124,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The DeleteFile method deletes a single assembly.
         /// </summary>
         /// <param name="file">The InstallFile to delete</param>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void DeleteFile(InstallFile file)
         {
             //Attempt to unregister assembly this will return False if the assembly is used by another package and
@@ -174,10 +148,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a flag that determines what type of file this installer supports
         /// </summary>
         /// <param name="type">The type of file being processed</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
         {
             return (type == InstallFileType.Assembly);
@@ -188,10 +158,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The InstallFile method installs a single assembly.
         /// </summary>
         /// <param name="file">The InstallFile to install</param>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override bool InstallFile(InstallFile file)
         {
             bool bSuccess = true;
@@ -268,8 +234,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             var name = assemblyName.Name;
-            var publicKeyToken = Regex.Match(assemblyName.FullName, @"PublicKeyToken=(\w+)").Groups[1].Value;
-            var oldVersion = "0.0.0.0-" + new Version(assemblyName.Version.Major, short.MaxValue, short.MaxValue, short.MaxValue);
+            var publicKeyToken = PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
+            var oldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
             var newVersion = assemblyName.Version.ToString();
 
             var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);

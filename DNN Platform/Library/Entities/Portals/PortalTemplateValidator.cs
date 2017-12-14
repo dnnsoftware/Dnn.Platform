@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,9 +32,6 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class PortalTemplateValidator : XmlValidatorBase
     {
         public bool Validate(string xmlFilename, string schemaFileName)

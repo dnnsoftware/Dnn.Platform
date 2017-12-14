@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Security.Permissions
     /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo
     /// objects
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModulePermissionCollection : CollectionBase

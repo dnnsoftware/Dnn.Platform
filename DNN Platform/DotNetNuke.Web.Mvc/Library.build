@@ -10,6 +10,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.WebPages.Deployment.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.WebPages.Razor.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.Helpers.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Web.Infrastructure.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Web.Helpers.dll" DestinationFolder="..\..\Website\bin\" />
   </Target>
 </Project>

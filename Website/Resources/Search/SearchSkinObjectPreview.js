@@ -36,8 +36,7 @@
                     return url;
                 };
 
-                var generatePreviewTemplate = function (data) {
-                    var $wrap = $('.searchInputContainer');
+                var generatePreviewTemplate = function (data, $wrap) {
                     var preview = $('.searchSkinObjectPreview', $wrap);
                     if (preview.length)
                         preview.remove();
@@ -124,6 +123,7 @@
                     var $this = $(this);
                     var $wrap = $this.parent();
                     var val = $this.val();
+                    var container = $this.parent('.searchInputContainer');
                     if (!val) {
 
                         $('a.dnnSearchBoxClearText', $wrap).removeClass('dnnShow');
@@ -148,7 +148,7 @@
                                     beforeSend: service ? service.setModuleHeaders : null,
                                     success: function(result) {
                                         if (result)
-                                            generatePreviewTemplate(result);
+                                            generatePreviewTemplate(result, container);
                                     },
                                     error: function() {
                                     },

@@ -269,7 +269,7 @@
     <value>Setup Social Groups</value>
   </data>
   <data name="SetupIntro.Text" xml:space="preserve">
-    <value>The Social Groups module allows users to browse, view and create groups.  The best way to configure the module is to create a page for listing your groups and another page for viewing the group details.  You can access the module settings to configure the module on your own or you can click the auto configure button below.  &lt;br /&gt;&lt;br /&gt;&lt;b&gt;We recommend using the Auto Cofigure option if you are not familiar with the module.&lt;/b&gt;</value>
+    <value>The Social Groups module allows users to browse, view and create groups.  The best way to configure the module is to create a page for listing your groups and another page for viewing the group details.  You can access the module settings to configure the module on your own or you can click the auto configure button below.  &lt;br /&gt;&lt;br /&gt;&lt;b&gt;We recommend using the Auto Configure option if you are not familiar with the module.&lt;/b&gt;</value>
   </data>
   <data name="RejectGroup.Text" xml:space="preserve">
     <value>Reject this Group</value>

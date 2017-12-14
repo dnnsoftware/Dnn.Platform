@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -90,29 +90,6 @@ namespace DotNetNuke.Common.Utilities
         public static object FillObject(IDataReader dr, Type objType, bool closeReader)
         {
             return CreateObjectFromReader(objType, dr, closeReader);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 5.0.  Replaced by GetProperties(Of TObject)() ")]
-        public static ArrayList GetPropertyInfo(Type objType)
-        {
-            var arrProperties = new ArrayList();
-
-            //get cached object mapping for type
-            ObjectMappingInfo objMappingInfo = GetObjectMapping(objType);
-
-            arrProperties.AddRange(objMappingInfo.Properties.Values);
-
-            return arrProperties;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Obsolete in DotNetNuke 5.0.  Replaced by SerializeObject(Object) ")]
-        public static XmlDocument Serialize(object objObject)
-        {
-            var document = new XmlDocument();
-            SerializeObject(objObject, document);
-            return document;
         }
     }
 }

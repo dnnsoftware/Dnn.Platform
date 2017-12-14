@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,16 +40,16 @@ namespace DotNetNuke.Entities.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	12/22/2005	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class UserMembership
     {
         private readonly UserInfo _user;
-        private bool _objectHydrated;
         private bool _approved;
+
+        public UserMembership() : this(new UserInfo())
+        {
+        }
 
         public UserMembership(UserInfo user)
         {
@@ -61,9 +61,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets whether the User is Approved
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Approved
         {
@@ -93,9 +90,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User's Creation Date
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DateTime CreatedDate { get; set; }
 
@@ -103,9 +97,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User Whether is deleted.
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsDeleted { get; set; }
 
@@ -113,9 +104,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets whether the User Is Online
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsOnLine { get; set; }
 
@@ -123,9 +111,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Last Activity Date of the User
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DateTime LastActivityDate { get; set; }
 
@@ -133,9 +118,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Last Lock Out Date of the User
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DateTime LastLockoutDate { get; set; }
 
@@ -143,9 +125,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Last Login Date of the User
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DateTime LastLoginDate { get; set; }
 
@@ -153,9 +132,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Last Password Change Date of the User
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public DateTime LastPasswordChangeDate { get; set; }
 
@@ -163,9 +139,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets whether the user is locked out
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool LockedOut { get; set; }
 
@@ -173,9 +146,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User's Password
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Password { get; set; }
 
@@ -183,9 +153,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User's Password Answer
         /// </summary>
-        /// <history>
-        ///     [cnurse]	08/04/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PasswordAnswer { get; set; }
 
@@ -200,9 +167,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User's Password Question
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PasswordQuestion { get; set; }
 
@@ -210,59 +174,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets a flag that determines whether the password should be updated
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool UpdatePassword { get; set; }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        public UserMembership()
-        {
-            Approved = true;
-            _user = new UserInfo();
-        }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        [Browsable(false)]
-        public string Email
-        {
-            get
-            {
-                return _user.Email;
-            }
-            set
-            {
-                _user.Email = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        [Browsable(false)]
-        public bool ObjectHydrated
-        {
-            get
-            {
-                return _objectHydrated;
-            }
-            set
-            {
-                _objectHydrated = true;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1")]
-        [Browsable(false)]
-        public string Username
-        {
-            get
-            {
-                return _user.Username;
-            }
-            set
-            {
-                _user.Username = value;
-            }
-        }
     }
 }

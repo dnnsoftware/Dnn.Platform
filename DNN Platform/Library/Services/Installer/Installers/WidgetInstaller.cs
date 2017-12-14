@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,9 +34,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	11/24/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class WidgetInstaller : FileInstaller
     {
@@ -45,9 +42,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Collection Node ("widgetFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	11/24/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -62,9 +56,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Item Node ("widgetFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	11/24/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -79,9 +70,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the PhysicalBasePath for the widget files
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	11/24/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string PhysicalBasePath
         {
@@ -97,9 +85,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	11/24/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {

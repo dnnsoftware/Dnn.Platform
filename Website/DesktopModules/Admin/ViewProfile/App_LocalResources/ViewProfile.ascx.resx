@@ -121,13 +121,13 @@
     <value>About Me</value>
   </data>
   <data name="EmptyAboutMe.Text" xml:space="preserve">
-    <value>There is no biography information from this user</value>
+    <value>There is no biography information for this user.</value>
   </data>
   <data name="EmptyLocation.Text" xml:space="preserve">
-    <value>There is no location information for this user</value>
+    <value>There is no location information for this user.</value>
   </data>
   <data name="EmptyGetInTouch.Text" xml:space="preserve">
-    <value>There is no contact information from this user</value>
+    <value>There is no contact information from this user.</value>
   </data>
   <data name="ControlTitle_viewprofile.Text" xml:space="preserve">
     <value>View Profile</value>
@@ -139,7 +139,7 @@
     <value>Email</value>
   </data>
   <data name="GetInTouch.Text" xml:space="preserve">
-    <value>Ways To Get In Touch</value>
+    <value>Ways to Get in Touch</value>
   </data>
   <data name="Location.Text" xml:space="preserve">
     <value>Location</value>
@@ -148,6 +148,6 @@
     <value>My Account</value>
   </data>
   <data name="NoProperties.Text" xml:space="preserve">
-    <value>This user has elected to hide his/her profile.</value>
+    <value>This user has elected to hide their profile.</value>
   </data>
 </root>

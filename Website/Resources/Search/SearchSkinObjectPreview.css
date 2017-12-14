@@ -1,26 +1,27 @@
 ﻿.searchInputContainer {
-    display: inline-block !important;
-    margin: 0 -3px 0 0 !important;
-    position: relative !important;
+    display: inline-block;
+    margin: 0 -3px 0 0;
+    position: relative;
 }
+
     .searchInputContainer > input[type="text"]::-ms-clear {
         display: none;
     }
 
     .searchInputContainer a.dnnSearchBoxClearText {
-        display: block !important;
-        position: absolute !important;
-        right: 10px !important;
-        width: 16px !important;
-        height: 16px !important;
-        background: none !important;
+        display: block;
+        position: absolute;
+        right: 10px;
+        width: 16px;
+        height: 16px;
+        background: none;
         cursor: pointer;
         margin: 7px 0 7px 0;
         z-index: 20;
     }
 
         .searchInputContainer a.dnnSearchBoxClearText.dnnShow {
-            background: url(../../../images/search/clearText.png) center center no-repeat !important;
+            background: url(../../../images/search/clearText.png) center center no-repeat;
         }
 
 ul.searchSkinObjectPreview {
@@ -37,7 +38,7 @@ ul.searchSkinObjectPreview {
 }
 
 ul.searchSkinObjectPreview li {
-    list-style: none !important;
+    list-style: none;
 }
 
     ul.searchSkinObjectPreview > li {
@@ -98,12 +99,12 @@ ul.searchSkinObjectPreview li {
             }
 
         ul.searchSkinObjectPreview > li > a.searchSkinObjectPreview_more {
-            display: inline !important;
-            position: static !important;
-            background: none !important;
-            z-index: inherit !important;
-            width: auto !important;
-            height: auto !important;
-            text-indent: inherit !important;
-            float: none !important;
+            display: inline;
+            position: static;
+            background: none;
+            z-index: inherit;
+            width: auto;
+            height: auto;
+            text-indent: inherit;
+            float: none;
         }

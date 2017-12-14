@@ -51,11 +51,15 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 			
             if (fi.Exists)
 				fi.Delete();
-			
-            var fs = fi.Create();
-			fs.Write(fileContents, 0, fileContents.Length);
-			fs.Close();
-			return fi;
+
+            //*** DNN related change ***  begin
+            using (var fs = fi.Create())
+            {
+                fs.Write(fileContents, 0, fileContents.Length);
+                fs.Close();
+            }
+            //*** DNN related change ***  end
+            return fi;
 		}
 
 	    /// <summary>
@@ -68,17 +72,20 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 	    /// <returns></returns>
 	    public override byte[] CombineFiles(string[] filePaths, HttpContextBase context, ClientDependencyType type, out List<CompositeFileDefinition> fileDefs)
 		{
-	        var ms = new MemoryStream(5000);            
-            var sw = new StreamWriter(ms, Encoding.UTF8);
+            //*** DNN related change *** begin
+            using (var ms = new MemoryStream(5000))
+            using (var sw = new StreamWriter(ms, Encoding.UTF8))
+            {
+                var fDefs = filePaths.Select(s => WritePathToStream(type, s, context, sw)).Where(def => def != null).ToList();
 
-	        var fDefs = filePaths.Select(s => WritePathToStream(type, s, context, sw)).Where(def => def != null).ToList();
-
-	        sw.Flush();
-			byte[] outputBytes = ms.ToArray();
-			sw.Close();
-			ms.Close();
-			fileDefs = fDefs;
-			return outputBytes;
+                sw.Flush();
+                byte[] outputBytes = ms.ToArray();
+                sw.Close();
+                ms.Close();
+                fileDefs = fDefs;
+                return outputBytes;
+            }
+            //*** DNN related change *** end
 		}
 
 		/// <summary>

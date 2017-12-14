@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -83,9 +83,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets and sets the Actions for this module context
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleActionCollection Actions
         {
@@ -107,9 +104,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets and sets the Module Configuration (ModuleInfo) for this context
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleInfo Configuration
         {
@@ -128,9 +122,6 @@ namespace DotNetNuke.UI.Modules
         /// The EditMode property is used to determine whether the user is in the
         /// Administrator role
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool EditMode
         {
@@ -144,9 +135,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets and sets the HelpUrl for this context
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string HelpURL { get; set; }
 
@@ -154,9 +142,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets whether the module is Editable (in Admin mode)
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsEditable
         {
@@ -201,9 +186,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets and sets the module ID for this context
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int ModuleId
         {
@@ -253,9 +235,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets the settings for this context
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Hashtable Settings
         {
@@ -280,9 +259,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets the tab ID for this context
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int TabId
         {
@@ -301,9 +277,6 @@ namespace DotNetNuke.UI.Modules
         /// <summary>
         /// Gets the tabnmodule ID for this context
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int TabModuleId
         {
@@ -335,11 +308,6 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	05/12/2005	Documented
-        ///     [cnurse]    01/19/2006  Moved from ActionBase
-        ///     [cnurse]    12/24/2007  Renamed (from SetHelpVisibility)
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void AddHelpActions()
         {
@@ -424,9 +392,6 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Refactored from LoadActions
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void AddMenuMoveActions()
         {
@@ -516,9 +481,6 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         /// <param name="actions">The actions collection to count.</param>
         /// <param name="count">The current count</param>
-        /// <history>
-        ///     [cnurse]    01/04/2008  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static int GetActionsCount(int count, ModuleActionCollection actions)
         {
@@ -541,9 +503,6 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    01/19/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void LoadActions(HttpRequest request)
         {
@@ -712,7 +671,8 @@ namespace DotNetNuke.UI.Modules
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";
                     if (!Configuration.IsShared)
                     {
-                        if (ModuleController.Instance.GetTabModulesByModule(Configuration.ModuleID).Cast<ModuleInfo>().Any(instance => instance.IsShared))
+                        var portal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                        if (PortalGroupController.Instance.IsModuleShared(Configuration.ModuleID, portal))
                         {
                             confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteSharedModule.Confirm")) + "')";
                         }

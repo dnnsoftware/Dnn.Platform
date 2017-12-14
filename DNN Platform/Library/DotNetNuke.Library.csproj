@@ -43,7 +43,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591, 3001, 3002, 1574, 1573</NoWarn>
-    <LangVersion>default</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -57,6 +57,7 @@
     <Optimize>true</Optimize>
     <DefineConstants>
     </DefineConstants>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
@@ -73,34 +74,40 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CountryListBox, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CountryListBox">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="dotnetnuke.log4net">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Services.Syndication">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Syndication\bin\DotNetNuke.Services.Syndication.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Client">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-      <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
@@ -119,27 +126,24 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SharpZipLib">
-      <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="SchwabenCode.QuickIO">
+      <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net40\SchwabenCode.QuickIO.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
@@ -148,9 +152,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -175,10 +177,6 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Telerik.Web.UI">
-      <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
@@ -187,11 +185,31 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Common\Utilities\CryptographyUtils.cs" />
+    <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
-    <Compile Include="Obsolete\Arg.cs" />
+    <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
+    <Compile Include="Data\PetaPoco\FluentMapper.cs" />
+    <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
+    <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
+    <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
+    <Compile Include="Entities\Modules\InstalledModulesController.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
+    <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
+    <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\ParameterAttributeBase.cs" />
+    <Compile Include="Entities\Modules\Settings\ParameterMapping.cs" />
+    <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
+    <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
+    <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
+    <Compile Include="Entities\Portals\IPortalTemplateEventHandlers.cs" />
+    <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
+    <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
+    <Compile Include="Entities\EventManager.cs" />
+    <Compile Include="Entities\IEventManager.cs" />
     <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />
     <Compile Include="Entities\Modules\Actions\ModuleEventArgs.cs" />
     <Compile Include="Entities\Portals\IPortalSettingsController.cs" />
@@ -219,7 +237,6 @@
     <Compile Include="Collections\PagedList.cs" />
     <Compile Include="Collections\PagedSelector.cs" />
     <Compile Include="Collections\PagingExtensions.cs" />
-    <Compile Include="Common\Assembly.cs" />
     <Compile Include="Common\Controls\ActionLessForm.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -429,7 +446,6 @@
     <Compile Include="Obsolete\TestablePortalAliasController.cs" />
     <Compile Include="Obsolete\ITabController.cs" />
     <Compile Include="Obsolete\CBO.cs" />
-    <Compile Include="Obsolete\FolderPermissionController.cs" />
     <Compile Include="Obsolete\LogController.cs" />
     <Compile Include="Obsolete\PortalAliasController.cs" />
     <Compile Include="Obsolete\PortalController.cs" />
@@ -544,7 +560,6 @@
     <Compile Include="Entities\Users\Users Online\OnlineUserInfo.cs" />
     <Compile Include="Entities\Users\Users Online\PurgeUsersOnline.cs" />
     <Compile Include="Entities\Users\Users Online\UserOnlineController.cs" />
-    <Compile Include="Entities\Users\UserTime.cs" />
     <Compile Include="Entities\Users\UserVisibilityMode.cs" />
     <Compile Include="ExtensionPoints\ContextMenuItemExtensionControl.cs" />
     <Compile Include="ExtensionPoints\Filters\CompositeFilter.cs" />
@@ -610,8 +625,6 @@
     <Compile Include="Entities\Content\Common\ContentExtensions.cs" />
     <Compile Include="Entities\Host\Host.cs" />
     <Compile Include="Entities\Host\HostPropertyAccess.cs" />
-    <Compile Include="Entities\Host\HostSettings.cs" />
-    <Compile Include="Entities\Host\HostSettingsController.cs" />
     <Compile Include="Entities\Host\ServerController.cs" />
     <Compile Include="Entities\Host\ServerInfo.cs" />
     <Compile Include="Entities\Icons\IconController.cs" />
@@ -623,9 +636,10 @@
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
-    <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
     <Compile Include="Obsolete\UserController.cs" />
+    <Compile Include="Security\Cookies\AuthCookieController.cs" />
+    <Compile Include="Security\Cookies\IAuthCookieController.cs" />
+    <Compile Include="Security\Cookies\PersistedAuthCookie.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
@@ -662,6 +676,15 @@
     <Compile Include="Services\Authentication\OAuth\QueryParameterComparer.cs" />
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
     <Compile Include="Services\ClientDependency\PurgeClientDependencyFiles.cs" />
+    <Compile Include="Services\Connections\ConnectionsController.cs" />
+    <Compile Include="Services\Connections\ConnectionsManager.cs" />
+    <Compile Include="Services\Connections\ConnectorCategories.cs" />
+    <Compile Include="Services\Connections\DynamicJsonConverter.cs" />
+    <Compile Include="Services\Connections\IConnectionsController.cs" />
+    <Compile Include="Services\Connections\IConnectionsManager.cs" />
+    <Compile Include="Services\Connections\IConnector.cs" />
+    <Compile Include="Services\Connections\ConnectorArgumentException.cs" />
+    <Compile Include="Services\Cryptography\FipsCompilanceCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CoreCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
@@ -670,6 +693,7 @@
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileDownloadedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileAddedEventArgs.cs" />
@@ -679,6 +703,7 @@
     <Compile Include="Services\FileSystem\EventArgs\FileRenamedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
+    <Compile Include="Services\FileSystem\Exceptions\InvalidFileContentException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -702,8 +727,43 @@
     <Compile Include="Services\FileSystem\Internal\FileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IFileDeletionController.cs" />
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileSecurityChecker.cs" />
+    <Compile Include="Services\FileSystem\Internal\IFileSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\FileSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\SecurityCheckers\SvgFileChecker.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Services\GeneratedImage\IPCount.cs" />
+    <Compile Include="Services\GeneratedImage\DiskImageStore.cs" />
+    <Compile Include="Services\GeneratedImage\DnnImageHandler.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageBrightnessTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageContrastTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageGammaTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageGreyscaleTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageInvertTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageResizeTransform.cs" />
+    <Compile Include="Services\GeneratedImage\FilterTransform\ImageRotateFlipTransform.cs" />
+    <Compile Include="Services\GeneratedImage\GeneratedImage.cs" />
+    <Compile Include="Services\GeneratedImage\ImageHandler.cs" />
+    <Compile Include="Services\GeneratedImage\ImageHandlerInternal.cs" />
+    <Compile Include="Services\GeneratedImage\ImageInfo.cs" />
+    <Compile Include="Services\GeneratedImage\ImageParameter.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\GrayscaleQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\OctreeQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\PaletteQuantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageQuantization\Quantizer.cs" />
+    <Compile Include="Services\GeneratedImage\ImageResizeMode.cs" />
+    <Compile Include="Services\GeneratedImage\ImageTransform.cs" />
+    <Compile Include="Services\GeneratedImage\ProfileEventHandler.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\ImageFileTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
+    <Compile Include="Services\GeneratedImage\StartTransform\UserProfilePicTransform.cs" />
+    <Compile Include="Services\ImprovementsProgram\BeaconService.cs" />
+    <Compile Include="Services\ImprovementsProgram\IBeaconService.cs" />
+    <Compile Include="Services\ImprovementsProgram\RolesEnum.cs" />
+    <Compile Include="Services\Installer\Blocker\IInstallBlocker.cs" />
+    <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
@@ -715,6 +775,14 @@
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\DatabaseResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\FileResponseFilter.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryProvider.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryResponseFilter.cs" />
+    <Compile Include="Services\Registration\IRegistrationProfileController.cs" />
+    <Compile Include="Services\Registration\RegistrationProfileController.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
@@ -998,25 +1066,6 @@
     <Compile Include="Framework\UserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Modules\Console\Components\ConsoleController.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardControl.cs" />
-    <Compile Include="Modules\Dashboard\Components\DashboardController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\BackupInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DatabaseController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbFileInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Database\DbInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\DataService.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Host\HostInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\IDashboardData.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModuleInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Modules\ModulesController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Portals\PortalsController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerController.cs" />
-    <Compile Include="Modules\Dashboard\Components\Server\ServerInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinInfo.cs" />
-    <Compile Include="Modules\Dashboard\Components\Skins\SkinsController.cs" />
     <Compile Include="Modules\HtmlEditorProvider.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1193,10 +1242,8 @@
     <Compile Include="Services\FileSystem\Wrappers\IFile.cs" />
     <Compile Include="Services\FileSystem\Providers\DatabaseFolderProvider.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileAlreadyExistsException.cs" />
-    <Compile Include="Services\FileSystem\FileController.cs" />
     <Compile Include="Services\FileSystem\FileInfo.cs" />
     <Compile Include="Services\FileSystem\FileManager.cs" />
-    <Compile Include="Services\FileSystem\FileManagerFunctions.cs" />
     <Compile Include="Services\FileSystem\FileServerHandler.cs" />
     <Compile Include="Services\FileSystem\FolderController.cs" />
     <Compile Include="Services\FileSystem\FolderInfo.cs" />
@@ -1232,7 +1279,6 @@
     </Compile>
     <Compile Include="Services\Installer\Installers\ConfigInstaller.cs" />
     <Compile Include="Services\Installer\Installers\ContainerInstaller.cs" />
-    <Compile Include="Services\Installer\Installers\DashboardInstaller.cs" />
     <Compile Include="Services\Installer\Installers\FileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\InstallerFactory.cs" />
     <Compile Include="Services\Installer\Installers\LanguageInstaller.cs" />
@@ -1298,9 +1344,6 @@
     <Compile Include="Services\Localization\LocaleCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Localization\LocaleCollectionWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Localization\Localization.cs" />
     <Compile Include="Services\Localization\LocalizationExpressionBuilder.cs" />
     <Compile Include="Services\Log\EventLog\EventLogController.cs">
@@ -1322,9 +1365,6 @@
     <Compile Include="Services\Log\EventLog\LogInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Log\EventLog\LogInfoArray.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Log\EventLog\LogProperties.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1334,8 +1374,6 @@
     <Compile Include="Services\Log\EventLog\LogTypeInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Log\EventLog\LogTypeSortFriendlyName.cs" />
-    <Compile Include="Services\Log\EventLog\PortalSortTitle.cs" />
     <Compile Include="Services\Log\EventLog\PurgeLogBuffer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1350,8 +1388,6 @@
     <Compile Include="Services\Messaging\Data\MessagingDataService.cs" />
     <Compile Include="Services\Messaging\Data\IMessagingDataService.cs" />
     <Compile Include="Services\Messaging\IMessagingController.cs" />
-    <Compile Include="Services\Messaging\MessagingController.cs" />
-    <Compile Include="Services\Messaging\Scheduler\MessagingScheduler.cs" />
     <Compile Include="Services\ModuleCache\ModuleCachingProvider.cs" />
     <Compile Include="Services\ModuleCache\PurgeModuleCache.cs" />
     <Compile Include="Services\OutputCache\OutputCacheResponseFilter.cs" />
@@ -1450,36 +1486,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\UserProfile\UserProfilePicHandler.cs" />
-    <Compile Include="Services\Vendors\AffiliateController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\AffiliateInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\BannerTypeInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\ClassificationInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Vendors\VendorInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Services\UserRequest\IUserRequestIPAddressController.cs" />
+    <Compile Include="Services\UserRequest\UserRequestIPAddressController.cs" />
     <Compile Include="UI\Containers\ActionBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1546,6 +1554,7 @@
     <Compile Include="UI\Skins\EventListeners\SkinEventHandler.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventType.cs" />
+    <Compile Include="UI\Skins\InstalledSkinInfo.cs" />
     <Compile Include="UI\Skins\ISkinControl.cs" />
     <Compile Include="UI\Skins\NavObjectBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1637,12 +1646,9 @@
     <Compile Include="UI\WebControls\DataGrids\RolesSelectionGrid.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumn.cs" />
     <Compile Include="UI\WebControls\DataGrids\TextColumnTemplate.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStartedOptions.cs" />
     <Compile Include="UI\WebControls\DualListBox.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventArgs.cs" />
     <Compile Include="UI\WebControls\Events\DualListBoxEventHandler.cs" />
-    <Compile Include="UI\WebControls\DnnGettingStarted.cs" />
-    <Compile Include="Services\GettingStarted\GettingStartedController.cs" />
     <Compile Include="UI\WebControls\LanguageSelector.cs" />
     <Compile Include="UI\WebControls\LiteralTemplate.cs" />
     <Compile Include="UI\WebControls\NavDataSource\NavDataPageHierarchicalEnumerable.cs" />
@@ -1669,7 +1675,6 @@
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNPageEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNRegionEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNRichTextEditControl.cs" />
-    <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNTimeZoneEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\EditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\EditControlFactory.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\EnumEditControl.cs" />
@@ -1711,7 +1716,6 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingInfo.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
-    <Compile Include="WebControls\FeedBrowser.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
     <None Include="Module.build">
       <SubType>Designer</SubType>
@@ -1766,23 +1770,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Entities\Controllers\HostController.cs" />
     <Compile Include="Entities\Controllers\IHostController.cs" />
   </ItemGroup>
@@ -1825,7 +1812,9 @@
   <ItemGroup>
     <Compile Include="Common\Utilities\FileSystemPermissionVerifier.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UI\Internal\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj">
       <Project>{ca056730-5759-41f8-a6c1-420f9c0c63e7}</Project>

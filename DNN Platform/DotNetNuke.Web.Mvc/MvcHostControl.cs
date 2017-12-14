@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,8 +38,14 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHostControl : ModuleControlBase, IActionable
     {
+        #region Fields
+
         private ModuleRequestResult _result;
         private string _controlKey;
+
+        #endregion
+
+        #region Constructors
 
         public MvcHostControl()
         {
@@ -50,6 +56,10 @@ namespace DotNetNuke.Web.Mvc
         {
             _controlKey = controlKey;
         }
+
+        #endregion
+
+        #region Private Methods
 
         private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
         {
@@ -164,12 +174,23 @@ namespace DotNetNuke.Web.Mvc
             return actions;
         }
 
-        public ModuleActionCollection ModuleActions { get; private set; }
-
-        protected override void OnInit(EventArgs e)
+        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
         {
-            base.OnInit(e);
+            MvcHtmlString moduleOutput;
 
+            using (var writer = new StringWriter(CultureInfo.CurrentCulture))
+            {
+                var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+
+                moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
+                moduleOutput = MvcHtmlString.Create(writer.ToString());
+            }
+
+            return moduleOutput;
+        }
+
+        protected void ExecuteModule()
+        {
             try
             {
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
@@ -186,40 +207,48 @@ namespace DotNetNuke.Web.Mvc
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
         }
 
-        protected override void OnLoad(EventArgs e)
+        #endregion
+
+        #region Properties
+
+        public ModuleActionCollection ModuleActions { get; private set; }
+
+        protected bool ExecuteModuleImmediately { get; set; } = true;
+
+        #endregion
+
+        #region Event Handlers
+
+        protected override void OnInit(EventArgs e)
         {
+            base.OnInit(e);
+
+            if (ExecuteModuleImmediately)
+            {
+                ExecuteModule();
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
             try
             {
-                if (_result != null)
+                if (_result == null) return;
+                var mvcString = RenderModule(_result);
+                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
                 {
-                    Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
+                    Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
                 }
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
-            base.OnLoad(e);
         }
 
-        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
-        {
-            MvcHtmlString moduleOutput;
-
-            using (var writer = new StringWriter(CultureInfo.CurrentCulture))
-            {
-                var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
-
-                moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
-
-                moduleOutput = MvcHtmlString.Create(writer.ToString());
-            }
-
-            return moduleOutput;
-        }
+        #endregion
     }
 }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -239,9 +239,6 @@ namespace DotNetNuke.Security.Permissions
         /// SaveFolderPermissions updates a Folder's permissions
         /// </summary>
         /// <param name="folder">The Folder to update</param>
-        /// <history>
-        /// 	[cnurse]	04/15/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SaveFolderPermissions(FolderInfo folder)
         {

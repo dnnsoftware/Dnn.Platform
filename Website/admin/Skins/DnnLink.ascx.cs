@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,9 +32,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <summary></summary>
     /// <returns></returns>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[bchapman]	12/11/2014	New control for default skin links
-        /// </history>
     /// -----------------------------------------------------------------------------
     public partial class DnnLink : SkinObjectBase
     {

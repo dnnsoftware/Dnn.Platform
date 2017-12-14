@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,6 +33,7 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Client;
 
 #endregion
 
@@ -46,9 +47,6 @@ namespace DotNetNuke.UI.WebControls
 	/// The DNNRegionEditControl control provides a standard UI component for editing
 	/// Regions
 	/// </summary>
-	/// <history>
-	///     [cnurse]	05/04/2006	created
-	/// </history>
 	/// -----------------------------------------------------------------------------
 	[ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
 	public class DNNRegionEditControl : EditControl
@@ -164,9 +162,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// OnAttributesChanged runs when the CustomAttributes property has changed.
 		/// </summary>
-		/// <history>
-		///     [cnurse]	06/08/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected override void OnAttributesChanged()
 		{
@@ -202,7 +197,8 @@ namespace DotNetNuke.UI.WebControls
 			Regions.ControlStyle.CopyFrom(ControlStyle);
 			Regions.ID = ID + "_dropdown";
 			Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
-			Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
+			Regions.Attributes.Add("aria-label", "Region");
+            Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
 			Controls.Add(Regions);
 
 			Region.ControlStyle.CopyFrom(ControlStyle);

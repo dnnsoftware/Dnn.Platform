@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Common.Utilities
     /// For each object, when it is first accessed, reflection is used on the class and
     /// an instance of ObjectMappingInfo is created, which is cached for performance.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	12/01/2007	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class ObjectMappingInfo
@@ -61,9 +58,6 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Constructs a new ObjectMappingInfo Object
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/12/2008	created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ObjectMappingInfo()
         {
@@ -76,9 +70,6 @@ namespace DotNetNuke.Common.Utilities
         /// CacheKey gets the root value of the key used to identify the cached collection 
         /// in the ASP.NET Cache.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CacheKey
         {
@@ -100,9 +91,6 @@ namespace DotNetNuke.Common.Utilities
         /// are cached by the PortalId property.
         /// </summary>
         /// <remarks>If empty, a collection of all the instances of the object is cached.</remarks>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CacheByProperty
         {
@@ -123,9 +111,6 @@ namespace DotNetNuke.Common.Utilities
         /// Setting - which in turn can be modified by the Host Account.
         /// </summary>
         /// <remarks>Defaults to 20.</remarks>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int CacheTimeOutMultiplier
         {
@@ -143,9 +128,6 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// ColumnNames gets a dictionary of Database Column Names for the Object
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/02/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, string> ColumnNames
         {
@@ -159,9 +141,6 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// ObjectType gets and sets the type of the object
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ObjectType
         {
@@ -180,9 +159,6 @@ namespace DotNetNuke.Common.Utilities
         /// PrimaryKey gets and sets the property of the object that corresponds to the
         /// primary key in the database
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PrimaryKey
         {
@@ -200,9 +176,6 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Properties gets a dictionary of Properties for the Object
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, PropertyInfo> Properties
         {
@@ -217,9 +190,6 @@ namespace DotNetNuke.Common.Utilities
         /// TableName gets and sets the name of the database table that is used to
         /// persist the object.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string TableName
         {

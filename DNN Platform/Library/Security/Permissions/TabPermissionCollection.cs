@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Security.Permissions
     /// TabPermissionCollection provides the a custom collection for TabPermissionInfo
     /// objects
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("tabpermissions")]
@@ -153,7 +150,11 @@ namespace DotNetNuke.Security.Permissions
             objTabPermissionCollection.InnerList.Sort(new CompareTabPermissions());
             for (int i = 0; i <= Count - 1; i++)
             {
-                if (objTabPermissionCollection[i].TabPermissionID != this[i].TabPermissionID || objTabPermissionCollection[i].AllowAccess != this[i].AllowAccess)
+                if (objTabPermissionCollection[i].TabPermissionID != this[i].TabPermissionID
+                        || objTabPermissionCollection[i].PermissionID != this[i].PermissionID
+                        || objTabPermissionCollection[i].RoleID != this[i].RoleID
+                        || objTabPermissionCollection[i].UserID != this[i].UserID
+                        || objTabPermissionCollection[i].AllowAccess != this[i].AllowAccess)
                 {
                     return false;
                 }

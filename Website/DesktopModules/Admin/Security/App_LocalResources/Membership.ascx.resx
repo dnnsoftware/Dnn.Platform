@@ -121,49 +121,49 @@
     <value>Authorized:</value>
   </data>
   <data name="Approved.Help" xml:space="preserve">
-    <value>Is the User Authorized for the site.</value>
+    <value>Indicates whether this user is authorized for the site.</value>
   </data>
   <data name="CreatedDate.Text" xml:space="preserve">
     <value>Created Date:</value>
   </data>
   <data name="CreatedDate.Help" xml:space="preserve">
-    <value>Date this user was created</value>
+    <value>The date this user account was created.</value>
   </data>
   <data name="LastActivityDate.Text" xml:space="preserve">
     <value>Last Activity Date:</value>
   </data>
   <data name="LastActivityDate.Help" xml:space="preserve">
-    <value>Date of last activity by this user</value>
+    <value>The date this user was last active on the site.</value>
   </data>
   <data name="LastLoginDate.Text" xml:space="preserve">
     <value>Last Login Date:</value>
   </data>
   <data name="LastLoginDate.Help" xml:space="preserve">
-    <value>Date this user last logged in</value>
+    <value>The date this user last logged into the site.</value>
   </data>
   <data name="LastPasswordChangeDate.Text" xml:space="preserve">
     <value>Last Password Change:</value>
   </data>
   <data name="LastPasswordChangeDate.Help" xml:space="preserve">
-    <value>Date the user last changed his/her password</value>
+    <value>The date this user last changed their password.</value>
   </data>
   <data name="LastLockoutDate.Text" xml:space="preserve">
-    <value>Last Lock-out Date:</value>
+    <value>Last Lock-Out Date:</value>
   </data>
   <data name="LastLockoutDate.Help" xml:space="preserve">
-    <value>Date this user was last locked out, due to repetitive failed logins</value>
+    <value>The date this user was last locked out of the site due to repetitive failed logins.</value>
   </data>
   <data name="IsOnLine.Text" xml:space="preserve">
     <value>User Is Online:</value>
   </data>
   <data name="IsOnLine.Help" xml:space="preserve">
-    <value>Is the user online at the moment</value>
+    <value>Indicates whether the user is currently online.</value>
   </data>
   <data name="LockedOut.Text" xml:space="preserve">
     <value>Locked Out:</value>
   </data>
   <data name="LockedOut.Help" xml:space="preserve">
-    <value>Is the User Locked Out due to too many failed login attempts</value>
+    <value>Indicates whether the user is currently locked out of the site due to repetitive failed logins.</value>
   </data>
   <data name="cmdAuthorize.Text" xml:space="preserve">
     <value>Authorize User</value>
@@ -178,13 +178,13 @@
     <value>Update Password:</value>
   </data>
   <data name="UpdatePassword.Help" xml:space="preserve">
-    <value>Force this user to update their password</value>
+    <value>Indicates whether this user is forced to update their password.</value>
   </data>
   <data name="IsDeleted.Text" xml:space="preserve">
     <value>Deleted:</value>
   </data>
   <data name="IsDeleted.Help" xml:space="preserve">
-    <value>Is the user deleted</value>
+    <value>Indicates whether this user is deleted.</value>
   </data>
   <data name="cmdPassword.Text" xml:space="preserve">
     <value>Force Password Change</value>
@@ -199,12 +199,12 @@
     <value>Make Regular User</value>
   </data>
   <data name="PromoteToSuperUser.Text" xml:space="preserve">
-    <value>Make SuperUser</value>
+    <value>Make Super User</value>
   </data>
   <data name="UserFolder.Help" xml:space="preserve">
-    <value>The folder store user's files.</value>
+    <value>The folder that stores this user's files.</value>
   </data>
   <data name="UserFolder.Text" xml:space="preserve">
-    <value>User Folder</value>
+    <value>User Folder:</value>
   </data>
 </root>

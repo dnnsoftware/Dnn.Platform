@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -114,6 +114,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             SetupUsers();
             SetupPortalSettings();
             SetupCachingProvider();
+
+            _mockInternalMessagingController.Setup(m => m.GetLastSentMessage(It.IsAny<UserInfo>())).Returns((Message)null);
         }
 
         [TearDown]
@@ -662,6 +664,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockDataService = new Mock<IDataService>();
             var messagingController = new MessagingController(mockDataService.Object);
 
+            _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, It.IsAny<double>())).Returns(0);
+
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
                 .Callback(SetupDataTables)
                 .Returns(_dtMessageRecipients.CreateDataReader());
@@ -690,6 +694,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var sender = new UserInfo { DisplayName = Constants.USER_ElevenName, UserID = Constants.USER_ElevenId };
             var mockDataService = new Mock<IDataService>();
             var messagingController = new MessagingController(mockDataService.Object);
+
+            _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, It.IsAny<double>())).Returns(0);
 
             _dtMessageRecipients.Clear();
             var recipientId = 0;
@@ -1297,7 +1303,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void WaitTimeForNextMessage_Returns_Zero_When_MessagingThrottlingInterval_Is_Zero()
         {
             _user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
-            _mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), _user12UserInfo.PortalID, Null.NullInteger)).Returns(0);
+            _mockMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, 0.5)).Returns(0.5);
 
             var result = _mockInternalMessagingController.Object.WaitTimeForNextMessage(_user12UserInfo);
 
@@ -1342,13 +1348,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var actualDate = DateTime.Parse(actualDateString, culture);
             var lastMessageDate = DateTime.Parse(lastMessageDateString, culture);
             _user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
-            _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), _user12UserInfo.PortalID, Null.NullInteger)).Returns(throttlingInterval);
+            _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, It.IsAny<double>())).Returns(throttlingInterval);
             _mockInternalMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(false);
             _dtMessages.Clear();
             _dtMessages.Rows.Add(-1, 1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
             var dr = _dtMessages.CreateDataReader();
             var message = CBO.FillObject<Message>(dr);
-            _mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(_user12UserInfo)).Returns(message);
+            _mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(It.IsAny<UserInfo>())).Returns(message);
             _mockInternalMessagingController.Setup(mc => mc.GetDateTimeNow()).Returns(actualDate);
             var result = _mockInternalMessagingController.Object.WaitTimeForNextMessage(_user12UserInfo);
 

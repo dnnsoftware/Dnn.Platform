@@ -30,7 +30,7 @@ namespace log4net.Util
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// The error message is processed using the LogLog sub-system.
+	/// The error message is processed using the LogLog sub-system by default.
 	/// </para>
 	/// <para>
 	/// This policy aims at protecting an otherwise working application
@@ -81,7 +81,7 @@ namespace log4net.Util
 		/// </summary>
 		public void Reset()
 		{
-			m_enabledDate = DateTime.MinValue;
+			m_enabledDateUtc = DateTime.MinValue;
 			m_errorCode = ErrorCode.GenericFailure;
 			m_exception = null;
 			m_message = null;
@@ -98,37 +98,50 @@ namespace log4net.Util
 		/// <param name="errorCode">The internal error code.</param>
 		/// <remarks>
 		/// <para>
-		/// Sends the error information to <see cref="LogLog"/>'s Error method.
+		/// Invokes <see cref="FirstError"/> if and only if this is the first error or the first error after <see cref="Reset"/> has been called.
 		/// </para>
 		/// </remarks>
 		public void Error(string message, Exception e, ErrorCode errorCode) 
 		{
 			if (m_firstTime)
 			{
-				m_enabledDate = DateTime.Now;
-				m_errorCode = errorCode;
-				m_exception = e;
-				m_message = message;
-				m_firstTime = false;
-
-				if (LogLog.InternalDebugging && !LogLog.QuietMode)
-				{
-					LogLog.Error(declaringType, "[" + m_prefix + "] ErrorCode: " + errorCode.ToString() + ". " + message, e);
-				}
+                FirstError(message, e, errorCode);
 			}
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Log the very first error
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="e">The exception.</param>
+        /// <param name="errorCode">The internal error code.</param>
+        /// <remarks>
+        /// <para>
+        /// Sends the error information to <see cref="LogLog"/>'s Error method.
+        /// </para>
+        /// </remarks>
+        public virtual void FirstError(string message, Exception e, ErrorCode errorCode) {
+            m_enabledDateUtc = DateTime.UtcNow;
+            m_errorCode = errorCode;
+            m_exception = e;
+            m_message = message;
+            m_firstTime = false;
+
+            if (LogLog.InternalDebugging && !LogLog.QuietMode) {
+                LogLog.Error(declaringType, "[" + m_prefix + "] ErrorCode: " + errorCode.ToString() + ". " + message, e);
+            }
+        }
+
+        /// <summary>
 		/// Log an Error
 		/// </summary>
 		/// <param name="message">The error message.</param>
 		/// <param name="e">The exception.</param>
 		/// <remarks>
-		/// <para>
-		/// Prints the message and the stack trace of the exception on the standard
-		/// error output stream.
-		/// </para>
-		/// </remarks>
+        /// <para>
+        /// Invokes <see cref="FirstError"/> if and only if this is the first error or the first error after <see cref="Reset"/> has been called.
+        /// </para>
+        /// </remarks>
 		public void Error(string message, Exception e) 
 		{
 			Error(message, e, ErrorCode.GenericFailure);
@@ -139,11 +152,10 @@ namespace log4net.Util
 		/// </summary>
 		/// <param name="message">The error message.</param>
 		/// <remarks>
-		/// <para>
-		/// Print a the error message passed as parameter on the standard
-		/// error output stream.
-		/// </para>
-		/// </remarks>
+        /// <para>
+        /// Invokes <see cref="FirstError"/> if and only if this is the first error or the first error after <see cref="Reset"/> has been called.
+        /// </para>
+        /// </remarks>
 		public void Error(string message) 
 		{
 			Error(message, null, ErrorCode.GenericFailure);
@@ -170,12 +182,24 @@ namespace log4net.Util
 		}
 
 		/// <summary>
-		/// The date the first error that trigged this error handler occured.
+		/// The date the first error that trigged this error handler occurred, or <see cref="DateTime.MinValue"/> if it has not been triggered.
 		/// </summary>
 		public DateTime EnabledDate
 		{
-			get { return m_enabledDate; }
+			get 
+            {
+                if (m_enabledDateUtc == DateTime.MinValue) return DateTime.MinValue;
+                return m_enabledDateUtc.ToLocalTime(); 
+            }
 		}
+
+        /// <summary>
+        /// The UTC date the first error that trigged this error handler occured, or <see cref="DateTime.MinValue"/> if it has not been triggered.
+        /// </summary>
+        public DateTime EnabledDateUtc
+        {
+            get { return m_enabledDateUtc; }
+        }
 
 		/// <summary>
 		/// The message from the first error that trigged this error handler.
@@ -212,9 +236,9 @@ namespace log4net.Util
 		#region Private Instance Fields
 
 		/// <summary>
-		/// The date the error was recorded.
+		/// The UTC date the error was recorded.
 		/// </summary>
-		private DateTime m_enabledDate;
+		private DateTime m_enabledDateUtc;
 
 		/// <summary>
 		/// Flag to indicate if it is the first error

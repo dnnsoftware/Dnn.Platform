@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -63,9 +63,6 @@ namespace DotNetNuke.UI.WebControls
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	///     [cnurse]	05/05/2006	created
-	/// </history>
 	/// -----------------------------------------------------------------------------
 	[ToolboxData("<{0}:FieldEditorControl runat=server></{0}:FieldEditorControl>")]
 	public class FieldEditorControl : WebControl, INamingContainer
@@ -119,9 +116,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the DataSource that is bound to this control
 		/// </summary>
 		/// <value>The DataSource object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(false)]
 		public object DataSource { get; set; }
@@ -131,9 +125,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the value of the Field/property that this control displays
 		/// </summary>
 		/// <value>A string representing the Name of the Field</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Control.")]
 		public string DataField { get; set; }
@@ -143,9 +134,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets whether the control uses Divs or Tables
 		/// </summary>
 		/// <value>An EditorDisplayMode enum</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public EditorDisplayMode EditorDisplayMode { get; set; }
 
@@ -154,9 +142,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the Edit Mode of the Editor
 		/// </summary>
 		/// <value>The mode of the editor</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public PropertyEditorMode EditMode { get; set; }
 
@@ -164,9 +149,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets the Edit Control associated with the Editor
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public EditControl Editor { get; private set; }
 
@@ -175,9 +157,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the Factory used to create the Control
 		/// </summary>
 		/// <value>The mode of the editor</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public IEditorInfoAdapter EditorInfoAdapter
 		{
@@ -207,9 +186,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the Editor Type to use
 		/// </summary>
 		/// <value>The typename of the editor</value>
-		/// <history>
-		///     [cnurse]	08/29/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 
 		public string EditorTypeName { get; set; }
@@ -220,9 +196,6 @@ namespace DotNetNuke.UI.WebControls
 		/// validation
 		/// </summary>
 		/// <value>A Boolean</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public bool EnableClientValidation { get; set; }
 
@@ -231,9 +204,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets whether the control displays Help
 		/// </summary>
 		/// <value>A HelpDisplayMode enum</value>
-		/// <history>
-		///     [cnurse]	05/09/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public HelpDisplayMode HelpDisplayMode { get; set; }
 
@@ -242,9 +212,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets whether any of the properties have been changed
 		/// </summary>
 		/// <value>A Boolean</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public bool IsDirty { get; private set; }
 
@@ -253,9 +220,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets whether all of the properties are Valid
 		/// </summary>
 		/// <value>A Boolean</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public bool IsValid
 		{
@@ -276,9 +240,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the Local Resource File for the Control
 		/// </summary>
 		/// <value>A String</value>
-		/// <history>
-		///     [cnurse]	05/17/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public string LocalResourceFile { get; set; }
 
@@ -289,9 +250,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the Url of the Required Image
 		/// </summary>
 		/// <value>A String</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public string RequiredUrl { get; set; }
 
@@ -299,9 +257,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// gets and sets whether the Required icon is used
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public bool ShowRequired { get; set; }
 
@@ -309,9 +264,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// gets and sets whether the Visibility control is used
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public bool ShowVisibility { get; set; }
 
@@ -326,9 +278,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets the value of the Field Style
 		/// </summary>
 		/// <value>A Style object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Edit Control.")]
 		public Style EditControlStyle { get; private set; }
@@ -338,9 +287,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the width of the Edit Control Column
 		/// </summary>
 		/// <value>A Style object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Appearance"), Description("Set the Width for the Edit Control.")]
 		public Unit EditControlWidth { get; set; }
@@ -350,9 +296,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets the value of the Error Style
 		/// </summary>
 		/// <value>A Style object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Error Text.")]
 		public Style ErrorStyle { get; private set; }
@@ -362,9 +305,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets the value of the Label Style
 		/// </summary>
 		/// <value>A Style object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Help Text.")]
 		public Style HelpStyle { get; private set; }
@@ -374,9 +314,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets the value of the Label Style
 		/// </summary>
 		/// <value>A Style object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Label Text")]
 		public Style LabelStyle { get; private set; }
@@ -386,9 +323,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets and sets the width of the Label Column
 		/// </summary>
 		/// <value>A Style object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Appearance"), Description("Set the Width for the Label Control.")]
 		public Unit LabelWidth { get; set; }
@@ -398,9 +332,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Gets the value of the Visibility Style
 		/// </summary>
 		/// <value>A Style object</value>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Visibility Control")]
 		public Style VisibilityStyle { get; private set; }
@@ -424,9 +355,6 @@ namespace DotNetNuke.UI.WebControls
 		/// BuildDiv creates the Control as a Div
 		/// </summary>
 		/// <param name="editInfo">The EditorInfo object for this control</param>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		private void BuildDiv(EditorInfo editInfo)
 		{
 			var propLabel = new PropertyLabelControl();
@@ -486,9 +414,6 @@ namespace DotNetNuke.UI.WebControls
 		/// BuildEditor creates the editor part of the Control
 		/// </summary>
 		/// <param name="editInfo">The EditorInfo object for this control</param>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		private EditControl BuildEditor(EditorInfo editInfo)
 		{
 			EditControl propEditor = EditControlFactory.CreateEditControl(editInfo);
@@ -517,9 +442,6 @@ namespace DotNetNuke.UI.WebControls
 		/// BuildLabel creates the label part of the Control
 		/// </summary>
 		/// <param name="editInfo">The EditorInfo object for this control</param>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		private PropertyLabelControl BuildLabel(EditorInfo editInfo)
 		{
 			var propLabel = new PropertyLabelControl {ID = editInfo.Name + "_Label"};
@@ -559,9 +481,6 @@ namespace DotNetNuke.UI.WebControls
 		/// BuildValidators creates the validators part of the Control
 		/// </summary>
 		/// <param name="editInfo">The EditorInfo object for this control</param>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		private Image BuildRequiredIcon(EditorInfo editInfo)
 		{
 			Image img = null;
@@ -587,9 +506,6 @@ namespace DotNetNuke.UI.WebControls
 		/// BuildTable creates the Control as a Table
 		/// </summary>
 		/// <param name="editInfo">The EditorInfo object for this control</param>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private void BuildTable(EditorInfo editInfo)
 		{
@@ -683,9 +599,6 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <param name="editInfo">The EditorInfo object for this control</param>
 		/// <param name="targetId">Target Control Id.</param>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		private void BuildValidators(EditorInfo editInfo, string targetId)
 		{
@@ -733,9 +646,6 @@ namespace DotNetNuke.UI.WebControls
 		/// BuildVisibility creates the visibility part of the Control
 		/// </summary>
 		/// <param name="editInfo">The EditorInfo object for this control</param>
-		/// <history>
-		///     [cnurse]	05/08/2006	created
-		/// </history>
 		private VisibilityControl BuildVisibility(EditorInfo editInfo)
 		{
 			VisibilityControl visControl = null;
@@ -763,9 +673,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// CreateEditor creates the control collection for this control
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void CreateEditor()
 		{
@@ -826,9 +733,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs when an item is added to a collection type property
 		/// </summary>
-		/// <history>
-		///     [cnurse]	02/05/2008	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
 		{
@@ -839,9 +743,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs when an item is removed from a collection type property
 		/// </summary>
-		/// <history>
-		///     [cnurse]	02/05/2008	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
 		{
@@ -852,9 +753,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs when an item is added to a collection type property
 		/// </summary>
-		/// <history>
-		///     [cnurse]	02/05/2008	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void OnItemAdded(PropertyEditorEventArgs e)
 		{
@@ -868,9 +766,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs when the Editor is Created
 		/// </summary>
-		/// <history>
-		///     [cnurse]	02/20/2007	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
 		{
@@ -884,9 +779,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs when an item is removed from a collection type property
 		/// </summary>
-		/// <history>
-		///     [cnurse]	02/05/2008	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
 		{
@@ -910,9 +802,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs when the Value of a Property changes
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void ValueChanged(object sender, PropertyEditorEventArgs e)
 		{
@@ -923,9 +812,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Runs when the Visibility of a Property changes
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void VisibilityChanged(object sender, PropertyEditorEventArgs e)
 		{
@@ -940,9 +826,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Binds the controls to the DataSource
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public override void DataBind()
 		{
@@ -969,9 +852,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Validates the data, and sets the IsValid Property
 		/// </summary>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public virtual void Validate()
 		{
@@ -1003,9 +883,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Runs when an Item in the List Is Changed
 		/// </summary>
 		/// <remarks>Raises an ItemChanged event.</remarks>
-		/// <history>
-		///     [cnurse]	05/05/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
 		{

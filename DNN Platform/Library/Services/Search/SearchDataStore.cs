@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -52,9 +52,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
     public class SearchDataStore : SearchDataStoreProvider
@@ -69,9 +66,6 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="locale">The locale string</param>
         /// <returns>A hashtable of common words</returns>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Hashtable GetCommonWords(string locale)
         {
@@ -111,9 +105,6 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId">A Id of the Portal</param>
         /// <param name="tabId">A Id of the Tab</param>
         /// <param name="moduleId">A Id of the Module</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId)
         {
@@ -128,9 +119,6 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
 		/// <param name="portalId">A Id of the Portal</param>
 		/// <param name="criteria">The criteria string</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override SearchResultsInfoCollection GetSearchResults(int portalId, string criteria)
         {
@@ -280,13 +268,6 @@ namespace DotNetNuke.Services.Search
         /// <remarks>
         /// </remarks>
         /// <param name="searchItems">A Collection of SearchItems</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        ///     [vnguyen]   09/07/2010  Modified: Added a date comparison for LastModifiedDate on the Tab
-        ///     [vnguyen]   16/04/2013  Modified: Now uses Lucene indexing
-        ///     [galatrash] 23/05/2013  Modified: moved indexing methods into the internal namespace.
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override void StoreSearchItems(SearchItemInfoCollection searchItems)
         {
             var indexer = new ModuleIndexer();

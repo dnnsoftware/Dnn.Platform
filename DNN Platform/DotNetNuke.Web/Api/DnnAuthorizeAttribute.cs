@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,6 +35,19 @@ namespace DotNetNuke.Web.Api
         private string _denyRoles;
         private string[] _denyRolesSplit = new string[0];
 
+        private string _authTypes;
+        private string[] _authTypesSplit = new string[0];
+
+        private static readonly List<string> DefaultAuthTypes = new List<string>();
+
+        internal static void AppendToDefaultAuthTypes(string authType)
+        {
+            if (!string.IsNullOrEmpty(authType))
+            {
+                DefaultAuthTypes.Add(authType.Trim());
+            }
+        }
+
         /// <summary>
         /// Gets or sets the authorized roles (separated by comma) 
         /// </summary>
@@ -61,12 +74,25 @@ namespace DotNetNuke.Web.Api
             }
         }
 
+        /// <summary>
+        /// Gets or sets the allowed authentication types (separated by comma)
+        /// </summary>
+        public string AuthTypes
+        {
+            get { return _authTypes; }
+            set 
+            {
+                _authTypes = value;
+                _authTypesSplit = SplitString(_authTypes);
+            }
+        }
+
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);
 
-            var principal = Thread.CurrentPrincipal;
-            if(!principal.Identity.IsAuthenticated)
+            var identity = Thread.CurrentPrincipal.Identity;
+            if(!identity.IsAuthenticated)
             {
                 return false;
             }
@@ -89,20 +115,32 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
+            // if the attribute opted in explicitly for specific authentication types, then 
+            // use it; otherwise use the defaults according to settings in the web.config.
+            var currentAuthType = (identity.AuthenticationType ?? "").Trim();
+            if (currentAuthType.Length > 0)
+            {
+                if (_authTypesSplit.Any())
+                {
+                    return _authTypesSplit.Contains(currentAuthType);
+                }
+
+                return DefaultAuthTypes.Contains(currentAuthType);
+            }
+
             return true;
         }
 
-        private string[] SplitString(string original)
+        private static readonly string[] EmptyArray = new string[0];
+        private static string[] SplitString(string original)
         {
-            if (String.IsNullOrEmpty(original))
+            if (string.IsNullOrEmpty(original))
             {
-                return new string[0];
+                return EmptyArray;
             }
 
-            IEnumerable<string> split = from piece in original.Split(',')
-                                        let trimmed = piece.Trim()
-                                        where !String.IsNullOrEmpty(trimmed)
-                                        select trimmed;
+            var split = original.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s));
             return split.ToArray();
         }
     }

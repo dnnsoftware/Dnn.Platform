@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -40,6 +41,8 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Upgrade;
+using Microsoft.VisualBasic.Logging;
 
 #endregion
 
@@ -53,9 +56,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// DesktopModuleController provides the Busines Layer for Desktop Modules
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/11/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class DesktopModuleController
     {
@@ -86,9 +86,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	01/13/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static object GetDesktopModulesByPortalCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -154,9 +151,6 @@ namespace DotNetNuke.Entities.Modules
         /// DeleteDesktopModule deletes a Desktop Module
         /// </summary>
         /// <param name="objDesktopModule">Desktop Module Info</param>
-        /// <history>
-        /// 	[cnurse]	05/14/2009   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void DeleteDesktopModule(DesktopModuleInfo objDesktopModule)
         {
@@ -168,9 +162,6 @@ namespace DotNetNuke.Entities.Modules
         /// DeleteDesktopModule deletes a Desktop Module By ID
         /// </summary>
         /// <param name="desktopModuleID">The ID of the Desktop Module to delete</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void DeleteDesktopModule(int desktopModuleID)
         {
@@ -188,9 +179,6 @@ namespace DotNetNuke.Entities.Modules
         /// DeleteDesktopModule deletes a Desktop Module
         /// </summary>
         /// <param name="moduleName">The Name of the Desktop Module to delete</param>
-        /// <history>
-        /// 	[cnurse]	05/14/2009   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModule(string moduleName)
         {
@@ -213,9 +201,6 @@ namespace DotNetNuke.Entities.Modules
         /// to the Dataprovider.</remarks>
         /// <param name="desktopModuleID">The ID of the Desktop Module to get</param>
         /// <param name="portalID">The ID of the portal</param>
-        /// <history>
-        /// 	[cnurse]	01/13/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModule(int desktopModuleID, int portalID)
         {
@@ -243,9 +228,6 @@ namespace DotNetNuke.Entities.Modules
         /// GetDesktopModuleByPackageID gets a Desktop Module by its Package ID
         /// </summary>
         /// <param name="packageID">The ID of the Package</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModuleByPackageID(int packageID)
         {
@@ -269,9 +251,6 @@ namespace DotNetNuke.Entities.Modules
         /// to the Dataprovider.</remarks>
         /// <param name="moduleName">The name of the Desktop Module to get</param>
         /// <param name="portalID">The ID of the portal</param>
-        /// <history>
-        /// 	[cnurse]	01/13/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
         {
@@ -291,9 +270,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="portalID">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get
         /// all the DesktopModules including Modules not allowed for the current portal</param>
-        /// <history>
-        /// 	[cnurse]	01/13/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<int, DesktopModuleInfo> GetDesktopModules(int portalID)
         {
@@ -317,9 +293,6 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="desktopModule">The Desktop Module to save</param>
         /// <param name="saveChildren">A flag that determines whether the child objects are also saved</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
-        /// <history>
-        /// 	[cnurse]	01/13/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache)
         {
@@ -347,7 +320,8 @@ namespace DotNetNuke.Entities.Modules
                                                                 desktopModule.Dependencies,
                                                                 desktopModule.Permissions,
                                                                 desktopModule.ContentItemId,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID);
+                                                                UserController.Instance.GetCurrentUserInfo().UserID,
+                                                                desktopModule.AdminPage, desktopModule.HostPage);
                 EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else
@@ -374,7 +348,9 @@ namespace DotNetNuke.Entities.Modules
                                                  desktopModule.Dependencies,
                                                  desktopModule.Permissions,
                                                  desktopModule.ContentItemId,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
+                                                 UserController.Instance.GetCurrentUserInfo().UserID,
+                                                 desktopModule.AdminPage,
+                                                 desktopModule.HostPage);
 
                 //Update Tags
                 if (saveTerms)
@@ -521,7 +497,16 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (!desktopModule.IsPremium)
                 {
-                    AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+                    if (desktopModule.Page != null && !string.IsNullOrEmpty(desktopModule.AdminPage))
+                    {
+                        bool createdNewPage = false, addedNewModule = false;
+                        AddDesktopModulePageToPortal(desktopModule, desktopModule.AdminPage, portalId, ref createdNewPage, ref addedNewModule);
+                    }
+                    else
+                    {
+                        AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+                    }
+                    
                 }
             }
             DataCache.ClearPortalCache(portalId, true);
@@ -618,99 +603,73 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
         }
 
+        #region Interal Methods
+
+        internal static void AddDesktopModulePageToPortal(DesktopModuleInfo desktopModule, string pageName, int portalId, ref bool createdNewPage, ref bool addedNewModule)
+        {
+            var tabPath = string.Format("//{0}//{1}", portalId == Null.NullInteger ? "Host" : "Admin", pageName);
+            var tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
+            TabInfo existTab = TabController.Instance.GetTab(tabId, portalId);
+            if (existTab == null)
+            {
+                if (portalId == Null.NullInteger)
+                {
+                    existTab = Upgrade.AddHostPage(pageName,
+                                                    desktopModule.Page.Description,
+                                                    desktopModule.Page.Icon,
+                                                    desktopModule.Page.LargeIcon,
+                                                    true);
+                }
+                else
+                {
+                    existTab = Upgrade.AddAdminPage(PortalController.Instance.GetPortal(portalId),
+                                                        pageName,
+                                                        desktopModule.Page.Description,
+                                                        desktopModule.Page.Icon,
+                                                        desktopModule.Page.LargeIcon,
+                                                        true);
+                }
+
+                createdNewPage = true;
+            }
+
+            if (existTab != null)
+            {
+                if (desktopModule.Page.IsCommon)
+                {
+                    TabController.Instance.UpdateTabSetting(existTab.TabID, "ControlBar_CommonTab", "Y");
+                }
+
+                AddDesktopModuleToPage(desktopModule, existTab, ref addedNewModule);
+            }
+        }
+
+        internal static void AddDesktopModuleToPage(DesktopModuleInfo desktopModule, TabInfo tab, ref bool addedNewModule)
+        {
+            if (tab.PortalID != Null.NullInteger)
+            {
+                AddDesktopModuleToPortal(tab.PortalID, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+            }
+
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModule.DesktopModuleID).Values;
+            var tabModules = ModuleController.Instance.GetTabModules(tab.TabID).Values;
+            foreach (var moduleDefinition in moduleDefinitions)
+            {
+                if (tabModules.All(m => m.ModuleDefinition.ModuleDefID != moduleDefinition.ModuleDefID))
+                {
+                    Upgrade.AddModuleToPage(tab,
+                        moduleDefinition.ModuleDefID,
+                        desktopModule.Page.Description,
+                        desktopModule.Page.Icon,
+                        true);
+
+                    addedNewModule = true;
+                }
+            }
+
+        }
 
         #endregion
-
-        #region Obsolete
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddDesktopModule adds a new Desktop Module to the database
-        /// </summary>
-        /// <param name="objDesktopModule">The Desktop Module to save</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated In DotNetNuke 6.0. Replaced by SaveDesktopModule")]
-        public int AddDesktopModule(DesktopModuleInfo objDesktopModule)
-        {
-            return SaveDesktopModule(objDesktopModule, false, true);
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method AddDesktopModuleToPortal(Integer, Integer)")]
-        public void AddPortalDesktopModule(int portalID, int desktopModuleID)
-        {
-            DataProvider.Instance().AddPortalDesktopModule(portalID, desktopModuleID, UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog("DesktopModuleID",
-                               desktopModuleID.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method RemoveDesktopModulesFromPortal(Integer)")]
-        public void DeletePortalDesktopModules(int portalID, int desktopModuleID)
-        {
-            DataProvider.Instance().DeletePortalDesktopModules(portalID, desktopModuleID);
-            EventLogController.Instance.AddLog("DesktopModuleID",
-                               desktopModuleID.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
-            DataCache.ClearPortalCache(portalID, true);
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetDesktopModule(Integer, Integer)")]
-        public DesktopModuleInfo GetDesktopModule(int desktopModuleId)
-        {
-            return (from kvp in GetDesktopModulesInternal(Null.NullInteger) where kvp.Value.DesktopModuleID == desktopModuleId select kvp.Value).FirstOrDefault();
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetDesktopModuleByModuleName(String, Integer)")]
-        public DesktopModuleInfo GetDesktopModuleByName(string friendlyName)
-        {
-            return (from kvp in GetDesktopModulesInternal(Null.NullInteger) where kvp.Value.FriendlyName == friendlyName select kvp.Value).FirstOrDefault();
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetDesktopModuleByModuleName(String, Integer)")]
-        public DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName)
-        {
-            return (from kvp in GetDesktopModulesInternal(Null.NullInteger) where kvp.Value.ModuleName == moduleName select kvp.Value).FirstOrDefault();
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetDesktopModules(Integer)")]
-        public ArrayList GetDesktopModules()
-        {
-            return new ArrayList(GetDesktopModulesInternal(Null.NullInteger).Values);
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetDesktopModules(Integer)")]
-        public ArrayList GetDesktopModulesByPortal(int portalID)
-        {
-            return CBO.FillCollection(DataProvider.GetDesktopModulesByPortal(portalID), typeof(DesktopModuleInfo));
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetPortalDesktopModulesByPortalID(Integer) and GetPortalDesktopModulesByDesktopModuleID(Integer) And GetPortalDesktopModule(Integer, Integer)")]
-        public ArrayList GetPortalDesktopModules(int portalID, int desktopModuleID)
-        {
-            return CBO.FillCollection(DataProvider.Instance().GetPortalDesktopModules(portalID, desktopModuleID), typeof(PortalDesktopModuleInfo));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpdateDesktopModule saves the Desktop Module to the database
-        /// </summary>
-        /// <param name="objDesktopModule">The Desktop Module to save</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated In DotNetNuke 6.0. Replaced by SaveDesktopModule")]
-        public void UpdateDesktopModule(DesktopModuleInfo objDesktopModule)
-        {
-            SaveDesktopModule(objDesktopModule, false, true);
-        }
 
         #endregion
     }

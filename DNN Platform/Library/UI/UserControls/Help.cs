@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
-// by DotNetNuke Corporation
+// DotNetNukeÂ® - http://www.dnnsoftware.com
+// Copyright (c) 2002-2017
+// by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -44,6 +44,7 @@ namespace DotNetNuke.UI.UserControls
         private string MyFileName = "Help.ascx";
         private string _key;
         protected LinkButton cmdCancel;
+        protected HyperLink cmdHelp;
         protected Literal helpFrame;
         protected Label lblHelp;
         protected Label lblInfo;
@@ -53,9 +54,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -68,7 +66,7 @@ namespace DotNetNuke.UI.UserControls
             }
             else if (Host.EnableModuleOnLineHelp)
             {
-                helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500' />", Host.HelpURL);
+                helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", Host.HelpURL);
             }
 
             ModuleControlInfo objModuleControl = ModuleControlController.GetModuleControl(moduleControlId);
@@ -76,7 +74,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(objModuleControl.HelpURL) && Host.EnableModuleOnLineHelp)
                 {
-                    helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500' />", objModuleControl.HelpURL); ;
+                    helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", objModuleControl.HelpURL); ;
                 }
                 else
                 {
@@ -120,6 +118,8 @@ namespace DotNetNuke.UI.UserControls
                     }
                     lblInfo.Text = Server.HtmlDecode(strInfo);
                 }
+
+                cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
             }
             if (Page.IsPostBack == false)
             {
@@ -140,9 +140,6 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void cmdCancel_Click(Object sender, EventArgs e)
         {
             try

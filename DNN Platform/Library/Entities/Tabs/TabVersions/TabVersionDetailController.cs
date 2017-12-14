@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -81,14 +81,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             Provider.DeleteTabVersionDetail(tabVersionDetailId);
             ClearCache(tabVersionId);
         }
-        #endregion
 
-        #region Private Methods
-        private void ClearCache(int tabVersionId)
+        public void ClearCache(int tabVersionId)
         {
             DataCache.RemoveCache(GetTabVersionDetailCacheKey(tabVersionId));
         }
+        #endregion
 
+        #region Private Methods
         private static string GetTabVersionDetailCacheKey(int tabVersionId)
         {
             return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);

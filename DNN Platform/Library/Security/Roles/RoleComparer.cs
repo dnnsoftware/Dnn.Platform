@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,9 +35,6 @@ namespace DotNetNuke.Security.Roles
     /// The RoleComparer class provides an Implementation of IComparer for
     /// RoleInfo objects
     /// </summary>
-    /// <history>
-    ///     [cnurse]    05/24/2005  Split into separate file and documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class RoleComparer : IComparer
     {
@@ -50,9 +47,6 @@ namespace DotNetNuke.Security.Roles
         /// <param name="x">One of the items to compare</param>
         /// <param name="y">One of the items to compare</param>
         /// <returns>An Integer that determines whether x is greater, smaller or equal to y </returns>
-        /// <history>
-        /// 	[cnurse]	05/24/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int Compare(object x, object y)
         {

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,69 +47,6 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     public partial class LogController
     {
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog()
-        {
-            return LoggingProvider.Instance().GetLog();
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog(int portalID)
-        {
-            return LoggingProvider.Instance().GetLog(portalID);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog(int portalID, string logType)
-        {
-            return LoggingProvider.Instance().GetLog(portalID, logType);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog(string logType)
-        {
-            return LoggingProvider.Instance().GetLog(logType);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(int portalID, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(portalID, pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(portalID, logType, pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(logType, pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogTypeInfoDictionary().")]
-        public virtual ArrayList GetLogTypeInfo()
-        {
-            return LoggingProvider.Instance().GetLogTypeInfo();
-        }
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in 7.3. Use GetLogTypeInfo and use the LoggingIsActive property.")]
         public bool LoggingIsEnabled(string logType, int portalID)

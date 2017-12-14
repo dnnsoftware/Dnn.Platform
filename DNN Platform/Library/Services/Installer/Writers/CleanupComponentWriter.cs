@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,9 +35,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/21/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class CleanupComponentWriter
     {
@@ -56,9 +53,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// </summary>
         /// <param name="basePath">Base Path.</param>
         /// <param name="files">A Dictionary of files</param>
-        /// <history>
-        /// 	[cnurse]	02/21/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public CleanupComponentWriter(string basePath, SortedList<string, InstallFile> files)
         {

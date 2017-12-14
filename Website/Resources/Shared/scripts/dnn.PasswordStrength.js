@@ -39,30 +39,36 @@
             this._$container = this.$element.parent();
 
             //$("<span/>").addClass(this.options.labelCss).text(this.options.minLength + this.options.minLengthText).appendTo(this._$container);
-            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth()).hide();
+            this._$meter = $("<div/>").addClass(this.options.meterCss).appendTo(this._$container).width(this.$element.outerWidth());
 	        var handler = this;
 	        setInterval(function () {
-				handler._$meter.width(handler.$element.outerWidth());
+	            handler._$meter.width(handler.$element.outerWidth());
+                handler._$tooltipContent.width(handler.$element.outerWidth() - 20);
 	        }, 50);
-            this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="" /></div>').appendTo(this._$meter);
+            this._$meterValue = $('<div><span class="" /><span class="" /><span class="" /><span class="last" /></div>').appendTo(this._$meter);
             this._$meterText = $("<label/>").prependTo(this._$meterValue);
 
-            this.$element.dnntooltip({
-                getTooltipMarkup: $.proxy(this._getTooltipMarkup, this),
-                cssClass: "password-strength-tooltip",
-                top: 0,
-				left: 0,
-                closeOnMouseLeave: true,
-                container: this._$container
-            });
+            this._$tooltipContainer = $('<div class="password-strength-tooltip" />');
+            this.$element.after(this._$tooltipContainer);
+            this._$tooltipContainer.hide();
+            this._initializeTooltip();
 
             this.$element.on("change keyup paste input propertychange", $.proxy(this._onInput, this));
 
-	        this.$element.on('focus', function() {
-		        $(this).trigger('mouseenter');
-	        }).on('blur', function() {
-		        $(this).trigger('mouseleave');
+	        this.$element.on('blur', function() {
+	            handler._updateTooltipVisible();
 	        });
+
+            var meterHover = {
+                over: function () {
+                    handler._forceTooltipVisible();
+                },
+                timeout: 200,
+                out: function () {
+                    handler._updateTooltipVisible();
+                }
+            };
+            this._$meter.hoverIntent(meterHover);
 
 	        var validateFunction = window['ValidatorValidate'];
 			if (typeof validateFunction === 'function') {
@@ -83,31 +89,40 @@
         },
 
         _initializeTooltip: function() {
-        	this._$tooltipContent = $("<div/>").addClass("password-strength-tooltip-content");
-			this._$tooltipContent.width(this.$element.outerWidth() * 0.8 - 16);
+        	this._$tooltipContent = $("<div/>").addClass("password-strength-tooltip-content").appendTo(this._$tooltipContainer);
+			this._$tooltipContent.width(this.$element.outerWidth() - 20);
 			$('<h2 />').html(this.options.passwordRulesHeadText).appendTo(this._$tooltipContent);
-			$('<div />').html(this.options.passwordRulesBodyText).appendTo(this._$tooltipContent);
-            var list = $("<ul/>").appendTo(this._$tooltipContent);
-            this._$labelOneUpperCaseLetter = $("<label/>").text(this.options.criteriaOneUpperCaseLetterText).appendTo($("<li/>").appendTo(list));
-            this._$labelOneLowerCaseLetter = $("<label/>").text(this.options.criteriaOneLowerCaseLetterText).appendTo($("<li/>").appendTo(list));
-            this._$labelOneSpecialChar = $("<label/>").text(this.options.criteriaSpecialCharText).appendTo($("<li/>").appendTo(list));
-            this._$labelOneNumericChar = $("<label/>").text(this.options.criteriaOneNumberText).appendTo($("<li/>").appendTo(list));
-            this._$labelAtLeastNChars = $("<label/>").text(this.options.criteriaAtLeastNCharsText).appendTo($("<li/>").appendTo(list));
-        },
 
-        _getTooltipMarkup: function (element) {
-            if (!this._$tooltipContent) {
-                this._initializeTooltip();
+			var list = $("<ul/>").appendTo(this._$tooltipContent);
+            this._$labelAtLeastNChars = $("<label/>").text(this.options.criteriaAtLeastNChars).appendTo($("<li/>").appendTo(list));
+            this._$labelAtLeastNSpecialChars = $("<label/>").text(this.options.criteriaAtLeastNSpecialChars).appendTo($("<li/>").appendTo(list));
+            this._$labelValidationExpression = $("<label/>").text(this.options.criteriaValidationExpression).appendTo($("<li/>").appendTo(list));
+
+            
+            if (this.options.minNumberOfSpecialChars === 0) {
+                this._$labelAtLeastNSpecialChars.hide();
             }
+
+            
+            if (this.options.validationExpression === '') {
+                this._$labelValidationExpression.hide();
+            }
+            
             if (!this._strength) {
                 this._strength = this._getStrength(this.$element.val(), this.options);
             }
             this._updateTooltipState(this._strength);
-            return this._$tooltipContent;
         },
 
         _onInput: function (e) {
-	        this._$meter.show();
+	        if (e.type === 'propertychange' && e.originalEvent.propertyName.toLowerCase() !== 'value') {
+		        return;
+	        }
+
+            if (this.$element.val() !== '') {
+                this._$meter.addClass('visible');
+            }
+
             this._updateState();
         },
 
@@ -124,7 +139,7 @@
             var bgColor = '';
 	        var ratingIndex = 0;
             if (rating === 0) {
-                this._$meterText.text("");
+                this._$meterText.text(this.options.emptyText);
             }
             else if (rating < 3) {
                 this._$meterText.text(this.options.weakText);
@@ -147,17 +162,34 @@
 			        $(this).css('background-color', bgColor);
 		        }
 	        });
+
+            rating === 0 ? this._$meterText.hide() : this._$meterText.show();
         },
 
         _updateTooltipState: function (strength) {
             if (!this._$tooltipContent) {
                 return;
             }
-            this._updateCriteriaLabel(this._$labelOneUpperCaseLetter, strength.hasOneUpperCaseChar);
-            this._updateCriteriaLabel(this._$labelOneLowerCaseLetter, strength.hasOneLowerCaseChar);
-            this._updateCriteriaLabel(this._$labelOneSpecialChar, strength.hasMinNumberOfSpecialChars);
-            this._updateCriteriaLabel(this._$labelOneNumericChar, strength.hasOneNumericChar);
+
             this._updateCriteriaLabel(this._$labelAtLeastNChars, strength.hasLengthOfNChars);
+            this._updateCriteriaLabel(this._$labelAtLeastNSpecialChars, strength.hasMinNumberOfSpecialChars);
+            this._updateCriteriaLabel(this._$labelValidationExpression, strength.matchValidationExpression);
+        },
+
+        _updateTooltipVisible: function () {
+            var password = this.$element.val();
+            var strength = this._strength = this._getStrength(password, this.options);
+
+            var matchedPasswordPolicy = this._matchedPasswordPolicy(strength);
+            if (matchedPasswordPolicy || this.$element.val() === '') {
+                this._$tooltipContainer.fadeOut('fast');
+            } else {
+                this._$tooltipContainer.fadeIn('fast');
+            }
+        },
+
+        _forceTooltipVisible: function() {
+            this._$tooltipContainer.fadeIn('fast');
         },
 
         _updateCriteriaLabel: function($label, satisfied) {
@@ -170,9 +202,9 @@
         },
 
 		_updateFieldState: function(strength) {
-			var rating = Math.min(strength.rating, strength.maxRating);
 			if (this.$element.val().length > 0) {
-				if (rating > 1) {
+			    var matchedPasswordPolicy = this._matchedPasswordPolicy(strength);
+				if (matchedPasswordPolicy) {
 					this.$element.removeClass('validate-fail').addClass('validate-success');
 				} else {
 					this.$element.removeClass('validate-success').addClass('validate-fail');
@@ -181,6 +213,12 @@
 				this.$element.removeClass('validate-success validate-fail');
 			}
 		},
+
+        _matchedPasswordPolicy: function(strength) {
+            return strength.hasLengthOfNChars
+                        && (this.options.minNumberOfSpecialChars === 0 || strength.hasMinNumberOfSpecialChars)
+                        && (this.options.validationExpression === '' || strength.matchValidationExpression);
+        },
 
         _getStrength: function(password, options) {
             var rating = 0;
@@ -193,8 +231,10 @@
             var hasMinNumberOfSpecialChars = false;
             var hasOneNumericChar = false;
             var hasLengthOfNChars = false;
+            var matchValidationExpression = false;
 
             var minNumberOfSpecialChars = options.minNumberOfSpecialChars || 0;
+            var validationExpression = options.validationExpression || '';
 
             if (password.length > 0) {
 
@@ -225,6 +265,10 @@
                 if (password.length >= minLength + 3) {
                     rating++;
                 }
+
+                if (validationExpression) {
+                    matchValidationExpression = new RegExp(validationExpression, 'g').test(password);
+                }
             }
             return {
                 rating: rating,
@@ -233,12 +277,15 @@
                 hasOneLowerCaseChar: hasOneLowerCaseChar,
                 hasMinNumberOfSpecialChars: hasMinNumberOfSpecialChars,
                 hasOneNumericChar: hasOneNumericChar,
-                hasLengthOfNChars: hasLengthOfNChars
+                hasLengthOfNChars: hasLengthOfNChars,
+                matchValidationExpression: matchValidationExpression
             };
         }
     };
 
-    PasswordStrength._defaults = {};
+    PasswordStrength._defaults = {
+        emptyText: 'Empty'
+    };
 
     PasswordStrength.defaults = function (settings) {
         if (typeof settings !== "undefined") {

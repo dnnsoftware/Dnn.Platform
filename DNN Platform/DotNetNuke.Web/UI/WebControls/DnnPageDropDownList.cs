@@ -45,6 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			Services.Parameters.Add("includeDisabled", IncludeDisabledTabs.ToString().ToLowerInvariant());
 			Services.Parameters.Add("includeAllTypes", IncludeAllTabTypes.ToString().ToLowerInvariant());
             Services.Parameters.Add("includeActive", IncludeActiveTab.ToString().ToLowerInvariant());
+            Services.Parameters.Add("disabledNotSelectable", DisabledNotSelectable.ToString().ToLowerInvariant());
             Services.Parameters.Add("includeHostPages", (IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
             Services.Parameters.Add("roles", string.Join(";", Roles.ToArray()));
 
@@ -65,6 +66,12 @@ namespace DotNetNuke.Web.UI.WebControls
                 ExpandPath = tabLevel.TrimEnd(',');
             }
         }
+
+        /// <summary>
+        /// Whether disabled pages are not selectable
+        /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages
+        /// </summary>
+        public bool DisabledNotSelectable { get; set; }
 
         /// <summary>
         /// Whether include active page.

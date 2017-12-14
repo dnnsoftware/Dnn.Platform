@@ -67,7 +67,7 @@ namespace log4net.Layout.Pattern
 		{
 			try 
 			{
-				m_dateFormatter.FormatDate(loggingEvent.TimeStamp.ToUniversalTime(), writer);
+				m_dateFormatter.FormatDate(loggingEvent.TimeStampUtc, writer);
 			}
 			catch (Exception ex) 
 			{

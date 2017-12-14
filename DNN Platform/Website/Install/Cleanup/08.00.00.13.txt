@@ -1,0 +1,7 @@
+DesktopModules\Admin\WhatsNew\App_LocalResources\WhatsNew.ascx.resx
+DesktopModules\Admin\WhatsNew\App_LocalResources\
+DesktopModules\Admin\WhatsNew\module.css
+DesktopModules\Admin\WhatsNew\WhatsNew.ascx
+DesktopModules\Admin\WhatsNew\WhatsNew.ascx.cs
+DesktopModules\Admin\WhatsNew\WhatsNew.ascx.designer.cs
+DesktopModules\Admin\WhatsNew\

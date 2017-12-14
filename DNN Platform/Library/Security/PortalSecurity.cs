@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,15 +34,12 @@ using System.Web.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Cryptography;
+// ReSharper disable MemberCanBeMadeStatic.Global
 
 #endregion
 
@@ -50,9 +47,52 @@ namespace DotNetNuke.Security
 {
     public class PortalSecurity
     {
+        public static readonly PortalSecurity Instance = new PortalSecurity();
+
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
+
+        private static readonly DateTime OldExpiryTime = new DateTime(1999, 1, 1);
+
+        private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+
+        const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
+        private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
+        private static readonly Regex[] RxListStrings = new[]
+        {
+            new Regex("<script[^>]*>.*?</script[^><]*>", RxOptions),
+            new Regex("<script", RxOptions),
+            new Regex("<input[^>]*>.*?</input[^><]*>", RxOptions),
+            new Regex("<object[^>]*>.*?</object[^><]*>", RxOptions),
+            new Regex("<embed[^>]*>.*?</embed[^><]*>", RxOptions),
+            new Regex("<applet[^>]*>.*?</applet[^><]*>", RxOptions),
+            new Regex("<form[^>]*>.*?</form[^><]*>", RxOptions),
+            new Regex("<option[^>]*>.*?</option[^><]*>", RxOptions),
+            new Regex("<select[^>]*>.*?</select[^><]*>", RxOptions),
+            new Regex("<source[^>]*>.*?</source[^><]*>", RxOptions),
+            new Regex("<iframe[^>]*>.*?</iframe[^><]*>", RxOptions),
+            new Regex("<iframe.*?<", RxOptions),
+            new Regex("<iframe.*?", RxOptions),
+            new Regex("<ilayer[^>]*>.*?</ilayer[^><]*>", RxOptions),
+            new Regex("<form[^>]*>", RxOptions),
+            new Regex("</form[^><]*>", RxOptions),
+            new Regex("onerror", RxOptions),
+            new Regex("onmouseover", RxOptions),
+            new Regex("onload", RxOptions),
+            new Regex("onreadystatechange", RxOptions),
+            new Regex("onfinish", RxOptions),
+            new Regex("javascript:", RxOptions),
+            new Regex("vbscript:", RxOptions),
+            new Regex("unescape", RxOptions),
+            new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
+            new Regex(@"eval*.\(", RxOptions),
+        };
+        
+        private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
+        private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
 
         #region FilterFlag enum
 
@@ -182,7 +222,7 @@ namespace DotNetNuke.Security
                 if (roleName.StartsWith("!"))
                 {
                     //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                    if (settings != null && !(settings.PortalId == user.PortalID && settings.AdministratorId == user.UserID))
+                    if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
                     {
                         string denyRole = roleName.Replace("!", "");
                         if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
@@ -218,13 +258,12 @@ namespace DotNetNuke.Security
             return RoleType.Security;
         }
 
-        private string BytesToHexString(byte[] bytes)
+        private static string BytesToHexString(IEnumerable<byte> bytes)
         {
-            var hexString = new StringBuilder(64);
-            int counter;
-            for (counter = 0; counter <= bytes.Length - 1; counter++)
+            var hexString = new StringBuilder();
+            foreach (var b in bytes)
             {
-                hexString.Append(String.Format("{0:X2}", bytes[counter]));
+                hexString.Append(String.Format("{0:X2}", b));
             }
             return hexString.ToString();
         }
@@ -240,58 +279,42 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the FormatDisableScripting function
         /// </remarks>
-        /// <history>
-        ///     [cathal]        3/06/2007   Created
-        /// </history>
         ///-----------------------------------------------------------------------------
-        private string FilterStrings(string strInput)
+        private static string FilterStrings(string strInput)
         {
 			//setup up list of search terms as items may be used twice
             var tempInput = strInput;
-            var listStrings = new List<string>
-                                  {
-                                      "<script[^>]*>.*?</script[^><]*>",
-                                      "<script",
-                                      "<input[^>]*>.*?</input[^><]*>",
-                                      "<object[^>]*>.*?</object[^><]*>",
-                                      "<embed[^>]*>.*?</embed[^><]*>",
-                                      "<applet[^>]*>.*?</applet[^><]*>",
-                                      "<form[^>]*>.*?</form[^><]*>",
-                                      "<option[^>]*>.*?</option[^><]*>",
-                                      "<select[^>]*>.*?</select[^><]*>",
-                                      "<iframe[^>]*>.*?</iframe[^><]*>",
-                                      "<iframe.*?<",
-                                      "<iframe.*?",
-                                      "<ilayer[^>]*>.*?</ilayer[^><]*>",
-                                      "<form[^>]*>",
-                                      "</form[^><]*>",
-                                      "onerror",
-                                      "onmouseover",
-                                      "javascript:",
-                                      "vbscript:",
-                                      "unescape",
-                                      "alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?",
-                                      @"eval*.\(",
-                                      "onload"
-                                  };
+            if (string.IsNullOrEmpty(tempInput))
+            {
+                return tempInput;
+            }
 
-            const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
             const string replacement = " ";
 
+            //remove the js event from html tags
+            var tagMatches = DangerElementsRegex.Matches(tempInput);
+            foreach (Match match in tagMatches)
+            {
+                var tagContent = match.Value;
+                var cleanTagContent = DangerElementContentRegex.Replace(tagContent, string.Empty);
+                tempInput = tempInput.Replace(tagContent, cleanTagContent);
+            }
+
             //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
-            if (tempInput.Contains("&gt;") && tempInput.Contains("&lt;"))
+            if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
             {
 				//text is encoded, so decode and try again
                 tempInput = HttpUtility.HtmlDecode(tempInput);
-                tempInput = listStrings.Aggregate(tempInput, (current, s) => Regex.Replace(current, s, replacement, options));
+                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
 
                 //Re-encode
                 tempInput = HttpUtility.HtmlEncode(tempInput);
             }
             else
             {
-                tempInput = listStrings.Aggregate(tempInput, (current, s) => Regex.Replace(current, s, replacement, options));
+                tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
             }
+
             return tempInput;
         }
 
@@ -309,13 +332,9 @@ namespace DotNetNuke.Security
         ///-----------------------------------------------------------------------------
         private string FormatDisableScripting(string strInput)
         {
-            var tempInput = strInput;
-            if (strInput==" " || String.IsNullOrEmpty(strInput))
-            {
-                return tempInput; 
-            }
-            tempInput = FilterStrings(tempInput); 
-            return tempInput;
+            return String.IsNullOrWhiteSpace(strInput)
+                ? strInput
+                : FilterStrings(strInput);
         }
 
         ///-----------------------------------------------------------------------------
@@ -327,15 +346,11 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
-        /// <history>
-        /// 	[Cathal] 	6/1/2006	Created to fufill client request
-        /// </history>
         ///-----------------------------------------------------------------------------
-        private string FormatAngleBrackets(string strInput)
+        private static string FormatAngleBrackets(string strInput)
         {
-            var tempInput = strInput.Replace("<", "");
-            tempInput = tempInput.Replace(">", "");
-            return tempInput;
+            var tempInput = new StringBuilder(strInput).Replace("<", "").Replace(">", "");
+            return tempInput.ToString();
         }
 
         ///-----------------------------------------------------------------------------
@@ -348,10 +363,11 @@ namespace DotNetNuke.Security
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
         ///-----------------------------------------------------------------------------
-        private string FormatMultiLine(string strInput)
+        private static string FormatMultiLine(string strInput)
         {
-            string tempInput = strInput.Replace(Environment.NewLine, "<br />").Replace("\r\n", "<br />").Replace("\n", "<br />").Replace("\r", "<br />");
-            return (tempInput);
+            const string lbreak = "<br />";
+            var tempInput = new StringBuilder(strInput).Replace("\r\n", lbreak).Replace("\n", lbreak).Replace("\r", lbreak);
+            return tempInput.ToString();
         }
 
         ///-----------------------------------------------------------------------------
@@ -365,11 +381,10 @@ namespace DotNetNuke.Security
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
         ///-----------------------------------------------------------------------------
-        private string FormatRemoveSQL(string strSQL)
+        private static string FormatRemoveSQL(string strSQL)
         {
             // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
-            const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
-            return Regex.Replace(strSQL, BadStatementExpression, " ", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace("'", "''");
+            return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
         }
 
         ///-----------------------------------------------------------------------------
@@ -382,11 +397,9 @@ namespace DotNetNuke.Security
         /// This is a private function that is used internally by the InputFilter function
         /// </remarks>
         ///-----------------------------------------------------------------------------
-        private bool IncludesMarkup(string strInput)
+        private static bool IncludesMarkup(string strInput)
         {
-            const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
-            const string pattern = "<[^<>]*>";
-            return Regex.IsMatch(strInput, pattern, options);
+            return StripTagsRegex.IsMatch(strInput);
         }
 		
 		#endregion
@@ -402,15 +415,14 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a public function used for generating SHA1 keys
         /// </remarks>
-        /// <history>
-        /// </history>
-        ///-----------------------------------------------------------------------------
         public string CreateKey(int numBytes)
         {
-            var rng = new RNGCryptoServiceProvider();
-            var buff = new byte[numBytes];
-            rng.GetBytes(buff);
-            return BytesToHexString(buff);
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var buff = new byte[numBytes];
+                rng.GetBytes(buff);
+                return BytesToHexString(buff);
+            }
         }
 
         public string Decrypt(string strKey, string strData)
@@ -460,20 +472,17 @@ namespace DotNetNuke.Security
             {
                 tempInput = FormatRemoveSQL(tempInput);
             }
-            else
+            if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
             {
-                if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
-                {
-                    tempInput = HttpUtility.HtmlEncode(tempInput);
-                }
-                if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
-                {
-                    tempInput = FormatDisableScripting(tempInput);
-                }
-                if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
-                {
-                    tempInput = FormatMultiLine(tempInput);
-                }
+                tempInput = HttpUtility.HtmlEncode(tempInput);
+            }
+            if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
+            {
+                tempInput = FormatDisableScripting(tempInput);
+            }
+            if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
+            {
+                tempInput = FormatMultiLine(tempInput);
             }
             if ((filterType & FilterFlag.NoProfanity) == FilterFlag.NoProfanity)
             {
@@ -607,6 +616,9 @@ namespace DotNetNuke.Security
 
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
+            if (HttpContext.Current.Session == null) return;
+            InvalidateAspNetSession(HttpContext.Current);
+
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
             {
                 //Create a custom auth cookie
@@ -629,7 +641,7 @@ namespace DotNetNuke.Security
                                         };
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
-
+                AuthCookieController.Instance.Update(authCookie.Value, authCookie.Expires.ToUniversalTime(), user.UserID);
 
                 if (PortalController.IsMemberOfPortalGroup(user.PortalID))
                 {
@@ -648,18 +660,39 @@ namespace DotNetNuke.Security
             else
             {
                 FormsAuthentication.SetAuthCookie(user.Username, false);
+                var authCookie = HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName];
+                if (authCookie != null)
+                {
+                    var t = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (t != null)
+                    {
+                        AuthCookieController.Instance.Update(authCookie.Value, t.Expiration.ToUniversalTime(), user.UserID);
+                    }
+                }
             }
 
             if (user.IsSuperUser)
             {
                 //save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
-                HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", user.UserID), "true");
             }
+
+            //Identity the Login is processed by system.
+            HttpContext.Current.Items["DNN_UserSignIn"] = true;
         }
 
         public void SignOut()
         {
+            if (HttpContext.Current.Session == null) return;
+            InvalidateAspNetSession(HttpContext.Current);
+
+            var currentAuthCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (currentAuthCookie != null)
+            {
+                // This will prevent next requests from being authenticated if using smae cookie
+                AuthCookieController.Instance.Update(currentAuthCookie.Value, OldExpiryTime, Null.NullInteger);
+            }
+
             //Log User Off from Cookie Authentication System
             var domainCookie = HttpContext.Current.Request.Cookies["SiteGroup"];
             if (domainCookie == null)
@@ -681,18 +714,17 @@ namespace DotNetNuke.Security
 
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, str)
                 {
-                    Expires = new DateTime(1999, 1, 1),
+                    Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
                     Secure = FormsAuthentication.RequireSSL
-
                 };
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
 
                 var siteGroupCookie = new HttpCookie("SiteGroup", str)
                 {
-                    Expires = new DateTime(1999, 1, 1),
+                    Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
                     Secure = FormsAuthentication.RequireSSL
@@ -750,7 +782,16 @@ namespace DotNetNuke.Security
                     }
                 }
             }
-           
+        }
+
+        private static void InvalidateAspNetSession(HttpContext context)
+        {
+            if (context.Session != null && !context.Session.IsNewSession)
+            {
+                // invalidate existing session so a new one is created
+                context.Session.Clear();
+                context.Session.Abandon();
+            }
         }
 
         ///-----------------------------------------------------------------------------
@@ -778,10 +819,10 @@ namespace DotNetNuke.Security
 			//get current url
             var url = HttpContext.Current.Request.Url.ToString();
 			//if unsecure connection
-            if (url.StartsWith("http://"))
+            if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
 				//switch to secure connection
-                url = url.Replace("http://", "https://");
+                url = "https://" + url.Substring("http://".Length);
                 //append ssl parameter to querystring to indicate secure connection processing has already occurred
                 if (url.IndexOf("?", StringComparison.Ordinal) == -1)
                 {
@@ -855,7 +896,7 @@ namespace DotNetNuke.Security
                         if (role.StartsWith("!"))
                         {
                             //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                            if (settings != null && !(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
+                            if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
                             {
                                 string denyRole = role.Replace("!", "");
                                 if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
@@ -874,13 +915,12 @@ namespace DotNetNuke.Security
 
         public static bool IsInRole(string role)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            HttpContext context = HttpContext.Current;
-            if (!String.IsNullOrEmpty(role) && ((context.Request.IsAuthenticated == false && role == Globals.glbRoleUnauthUserName)))
+            if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
             {
                 return true;
             }
-            return IsInRoles(objUserInfo, PortalController.Instance.GetCurrentPortalSettings(), role);
+
+            return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentPortalSettings(), role);
         }
 
         public static bool IsInRoles(string roles)
@@ -934,79 +974,6 @@ namespace DotNetNuke.Security
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
         }
-		#endregion
-		
-		#region Obsoleted Methods, retained for Binary Compatability
-
-        [Obsolete("Deprecated in DNN 6.2 - roles cookie is no longer used)")]
-        public static void ClearRoles()
-        {
-            var httpCookie = HttpContext.Current.Response.Cookies["portalroles"];
-            if (httpCookie != null)
-            {
-                httpCookie.Value = null;
-                httpCookie.Path = Globals.ApplicationPath;
-                httpCookie.Expires = DateTime.Now.AddYears(-30);
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0.  Please use HasModuleAccess(SecurityAccessLevel.Edit, PortalSettings, ModuleInfo, Username)")]
-        public static bool HasEditPermissions(int ModuleId)
-        {
-            return
-                ModulePermissionController.HasModulePermission(
-                    new ModulePermissionCollection(CBO.FillCollection(DataProvider.Instance().GetModulePermissionsByModuleID(ModuleId, -1), typeof (ModulePermissionInfo))), "EDIT");
-        }
-
-        [Obsolete("Deprecated in DNN 5.0.  Please use HasModuleAccess(SecurityAccessLevel.Edit, PortalSettings, ModuleInfo)")]
-        public static bool HasEditPermissions(ModulePermissionCollection objModulePermissions)
-        {
-            return ModulePermissionController.HasModulePermission(objModulePermissions, "EDIT");
-        }
-
-        [Obsolete("Deprecated in DNN 5.0.  Please use HasModuleAccess(SecurityAccessLevel.Edit, PortalSettings, ModuleInfo)")]
-        public static bool HasEditPermissions(int ModuleId, int Tabid)
-        {
-            return ModulePermissionController.HasModulePermission(ModulePermissionController.GetModulePermissions(ModuleId, Tabid), "EDIT");
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.  Please use ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, PortalSettings, ModuleInfo)")]
-        public static bool HasNecessaryPermission(SecurityAccessLevel AccessLevel, PortalSettings PortalSettings, ModuleInfo ModuleConfiguration, string UserName)
-        {
-            return ModulePermissionController.HasModuleAccess(AccessLevel, "EDIT", ModuleConfiguration);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.  Please use ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, PortalSettings, ModuleInfo)")]
-        public static bool HasNecessaryPermission(SecurityAccessLevel AccessLevel, PortalSettings PortalSettings, ModuleInfo ModuleConfiguration, UserInfo User)
-        {
-            return ModulePermissionController.HasModuleAccess(AccessLevel, "EDIT", ModuleConfiguration);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.  Please use ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, PortalSettings, ModuleInfo)")]
-        public static bool HasNecessaryPermission(SecurityAccessLevel AccessLevel, PortalSettings PortalSettings, ModuleInfo ModuleConfiguration)
-        {
-            return ModulePermissionController.HasModuleAccess(AccessLevel, "EDIT", ModuleConfiguration);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.  Please use TabPermissionController.CanAdminPage")]
-        public static bool IsPageAdmin()
-        {
-            return TabPermissionController.CanAdminPage();
-        }
-
-        [Obsolete("Deprecated in DNN 4.3. This function has been replaced by UserController.UserLogin")]
-        public int UserLogin(string Username, string Password, int PortalID, string PortalName, string IP, bool CreatePersistentCookie)
-        {
-            UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            int UserId = -1;
-            UserInfo objUser = UserController.UserLogin(PortalID, Username, Password, "", PortalName, IP, ref loginStatus, CreatePersistentCookie);
-            if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
-            {
-                UserId = objUser.UserID;
-            }
-            return UserId;
-        }
-		
 		#endregion
     }    
 }

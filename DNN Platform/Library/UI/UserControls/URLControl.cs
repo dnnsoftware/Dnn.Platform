@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -329,54 +329,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowSecure
-        {
-            get
-            {
-                if (ViewState["ShowSecure"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowSecure"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowSecure"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
-                }
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0")]
-        public bool ShowDatabase
-        {
-            get
-            {
-                if (ViewState["ShowDatabase"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["ShowDatabase"]);
-                }
-                else
-                {
-                    return true; //Set as default in the old variable
-                }
-            }
-            set
-            {
-                ViewState["ShowDatabase"] = value;
-                if (IsTrackingViewState)
-                {
-                    _doReloadFolders = true;
-                }
-            }
-        }
-
         public bool ShowTabs
         {
             get
@@ -541,7 +493,7 @@ namespace DotNetNuke.UI.UserControls
                         if (cboTabs.SelectedItem != null)
                         {
                             strTab = cboTabs.SelectedItem.Value;
-                            if (Regex.IsMatch(strTab, "^\\d+$") && (Convert.ToInt32(strTab) >= 0))
+                            if (Globals.NumberMatchRegex.IsMatch(strTab) && (Convert.ToInt32(strTab) >= 0))
                             {
                                 r = strTab;
                             }

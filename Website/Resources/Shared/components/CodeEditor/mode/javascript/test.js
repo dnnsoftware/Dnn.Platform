@@ -34,16 +34,9 @@
      "  }",
      "}");
 
-  MT("module",
-     "[keyword module] [string 'foo'] {",
-     "  [keyword export] [keyword let] [def x] [operator =] [number 42];",
-     "  [keyword export] [keyword *] [keyword from] [string 'somewhere'];",
-     "}");
-
   MT("import",
      "[keyword function] [variable foo]() {",
      "  [keyword import] [def $] [keyword from] [string 'jquery'];",
-     "  [keyword module] [def crypto] [keyword from] [string 'crypto'];",
      "  [keyword import] { [def encrypt], [def decrypt] } [keyword from] [string 'crypto'];",
      "}");
 
@@ -60,6 +53,12 @@
      "  [keyword for]([keyword var] [def i] [operator =] [number 0]; [variable-2 i] [operator <] [variable-2 n]; [operator ++][variable-2 i])",
      "    [keyword yield] [variable-2 i];",
      "}");
+
+  MT("quotedStringAddition",
+     "[keyword let] [variable f] [operator =] [variable a] [operator +] [string 'fatarrow'] [operator +] [variable c];");
+
+  MT("quotedFatArrow",
+     "[keyword let] [variable f] [operator =] [variable a] [operator +] [string '=>'] [operator +] [variable c];");
 
   MT("fatArrow",
      "[variable array].[property filter]([def a] [operator =>] [variable-2 a] [operator +] [number 1]);",
@@ -153,6 +152,11 @@
      "  [number 2],",
      "]];",
      "[number 10];");
+
+  MT("param_default",
+     "[keyword function] [variable foo]([def x] [operator =] [string-2 `foo${][number 10][string-2 }bar`]) {",
+     "  [keyword return] [variable-2 x];",
+     "}");
 
   var jsonld_mode = CodeMirror.getMode(
     {indentUnit: 2},

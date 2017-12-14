@@ -88,11 +88,14 @@ DNN [Pp]latform/[Cc]ontrols/[Cc]ountry[Ll]ist[Bb]ox/[Bb]in/*
 DNN [Pp]latform/*/[Bb]in
 DNN [Pp]latform/Tests/*/[Bb]in/*
 DNN [Pp]latform/Modules/*/[Bb]in/*
+DNN [Pp]latform/Skins/*/[Bb]in/*
 DNN [Pp]latform/Admin Modules/*/[Bb]in/*
 DNN [Pp]latform/MVC Modules/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
+DNN [Pp]latform/[Cc]onnectors/*/[Bb]in/*
+DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 
 
 [Ww]ebsite/*/[Dd]efault.aspx
@@ -120,6 +123,15 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Ss]itemap
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Ss]ite[Ww]izard
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Tt]abs
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Cc]onsole
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Vv]endors
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Dd]ashboard
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Mm]odule[Cc]reator
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Ss]ql
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Xx]ml[Mm]erge
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Aa]nalytics
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Ss]kin[Mm]anagement
+
 
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Ff]acebook
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Gg]oogle
@@ -152,6 +164,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Uu]ser[Dd]efined[Tt]able
 [Ww]ebsite/[Dd]esktop[Mm]odules/dnnGlimpse
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Tt]est*
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Cc]onnectors*
 
 [Ww]ebsite/[Ii]nstall/*/*.zip
 [Ww]ebsite/[Ii]nstall/*/*.resources
@@ -160,6 +173,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Ii]nstall/[Dd]ot[Nn]et[Nn]uke.install.config
 [Ww]ebsite/[Ii]nstall/installstat.log.resources.txt
 [Ww]ebsite/[Ii]nstall/upgradestat.log.resources.txt
+[Ww]ebsite/[Ii]nstall/[Ii]nstall[Ww]izard*.*
 
 [Ww]ebsite/[Ll]icenses/*.txt
 
@@ -170,6 +184,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Pp]ortals/_default/[Bb]lank [Ww]ebsite*.*
 [Ww]ebsite/[Pp]ortals/_default/[Dd]efault [Ww]ebsite*.*
 [Ww]ebsite/[Pp]ortals/_default/[Mm]obile [Ww]ebsite*.*
+[Ww]ebsite/[Pp]ortals/_default/[Cc]ontent [Tt]emplates*
 [Ww]ebsite/[Pp]ortals/_default/[Cc]ontainers/*/thumbnail*.jpg
 [Ww]ebsite/[Pp]ortals/_default/[Cc]ontainers/[Cc]avalier/*.*
 [Ww]ebsite/[Pp]ortals/_default/[Ss]kins/*/thumbnail*.jpg
@@ -183,6 +198,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Pp]roviders/*/*/license.txt
 [Ww]ebsite/[Pp]roviders/*/*/release[Nn]otes.txt
 [Ww]ebsite/[Pp]roviders/[Ff]older[Pp]roviders
+[Ww]ebsite/[Pp]roviders/[Cc]lient[Cc]apability[Pp]roviders
 
 [Ww]ebsite/[Rr]esources/[Ll]ibraries
 
@@ -225,3 +241,10 @@ Website/Install/Temp/
 Website/Providers/HtmlEditorProviders/
 Website/Portals/_default/CK*.xml
 Website/Portals/_default/Install/CK*.xml
+Website/Portals/_default/Skins/Xcillion/
+Website/Portals/_default/Containers/Xcillion/
+DNN Platform/Dnn.AuthServices.Jwt/Package/
+Website/Portals/_default/Install/Dnn.CKEditorDefaultSettings.xml
+Website/Portals/_default/Install/Dnn.CKToolbarButtons.xml
+Website/Portals/_default/Install/Dnn.CKToolbarSets.xml
+Website/DesktopModules/Admin/SiteExportImport/App_LocalResources/ExportImport.resx

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,9 +43,6 @@ namespace DotNetNuke.Entities.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	03/14/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class UserOnlineController
     {
@@ -58,9 +55,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Clears the cached Users Online Information
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ClearUserList()
         {
@@ -72,9 +66,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets the Online time window
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int GetOnlineTimeWindow()
         {
@@ -85,9 +76,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets the cached Users Online Information
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Hashtable GetUserList()
         {
@@ -111,9 +99,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets whether the Users Online functionality is enabled
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsEnabled()
         {
@@ -124,9 +109,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Determines whether a User is online
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsUserOnline(UserInfo user)
         {
@@ -142,9 +124,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Sets the cached Users Online Information
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void SetUserList(Hashtable userList)
         {
@@ -156,9 +135,6 @@ namespace DotNetNuke.Entities.Users
         /// Tracks an Anonymous User
         /// </summary>
         /// <param name="context">An HttpContext Object</param>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void TrackAnonymousUser(HttpContext context)
         {
@@ -246,9 +222,6 @@ namespace DotNetNuke.Entities.Users
         /// Tracks an Authenticated User
         /// </summary>
         /// <param name="context">An HttpContext Object</param>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void TrackAuthenticatedUser(HttpContext context)
         {
@@ -285,9 +258,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Tracks an online User
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void TrackUsers()
         {
@@ -316,9 +286,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Update the Users Online information
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void UpdateUsersOnline()
         {

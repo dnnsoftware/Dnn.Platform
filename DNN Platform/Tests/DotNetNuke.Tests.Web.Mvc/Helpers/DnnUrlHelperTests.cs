@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -53,6 +53,20 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         }
 
         [Test]
+        public void Constructor_Throws_On_Null_RequestContext()
+        {
+            //Act,Assert
+            Assert.Throws<ArgumentNullException>(() => new DnnUrlHelper(null, new Mock<IDnnController>().Object));
+        }
+
+        [Test]
+        public void Constructor_Throws_On_Null_Controller()
+        {
+            //Act,Assert
+            Assert.Throws<ArgumentNullException>(() => new DnnUrlHelper(new Mock<RequestContext>().Object, null));
+        }
+
+        [Test]
         public void Constructor_Throws_On_Invalid_Controller_Property()
         {
             //Arrange
@@ -64,7 +78,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         }
 
         [Test]
-        public void Constructor_Sets_ModuleContext_Property()
+        public void ViewContext_Constructor_Sets_ModuleContext_Property()
         {
             //Arrange
             var mockController = new Mock<ControllerBase>();
@@ -81,15 +95,63 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         }
 
         [Test]
+        public void RequestContext_Constructor_Sets_ModuleContext_Property()
+        {
+            //Arrange
+            var expectedContext = new ModuleInstanceContext();
+
+            var mockController = new Mock<IDnnController>();
+            mockController.SetupGet(c => c.ModuleContext)
+                          .Returns(expectedContext);
+
+            var requestContext = new RequestContext();
+
+            //Act
+            var helper = new DnnUrlHelper(requestContext, mockController.Object);
+
+            //Assert
+            Assert.NotNull(helper);
+            Assert.AreEqual(expectedContext, helper.ModuleContext);
+        }
+
+        [Test]
+        public void Action_Method_ViewContext_RetrievesRawUrl()
+        {
+            //Arrange
+            var expectedContext = new ModuleInstanceContext();
+            var rawUrl = "http://base.url/";
+            var helper = ArrangeHelper(expectedContext, rawUrl);
+
+            //Act
+            var result = helper.Action();
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.AreEqual(rawUrl, result);
+        }
+
+        [Test]
+        public void Action_Method_RequestContext_RetrievesRawUrl()
+        {
+            //Arrange
+            var expectedContext = new ModuleInstanceContext();
+            var rawUrl = "http://base.url/";
+            var helper = ArrangeHelper(expectedContext, rawUrl, false);
+
+            //Act
+            var result = helper.Action();
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.AreEqual(rawUrl, result);
+        }
+
+        [Test]
         public void Action_Method_Calls_ModuleRouteProvider()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
-            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object };
-            var helper = new DnnUrlHelper(viewContext);
+            var helper = ArrangeHelper(expectedContext);
 
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
             ComponentFactory.RegisterComponentInstance<ModuleRoutingProvider>(mockRouteProvider.Object);
@@ -105,12 +167,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void Action_Overload_1__Method_Calls_ModuleRouteProvider()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
-            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object };
-            var helper = new DnnUrlHelper(viewContext);
+            var helper = ArrangeHelper(expectedContext);
 
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
             ComponentFactory.RegisterComponentInstance<ModuleRoutingProvider>(mockRouteProvider.Object);
@@ -126,12 +184,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void Action_Overload_2_Method_Calls_ModuleRouteProvider()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
-            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object };
-            var helper = new DnnUrlHelper(viewContext);
+            var helper = ArrangeHelper(expectedContext);
 
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
             ComponentFactory.RegisterComponentInstance<ModuleRoutingProvider>(mockRouteProvider.Object);
@@ -147,12 +201,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void Action_Overload_3_Method_Calls_ModuleRouteProvider()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
-            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object };
-            var helper = new DnnUrlHelper(viewContext);
+            var helper = ArrangeHelper(expectedContext);
 
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
             ComponentFactory.RegisterComponentInstance<ModuleRoutingProvider>(mockRouteProvider.Object);
@@ -168,12 +218,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void Action_Overload_4_Method_Calls_ModuleRouteProvider()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
-            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object };
-            var helper = new DnnUrlHelper(viewContext);
+            var helper = ArrangeHelper(expectedContext);
 
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
             ComponentFactory.RegisterComponentInstance<ModuleRoutingProvider>(mockRouteProvider.Object);
@@ -189,12 +235,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void Action_Overload_5_Method_Calls_ModuleRouteProvider()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
-            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object };
-            var helper = new DnnUrlHelper(viewContext);
+            var helper = ArrangeHelper(expectedContext);
 
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
             ComponentFactory.RegisterComponentInstance<ModuleRoutingProvider>(mockRouteProvider.Object);
@@ -207,15 +249,44 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         }
 
         [Test]
+        public void Content_Method_Calls_Returns_Correct_Url()
+        {
+            //Arrange
+            var context = new ModuleInstanceContext();
+            var helper = ArrangeHelper(context, "http://foo.com/foo");
+            string expectedResult = "/foo/test.css";
+
+            //Act
+            var url = helper.Content("~/test.css");
+
+            //Assert
+            Assert.IsNotNull(url);
+            Assert.True(expectedResult.Equals(url));
+        }
+
+        [Test]
+        public void IsLocalUrl_Method_Calls_Returns_Correct_Result()
+        {
+            //Arrange
+            var context = new ModuleInstanceContext();
+            var helper = ArrangeHelper(context, "http://foo.com");
+
+            //Act
+            var withOuterUrl = helper.IsLocalUrl("http://dnnsoftware.com");
+            var withLocalUrl = helper.IsLocalUrl("~/foo/foo.html");
+            
+            //Assert
+            Assert.IsFalse(withOuterUrl);
+            Assert.IsTrue(withLocalUrl);
+        }
+
+        [Test]
         public void GenerateUrl_Method_Passes_Correct_RouteValueCollection_To_ModuleRouteProvider()
         {
             //Arrange
-            var mockController = new Mock<ControllerBase>();
-            var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
-            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object };
-            var helper = new DnnUrlHelper(viewContext);
+            var helper = ArrangeHelper(expectedContext);
+
 
             RouteValueDictionary routeValues = null;
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
@@ -235,6 +306,33 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             Assert.AreEqual("foo", (string)routeValues["action"]);
             Assert.AreEqual("bar", (string)routeValues["controller"]);
             Assert.AreEqual(5, (int)routeValues["id"]);
+        }
+
+        private static DnnUrlHelper ArrangeHelper(ModuleInstanceContext expectedContext, string url = null, bool isViewContext = true)
+        {
+            var mockController = new Mock<ControllerBase>();
+            var mockDnnController = mockController.As<IDnnController>();
+
+            var routeData = new RouteData();
+            routeData.Values["controller"] = "bar";
+            routeData.Values["action"] = "foo";
+            var context = MockHelper.CreateMockControllerContext(url!=null? MockHelper.CreateMockHttpContext(url):null, routeData);
+            
+            mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
+            mockDnnController.Setup(c => c.ControllerContext).Returns(context);
+
+            if (isViewContext)
+            {
+                var viewContext = new ViewContext { Controller = mockController.Object };
+
+                if (!string.IsNullOrEmpty(url))
+                    viewContext.RequestContext = new RequestContext(MockHelper.CreateMockHttpContext(url), routeData);
+
+                return new DnnUrlHelper(viewContext);
+            }
+
+            var requestContext = new RequestContext(MockHelper.CreateMockHttpContext(url ?? "http://base/"), routeData);
+            return new DnnUrlHelper(requestContext, mockDnnController.Object);
         }
     }
 }

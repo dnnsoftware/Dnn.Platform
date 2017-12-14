@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -108,8 +108,6 @@ namespace DotNetNuke.Entities.Urls
             return appPath + url.Substring(1);
         }
 
-        private static readonly Regex ServicesFrameworkRegex = new Regex("DesktopModules/[^/]+/API/");
-
         static internal bool OmitFromRewriteProcessing(string localPath)
         {
             var omitSettings = String.Empty;
@@ -121,8 +119,8 @@ namespace DotNetNuke.Entities.Urls
             if (string.IsNullOrEmpty(omitSettings)) {
 		        omitSettings = "scriptresource.axd|webresource.axd|gif|ico|jpg|jpeg|png|css|js";
 	        }
-	        omitSettings = omitSettings.ToLower();
-	        localPath = localPath.ToLower();
+	        omitSettings = omitSettings.ToLowerInvariant();
+	        localPath = localPath.ToLowerInvariant();
 
 	        var omissions = omitSettings.Split(new[] { '|' });
 
@@ -130,7 +128,7 @@ namespace DotNetNuke.Entities.Urls
 
             if(!shouldOmit)
             {
-                shouldOmit = ServicesFrameworkRegex.IsMatch(localPath);
+                shouldOmit = Globals.ServicesFrameworkRegex.IsMatch(localPath);
             }
 
             return shouldOmit;

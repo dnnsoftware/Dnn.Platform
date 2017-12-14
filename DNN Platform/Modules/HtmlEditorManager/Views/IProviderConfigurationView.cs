@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
     /// <summary>
     /// Interface for the Provider Configuration View
     /// </summary>
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public interface IProviderConfigurationView : IModuleView<ProviderConfigurationViewModel>
     {
         /// <summary>Occurs when [save editor choice].</summary>
@@ -40,5 +41,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
         /// <summary>Gets or sets the editor panel.</summary>
         /// <value>The editor panel.</value>
         PlaceHolder Editor { get; set; }
+
+        void Refresh();
     }
 }

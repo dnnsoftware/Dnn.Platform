@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -199,20 +199,45 @@ namespace DotNetNuke.Entities.Content.Data
         
         public void SynchronizeMetaData(ContentItem contentItem, IEnumerable<KeyValuePair<string,string>> added, IEnumerable<KeyValuePair<string,string>> deleted)
         {
+#if false
+            //TODO: fixing the original code requires adding new DataProvider methods. Reason:
+            //      since we are calling DeleteMetaData/AddMetaData on their own connections,
+            //      the transaction is useless and not going on the same connection as the other
+            //      operations; we must find a better way of doing this transactionsl operation.
             using (var transaction = _provider.GetTransaction())
             {
-                foreach (var item in deleted)
+                try
                 {
-                    DeleteMetaData(contentItem, item.Key, item.Value);
-                }
+                    var connection = transaction.Connection;
+                    foreach (var item in deleted)
+                    {
+                        _provider.ExecuteNonQuery(connection, "DeleteMetaData", contentItem.ContentItemId, item.Key, item.Value);
+                    }
 
-                foreach (var item in added)
+                    foreach (var item in added)
+                    {
+                        _provider.ExecuteNonQuery(connection, "AddMetaData", contentItem, item.Key, item.Value);
+                    }
+
+                    _provider.CommitTransaction(transaction);
+                }
+                catch (Exception)
                 {
-                    AddMetaData(contentItem, item.Key, item.Value);
+                    _provider.RollbackTransaction(transaction);
+                    throw;
                 }
-
-                transaction.Commit();
             }
+#else
+            foreach (var item in deleted)
+            {
+                DeleteMetaData(contentItem, item.Key, item.Value);
+            }
+
+            foreach (var item in added)
+            {
+                AddMetaData(contentItem, item.Key, item.Value);
+            }
+#endif
         }
 
 		/// <summary>

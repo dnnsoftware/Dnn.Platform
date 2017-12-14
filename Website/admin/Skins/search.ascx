@@ -5,8 +5,8 @@
     <asp:RadioButton ID="WebRadioButton" runat="server" CssClass="SkinObject" GroupName="Search" />
     <asp:RadioButton ID="SiteRadioButton" runat="server" CssClass="SkinObject" GroupName="Search" />
     <span class="searchInputContainer" data-moreresults="<%= SeeMoreText %>" data-noresult="<%= NoResultText %>">
-        <asp:TextBox ID="txtSearch" runat="server" EnableViewState="False" CssClass="NormalTextBox" Columns="20" MaxLength="255"></asp:TextBox>
-        <a class="dnnSearchBoxClearText"></a>
+        <asp:TextBox ID="txtSearch" runat="server" EnableViewState="False" CssClass="NormalTextBox" Columns="20" MaxLength="255" aria-label="Search"></asp:TextBox>
+        <a class="dnnSearchBoxClearText" title="<%= ClearQueryText %>"></a>
     </span>
     <asp:LinkButton ID="cmdSearch" runat="server" CausesValidation="False" CssClass="SkinObject"></asp:LinkButton>
 </span>
@@ -17,8 +17,8 @@
             <dnn:DnnImage ID="downArrow" runat="server" IconKey="Action" />
         </div>
         <span class="searchInputContainer" data-moreresults="<%= SeeMoreText %>" data-noresult="<%= NoResultText %>">
-            <asp:TextBox ID="txtSearchNew" runat="server" CssClass="SearchTextBox" MaxLength="255" EnableViewState="False"></asp:TextBox>
-            <a class="dnnSearchBoxClearText"></a>
+            <asp:TextBox ID="txtSearchNew" runat="server" CssClass="SearchTextBox" MaxLength="255" EnableViewState="False" aria-label="Search"></asp:TextBox>
+            <a class="dnnSearchBoxClearText" title="<%= ClearQueryText %>"></a>
         </span>
 
         <ul id="SearchChoices">

@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (IncludeNoneSpecificItem)
             {
-                UndefinedItem = new ListItem(SharedConstants.Unspecified, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
+                UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
             }
 
             base.OnPreRender(e);

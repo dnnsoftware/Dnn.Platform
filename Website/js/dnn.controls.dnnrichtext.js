@@ -1,7 +1,7 @@
 ﻿
 dnn.controls.DNNRichText=function(initFunc)
 {this.supportsCE=(document.body.contentEditable!=null);this.text='';this.supportsMultiLine=true;this.document=null;this.control=null;this.initialized=false;this.isRichText=true;this.loaded=false;if(this.supportsCE)
-{this.document=document;this.container=document.createElement('span');this.container.contentEditable=true;this.control=this.container;this.initialized=true;}
+{this.document=document;this.container=document.createElement('div');this.container.contentEditable=true;this.control=this.container;this.initialized=true;}
 else
 {this.container=document.createElement('iframe');this.container.src='';this.container.style.border='0';this.initFunc=initFunc;this._initDelegate=Function.createDelegate(this,this.initDocument);dnn.doDelay(this.container.id+'initEdit',10,this._initDelegate);}}
 dnn.controls.DNNRichText.prototype={focus:function()

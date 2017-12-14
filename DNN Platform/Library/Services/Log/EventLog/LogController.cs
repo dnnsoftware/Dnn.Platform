@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Log.EventLog
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LogController));
         private const int WriterLockTimeout = 10000; //milliseconds
-        private static readonly ReaderWriterLock LockLog = new ReaderWriterLock();
+        private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
 
         protected override Func<ILogController> GetFactory()
         {
@@ -108,9 +108,9 @@ namespace DotNetNuke.Services.Log.EventLog
         private static void WriteLog(string filePath, string message)
         {
             FileStream fs = null;
+            if (!LockLog.TryEnterWriteLock(WriterLockTimeout)) return;
             try
             {
-                LockLog.AcquireWriterLock(WriterLockTimeout);
                 var intAttempts = 0;
                 while (fs == null && intAttempts < 100)
                 {
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     fs.Close();
                 }
-                LockLog.ReleaseWriterLock();
+                LockLog.ExitWriteLock();
             }
         }
 
@@ -180,7 +180,6 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             if (Globals.Status == Globals.UpgradeStatus.Install)
             {
-                //AddLogToFile(logInfo);
                 Logger.Info(logInfo);
             }
             else
@@ -208,6 +207,36 @@ namespace DotNetNuke.Services.Log.EventLog
                     if (logInfo.LogPortalID != Null.NullInteger && String.IsNullOrEmpty(logInfo.LogPortalName))
                     {
                         logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
+                    }
+
+                    //Check if Log Type exists
+                    if (!GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
+                    {
+                        //Add new Log Type
+                        var logType = new LogTypeInfo()
+                                            {
+                                                LogTypeKey = logInfo.LogTypeKey,
+                                                LogTypeFriendlyName = logInfo.LogTypeKey,
+                                                LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                                                LogTypeCSSClass = "GeneralAdminOperation",
+                                                LogTypeDescription = string.Empty
+                                            };
+                        AddLogType(logType);
+
+                        var logTypeConfigInfo = new LogTypeConfigInfo()
+                                            {
+                                                LogTypeKey =  logInfo.LogTypeKey,
+                                                LogTypePortalID = "*",
+                                                LoggingIsActive = false,
+                                                KeepMostRecent = "-1",
+                                                EmailNotificationIsActive = false,
+                                                NotificationThreshold = 1,
+                                                NotificationThresholdTime = 1,
+                                                NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                                                MailFromAddress = String.Empty,
+                                                MailToAddress = String.Empty
+                                            };
+                        AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
 
 	                if (LoggingProvider.Instance() != null)

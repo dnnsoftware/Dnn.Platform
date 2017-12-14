@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -59,15 +59,17 @@ namespace DotNetNuke.Services.Cryptography
                 byte[] byteData = Encoding.UTF8.GetBytes(message);
 
                 //encrypt 
-                var objDes = new DESCryptoServiceProvider();
-                var objMemoryStream = new MemoryStream();
-                var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateEncryptor(byteKey, byteVector),
-                    CryptoStreamMode.Write);
-                objCryptoStream.Write(byteData, 0, byteData.Length);
-                objCryptoStream.FlushFinalBlock();
+                using (var objDes = new DESCryptoServiceProvider())
+                using (var objMemoryStream = new MemoryStream())
+                using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateEncryptor(byteKey, byteVector),
+                    CryptoStreamMode.Write))
+                {
+                    objCryptoStream.Write(byteData, 0, byteData.Length);
+                    objCryptoStream.FlushFinalBlock();
 
-                //convert to string and Base64 encode
-                value = Convert.ToBase64String(objMemoryStream.ToArray());
+                    //convert to string and Base64 encode
+                    value = Convert.ToBase64String(objMemoryStream.ToArray());
+                }
             }
             else
             {
@@ -84,46 +86,32 @@ namespace DotNetNuke.Services.Cryptography
         /// <returns></returns>
         public override string DecryptParameter(string message, string passphrase)
         {
-            if (String.IsNullOrEmpty(message))
-            {
-                return "";
-            }
             string strValue = "";
-            if (!String.IsNullOrEmpty(passphrase))
+            if (!string.IsNullOrEmpty(passphrase) && !string.IsNullOrEmpty(message))
             {
-                //convert key to 16 characters for simplicity
-                if (passphrase.Length < 16)
-                {
-                    passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
-                }
-                else
-                {
-                    passphrase = passphrase.Substring(0, 16);
-                }
-
-                //create encryption keys
-                byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
-                byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
-
-                //convert data to byte array and Base64 decode
-                var byteData = new byte[message.Length];
                 try
                 {
-                    byteData = Convert.FromBase64String(message);
-                }
-                catch //invalid length
-                {
-                    strValue = message;
-                }
-                if (String.IsNullOrEmpty(strValue))
-                {
-                    try
+                    //convert key to 16 characters for simplicity
+                    if (passphrase.Length < 16)
                     {
-                        //decrypt
-                        var objDes = new DESCryptoServiceProvider();
-                        var objMemoryStream = new MemoryStream();
-                        var objCryptoStream = new CryptoStream(objMemoryStream,
-                            objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write);
+                        passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
+                    }
+                    else
+                    {
+                        passphrase = passphrase.Substring(0, 16);
+                    }
+
+                    //create encryption keys
+                    byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
+                    byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
+                    byte[] byteData = Convert.FromBase64String(message);
+
+                    //decrypt
+                    using (var objDes = new DESCryptoServiceProvider())
+                    using (var objMemoryStream = new MemoryStream())
+                    using (var objCryptoStream = new CryptoStream(objMemoryStream,
+                        objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
+                    {
                         objCryptoStream.Write(byteData, 0, byteData.Length);
                         objCryptoStream.FlushFinalBlock();
 
@@ -131,15 +119,11 @@ namespace DotNetNuke.Services.Cryptography
                         Encoding objEncoding = Encoding.UTF8;
                         strValue = objEncoding.GetString(objMemoryStream.ToArray());
                     }
-                    catch //decryption error
-                    {
-                        strValue = "";
-                    }
                 }
-            }
-            else
-            {
-                strValue = message;
+                catch //decryption error
+                {
+                    strValue = "";
+                }
             }
             return strValue;
         }
@@ -156,29 +140,30 @@ namespace DotNetNuke.Services.Cryptography
             var utf8 = new UTF8Encoding();
 
             //hash the passphrase using MD5 to create 128bit byte array
-            var hashProvider = new MD5CryptoServiceProvider();
-            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
-
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider
+            using (var hashProvider = new MD5CryptoServiceProvider())
             {
-                Key = tdesKey,
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
+                byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
 
+                var tdesAlgorithm = new TripleDESCryptoServiceProvider
+                {
+                    Key = tdesKey,
+                    Mode = CipherMode.ECB,
+                    Padding = PaddingMode.PKCS7
+                };
 
-            byte[] dataToEncrypt = utf8.GetBytes(message);
+                byte[] dataToEncrypt = utf8.GetBytes(message);
 
-            try
-            {
-                ICryptoTransform encryptor = tdesAlgorithm.CreateEncryptor();
-                results = encryptor.TransformFinalBlock(dataToEncrypt, 0, dataToEncrypt.Length);
-            }
-            finally
-            {
-                // Clear the TripleDes and Hashprovider services of any sensitive information 
-                tdesAlgorithm.Clear();
-                hashProvider.Clear();
+                try
+                {
+                    ICryptoTransform encryptor = tdesAlgorithm.CreateEncryptor();
+                    results = encryptor.TransformFinalBlock(dataToEncrypt, 0, dataToEncrypt.Length);
+                }
+                finally
+                {
+                    // Clear the TripleDes and Hashprovider services of any sensitive information 
+                    tdesAlgorithm.Clear();
+                    hashProvider.Clear();
+                }
             }
 
             //Return the encrypted string as a base64 encoded string 
@@ -197,28 +182,30 @@ namespace DotNetNuke.Services.Cryptography
             var utf8 = new UTF8Encoding();
 
             //hash the passphrase using MD5 to create 128bit byte array
-            var hashProvider = new MD5CryptoServiceProvider();
-            byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
-
-            var tdesAlgorithm = new TripleDESCryptoServiceProvider
+            using (var hashProvider = new MD5CryptoServiceProvider())
             {
-                Key = tdesKey,
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
+                byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
+
+                var tdesAlgorithm = new TripleDESCryptoServiceProvider
+                {
+                    Key = tdesKey,
+                    Mode = CipherMode.ECB,
+                    Padding = PaddingMode.PKCS7
+                };
 
 
-            byte[] dataToDecrypt = Convert.FromBase64String(message);
-            try
-            {
-                ICryptoTransform decryptor = tdesAlgorithm.CreateDecryptor();
-                results = decryptor.TransformFinalBlock(dataToDecrypt, 0, dataToDecrypt.Length);
-            }
-            finally
-            {
-                // Clear the TripleDes and Hashprovider services of any sensitive information 
-                tdesAlgorithm.Clear();
-                hashProvider.Clear();
+                byte[] dataToDecrypt = Convert.FromBase64String(message);
+                try
+                {
+                    ICryptoTransform decryptor = tdesAlgorithm.CreateDecryptor();
+                    results = decryptor.TransformFinalBlock(dataToDecrypt, 0, dataToDecrypt.Length);
+                }
+                finally
+                {
+                    // Clear the TripleDes and Hashprovider services of any sensitive information 
+                    tdesAlgorithm.Clear();
+                    hashProvider.Clear();
+                }
             }
 
             return utf8.GetString(results);

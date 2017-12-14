@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,9 +44,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
     /// <summary>
     /// ModuleDefinitionController provides the Business Layer for Module Definitions
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/11/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModuleDefinitionController
     {
@@ -62,9 +59,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	01/13/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static object GetModuleDefinitionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -78,9 +72,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// GetModuleDefinitionByID gets a Module Definition by its ID
         /// </summary>
 		/// <param name="objModuleDefinition">The object of the Module Definition</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
         {
@@ -92,9 +83,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// DeleteModuleDefinition deletes a Module Definition By ID
         /// </summary>
         /// <param name="moduleDefinitionId">The ID of the Module Definition to delete</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(int moduleDefinitionId)
         {
@@ -121,9 +109,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// GetModuleDefinitionByID gets a Module Definition by its ID
         /// </summary>
         /// <param name="moduleDefID">The ID of the Module Definition</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByID(int moduleDefID)
         {
@@ -139,9 +124,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
 		/// Name (and DesktopModuleID)
 		/// </summary>
 		/// <param name="friendlyName">The friendly name</param>
-		/// <history>
-		/// 	[cnurse]	01/14/2008   Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName)
         {
@@ -160,9 +142,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// </summary>
         /// <param name="friendlyName">The friendly name</param>
         /// <param name="desktopModuleID">The ID of the Dekstop Module</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName, int desktopModuleID)
         {
@@ -179,9 +158,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <summary>
         /// GetModuleDefinitions gets a Dictionary of Module Definitions.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<int, ModuleDefinitionInfo> GetModuleDefinitions()
         {
@@ -196,9 +172,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// with a particular DesktopModuleID, keyed by the FriendlyName.
         /// </summary>
         /// <param name="desktopModuleID">The ID of the Desktop Module</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleDefinitionInfo> GetModuleDefinitionsByDesktopModuleID(int desktopModuleID)
         {
@@ -231,9 +204,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <param name="moduleDefinition">The Module Definition to save</param>
         /// <param name="saveChildren">A flag that determines whether the child objects are also saved</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int SaveModuleDefinition(ModuleDefinitionInfo moduleDefinition, bool saveChildren, bool clearCache)
         {
@@ -291,41 +261,5 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
             return moduleDefinitionID;
         }
-
-        #region Obsolete Members
-
-        [Obsolete("Deprecated in DotNetNuke 6.0.  Replaced by SaveModuleDefinition")]
-        public void UpdateModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
-        {
-            SaveModuleDefinition(objModuleDefinition, false, true);
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.0.  Replaced by SaveModuleDefinition")]
-        public int AddModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
-        {
-            return SaveModuleDefinition(objModuleDefinition, false, true);
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleDefinitionByID(Integer)")]
-        public ModuleDefinitionInfo GetModuleDefinition(int moduleDefID)
-        {
-            return GetModuleDefinitionByID(moduleDefID);
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleDefinitionByFriendlyName(String,Integer)")]
-        public ModuleDefinitionInfo GetModuleDefinitionByName(int desktopModuleID, string friendlyName)
-        {
-            return GetModuleDefinitionByFriendlyName(friendlyName, desktopModuleID);
-        }
-
-        [Obsolete("This method replaced in DotNetNuke 5.0 by Shared method GetModuleDefinitionsByDesktopModuleID(Integer)")]
-        public ArrayList GetModuleDefinitions(int DesktopModuleId)
-        {
-            var arrDefinitions = new ArrayList();
-            arrDefinitions.AddRange(GetModuleDefinitionsByDesktopModuleID(DesktopModuleId).Values);
-            return arrDefinitions;
-        }
-
-        #endregion
     }
 }

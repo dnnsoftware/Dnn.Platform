@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,9 +43,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	10/12/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public abstract class SkinThumbNailControl : UserControlBase
     {
@@ -169,9 +166,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void AddDefaultSkin()
         {
@@ -189,9 +183,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="root">Root Path.</param>
         /// <param name="strFolder">The Skin Folder</param>
         /// <param name="strFile">The Skin File</param>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void AddSkin(string root, string strFolder, string strFile)
         {
@@ -216,9 +207,6 @@ namespace DotNetNuke.UI.Skins
         /// </remarks>
         /// <param name="strSkinFolder">The Folder Name</param>
         /// <param name="strSkinFile">The File Name without extension</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
         {
             if (strSkinFolder.ToLower() == "_default") //host folder
@@ -245,9 +233,6 @@ namespace DotNetNuke.UI.Skins
         /// <remarks>
         /// </remarks>
         /// <param name="strImage">The Image File Name</param>
-        /// <history>
-        /// 	[cnurse]	9/8/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static string CreateThumbnail(string strImage)
         {
@@ -331,9 +316,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Clear()
         {
@@ -347,9 +329,6 @@ namespace DotNetNuke.UI.Skins
         /// <remarks>
         /// </remarks>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void LoadAllSkins(bool includeNotSpecified)
         {
@@ -373,9 +352,6 @@ namespace DotNetNuke.UI.Skins
         /// <remarks>
         /// </remarks>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void LoadHostSkins(bool includeNotSpecified)
         {
@@ -408,9 +384,6 @@ namespace DotNetNuke.UI.Skins
         /// <remarks>
         /// </remarks>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void LoadPortalSkins(bool includeNotSpecified)
         {
@@ -441,9 +414,6 @@ namespace DotNetNuke.UI.Skins
         /// <param name="strFolder">The folder to search for skins</param>
         /// <param name="skinType">A string that identifies whether the skin is Host "[G]" or Site "[L]"</param>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
-        /// <history>
-        /// 	[cnurse]	12/15/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void LoadSkins(string strFolder, string skinType, bool includeNotSpecified)
         {

@@ -3,9 +3,9 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+
+<%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Audit" Src="~/controls/ModuleAuditControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="ModuleLocalization" Src="~/Admin/Modules/ModuleLocalization.ascx" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm dnnModuleSettings dnnClear" id="dnnModuleSettings">
     <ul class="dnnAdminTabNav dnnClear">
@@ -25,7 +25,7 @@
             <fieldset>
                 <div class="dnnFormItem" id="cultureRow" runat="server">
                     <dnn:label id="cultureLabel" runat="server" controlname="cultureLanguageLabel" />
-                    <dnn:dnnlanguagelabel id="cultureLanguageLabel" runat="server" />
+                    <dnnweb:dnnlanguagelabel id="cultureLanguageLabel" runat="server" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plFriendlyName" runat="server" controlname="txtFriendlyName" />
@@ -37,7 +37,7 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plTags" runat="server" controlname="termsSelector" />
-                    <dnn:termsselector id="termsSelector" runat="server" height="250px" width="525px" IncludeTags="false" />
+                    <dnnweb:termsselector id="termsSelector" runat="server" height="250px" width="525px" IncludeTags="false" />
                 </div>
             </fieldset>
             <h2 id="dnnPanel-ModuleSecuritySettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Security")%></a></h2>
@@ -76,11 +76,11 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plStartDate" runat="server" controlname="txtStartDate" />
-                    <dnn:dnndatetimepicker id="startDatePicker" runat="server" ViewStateMode="Disabled" />
+                    <dnnweb:dnndatetimepicker id="startDatePicker" runat="server" ViewStateMode="Disabled" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plEndDate" runat="server" controlname="txtEndDate" />
-                    <dnn:dnndatetimepicker id="endDatePicker" runat="server" ViewStateMode="Disabled" />
+                    <dnnweb:dnndatetimepicker id="endDatePicker" runat="server" ViewStateMode="Disabled" />
                     
                 </div>
 				<div class="dnnFormItem">
@@ -88,6 +88,10 @@
 						Display="Dynamic" resourcekey="valEndDate2.ErrorMessage" CompareControl="startDatePicker"
                         CssClass="dnnFormMessage dnnFormError"></asp:CustomValidator>
 				</div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plMoniker" runat="server" controlname="txtMoniker" />
+                    <asp:TextBox ID="txtMoniker" runat="server" MaxLength="100" />
+                </div>
             </fieldset>
             <h2 id="dnnPanel-ModuleAdditionalPages" class="dnnFormSectionHead">
                 <a href="" class="dnnSectionExpanded">
@@ -96,7 +100,6 @@
                 <div>
                     <div class="dnnFormItem">
                         <dnnweb:DnnGrid ID="dgOnTabs" runat="server" AutoGenerateColumns="False" AllowPaging="true" PageSize="20" ViewStateMode="Disabled">
-                            <MasterTableView>
                                 <Columns>
                                     <dnnweb:DnnGridTemplateColumn HeaderText="Site" HeaderStyle-Width="150px">
                                         <ItemTemplate>
@@ -109,12 +112,11 @@
                                         </ItemTemplate>
                                     </dnnweb:DnnGridTemplateColumn>
                                 </Columns>
-                                <NoRecordsTemplate>
+                                <EmptyDataTemplate>
                                     <div class="dnnFormMessage dnnFormWarning">
                                         <asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" />
                                     </div>
-                                </NoRecordsTemplate>
-                            </MasterTableView>
+                                </EmptyDataTemplate>
                         </dnnweb:DnnGrid>
                     </div>   
                 </div>
@@ -202,7 +204,7 @@
                 </div>
                 <div class="dnnFormItem" id="webSliceExpiry" runat="server" ViewStateMode="Disabled">
                     <dnn:label id="plWebSliceExpiry" runat="server" controlname="txtWebSliceExpiry" />
-                    <dnn:dnndatepicker ID="diWebSliceExpiry" runat="server"/>
+                    <dnnweb:dnndatepicker ID="diWebSliceExpiry" runat="server"/>
                     <asp:CompareValidator ID="valWebSliceExpiry" ControlToValidate="diWebSliceExpiry"
                         Operator="DataTypeCheck" Type="Date" runat="server" Display="Dynamic" resourcekey="valWebSliceExpiry.ErrorMessage"
                         CssClass="dnnFormMessage dnnFormError" />
@@ -216,7 +218,7 @@
                 </div>
                 <div class="dnnFormItem dnnContainerPreview">
                     <dnn:label id="plModuleContainer" runat="server" controlname="ctlModuleContainer" />
-                    <dnn:DnnSkinComboBox ID="moduleContainerCombo" runat="server" ViewStateMode="Disabled" />
+                    <dnnweb:DnnSkinComboBox ID="moduleContainerCombo" runat="server" />
                     <a href="#" class="dnnSecondaryAction">
                         <%=LocalizeString("ContainerPreview")%></a>
                 </div>
@@ -229,7 +231,7 @@
                     <dnn:label id="lblCacheProvider" runat="server" controlname="cboCacheProvider" resourcekey="CacheProvider" />
                     <%--<asp:DropDownList ID="cboCacheProvider" runat="server" AutoPostBack="true" DataValueField="Key"
                         DataTextField="filteredkey" />--%>
-                    <dnn:DnnComboBox ID="cboCacheProvider" runat="server" AutoPostBack="true" DataValueField="Key" DataTextField="filteredkey" />
+                    <dnnweb:DnnComboBox ID="cboCacheProvider" runat="server" AutoPostBack="true" DataValueField="Key" DataTextField="filteredkey" />
                     <asp:Label ID="lblCacheInherited" runat="server" resourceKey="CacheInherited" CssClass="labelCacheInherited" />
                 </div>
                 <div class="dnnFormItem" id="divCacheDuration" runat="server" visible="false">
@@ -259,7 +261,7 @@
                     <dnn:label id="plTab" runat="server" controlname="cboTab" />
                     <%--<asp:DropDownList ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId"
                         runat="server" />--%>
-                    <dnn:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server"  ViewStateMode="Disabled"/>
+                    <dnnweb:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server" />
                 </div>
             </fieldset>
         </div>
@@ -312,7 +314,8 @@
                 noSelectionMessage: '<%= Localization.GetSafeJSString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
-                useComboBox: true
+                useComboBox: true,
+                ModuleId: '<%= ModuleId %>'
             });
 
             toggleShareableRowViewOnly(false);
@@ -341,8 +344,8 @@
             window.compareDate = function (source, arg) {
             	var id = source.controltovalidate;
             	var compareId = source.getAttribute("CompareControl");
-            	var time = $find(id).get_timeView().getTime();
-            	var compareTime = $find(id.substr(0, id.lastIndexOf("_") + 1) + compareId).get_timeView().getTime();
+            	var time = $('#' + id).val();
+            	var compareTime = $('#' + id.substr(0, id.lastIndexOf("_") + 1) + compareId).val();
             	arg.IsValid = compareTime == null || time > compareTime;
             };
         });

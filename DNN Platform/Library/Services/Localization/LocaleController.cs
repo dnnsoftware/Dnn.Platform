@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Localization
             var portalID = (int)cacheItemArgs.ParamList[0];
             Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
                                                                        ? DataProvider.Instance().GetLanguagesByPortal(portalID)
-                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>());
+                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
             return locales;
         }
 
@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Localization
         /// </returns>
         public bool CanDeleteLanguage(int languageId)
         {
-            return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "CoreLanguagePack")
+            return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase))
                         .Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID))
                         .All(languagePack => languagePack.LanguageID != languageId);
         }
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Localization
                 }
                 else
                 {
-                    locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>());
+                    locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
                 }
             return locales;
             }
@@ -273,6 +273,23 @@ namespace DotNetNuke.Services.Localization
         {
             bool returnValue = code == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
             return returnValue;
+        }
+
+        /// <summary>
+        /// Activates the language without publishing it.
+        /// </summary>
+        /// <param name="portalid">The portalid.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="publish">if set to <c>true</c> will publishthe language.</param>
+        public void ActivateLanguage(int portalid, string cultureCode, bool publish)
+        {
+            Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
+            Locale enabledlanguage;
+            if (enabledLanguages.TryGetValue(cultureCode, out enabledlanguage))
+            {
+                enabledlanguage.IsPublished = publish;
+                Instance.UpdatePortalLocale(enabledlanguage);
+            }
         }
 
         /// <summary>

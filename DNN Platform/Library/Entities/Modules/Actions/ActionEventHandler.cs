@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,9 +29,6 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// The ActionEventHandler delegate defines a custom event handler for an Action
     /// Event.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	01/12/2008	Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public delegate void ActionEventHandler(object sender, ActionEventArgs e);
 }

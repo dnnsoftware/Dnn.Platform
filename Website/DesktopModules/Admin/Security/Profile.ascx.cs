@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,14 +21,17 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.UI.Skins.Controls;
+using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 #endregion
 
@@ -40,9 +43,6 @@ namespace DesktopModules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/02/2006
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class DNNProfile : ProfileUserControlBase
     {
@@ -52,9 +52,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets whether to display the Visibility controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/11/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool ShowVisibility
         {
@@ -73,9 +70,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets and sets the EditorMode
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/02/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PropertyEditorMode EditorMode
         {
@@ -93,9 +87,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets whether the User is valid
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsValid
         {
@@ -109,9 +100,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets and sets whether the Update button
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool ShowUpdate
         {
@@ -129,9 +117,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// Gets the UserProfile associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/02/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public UserProfile UserProfile
         {
@@ -154,9 +139,6 @@ namespace DesktopModules.Admin.Security
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
@@ -193,9 +175,6 @@ namespace DesktopModules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -218,9 +197,6 @@ namespace DesktopModules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -234,20 +210,36 @@ namespace DesktopModules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object sender, EventArgs e)
         {
-			if (IsUserOrAdmin == false && UserId == Null.NullInteger)
+            if (IsUserOrAdmin == false && UserId == Null.NullInteger)
             {
                 return;
             }
 
             if (IsValid)
             {
-                var properties = (ProfilePropertyDefinitionCollection) ProfileProperties.DataSource;
+                if (User.UserID == PortalSettings.AdministratorId)
+                {
+                    //Clear the Portal Cache
+                    DataCache.ClearPortalCache(UserPortalID, true);
+                }
+
+                //Update DisplayName to conform to Format
+                UpdateDisplayName();
+
+                if (PortalSettings.Registration.RequireUniqueDisplayName)
+                {
+                    var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                    if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
+                    {
+                        AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
+                        return;
+                    }
+                }
+
+                var properties = (ProfilePropertyDefinitionCollection)ProfileProperties.DataSource;
 
                 //Update User's profile
                 User = ProfileController.UpdateUserProfile(User, properties);
@@ -256,7 +248,15 @@ namespace DesktopModules.Admin.Security
                 OnProfileUpdateCompleted(EventArgs.Empty);
             }
         }
-		
-		#endregion
+
+        private void UpdateDisplayName()
+        {
+            if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+            {
+                User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
+            }
+        }
+
+        #endregion
     }
 }

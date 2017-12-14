@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Entities.Modules
 	/// <summary>
 	/// ModuleControlInfo provides the Entity Layer for Module Controls
 	/// </summary>
-	/// <history>
-	/// 	[cnurse]	01/14/2008   Documented
-	/// </history>
 	/// -----------------------------------------------------------------------------
     [Serializable]
     public class ModuleControlInfo : ControlInfo, IXmlSerializable, IHydratable
@@ -61,9 +58,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Control Title
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ControlTitle { get; set; }
 
@@ -72,9 +66,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Control Type
         /// </summary>
         /// <returns>A SecurityAccessLevel</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public SecurityAccessLevel ControlType { get; set; }
 
@@ -83,9 +74,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Help URL
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string HelpURL { get; set; }
 
@@ -94,9 +82,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Icon  Source
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
 		
@@ -105,9 +90,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Module Control ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int ModuleControlID { get; set; }
 		
@@ -116,9 +98,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Module Definition ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int ModuleDefID { get; set; }
 
@@ -135,9 +114,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the View Order
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int ViewOrder { get; set; }
 
@@ -148,9 +124,6 @@ namespace DotNetNuke.Entities.Modules
         /// Fills a ModuleControlInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -172,9 +145,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -196,9 +166,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets an XmlSchema for the ModuleControlInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -210,9 +177,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a ModuleControlInfo from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -266,9 +230,6 @@ namespace DotNetNuke.Entities.Modules
         /// Writes a ModuleControlInfo to an XmlWriter
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
-        /// <history>
-        /// 	[cnurse]	01/17/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {

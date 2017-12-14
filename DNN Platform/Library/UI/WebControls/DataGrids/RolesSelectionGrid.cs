@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -448,9 +448,6 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Overrides the base OnPreRender method to Bind the Grid to the Permissions
 		/// </summary>
-		/// <history>
-		///     [cnurse]    01/09/2006  Documented
-		/// </history>
 		protected override void OnPreRender(EventArgs e)
 		{
 			BindData();

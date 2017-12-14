@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -45,9 +45,6 @@ namespace DotNetNuke.UI.WebControls
     /// <remarks>
     /// ActionBase inherits from HyperLink
     /// </remarks>
-    /// <history>
-    /// 	[sbwalker]	10/17/2012  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ActionLink : HyperLink
     {
@@ -105,9 +102,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// CreateChildControls builds the control tree
         /// </summary>
-        /// <history>
-        /// 	[sbwalker]	10/17/2012  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
@@ -123,9 +117,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// OnPreRender runs when just before the Render phase of the Page Lifecycle
         /// </summary>
-        /// <history>
-        /// 	[sbwalker]	10/17/2012  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@ using System.ComponentModel.Composition;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Instrumentation;
+// ReSharper disable ConvertPropertyToExpressionBody
 
 namespace DotNetNuke.Common.Internal
 {
@@ -34,7 +35,7 @@ namespace DotNetNuke.Common.Internal
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventHandlersContainer<T>));
 
         [ImportMany]
-        private IEnumerable<Lazy<T>> eventsHandlers = new List<Lazy<T>>();
+        private IEnumerable<Lazy<T>> _eventHandlers = new List<Lazy<T>>();
 
         public EventHandlersContainer()
         {
@@ -56,7 +57,7 @@ namespace DotNetNuke.Common.Internal
         {
             get
             {
-                return eventsHandlers;
+                return _eventHandlers;
             }
         }
 

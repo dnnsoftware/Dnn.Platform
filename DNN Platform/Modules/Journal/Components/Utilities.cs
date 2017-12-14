@@ -7,10 +7,31 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
 
 namespace DotNetNuke.Modules.Journal.Components {
     public class Utilities {
-        static internal Bitmap GetImageFromURL(string url) {
+
+        private static readonly Regex PageRegex = new Regex("<(title)[^>]*?>((?:.|\\n)*?)</\\s*\\1\\s*>",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+
+        private static readonly Regex MetaRegex = new Regex("<meta\\s*(?:(?:\\b(\\w|-)+\\b\\s*(?:=\\s*(?:\"[^\"]*\"|'[^']*'|[^\"'<> ]+)\\s*)?)*)/?\\s*>",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+
+        private static readonly Regex MetaSubRegex = new Regex(
+            "<meta[\\s]+[^>]*?(((name|property)*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?)|(content*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?))((content*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|(name*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|>)",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.Compiled);
+
+        private static readonly Regex MetaSubRegex2 = new Regex(
+            "<img[\\s]+[^>]*?((alt*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?)|(src*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?))((src*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|(alt*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|>)",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.Compiled);
+
+        private static readonly Regex ResexRegex = new Regex("(\\{resx:.+?\\})", RegexOptions.Compiled);
+
+        private static readonly Regex HtmlTextRegex = new Regex("<(.|\\n)*?>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        internal static Bitmap GetImageFromURL(string url) {
             string sImgName = string.Empty;
             System.Net.WebRequest myRequest = default(System.Net.WebRequest);
             Bitmap bmp = null;
@@ -66,6 +87,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             return url;
 
         }
+
         static internal LinkInfo GetLinkData(string URL) {
             string sPage = GetPageFromURL(ref URL, string.Empty, string.Empty);
             LinkInfo link = new LinkInfo();
@@ -78,19 +100,17 @@ namespace DotNetNuke.Modules.Journal.Components {
             
             link.URL = URL;
             link.Images = new List<ImageInfo>();
-            Match m = Regex.Match(sPage, "<(title)[^>]*?>((?:.|\\n)*?)</\\s*\\1\\s*>", RegexOptions.IgnoreCase & RegexOptions.Multiline);
+            Match m = PageRegex.Match(sPage);
             if (m.Success) {
                 link.Title = m.Groups[2].ToString().Trim();
             }
             //
-            Regex regExp = new Regex("<meta\\s*(?:(?:\\b(\\w|-)+\\b\\s*(?:=\\s*(?:\"[^\"]*\"|'[^']*'|[^\"'<> ]+)\\s*)?)*)/?\\s*>", RegexOptions.IgnoreCase & RegexOptions.Multiline);
             MatchCollection matches = default(MatchCollection);
-            matches = regExp.Matches(sPage);
+            matches = MetaRegex.Matches(sPage);
             int i = 0;
             foreach (Match match in matches) {
                 string sTempDesc = match.Groups[0].Value;
-                Regex subReg = new Regex("<meta[\\s]+[^>]*?(((name|property)*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?)|(content*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?))((content*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|(name*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|>)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
-                foreach (Match subM in subReg.Matches(sTempDesc)) {
+                foreach (Match subM in MetaSubRegex.Matches(sTempDesc)) {
                     if (subM.Groups[4].Value.ToUpperInvariant() == "OG:DESCRIPTION") {
                         link.Description = subM.Groups[9].Value;
                     } else if (subM.Groups[4].Value.ToUpperInvariant() == "DESCRIPTION".ToUpperInvariant()) {
@@ -117,8 +137,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             if (!string.IsNullOrEmpty(link.Title)) {
                 link.Title = link.Title.Replace("&amp;", "&");
             }
-            regExp = new Regex("<img[\\s]+[^>]*?((alt*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?)|(src*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?))((src*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|(alt*?[\\s]?=[\\s\\x27\\x22]+(.*?)[\\x27\\x22]+.*?>)|>)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline);
-            matches = regExp.Matches(sPage);
+            matches = MetaSubRegex2.Matches(sPage);
 
             string imgList = string.Empty;
             string hostUrl = string.Empty;
@@ -188,11 +207,11 @@ namespace DotNetNuke.Modules.Journal.Components {
 
                 if ((objWebRequest.HaveResponse == true) & objWebResponse.StatusCode == HttpStatusCode.OK) {
                     objWebResponse.Cookies = objWebRequest.CookieContainer.GetCookies(objWebRequest.RequestUri);
-                    using (Stream objStream = objWebResponse.GetResponseStream()) {
-                        using (StreamReader objStreamReader = new StreamReader(objStream, enc)) {
-                            sHTML = objStreamReader.ReadToEnd();
-                            objStreamReader.Close();
-                        }
+                    using (Stream objStream = objWebResponse.GetResponseStream())
+                    using (StreamReader objStreamReader = new StreamReader(objStream, enc))
+                    {
+                        sHTML = objStreamReader.ReadToEnd();
+                        objStreamReader.Close();
                         objStream.Close();
                     }
                 }
@@ -207,10 +226,8 @@ namespace DotNetNuke.Modules.Journal.Components {
         public static string LocalizeControl(string controlText) {
             string sKey = "";
             string sReplace = "";
-            string pattern = "(\\{resx:.+?\\})";
-            Regex regExp = new Regex(pattern);
             MatchCollection matches = default(MatchCollection);
-            matches = regExp.Matches(controlText);
+            matches = ResexRegex.Matches(controlText);
             foreach (Match match in matches) {
                 sKey = match.Value;
                 sReplace = GetSharedResource(sKey);
@@ -247,11 +264,16 @@ namespace DotNetNuke.Modules.Journal.Components {
             {
                 return string.Empty;
             }
-            string pattern = "<(.|\\n)*?>";
-            sText = Regex.Replace(sText, pattern, string.Empty, RegexOptions.IgnoreCase);
+
+            sText = HtmlTextRegex.Replace(sText, string.Empty);
             sText = HttpUtility.HtmlEncode(sText);
             return sText;
         }
 
+        public static bool AreFriends(UserInfo profileUser, UserInfo currentUser)
+        {
+            var friendsRelationShip = RelationshipController.Instance.GetFriendRelationship(profileUser, currentUser);
+            return (friendsRelationShip != null && friendsRelationShip.Status == RelationshipStatus.Accepted);
+        }
     }
 }

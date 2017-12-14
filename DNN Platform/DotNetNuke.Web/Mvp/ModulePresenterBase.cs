@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,11 +34,11 @@ using DotNetNuke.Web.Validators;
 
 using WebFormsMvp;
 
-
 #endregion
 
 namespace DotNetNuke.Web.Mvp
 {
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public abstract class ModulePresenterBase<TView> : Presenter<TView> where TView : class, IModuleViewBase
     {
         #region Constructors
@@ -256,11 +256,6 @@ namespace DotNetNuke.Web.Mvp
         #endregion
 
         #region Public Methods
-
-        [Obsolete("Deprecated in DotNetNuke 6.1. Base Class Method deprecated in WebFormsMVP 1.2")]
-        public override void ReleaseView()
-        {
-        }
 
         public virtual void RestoreState(StateBag stateBag)
         {

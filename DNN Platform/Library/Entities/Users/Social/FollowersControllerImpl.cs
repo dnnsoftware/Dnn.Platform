@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,18 +36,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
     {
         internal const string FollowerRequest = "FollowerRequest";
         internal const string FollowBackRequest = "FollowBackRequest";
-
-        private static event EventHandler<RelationshipEventArgs> FollowRequested;
-        private static event EventHandler<RelationshipEventArgs> UnfollowRequested;
-
-        static FollowersControllerImpl()
-        {
-            foreach (var handlers in EventHandlersContainer<IFollowerEventHandlers>.Instance.EventHandlers)
-            {
-                FollowRequested += handlers.Value.FollowRequested;
-                UnfollowRequested += handlers.Value.UnfollowRequested;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -84,8 +72,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
             AddFollowerRequestNotification(initiatingUser, targetUser);
 
-            if (FollowRequested != null)
-                FollowRequested(null, new RelationshipEventArgs(relationship, initiatingUser.PortalID));
+            EventManager.Instance.OnFollowRequested(new RelationshipEventArgs(relationship, initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -101,8 +88,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
             RelationshipController.Instance.DeleteUserRelationship(followRelationship);
 
-            if (UnfollowRequested != null)
-                UnfollowRequested(null, new RelationshipEventArgs(followRelationship, initiatingUser.PortalID));
+            EventManager.Instance.OnUnfollowRequested(new RelationshipEventArgs(followRelationship, initiatingUser.PortalID));
         }
 
         private static void AddFollowerRequestNotification(UserInfo initiatingUser, UserInfo targetUser)

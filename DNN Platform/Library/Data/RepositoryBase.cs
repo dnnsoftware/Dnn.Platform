@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,7 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Web.Caching;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -38,7 +38,7 @@ namespace DotNetNuke.Data
 
         protected RepositoryBase()
         {
-            Initialize();
+            InitializeInternal();
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace DotNetNuke.Data
             }
         }
 
-        private void Initialize()
+        private void InitializeInternal()
         {
             var type = typeof (T);
             Scope = String.Empty;
@@ -240,6 +240,24 @@ namespace DotNetNuke.Data
         protected abstract void UpdateInternal(T item);
 
         #endregion
-    }
 
+        public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
+        {
+            Scope = scope;
+            IsScoped = (!String.IsNullOrEmpty(Scope));
+            IsCacheable = (!String.IsNullOrEmpty(cacheKey));
+            if (IsCacheable)
+            {
+                if (IsScoped)
+                {
+                    cacheKey += "_" + Scope + "_{0}";
+                }
+                CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
+            }
+            else
+            {
+                CacheArgs = null;
+            }
+        }
+    }
 }

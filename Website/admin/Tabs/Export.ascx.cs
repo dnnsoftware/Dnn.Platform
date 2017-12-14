@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -67,9 +67,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
         /// </summary>
         /// <param name="xmlTemplate">Reference to XmlDocument context</param>
         /// <param name="nodeTabs">Node to add the serialized objects</param>
-        /// <history>
-        /// 	[cnurse]	10/02/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
@@ -100,10 +97,14 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (Page.IsPostBack) return;
                 cmdCancel.NavigateUrl = Globals.NavigateURL();
-                var folders = FolderManager.Instance.GetFolders(UserInfo, "ADD");
+                var folderPath = "Templates/";
+                var templateFolder = FolderManager.Instance.GetFolder(UserInfo.PortalID, folderPath);
                 cboFolders.Services.Parameters.Add("permission", "ADD");
-                var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
-                if (templateFolder != null) cboFolders.SelectedFolder = templateFolder;
+                
+                if (templateFolder != null && IsAccessibleByUser(templateFolder))
+                {
+                    cboFolders.SelectedFolder = templateFolder;
+                }
                 
                 if (Tab != null)
                 {
@@ -114,6 +115,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private bool IsAccessibleByUser(IFolderInfo folder)
+        {
+            return FolderPermissionController.Instance.CanAddFolder(folder);
         }
 
         protected void OnExportClick(Object sender, EventArgs e)

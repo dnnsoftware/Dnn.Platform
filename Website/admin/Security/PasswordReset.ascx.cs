@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,12 +31,15 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -70,15 +73,15 @@ namespace DotNetNuke.Modules.Admin.Security
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            _ipAddress = Request.UserHostAddress;
+            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
 
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
 			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
             {
@@ -91,6 +94,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (Request.QueryString["resetToken"] != null)
             {
                 ResetToken = Request.QueryString["resetToken"];
+                txtUsername.Enabled = false;
                 
             }
 
@@ -113,6 +117,31 @@ namespace DotNetNuke.Modules.Admin.Security
 			txtPassword.Attributes.Add("data-default", LocalizeString("Password"));
 			txtConfirmPassword.Attributes.Add("data-default", LocalizeString("Confirm"));
             txtAnswer.Attributes.Add("data-default", LocalizeString("Answer"));
+
+            if (!Page.IsPostBack)
+            {
+                LoadUserInfo();
+            }
+        }
+
+        private void LoadUserInfo()
+        {
+            var user = UserController.GetUserByPasswordResetToken(PortalId, ResetToken);
+
+            if (user == null || user.PasswordResetExpiration < DateTime.Now)
+            {
+                divPassword.Visible = false;
+                resetMessages.Visible = true;
+                lblHelp.Text = Localization.GetString("ResetLinkExpired", LocalResourceFile);
+                return;
+            }
+
+            txtUsername.Text = user.Username;
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
+            {
+                lblQuestion.Text = user.Membership.PasswordQuestion;
+                divQA.Visible = true;
+            }
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -163,14 +192,8 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             string username = txtUsername.Text;
 
-            if (MembershipProviderConfig.RequiresQuestionAndAnswer && String.IsNullOrEmpty(txtAnswer.Text))
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer && string.IsNullOrEmpty(txtAnswer.Text))
             {
-                var user = UserController.GetUserByName(username);
-                if (user != null)
-                {
-                    lblQuestion.Text = user.Membership.PasswordQuestion;
-                }
-                divQA.Visible = true;
                 return;
             }
 
@@ -184,7 +207,8 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;
             }
 
-            if (UserController.ValidatePassword(txtPassword.Text)==false)
+            var newPassword = txtPassword.Text.Trim();
+            if (UserController.ValidatePassword(newPassword) ==false)
             {
                 resetMessages.Visible = true;
                 var failed = Localization.GetString("PasswordResetFailed");
@@ -199,7 +223,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (settings.EnableBannedList)
             {
                 var m = new MembershipPasswordController();
-                if (m.FoundBannedPassword(txtPassword.Text) || txtUsername.Text == txtPassword.Text)
+                if (m.FoundBannedPassword(newPassword) || txtUsername.Text == newPassword)
                 {
                     resetMessages.Visible = true;
                     var failed = Localization.GetString("PasswordResetFailed");
@@ -224,7 +248,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 answer = txtAnswer.Text;
             }
 
-            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, answer, ResetToken, out errorMessage) == false)
+            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, newPassword, answer, ResetToken, out errorMessage) == false)
             {
                 resetMessages.Visible = true;
                 var failed = errorMessage;
@@ -265,25 +289,22 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     //return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                    if (redirectURL.Contains("://"))
-                    {
-                        redirectURL = "";
-                    }
+
+                    //clean the return url to avoid possible XSS attack.
+                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
+
                 if (Request.Cookies["returnurl"] != null)
                 {
                     //return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
-                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                    if (redirectURL.Contains("://"))
-                    {
-                        redirectURL = "";
-                    }
+
+                    //clean the return url to avoid possible XSS attack.
+                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
                 if (String.IsNullOrEmpty(redirectURL))
                 {
-                    if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
+                    if (PortalSettings.RegisterTabId != -1 && PortalSettings.HomeTabId != -1)
                     {
                         //redirect to portal home page specified
                         redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
@@ -302,18 +323,19 @@ namespace DotNetNuke.Modules.Admin.Security
 
 			AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
 	        resetMessages.Visible = divPassword.Visible = false;
+            lblHelp.Text = lblInfo.Text = string.Empty;
 
-			//redirect page after 5 seconds
-	        var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
-			if (ScriptManager.GetCurrent(Page) != null)
-			{
-				// respect MS AJAX
-				ScriptManager.RegisterStartupScript(Page, GetType(), "ChangePasswordSuccessful", script, true);
-			}
-			else
-			{
-				Page.ClientScript.RegisterStartupScript(GetType(), "ChangePasswordSuccessful", script, true);
-			}
+            //redirect page after 5 seconds
+            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
+            if (ScriptManager.GetCurrent(Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(Page, GetType(), "ChangePasswordSuccessful", script, true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "ChangePasswordSuccessful", script, true);
+            }
         }
 
         private void LogSuccess()

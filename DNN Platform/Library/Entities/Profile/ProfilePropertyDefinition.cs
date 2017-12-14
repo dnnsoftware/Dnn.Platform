@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Entities.Profile
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	01/31/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [XmlRoot("profiledefinition", IsNullable = false)]
     [Serializable]
@@ -97,9 +94,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the Data Type of the Profile Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Editor("DotNetNuke.UI.WebControls.DNNListEditControl, DotNetNuke", typeof (EditControl))]
         [List("DataType", "", ListBoundField.Id, ListBoundField.Value)]
@@ -127,9 +121,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the Default Value of the Profile Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(4)]
         [XmlIgnore]
@@ -153,9 +144,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         ///   Gets and sets the Default Visibility of the Profile Property
         /// </summary>
-        /// <history>
-        ///   [sbwalker]	06/28/2010	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(10)]
         [XmlIgnore]
@@ -198,9 +186,6 @@ namespace DotNetNuke.Entities.Profile
 	    /// <summary>
 	    /// Gets whether the Definition has been modified since it has been retrieved
 	    /// </summary>
-	    /// <history>
-	    ///     [cnurse]	02/21/2006	created
-	    /// </history>
 	    /// -----------------------------------------------------------------------------
 	    [Browsable(false)]
         [XmlIgnore]
@@ -210,9 +195,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the Length of the Profile Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(3)]
         [XmlElement("length")]
@@ -236,9 +218,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the ModuleDefId
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -258,9 +237,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the PortalId
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -280,9 +256,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the Category of the Profile Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Required(true)]
         [SortOrder(2)]
@@ -307,9 +280,6 @@ namespace DotNetNuke.Entities.Profile
 	    /// <summary>
 	    /// Gets and sets the Id of the ProfilePropertyDefinition
 	    /// </summary>
-	    /// <history>
-	    ///     [cnurse]	01/31/2006	created
-	    /// </history>
 	    /// -----------------------------------------------------------------------------
 	    [Browsable(false)]
         [XmlIgnore]
@@ -319,9 +289,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the Name of the Profile Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Required(true)]
         [IsReadOnly(true)]
@@ -348,9 +315,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the Value of the Profile Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -374,9 +338,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets whether the property is read only
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(7)]
         [XmlIgnore]
@@ -400,9 +361,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets whether the property is required
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(6)]
         [XmlIgnore]
@@ -426,9 +384,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets a Validation Expression (RegEx) for the Profile Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(5)]
         [XmlIgnore]
@@ -452,9 +407,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets the View Order of the Property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [IsReadOnly(true)]
         [SortOrder(9)]
@@ -479,9 +431,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets whether the property is visible
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(8)]
         [XmlIgnore]
@@ -505,9 +454,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets and sets whether the property is visible
         /// </summary>
-        /// <history>
-        ///     [cnurse]	01/31/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -535,9 +481,6 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Clears the IsDirty Flag
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/23/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ClearIsDirty()
         {
@@ -577,7 +520,7 @@ namespace DotNetNuke.Entities.Profile
 
         #region Obsolete
 
-        [Obsolete("Deprecated in 6.2 as profile visibility has been extended")]
+        [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.")]
         [Browsable(false)]
         [XmlIgnore]
         public UserVisibilityMode Visibility

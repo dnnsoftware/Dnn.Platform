@@ -121,7 +121,7 @@
     <value>Create Group</value>
   </data>
   <data name="GroupName.Help" xml:space="preserve">
-    <value>Enter the name of the group you would like to create.</value>
+    <value>Enter the name of the group you want to create.</value>
   </data>
   <data name="GroupName.Text" xml:space="preserve">
     <value>Group Name</value>

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,8 +40,6 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>
     ///   WorkflowStatePermissionController provides the Business Layer for DesktopModule Permissions
     /// </summary>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class WorkflowStatePermissionController
     {
@@ -58,8 +56,6 @@ namespace DotNetNuke.Security.Permissions
         ///   GetWorkflowStatePermissions gets a Dictionary of WorkflowStatePermissionCollections by 
         ///   WorkflowState.
         /// </summary>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, WorkflowStatePermissionCollection> GetWorkflowStatePermissions()
         {
@@ -73,8 +69,6 @@ namespace DotNetNuke.Security.Permissions
         ///   WorkflowState from the the Database.
         /// </summary>
         /// <param name = "cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static object GetWorkflowStatePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -87,8 +81,6 @@ namespace DotNetNuke.Security.Permissions
         ///   dataReader
         /// </summary>
         /// <param name = "dr">The IDataReader</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, WorkflowStatePermissionCollection> FillWorkflowStatePermissionDictionary(IDataReader dr)
         {
@@ -144,8 +136,6 @@ namespace DotNetNuke.Security.Permissions
         ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection
         /// </summary>
         /// <param name = "StateID">The ID of the State</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int StateID)
         {
@@ -175,8 +165,6 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState</param>
         /// <param name = "permissionKey">The Permission to check</param>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool HasWorkflowStatePermission(WorkflowStatePermissionCollection objWorkflowStatePermissions, string permissionKey)
         {

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -114,9 +114,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the URL of the Link (unless DataBinding through KeyField)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/17/2006	Created
-        /// </history>
         public string NavigateURL { get; set; }
 
 
@@ -124,9 +121,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the URL Formatting string
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         public string NavigateURLFormatString { get; set; }
 
 

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,10 +25,12 @@
 
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web;
-
+using System.Web.Caching;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -36,7 +38,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Entities.Urls
 {
-    public class UrlRewriterUtils
+    public static class UrlRewriterUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UrlRewriterUtils));
 
@@ -212,6 +214,5 @@ namespace DotNetNuke.Entities.Urls
 			bool replaced;
 		    return RewriteController.CleanExtension(value, settings, langParms, out replaced);
 	    }
-
     }
 }

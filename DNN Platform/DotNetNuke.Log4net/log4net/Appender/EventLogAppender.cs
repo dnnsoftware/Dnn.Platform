@@ -364,7 +364,7 @@ namespace log4net.Appender
 		#region Override implementation of AppenderSkeleton
 
 		/// <summary>
-		/// This method is called by the <see cref="AppenderSkeleton.DoAppend(LoggingEvent)"/>
+		/// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/>
 		/// method. 
 		/// </summary>
 		/// <param name="loggingEvent">the event to log</param>
@@ -454,10 +454,10 @@ namespace log4net.Appender
 			{
 				string eventTxt = RenderLoggingEvent(loggingEvent);
 
-				// There is a limit of 32K characters for an event log message
-				if (eventTxt.Length > 32000)
+				// There is a limit of about 32K characters for an event log message
+				if (eventTxt.Length > MAX_EVENTLOG_MESSAGE_SIZE)
 				{
-					eventTxt = eventTxt.Substring(0, 32000);
+					eventTxt = eventTxt.Substring(0, MAX_EVENTLOG_MESSAGE_SIZE);
 				}
 
 				EventLogEntryType entryType = GetEntryType(loggingEvent.Level);
@@ -613,6 +613,74 @@ namespace log4net.Appender
 	    /// log message.
 	    /// </remarks>
 	    private readonly static Type declaringType = typeof(EventLogAppender);
+
+		/// <summary>
+		/// The maximum size supported by default.
+		/// </summary>
+		/// <remarks>
+		/// http://msdn.microsoft.com/en-us/library/xzwc042w(v=vs.100).aspx
+		/// The 32766 documented max size is two bytes shy of 32K (I'm assuming 32766 
+		/// may leave space for a two byte null terminator of #0#0). The 32766 max 
+		/// length is what the .NET 4.0 source code checks for, but this is WRONG! 
+		/// Strings with a length > 31839 on Windows Vista or higher can CORRUPT 
+		/// the event log! See: System.Diagnostics.EventLogInternal.InternalWriteEvent() 
+		/// for the use of the 32766 max size.
+		/// </remarks>
+		private readonly static int MAX_EVENTLOG_MESSAGE_SIZE_DEFAULT = 32766;
+
+		/// <summary>
+		/// The maximum size supported by a windows operating system that is vista
+		/// or newer.
+		/// </summary>
+		/// <remarks>
+		/// See ReportEvent API:
+		///		http://msdn.microsoft.com/en-us/library/aa363679(VS.85).aspx
+		/// ReportEvent's lpStrings parameter:
+		/// "A pointer to a buffer containing an array of 
+		/// null-terminated strings that are merged into the message before Event Viewer 
+		/// displays the string to the user. This parameter must be a valid pointer 
+		/// (or NULL), even if wNumStrings is zero. Each string is limited to 31,839 characters."
+		/// 
+		/// Going beyond the size of 31839 will (at some point) corrupt the event log on Windows
+		/// Vista or higher! It may succeed for a while...but you will eventually run into the
+		/// error: "System.ComponentModel.Win32Exception : A device attached to the system is
+		/// not functioning", and the event log will then be corrupt (I was able to corrupt 
+		/// an event log using a length of 31877 on Windows 7).
+		/// 
+		/// The max size for Windows Vista or higher is documented here:
+		///		http://msdn.microsoft.com/en-us/library/xzwc042w(v=vs.100).aspx.
+		/// Going over this size may succeed a few times but the buffer will overrun and 
+		/// eventually corrupt the log (based on testing).
+		/// 
+		/// The maxEventMsgSize size is based on the max buffer size of the lpStrings parameter of the ReportEvent API.
+		/// The documented max size for EventLog.WriteEntry for Windows Vista and higher is 31839, but I'm leaving room for a
+		/// terminator of #0#0, as we cannot see the source of ReportEvent (though we could use an API monitor to examine the
+		/// buffer, given enough time).
+		/// </remarks>
+		private readonly static int MAX_EVENTLOG_MESSAGE_SIZE_VISTA_OR_NEWER = 31839 - 2;
+
+		/// <summary>
+		/// The maximum size that the operating system supports for
+		/// a event log message.
+		/// </summary>
+		/// <remarks>
+		/// Used to determine the maximum string length that can be written
+		/// to the operating system event log and eventually truncate a string
+		/// that exceeds the limits.
+		/// </remarks>
+		private readonly static int MAX_EVENTLOG_MESSAGE_SIZE = GetMaxEventLogMessageSize();
+
+		/// <summary>
+		/// This method determines the maximum event log message size allowed for
+		/// the current environment.
+		/// </summary>
+		/// <returns></returns>
+		private static int GetMaxEventLogMessageSize()
+		{
+			if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major >= 6)
+				return MAX_EVENTLOG_MESSAGE_SIZE_VISTA_OR_NEWER;
+			return MAX_EVENTLOG_MESSAGE_SIZE_DEFAULT;
+		}
 
 	    #endregion Private Static Fields
 	}

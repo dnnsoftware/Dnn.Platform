@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,10 +42,6 @@ namespace DotNetNuke.UI.UserControls
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// 	[cnurse]	10/08/2004	Updated to reflect design changes for Help, 508 support
-	///                       and localisation
-	/// </history>
 	public abstract class Address : UserControlBase
 	{
 
@@ -421,10 +417,6 @@ namespace DotNetNuke.UI.UserControls
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	10/08/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		private void Localize()
 		{
 			var countryCode = cboCountry.SelectedItem.Value;
@@ -491,10 +483,6 @@ namespace DotNetNuke.UI.UserControls
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	10/08/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		private void ShowRequiredFields()
 		{
 			var reqStreet = PortalController.GetPortalSettingAsBoolean("addressstreet", PortalSettings.PortalId, true);
@@ -617,10 +605,6 @@ namespace DotNetNuke.UI.UserControls
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	10/08/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		private void UpdateRequiredFields()
 		{
 			if (chkCountry.Checked == false)
@@ -648,10 +632,6 @@ namespace DotNetNuke.UI.UserControls
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	10/08/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,12 +42,11 @@ using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 
-using Telerik.Web.UI;
-
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 using System.Web.UI.WebControls;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Web.Client;
 
 #endregion
 
@@ -61,10 +60,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/01/2006  created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class User : UserUserControlBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (User));
@@ -76,10 +71,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets whether the User is valid
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public bool IsValid
         {
             get
@@ -92,10 +83,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets and sets whether the Password section is displayed
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/17/2007  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public bool ShowPassword
         {
             get
@@ -112,10 +99,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets and sets whether the Update button
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public bool ShowUpdate
         {
             get
@@ -198,10 +181,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Validate validates the User
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/10/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private bool Validate()
         {
             //Check User Editor
@@ -270,10 +249,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// CreateUser creates a new user in the Database
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/18/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void CreateUser()
         {
             //Update DisplayName to conform to Format
@@ -311,10 +286,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
             if (Page.IsPostBack == false)
@@ -459,10 +430,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -479,7 +446,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
 			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
@@ -536,10 +503,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdDelete_Click runs when the delete Button is clicked
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdDelete_Click(Object sender, EventArgs e)
         {
             if (IsUserOrAdmin == false)
@@ -602,10 +565,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdUpdate_Click runs when the Update Button is clicked
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(Object sender, EventArgs e)
         {
             if (IsUserOrAdmin == false)

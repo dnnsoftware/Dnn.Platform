@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -50,9 +50,6 @@ namespace DotNetNuke.UI.ControlPanels
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/11/2008  documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ControlPanelBase : UserControl
     {
@@ -69,9 +66,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// Gets whether the ControlPanel is Visible
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool IsVisible
         {
@@ -85,9 +79,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// <summary>
         /// Gets the current Portal Settings
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PortalSettings PortalSettings
         {
@@ -102,9 +93,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// Gets the User mode of the Control Panel
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PortalSettings.Mode UserMode
         {
@@ -119,9 +107,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// Gets and sets the Local ResourceFile for the Control Panel
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
@@ -208,9 +193,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// <param name="roleId">The Id of the role to add the permission for.</param>
         /// <param name="userId">Operator</param>
         /// <param name="allowAccess">Whether allow to access the module</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
         {
@@ -243,9 +225,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// <param name="tabId">The id of the tab</param>
         /// <param name="paneName">The pane to add the module to</param>
         /// <param name="position">The relative position within the pane for the module</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void AddExistingModule(int moduleId, int tabId, string paneName, int position, string align)
         {
@@ -281,9 +260,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// <param name="title">The Title for the resulting module</param>
         /// <param name="paneName">The pane to add the module to</param>
         /// <param name="position">The relative position within the pane for the module</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void AddNewModule(string title, int desktopModuleId, string paneName, int position, ViewPermissionType permissionType, string align)
         {
@@ -430,9 +406,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// </summary>
         /// <param name="FriendlyName">The friendly name of the Module</param>
         /// <param name="PortalID">The ID of the portal</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string BuildURL(int PortalID, string FriendlyName)
         {
@@ -468,9 +441,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// Sets the UserMode
         /// </summary>
         /// <param name="userMode">The userMode to set</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void SetUserMode(string userMode)
         {
@@ -482,9 +452,6 @@ namespace DotNetNuke.UI.ControlPanels
         /// Sets the current Visible Mode
         /// </summary>
         /// <param name="isVisible">A flag indicating whether the Control Panel should be visible</param>
-        /// <history>
-        /// 	[cnurse]	01/11/2008  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void SetVisibleMode(bool isVisible)
         {
@@ -503,51 +470,6 @@ namespace DotNetNuke.UI.ControlPanels
 				base.OnInit(e);
 			}
 		}
-		
-		#endregion
-		
-		#region Obsolete
-
-        [Obsolete("Deprecated in 5.0. Replaced by SetMode(UserMode).")]
-        protected void SetContentMode(bool showContent)
-        {
-            Personalization.SetProfile("Usability", "ContentVisible" + PortalSettings.PortalId, showContent.ToString());
-        }
-
-        [Obsolete("Deprecated in 5.0. Replaced by SetMode(UserMode).")]
-        protected void SetPreviewMode(bool isPreview)
-        {
-            if (isPreview)
-            {
-                Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, "View");
-            }
-            else
-            {
-                Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, "Edit");
-            }
-        }
-
-        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
-        protected bool ShowContent
-        {
-            get
-            {
-                return PortalSettings.UserMode != PortalSettings.Mode.Layout;
-            }
-        }
-
-        [Obsolete("Deprecated in 5.0. Replaced By UserMode.")]
-        protected bool IsPreview
-        {
-            get
-            {
-                if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
-                {
-                    return false;
-                }
-                return true;
-            }
-        }
 		
 		#endregion
 

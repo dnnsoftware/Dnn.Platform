@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,8 +24,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
@@ -282,12 +282,11 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folderMapping", folderMapping);
 
             var folderProvider = Instance(folderMapping.FolderProviderType);
-
-            AddFolderAndMoveFiles(folderPath, newFolderPath, folderMapping);
-
             var folder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
             var folderManager = new FolderManager();
             var subFolders = folderManager.GetFolderMappingFoldersRecursive(folderMapping, folder).Skip(1).Reverse();
+
+            AddFolderAndMoveFiles(folderPath, newFolderPath, folderMapping);
 
             foreach (var subFolderPath in subFolders.Select(s => s.Key))
             {
@@ -300,14 +299,25 @@ namespace DotNetNuke.Services.FileSystem
             folderProvider.DeleteFolder(new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID });
         }
 
+        /// <summary>
+        /// Gets the decrypted value of an encrypted folder mapping setting
+        /// </summary>
+        /// <remarks>If the value is not set the method returns null</remarks>
+        /// <param name="folderMappingSettings">Folder mapping settings</param>
+        /// <param name="settingName">Setting name</param>
+        /// <exception cref="ArgumentNullException">the input parameters of the method cannot be null</exception>
+        /// <returns>decrypted value</returns>
         public string GetEncryptedSetting(Hashtable folderMappingSettings, string settingName)
         {
-            return new PortalSecurity().Decrypt(Host.GUID, folderMappingSettings[settingName].ToString());
+            Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);
+            Requires.NotNullOrEmpty(nameof(settingName), settingName);
+            
+            return PortalSecurity.Instance.Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
         }
 
         public string EncryptValue(string settingValue)
         {
-            return new PortalSecurity().Encrypt(Host.GUID, settingValue.Trim());
+            return PortalSecurity.Instance.Encrypt(Host.GUID, settingValue.Trim());
         }
 
         public virtual string GetHashCode(IFileInfo file)
@@ -331,19 +341,17 @@ namespace DotNetNuke.Services.FileSystem
                 fileContent = tmp;
             }
 
-            var hashText = "";
-            string hexValue;
-
-            var hashData = SHA1.Create().ComputeHash(fileContent);
-
-            foreach (var b in hashData)
+            var hashText = new StringBuilder();
+            using (var hasher = SHA1.Create())
             {
-                hexValue = b.ToString("X").ToLower();
-                //Lowercase for compatibility on case-sensitive systems
-                hashText += (hexValue.Length == 1 ? "0" : "") + hexValue;
+                var hashData = hasher.ComputeHash(fileContent);
+                foreach (var b in hashData)
+                {
+                    hashText.Append(b.ToString("x2"));
+                }
             }
 
-            return hashText;
+            return hashText.ToString();
         }
 
         #endregion

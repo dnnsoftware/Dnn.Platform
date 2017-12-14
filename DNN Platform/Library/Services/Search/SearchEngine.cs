@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,10 +47,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    ///     [vnguyen]   04/16/2013  updated with methods for an Updated Search
-    /// </history>
     /// -----------------------------------------------------------------------------
     internal class SearchEngine
     {
@@ -74,9 +70,6 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Indexes content within the given time farame
         /// </summary>
-        /// <history>
-        ///     [vnguyen]   04/17/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         internal void IndexContent()
         {
@@ -194,9 +187,6 @@ namespace DotNetNuke.Services.Search
         /// Gets all the Search Documents for the given timeframe.
         /// </summary>
         /// <param name="indexer"></param>
-        /// <history>
-        ///     [vnguyen]   04/17/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private int GetAndStoreSearchDocuments(IndexingProvider indexer)
         {
@@ -211,7 +201,7 @@ namespace DotNetNuke.Services.Search
                 try
                 {
                     indexedCount += indexer.IndexSearchDocuments(
-                        portal.PortalID, SchedulerItem.ScheduleID, indexSince, StoreSearchDocuments);
+                        portal.PortalID, SchedulerItem, indexSince, StoreSearchDocuments);
                 }
                 catch (NotImplementedException)
                 {
@@ -228,7 +218,7 @@ namespace DotNetNuke.Services.Search
             try
             {
                 indexedCount += indexer.IndexSearchDocuments(
-                    Null.NullInteger, SchedulerItem.ScheduleID, indexSince, StoreSearchDocuments);
+                    Null.NullInteger, SchedulerItem, indexSince, StoreSearchDocuments);
             }
             catch (NotImplementedException)
             {
@@ -245,9 +235,6 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Gets all the Searchable Module MetaData SearchDocuments within the timeframe for all portals
         /// </summary>
-        /// <history>
-        ///     [vnguyen]   04/17/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private int GetAndStoreModuleMetaData(ModuleIndexer indexer)
         {
@@ -315,7 +302,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetContent gets all the content and passes it to the Indexer
@@ -323,11 +310,8 @@ namespace DotNetNuke.Services.Search
         /// <remarks>
         /// </remarks>
         /// <param name="indexer">The Index Provider that will index the content of the portal</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         protected SearchItemInfoCollection GetContent(IndexingProvider indexer)
         {
             var searchItems = new SearchItemInfoCollection();
@@ -342,7 +326,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetContent gets the Portal's content and passes it to the Indexer
@@ -351,11 +335,8 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
         /// <param name="indexer">The Index Provider that will index the content of the portal</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
         {
             var searchItems = new SearchItemInfoCollection();

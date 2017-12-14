@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Entities.Modules
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	03/02/2007
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class UserUserControlBase : UserModuleBase
     {
@@ -73,9 +70,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the UserCreateCompleted Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/13/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnUserCreateCompleted(UserCreatedEventArgs e)
         {
@@ -89,9 +83,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the UserCreated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnUserCreated(UserCreatedEventArgs e)
         {
@@ -105,9 +96,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the UserDeleted Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnUserDeleted(UserDeletedEventArgs e)
         {
@@ -121,9 +109,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the UserDeleteError Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	11/30/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnUserDeleteError(UserUpdateErrorArgs e)
         {
@@ -169,9 +154,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the UserUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdated(EventArgs e)
         {
@@ -185,9 +167,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the UserUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateCompleted(EventArgs e)
         {
@@ -201,9 +180,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Raises the UserUpdateError Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/07/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateError(UserUpdateErrorArgs e)
         {
@@ -215,15 +191,18 @@ namespace DotNetNuke.Entities.Modules
 
         #endregion
 
+        #region "Properties"
+
+        protected override bool AddUser => !Request.IsAuthenticated || base.AddUser;
+
+        #endregion
+
         #region Nested type: BaseUserEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The BaseUserEventArgs class provides a base for User EventArgs classes
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public class BaseUserEventArgs
         {
@@ -231,9 +210,6 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>
             /// Gets and sets the Id of the User
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	02/07/2007  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public int UserId { get; set; }
 
@@ -241,9 +217,6 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>
             /// Gets and sets the Id of the User
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	02/07/2007  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public string UserName { get; set; }
         }
@@ -257,9 +230,6 @@ namespace DotNetNuke.Entities.Modules
         /// The UserCreatedEventArgs class provides a customised EventArgs class for
         /// the UserCreated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/08/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public class UserCreatedEventArgs
         {
@@ -270,9 +240,6 @@ namespace DotNetNuke.Entities.Modules
             /// Constructs a new UserCreatedEventArgs
             /// </summary>
             /// <param name="newUser">The newly Created User</param>
-            /// <history>
-            /// 	[cnurse]	03/08/2006  Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public UserCreatedEventArgs(UserInfo newUser)
             {
@@ -283,9 +250,6 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>
             /// Gets and sets the Create Status
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	03/08/2006  Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public UserCreateStatus CreateStatus
             {
@@ -303,9 +267,6 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>
             /// Gets and sets the New User
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	03/08/2006  Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public UserInfo NewUser { get; set; }
 
@@ -313,9 +274,6 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>
             /// Gets and sets a flag whether to Notify the new User of the Creation
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	03/08/2006  Created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public bool Notify { get; set; }
         }
@@ -329,9 +287,6 @@ namespace DotNetNuke.Entities.Modules
         /// The UserDeletedEventArgs class provides a customised EventArgs class for
         /// the UserDeleted Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/08/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public class UserDeletedEventArgs : BaseUserEventArgs
         {
@@ -341,9 +296,6 @@ namespace DotNetNuke.Entities.Modules
             /// </summary>
             /// <param name="id">The Id of the User</param>
             /// <param name="name">The user name of the User</param>
-            /// <history>
-            /// 	[cnurse]	02/07/2007  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public UserDeletedEventArgs(int id, string name)
             {
@@ -361,9 +313,6 @@ namespace DotNetNuke.Entities.Modules
 		/// The UserRestoredEventArgs class provides a customised EventArgs class for
 		/// the UserRestored Event
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	02/07/2007  created
-		/// </history>
 		/// -----------------------------------------------------------------------------
         public class UserRestoredEventArgs : BaseUserEventArgs
         {
@@ -373,9 +322,6 @@ namespace DotNetNuke.Entities.Modules
 			/// </summary>
 			/// <param name="id">The Id of the User</param>
 			/// <param name="name">The user name of the User</param>
-			/// <history>
-			/// 	[cnurse]	02/07/2007  created
-			/// </history>
 			/// -----------------------------------------------------------------------------
             public UserRestoredEventArgs(int id, string name)
             {
@@ -393,9 +339,6 @@ namespace DotNetNuke.Entities.Modules
 		/// The UserRemovedEventArgs class provides a customised EventArgs class for
 		/// the UserRemoved Event
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	02/07/2007  created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 
         public class UserRemovedEventArgs : BaseUserEventArgs
@@ -406,9 +349,6 @@ namespace DotNetNuke.Entities.Modules
 			/// </summary>
 			/// <param name="id">The Id of the User</param>
 			/// <param name="name">The user name of the User</param>
-			/// <history>
-			/// 	[cnurse]	02/07/2007  created
-			/// </history>
 			/// -----------------------------------------------------------------------------
 			public UserRemovedEventArgs(int id, string name)
             {
@@ -427,9 +367,6 @@ namespace DotNetNuke.Entities.Modules
         /// The UserUpdateErrorArgs class provides a customised EventArgs class for
         /// the UserUpdateError Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public class UserUpdateErrorArgs : BaseUserEventArgs
         {
@@ -440,9 +377,6 @@ namespace DotNetNuke.Entities.Modules
             /// <param name="id">The Id of the User</param>
             /// <param name="name">The user name of the User</param>
             /// <param name="message">The error message</param>
-            /// <history>
-            /// 	[cnurse]	02/07/2007  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public UserUpdateErrorArgs(int id, string name, string message)
             {
@@ -455,9 +389,6 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>
             /// Gets and sets the error message
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	02/07/2007  created
-            /// </history>
             /// -----------------------------------------------------------------------------
             public string Message { get; set; }
         }

@@ -57,47 +57,6 @@ namespace log4net.Config
 		#region Configure static methods
 
 #if !NETCF
-		/// <summary>
-		/// Automatically configures the log4net system based on the 
-		/// application's configuration settings.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Each application has a configuration file. This has the
-		/// same name as the application with '.config' appended.
-		/// This file is XML and calling this function prompts the
-		/// configurator to look in that file for a section called
-		/// <c>log4net</c> that contains the configuration data.
-		/// </para>
-		/// <para>
-		/// To use this method to configure log4net you must specify 
-		/// the <see cref="Log4NetConfigurationSectionHandler"/> section
-		/// handler for the <c>log4net</c> configuration section. See the
-		/// <see cref="Log4NetConfigurationSectionHandler"/> for an example.
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="Log4NetConfigurationSectionHandler"/>
-#else
-		/// <summary>
-		/// Automatically configures the log4net system based on the 
-		/// application's configuration settings.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Each application has a configuration file. This has the
-		/// same name as the application with '.config' appended.
-		/// This file is XML and calling this function prompts the
-		/// configurator to look in that file for a section called
-		/// <c>log4net</c> that contains the configuration data.
-		/// </para>
-		/// </remarks>
-#endif
-        static public ICollection Configure()
-        {
-            return Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
-        }
-
-#if !NETCF
         /// <summary>
         /// Automatically configures the <see cref="ILoggerRepository"/> using settings
         /// stored in the application's configuration file.
@@ -162,7 +121,7 @@ namespace log4net.Config
 				LogLog.Debug(declaringType, "Application config file location unknown");
 			}
 
-#if NETCF
+#if NETCF || NETSTANDARD1_3
 			// No config file reading stuff. Just go straight for the file
 			Configure(repository, new FileInfo(SystemInfo.ConfigurationFileLocation));
 #else
@@ -202,6 +161,48 @@ namespace log4net.Config
 #endif
 		}
 
+#if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
+#if !NETCF
+		/// <summary>
+		/// Automatically configures the log4net system based on the 
+		/// application's configuration settings.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Each application has a configuration file. This has the
+		/// same name as the application with '.config' appended.
+		/// This file is XML and calling this function prompts the
+		/// configurator to look in that file for a section called
+		/// <c>log4net</c> that contains the configuration data.
+		/// </para>
+		/// <para>
+		/// To use this method to configure log4net you must specify 
+		/// the <see cref="Log4NetConfigurationSectionHandler"/> section
+		/// handler for the <c>log4net</c> configuration section. See the
+		/// <see cref="Log4NetConfigurationSectionHandler"/> for an example.
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="Log4NetConfigurationSectionHandler"/>
+#else
+		/// <summary>
+		/// Automatically configures the log4net system based on the 
+		/// application's configuration settings.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Each application has a configuration file. This has the
+		/// same name as the application with '.config' appended.
+		/// This file is XML and calling this function prompts the
+		/// configurator to look in that file for a section called
+		/// <c>log4net</c> that contains the configuration data.
+		/// </para>
+		/// </remarks>
+#endif
+        static public ICollection Configure()
+        {
+            return Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
+        }
+
 		/// <summary>
 		/// Configures log4net using a <c>log4net</c> element
 		/// </summary>
@@ -220,32 +221,6 @@ namespace log4net.Config
 
             using (new LogLog.LogReceivedAdapter(configurationMessages))
             {
-                InternalConfigureFromXml(repository, element);
-            }
-
-            repository.ConfigurationMessages = configurationMessages;
-
-            return configurationMessages;
-		}
-
-		/// <summary>
-		/// Configures the <see cref="ILoggerRepository"/> using the specified XML 
-		/// element.
-		/// </summary>
-		/// <remarks>
-		/// Loads the log4net configuration from the XML element
-		/// supplied as <paramref name="element"/>.
-		/// </remarks>
-		/// <param name="repository">The repository to configure.</param>
-		/// <param name="element">The element to parse.</param>
-		static public ICollection Configure(ILoggerRepository repository, XmlElement element) 
-		{
-            ArrayList configurationMessages = new ArrayList();
-
-            using (new LogLog.LogReceivedAdapter(configurationMessages))
-            {
-                LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using XML element");
-
                 InternalConfigureFromXml(repository, element);
             }
 
@@ -372,7 +347,6 @@ namespace log4net.Config
             ArrayList configurationMessages = new ArrayList();
 
             ILoggerRepository repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
-
             using (new LogLog.LogReceivedAdapter(configurationMessages))
             {
                 InternalConfigure(repository, configUri);
@@ -402,7 +376,6 @@ namespace log4net.Config
             ArrayList configurationMessages = new ArrayList();
 
             ILoggerRepository repository = LogManager.GetRepository(Assembly.GetCallingAssembly());
-
             using (new LogLog.LogReceivedAdapter(configurationMessages))
             {
                 InternalConfigure(repository, configStream);
@@ -412,9 +385,35 @@ namespace log4net.Config
 
             return configurationMessages;
 		}
+#endif // !NETSTANDARD1_3
+
+        /// <summary>
+        /// Configures the <see cref="ILoggerRepository"/> using the specified XML 
+        /// element.
+        /// </summary>
+        /// <remarks>
+        /// Loads the log4net configuration from the XML element
+        /// supplied as <paramref name="element"/>.
+        /// </remarks>
+        /// <param name="repository">The repository to configure.</param>
+        /// <param name="element">The element to parse.</param>
+        static public ICollection Configure(ILoggerRepository repository, XmlElement element)
+        {
+            ArrayList configurationMessages = new ArrayList();
+
+            using (new LogLog.LogReceivedAdapter(configurationMessages))
+            {
+                LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using XML element");
+
+                InternalConfigureFromXml(repository, element);
+            }
+
+            repository.ConfigurationMessages = configurationMessages;
+
+            return configurationMessages;
+        }
 
 #if !NETCF
-
         /// <summary>
         /// Configures the <see cref="ILoggerRepository"/> using the specified configuration 
         /// file.
@@ -652,7 +651,11 @@ namespace log4net.Config
 #endif
 						try
 						{
+#if NETSTANDARD1_3
+							WebResponse response = configRequest.GetResponseAsync().GetAwaiter().GetResult();
+#else
 							WebResponse response = configRequest.GetResponse();
+#endif
 							if (response != null)
 							{
 								try
@@ -725,12 +728,14 @@ namespace log4net.Config
 #if (NETCF)
 					// Create a text reader for the file stream
 					XmlTextReader xmlReader = new XmlTextReader(configStream);
-#elif NET_2_0
+#elif NET_2_0 || NETSTANDARD1_3
 					// Allow the DTD to specify entity includes
 					XmlReaderSettings settings = new XmlReaderSettings();
                                         // .NET 4.0 warning CS0618: 'System.Xml.XmlReaderSettings.ProhibitDtd'
                                         // is obsolete: 'Use XmlReaderSettings.DtdProcessing property instead.'
-#if !NET_4_0
+#if NETSTANDARD1_3 // TODO DtdProcessing.Parse not yet available (https://github.com/dotnet/corefx/issues/4376)
+					settings.DtdProcessing = DtdProcessing.Ignore;
+#elif !NET_4_0 && !MONO_4_0
 					settings.ProhibitDtd = false;
 #else
 					settings.DtdProcessing = DtdProcessing.Parse;
@@ -786,7 +791,7 @@ namespace log4net.Config
 		#region ConfigureAndWatch static methods
 
 #if (!NETCF && !SSCLI)
-
+#if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
 		/// <summary>
 		/// Configures log4net using the file specified, monitors the file for changes 
 		/// and reloads the configuration if a change is detected.
@@ -804,10 +809,10 @@ namespace log4net.Config
 		/// </para>
 		/// <para>
 		/// For more information on how to configure log4net using
-		/// a separate configuration file, see <see cref="Configure(FileInfo)"/>.
+		/// a separate configuration file, see <see cref="M:Configure(FileInfo)"/>.
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="Configure(FileInfo)"/>
+		/// <seealso cref="M:Configure(FileInfo)"/>
 		static public ICollection ConfigureAndWatch(FileInfo configFile)
 		{
             ArrayList configurationMessages = new ArrayList();
@@ -823,6 +828,7 @@ namespace log4net.Config
 
             return configurationMessages;
 		}
+#endif // !NETSTANDARD1_3
 
         /// <summary>
         /// Configures the <see cref="ILoggerRepository"/> using the file specified, 
@@ -843,10 +849,10 @@ namespace log4net.Config
         /// </para>
         /// <para>
         /// For more information on how to configure log4net using
-        /// a separate configuration file, see <see cref="Configure(FileInfo)"/>.
+        /// a separate configuration file, see <see cref="M:Configure(FileInfo)"/>.
         /// </para>
         /// </remarks>
-        /// <seealso cref="Configure(FileInfo)"/>
+        /// <seealso cref="M:Configure(FileInfo)"/>
         static public ICollection ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
         {
             ArrayList configurationMessages = new ArrayList();
@@ -880,18 +886,18 @@ namespace log4net.Config
                     {
                         // support multiple repositories each having their own watcher
                         ConfigureAndWatchHandler handler =
-                            (ConfigureAndWatchHandler)m_repositoryName2ConfigAndWatchHandler[repository.Name];
+							(ConfigureAndWatchHandler)m_repositoryName2ConfigAndWatchHandler[configFile.FullName];
 
                         if (handler != null)
                         {
-                            m_repositoryName2ConfigAndWatchHandler.Remove(repository.Name);
+							m_repositoryName2ConfigAndWatchHandler.Remove(configFile.FullName);
                             handler.Dispose();
                         }
 
                         // Create and start a watch handler that will reload the
                         // configuration whenever the config file is modified.
                         handler = new ConfigureAndWatchHandler(repository, configFile);
-                        m_repositoryName2ConfigAndWatchHandler[repository.Name] = handler;
+						m_repositoryName2ConfigAndWatchHandler[configFile.FullName] = handler;
                     }
 				}
 				catch(Exception ex)
@@ -963,7 +969,7 @@ namespace log4net.Config
 			/// Initializes a new instance of the <see cref="ConfigureAndWatchHandler" /> class.
 			/// </para>
 			/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
             [System.Security.SecuritySafeCritical]
 #endif
             public ConfigureAndWatchHandler(ILoggerRepository repository, FileInfo configFile)
@@ -1043,7 +1049,7 @@ namespace log4net.Config
             /// <summary>
             /// Release the handles held by the watcher and timer.
             /// </summary>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
             [System.Security.SecuritySafeCritical]
 #endif
             public void Dispose()

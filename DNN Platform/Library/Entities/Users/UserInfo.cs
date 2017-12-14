@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,9 +49,6 @@ namespace DotNetNuke.Entities.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	12/13/2005	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess
@@ -59,7 +56,6 @@ namespace DotNetNuke.Entities.Users
         #region Private Members
 
         private string _administratorRoleName;
-        private string _fullName;
         private UserMembership _membership;
         private UserProfile _profile;
         private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
@@ -85,9 +81,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the AffiliateId for this user
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public int AffiliateID { get; set; }
@@ -96,9 +89,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Display Name
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(3), Required(true), MaxLength(128)]
         public string DisplayName { get; set; }
@@ -107,9 +97,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Email Address
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/27/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(4), MaxLength(256), Required(true), RegularExpressionValidator(Globals.glbEmailRegEx)]
         public string Email { get; set; }
@@ -118,9 +105,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the First Name
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(1), MaxLength(50)]
         public string FirstName
@@ -129,24 +113,10 @@ namespace DotNetNuke.Entities.Users
             set { Profile.FirstName = value; }
         }
 
-        /// <summary>
-        /// Gets and sets the HMAC AppId
-        /// </summary>
-        public string HmacAppId { get; set; }
-
-        /// <summary>
-        /// Gets and sets the HMAC AppSecret
-        /// </summary>
-        public string HmacAppSecret { get; set; }
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the User is deleted
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsDeleted { get; set; }
@@ -155,9 +125,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets whether the User is a SuperUser
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
@@ -166,9 +133,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Last IP address used by user
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/13/2009	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public string LastIPAddress { get; set; }
@@ -177,9 +141,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Last Name
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(2), MaxLength(50)]
         public string LastName
@@ -192,9 +153,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Membership object
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public UserMembership Membership
@@ -231,9 +189,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the PortalId
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public int PortalID { get; set; }
@@ -242,9 +197,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Profile Object
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public UserProfile Profile
@@ -300,9 +252,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User Id
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public int UserID { get; set; }
@@ -311,9 +260,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the User Name
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/24/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(0), MaxLength(100), IsReadOnly(true), Required(true)]
         public string Username { get; set; }
@@ -333,10 +279,6 @@ namespace DotNetNuke.Entities.Users
         /// <param name="currentScope">requested maximum access level, might be restricted due to user level</param>
         /// <param name="propertyNotFound">out: flag, if property could be retrieved.</param>
         /// <returns>current value of the property for this userinfo object</returns>
-        /// <history>
-        ///    2007-10-20   [sleupold]   documented and extended with differenciated access permissions
-        ///    2007-10-20   [sleupold]   role access added (for user himself or admin only).
-        /// </history>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             Scope internScope;
@@ -361,8 +303,8 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    var ps = new PortalSecurity();
-                    var code = ps.EncryptString(PortalID + "-" + UserID, Config.GetDecryptionkey());
+                    var ps = PortalSecurity.Instance;
+                    var code = ps.Encrypt(Config.GetDecryptionkey(), PortalID + "-" + UserID);
                     return code.Replace("+", ".").Replace("/", "-").Replace("=", "_");
                 case "affiliateid":
                     if (internScope < Scope.SystemMessages)
@@ -466,9 +408,6 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <param name="accessingUser">userinfo of the user to query</param>
         /// <returns>true, if user is portal administrator or superuser</returns>
-        /// <history>
-        ///    2007-10-20 [sleupold] added
-        /// </history>
         private bool isAdminUser(ref UserInfo accessingUser)
         {
             if (accessingUser == null || accessingUser.UserID == -1)
@@ -493,9 +432,6 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <param name="role">The role to check</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        /// <history>
-        ///     [cnurse]	12/13/2005	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
@@ -530,13 +466,10 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets current time in User's timezone
         /// </summary>
-        /// <history>
-        ///     [aprasad]	07/19/2011	Added
-        /// </history>
         /// -----------------------------------------------------------------------------        
         public DateTime LocalTime()
         {
-            return LocalTime(DateUtils.GetDatabaseTime());
+            return LocalTime(DateUtils.GetDatabaseUtcTime());
         }
 
         /// -----------------------------------------------------------------------------
@@ -544,9 +477,6 @@ namespace DotNetNuke.Entities.Users
         /// Convert utc time in User's timezone
         /// </summary>
         /// <param name="utcTime">Utc time to convert</param>
-        /// <history>
-        ///     [aprasad]	07/19/2011	Added
-        /// </history>
         /// -----------------------------------------------------------------------------       
         public DateTime LocalTime(DateTime utcTime)
         {
@@ -562,9 +492,6 @@ namespace DotNetNuke.Entities.Users
         /// UpdateDisplayName updates the displayname to the format provided
         /// </summary>
         /// <param name="format">The format to use</param>
-        /// <history>
-        ///     [cnurse]	02/21/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void UpdateDisplayName(string format)
         {
@@ -575,31 +502,6 @@ namespace DotNetNuke.Entities.Users
             format = format.Replace("[USERNAME]", Username);
             DisplayName = format;
         }
-
-        #endregion
-
-        #region Obsolete
-
-        [Obsolete("Deprecated in DNN 6.2. Roles are no longer stored in a cookie")]
-        public void ClearRoles() { }
-
-        [Browsable(false), Obsolete("Deprecated in DNN 5.1. This property has been deprecated in favour of Display Name")]
-        public string FullName
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(_fullName))
-                {
-                    _fullName = FirstName + " " + LastName;
-                }
-                return _fullName;
-            }
-            set { _fullName = value; }
-        }
-
-        [Browsable(false)]
-        [Obsolete("Deprecated in DNN 6.2. Roles are no longer stored in a cookie so this property is no longer neccessary")]
-        public bool RefreshRoles { get; set; }
 
         #endregion
     }

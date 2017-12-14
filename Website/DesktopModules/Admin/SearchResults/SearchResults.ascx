@@ -1,10 +1,11 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.SearchResults.SearchResults" Codebehind="SearchResults.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <div class="dnnSearchBoxPanel">
     <a href="javascript:void(0)" class="dnnSearchResultAdvancedTip"><%= LinkAdvancedTipText %></a>
-    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= SearchDisplayTerm %>" />
+    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= HttpUtility.HtmlAttributeEncode(SearchTerm) %>" aria-label="Search Term" />
     <div id="dnnSearchResult-advancedTipContainer">
         <%= AdvancedSearchHintText %>
     </div>
@@ -20,12 +21,12 @@
 
     <div class="dnnRight">
         <span class="dnnSearchResultCountPerPage"><%= ResultsPerPageText %></span>
-        <dnn:DnnComboBox ID="ResultsPerPageList" runat="server" OnClientSelectedIndexChanged="dnnSearchResultPageSizeChanged">
+        <dnn:DnnComboBox ID="ResultsPerPageList" runat="server" OnClientSelectedIndexChanged="dnnSearchResultPageSizeChanged" aria-label="PageSize">
             <Items>
-                <dnn:DnnComboBoxItem runat="Server" Text="15" Value="15" />
-                <dnn:DnnComboBoxItem runat="Server" Text="25" Value="25" />
-                <dnn:DnnComboBoxItem runat="Server" Text="50" Value="50" />
-                <dnn:DnnComboBoxItem runat="Server" Text="100" Value="100" />
+                <asp:ListItem runat="Server" Text="15" Value="15" />
+                <asp:ListItem runat="Server" Text="25" Value="25" />
+                <asp:ListItem runat="Server" Text="50" Value="50" />
+                <asp:ListItem runat="Server" Text="100" Value="100" />
             </Items>
         </dnn:DnnComboBox>
     </div>
@@ -36,7 +37,7 @@
     <div class="dnnLeft">
         <span></span>
     </div>
-    <div class="dnnRight">       
+    <div class="dnnRight">
     </div>
     <div class="dnnClear"></div>
 </div>
@@ -48,34 +49,34 @@
     <div class="dnnLeft">
         <span></span>
     </div>
-    <div class="dnnRight">       
+    <div class="dnnRight">
     </div>
 </div>
 
 <div id="dnnSearchResultAdvancedForm" class="dnnForm">
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" />
-        <input type="text" id="advancedTagsCtrl" value="<%=TagsQuery %>" />
+        <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" ControlName="advancedTagsCtrl" />
+        <input type="text" id="advancedTagsCtrl" value="<%= HttpUtility.HtmlAttributeEncode(TagsQuery) %>" />
     </div>
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" />
-        <dnn:DnnComboBox ID="AdvnacedDatesList" runat="server">
+        <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" ControlName="AdvnacedDatesList" />
+        <dnn:DnnComboBox ID="AdvnacedDatesList" runat="server" aria-label="Advanced Date">
             <Items>
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionAll.Text" Value="" Selected="True" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionDay.Text" Value="day" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionWeek.Text" Value="week" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionMonth.Text" Value="month" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionQuarter.Text" Value="quarter" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionYear.Text" Value="year" />
+                <asp:ListItem runat="Server" ResourceKey="optionAll.Text" Value="" Selected="True" />
+                <asp:ListItem runat="Server" ResourceKey="optionDay.Text" Value="day" />
+                <asp:ListItem runat="Server" ResourceKey="optionWeek.Text" Value="week" />
+                <asp:ListItem runat="Server" ResourceKey="optionMonth.Text" Value="month" />
+                <asp:ListItem runat="Server" ResourceKey="optionQuarter.Text" Value="quarter" />
+                <asp:ListItem runat="Server" ResourceKey="optionYear.Text" Value="year" />
             </Items>
         </dnn:DnnComboBox>
     </div>
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedScope" runat="server" ResourceKey="lblAdvancedScope" />
-        <dnn:DnnComboBox ID="SearchScopeList" runat="server" CheckBoxes="true" Width="235px" OnClientItemChecking="dnnSearchResultScopeItemChecking" />
+        <dnn:Label ID="lblAdvancedScope" runat="server" ResourceKey="lblAdvancedScope" ControlName="SearchScopeList" />
+        <dnn:DnnComboBox ID="SearchScopeList" runat="server" CheckBoxes="true" Width="235px" OnClientSelectedIndexChanged="dnnSearchResultScopeItemChanged" aria-label="Advanced Scope" />
     </div>
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" />
+        <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" ControlName="dnnSearchResultAdvancedExactSearch" />
         <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" <%= CheckedExactSearch %> />
     </div>
     <ul class="dnnActions dnnClear">
@@ -89,25 +90,21 @@
 </div>
 
 <script type="text/javascript">
-    function dnnSearchResultScopeItemChecking(sender, e) {
-        var combo = $find('<%= SearchScopeList.ClientID %>');
-        var items = combo.get_items();
-        var countOfChecked = 0;
-        for (var i = 0; i < items.get_count(); i++) {
-            var checked = items.getItem(i).get_checked();
-            if (checked) countOfChecked++;
-        }
-        
-        if (countOfChecked == 1) {
-            var item = e.get_item();
-            if (item.get_checked()) e.set_cancel(true);
+    function dnnSearchResultScopeItemChanged(value) {
+        if (value === '') {
+            var self = this;
+            setTimeout(function() {
+                if (self.$activeOption) {
+                    self.addItem(self.$activeOption.data('value'));
+                    self.refreshOptions(true);
+                }
+            }, 0);
         }
     }
-    
-    function dnnSearchResultPageSizeChanged(sender, e) {
-        var combo = $find('<%= ResultsPerPageList.ClientID %>');
-        var pageSize = combo.get_value();
-        if (typeof dnn != 'undefined' && dnn.searchResult) {
+
+    function dnnSearchResultPageSizeChanged(value) {
+        var pageSize = value;
+        if (typeof dnn != 'undefined' && dnn.searchResult && pageSize) {
             dnn.searchResult.queryOptions.pageSize = pageSize;
             dnn.searchResult.queryOptions.pageIndex = 1;
             dnn.searchResult.doSearch();
@@ -117,10 +114,10 @@
         if(typeof dnn != 'undefined' && dnn.searchResult){
             dnn.searchResult.moduleId = <%= ModuleId %>;
             dnn.searchResult.queryOptions = {
-                searchTerm: '<%= SearchTerm %>',
-                sortOption: 0,
-                pageIndex: 1,
-                pageSize: 15
+                searchTerm: '<%= Localization.GetSafeJSString(SearchTerm) %>',
+                sortOption: <%= SortOption %>,
+                pageIndex: <%= PageIndex %>,
+                pageSize: <%= PageSize %>
             };
 
             dnn.searchResult.init({
@@ -141,7 +138,7 @@
                 currentPageIndexText: '<%= CurrentPageIndexText %>',
                 linkTarget: '<%= LinkTarget %>',
                 cultureCode: '<%= CultureCode %>'
-                
+
             });
         }
     });

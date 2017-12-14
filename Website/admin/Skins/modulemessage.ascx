@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.ModuleMessage" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls.Internal" %>
 <asp:Panel id="dnnSkinMessage" runat="server" CssClass="dnnModuleMessage">
     <asp:label id="lblHeading" runat="server" visible="False" enableviewstate="False" CssClass="dnnModMessageHeading" />
     <asp:label id="lblMessage" runat="server" enableviewstate="False" />

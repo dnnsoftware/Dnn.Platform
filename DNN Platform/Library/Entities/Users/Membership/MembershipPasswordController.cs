@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,27 +44,30 @@ namespace DotNetNuke.Entities.Users.Membership
 
         #region Private functions
 
-        private void AddPasswordHistory(int userId, string password, int retained)
+        private void AddPasswordHistory(int userId, string password, int passwordsRetained, int daysRetained)
         {
-            HashAlgorithm ha = HashAlgorithm.Create();
-            byte[] newSalt = GetRandomSaltValue();
-            byte[] bytePassword = Encoding.Unicode.GetBytes(password);
-            var inputBuffer = new byte[bytePassword.Length + 16];
-            Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
-            Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
-            byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
-            string hashedPassword = Convert.ToBase64String(bhashedPassword);
+            using (HashAlgorithm ha = HashAlgorithm.Create())
+            {
+                byte[] newSalt = GetRandomSaltValue();
+                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
+                var inputBuffer = new byte[bytePassword.Length + 16];
+                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
+                Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
+                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
+                string hashedPassword = Convert.ToBase64String(bhashedPassword);
 
-            _dataProvider.AddPasswordHistory(userId, hashedPassword,
-                Convert.ToBase64String(newSalt), retained);
+                _dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
+            }
         }
 
         private byte[] GetRandomSaltValue()
         {
-            var rcsp = new RNGCryptoServiceProvider();
-            var bSalt = new byte[16];
-            rcsp.GetBytes(bSalt);
-            return bSalt;
+            using (var rcsp = new RNGCryptoServiceProvider())
+            {
+                var bSalt = new byte[16];
+                rcsp.GetBytes(bSalt);
+                return bSalt;
+            }
         }
 
         #endregion
@@ -75,8 +78,19 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>list of PasswordHistory objects</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId)
         {
+            return GetPasswordHistory(userId, Null.NullInteger);
+        }
+
+        /// <summary>
+        /// returns the password history of the supplied user
+        /// </summary>
+        /// <param name="portalId">portalid - futureproofing against any setting become site level</param>
+        /// <returns>list of PasswordHistory objects</returns>
+        public List<PasswordHistory> GetPasswordHistory(int userId, int portalId)
+        {
+            var settings = new MembershipPasswordSettings(portalId);
             List<PasswordHistory> history =
-                CBO.FillCollection<PasswordHistory>(_dataProvider.GetPasswordHistory(userId));
+                CBO.FillCollection<PasswordHistory>(_dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
             return history;
         }
 
@@ -109,7 +123,7 @@ namespace DotNetNuke.Entities.Users.Membership
 				{
 					if (autoAdd)
 					{
-						AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored);
+						AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse);
 					}
 				}
 				else
@@ -127,24 +141,25 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>true if previously used, false otherwise</returns>
         public bool IsPasswordPreviouslyUsed(int userId, string password)
         {
-            //use default algorithm (SHA1CryptoServiceProvider )
-            HashAlgorithm ha = HashAlgorithm.Create();
             bool foundMatch = false;
-
-            List<PasswordHistory> history = GetPasswordHistory(userId);
-            foreach (PasswordHistory ph in history)
+            //use default algorithm (SHA1CryptoServiceProvider )
+            using (HashAlgorithm ha = HashAlgorithm.Create())
             {
-                string oldEncodedPassword = ph.Password;
-                string oldEncodedSalt = ph.PasswordSalt;
-                byte[] oldSalt = Convert.FromBase64String(oldEncodedSalt);
-                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
-                var inputBuffer = new byte[bytePassword.Length + 16];
-                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
-                Buffer.BlockCopy(oldSalt, 0, inputBuffer, bytePassword.Length, 16);
-                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
-                string hashedPassword = Convert.ToBase64String(bhashedPassword);
-                if (hashedPassword == oldEncodedPassword)
-                    foundMatch = true;
+                List<PasswordHistory> history = GetPasswordHistory(userId);
+                foreach (PasswordHistory ph in history)
+                {
+                    string oldEncodedPassword = ph.Password;
+                    string oldEncodedSalt = ph.PasswordSalt;
+                    byte[] oldSalt = Convert.FromBase64String(oldEncodedSalt);
+                    byte[] bytePassword = Encoding.Unicode.GetBytes(password);
+                    var inputBuffer = new byte[bytePassword.Length + 16];
+                    Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
+                    Buffer.BlockCopy(oldSalt, 0, inputBuffer, bytePassword.Length, 16);
+                    byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
+                    string hashedPassword = Convert.ToBase64String(bhashedPassword);
+                    if (hashedPassword == oldEncodedPassword)
+                        foundMatch = true;
+                }
             }
 
             return foundMatch;

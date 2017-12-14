@@ -85,11 +85,5 @@ namespace DotNetNuke.Web.DDRMenu
 		{
 			menuNode.LargeImage = dnnNode.LargeImage;
 		}
-
-		public static bool RequestJQuery()
-		{
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-			return true;
-		}
 	}
 }

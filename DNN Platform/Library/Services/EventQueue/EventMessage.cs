@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -311,40 +311,42 @@ namespace DotNetNuke.Services.EventQueue
 
             var sb = new StringBuilder();
 
-            XmlWriter writer = XmlWriter.Create(sb, settings);
-            writer.WriteStartElement("Attributes");
-
-            foreach (string key in Attributes.Keys)
+            using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
-                writer.WriteStartElement("Attribute");
+                writer.WriteStartElement("Attributes");
 
-                //Write the Name element
-                writer.WriteElementString("Name", key);
-
-                //Write the Value element
-                if (Attributes[key].IndexOfAny("<'>\"&".ToCharArray()) > -1)
+                foreach (string key in Attributes.Keys)
                 {
-                    writer.WriteStartElement("Value");
-                    writer.WriteCData(Attributes[key]);
+                    writer.WriteStartElement("Attribute");
+
+                    //Write the Name element
+                    writer.WriteElementString("Name", key);
+
+                    //Write the Value element
+                    if (Attributes[key].IndexOfAny("<'>\"&".ToCharArray()) > -1)
+                    {
+                        writer.WriteStartElement("Value");
+                        writer.WriteCData(Attributes[key]);
+                        writer.WriteEndElement();
+                    }
+                    else
+                    {
+                        //Write value
+                        writer.WriteElementString("Value", Attributes[key]);
+                    }
+
+                    //Close the Attribute node
                     writer.WriteEndElement();
                 }
-                else
-                {
-					//Write value
-                    writer.WriteElementString("Value", Attributes[key]);
-                }
-				
-                //Close the Attribute node
+
+                //Close the Attributes node
                 writer.WriteEndElement();
+
+                //Close Writer
+                writer.Close();
+
+                return sb.ToString();
             }
-			
-			//Close the Attributes node
-            writer.WriteEndElement();
-
-            //Close Writer
-            writer.Close();
-
-            return sb.ToString();
         }
 		
 		#endregion

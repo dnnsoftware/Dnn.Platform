@@ -8,8 +8,9 @@
         <fieldset data-bind=" with: $root.subscriptionsViewModel">
             
             <div class="dnnFormItem">
-                <dnn:label id="lblSubscriptions" runat="server" />
-                
+                <div class="dnnFormMessage">
+                    <asp:label ID="lblSubscriptionsHelp" runat="server" resourcekey="lblSubscriptions.Help"/>
+                </div>         
                 <div class="subscription-table-container">
                     <div class="loading-panel" data-bind="visible: isLoading"></div>
 
@@ -40,7 +41,7 @@
       
                                     <div class="subscriptions-page-size">
                                         <%= LocalizeString("ItemsPerPage") %>
-                                        <select data-bind="value: pageSize, event: { change: function () { changePage(0) } }">
+                                        <select data-bind="value: pageSize, event: { change: function () { changePage(0) } }" aria-label="Page Size">
                                             <option value="10" selected="selected">10</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>                                        

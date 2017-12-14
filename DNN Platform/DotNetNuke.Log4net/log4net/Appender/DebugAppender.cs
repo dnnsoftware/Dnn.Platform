@@ -35,7 +35,7 @@ namespace log4net.Appender
 	/// debug system.
 	/// </para>
 	/// <para>
-	/// Events are written using the <see cref="System.Diagnostics.Debug.Write(string,string)"/>
+	/// Events are written using the <see cref="M:System.Diagnostics.Debug.Write(string,string)"/>
 	/// method. The event's logger name is passed as the value for the category name to the Write method.
 	/// </para>
 	/// </remarks>
@@ -102,6 +102,24 @@ namespace log4net.Appender
 
 		#endregion Public Instance Properties
 
+#if !NETSTANDARD1_3
+            /// <summary>
+            /// Flushes any buffered log data.
+            /// </summary>
+            /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
+            /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+            public override bool Flush(int millisecondsTimeout)
+            {
+                // Nothing to do if ImmediateFlush is true
+                if (m_immediateFlush) return true;
+
+                // System.Diagnostics.Debug is thread-safe, so no need for lock(this).
+                System.Diagnostics.Debug.Flush();
+
+                return true;
+            }
+#endif
+
 		#region Override implementation of AppenderSkeleton
 
 		/// <summary>
@@ -121,7 +139,7 @@ namespace log4net.Appender
 			// Write the string to the Debug system
 			//
 			System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
-	 
+#if !NETSTANDARD1_3
 			//
 			// Flush the Debug system if needed
 			//
@@ -129,6 +147,7 @@ namespace log4net.Appender
 			{
 				System.Diagnostics.Debug.Flush();
 			} 
+#endif
 		}
 
 		/// <summary>

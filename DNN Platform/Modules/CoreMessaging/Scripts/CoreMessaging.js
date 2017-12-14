@@ -26,6 +26,10 @@
         });
     };
 
+    function setDocumentTitle(title) {
+        document.title = title + ' - ' + settings.currentUserText + ' - ' + settings.portalText;
+    }
+
     function getQuerystring(key, default_) {
         if (default_ == null) default_ = "";
         key = key.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -104,6 +108,7 @@
         self.ConversationId = data.ConversationId;
         self.ReplyAllAllowed = data.ReplyAllAllowed;
         self.SenderUserID = data.SenderUserID;
+        self.SenderDisplayName = data.SenderDisplayName || data.From;
         self.RowNumber = data.RowNumber;
         self.AttachmentCount = ko.observable(data.AttachmentCount);
         self.NewThreadCount = ko.observable(data.NewThreadCount);
@@ -135,6 +140,7 @@
         self.ConversationId = data.Conversation.ConversationId;
         self.ReplyAllAllowed = data.Conversation.ReplyAllAllowed;
         self.SenderUserID = data.Conversation.SenderUserID;
+        self.SenderDisplayName = data.Conversation.SenderDisplayName || data.Conversation.From;
         self.RowNumber = data.Conversation.RowNumber;
         self.AttachmentCount = data.Conversation.AttachmentCount;
         self.NewThreadCount = ko.observable(data.Conversation.NewThreadCount);
@@ -169,6 +175,7 @@
         self.SenderAvatar = data.SenderAvatar;
         self.SenderProfileUrl = data.SenderProfileUrl;
         self.DisplayDate = data.DisplayDate;
+        self.SenderDisplayName = data.SenderDisplayName;
         self.Actions = $.map(data.Actions, function (action) { return new notificationActionViewModel(action, data.NotificationId); });
     }
 
@@ -178,6 +185,8 @@
 	    self.disablePrivateMessage = ko.observable(settings.disablePrivateMessage);
         self.messages = ko.observableArray([]);
         self.notifications = ko.observableArray([]);
+
+        self.notificationFadeTime = ko.observable(500);
 
         // Number displayed in Notifications tab
         self.TotalNotifications = ko.observable(0);
@@ -237,7 +246,7 @@
             }
         };
 
-        $('body').bind('click.coremessaging', function (event) {
+        $('body').on('click.coremessaging', function (event) {
             if (!$(event.target).closest('#SelectMenu').length) {
                 self.selectMenuOn(false);
             };
@@ -284,6 +293,7 @@
 
         self.sendThreadRequest = function (message) {
             History.pushState({ view: 'messages', action: 'thread', conversationId: message.ConversationId }, "", "?view=messages&action=thread&t=" + self.fetch_unix_timestamp());
+            setDocumentTitle(settings.messageTitleText);
         };
 
         self.checkReplyHasRecipients = function (conversationId) {
@@ -385,11 +395,11 @@
             var previousNewThreads = self.TotalNewThreads();
 
             if (messageconversationView.Read() === true) {
-                messageconversationView.NewThreadCount(messageconversationView.ThreadCount());
+                messageconversationView.NewThreadCount(0);
                 self.TotalNewThreads(previousNewThreads + messageconversationView.NewThreadCount());
             } else {
                 self.TotalNewThreads(previousNewThreads - messageconversationView.NewThreadCount());
-                messageconversationView.NewThreadCount(0);
+                messageconversationView.NewThreadCount(1);
             }
         };
 
@@ -413,10 +423,12 @@
         };
 
         self.markAsRead = function (messageconversationView) {
+            messageconversationView.NewThreadCount(0);
             self.changeState(messageconversationView, baseServicepath + 'MarkRead');
         };
 
         self.markAsUnread = function (messageconversationView) {
+            messageconversationView.NewThreadCount(1);
             self.changeState(messageconversationView, baseServicepath + 'MarkUnRead');
         };
 
@@ -634,7 +646,9 @@
         };
 
         self.loadNotificationsTab = function () {
+            self.notificationFadeTime(0);
             History.pushState({ view: 'notifications', action: 'notifications' }, "", "?view=notifications&action=notifications&t=" + self.fetch_unix_timestamp());
+            setDocumentTitle(settings.notificationTitleText);
         };
 
         self.loadNotificationsTabHandler = function () {
@@ -823,14 +837,16 @@
                         displayMessage("#dnnCoreNotification", settings.actionNotPerformedText, "dnnFormWarning");
                     }
                 }
-            }).fail(function () {
-                displayMessage("#dnnCoreNotification", settings.actionNotPerformedText, "dnnFormWarning");
+            }).fail(function (data) {
+                var response = $.parseJSON(data.responseText);
+                displayMessage("#dnnCoreNotification", response.Message, "dnnFormWarning");
             });
         };
 
         self.hideNotification = function (elem) {
             if (elem.nodeType === 1) {
-                $(elem).fadeOut('slow', function () { $(elem).remove(); });
+                $(elem).fadeOut(self.notificationFadeTime(), function () { $(elem).remove(); });
+                self.notificationFadeTime(500);
             }
         };
 
@@ -868,6 +884,7 @@
 
         self.myinbox = function () {
             History.pushState({ view: 'messages', action: 'inbox' }, "", "?view=messages&action=inbox&t=" + self.fetch_unix_timestamp());
+            setDocumentTitle(settings.messageTitleText);
         };
 
         self.myinboxHandler = function () {
@@ -878,6 +895,7 @@
 
         self.mysentbox = function () {
             History.pushState({ view: 'messages', action: 'sentbox' }, "", "?view=messages&action=sentbox&t=" + self.fetch_unix_timestamp());
+            setDocumentTitle(settings.sentTitleText);
         };
 
         self.mysentboxHandler = function () {
@@ -888,6 +906,7 @@
 
         self.myarchivebox = function () {
             History.pushState({ view: 'messages', action: 'archivebox' }, "", "?view=messages&action=archivebox&t=" + self.fetch_unix_timestamp());
+            setDocumentTitle(settings.archiveTitleText);
         };
 
         self.myarchiveboxHandler = function () {

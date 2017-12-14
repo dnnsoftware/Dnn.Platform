@@ -127,7 +127,7 @@
     <value>Use this dialog to define a new folder type.</value>
   </data>
   <data name="DuplicateMappingName.Text" xml:space="preserve">
-    <value>A mapping with the same name already exists. The changes have not been saved.</value>
+    <value>A mapping with the same name already exists.  The changes have not been saved.</value>
   </data>
   <data name="FolderProviderSettings.Text" xml:space="preserve">
     <value>Folder Provider Settings</value>
@@ -148,21 +148,21 @@
     <value>Name</value>
   </data>
   <data name="RequiredFields.Text" xml:space="preserve">
-    <value>Indicates required fields</value>
+    <value>Indicates required fields.</value>
   </data>
   <data name="SelectFolderProvider.Text" xml:space="preserve">
     <value>- Select a Folder Provider -</value>
   </data>
   <data name="SyncWarning.Text" xml:space="preserve">
-    <value>After updating the folder type, a synchronization will be performed on the folders using this type. This may take some time, depending on the number of folders that match the criteria.</value>
+    <value>After updating the folder type, a synchronization will be performed on the folders using this type.  This may take some time, depending on the number of folders that match the criteria.</value>
   </data>
   <data name="Update.Text" xml:space="preserve">
     <value>Update</value>
   </data>
   <data name="FolderProviderValidator.ErrorMessage" xml:space="preserve">
-    <value>Folder Provider is Required</value>
+    <value>Folder provider is required.</value>
   </data>
   <data name="NameValidator.ErrorMessage" xml:space="preserve">
-    <value>Name is Required</value>
+    <value>Name is required.</value>
   </data>
 </root>

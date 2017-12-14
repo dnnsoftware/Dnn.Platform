@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -701,9 +701,9 @@ namespace DotNetNuke.Services.Mobile
                 int matchCount = 0;
                 foreach (IMatchRule rule in redirection.MatchRules)
                 {
-                    if (clientCapability.Capabilities != null && clientCapability.Capabilities.ContainsKey(rule.Capability))
+                    if (!string.IsNullOrEmpty(clientCapability[rule.Capability]))
                     {
-                        if (clientCapability.Capabilities[rule.Capability].Equals(rule.Expression, StringComparison.InvariantCultureIgnoreCase))
+                        if (clientCapability[rule.Capability].Equals(rule.Expression, StringComparison.InvariantCultureIgnoreCase))
                         {
                             matchCount++;
                         }

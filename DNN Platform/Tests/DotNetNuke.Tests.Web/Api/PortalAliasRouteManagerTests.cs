@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,10 +47,10 @@ namespace DotNetNuke.Tests.Web.Api
 
 
         [Test]
-        [TestCase("mfn", "url", 0, "DesktopModules/mfn/API/url")]
-        [TestCase("mfn", "url", 1, "{prefix0}/DesktopModules/mfn/API/url")]
-        [TestCase("mfn", "url", 2, "{prefix0}/{prefix1}/DesktopModules/mfn/API/url")]
-        [TestCase("fee/foo", "{contoller}/{action}/{id}", 4, "{prefix0}/{prefix1}/{prefix2}/{prefix3}/DesktopModules/fee/foo/API/{contoller}/{action}/{id}")]
+        [TestCase("mfn", "url", 0, "API/mfn/url")]
+        [TestCase("mfn", "url", 1, "{prefix0}/API/mfn/url")]
+        [TestCase("mfn", "url", 2, "{prefix0}/{prefix1}/API/mfn/url")]
+        [TestCase("fee/foo", "{contoller}/{action}/{id}", 4, "{prefix0}/{prefix1}/{prefix2}/{prefix3}/API/fee/foo/{contoller}/{action}/{id}")]
         public void GetRouteUrl(string moduleFolderName, string url, int count, string expected)
         {
             //Arrange

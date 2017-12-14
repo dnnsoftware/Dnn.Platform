@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Text;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -13,6 +15,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Framework.ActionResults;
 using DotNetNuke.Web.Mvc.Framework.Modules;
+using DotNetNuke.Web.Mvc.Helpers;
 
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
@@ -34,6 +37,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         }
 
         public Page DnnPage { get; set; }
+
+        public new DnnUrlHelper Url { get; set; }
 
         public string LocalResourceFile { get; set; }
 
@@ -101,5 +106,29 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 ViewEngineCollection = ViewEngineCollection
             };
         }
+
+        protected override PartialViewResult PartialView(string viewName, object model)
+        {
+            if (model != null)
+            {
+                ViewData.Model = model;
+            }
+
+            return new DnnPartialViewResult
+            {
+                ViewName = viewName,
+                ViewData = ViewData,
+                TempData = TempData,
+                ViewEngineCollection = ViewEngineCollection
+            };
+        }
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
+            Url = new DnnUrlHelper(requestContext, this);
+        }
+
+        public ViewEngineCollection ViewEngineCollectionEx { get; set; }
     }
 }

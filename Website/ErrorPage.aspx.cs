@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,6 @@ using System;
 using System.Web;
 using System.Web.UI;
 
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
@@ -52,9 +51,6 @@ namespace DotNetNuke.Services.Exceptions
     /// 'add to a placeholder and place on page
     /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly
     /// </remarks>
-    /// <history>
-    /// 	[sun1]	1/19/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
     {
@@ -88,45 +84,6 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        [Obsolete("Function obsoleted in 5.6.1 as no longer used in core - version identification can be useful to potential hackers if used incorrectly")]
-        public string ExtractOSVersion()
-        {
-            //default name to OSVersion in case OS not recognised
-            string commonName = Environment.OSVersion.ToString();
-            switch (Environment.OSVersion.Version.Major)
-            {
-                case 5:
-                    switch (Environment.OSVersion.Version.Minor)
-                    {
-                        case 0:
-                            commonName = "Windows 2000";
-                            break;
-                        case 1:
-                            commonName = "Windows XP";
-                            break;
-                        case 2:
-                            commonName = "Windows Server 2003";
-                            break;
-                    }
-                    break;
-                case 6:
-                    switch (Environment.OSVersion.Version.Minor)
-                    {
-                        case 0:
-                            commonName = "Windows Vista";
-                            break;
-                        case 1:
-                            commonName = "Windows Server 2008";
-                            break;
-                        case 2:
-                            commonName = "Windows 7";
-                            break;
-                    }
-                    break;
-            }
-            return commonName;
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -138,7 +95,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             base.OnLoad(e);
 
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null && !String.IsNullOrEmpty(portalSettings.LogoFile))
             {
                 IFileInfo fileInfo = FileManager.Instance.GetFile(portalSettings.PortalId, portalSettings.LogoFile);
@@ -150,12 +107,14 @@ namespace DotNetNuke.Services.Exceptions
             headerImage.Visible = !string.IsNullOrEmpty(headerImage.ImageUrl);
 
             string localizedMessage;
-            var security = new PortalSecurity();
-            string status = security.InputFilter(Request.QueryString["status"],
+            var security = PortalSecurity.Instance;
+            var status = security.InputFilter(Request.QueryString["status"],
                                                     PortalSecurity.FilterFlag.NoScripting |
                                                     PortalSecurity.FilterFlag.NoMarkup);
             if (!string.IsNullOrEmpty(status))
+            {
                 ManageError(status);
+            }
             else
             {
                 //get the last server error

@@ -437,6 +437,7 @@ li.rmItem a.permission_denied {
 
 .ItemNameEdit {
     width: 90%;
+    color: black;
 }
 
 .ItemIcon {
@@ -650,7 +651,8 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
 #dnnModuleDigitalAssetsBreadcrumb ul {
     list-style: none outside none;
     margin-bottom: 0;
-    margin-left: 7px;  
+    margin-left: 7px;
+    padding: 0;
 }
 
 #dnnModuleDigitalAssetsBreadcrumb li {
@@ -802,6 +804,7 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
 .dnnModuleDigitalAssetsListViewItem input {
     text-align: center;
     width: 144px;
+    color: black;
 }
 
 div.dnnModuleDigitalAssetsListViewItem:hover {
@@ -847,7 +850,7 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 
 .dnnModuleDigitalAssetsGeneralProperties {
     min-height: 300px;
-    width: 600px;
+    width: 600px !important;
     margin-top: 7px;
     margin-bottom: 25px;    
     float: left;

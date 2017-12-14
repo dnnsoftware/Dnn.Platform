@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,9 +43,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/14/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ValidationPropertyAttribute("Value")]
     public abstract class EditControl : WebControl, IPostBackDataHandler
@@ -63,9 +60,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Custom Attributes for this Control
         /// </summary>
         /// <value>An array of Attributes</value>
-        /// <history>
-        ///     [cnurse]	05/08/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public object[] CustomAttributes
         {
@@ -88,9 +82,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Edit Mode of the Editor
         /// </summary>
         /// <value>A boolean</value>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PropertyEditorMode EditMode { get; set; }
 
@@ -99,9 +90,6 @@ namespace DotNetNuke.UI.WebControls
         /// Returns whether the
         /// </summary>
         /// <value>A boolean</value>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual bool IsValid
         {
@@ -116,9 +104,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the Local Resource File for the Control
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        ///     [cnurse]	05/17/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile { get; set; }
 
@@ -127,9 +112,6 @@ namespace DotNetNuke.UI.WebControls
 		/// Name is the name of the field as a string
 		/// </summary>
 		/// <value>A string representing the Name of the property</value>
-		/// <history>
-		///     [cnurse]	02/21/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public string Name { get; set; }
 
@@ -138,9 +120,6 @@ namespace DotNetNuke.UI.WebControls
 		/// The Category to which this edit control belongs
 		/// </summary>
 		/// <value>A string representing the Category of the property</value>
-		/// <history>
-		///     [cnurse]	02/21/2006	created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		public string Category { get; set; }
 
@@ -149,9 +128,6 @@ namespace DotNetNuke.UI.WebControls
         /// OldValue is the initial value of the field
         /// </summary>
         /// <value>The initial Value of the property</value>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public object OldValue { get; set; }
 
@@ -160,9 +136,6 @@ namespace DotNetNuke.UI.WebControls
         /// gets and sets whether the Property is required
         /// </summary>
         /// <value>The initial Value of the property</value>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool Required { get; set; }
 
@@ -171,9 +144,6 @@ namespace DotNetNuke.UI.WebControls
         /// SystemType is the System Data Type for the property
         /// </summary>
         /// <value>A string representing the Type of the property</value>
-        /// <history>
-        ///     [cnurse]	02/22/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string SystemType { get; set; }
 
@@ -182,9 +152,6 @@ namespace DotNetNuke.UI.WebControls
         /// Value is the value of the control
         /// </summary>
         /// <value>The Value of the property</value>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public object Value { get; set; }
 
@@ -198,9 +165,6 @@ namespace DotNetNuke.UI.WebControls
         /// StringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected abstract string StringValue { get; set; }
 
@@ -224,9 +188,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <param name="postDataKey">A key to the PostBack Data to load</param>
         /// <param name="postCollection">A name value collection of postback data</param>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -246,9 +207,6 @@ namespace DotNetNuke.UI.WebControls
         /// RaisePostDataChangedEvent runs when the PostBackData has changed.  It triggers
         /// a ValueChanged Event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void RaisePostDataChangedEvent()
         {
@@ -272,9 +230,6 @@ namespace DotNetNuke.UI.WebControls
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected abstract void OnDataChanged(EventArgs e);
 
@@ -286,9 +241,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// OnAttributesChanged runs when the CustomAttributes property has changed.
         /// </summary>
-        /// <history>
-        ///     [cnurse]	06/08/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnAttributesChanged()
         {
@@ -298,9 +250,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Runs when an item is added to a collection type property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/05/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
@@ -314,9 +263,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Runs when an item is deleted from a collection type property
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/05/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
@@ -331,9 +277,6 @@ namespace DotNetNuke.UI.WebControls
         /// OnValueChanged runs when the Value has changed.  It raises the ValueChanged
         /// Event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnValueChanged(PropertyEditorEventArgs e)
         {
@@ -348,9 +291,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderViewMode renders the View (readonly) mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void RenderViewMode(HtmlTextWriter writer)
         {
@@ -358,7 +298,7 @@ namespace DotNetNuke.UI.WebControls
 
             ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            var security = new PortalSecurity();
+            var security = PortalSecurity.Instance;
             writer.Write(security.InputFilter(propValue, PortalSecurity.FilterFlag.NoScripting));
             writer.RenderEndTag();
         }
@@ -368,9 +308,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderEditMode renders the Edit mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void RenderEditMode(HtmlTextWriter writer)
         {
@@ -390,9 +327,6 @@ namespace DotNetNuke.UI.WebControls
         /// Render is called by the .NET framework to render the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void Render(HtmlTextWriter writer)
         {

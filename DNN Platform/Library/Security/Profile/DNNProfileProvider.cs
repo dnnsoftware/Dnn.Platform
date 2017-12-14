@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,7 +21,6 @@
 #region Usings
 
 using System;
-using System.Data;
 using System.Globalization;
 
 using DotNetNuke.Common;
@@ -35,6 +34,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 #endregion
 
+// ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Security.Profile
 // ReSharper restore CheckNamespace
@@ -124,36 +124,46 @@ namespace DotNetNuke.Security.Profile
             //Load the Profile properties
             if (user.UserID > Null.NullInteger)
             {
-                IDataReader dr = _dataProvider.GetUserProfile(user.UserID);
-                try
+                var key = GetProfileCacheKey(user);
+                var cachedProperties = (ProfilePropertyDefinitionCollection)DataCache.GetCache(key);
+                if (cachedProperties != null)
                 {
-                    while (dr.Read())
+                    properties = cachedProperties;
+                }
+                else
+                {
+                    using (var dr = _dataProvider.GetUserProfile(user.UserID))
                     {
-						//Ensure the data reader returned is valid
-                        if (!string.Equals(dr.GetName(0), "ProfileID", StringComparison.InvariantCultureIgnoreCase))
+                        while (dr.Read())
                         {
-                            break;
-                        }
-                        int definitionId = Convert.ToInt32(dr["PropertyDefinitionId"]);
-                        profProperty = properties.GetById(definitionId);
-                        if (profProperty != null)
-                        {
-                            profProperty.PropertyValue = Convert.ToString(dr["PropertyValue"]);
-                            var extendedVisibility = string.Empty;
-                            if (dr.GetSchemaTable().Select("ColumnName = 'ExtendedVisibility'").Length > 0)
+                            //Ensure the data reader returned is valid
+                            if (!string.Equals(dr.GetName(0), "ProfileID", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                extendedVisibility = Convert.ToString(dr["ExtendedVisibility"]);
+                                break;
                             }
-                            profProperty.ProfileVisibility = new ProfileVisibility(portalId, extendedVisibility)
-                                                                 {
-                                                                     VisibilityMode = (UserVisibilityMode)dr["Visibility"]
-                                                                 };
+                            int definitionId = Convert.ToInt32(dr["PropertyDefinitionId"]);
+                            profProperty = properties.GetById(definitionId);
+                            if (profProperty != null)
+                            {
+                                profProperty.PropertyValue = Convert.ToString(dr["PropertyValue"]);
+                                var extendedVisibility = string.Empty;
+                                var schemaTable = dr.GetSchemaTable();
+                                if (schemaTable != null && schemaTable.Select("ColumnName = 'ExtendedVisibility'").Length > 0)
+                                {
+                                    extendedVisibility = Convert.ToString(dr["ExtendedVisibility"]);
+                                }
+                                profProperty.ProfileVisibility = new ProfileVisibility(portalId, extendedVisibility)
+                                {
+                                    VisibilityMode = (UserVisibilityMode)dr["Visibility"]
+                                };
+                            }
+                        }
+
+                        if (properties.Count > 0)
+                        {
+                            DataCache.SetCache(key, properties, TimeSpan.FromMinutes(DataCache.UserProfileCacheTimeOut));
                         }
                     }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
                 }
             }
                       
@@ -188,6 +198,9 @@ namespace DotNetNuke.Security.Profile
         /// -----------------------------------------------------------------------------
         public override void UpdateUserProfile(UserInfo user)
         {
+            var key = GetProfileCacheKey(user);
+            DataCache.ClearCache(key);
+
             ProfilePropertyDefinitionCollection properties = user.Profile.ProfileProperties;
 
             //Ensure old and new TimeZone properties are in synch
@@ -214,7 +227,7 @@ namespace DotNetNuke.Security.Profile
             {
                 if ((profProperty.PropertyValue != null) && (profProperty.IsDirty))
                 {
-                    var objSecurity = new PortalSecurity();
+                    var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
                     _dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId, 
                                                 propertyValue, (int) profProperty.ProfileVisibility.VisibilityMode, 
@@ -225,5 +238,10 @@ namespace DotNetNuke.Security.Profile
         }
 
         #endregion
+
+        private string GetProfileCacheKey(UserInfo user)
+        {
+            return string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
+        }
     }
 }

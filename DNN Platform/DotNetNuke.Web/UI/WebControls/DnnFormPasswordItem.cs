@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
@@ -77,10 +78,11 @@ namespace DotNetNuke.Web.UI.WebControls
                 ID = ID + "_TextBox",
                 TextMode = TextBoxMode.Password,
                 CssClass = TextBoxCssClass,
-                MaxLength = 20, //ensure password cannot be cut if too long
+                MaxLength = 39, //ensure password cannot be cut if too long
                 Text = Convert.ToString(Value) // Load from ControlState
             };
             _password.Attributes.Add("autocomplete", "off");
+            _password.Attributes.Add("aria-label", DataField);
             _password.TextChanged += TextChanged;
 
             var passwordContainer = new Panel() { ID = "passwordContainer", CssClass = ContainerCssClass };
@@ -101,7 +103,7 @@ namespace DotNetNuke.Web.UI.WebControls
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
 
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }

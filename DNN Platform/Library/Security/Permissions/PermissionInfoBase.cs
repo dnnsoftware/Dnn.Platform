@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,9 +49,6 @@ namespace DotNetNuke.Security.Permissions
     /// 
     /// and these are implemented in this base class
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/14/2008   Documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class PermissionInfoBase : PermissionInfo
@@ -88,9 +85,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets  aflag that indicates whether the user or role has permission
         /// </summary>
         /// <returns>A Boolean</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("allowaccess")]
         public bool AllowAccess
@@ -110,9 +104,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the User's DisplayName
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("displayname")]
         public string DisplayName
@@ -132,9 +123,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Role ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("roleid")]
         public int RoleID
@@ -154,9 +142,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the Role Name
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("rolename")]
         public string RoleName
@@ -176,9 +161,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the User ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("userid")]
         public int UserID
@@ -198,9 +180,6 @@ namespace DotNetNuke.Security.Permissions
         /// Gets and sets the User Name
         /// </summary>
         /// <returns>A String</returns>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         [XmlElement("username")]
         public string Username
@@ -224,9 +203,6 @@ namespace DotNetNuke.Security.Permissions
         /// FillInternal fills the PermissionInfoBase from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/14/2008   Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {

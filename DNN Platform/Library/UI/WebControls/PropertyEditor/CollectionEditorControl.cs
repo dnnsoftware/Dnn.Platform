@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -45,9 +45,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/14/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:CollectionEditorControl runat=server></{0}:CollectionEditorControl>")]
     public class CollectionEditorControl : PropertyEditorControl
@@ -59,9 +56,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the Underlying DataSource
         /// </summary>
         /// <value>An IEnumerable</value>
-        /// <history>
-        /// 	[cnurse]	03/09/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override IEnumerable UnderlyingDataSource
         {
@@ -80,9 +74,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Category
         /// </summary>
         /// <value>A string representing the Category of the Field</value>
-        /// <history>
-        /// 	[cnurse]	04/07/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Category.")]
         public string CategoryDataField { get; set; }
@@ -92,9 +83,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Editor Type to use
         /// </summary>
         /// <value>A string representing the Editor Type of the Field</value>
-        /// <history>
-        /// 	[cnurse]	02/23/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Editor Type.")]
         public string EditorDataField { get; set; }
@@ -104,9 +92,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that determines the length
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	05/08/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines the length.")]
         public string LengthDataField { get; set; }
@@ -116,9 +101,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that is bound to the Label
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	02/14/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Label's Text property.")]
         public string NameDataField { get; set; }
@@ -128,9 +110,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that determines whether an item is required
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	02/24/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines whether an item is required.")]
         public string RequiredDataField { get; set; }
@@ -140,9 +119,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that is bound to the EditControl
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	02/23/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Type.")]
         public string TypeDataField { get; set; }
@@ -153,9 +129,6 @@ namespace DotNetNuke.UI.WebControls
         /// Expression DynamicContentValidator
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	02/13/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Expression DynamicContentValidator.")]
         public string ValidationExpressionDataField { get; set; }
@@ -165,9 +138,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that is bound to the EditControl
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	02/13/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Value property.")]
         public string ValueDataField { get; set; }
@@ -177,9 +147,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that determines whether the control is visible
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	02/24/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines whether the item is visble.")]
         public string VisibleDataField { get; set; }
@@ -189,9 +156,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that determines the visibility
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        /// <history>
-        /// 	[cnurse]	05/03/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines the visibility.")]
         public string VisibilityDataField { get; set; }
@@ -239,9 +203,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetCategory gets the Category of an object
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/08/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string GetCategory(object obj)
         {
@@ -264,9 +225,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetGroups gets an array of Groups/Categories from the DataSource
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	04/15/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string[] GetGroups(IEnumerable arrObjects)
         {
@@ -303,9 +261,6 @@ namespace DotNetNuke.UI.WebControls
         /// GetRowVisibility determines the Visibility of a row in the table
         /// </summary>
         /// <param name="obj">The property</param>
-        /// <history>
-        ///     [cnurse]	03/08/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override bool GetRowVisibility(object obj)
         {

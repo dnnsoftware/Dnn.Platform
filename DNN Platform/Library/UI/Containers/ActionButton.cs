@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,11 +39,6 @@ namespace DotNetNuke.UI.Containers
     /// <remarks>
     ///   ActionBase inherits from UserControl, and implements the IActionControl Interface.
     /// </remarks>
-    /// <history>
-    ///   [cnurse]	10/07/2004	Documented
-    ///   [cnurse]    12/15/2007  Deprectaed and Refactored to use ActionButtonList 
-    ///   by Containment
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Obsolete("This class has been deprecated in favour of the new ActionCommandButton and ActionButtonList.")]
     public class ActionButton : ActionBase
@@ -60,9 +55,6 @@ namespace DotNetNuke.UI.Containers
         ///   Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions
         /// </remarks>
         /// <value>A String</value>
-        /// <history>
-        ///   [cnurse]	6/29/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CommandName
         {
@@ -86,9 +78,6 @@ namespace DotNetNuke.UI.Containers
         ///   Defaults to 'CommandButton'
         /// </remarks>
         /// <value>A String</value>
-        /// <history>
-        ///   [cnurse]	6/29/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CssClass
         {
@@ -112,9 +101,6 @@ namespace DotNetNuke.UI.Containers
         ///   Defaults to True
         /// </remarks>
         /// <value>A Boolean</value>
-        /// <history>
-        ///   [cnurse]	6/29/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
@@ -138,9 +124,6 @@ namespace DotNetNuke.UI.Containers
         ///   Defaults to False
         /// </remarks>
         /// <value>A Boolean</value>
-        /// <history>
-        ///   [cnurse]	6/29/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DisplayIcon
         {
@@ -164,9 +147,6 @@ namespace DotNetNuke.UI.Containers
         ///   Defaults to the icon defined in Action
         /// </remarks>
         /// <value>A String</value>
-        /// <history>
-        ///   [cnurse]	6/29/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string IconFile
         {
@@ -190,9 +170,6 @@ namespace DotNetNuke.UI.Containers
         ///   Defaults to 2 non-breaking spaces
         /// </remarks>
         /// <value>A String</value>
-        /// <history>
-        ///   [cnurse]	6/29/2005	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
@@ -216,9 +193,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         ///   Action_Click responds to an Action Event in the contained actionButtonList
         /// </summary>
-        /// <history>
-        ///   [cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void Action_Click(object sender, ActionEventArgs e)
         {
@@ -233,9 +207,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         ///   CreateChildControls builds the control tree
         /// </summary>
-        /// <history>
-        ///   [cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {

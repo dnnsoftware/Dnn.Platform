@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,6 +47,8 @@ namespace DotNetNuke.Tests.Web.Mvc
             var mockRequest = new Mock<HttpRequestBase>();
             mockRequest.Setup(r => r.QueryString)
                        .Returns(new NameValueCollection());
+            mockRequest.Setup(r => r.RequestContext)
+                       .Returns(new RequestContext());
 
             var mockResponse = new Mock<HttpResponseBase>();
 
@@ -54,7 +56,7 @@ namespace DotNetNuke.Tests.Web.Mvc
                        .Returns(mockRequest.Object);
             mockContext.SetupGet(c => c.Response)
                        .Returns(mockResponse.Object);
-
+            
             return mockContext.Object;
         }
 
@@ -66,7 +68,7 @@ namespace DotNetNuke.Tests.Web.Mvc
             mockRequest.Setup(r => r.Url)
                        .Returns(new Uri(requestUrl));
             mockRequest.Setup(r => r.ApplicationPath)
-                       .Returns("/");
+                       .Returns(new Uri(requestUrl).AbsolutePath);
             mockRequest.Setup(r => r.RawUrl)
                        .Returns(requestUrl);
 
@@ -99,6 +101,11 @@ namespace DotNetNuke.Tests.Web.Mvc
         public static ControllerContext CreateMockControllerContext(RouteData routeDatae)
         {
             return new ControllerContext(CreateMockHttpContext(), routeDatae, new Mock<ControllerBase>().Object);
+        }
+
+        public static ControllerContext CreateMockControllerContext(HttpContextBase httpContext, RouteData routeData)
+        {
+            return new ControllerContext(httpContext?? CreateMockHttpContext(), routeData, new Mock<ControllerBase>().Object);
         }
 
         public static ViewContext CreateViewContext(string url)

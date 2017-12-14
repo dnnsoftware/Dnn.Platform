@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,6 +41,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 
@@ -56,10 +57,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	03/03/2006  created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public partial class Password : UserModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Password));
@@ -82,10 +79,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the UserMembership associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public UserMembership Membership
         {
             get
@@ -116,10 +109,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Raises the PasswordUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/08/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void OnPasswordUpdated(PasswordUpdatedEventArgs e)
         {
             if (IsUserOrAdmin == false)
@@ -136,10 +125,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Raises the PasswordQuestionAnswerUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public void OnPasswordQuestionAnswerUpdated(PasswordUpdatedEventArgs e)
         {
             if (IsUserOrAdmin == false)
@@ -160,10 +145,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
             lblLastChanged.Text = User.Membership.LastPasswordChangeDate.ToLongDateString();
@@ -307,7 +288,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css");
+			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
 			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
@@ -456,7 +437,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void LogResult(string message)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
 
             var log = new LogInfo
             {
@@ -604,10 +585,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/09/2006  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdateQA_Click(object sender, EventArgs e)
         {
             if (IsUserOrAdmin == false)
@@ -646,10 +623,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// The PasswordUpdatedEventArgs class provides a customised EventArgs class for
         /// the PasswordUpdated Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/08/2006  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public class PasswordUpdatedEventArgs
         {
             /// -----------------------------------------------------------------------------
@@ -657,10 +630,6 @@ namespace DotNetNuke.Modules.Admin.Users
             /// Constructs a new PasswordUpdatedEventArgs
             /// </summary>
             /// <param name="status">The Password Update Status</param>
-            /// <history>
-            /// 	[cnurse]	03/08/2006  Created
-            /// </history>
-            /// -----------------------------------------------------------------------------
             public PasswordUpdatedEventArgs(PasswordUpdateStatus status)
             {
                 UpdateStatus = status;
@@ -670,10 +639,6 @@ namespace DotNetNuke.Modules.Admin.Users
             /// <summary>
             /// Gets and sets the Update Status
             /// </summary>
-            /// <history>
-            /// 	[cnurse]	03/08/2006  Created
-            /// </history>
-            /// -----------------------------------------------------------------------------
             public PasswordUpdateStatus UpdateStatus { get; set; }
         }
 

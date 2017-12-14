@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.UI.Skins.Controls
 	/// to provide a Windows Explore like Menu.
 	/// </summary>
 	/// <remarks></remarks>
-	/// <history>
-	/// 	[cnurse]	12/8/2004	created
-	/// </history>
 	/// -----------------------------------------------------------------------------
     public partial class TreeViewMenu : NavObjectBase
     {
@@ -331,10 +328,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]        12/8/2004   Created
-        ///		[Jon Henning]	3/21/06		Updated to handle Auto-expand and AddUpNode	
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BuildTree(DNNNode objNode, bool blnPODRequest)
         {
@@ -422,9 +415,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]        12/8/2004   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void InitializeTree()
         {
@@ -491,9 +481,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/9/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -579,9 +566,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <remarks>The event only fires when the Node contains child nodes, as leaf nodes
         /// have their NavigateUrl Property set.
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	12/9/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void DNNTree_NodeClick(NavigationEventArgs args)
         {

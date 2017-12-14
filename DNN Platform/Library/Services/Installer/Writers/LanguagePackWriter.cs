@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,9 +42,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/30/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class LanguagePackWriter : PackageWriterBase
     {
@@ -135,9 +132,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the associated Language
         /// </summary>
         /// <value>An Locale object</value>
-        /// <history>
-        /// 	[cnurse]	01/30/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Locale Language
         {
@@ -156,9 +150,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the associated Language Pack
         /// </summary>
         /// <value>An LanguagePackInfo object</value>
-        /// <history>
-        /// 	[cnurse]	05/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public LanguagePackInfo LanguagePack
         {
@@ -222,9 +213,6 @@ namespace DotNetNuke.Services.Installer.Writers
                                         break;
                                     case "requestfilters.ascx":
                                         filePath = "DesktopModules\\Admin\\HostSettings\\App_LocalResources";
-                                        break;
-                                    case "solutions.ascx":
-                                        filePath = "DesktopModules\\Admin\\Solutions\\App_LocalResources";
                                         break;
                                 }
                                 break;
@@ -371,18 +359,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 }
                                 break;
                             case "skins":
-                                switch (fileName.Replace(extendedExtension, ""))
-                                {
-                                    case "attributes.ascx":
-                                        filePath = "DesktopModules\\Admin\\SkinDesigner\\App_LocalResources";
-                                        break;
-                                    case "editskins.ascx":
-                                        filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
-                                        break;
-                                    default:
-                                        filePath = "Admin\\Skins\\App_LocalResources";
-                                        break;
-                                }
+                                filePath = "Admin\\Skins\\App_LocalResources";
                                 break;
                             case "syndication":
                                 filePath = "DesktopModules\\Admin\\FeedExplorer\\App_LocalResources";

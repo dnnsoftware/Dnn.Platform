@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@
 using System;
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common;
 
 #endregion
 
@@ -43,6 +44,8 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         #endregion
+
+        private string _mailFromAddress;
 
         public DateTime StartDateTime
         {
@@ -66,7 +69,17 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public bool EmailNotificationIsActive { get; set; }
 
-        public string MailFromAddress { get; set; }
+        public string MailFromAddress
+        {
+            get {                
+                var portalSettings = Globals.GetPortalSettings();
+                return 
+                    string.IsNullOrWhiteSpace(_mailFromAddress) 
+                    ? (portalSettings == null ? string.Empty : portalSettings.Email) 
+                    : _mailFromAddress; }
+            set { _mailFromAddress = value; }
+        }
+
 
         public string MailToAddress { get; set; }
 

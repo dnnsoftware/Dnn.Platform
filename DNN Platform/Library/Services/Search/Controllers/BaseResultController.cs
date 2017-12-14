@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,6 +51,11 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <returns>Url</returns>
         /// <remarks>The Query Strings in the Document (if present) should be appended while returning the Url</remarks>
         public abstract string GetDocUrl(SearchResult searchResult);
+        
+        /// <summary>
+        /// Gets the localized search type name.
+        /// </summary>
+        public virtual string LocalizedSearchTypeName => "";
 
         #endregion
     }

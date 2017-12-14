@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -55,9 +56,6 @@ namespace DotNetNuke.UI.Skins
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	12/04/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class Pane
     {
@@ -76,9 +74,6 @@ namespace DotNetNuke.UI.Skins
         /// Constructs a new Pane object from the Control in the Skin
         /// </summary>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Pane(HtmlContainerControl pane)
         {
@@ -94,9 +89,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="name">The name (ID) of the HtmlContainerControl</param>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public Pane(string name, HtmlContainerControl pane)
         {
@@ -112,9 +104,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets a Dictionary of Containers.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected Dictionary<string, Containers.Container> Containers
         {
@@ -128,9 +117,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets and sets the name (ID) of the Pane
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string Name { get; set; }
 
@@ -138,9 +124,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets and sets the HtmlContainerControl
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected HtmlContainerControl PaneControl { get; set; }
 
@@ -148,9 +131,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// Gets the PortalSettings of the Portal
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected PortalSettings PortalSettings
         {
@@ -203,9 +183,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="containerPath">The Url to the Container control</param>
         /// <returns>A Container</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerByPath(string containerPath)
         {
@@ -249,9 +226,6 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="request">Current Http Request.</param>
         /// <returns>A Container</returns>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerFromCookie(HttpRequest request)
         {
@@ -395,6 +369,17 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
 
+                //error loading container - load from tab
+                if (container == null)
+                {
+                    containerSrc = PortalSettings.ActiveTab.ContainerSrc;
+                    if (!String.IsNullOrEmpty(containerSrc))
+                    {
+                        containerSrc = SkinController.FormatSkinSrc(containerSrc, PortalSettings);
+                        container = LoadContainerByPath(containerSrc);
+                    }
+                }
+
                 //error loading container - load default
                 if (container == null)
                 {
@@ -421,9 +406,6 @@ namespace DotNetNuke.UI.Skins
         /// ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop
         /// </summary>
         /// <param name="args">A ClientAPIPostBackEventArgs object</param>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Moved from Skin.vb
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ModuleMoveToPanePostBack(ClientAPIPostBackEventArgs args)
         {
@@ -450,7 +432,7 @@ namespace DotNetNuke.UI.Skins
                 return false;
             }
             
-            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
+            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
             return controller is IVersionable;
         }
 
@@ -463,9 +445,6 @@ namespace DotNetNuke.UI.Skins
         /// InjectModule injects a Module (and its container) into the Pane
         /// </summary>
         /// <param name="module">The Module</param>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void InjectModule(ModuleInfo module)
         {
@@ -490,7 +469,7 @@ namespace DotNetNuke.UI.Skins
 
             try
             {
-                if (!Globals.IsAdminControl() && PortalSettings.InjectModuleHyperLink)
+                if (!Globals.IsAdminControl() && (PortalSettings.InjectModuleHyperLink || PortalSettings.UserMode != PortalSettings.Mode.View))
                 {
                     _containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
                 }
@@ -550,6 +529,10 @@ namespace DotNetNuke.UI.Skins
                 else
                 {
                     _containerWrapperControl.Controls.Add(container);
+                    if (Globals.IsAdminControl())
+                    {
+                        _containerWrapperControl.Attributes["class"] += " DnnModule-Admin";
+                    }
                 }
 
                 //Attach Module to Container
@@ -560,6 +543,10 @@ namespace DotNetNuke.UI.Skins
                 {
                     PaneControl.Visible = true;
                 }
+            }
+            catch (ThreadAbortException)
+            {
+                //Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
             }
             catch (Exception exc)
             {
@@ -578,9 +565,6 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// ProcessPane processes the Attributes for the PaneControl
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/05/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ProcessPane()
         {

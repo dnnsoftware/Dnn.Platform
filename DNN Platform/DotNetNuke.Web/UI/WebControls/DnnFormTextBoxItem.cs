@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,6 +35,8 @@ namespace DotNetNuke.Web.UI.WebControls
         private TextBox _textBox;
 
         public AutoCompleteType AutoCompleteType { get; set; }
+
+        public int MaxLength { get; set; }
 
         public int Columns { get; set; }
 
@@ -75,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
             _textBox.CssClass = TextBoxCssClass;
             _textBox.AutoCompleteType = AutoCompleteType;
             _textBox.TextChanged += TextChanged;
+            _textBox.Attributes.Add("aria-label", DataField);
 
             //Load from ControlState
             _textBox.Text = Convert.ToString(Value);
@@ -82,6 +85,11 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 _textBox.Attributes.Add("autocomplete", "off");
             }
+            if (MaxLength > 0)
+            {
+                _textBox.MaxLength = MaxLength;
+            }
+
             container.Controls.Add(_textBox);
 
             return _textBox;

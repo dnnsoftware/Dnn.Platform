@@ -27,6 +27,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,20 +74,23 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-      <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -112,6 +116,10 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Components\CompareWorkflowStatePermissions.cs" />
     <Compile Include="Components\DataProvider.cs" />
+    <Compile Include="Components\HtmlModuleBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\HtmlModuleSettings.cs" />
     <Compile Include="Components\HtmlTextController.cs" />
     <Compile Include="Components\HtmlTextInfo.cs" />
     <Compile Include="Components\HtmlTextLogController.cs" />

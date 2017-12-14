@@ -147,4 +147,7 @@
   <data name="Placeholder.Text" xml:space="preserve">
     <value>Search...</value>
   </data>
+  <data name="SearchClearQuery.Text" xml:space="preserve">
+    <value>Clear search text</value>
+  </data>
 </root>

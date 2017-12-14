@@ -1,9 +1,1 @@
-/* DNN-7273 Modify the ContentTypes Index   */
-/********************************************/
-
-IF EXISTS (SELECT name FROM sys.indexes WHERE name = 'IX_{objectQualifier}ContentTypes_ContentType')
-	DROP INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}{objectQualifier}ContentTypes
-GO
-
-CREATE UNIQUE INDEX IX_{objectQualifier}ContentTypes_ContentType ON {databaseOwner}{objectQualifier}ContentTypes (ContentType, PortalID)
-GO
+-- Removed code from DNN-8060

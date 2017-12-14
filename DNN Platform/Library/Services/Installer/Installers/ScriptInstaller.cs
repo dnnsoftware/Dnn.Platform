@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	08/07/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ScriptInstaller : FileInstaller
     {
@@ -61,9 +58,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the base Install Script (if present)
         /// </summary>
         /// <value>An InstallFile</value>
-        /// <history>
-        /// 	[cnurse]	05/20/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected InstallFile InstallScript
         {
@@ -78,9 +72,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the collection of Install Scripts
         /// </summary>
         /// <value>A List(Of InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected SortedList<Version, InstallFile> InstallScripts
         {
@@ -95,9 +86,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the collection of UnInstall Scripts
         /// </summary>
         /// <value>A List(Of InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected SortedList<Version, InstallFile> UnInstallScripts
         {
@@ -112,9 +100,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Collection Node ("scripts")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -129,9 +114,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Item Node ("script")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -154,9 +136,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Upgrade Script (if present)
         /// </summary>
         /// <value>An InstallFile</value>
-        /// <history>
-        /// 	[cnurse]	07/14/2009  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected InstallFile UpgradeScript
         {
@@ -175,9 +154,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -256,9 +232,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a flag that determines what type of file this installer supports
         /// </summary>
         /// <param name="type">The type of file being processed</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
         {
@@ -271,9 +244,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="file">The file represented by the node</param>
         /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -333,9 +303,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Files this is not neccessary</remarks>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -346,9 +313,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the script component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
@@ -417,9 +381,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Rollback method undoes the installation of the script component in the event 
         /// that one of the other components fails
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -430,9 +391,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The UnInstall method uninstalls the script component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

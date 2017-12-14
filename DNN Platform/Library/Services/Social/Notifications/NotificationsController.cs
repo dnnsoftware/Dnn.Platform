@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,9 +32,9 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications.Data;
+using DotNetNuke.Services.Cache;
 
 namespace DotNetNuke.Services.Social.Notifications
 {
@@ -54,6 +54,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
+	    private const string ToastsCacheKey = "GetToasts_{0}";
 
         #endregion
 
@@ -66,11 +67,19 @@ namespace DotNetNuke.Services.Social.Notifications
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public NotificationsController()
             : this(DataService.Instance, Messaging.Data.DataService.Instance)
         {
         }
 
+        /// <summary>
+        /// Constructor from specifict data service
+        /// </summary>
+        /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see></param>
+        /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging</param>
         public NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService)
         {
             Requires.NotNull("dataService", dataService);
@@ -117,7 +126,20 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual int CountNotifications(int userId, int portalId)
         {
-            return _dataService.CountNotifications(userId, portalId);
+            if (userId <= 0) return 0;
+
+            var cacheKey = string.Format(DataCache.UserNotificationsCountCacheKey, portalId, userId);
+            var cache = CachingProvider.Instance();
+            var cacheObject = cache.GetItem(cacheKey);
+            if (cacheObject is int)
+            {
+                return (int)cacheObject;
+            }
+
+            var count = _dataService.CountNotifications(userId, portalId);
+            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            return count;
         }
 
         public virtual void SendNotification(Notification notification, int portalId, IList<RoleInfo> roles, IList<UserInfo> users)
@@ -250,16 +272,23 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual void DeleteNotification(int notificationId)
         {
+            var recipients = InternalMessagingController.Instance.GetMessageRecipients(notificationId);
+            foreach (var recipient in recipients)
+            {
+                DataCache.RemoveCache(string.Format(ToastsCacheKey, recipient.UserID));
+            }
             _dataService.DeleteNotification(notificationId);
         }
 
         public int DeleteUserNotifications(UserInfo user)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, user.UserID));
             return _dataService.DeleteUserNotifications(user.UserID, user.PortalID);
         }
 
         public virtual void DeleteNotificationRecipient(int notificationId, int userId)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
             InternalMessagingController.Instance.DeleteMessageRecipient(notificationId, userId);
             var recipients = InternalMessagingController.Instance.GetMessageRecipients(notificationId);
             if (recipients.Count == 0)
@@ -373,6 +402,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public void MarkReadyForToast(Notification notification, int userId)
         {
+            DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
             _dataService.MarkReadyForToast(notification.NotificationID, userId);
         }
 
@@ -381,25 +411,37 @@ namespace DotNetNuke.Services.Social.Notifications
 			_dataService.MarkToastSent(notificationId, userId);
 		}
 
-		public IList<Notification> GetToasts(UserInfo userInfo)
-		{
-			var toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+        public IList<Notification> GetToasts(UserInfo userInfo)
+        {
+            var cacheKey = string.Format(ToastsCacheKey, userInfo.UserID);
+            var toasts = DataCache.GetCache<IList<Notification>>(cacheKey);
 
-			foreach (var message in toasts)
-			{
-				_dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
-			}
+            if (toasts == null)
+            {
+                toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+                foreach (var message in toasts)
+                {
+                    _dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+                }
+                //Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
+                //This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
+                DataCache.SetCache(cacheKey, new List<Notification>());
+            }
 
-			return toasts;
-		}
+            return toasts;
+        }
 
-		#endregion
+
+        #endregion
 
         #region Internal Methods
 
         internal virtual UserInfo GetAdminUser()
         {
-            return UserController.GetUserById(PortalSettings.Current.PortalId, PortalSettings.Current.AdministratorId);
+            var current = PortalSettings.Current;
+            return current == null
+                ? new UserInfo()
+                : UserController.GetUserById(current.PortalId, current.AdministratorId);
         }
 
         internal virtual int GetCurrentUserId()
@@ -448,7 +490,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal virtual string InputFilter(string input)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
         }
 

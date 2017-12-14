@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,9 +40,6 @@ namespace DotNetNuke.Entities.Users
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	03/14/2006	documented
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PurgeUsersOnline : SchedulerClient
     {
@@ -53,9 +50,6 @@ namespace DotNetNuke.Entities.Users
         /// <remarks>
         /// </remarks>
         /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem</param>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PurgeUsersOnline(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -66,9 +60,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// UpdateUsersOnline updates the Users Online information
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void UpdateUsersOnline()
         {
@@ -89,9 +80,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// DoWork does th4 Scheduler work
         /// </summary>
-        /// <history>
-        ///     [cnurse]	03/14/2006	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DoWork()
         {

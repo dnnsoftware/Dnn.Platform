@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,6 +33,8 @@ namespace DotNetNuke.Common.Utilities
 {
     public class PathUtils : ComponentBase<IPathUtils, PathUtils>, IPathUtils
     {
+        private static readonly Regex FolderPathRx = new Regex("^0\\\\", RegexOptions.Compiled);
+
         #region Constructor
 
         internal PathUtils()
@@ -280,9 +282,9 @@ namespace DotNetNuke.Common.Utilities
         {
             Requires.PropertyNotNull("originalPath", originalPath);
 
-            if (originalPath.IndexOf("\\") != -1)
+            if (originalPath.IndexOf("\\", StringComparison.InvariantCulture) >= 0)
             {
-                return Regex.Replace(originalPath, "^0\\\\", "");
+                return FolderPathRx.Replace(originalPath, "");
             }
 
             return originalPath.StartsWith("0") ? originalPath.Substring(1) : originalPath;

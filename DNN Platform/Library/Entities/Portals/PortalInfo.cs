@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,9 +29,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 
 #endregion
 
@@ -748,7 +746,8 @@ namespace DotNetNuke.Entities.Portals
 
         #endregion
 
-        [XmlIgnore, Obsolete("Deprecated in DNN 6.0.")]
+        [XmlIgnore]
+        [Obsolete("Deprecated in DNN 6.0.")]
         public int TimeZoneOffset { get; set; }
 
         #region IHydratable Members
@@ -799,15 +798,39 @@ namespace DotNetNuke.Entities.Portals
             GUID = new Guid(Null.SetNullString(dr["GUID"]));
             PaymentProcessor = Null.SetNullString(dr["PaymentProcessor"]);
             ProcessorUserId = Null.SetNullString(dr["ProcessorUserId"]);
-            ProcessorPassword = Null.SetNullString(dr["ProcessorPassword"]);
+            var p = Null.SetNullString(dr["ProcessorPassword"]);
+            try
+            {
+                ProcessorPassword = string.IsNullOrEmpty(p)
+                    ? p
+                    : Security.FIPSCompliant.DecryptAES(p, Config.GetDecryptionkey(), Host.Host.GUID);
+            }
+            catch(FormatException)
+            {
+                // for backward compatibility
+                ProcessorPassword = p;
+            }
             SplashTabId = Null.SetNullInteger(dr["SplashTabID"]);
             HomeTabId = Null.SetNullInteger(dr["HomeTabID"]);
             LoginTabId = Null.SetNullInteger(dr["LoginTabID"]);
             RegisterTabId = Null.SetNullInteger(dr["RegisterTabID"]);
             UserTabId = Null.SetNullInteger(dr["UserTabID"]);
             SearchTabId = Null.SetNullInteger(dr["SearchTabID"]);
-            Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
-            Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
+
+            Custom404TabId = Custom500TabId = Null.NullInteger;
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'Custom404TabId'").Length > 0)
+                {
+                    Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
+                }
+                if (schema.Select("ColumnName = 'Custom500TabId'").Length > 0)
+                {
+                    Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
+                }
+            }
+
             DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
 #pragma warning disable 612,618 //needed for upgrades and backwards compatibility
             TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);

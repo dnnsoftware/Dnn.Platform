@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -68,8 +68,8 @@ namespace DotNetNuke.Entities.Tabs
         private Hashtable _settings;
         private string _skinDoctype;
         private bool _superTabIdSet = Null.NullBoolean;
-        private readonly SharedDictionary<string, string> _localizedTabNameDictionary = new SharedDictionary<string, string>();
-        private readonly SharedDictionary<string, string> _fullUrlDictionary = new SharedDictionary<string, string>();
+        private readonly SharedDictionary<string, string> _localizedTabNameDictionary;
+        private readonly SharedDictionary<string, string> _fullUrlDictionary;
         private string _iconFile;
         private string _iconFileLarge;
 
@@ -789,8 +789,9 @@ namespace DotNetNuke.Entities.Tabs
 
         #region Private Methods
 
-        static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
-        static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+        private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
+        private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+        private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
@@ -798,9 +799,6 @@ namespace DotNetNuke.Entities.Tabs
         /// Adds xmlns and lang parameters when appropiate.
         /// </summary>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[cathal]	28/05/2006	Created
-        /// </history>
         private string CheckIfDoctypeConfigExists()
         {
             if (string.IsNullOrEmpty(SkinSrc))
@@ -837,15 +835,16 @@ namespace DotNetNuke.Entities.Tabs
             var xmlSkinDocType = new XmlDocument();
 
             // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-            string skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
+            var skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
             if (File.Exists(skinFileName)) {
                 xmlSkinDocType.Load(skinFileName);
                 return xmlSkinDocType;
             }
 
             // use the skin.doctype.xml file
-            string packageFileName = HttpContext.Current.Server.MapPath(Regex.Replace(SkinSrc, @"([^/]+$)", "skin.doctype.xml", RegexOptions.CultureInvariant));
-            if (File.Exists(packageFileName)) {
+            var packageFileName = HttpContext.Current.Server.MapPath(SkinSrcRegex.Replace(SkinSrc, "skin.doctype.xml"));
+            if (File.Exists(packageFileName))
+            {
                 xmlSkinDocType.Load(packageFileName);
                 return xmlSkinDocType;
             }
@@ -960,9 +959,6 @@ namespace DotNetNuke.Entities.Tabs
         /// Fills a TabInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
@@ -1017,59 +1013,6 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
             return url ?? ("");
-        }
-
-        #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DNN 5.1. All permission checks are done through Permission Collections")]
-        [XmlIgnore]
-        public string AdministratorRoles
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_administratorRoles))
-                {
-                    _administratorRoles = TabPermissions.ToString("EDIT");
-                }
-                return _administratorRoles;
-            }
-            set
-            {
-                _administratorRoles = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. All permission checks are done through Permission Collections")]
-        [XmlIgnore]
-        public string AuthorizedRoles
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_authorizedRoles))
-                {
-                    _authorizedRoles = TabPermissions.ToString("VIEW");
-                }
-                return _authorizedRoles;
-            }
-            set
-            {
-                _authorizedRoles = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. The artificial differences between Regular and Admin pages was removed.")]
-        public bool IsAdminTab
-        {
-            get
-            {
-                if (IsSuperTab)
-                {
-                    return true;
-                }
-                return false;
-            }
         }
 
         #endregion

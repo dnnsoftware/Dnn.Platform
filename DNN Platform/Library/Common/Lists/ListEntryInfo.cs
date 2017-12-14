@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -99,7 +99,10 @@ namespace DotNetNuke.Common.Lists
 
                     res = Services.Localization.Localization.GetString(key, ResourceFileRoot);
                 }
-                catch { }
+                catch
+                {
+                    //ignore
+                }
                 if (string.IsNullOrEmpty(res)) { res = _Text; };
                 return res;
             }

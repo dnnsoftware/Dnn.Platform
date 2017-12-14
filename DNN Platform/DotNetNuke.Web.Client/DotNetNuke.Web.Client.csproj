@@ -36,11 +36,12 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClientDependency.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ClientDependency.Core">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -55,6 +56,9 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Controls\ClientResourceExclude.cs" />
+    <Compile Include="Controls\DnnJsExclude.cs" />
+    <Compile Include="Controls\DnnCssExclude.cs" />
     <Compile Include="Controls\DnnJsIncludeFallback.cs" />
     <Compile Include="FileOrder.cs" />
     <Compile Include="Controls\ClientResourceInclude.cs" />

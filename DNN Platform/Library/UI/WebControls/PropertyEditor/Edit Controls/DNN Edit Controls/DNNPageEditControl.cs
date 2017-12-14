@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,9 +43,6 @@ namespace DotNetNuke.UI.WebControls
     /// The DNNPageEditControl control provides a standard UI component for selecting
     /// a DNN Page
     /// </summary>
-    /// <history>
-    ///     [cnurse]	03/22/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNPageEditControl runat=server></{0}:DNNPageEditControl>")]
     public class DNNPageEditControl : IntegerEditControl
@@ -57,9 +54,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderEditMode renders the Edit mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	03/22/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
@@ -101,9 +95,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderViewMode renders the View mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	10/11/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {

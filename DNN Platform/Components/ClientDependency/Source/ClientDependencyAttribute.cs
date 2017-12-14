@@ -18,9 +18,12 @@ namespace ClientDependency.Core
             Group = Constants.DefaultGroup;
 			PathNameAlias = "";
             HtmlAttributes = new Dictionary<string, string>();
+            //*** DNN related change *** begin
+            ForceVersion = false;
+            //*** DNN related change *** end
         }
-        
-		public ClientDependencyAttribute(ClientDependencyType dependencyType, string fullFilePath)
+
+        public ClientDependencyAttribute(ClientDependencyType dependencyType, string fullFilePath)
             : this(Constants.DefaultPriority, dependencyType, fullFilePath, string.Empty)
 		{ }
 
@@ -75,6 +78,12 @@ namespace ClientDependency.Core
 			ForceBundle = forceBundle;
 
             HtmlAttributes = new Dictionary<string, string>();
+
+            //*** DNN related change *** begin
+            Name = "";
+            Version = "";
+            ForceVersion = false;
+            //*** DNN related change *** end
         }
 
 
@@ -132,6 +141,25 @@ namespace ClientDependency.Core
         /// </summary>
         /// <value>The type of the dependency.</value>
         public ClientDependencyType DependencyType { get; set; }
+
+        //*** DNN related change *** begin
+        /// <summary>
+        /// Name of a framework such as jQuery, Bootstrap, Angular, etc.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Version of this resource if it is a framework
+        /// Note this field is only used when Framework is specified
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        /// Force this version to be used. Meant for skin designers that wish to override
+        /// choices made by module developers or the framework.
+        /// </summary>
+        public bool ForceVersion { get; set; }
+        //*** DNN related change *** end
 
         protected bool Equals(ClientDependencyAttribute other)
         {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,9 +34,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	11/24/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class WidgetComponentWriter : FileComponentWriter
     {
@@ -49,9 +46,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Collection Node ("widgetFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	11/24/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -66,9 +60,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Item Node ("widgetFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	11/24/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -83,9 +74,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Component Type ("Widget")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	11/24/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {

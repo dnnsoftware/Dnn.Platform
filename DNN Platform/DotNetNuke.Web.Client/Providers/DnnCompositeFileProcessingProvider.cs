@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System.IO;
 
 namespace DotNetNuke.Web.Client.Providers
 {
@@ -39,7 +41,18 @@ namespace DotNetNuke.Web.Client.Providers
                 case ClientDependencyType.Css:
                     return MinifyCss ? CssHelper.MinifyCss(fileContents) : fileContents;
                 case ClientDependencyType.Javascript:
-                    return MinifyJs ? JSMin.CompressJS(fileContents) : fileContents;
+                {
+                    if (!MinifyJs)
+                        return fileContents;
+
+                    using (var ms = new MemoryStream())
+                    using (var writer = new StreamWriter(ms))
+                    {
+                        writer.Write(fileContents);
+                        writer.Flush();
+                        return JSMin.CompressJS(ms);
+                    }
+                }
                 default:
                     return fileContents;
             }

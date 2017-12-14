@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Package is installed
+        /// Gets whether the Package is already installed with the same version
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -205,9 +205,6 @@ namespace DotNetNuke.Services.Installer
         /// Gets the Invalid File Extensions
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/12/2009  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string InvalidFileExtensions
         {
@@ -339,6 +336,11 @@ namespace DotNetNuke.Services.Installer
         private void ReadZipStream(Stream inputStream, bool isEmbeddedZip)
         {
             Log.StartJob(Util.FILES_Reading);
+            if (inputStream.CanSeek)
+            {
+                inputStream.Seek(0, SeekOrigin.Begin);
+            }
+
             var unzip = new ZipInputStream(inputStream);
             ZipEntry entry = unzip.GetNextEntry();
             while (entry != null)
@@ -353,13 +355,14 @@ namespace DotNetNuke.Services.Installer
                         string tmpInstallFolder = TempInstallFolder;
 
                         //Create Zip Stream from File
-                        var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read);
+                        using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
+                        {
+                            //Set TempInstallFolder
+                            TempInstallFolder = Path.Combine(TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
 
-                        //Set TempInstallFolder
-                        TempInstallFolder = Path.Combine(TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
-
-                        //Extract files from zip
-                        ReadZipStream(zipStream, true);
+                            //Extract files from zip
+                            ReadZipStream(zipStream, true);
+                        }
 
                         //Restore TempInstallFolder
                         TempInstallFolder = tmpInstallFolder;

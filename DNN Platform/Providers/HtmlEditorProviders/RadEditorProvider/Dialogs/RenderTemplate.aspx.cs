@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,8 +38,6 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// </history>
 	public partial class RenderTemplate : System.Web.UI.Page
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RenderTemplate));

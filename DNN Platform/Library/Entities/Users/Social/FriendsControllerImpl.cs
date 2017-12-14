@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,19 +36,10 @@ namespace DotNetNuke.Entities.Users.Social.Internal
     {
         internal const string FriendRequest = "FriendRequest";
 
-        private static event EventHandler<RelationshipEventArgs> FriendshipRequested;
-        private static event EventHandler<RelationshipEventArgs> FriendshipAccepted;
-        private static event EventHandler<RelationshipEventArgs> FriendshipDeleted;
 
-        static FriendsControllerImpl()
-        {
-            foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
-            {
-                FriendshipRequested += handlers.Value.FriendshipRequested;
-                FriendshipAccepted += handlers.Value.FriendshipAccepted;
-                FriendshipDeleted += handlers.Value.FriendshipDeleted;
-            }
-        }
+        //static FriendsControllerImpl()
+        //{
+        //}
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -67,8 +58,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 NotificationsController.Instance.GetNotificationType(FriendRequest).NotificationTypeId,
                 friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), initiatingUser.UserID);
 
-            if (FriendshipAccepted != null)
-                FriendshipAccepted(null, new RelationshipEventArgs(friendRelationship,initiatingUser.PortalID));
+            EventManager.Instance.OnFriendshipAccepted(new RelationshipEventArgs(friendRelationship,initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -102,13 +92,21 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
+            //Check if the friendship has been requested first by target user
+            var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(targetUser,
+                initiatingUser);
+            if (targetUserRelationship != null && targetUserRelationship.Status == RelationshipStatus.Pending)
+            {
+                RelationshipController.Instance.AcceptUserRelationship(targetUserRelationship.UserRelationshipId);
+                return;
+            }
+
             var userRelationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser, 
                                         RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
 
             AddFriendRequestNotification(initiatingUser, targetUser, userRelationship);
 
-            if (FriendshipRequested != null)
-                FriendshipRequested(null, new RelationshipEventArgs(userRelationship, initiatingUser.PortalID));
+            EventManager.Instance.OnFriendshipRequested(new RelationshipEventArgs(userRelationship, initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -139,8 +137,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
             RelationshipController.Instance.DeleteUserRelationship(friend);
 
-            if (FriendshipDeleted != null)
-                FriendshipDeleted(null, new RelationshipEventArgs(friend, initiatingUser.PortalID));
+            EventManager.Instance.OnFriendshipDeleted(new RelationshipEventArgs(friend, initiatingUser.PortalID));
         }
 
         private static void AddFriendRequestNotification(UserInfo initiatingUser, UserInfo targetUser, UserRelationship userRelationship)

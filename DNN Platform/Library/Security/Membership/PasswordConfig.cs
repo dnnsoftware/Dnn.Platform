@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,9 +40,6 @@ namespace DotNetNuke.Security.Membership
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	03/02/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PasswordConfig
     {
@@ -51,9 +48,6 @@ namespace DotNetNuke.Security.Membership
         /// Gets and sets the Password Expiry time in days
         /// </summary>
         /// <returns>An integer.</returns>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(0), Category("Password")]
         public static int PasswordExpiry
@@ -74,9 +68,6 @@ namespace DotNetNuke.Security.Membership
         /// is about to expire
         /// </summary>
         /// <returns>An integer.</returns>
-        /// <history>
-        ///     [cnurse]	03/02/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(1), Category("Password")]
         public static int PasswordExpiryReminder

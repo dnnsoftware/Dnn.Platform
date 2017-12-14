@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Helpers;
 
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
@@ -23,5 +24,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         ModuleInstanceContext ModuleContext { get; set; }
 
         ActionResult ResultOfLastExecute { get; }
+
+        bool ValidateRequest { get; set; }
+
+        ViewEngineCollection ViewEngineCollectionEx { get; set; }
+
+        DnnUrlHelper Url { get; set; }
+
     }
 }

@@ -1,0 +1,83 @@
+﻿
+.console { width:95%; height:95%; }
+.console select { margin-left:0px;margin-bottom:4px; }
+
+.console-none div { height:30px; margin:2px; width:180px; padding:5px; cursor:pointer; text-align:left; float:left; }
+.console-none h3 { margin: 0px 2px 2px 28px; padding-top:5px; font-size:1em; line-height: 1.4em; font-weight: normal }
+.console-none div div { display:none; }
+
+.console-none-detail div { padding:10px; clear:both; cursor:pointer; }
+.console-none-detail h3 { margin: 2px 2px 2px 28px; padding-top:5px; font-size:1em; }
+.console-none-detail div div { margin: 2px 2px 2px 28px; padding:0px; clear:none; }
+
+.console-small div { height:30px; margin:2px; width:180px; padding:5px; cursor:pointer; text-align:left; float:left; }
+.console-small img { padding:4px; float:left; }
+.console-small h3 { margin: 0px 2px 2px 28px; padding-top:5px; font-size:1em; line-height: 1.4em; font-weight: normal }
+.console-small div div { display:none; }
+
+.console-small-detail div { padding:10px; clear:both; cursor:pointer; }
+.console-small-detail img { padding:4px; float:left; }
+.console-small-detail h3 { margin: 2px 2px 2px 28px; padding:0px; font-size:1em; }
+.console-small-detail div div { margin: 2px 2px 2px 28px; padding:0px; clear:none; }
+
+.console-large div { margin:10px; width:130px; height:90px !important; padding:0px; cursor:pointer; text-align:center; float:left; }
+.console-large img { float:none; padding: 10px 0px 0px 0px; }
+.console-large h3 {  margin:2px; width:130px; text-align:center; overflow:hidden; font-size:1em; line-height: 1.4em; padding-top:5px; font-weight: normal }
+.console-large div div { display:none; }
+
+.console-large-detail div { margin:0px; padding:15px; clear:both; cursor:pointer; }
+.console-large-detail img { padding:0px; float:left; }
+.console-large-detail h3 { margin: 2px 2px 2px 44px; padding: 0px; font-size:1em; }
+.console-large-detail div div { margin: 2px 2px 2px 44px; padding:0px; clear:none; }
+
+.console-mouseon { background-color:#ebedf0; } /*#f1f6f9*/
+
+/*------------------------------------------------*/
+/* DEFAULT PROFILE STYLE */
+/*------------------------------------------------*/
+
+.UserProfileControls ul li {
+    list-style-type: none;
+}
+
+/*------------------------------------------------*/
+/* PROFILE STYLE */
+/*------------------------------------------------*/
+.console.profile {
+    /*width: 250px;*/
+    width:100% !important; /* updated for responsive*/
+    height: auto;
+    background-color: #484848; /* Menu Background Color */
+}
+
+.console.profile .console-none div {
+    cursor: pointer;
+    cursor: hand;
+    float: left;
+    height: auto;
+    /*width: 250px;*/
+    width:100% !important; /* updated for responsive*/
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+}
+
+.console.profile .console-none h3 {
+    padding: 10px 8px 10px 40px;
+    margin: 0;
+    border-bottom: solid 1px #fff;
+    background: url('../../../images/arrow-right-white.png') 18px center no-repeat;
+    color: #eee;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.console.profile .console-none div div {
+    display: none;
+}
+
+.console.profile .console-mouseon {
+    background-color: #70b1c7; /* Menu Hover Background Color */
+}
+

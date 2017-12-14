@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -166,7 +166,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="ArgumentException"><paramref name="collection"/> does not contain a value for <paramref name="key"/></exception>
         public static T GetValue<T>(this NameValueCollection collection, string key)
         {
-            return collection.ToLookup().GetValue<T>(key);
+            return collection.ToLookup(false).GetValue<T>(key);
         }
 
         /// <summary>Gets the value from the XML node's child elements.</summary>
@@ -245,7 +245,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="ArgumentException"><paramref name="collection"/> does not contain a value for <paramref name="key"/></exception>
         public static T GetValue<T>(this NameValueCollection collection, string key, Func<object, T> converter)
         {
-            return collection.ToLookup().GetValue(key, converter);
+            return collection.ToLookup(false).GetValue(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements.</summary>
@@ -312,7 +312,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="ArgumentException"><paramref name="collection"/> does not contain a value for <paramref name="key"/></exception>
         public static T GetValue<T>(this NameValueCollection collection, string key, Func<string, T> converter)
         {
-            return collection.ToLookup().GetValue(key, converter);
+            return collection.ToLookup(false).GetValue(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements.</summary>
@@ -395,7 +395,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
         public static T GetValueOrDefault<T>(this NameValueCollection collection, string key)
         {
-            return collection.ToLookup().GetValueOrDefault<T>(key);
+            return collection.ToLookup(false).GetValueOrDefault<T>(key);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -481,7 +481,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
         public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, T defaultValue)
         {
-            return collection.ToLookup().GetValueOrDefault(key, defaultValue);
+            return collection.ToLookup(false).GetValueOrDefault(key, defaultValue);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/>  if the value doesn't exist.</summary>
@@ -548,7 +548,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
         public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, Func<object, T> converter)
         {
-            return collection.ToLookup().GetValueOrDefault(key, converter);
+            return collection.ToLookup(false).GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -610,7 +610,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
         public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, Func<string, T> converter)
         {
-            return collection.ToLookup().GetValueOrDefault(key, converter);
+            return collection.ToLookup(false).GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -676,7 +676,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
         public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, T defaultValue, Func<string, T> converter)
         {
-            return collection.ToLookup().GetValueOrDefault(key, defaultValue, converter);
+            return collection.ToLookup(false).GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -730,7 +730,7 @@ namespace DotNetNuke.Collections
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
         public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, T defaultValue, Func<object, T> converter)
         {
-            return collection.ToLookup().GetValueOrDefault(key, defaultValue, converter);
+            return collection.ToLookup(false).GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -831,10 +831,37 @@ namespace DotNetNuke.Collections
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
         public static ILookup<string, string> ToLookup(this NameValueCollection collection)
         {
+            return collection.ToLookup(true);
+        }
+
+        /// <summary>Converts the <paramref name="collection" /> to an <see cref="ILookup{TKey,TElement}" />.</summary>
+        /// <param name="collection">The collection.</param>
+        /// <param name="splitValues">If <c>true</c>, treats values in the <paramref name="collection"/> as comma-delimited lists of items (e.g. from a <see cref="NameValueCollection"/>)</param>
+        /// <returns>An <see cref="ILookup{TKey,TElement}" /> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection" /> is <c>null</c></exception>
+        public static ILookup<string, string> ToLookup(this NameValueCollection collection, bool splitValues)
+        {
             Requires.NotNull("collection", collection);
             return collection.AllKeys
-                             .SelectMany(key => ParseValues(key, collection.GetValues(key)))
+                             .SelectMany(key => ParseValues(key, collection.GetValues(key), splitValues))
                              .ToLookup(pair => pair.Key, pair => pair.Value);
+        }
+
+        /// <summary>
+        /// Executes an action for each element in the source collection.
+        /// </summary>
+        /// <typeparam name="TType">The type of the type.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        public static IEnumerable<TType> ForEach<TType>(this IEnumerable<TType> source, Action<TType> action)
+        {
+            foreach (TType element in source)
+            {
+                action(element);
+            }
+
+            return source;
         }
 
         #region Private Methods
@@ -901,7 +928,17 @@ namespace DotNetNuke.Collections
         /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/> instances.</returns>
         private static IEnumerable<KeyValuePair<string, string>> ParseValues(string key, string[] values)
         {
-            return (values.Length == 1
+            return ParseValues(key, values, true);
+        }
+
+        /// <summary>Wraps the <paramref name="values"/> into <see cref="KeyValuePair{TKey,TValue}"/> instances.</summary>
+        /// <param name="key">The key.</param>
+        /// <param name="values">The values.</param>
+        /// <param name="splitSingleValue">If <c>true</c>, treats a single item in <paramref name="values"/> as a comma-delimited list of items (e.g. from a <see cref="NameValueCollection"/>)</param>
+        /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/> instances.</returns>
+        private static IEnumerable<KeyValuePair<string, string>> ParseValues(string key, string[] values, bool splitSingleValue)
+        {
+            return (splitSingleValue && values.Length == 1
                         ? values[0].Split(',')
                         : values).Select(value => new KeyValuePair<string, string>(key, value));
         }

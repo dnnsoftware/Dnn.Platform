@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -50,6 +50,9 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
 
+        public static readonly Regex TabIdRegex = new Regex("&?tabid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        public static readonly Regex PortalIdRegex = new Regex("&?portalid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region overridden methods
 
         internal override void RewriteUrl(object sender, EventArgs e)
@@ -76,12 +79,9 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             //URL validation 
             //check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
             //the application should always use the exact relative location of the resource it is requesting
-            string strURL = request.Url.AbsolutePath;
-            string strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl));
-            if (Regex.Match(strURL, "[\\\\/]\\.\\.[\\\\/]").Success ||
-// ReSharper disable AssignNullToNotNullAttribute
-                Regex.Match(strDoubleDecodeURL, "[\\\\/]\\.\\.[\\\\/]").Success)
-// ReSharper restore AssignNullToNotNullAttribute
+            var strURL = request.Url.AbsolutePath;
+            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? "";
+            if (Globals.FileEscapingRegex.Match(strURL).Success || Globals.FileEscapingRegex.Match(strDoubleDecodeURL).Success)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }
@@ -659,10 +659,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         string requestQuery = app.Request.Url.Query;
                         if (!string.IsNullOrEmpty(requestQuery))
                         {
-                            requestQuery = Regex.Replace(requestQuery, "&?tabid=\\d+", string.Empty,
-                                                         RegexOptions.IgnoreCase);
-                            requestQuery = Regex.Replace(requestQuery, "&?portalid=\\d+", string.Empty,
-                                                         RegexOptions.IgnoreCase);
+                            requestQuery = TabIdRegex.Replace(requestQuery, string.Empty);
+                            requestQuery = PortalIdRegex.Replace(requestQuery, string.Empty);
                             requestQuery = requestQuery.TrimStart('?', '&');
                         }
                         if (tabPath == "/login.aspx")

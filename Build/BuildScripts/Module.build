@@ -14,6 +14,7 @@
       <MVCConfig Include="Views/*.config" />
       <Controls Include="Controls/*.ascx;" />
       <ResourceFiles Include="App_LocalResources/*.resx" />
+      <ControlResourceFiles Include="Controls/App_LocalResources/*.resx;" />
       <Images Include="Images/*.*" />
       <Keys Include="keys/*.*" />
       <ClientScripts Include="ClientScripts/*.*" />
@@ -22,7 +23,7 @@
       <SharedScripts Include="Scripts/Shared/*.*" />
       <Templates Include="Templates/*.htm" />
       <DataFiles Include="Resources/*.xml" />
-      <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);
+      <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);@(ControlResourceFiles);
                  @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews); @(MVCConfig)" />
     </ItemGroup>
   </Target>
@@ -36,19 +37,20 @@
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ModuleFolderName)" />
     <Copy SourceFiles="@(RootViews)" DestinationFolder="$(ModuleFolderName)" />
     <Copy SourceFiles="@(RootConfig)" DestinationFolder="$(ModuleFolderName)" />
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModuleFolderName)\App_LocalResources" />
-    <Copy SourceFiles="@(ClientScripts)" DestinationFolder="$(ModuleFolderName)\ClientScripts" />
-    <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(ModuleFolderName)\Config" />
-    <Copy SourceFiles="@(Controls)" DestinationFolder="$(ModuleFolderName)\Controls" />
-    <Copy SourceFiles="@(Images)" DestinationFolder="$(ModuleFolderName)\Images" />
-    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(ModuleFolderName)\js" />
-    <Copy SourceFiles="@(Keys)" DestinationFolder="$(ModuleFolderName)\keys" />
-    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ModuleFolderName)\Resources" />
-    <Copy SourceFiles="@(Scripts)" DestinationFolder="$(ModuleFolderName)\Scripts" />
-    <Copy SourceFiles="@(SharedScripts)" DestinationFolder="$(ModuleFolderName)\Scripts\Shared" />
-    <Copy SourceFiles="@(Templates)" DestinationFolder="$(ModuleFolderName)\Templates" />
-    <Copy SourceFiles="@(Views)" DestinationFolder="$(ModuleFolderName)\Views" />
-    <Copy SourceFiles="@(MVCViews)" DestinationFolder="$(ModuleFolderName)\Views\%(RecursiveDir)" />
-    <Copy SourceFiles="@(MVCConfig)" DestinationFolder="$(ModuleFolderName)\Views" />
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ModuleFolderName)/App_LocalResources" />
+    <Copy SourceFiles="@(ClientScripts)" DestinationFolder="$(ModuleFolderName)/ClientScripts" />
+    <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(ModuleFolderName)/Config" />
+    <Copy SourceFiles="@(Controls)" DestinationFolder="$(ModuleFolderName)/Controls" />
+    <Copy SourceFiles="@(ControlResourceFiles)" DestinationFolder="$(ModuleFolderName)\Controls\App_LocalResources" />
+    <Copy SourceFiles="@(Images)" DestinationFolder="$(ModuleFolderName)/Images" />
+    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(ModuleFolderName)/js" />
+    <Copy SourceFiles="@(Keys)" DestinationFolder="$(ModuleFolderName)/keys" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ModuleFolderName)/Resources" />
+    <Copy SourceFiles="@(Scripts)" DestinationFolder="$(ModuleFolderName)/Scripts" />
+    <Copy SourceFiles="@(SharedScripts)" DestinationFolder="$(ModuleFolderName)/Scripts/Shared" />
+    <Copy SourceFiles="@(Templates)" DestinationFolder="$(ModuleFolderName)/Templates" />
+    <Copy SourceFiles="@(Views)" DestinationFolder="$(ModuleFolderName)/Views" />
+    <Copy SourceFiles="@(MVCViews)" DestinationFolder="$(ModuleFolderName)/Views/%(RecursiveDir)" />
+    <Copy SourceFiles="@(MVCConfig)" DestinationFolder="$(ModuleFolderName)/Views" />
   </Target> 
 </Project>

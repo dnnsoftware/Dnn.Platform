@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -52,9 +52,11 @@ namespace DotNetNuke.Services.ModuleCache
         private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
         {
             byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            var sha256 = new SHA256CryptoServiceProvider();
-            hash = sha256.ComputeHash(hash);
-            return tabModuleId + "_" + ByteArrayToString(hash);
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                hash = sha256.ComputeHash(hash);
+                return tabModuleId + "_" + ByteArrayToString(hash);
+            }
         }
 
 
@@ -203,33 +205,17 @@ namespace DotNetNuke.Services.ModuleCache
         public override byte[] GetModule(int tabModuleId, string cacheKey)
         {
             string cachedModule = GetCachedOutputFileName(tabModuleId, cacheKey);
-            BinaryReader br = null;
-            FileStream fStream = null;
-            byte[] data;
-            try
+            if (!File.Exists(cachedModule))
             {
-                if (!File.Exists(cachedModule))
-                {
-                    return null;
-                }
-                var fInfo = new FileInfo(cachedModule);
-                long numBytes = fInfo.Length;
-                fStream = new FileStream(cachedModule, FileMode.Open, FileAccess.Read);
-                br = new BinaryReader(fStream);
-                data = br.ReadBytes(Convert.ToInt32(numBytes));
+                return null;
             }
-            finally
+            var fInfo = new FileInfo(cachedModule);
+            long numBytes = fInfo.Length;
+            using (var fStream = new FileStream(cachedModule, FileMode.Open, FileAccess.Read))
+            using (var br = new BinaryReader(fStream))
             {
-                if (br != null)
-                {
-                    br.Close();
-                }
-                if (fStream != null)
-                {
-                    fStream.Close();
-                }
+                return br.ReadBytes(Convert.ToInt32(numBytes));
             }
-            return data;
         }
 
         public override void PurgeCache(int portalId)

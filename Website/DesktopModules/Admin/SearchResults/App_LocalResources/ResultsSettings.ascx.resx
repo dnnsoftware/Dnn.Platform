@@ -121,7 +121,7 @@
     <value>Search Results Settings</value>
   </data>
   <data name="filtersRequired.Text" xml:space="preserve">
-    <value>At least one content type should be selected</value>
+    <value>At least one content type should be selected.</value>
   </data>
   <data name="linkTargetOnSamePage.Text" xml:space="preserve">
     <value>On Same Page</value>
@@ -130,30 +130,30 @@
     <value>Open New Page</value>
   </data>
   <data name="plEnableWildSearch.Help" xml:space="preserve">
-    <value>Search can be performed by typing partial words, e.g. typing "org" will find "organization" or "organize". Disable this setting if results take a long time to retrieve.</value>
+    <value>Check this box to enable searches to be performed by typing partial words, e.g. typing "org" will find "organization" or "organize".  This setting should be unchecked if results take a long time to retrieve.</value>
   </data>
   <data name="plEnableWildSearch.Text" xml:space="preserve">
-    <value>Enable wildcard searches by default</value>
+    <value>Enable Wildcard Searches by Default</value>
   </data>
   <data name="plResultsScopeForFilters.Help" xml:space="preserve">
-    <value>Limit the Search Results by selecting the content type(s)</value>
+    <value>Limit the search results by selecting the content type(s).</value>
   </data>
   <data name="plResultsScopeForFilters.Text" xml:space="preserve">
     <value>Results Scope for Content Type(s)</value>
   </data>
   <data name="plResultsScopeForPortals.Help" xml:space="preserve">
-    <value>Limit the Search Results by selecting the site(s)</value>
+    <value>Limit the search results by selecting the site(s).</value>
   </data>
   <data name="plResultsScopeForPortals.Text" xml:space="preserve">
     <value>Results Scope for Site(s)</value>
   </data>
   <data name="plTitleLinkTarget.Help" xml:space="preserve">
-    <value>Determine if the Link will be opened in the same page or in a new window</value>
+    <value>Choose to open the link in the same page or in a new window.</value>
   </data>
   <data name="plTitleLinkTarget.Text" xml:space="preserve">
     <value>Title Link Target</value>
   </data>
   <data name="portalsRequired.Text" xml:space="preserve">
-    <value>At least one site should be selected</value>
+    <value>At least one site should be selected.</value>
   </data>
 </root>

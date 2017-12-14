@@ -203,7 +203,7 @@
     <value>A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z</value>
   </data>
   <data name="UserDeleted.Text" xml:space="preserve">
-    <value>User Deleted Successfully</value>
+    <value>User deleted successfully.</value>
   </data>
   <data name="Delete.Text" xml:space="preserve">
     <value>Delete</value>

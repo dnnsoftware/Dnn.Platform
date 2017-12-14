@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,6 +29,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -90,8 +91,10 @@ namespace DotNetNuke.Admin.Containers
 
             actionButton.Click += actionButton_Click;
 
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
             ClientResourceManager.RegisterStyleSheet(Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterStyleSheet(Page, "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", FileOrder.Css.ModuleCss);
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -121,10 +124,13 @@ namespace DotNetNuke.Admin.Containers
                 {
                     SupportsQuickSettings = true;
                     var control  = ModuleControlFactory.LoadModuleControl(Page, ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    control.ID += ModuleContext.ModuleId;
                     quickSettings.Controls.Add(control);
 
                     DisplayQuickSettings = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
                     ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "QS_FirstLoad", "False");
+
+                    ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
                 if (ActionRoot.Visible)

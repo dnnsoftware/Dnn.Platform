@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,10 +23,13 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Text;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Security;
 
 #endregion
 
@@ -55,27 +58,9 @@ namespace DotNetNuke.Services.Personalization
             string profileData = Null.NullString;
             if (userId > Null.NullInteger)
             {
-                IDataReader dr = null;
-                try
-                {
-                    dr = DataProvider.Instance().GetProfile(userId, portalId);
-                    if (dr.Read())
-                    {
-                        profileData = dr["ProfileData"].ToString();
-                    }
-                    else //does not exist
-                    {
-                        DataProvider.Instance().AddProfile(userId, portalId);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.Exceptions.LogException(ex);
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
+               var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                profileData = CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
+                    DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
             }
             else
             {
@@ -83,12 +68,52 @@ namespace DotNetNuke.Services.Personalization
                 HttpContext context = HttpContext.Current;
                 if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
                 {
-                    profileData = context.Request.Cookies["DNNPersonalization"].Value;
+                    profileData = DecryptData(context.Request.Cookies["DNNPersonalization"].Value);
+
+                    if (string.IsNullOrEmpty(profileData))
+                    {
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", string.Empty)
+                        {
+                            Expires = DateTime.Now.AddDays(-1),
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
+                        context.Response.Cookies.Add(personalizationCookie);
+                    }
                 }
             }
             personalization.Profile = string.IsNullOrEmpty(profileData)
                 ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
             return personalization;
+        }
+
+        private static object GetCachedUserPersonalizationCallback(CacheItemArgs cacheItemArgs)
+        {
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            var userId = (int)cacheItemArgs.ParamList[1];
+            var returnValue = Null.NullString; //Default is no profile
+            IDataReader dr = null;
+            try
+            {
+                dr = DataProvider.Instance().GetProfile(userId, portalId);
+                if (dr.Read())
+                {
+                    returnValue = dr["ProfileData"].ToString();
+                }
+                else //does not exist
+                {
+                    DataProvider.Instance().AddProfile(userId, portalId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Exceptions.LogException(ex);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return returnValue;
         }
 
         public void SaveProfile(PersonalizationInfo personalization)
@@ -106,31 +131,51 @@ namespace DotNetNuke.Services.Personalization
         //override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public void SaveProfile(PersonalizationInfo personalization, int userId, int portalId)
         {
-            if (personalization != null)
+            if (personalization != null && personalization.IsModified)
             {
-                if (personalization.IsModified)
+                var profileData = Globals.SerializeHashTableXml(personalization.Profile);
+                if (userId > Null.NullInteger)
                 {
-                    var profileData = Globals.SerializeHashTableXml(personalization.Profile);
-                    if (userId > Null.NullInteger)
+                    DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
+
+                    // remove then re-add the updated one
+                    var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                    DataCache.RemoveCache(cacheKey);
+                    CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey,
+                        DataCache.UserPersonalizationCacheTimeout, DataCache.UserPersonalizationCachePriority), _ => profileData);
+                }
+                else
+                {
+					//Anon User - so try and use cookie.
+                    var context = HttpContext.Current;
+                    if (context != null)
                     {
-                        DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
-                    }
-                    else
-                    {
-						//Anon User - so try and use cookie.
-                        var context = HttpContext.Current;
-                        if (context != null)
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", EncryptData(profileData))
                         {
-                            var personalizationCookie = new HttpCookie("DNNPersonalization", profileData)
-                            {
-                                Expires = DateTime.Now.AddDays(30),
-                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
-                            };
-                            context.Response.Cookies.Add(personalizationCookie);
-                        }
+                            Expires = DateTime.Now.AddDays(30),
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
+                        context.Response.Cookies.Add(personalizationCookie);
                     }
                 }
             }
+        }
+
+        private static string EncryptData(string profileData)
+        {
+            return PortalSecurity.Instance.Encrypt(GetDecryptionkey(), profileData);
+        }
+
+        private static string DecryptData(string profileData)
+        {
+            return PortalSecurity.Instance.Decrypt(GetDecryptionkey(), profileData);
+        }
+
+        private static string GetDecryptionkey()
+        {
+            var machineKey = Config.GetDecryptionkey();
+            var hostGuid = Host.GUID.Replace("-", string.Empty);
+            return (machineKey ?? "") + hostGuid;
         }
     }
 }

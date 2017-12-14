@@ -1,0 +1,14 @@
+﻿<h3>Microsoft CodeDom .NET Compiler</h3>
+<strong>1.0.7</strong>
+<p class="Contributor">
+	DotNetNuke Corporation <br />
+	<a href="mailto:support@dnncorp.com">support@dnncorp.com</a><br />
+	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Microsoft CodeDom .NET Compiler</h3>
+	<h2>
+		WARNING - Please check with your hosting provider if they allow having EXE files in the Bin Folder. Installation of this package will result in few EXE files copied under Bin\Roslyn folder. Although, the files are from Microsoft, this will completely break your site if the hosting providers do not allow EXE files in Bin folder.
+	</h2>
+</div>

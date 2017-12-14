@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,9 +48,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	05/10/2007	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
     public class DateEditControl : EditControl
@@ -66,9 +63,6 @@ namespace DotNetNuke.UI.WebControls
         /// DateValue returns the Date representation of the Value
         /// </summary>
         /// <value>A Date representing the Value</value>
-        /// <history>
-        ///     [cnurse]	05/22/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected DateTime DateValue
         {
@@ -96,9 +90,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A String representing the default format to use to render the date</value>
         /// <returns>A Format String</returns>
-        /// <history>
-        ///     [cnurse]	10/29/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string DefaultFormat
         {
@@ -114,9 +105,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A String representing the format to use to render the date</value>
         /// <returns>A Format String</returns>
-        /// <history>
-        ///     [cnurse]	06/11/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string Format
         {
@@ -144,9 +132,6 @@ namespace DotNetNuke.UI.WebControls
         /// OldDateValue returns the Date representation of the OldValue
         /// </summary>
         /// <value>A Date representing the OldValue</value>
-        /// <history>
-        ///     [cnurse]	05/22/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected DateTime OldDateValue
         {
@@ -270,9 +255,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderViewMode renders the View (readonly) mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	06/11/2007	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {

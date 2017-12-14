@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -102,9 +102,6 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="sourceText">the text to parse for tokens to replace</param>
         /// <returns>cacheability level (not - safe - fully)</returns>
         /// <remarks>always check cacheability before caching a module!</remarks>
-        /// <history>
-        ///    10/19/2007 [sleupold] corrected to handle non-empty strings
-        /// </history>
         public CacheLevel Cacheability(string sourceText)
         {
             CacheLevel isSafe = CacheLevel.fullyCacheable;
@@ -144,10 +141,6 @@ namespace DotNetNuke.Services.Tokens
         /// </summary>
         /// <param name="strSourceText">String with [Object:Property] tokens</param>
         /// <returns></returns>
-        /// <history>
-        ///    08/10/2007 [sleupold] created
-        ///    10/19/2007 [sleupold] corrected to ignore unchanged text returned (issue DNN-6526)
-        /// </history>
         public bool ContainsTokens(string strSourceText)
         {
             if (!string.IsNullOrEmpty(strSourceText))

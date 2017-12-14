@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Install
             {
                 strErrorMessage = "ConfirmPassword";
             }
-            else if (!Regex.IsMatch(txtEmail.Text, Globals.glbEmailRegEx))
+            else if (!Globals.EmailValidatorRegex.IsMatch(txtEmail.Text))
             {
                 strErrorMessage = "InValidEmail";
             }
@@ -247,9 +247,6 @@ namespace DotNetNuke.Services.Install
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	02/15/2007	Created
-		/// </history>
 		/// -----------------------------------------------------------------------------
 		protected override void OnPreRender(EventArgs e)
 		{

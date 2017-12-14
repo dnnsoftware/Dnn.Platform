@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -79,6 +79,21 @@ namespace DotNetNuke.Services.Tokens
                 else
                 {
                     ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider);
+                }
+            }
+            else if (!String.IsNullOrEmpty(model.Path))
+            {
+                if (model.Priority == 0)
+                {
+                    model.Priority = (int)FileOrder.Js.DefaultPriority;
+                }
+                if (String.IsNullOrEmpty(model.Provider))
+                {
+                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, "", model.JsName, model.Version);
+                }
+                else
+                {
+                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider, model.JsName, model.Version);
                 }
             }
             else

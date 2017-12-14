@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -111,8 +111,8 @@ namespace DotNetNuke.Tests.Urls
 
             if (_customLocale != null)
             {
-                Localization.RemoveLanguageFromPortals(_customLocale.LanguageId);
-                Localization.DeleteLanguage(_customLocale);
+                Localization.RemoveLanguageFromPortals(_customLocale.LanguageId, true);
+                Localization.DeleteLanguage(_customLocale, true);
             }
             if (_primaryAlias != null)
             {
@@ -154,9 +154,7 @@ namespace DotNetNuke.Tests.Urls
 
         private void ExecuteTest(string test, Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"]);
-
-            settings.PortalId = PortalId;
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
 
             SetDefaultAlias(testFields);
 
@@ -167,6 +165,8 @@ namespace DotNetNuke.Tests.Urls
         {
             var tabName = testFields["Page Name"];
             var tab = TabController.Instance.GetTabByName(tabName, PortalId);
+            if (tab == null)
+                Assert.Fail($"TAB with name [{tabName}] is not found!");
 
             ExecuteTestForTab(test, tab, settings, testFields);            
         }
@@ -261,7 +261,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_SpaceEncodingTestCases")]
         public void AdvancedUrlProvider_SpaceEncoding(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "SpaceEncoding");
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "SpaceEncoding", PortalId);
             settings.ReplaceSpaceWith = " ";
 
             string spaceEncoding = testFields.GetValue("SpaceEncoding");
@@ -278,7 +278,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_PageExtensionTestCases")]
         public void AdvancedUrlProvider_PageExtension(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PageExtension");
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PageExtension", PortalId);
 
             string pageExtensionUsageType = testFields.GetValue("PageExtensionUsageType");
             string pageExtension = testFields.GetValue("PageExtension");
@@ -310,7 +310,7 @@ namespace DotNetNuke.Tests.Urls
             string defaultAlias = testFields["DefaultAlias"];
             string redirectMode = testFields["RedirectMode"];
 
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PrimaryPortalAlias");
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PrimaryPortalAlias", PortalId);
 
             string language = testFields["Language"].Trim();
             if (!String.IsNullOrEmpty(language))
@@ -344,7 +344,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_RegexTestCases")]
         public void AdvancedUrlProvider_Regex(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"]);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
 
             string regexSetting = testFields["Setting"];
             string regexValue = testFields["Value"];
@@ -392,7 +392,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ReplaceCharsTestCases")]
         public void AdvancedUrlProvider_ReplaceChars(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"]);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
 
             string testPageName = testFields.GetValue("TestPageName");
             TabInfo tab = null;
@@ -423,7 +423,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ReplaceSpaceTestCases")]
         public void AdvancedUrlProvider_ReplaceSpace(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"]);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
 
             string replaceSpaceWith = testFields.GetValue("ReplaceSpaceWith");
             if (!String.IsNullOrEmpty(replaceSpaceWith))
@@ -438,7 +438,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_VanityUrlTestCases")]
         public void AdvancedUrlProvider_VanityUrl(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"]);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
 
             var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
             var userName = testFields.GetValue("UserName", String.Empty);
@@ -464,7 +464,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ForceLowerCaseTestCases")]
         public void AdvancedUrlProvider_ForceLowerCase(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"]);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
 
             string forceLowerCaseRegex = testFields.GetValue("ForceLowerCaseRegex");
 

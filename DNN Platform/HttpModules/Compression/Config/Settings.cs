@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -93,11 +93,13 @@ namespace DotNetNuke.HttpModules.Compression
                 string filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.Compression);
 
                 //Create a FileStream for the Config file
-                var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var doc = new XPathDocument(fileReader);
-                foreach (XPathNavigator nav in doc.CreateNavigator().Select("compression/excludedPaths/path"))
+                using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    settings._excludedPaths.Add(nav.Value.ToLower());
+                    var doc = new XPathDocument(fileReader);
+                    foreach (XPathNavigator nav in doc.CreateNavigator().Select("compression/excludedPaths/path"))
+                    {
+                        settings._excludedPaths.Add(nav.Value.ToLower());
+                    }
                 }
                 if ((File.Exists(filePath)))
                 {

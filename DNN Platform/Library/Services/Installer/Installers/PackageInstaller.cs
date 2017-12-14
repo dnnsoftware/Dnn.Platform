@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,9 +39,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// <summary>
     /// The PackageInstaller class is an Installer for Packages
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	01/16/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class PackageInstaller : ComponentInstallerBase
     {
@@ -60,9 +57,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// This Constructor creates a new PackageInstaller instance
         /// </summary>
         /// <param name="package">A PackageInfo instance</param>
-        /// <history>
-        /// 	[cnurse]	01/21/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInstaller(PackageInfo package)
         {
@@ -97,9 +91,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="info">An InstallerInfo instance</param>
         /// <param name="packageManifest">The manifest as a string</param>
-        /// <history>
-        /// 	[cnurse]	01/16/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PackageInstaller(string packageManifest, InstallerInfo info)
         {
@@ -127,9 +118,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// package
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DeleteFiles { get; set; }
 
@@ -138,9 +126,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets whether the Package is Valid
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	01/16/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
 		
@@ -152,13 +137,10 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The CheckSecurity method checks whether the user has the appropriate security
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	09/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
             if (type == null)
             {
                 //This package type not registered
@@ -181,9 +163,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadComponents method reads the components node of the manifest file.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/21/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ReadComponents(XPathNavigator manifestNav)
         {
@@ -237,90 +216,6 @@ namespace DotNetNuke.Services.Installer.Installers
             return strText;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ValidateVersion method checks whether the package is already installed
-        /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private void ValidateVersion(string strVersion)
-        {
-            if (string.IsNullOrEmpty(strVersion))
-            {
-                IsValid = false;
-                return;
-            }
-            Package.Version = new Version(strVersion);
-            if (_installedPackage != null)
-            {
-                Package.InstalledVersion = _installedPackage.Version;
-                Package.InstallerInfo.PackageID = _installedPackage.PackageID;
-
-                if (Package.InstalledVersion > Package.Version)
-                {
-                    Log.AddFailure(Util.INSTALL_Version + " - " + Package.InstalledVersion.ToString(3));
-                    IsValid = false;
-                }
-                else if (Package.InstalledVersion == Package.Version)
-                {
-                    Package.InstallerInfo.Installed = true;
-                    Package.InstallerInfo.PortalID = _installedPackage.PortalID;
-                }
-            }
-        }
-
-        private void ReadEventMessageNode(XPathNavigator manifestNav)
-        {
-            XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
-            if (eventMessageNav != null)
-            {
-                _eventMessage = new EventMessage();
-                _eventMessage.Priority = MessagePriority.High;
-                _eventMessage.ExpirationDate = DateTime.Now.AddYears(-1);
-                _eventMessage.SentDate = DateTime.Now;
-                _eventMessage.Body = "";
-                _eventMessage.ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing);
-                _eventMessage.ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing);
-                foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
-                {
-                    var attribName = attributeNav.Name;
-                    var attribValue = attributeNav.Value;
-                    if (attribName == "upgradeVersionsList")
-                    {
-                        if (!String.IsNullOrEmpty(attribValue))
-                        {
-                            string[] upgradeVersions = attribValue.Split(',');
-                            attribValue = ""; foreach (string version in upgradeVersions)
-                            {
-                                Version upgradeVersion = null;
-                                try
-                                {
-                                    upgradeVersion = new Version(version);
-                                }
-                                catch (FormatException)
-                                {
-                                    Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
-                                }
-
-                                if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion && Globals.Status == Globals.UpgradeStatus.Upgrade) //To allow when upgrading to an upper version
-                                {
-                                    attribValue += version + ",";
-                                }
-                                else if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install || Globals.Status == Globals.UpgradeStatus.None)) //To allow when fresh installing or installresources
-                                {
-                                    attribValue += version + ",";                                    
-                                }
-                            }
-                            attribValue = attribValue.TrimEnd(',');
-                        }
-                    }
-                   _eventMessage.Attributes.Add(attribName, attribValue);
-                }
-            }
-        }
-
 		#endregion
 
 	    #region Public Methods
@@ -329,9 +224,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Commit method commits the package installation
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -366,9 +258,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the components of the package
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
@@ -432,9 +321,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadManifest method reads the manifest file and parses it into components.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
@@ -445,7 +331,7 @@ namespace DotNetNuke.Services.Installer.Installers
             Package.PackageType = Util.ReadAttribute(manifestNav, "type", Log, Util.EXCEPTION_TypeMissing);
 
             //If Skin or Container then set PortalID
-            if (Package.PackageType == "Skin" || Package.PackageType == "Container")
+            if (Package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) || Package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase))
             {
                 Package.PortalID = Package.InstallerInfo.PortalID;
             }
@@ -474,17 +360,18 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             //Attempt to get the Package from the Data Store (see if its installed)
-            var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+            var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
 
             if (packageType.SupportsSideBySideInstallation)
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name
-                                                                                                            && p.PackageType == Package.PackageType
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name.Equals(Package.Name, StringComparison.OrdinalIgnoreCase)
+                                                                                                            && p.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase)
                                                                                                             && p.Version == Package.Version);                
             }
             else
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.PackageType == Package.PackageType);
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name.Equals(Package.Name, StringComparison.OrdinalIgnoreCase) 
+                                                                                                            && p.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
             }
 
             if (_installedPackage != null)
@@ -537,7 +424,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
             }
 
-            ReadEventMessageNode(manifestNav);
+            _eventMessage = ReadEventMessageNode(manifestNav);
 
             //Get Icon
             XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");
@@ -611,8 +498,9 @@ namespace DotNetNuke.Services.Installer.Installers
 				//Legacy Packages have no Release Notes
 				Package.ReleaseNotes = Util.PACKAGE_NoReleaseNotes;
             }
-			
+
             //Parse the Dependencies
+            var packageDependencies = Package.Dependencies;
             foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
             {
 			    var dependency = DependencyFactory.GetDependency(dependencyNav);
@@ -620,7 +508,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 if (packageDependecy != null)
                 {
-                    Package.Dependencies.Add(packageDependecy.PackageDependency);
+                    packageDependencies.Add(packageDependecy.PackageDependency);
                 }
 
                 if (!dependency.IsValid)
@@ -638,9 +526,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Rollback method rolls back the package installation
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -672,9 +557,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Uninstall method uninstalls the components of the package
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

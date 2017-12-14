@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,7 +23,7 @@ using System.Web.Routing;
 
 namespace DotNetNuke.Web.Mvc.Common
 {
-    internal static class TypeHelper
+    public static class TypeHelper
     {
         /// <summary>
         /// Given an object of anonymous type, add each property as a key and associated with its value to a dictionary.

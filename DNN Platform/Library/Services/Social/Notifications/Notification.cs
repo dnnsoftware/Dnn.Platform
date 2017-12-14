@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -152,6 +152,9 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public bool IncludeDismissAction { get; set; }
 
+        /// <summary>
+        /// The notification is displayed on the UI as a toast notification
+        /// </summary>
 		[XmlAttribute]
 		public bool SendToast { get; set; }
 
@@ -159,6 +162,9 @@ namespace DotNetNuke.Services.Social.Notifications
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Notification()
         {
             SendToast = true;

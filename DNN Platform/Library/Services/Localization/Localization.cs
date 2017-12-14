@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -115,13 +115,13 @@ namespace DotNetNuke.Services.Localization
     public class Localization
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
+
         #region Private Members
 
         private static string _defaultKeyName = "resourcekey";
         //private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
         //private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
-        private static Nullable<Boolean> _showMissingKeys;
-
+        private static bool? _showMissingKeys;
         #endregion
 
         #region Public Shared Properties
@@ -214,9 +214,6 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	11/20/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static bool ShowMissingKeys
         {
@@ -714,7 +711,7 @@ namespace DotNetNuke.Services.Localization
                 default:
                     foreach (TimeZoneInfo timeZone in TimeZoneInfo.GetSystemTimeZones())
                     {
-                        if (timeZone.BaseUtcOffset.TotalMinutes == timeZoneOffsetInMinutes)
+                        if (Math.Abs(timeZone.BaseUtcOffset.TotalMinutes - timeZoneOffsetInMinutes) < 0.001)
                         {
                             timeZoneInfo = timeZone;
                             break;
@@ -728,8 +725,13 @@ namespace DotNetNuke.Services.Localization
 
         public static void DeleteLanguage(Locale language)
         {
+            DeleteLanguage(language, false);
+        }
+
+        public static void DeleteLanguage(Locale language, bool isInstalling)
+        {
             //remove languages from all portals
-            RemoveLanguageFromPortals(language.LanguageId);
+            RemoveLanguageFromPortals(language.LanguageId, isInstalling);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
             EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_DELETED);
@@ -1110,9 +1112,6 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="key">The resource key to find</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key)
         {
@@ -1127,9 +1126,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="key">The resourcekey to find</param>
         /// <param name="portalSettings">The current portals Portal Settings</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, PortalSettings portalSettings)
         {
@@ -1145,9 +1141,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="resourceFileRoot">The Local Resource root</param>
         /// <param name="disableShowMissingKeys">Disable to show missing key.</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, bool disableShowMissingKeys)
         {
@@ -1162,9 +1155,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="key">The resourcekey to find</param>
         /// <param name="resourceFileRoot">The Resource File Name.</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot)
         {
@@ -1180,9 +1170,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="resourceFileRoot">The Local Resource root</param>
         /// <param name="language">A specific language to lookup the string</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, string language)
         {
@@ -1199,9 +1186,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalSettings">The current portals Portal Settings</param>
         /// <param name="language">A specific language to lookup the string</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, PortalSettings portalSettings, string language)
         {
@@ -1219,11 +1203,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="language">A specific language to lookup the string</param>
         /// <param name="disableShowMissingKeys">Disables the show missing keys flag</param>
         /// <returns>The localized Text</returns>
-        /// <history>
-        /// 	[cnurse]	10/06/2004	Documented
-        ///     [cnurse]    01/30/2008  Refactored to use Dictionaries and to cahe the portal and host 
-        ///                             customisations and language versions separately
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, PortalSettings portalSettings, string language, bool disableShowMissingKeys)
         {
@@ -1264,13 +1243,12 @@ namespace DotNetNuke.Services.Localization
         /// <returns>the string that is safe to use in a javascript function</returns>
         public static string GetSafeJSString(string unsafeString)
         {
-            var safeString = !string.IsNullOrEmpty(unsafeString) && unsafeString.Length > 0 ? Regex.Replace(unsafeString, "(['\"\\\\])", "\\$1") : unsafeString;
-			if (!string.IsNullOrEmpty(safeString))
-	        {
-				safeString = safeString.Replace("\r\n", string.Empty).Replace("\r", string.Empty).Replace("\n", string.Empty);
-	        }
+            if (string.IsNullOrEmpty(unsafeString))
+            {
+                return string.Empty;
+            }
 
-			return safeString;
+            return HttpUtility.JavaScriptStringEncode(unsafeString);
         }
 
         /// <summary>
@@ -1306,9 +1284,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName)
         {
@@ -1333,9 +1308,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo)
         {
@@ -1361,9 +1333,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo)
         {
@@ -1389,9 +1358,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, string resourceFile)
         {
@@ -1418,9 +1384,6 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile)
         {
@@ -1441,11 +1404,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, string resourceFile, ArrayList custom)
         {
@@ -1467,11 +1425,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom)
         {
@@ -1494,11 +1447,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom)
         {
@@ -1523,11 +1471,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
-        ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
-        ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom, string customCaption,
                                               int accessingUserID)
@@ -1554,38 +1497,46 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    09/09/2009  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList customArray,
                                               IDictionary customDictionary, string customCaption, int accessingUserID)
         {
-            string strMessageValue = GetString(messageName, resourceFile, portalSettings, strLanguage);
-            if (!String.IsNullOrEmpty(strMessageValue))
+            try
             {
-                if (String.IsNullOrEmpty(customCaption))
+                string strMessageValue = GetString(messageName, resourceFile, portalSettings, strLanguage);
+                if (!String.IsNullOrEmpty(strMessageValue))
                 {
-                    customCaption = "Custom";
-                }
-                var objTokenReplace = new TokenReplace(Scope.SystemMessages, strLanguage, portalSettings, userInfo);
-                if ((accessingUserID != -1) && (userInfo != null))
-                {
-                    if (userInfo.UserID != accessingUserID)
+                    if (String.IsNullOrEmpty(customCaption))
                     {
-                        objTokenReplace.AccessingUser = UserController.Instance.GetUser(portalSettings.PortalId, accessingUserID);
+                        customCaption = "Custom";
+                    }
+                    var objTokenReplace = new TokenReplace(Scope.SystemMessages, strLanguage, portalSettings, userInfo);
+                    if ((accessingUserID != -1) && (userInfo != null))
+                    {
+                        if (userInfo.UserID != accessingUserID)
+                        {
+                            objTokenReplace.AccessingUser =
+                                UserController.Instance.GetUser(portalSettings.PortalId, accessingUserID);
+                        }
+                    }
+                    if (customArray != null)
+                    {
+                        strMessageValue =
+                            objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customArray, customCaption);
+                    }
+                    else
+                    {
+                        strMessageValue =
+                            objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customDictionary, customCaption);
                     }
                 }
-                if (customArray != null)
-                {
-                    strMessageValue = objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customArray, customCaption);
-                }
-                else
-                {
-                    strMessageValue = objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customDictionary, customCaption);
-                }
+                return strMessageValue;
             }
-            return strMessageValue;
+            catch (NullReferenceException ex)
+            {
+                Logger.Error(ex);
+                return messageName;
+            }
         }
 
         #endregion
@@ -1756,9 +1707,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="grid">Grid to localize</param>
         /// <param name="resourceFile">The root name of the Resource File where the localized
         ///   text can be found</param>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void LocalizeDataGrid(ref DataGrid grid, string resourceFile)
         {
@@ -1859,9 +1807,6 @@ namespace DotNetNuke.Services.Localization
         /// -DesktopTabs
         /// -BreadCrumbs
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	02/01/2005	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string LocalizeRole(string role)
         {
@@ -1881,10 +1826,28 @@ namespace DotNetNuke.Services.Localization
             return localRole;
         }
 
+        private static IList<object> GetPortalLocalizations(int portalID)
+        {
+            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalID));
+        }
+
         public static void RemoveLanguageFromPortal(int portalID, int languageID)
         {
-            //Remove Translator Role from Portal
-            Locale language = LocaleController.Instance.GetLocale(languageID);
+            RemoveLanguageFromPortal(portalID, languageID, false);
+        }
+
+        public static void RemoveLanguageFromPortal(int portalID, int languageID, bool isInstalling)
+        {
+            if (!isInstalling)
+            {
+                var portalLocales = GetPortalLocalizations(portalID);
+                if (portalLocales.Count <= 1)
+                {
+                    throw new Exception("You are trying to delete the only Portal localization entry in the system. This is NOT allowd!");
+                }
+            }
+
+            var language = LocaleController.Instance.GetLocale(languageID);
             if (language != null)
             {
                 if (Config.GetFriendlyUrlProvider() == "advanced")
@@ -1930,6 +1893,7 @@ namespace DotNetNuke.Services.Localization
 
                 if (role != null)
                 {
+                    //Remove Translator Role from Portal
                     RoleController.Instance.DeleteRole(role);
                 }
 
@@ -1946,9 +1910,14 @@ namespace DotNetNuke.Services.Localization
 
         public static void RemoveLanguageFromPortals(int languageId)
         {
+            RemoveLanguageFromPortals(languageId, false);
+        }
+
+        public static void RemoveLanguageFromPortals(int languageId, bool isInstalling)
+        {
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                RemoveLanguageFromPortal(portal.PortalID, languageId);
+                RemoveLanguageFromPortal(portal.PortalID, languageId, isInstalling);
             }
         }
 
@@ -2095,229 +2064,6 @@ namespace DotNetNuke.Services.Localization
             var locale = LocaleController.Instance.GetLocale(cultureCode);
             return locale != null ? locale.LanguageId : Null.NullInteger;
         }
-        #endregion
-
-        #region Obsolete
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by GetLocales().")]
-        public static LocaleCollection GetEnabledLocales()
-        {
-            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var enabledLocales = new LocaleCollection();
-            foreach (KeyValuePair<string, Locale> kvp in LocaleController.Instance.GetLocales(objPortalSettings.PortalId))
-            {
-                enabledLocales.Add(kvp.Key, kvp.Value);
-            }
-            return enabledLocales;
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by GetLocales().")]
-        public static LocaleCollection GetSupportedLocales()
-        {
-            var supportedLocales = new LocaleCollection();
-            foreach (KeyValuePair<string, Locale> kvp in LocaleController.Instance.GetLocales(Null.NullInteger))
-            {
-                supportedLocales.Add(kvp.Key, kvp.Value);
-            }
-            return supportedLocales;
-        }
-
-        [Obsolete("Deprecated in DNN 5.5. Replaced by LocaleController.GetLocale(code).")]
-        public static Locale GetLocale(string code)
-        {
-            return GetLocale(Null.NullInteger, code);
-        }
-
-        [Obsolete("Deprecated in DNN 5.5. Replaced by LocaleController.GetLocale(portalID, code).")]
-        public static Locale GetLocale(int portalID, string code)
-        {
-            Dictionary<string, Locale> dicLocales = LocaleController.Instance.GetLocales(portalID);
-            Locale language = null;
-
-            if (dicLocales != null)
-            {
-                dicLocales.TryGetValue(code, out language);
-            }
-
-            return language;
-        }
-
-        [Obsolete("Deprecated in DNN 5.5. Replaced by LocaleController.GetLocale(languageID).")]
-        public static Locale GetLocaleByID(int languageID)
-        {
-            Dictionary<string, Locale> dicLocales = LocaleController.Instance.GetLocales(Null.NullInteger);
-            Locale language = null;
-
-            foreach (KeyValuePair<string, Locale> kvp in dicLocales)
-            {
-                if (kvp.Value.LanguageId == languageID)
-                {
-                    language = kvp.Value;
-                    break;
-                }
-            }
-
-            return language;
-        }
-
-        [Obsolete("Deprecated in DNN 5.5. Replaced by LocaleController.GetLocales(portalID).")]
-        public static Dictionary<string, Locale> GetLocales(int portalID)
-        {
-            return LocaleController.Instance.GetLocales(portalID);
-        }
-
-        [Obsolete("Deprecated in DNN 6.0. Replaced by SystemTimeZone and use of .NET TimeZoneInfo class")]
-        public static NameValueCollection GetTimeZones(string language)
-        {
-            language = language.ToLower();
-            string cacheKey = "dotnetnuke-" + language + "-timezones";
-            string translationFile;
-            if (language == SystemLocale.ToLower())
-            {
-                translationFile = TimezonesFile;
-            }
-            else
-            {
-                translationFile = TimezonesFile.Replace(".xml", "." + language + ".xml");
-            }
-            var timeZones = (NameValueCollection)DataCache.GetCache(cacheKey);
-            if (timeZones == null)
-            {
-                string filePath = HttpContext.Current.Server.MapPath(translationFile);
-                timeZones = new NameValueCollection();
-                if (File.Exists(filePath) == false)
-                {
-                    return timeZones;
-                }
-                var dp = new DNNCacheDependency(filePath);
-                try
-                {
-                    var d = new XmlDocument();
-                    d.Load(filePath);
-                    foreach (XmlNode n in d.SelectSingleNode("root").ChildNodes)
-                    {
-                        if (n.NodeType != XmlNodeType.Comment)
-                        {
-                            timeZones.Add(n.Attributes["name"].Value, n.Attributes["key"].Value);
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-
-                }
-                if (Host.PerformanceSetting != Globals.PerformanceSettings.NoCaching)
-                {
-                    DataCache.SetCache(cacheKey, timeZones, dp);
-                }
-            }
-            return timeZones;
-        }
-
-        [Obsolete("Deprecated in DNN 5.5.  Replcaed by LocaleController.IsEnabled()")]
-        public static bool LocaleIsEnabled(Locale locale)
-        {
-            return LocaleIsEnabled(locale.Code);
-        }
-
-        [Obsolete("Deprecated in DNN 5.5.  Replcaed by LocaleController.IsEnabled()")]
-        public static bool LocaleIsEnabled(string localeCode)
-        {
-            PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
-
-            return LocaleController.Instance.IsEnabled(ref localeCode, _Settings.PortalId);
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by LocalizeControlTitle(IModuleControl).")]
-        public static string LocalizeControlTitle(string controlTitle, string controlSrc, string Key)
-        {
-            string reskey;
-            reskey = "ControlTitle_" + Key.ToLower() + ".Text";
-            string resFile = controlSrc.Substring(0, controlSrc.LastIndexOf("/") + 1) + LocalResourceDirectory +
-                             controlSrc.Substring(controlSrc.LastIndexOf("/"), controlSrc.LastIndexOf(".") - controlSrc.LastIndexOf("/"));
-            if (resFile.StartsWith("DesktopModules"))
-            {
-                resFile = "~/" + resFile;
-            }
-            string localizedvalue = GetString(reskey, resFile);
-            if (localizedvalue != null)
-            {
-                return localizedvalue;
-            }
-            else
-            {
-                return controlTitle;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. This does nothing now as the Admin Tabs are treated like any other tab.")]
-        public static void LocalizePortalSettings()
-        {
-        }
-
-        [Obsolete("Deprecated in DNN 6.0. Replaced by SystemTimeZone and use of .NET TimeZoneInfo class")]
-        public static int SystemTimeZoneOffset
-        {
-            get
-            {
-                return -480;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 6.0. Replaced by SystemTimeZone and use of .NET TimeZoneInfo class")]
-        public static string TimezonesFile
-        {
-            get
-            {
-                return ApplicationResourceDirectory + "/TimeZones.xml";
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by Host.EnableBrowserLanguage OR PortalSettings.EnableBrowserLanguage")]
-        public static bool UseBrowserLanguage()
-        {
-            return PortalController.Instance.GetCurrentPortalSettings().EnableBrowserLanguage;
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Replaced by Host.EnableUrlLanguage OR PortalSettings.EnableUrlLanguage")]
-        public static bool UseLanguageInUrl()
-        {
-            return PortalController.Instance.GetCurrentPortalSettings().EnableUrlLanguage;
-        }
-
-        [Obsolete("Deprecated in DNN 6.0. Replaced by new DnnTimeZoneComboBox control and use of .NET TimeZoneInfo class")]
-        public static void LoadTimeZoneDropDownList(DropDownList list, string language, string selectedValue)
-        {
-            NameValueCollection timeZones = GetTimeZones(language);
-            //If no Timezones defined get the System Locale Time Zones
-            if (timeZones.Count == 0)
-            {
-                timeZones = GetTimeZones(SystemLocale.ToLower());
-            }
-            int i;
-            for (i = 0; i <= timeZones.Keys.Count - 1; i++)
-            {
-                list.Items.Add(new ListItem(timeZones.GetKey(i), timeZones.Get(i)));
-            }
-
-            //select the default item
-            if (selectedValue != null)
-            {
-                ListItem item = list.Items.FindByValue(selectedValue);
-                if (item == null)
-                {
-                    //Try system default
-                    item = list.Items.FindByValue(SystemTimeZoneOffset.ToString());
-                }
-                if (item != null)
-                {
-                    list.SelectedIndex = -1;
-                    item.Selected = true;
-                }
-            }
-        }
-
         #endregion
     }
 }

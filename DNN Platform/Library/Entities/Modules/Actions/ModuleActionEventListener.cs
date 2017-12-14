@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,9 +29,6 @@ namespace DotNetNuke.Entities.Modules.Actions
     ///
     /// </summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[jbrinkman] 	12/27/2003	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public class ModuleActionEventListener
     {
@@ -45,9 +42,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <param name="ModID"></param>
         /// <param name="e"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman] 	12/27/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ModuleActionEventListener(int ModID, ActionEventHandler e)
         {
@@ -61,9 +55,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman] 	12/27/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public int ModuleID
         {
@@ -79,9 +70,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman] 	12/27/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ActionEventHandler ActionEvent
         {

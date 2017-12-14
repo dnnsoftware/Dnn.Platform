@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,9 +37,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class FileInstaller : ComponentInstallerBase
     {
@@ -58,9 +55,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <remarks>The Base Path is relative to the WebRoot</remarks>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string BasePath { get; set; }
 
@@ -69,9 +63,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Collection Node ("files")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string CollectionNodeName
         {
@@ -86,9 +77,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a Dictionary of Files that are included in this component
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile)</value>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected List<InstallFile> Files
         {
@@ -103,9 +91,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the default Path for the file - if not present in the manifest
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/10/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string DefaultPath
         {
@@ -120,9 +105,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Item Node ("file")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string ItemNodeName
         {
@@ -137,9 +119,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the PhysicalBasePath for the files
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string PhysicalBasePath
         {
@@ -164,9 +143,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// package
         /// </summary>
         /// <value>A Boolean value</value>
-        /// <history>
-        /// 	[cnurse]	01/31/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DeleteFiles
         {
@@ -185,9 +161,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets whether the Installer supports Manifest only installs
         /// </summary>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	02/29/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override bool SupportsManifestOnlyInstall
         {
@@ -206,9 +179,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The CommitFile method commits a single file.
         /// </summary>
         /// <param name="insFile">The InstallFile to commit</param>
-        /// <history>
-        /// 	[cnurse]	08/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void CommitFile(InstallFile insFile)
         {
@@ -219,9 +189,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The DeleteFile method deletes a single file.
         /// </summary>
         /// <param name="insFile">The InstallFile to delete</param>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void DeleteFile(InstallFile insFile)
         {
@@ -236,9 +203,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The InstallFile method installs a single file.
         /// </summary>
         /// <param name="insFile">The InstallFile to install</param>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual bool InstallFile(InstallFile insFile)
         {
@@ -275,9 +239,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a flag that determines what type of file this installer supports
         /// </summary>
         /// <param name="type">The type of file being processed</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual bool IsCorrectType(InstallFileType type)
         {
@@ -290,9 +251,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="file">The file represented by the node</param>
         /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -311,9 +269,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// of FileInstaller may need)
         /// </summary>
         /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <history>
-        /// 	[cnurse]	08/22/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void ReadCustomManifest(XPathNavigator nav)
         {
@@ -325,9 +280,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="nav">The XPathNavigator representing the node</param>
         /// <param name="checkFileExists">Flag that determines whether a check should be made</param>
-        /// <history>
-        /// 	[cnurse]	08/07/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
         {
@@ -399,9 +351,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <remarks>For new installs this removes the added file.  For upgrades it restores the
         /// backup file created during install</remarks>
         /// <param name="installFile">The InstallFile to commit</param>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void RollbackFile(InstallFile installFile)
         {
@@ -420,9 +369,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The UnInstallFile method unInstalls a single file.
         /// </summary>
         /// <param name="unInstallFile">The InstallFile to unInstall.</param>
-        /// <history>
-        /// 	[cnurse]	01/07/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void UnInstallFile(InstallFile unInstallFile)
         {
@@ -439,9 +385,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Files this is not neccessary</remarks>
-        /// <history>
-        /// 	[cnurse]	08/01/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -463,9 +406,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the file component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
@@ -492,9 +432,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadManifest method reads the manifest file for the file compoent.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/25/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
@@ -519,9 +456,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Rollback method undoes the installation of the file component in the event 
         /// that one of the other components fails
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -543,9 +477,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The UnInstall method uninstalls the file component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

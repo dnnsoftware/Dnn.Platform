@@ -572,4 +572,7 @@ You must set the CustomLinks tool in your toolbar configuratioon in order to mak
   <data name="Width.Text" xml:space="preserve">
     <value>Width:</value>
   </data>
+  <data name="CannotManageHTMLEditorProviders.Text" xml:space="preserve">
+    <value>You cannot manage HTML Editor providers</value>
+  </data>
 </root>

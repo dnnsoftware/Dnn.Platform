@@ -105,7 +105,7 @@ namespace log4net.Repository.Hierarchy
 	/// </para>
 	/// <para>
 	/// The structure of the logger hierarchy is maintained by the
-	/// <see cref="GetLogger(string)"/> method. The hierarchy is such that children
+	/// <see cref="M:GetLogger(string)"/> method. The hierarchy is such that children
 	/// link to their parent but parents do not have any references to their
 	/// children. Moreover, loggers can be instantiated in any order, in
 	/// particular descendant before ancestor.
@@ -297,7 +297,10 @@ namespace log4net.Repository.Hierarchy
 				throw new ArgumentNullException("name");
 			}
 
-			return m_ht[new LoggerKey(name)] as Logger;
+			lock(m_ht) 
+			{
+				return m_ht[new LoggerKey(name)] as Logger;
+			}
 		}
 
 		/// <summary>
@@ -316,17 +319,20 @@ namespace log4net.Repository.Hierarchy
 			// The accumulation in loggers is necessary because not all elements in
 			// ht are Logger objects as there might be some ProvisionNodes
 			// as well.
-			System.Collections.ArrayList loggers = new System.Collections.ArrayList(m_ht.Count);
-	
-			// Iterate through m_ht values
-			foreach(object node in m_ht.Values)
+			lock(m_ht) 
 			{
-				if (node is Logger) 
+				System.Collections.ArrayList loggers = new System.Collections.ArrayList(m_ht.Count);
+	
+				// Iterate through m_ht values
+				foreach(object node in m_ht.Values)
 				{
-					loggers.Add(node);
+					if (node is Logger) 
+					{
+						loggers.Add(node);
+					}
 				}
+				return (Logger[])loggers.ToArray(typeof(Logger));
 			}
-			return (Logger[])loggers.ToArray(typeof(Logger));
 		}
 
 		/// <summary>
@@ -457,7 +463,7 @@ namespace log4net.Repository.Hierarchy
 		/// This method should not normally be used to log.
 		/// The <see cref="ILog"/> interface should be used 
 		/// for routine logging. This interface can be obtained
-		/// using the <see cref="log4net.LogManager.GetLogger(string)"/> method.
+		/// using the <see cref="M:log4net.LogManager.GetLogger(string)"/> method.
 		/// </para>
 		/// <para>
 		/// The <c>logEvent</c> is delivered to the appropriate logger and
@@ -568,7 +574,7 @@ namespace log4net.Repository.Hierarchy
 		/// <remarks>
 		/// <para>
 		/// This method provides the same functionality as the 
-		/// <see cref="IBasicRepositoryConfigurator.Configure(IAppender)"/> method implemented
+		/// <see cref="M:IBasicRepositoryConfigurator.Configure(IAppender)"/> method implemented
 		/// on this object, but it is protected and therefore can be called by subclasses.
 		/// </para>
 		/// </remarks>
@@ -612,7 +618,7 @@ namespace log4net.Repository.Hierarchy
 		/// <remarks>
 		/// <para>
 		/// This method provides the same functionality as the 
-		/// <see cref="IBasicRepositoryConfigurator.Configure(IAppender)"/> method implemented
+		/// <see cref="M:IBasicRepositoryConfigurator.Configure(IAppender)"/> method implemented
 		/// on this object, but it is protected and therefore can be called by subclasses.
 		/// </para>
 		/// </remarks>
@@ -694,7 +700,10 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		public void Clear() 
 		{
-			m_ht.Clear();
+			lock(m_ht) 
+			{
+				m_ht.Clear();
+			}
 		}
 
 		/// <summary>
@@ -866,7 +875,12 @@ namespace log4net.Repository.Hierarchy
 							LogLog.Error(declaringType, "Unexpected object type ["+node.GetType()+"] in ht.", new LogException());
 						}
 					} 
-				} 
+				}
+				if (i == 0) {
+				    // logger name starts with a dot
+				    // and we've hit the start
+				    break;
+				}
 			}
 
 			// If we could not find any existing parents, then link with root.

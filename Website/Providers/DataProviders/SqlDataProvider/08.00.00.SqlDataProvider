@@ -8,377 +8,29 @@
 /*****                                                  *****/
 /************************************************************/
 
-/* DNN-6782 Allow developer to manage ContentTypes */
-/***************************************************/
-
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'PortalID')
-   BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [PortalID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_PortalID] DEFAULT (-1)
-    END 
-GO
-
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsDynamic')
-   BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [IsDynamic] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_IsDynamic] DEFAULT (0)
-    END 
-GO
-
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'Description')
-   BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [Description] nvarchar(1000) NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_Description] DEFAULT ('')
-    END 
-GO
-
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'CreatedByUserID')
-   BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [CreatedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_CreatedByUserID] DEFAULT (-1)
-    END 
-GO
-
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'CreatedOnDate')
-   BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_CreatedOnDate] DEFAULT (getdate())
-    END 
-GO
-
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'LastModifiedByUserID')
-   BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [LastModifiedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_LastModifiedByUserID] DEFAULT (-1)
-    END 
-GO
-
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'LastModifiedOnDate')
-   BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_LastModifiedOnDate] DEFAULT (getdate())
-    END 
-GO
-
-/* DNN-6783 Allow developers to manage DCC DataTypes */
-/*****************************************************/
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_DataTypes]') AND type in (N'U'))
-	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_DataTypes](
-			[DataTypeID] [int] IDENTITY(1,1) NOT NULL,
-			[PortalID] [int] NOT NULL,
-			[Name] [nvarchar](100) NOT NULL,
-			[UnderlyingDataType] [int] NOT NULL,
-			[CreatedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedByUserID] DEFAULT (-1),
-			[CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedOnDate] DEFAULT (getdate()),
-			[LastModifiedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedByUserID] DEFAULT (-1),
-			[LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedOnDate] DEFAULT (getdate()),
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)
-			)	
-	END
-GO
-
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Text', 0)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Rich Text', 0)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Markdown', 0)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Integer', 2)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Decimal', 3)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'True/False', 1)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Url', 6)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Date', 7)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Time', 8)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'DateTime', 7)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Image', 2)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'File', 2)
-INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Page', 2)
-GO
-
-/* DNN-6784 Allow developers to manage ContentFields */
-/*****************************************************/
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]') AND type in (N'U'))
-	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions](
-			[FieldDefinitionID] [int] IDENTITY(1,1) NOT NULL,
-			[ContentTypeID] [int] NOT NULL,
-			[PortalID] [int] NOT NULL,
-			[Name] [nvarchar](100) NOT NULL,
-			[Label] [nvarchar](100) NOT NULL,
-			[Description] [nvarchar](2000) NULL,
-			[DataTypeID] [int] NOT NULL,
-			[Order] [int] NOT NULL,
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_FieldDefinitions] PRIMARY KEY CLUSTERED ([FieldDefinitionID] ASC)
-		)
-
-		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]  WITH CHECK 
-			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_FieldDefinitions_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
-				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
-
-		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]  WITH CHECK 
-			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_FieldDefinitions_{objectQualifier}ContentTypes_DataTypes] FOREIGN KEY([DataTypeID])
-				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([DataTypeID])
-	END
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes]') AND type in (N'U'))
-	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes](
-			[ValidatorTypeID] [int] IDENTITY(1,1) NOT NULL,
-			[Name] [nvarchar](100) NOT NULL,
-			[ValidatorClassName] [nvarchar](1000) NOT NULL,
-			[ErrorKey] [nvarchar](100) NULL,
-			[ErrorMessage] [nvarchar](1000) NULL,
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidatorTypes] PRIMARY KEY CLUSTERED ( [ValidatorTypeID] ASC)
-		)
- 	END
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]') AND type in (N'U'))
-	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules](
-			[ValidationRuleID] [int] IDENTITY(1,1) NOT NULL,
-			[FieldDefinitionID] [int] NOT NULL,
-			[ValidatorTypeID] [int] NOT NULL,
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidationRules] PRIMARY KEY CLUSTERED ([ValidationRuleID] ASC)
-		)
-
-		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]  WITH CHECK 
-			ADD CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRules_{objectQualifier}ContentTypes_FieldDefinitions] FOREIGN KEY([FieldDefinitionID])
-				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions] ([FieldDefinitionID])
-
-		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]  WITH CHECK 
-			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRules_{objectQualifier}ContentTypes_ValidatorTypes] FOREIGN KEY([ValidatorTypeID])
-				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes] ([ValidatorTypeID])
-	END
-GO
-
-/* DNN-6789 Allow developers to Manage Content Templates */
-/*********************************************************/
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Templates]') AND type in (N'U'))
-	BEGIN
-        CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates](
-			[TemplateID] [int] IDENTITY(1,1) NOT NULL,
-			[ContentTypeID] [int] NOT NULL,
-            [PortalID] [int] NOT NULL,
-            [Name] [nvarchar](100) NOT NULL,
-            [TemplateFileID] [int] NOT NULL,
-            [CreatedByUserID] [int] NOT NULL,
-            [CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_Templatess_CreatedOnDate] DEFAULT (getdate()),
-            [LastModifiedByUserID] [int] NOT NULL,
-            [LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_Templates_LastModifiedOnDate] DEFAULT (getdate()),
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_Templates] PRIMARY KEY CLUSTERED ( [TemplateID] ASC )		
-		)
-
-        ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
-			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
-				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
-
-        ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
-			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}Files] FOREIGN KEY([TemplateFileID])
-				REFERENCES {databaseOwner}[{objectQualifier}Files] ([FileId])
-	END
-GO
-
-/* DNN-6787 Manage DCC ContentItem */
-/*********************************************************/
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]') AND type in (N'U'))
-	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings](
-			[ValidatorSettingID] [int] IDENTITY(1,1) NOT NULL,
-			[ValidationRuleID] [int] NOT NULL,
-			[SettingName] [nvarchar](100) NOT NULL,
-			[SettingValue] [nvarchar](1000) NOT NULL,
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidationRuleSettings] PRIMARY KEY CLUSTERED ([ValidatorSettingID] ASC)
-		)
-
-		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]  WITH CHECK 
-			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRuleSettings_{objectQualifier}ContentTypes_ValidationRules] FOREIGN KEY([ValidationRuleID])
-				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules] ([ValidationRuleID])
-	END
-GO
-
-
-/* DNN-7094 Provide Multi-language Support  */
-/********************************************/
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Localizations]') AND type in (N'U'))
-	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_Localizations](
-			[LocalizationID] [int] IDENTITY(1,1) NOT NULL,
-			[PortalID] [int] NOT NULL,
-			[CultureCode] [nvarchar](10) NOT NULL,
-			[Key] [nvarchar](256) NOT NULL,
-			[Value] [nvarchar](max) NOT NULL,
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_Localizations] PRIMARY KEY CLUSTERED ([LocalizationID] ASC)
-		)
-	END
-GO
-
-/* Add Columns to Users Table */
-/******************************/
-
-ALTER TABLE {databaseOwner}{objectQualifier}Users ADD
-	HmacAppId nvarchar(256) NULL,
-	HmacAppSecret nvarchar(256) NULL
-GO
-
-/* update users view */
-/******************************/
-
-IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
-	DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
-GO
-
-CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
-AS
-	SELECT  U.UserId,
-        UP.PortalId,
-        U.Username,
-        U.FirstName,
-        U.LastName,
-        U.DisplayName,
-        U.IsSuperUser,
-        U.Email,
-        UP.VanityUrl,
-        U.AffiliateId,
-        IsNull(UP.IsDeleted, U.IsDeleted) AS IsDeleted,
-        UP.RefreshRoles,
-        U.LastIPAddress,
-        U.UpdatePassword,
-        U.PasswordResetToken,
-        U.PasswordResetExpiration,
-        UP.Authorised,
-        U.CreatedByUserId,
-        U.CreatedOnDate,
-        U.LastModifiedByUserId,
-        U.LastModifiedOnDate,
-		U.HmacAppId,
-		U.HmacAppSecret
-	FROM       {databaseOwner}[{objectQualifier}Users]       AS U
-		LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] AS UP 
-			ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
-GO
-
-
-/* Update UpdateUser Procedure */
-/*******************************/
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateUser]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUser]
-	@UserID         int,
-	@PortalID		int,
-	@FirstName		nvarchar(50),
-	@LastName		nvarchar(50),
-	@IsSuperUser    bit,
-	@Email          nvarchar(256),
-	@DisplayName    nvarchar(100),
-	@VanityUrl		nvarchar(100),
-	@UpdatePassword	bit,
-	@Authorised		bit,
-	@RefreshRoles	bit,
-	@LastIPAddress	nvarchar(50),
-	@passwordResetToken uniqueidentifier,
-	@passwordResetExpiration datetime,
-	@IsDeleted		bit,
-	@LastModifiedByUserID int,
-	@HmacAppId nvarchar(256),
-	@HmacAppSecret nvarchar(256) 
-AS
-	UPDATE {databaseOwner}{objectQualifier}Users
-		SET
-			FirstName = @FirstName,
-			LastName = @LastName,
-			IsSuperUser = @IsSuperUser,
-			Email = @Email,
-			DisplayName = @DisplayName,
-			UpdatePassword = @UpdatePassword,
-			PasswordResetToken=@passwordResetToken,
-			PasswordResetExpiration=@passwordResetExpiration,
-			LastIPAddress = @LastIPAddress,
-			LastModifiedByUserID = @LastModifiedByUserID,
-			LastModifiedOnDate = getdate(),
-			HmacAppId=@HmacAppId,
-			HmacAppSecret=@HmacAppSecret
-		WHERE  UserId = @UserID
-	
-	IF @PortalID IS NULL
-		BEGIN
-			UPDATE {databaseOwner}{objectQualifier}Users
-				SET
-					IsDeleted = @IsDeleted
-				WHERE  UserId = @UserID
-		END
-	ELSE
-		BEGIN
-			UPDATE {databaseOwner}{objectQualifier}UserPortals
-				SET
-					Authorised = @Authorised,
-					RefreshRoles = @RefreshRoles,
-					VanityUrl = @VanityUrl,
-					IsDeleted = @IsDeleted
-				WHERE  UserId = @UserID
-					AND PortalId = @PortalID
-		END
-GO
-
-/* Add GetUsernameByAppId Procedure */
-/*******************************/
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserByHmacAppId]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserByHmacAppId]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserByHmacAppId]
-(
-	@HmacAppId nvarchar(256)
-)
-
-AS
-	SELECT top 1 * FROM {databaseOwner}{objectQualifier}vw_Users
-	WHERE  HmacAppId=@HmacAppId 
-GO
-
-/* Add GetHmacSecretByHmacAppId Procedure */
-/*******************************/
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]
-(
-	@HmacAppId nvarchar(256)
-)
-
-AS
-	SELECT top 1 HmacAppSecret FROM {databaseOwner}{objectQualifier}vw_Users
-	WHERE  HmacAppId=@HmacAppId 
-GO
-
 /* Update Version table for increment column */
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Version' AND COLUMN_NAME='Increment')
-	BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}Version
-			ADD	Increment int NULL
-	END
+	ALTER TABLE {databaseOwner}[{objectQualifier}Version]
+		ADD	Increment int NULL;
 GO
 
 /* Drop existing constraint */
-BEGIN
-	ALTER TABLE {databaseOwner}{objectQualifier}Version DROP CONSTRAINT [IX_{objectQualifier}Version]
-END
+IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Version]') AND name = N'IX_{objectQualifier}Version')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Version] DROP CONSTRAINT [IX_{objectQualifier}Version]
 GO
 
+IF EXISTS (SELECT * FROM Sys.Indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Version]') AND name = N'IX_{objectQualifier}Version')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Version] DROP CONSTRAINT [IX_{objectQualifier}Version]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Version]') AND name = N'IX_{objectQualifier}Version')
+	DROP INDEX [IX_{objectQualifier}Version] ON {databaseOwner}[{objectQualifier}Version]
+GO 
+
 /* Add new  constraint */
-BEGIN
-	ALTER TABLE {databaseOwner}{objectQualifier}Version ADD CONSTRAINT [IX_{objectQualifier}Version] UNIQUE NONCLUSTERED  ([Major], [Minor], [Build],[Increment])
-END
+ALTER TABLE {databaseOwner}[{objectQualifier}Version]
+	ADD CONSTRAINT [IX_{objectQualifier}Version] UNIQUE NONCLUSTERED  
+		([Major], [Minor], [Build],[Increment]);
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateDatabaseVersionIncrement]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
@@ -415,26 +67,33 @@ AS
 	SELECT ISNULL(MAX(Increment),0) from {databaseOwner}{objectQualifier}Version WHERE Major=@Major AND Minor=@Minor AND Build=@Build
 GO
 
-/* DNN-7405: Update GetTabPaths Procedure to return all tab paths when culture code is null. */
-/*******************************/
+/* DNN-7477: Extract Dashboard into a separate module. */
+/**************************************************/
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabPaths]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabPaths]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabPaths] 
-	@PortalID		INT,
-	@CultureCode	NVARCHAR(10)
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetInstalledModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetInstalledModules]
 AS
-	SELECT
-		TabID, 
-		PortalID, 
-		TabPath
-	FROM {databaseOwner}{objectQualifier}vw_Tabs
-	WHERE (PortalID = @PortalID AND (CultureCode = @CultureCode OR CultureCode Is NULL OR ISNULL(@CultureCode, '') = ''))
-		OR @PortalID Is NULL
+	SELECT		
+		DesktopModuleID, 
+		ModuleName,
+		FriendlyName,
+		Version,
+		(SELECT     COUNT(*) AS Instances
+			FROM          {databaseOwner}{objectQualifier}DesktopModules 
+				INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions ON {databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = {databaseOwner}{objectQualifier}ModuleDefinitions.DesktopModuleID 
+				INNER JOIN {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}ModuleDefinitions.ModuleDefID = {databaseOwner}{objectQualifier}Modules.ModuleDefID
+			WHERE      ({databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = DM.DesktopModuleID)) AS Instances
+	FROM {databaseOwner}{objectQualifier}DesktopModules AS DM
+	WHERE (IsAdmin = 0)
+	ORDER BY [FriendlyName] ASC
 GO
-		
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

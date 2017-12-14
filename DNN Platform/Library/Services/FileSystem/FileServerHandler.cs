@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,11 +28,12 @@ using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -52,15 +53,12 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="context">System.Web.HttpContext)</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cpaterra]	4/19/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            int TabId = -1;
-            int ModuleId = -1;
+            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var TabId = -1;
+            var ModuleId = -1;
             try
             {
                 //get TabId
@@ -78,7 +76,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception)
             {
                 //The TabId or ModuleId are incorrectly formatted (potential DOS)
-                Exceptions.Exceptions.ProcessHttpException(context.Request);
+                Handle404Exception(context, context.Request.RawUrl);
             }
 
             //get Language
@@ -102,8 +100,6 @@ namespace DotNetNuke.Services.FileSystem
 
             //get the URL
             string URL = "";
-            bool blnClientCache = true;
-            bool blnForceDownload = false;
             if (context.Request.QueryString["fileticket"] != null)
             {
 
@@ -134,7 +130,7 @@ namespace DotNetNuke.Services.FileSystem
                     //verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
-                        Exceptions.Exceptions.ProcessHttpException();
+                        Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
                 if (UrlType != TabType.File)
@@ -147,7 +143,7 @@ namespace DotNetNuke.Services.FileSystem
                     //to handle legacy scenarios before the introduction of the FileServerHandler
                     var fileName = Path.GetFileName(URL);
 
-                    var folderPath = URL.Substring(0, URL.LastIndexOf(fileName));
+                    var folderPath = URL.Substring(0, URL.LastIndexOf(fileName, StringComparison.InvariantCulture));
                     var folder = FolderManager.Instance.GetFolder(_portalSettings.PortalId, folderPath);
 
                     var file = FileManager.Instance.GetFile(folder, fileName);
@@ -156,13 +152,10 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 //get optional parameters
-                if (context.Request.QueryString["clientcache"] != null)
-                {
-                    blnClientCache = bool.Parse(context.Request.QueryString["clientcache"]);
-                }
+                bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                    blnForceDownload = bool.Parse(context.Request.QueryString["forcedownload"]);
+                     bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
                 }
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
 
@@ -178,7 +171,7 @@ namespace DotNetNuke.Services.FileSystem
                             var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(URL)));
                             if (file != null)
                             {
-                                if (!file.IsEnabled)
+                                if (!file.IsEnabled || !HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
@@ -194,6 +187,13 @@ namespace DotNetNuke.Services.FileSystem
                                 {
                                     var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
                                     var directUrl = fileManager.GetUrl(file);
+
+                                    EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
+                                    {
+                                        FileInfo = file,
+                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID
+                                    });
+
                                     if (directUrl.Contains("LinkClick") || (blnForceDownload && folderMapping.FolderProviderType == "StandardFolderProvider"))
                                     {
                                         fileManager.WriteFileToResponse(file, contentDisposition);
@@ -227,7 +227,7 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                Exceptions.Exceptions.ProcessHttpException(URL);
+                                Handle404Exception(context, URL);
                             }
                             break;
                         case TabType.Url:
@@ -248,22 +248,39 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    Exceptions.Exceptions.ProcessHttpException(URL);
+                    Handle404Exception(context, URL);
                 }
             }
             else
             {
-                Exceptions.Exceptions.ProcessHttpException(URL);
+                Handle404Exception(context, URL);
             }
         }
 
-        public bool IsReusable
+        private bool HasAPublishedVersion(IFileInfo file)
         {
-            get
+            if (file.HasBeenPublished)
             {
                 return true;
             }
+            //We should allow creator to see the file that is pending to be approved
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user != null && user.UserID == file.CreatedByUserID;
         }
+
+        private void Handle404Exception(HttpContext context, string url)
+        {
+            try
+            {
+                Exceptions.Exceptions.ProcessHttpException(url);
+            }
+            catch (Exception)
+            {
+                UrlUtils.Handle404Exception(context.Response, PortalController.Instance.GetCurrentPortalSettings());
+            }
+        }
+
+        public bool IsReusable => true;
 
         #endregion
     }

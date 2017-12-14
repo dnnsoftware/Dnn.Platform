@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,6 +37,12 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     internal static class RedirectTokens
     {
+        private static readonly Regex RewritePathRx = new Regex(@"&rr=(?<rr>[^&].)",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static readonly Regex RedirectTokensRx = new Regex(@"(?<=(?<p>&|\?))(?<tk>do301|do302|do404)=(?<val>[^&]+)",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
         #region Private Methods
 
         /// <summary>
@@ -53,8 +59,7 @@ namespace DotNetNuke.Entities.Urls
         private static List<string> GetRedirectReasonTokensFromRewritePath(string rewritePath)
         {
             var reasons = new List<string>();
-            MatchCollection matches = Regex.Matches(rewritePath, @"&rr=(?<rr>[^&].)",
-                                                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            MatchCollection matches = RewritePathRx.Matches(rewritePath);
             foreach (Match match in matches)
             {
                 if (match.Success)
@@ -135,9 +140,7 @@ namespace DotNetNuke.Entities.Urls
         {
             hasDupes = false;
             var results = new Dictionary<string, string>();
-            MatchCollection matches = Regex.Matches(rewritePath,
-                                                    @"(?<=(?<p>&|\?))(?<tk>do301|do302|do404)=(?<val>[^&]+)",
-                                                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            MatchCollection matches = RedirectTokensRx.Matches(rewritePath);
             foreach (Match tokenMatch in matches)
             {
                 string tk = tokenMatch.Groups["tk"].Value;
@@ -374,9 +377,7 @@ namespace DotNetNuke.Entities.Urls
         {
             bool found = false;
             action = ActionType.Continue; //default
-            MatchCollection actionMatches = Regex.Matches(rewrittenUrl,
-                                                          @"(?<=(?<p>&|\?))(?<tk>do301|do302|do404)=(?<val>[^&]+)",
-                                                          RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            MatchCollection actionMatches = RedirectTokensRx.Matches(rewrittenUrl);
             foreach (Match actionMatch in actionMatches)
             {
                 if (actionMatch.Success)
@@ -429,7 +430,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static string RemoveAnyRedirectReasons(string rewritePath)
         {
-            return Regex.Replace(rewritePath, @"&rr=(?<rr>[^&].)", "");
+            return RewritePathRx.Replace(rewritePath, "");
         }
 
         /// <summary>
@@ -482,8 +483,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string result = RemoveAnyRedirectReasons(rewritePath);
             //regex expression matches a token and removes it
-            Match tokenMatch = Regex.Match(result, @"(?<=(?<p>&|\?))(?<tk>do301|do302|do404)=(?<val>[^&]+)",
-                                           RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            Match tokenMatch = RedirectTokensRx.Match(result);
             if (tokenMatch.Success)
             {
                 //tokenAndValue is the do301=true

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,9 +40,6 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// SkinControlInfo provides the Entity Layer for Skin Controls (SkinObjects)
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	03/28/2008   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class SkinControlInfo : ControlInfo, IXmlSerializable, IHydratable
@@ -58,9 +55,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the SkinControl ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int SkinControlID { get; set; }
 
@@ -69,9 +63,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the ID of the Package for this Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
@@ -82,9 +73,6 @@ namespace DotNetNuke.Entities.Modules
         /// Fills a SkinControlInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -98,9 +86,6 @@ namespace DotNetNuke.Entities.Modules
         /// Gets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -122,9 +107,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets an XmlSchema for the SkinControlInfo
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -136,9 +118,6 @@ namespace DotNetNuke.Entities.Modules
         /// Reads a SkinControlInfo from an XmlReader
         /// </summary>
         /// <param name="reader">The XmlReader to use</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -161,9 +140,6 @@ namespace DotNetNuke.Entities.Modules
         /// Writes a SkinControlInfo to an XmlWriter
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
-        /// <history>
-        /// 	[cnurse]	03/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {

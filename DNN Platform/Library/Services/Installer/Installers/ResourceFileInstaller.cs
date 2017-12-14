@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,9 +40,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/18/2008  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ResourceFileInstaller : FileInstaller
     {
@@ -60,9 +57,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Collection Node ("resourceFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/18/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -77,9 +71,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the name of the Item Node ("resourceFile")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/18/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -107,9 +98,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	03/28/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -128,9 +116,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The CommitFile method commits a single file.
         /// </summary>
         /// <param name="insFile">The InstallFile to commit</param>
-        /// <history>
-        /// 	[cnurse]	01/18/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CommitFile(InstallFile insFile)
         {
@@ -141,9 +126,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The DeleteFile method deletes a single assembly.
         /// </summary>
         /// <param name="file">The InstallFile to delete</param>
-        /// <history>
-        /// 	[cnurse]	01/18/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void DeleteFile(InstallFile file)
         {
@@ -154,13 +136,6 @@ namespace DotNetNuke.Services.Installer.Installers
         ///   The InstallFile method installs a single assembly.
         /// </summary>
         /// <param name = "insFile">The InstallFile to install</param>
-        /// <history>
-        ///   [cnurse]	01/18/2008  created
-        ///   [aprasad]	01/26/2011  Removed condition [If String.IsNullOrEmpty(Manifest) Then] prior to setting _Manifest
-        ///   Since it was not able to set _Manifest for the second file onwards, same manifest file was being 
-        ///   created for all the resource files
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override bool InstallFile(InstallFile insFile)
         {
             FileStream fs = null;
@@ -261,9 +236,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a flag that determines what type of file this installer supports
         /// </summary>
         /// <param name="type">The type of file being processed</param>
-        /// <history>
-        /// 	[cnurse]	01/18/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
         {
@@ -276,9 +248,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="nav">The XPathNavigator representing the node</param>
         /// <param name="checkFileExists">Flag that determines whether a check should be made</param>
-        /// <history>
-        /// 	[cnurse]	01/18/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
         {
@@ -302,31 +271,30 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <remarks>For new installs this removes the added file.  For upgrades it restores the
         /// backup file created during install</remarks>
         /// <param name="insFile">The InstallFile to commit</param>
-        /// <history>
-        /// 	[cnurse]	01/18/2008  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RollbackFile(InstallFile insFile)
         {
-            var unzip = new ZipInputStream(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open));
-            ZipEntry entry = unzip.GetNextEntry();
-            while (entry != null)
+            using (var unzip = new ZipInputStream(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
             {
-                if (!entry.IsDirectory)
+                ZipEntry entry = unzip.GetNextEntry();
+                while (entry != null)
                 {
-					//Check for Backups
-                    if (File.Exists(insFile.BackupPath + entry.Name))
+                    if (!entry.IsDirectory)
                     {
-						//Restore File
-                        Util.RestoreFile(new InstallFile(unzip, entry, Package.InstallerInfo), PhysicalBasePath, Log);
+                        //Check for Backups
+                        if (File.Exists(insFile.BackupPath + entry.Name))
+                        {
+                            //Restore File
+                            Util.RestoreFile(new InstallFile(unzip, entry, Package.InstallerInfo), PhysicalBasePath, Log);
+                        }
+                        else
+                        {
+                            //Delete File
+                            Util.DeleteFile(entry.Name, PhysicalBasePath, Log);
+                        }
                     }
-                    else
-                    {
-						//Delete File
-                        Util.DeleteFile(entry.Name, PhysicalBasePath, Log);
-                    }
+                    entry = unzip.GetNextEntry();
                 }
-                entry = unzip.GetNextEntry();
             }
         }
 

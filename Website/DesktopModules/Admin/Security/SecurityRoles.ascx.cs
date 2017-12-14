@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,10 +56,6 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-    ///                       and localisation
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
@@ -83,9 +79,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Gets the Return Url for the page
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/14/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected string ReturnUrl
         {
@@ -175,9 +168,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Gets the control should use a Combo Box or Text Box to display the users
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected UsersControl UsersControl
         {
@@ -209,9 +199,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/10/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public PortalModuleBase ParentModule { get; set; }
 		
@@ -237,10 +224,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindData()
         {
@@ -341,10 +324,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void BindGrid()
         {
@@ -370,14 +349,14 @@ namespace DotNetNuke.Modules.Admin.Security
             ctlPagingControl.PageSize = PageSize;
             ctlPagingControl.CurrentPage = CurrentPage;
             ctlPagingControl.TabID = TabId;
-            ctlPagingControl.QuerystringParams = System.Web.HttpUtility.UrlDecode(String.Join("&", Request.QueryString.ToString().Split('&').
+            ctlPagingControl.QuerystringParams = System.Web.HttpUtility.UrlDecode(string.Join("&", Request.QueryString.ToString().Split('&').
                                                                         ToList().
-                                                                        Where(s => s.StartsWith("ctl") 
-                                                                            || s.StartsWith("mid")
-                                                                            || s.StartsWith("RoleId")
-                                                                            || s.StartsWith("UserId")
-                                                                            || s.StartsWith("filter")
-                                                                            || s.StartsWith("popUp")).ToArray()));
+                                                                        Where(s => s.StartsWith("ctl", StringComparison.OrdinalIgnoreCase) 
+                                                                            || s.StartsWith("mid", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("RoleId", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("UserId", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("filter", StringComparison.OrdinalIgnoreCase)
+                                                                            || s.StartsWith("popUp", StringComparison.OrdinalIgnoreCase)).ToArray()));
         }
 
         private IList<UserRoleInfo> GetPagedDataSource()
@@ -400,11 +379,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         /// <param name="UserId">The Id of the User</param>
         /// <param name="RoleId">The Id of the Role</param>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        ///     [cnurse]    01/20/2006  Added support for Effective Date
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void GetDates(int UserId, int RoleId)
         {
@@ -458,9 +432,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/10/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
@@ -488,9 +459,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         /// <param name="UserID">The ID of the user to check delete button visibility for</param>
         /// <param name="RoleID">The ID of the role to check delete button visibility for</param>
-        /// <history>
-        /// 	[anurse]	01/13/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DeleteButtonVisible(int UserID, int RoleID)
         {
@@ -511,10 +479,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <remarks>
         /// </remarks>
         /// <param name="DateTime">The Date object to format</param>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FormatDate(DateTime DateTime)
         {
@@ -532,10 +496,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// FormatExpiryDate formats the expiry/effective date and filters out nulls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FormatUser(int UserID, string DisplayName)
         {
@@ -552,9 +512,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/10/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -600,11 +557,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        ///     [VMasanas]  9/28/2004   Changed redirect to Access Denied
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -642,10 +594,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cboUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -663,8 +611,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdValidate_Click(object sender, EventArgs e)
         {
@@ -697,10 +643,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cboRoles_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -714,10 +656,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdAdd_Click(Object sender, EventArgs e)
         {
@@ -808,10 +746,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void grdUserRoles_ItemCreated(object sender, DataGridItemEventArgs e)
         {

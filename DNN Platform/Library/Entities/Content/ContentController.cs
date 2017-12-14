@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,19 +23,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data;
 using System.Linq;
-using System.Text;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 
@@ -66,9 +61,14 @@ namespace DotNetNuke.Entities.Content
             //Argument Contract
             Requires.NotNull("contentItem", contentItem);
 
-            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
+	        var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, userId);
+            contentItem.CreatedByUserID = userId;
+            contentItem.LastModifiedByUserID = userId;
 
             SaveMetadataDelta(contentItem);
+
+	        UpdateContentItemsCache(contentItem);
 
             return contentItem.ContentItemId;
         }
@@ -89,6 +89,8 @@ namespace DotNetNuke.Entities.Content
             DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
 
             _dataService.DeleteContentItem(contentItem.ContentItemId);
+
+            UpdateContentItemsCache(contentItem, false);
         }
 
         public void DeleteContentItem(int contentItemId)
@@ -102,7 +104,9 @@ namespace DotNetNuke.Entities.Content
             //Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
-            return CBO.FillObject<ContentItem>(_dataService.GetContentItem(contentItemId));
+            return CBO.GetCachedObject<ContentItem>(
+                new CacheItemArgs(GetContentItemCacheKey(contentItemId), DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority),
+                c => CBO.FillObject<ContentItem>(_dataService.GetContentItem(contentItemId)));
         }
 
         public IQueryable<ContentItem> GetContentItems(int contentTypeId, int tabId, int moduleId)
@@ -131,7 +135,7 @@ namespace DotNetNuke.Entities.Content
         /// <summary>Get a list of content items by ContentType.</summary>
         public IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType)
         {
-            return CBO.FillQueryable<ContentItem>(_dataService.GetContentItemsByContentType(contentType.ContentTypeId));
+            return GetContentItemsByContentType(contentType.ContentTypeId);
         }
 
 	    public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
@@ -181,8 +185,12 @@ namespace DotNetNuke.Entities.Content
             AttachmentController.SerializeAttachmentMetadata(contentItem);
 
             SaveMetadataDelta(contentItem);
-            
-            _dataService.UpdateContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
+
+            var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            _dataService.UpdateContentItem(contentItem, userId);
+            contentItem.LastModifiedByUserID = userId;
+
+            UpdateContentItemsCache(contentItem);
         }
 
         public void AddMetaData(ContentItem contentItem, string name, string value)
@@ -193,6 +201,8 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNullOrEmpty("name", name);
 
             _dataService.AddMetaData(contentItem, name, value);
+
+            UpdateContentItemsCache(contentItem, false);
         }
 
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
@@ -203,6 +213,8 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNullOrEmpty("name", name);
 
             _dataService.DeleteMetaData(contentItem, name, value);
+
+            UpdateContentItemsCache(contentItem, false);
         }
 
         public void DeleteMetaData(ContentItem contentItem, string name)
@@ -254,6 +266,8 @@ namespace DotNetNuke.Entities.Content
             var added = rh.Except(lh).ToArray();
 
             _dataService.SynchronizeMetaData(contentItem, added, deleted);
+
+            UpdateContentItemsCache(contentItem, false);
         }
 
         private static bool MetaDataChanged(
@@ -261,6 +275,23 @@ namespace DotNetNuke.Entities.Content
             IEnumerable<KeyValuePair<string, string>> rh)
         {
             return lh.SequenceEqual(rh, new NameValueEqualityComparer()) == false;
+        }
+
+        private static void UpdateContentItemsCache(ContentItem contentItem, bool readdItem = true)
+        {
+
+            DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
+            if (readdItem)
+            {
+                CBO.GetCachedObject<ContentItem>(new CacheItemArgs(
+                    GetContentItemCacheKey(contentItem.ContentItemId),
+                   DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
+            }
+        }
+
+        private static string GetContentItemCacheKey(int contetnItemId)
+        {
+            return string.Format(DataCache.ContentItemsCacheKey, contetnItemId);
         }
     }
 }

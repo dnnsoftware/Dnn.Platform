@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -45,9 +45,6 @@ namespace DotNetNuke.Web.UI.WebControls
 	/// <summary>
 	///   The FilePicker Class provides a File Picker Control for DotNetNuke
 	/// </summary>
-	/// <history>
-	///   [cnurse]	07/31/2006
-	/// </history>
 	public class DnnFilePicker : CompositeControl, ILocalizable
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DnnFilePicker));
@@ -114,9 +111,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Gets whether the control is on a Host or Portal Tab
 		/// </summary>
 		/// <value>A Boolean</value>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		protected bool IsHost
 		{
 			get
@@ -163,9 +157,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Defaults to FileControlMode.Normal
 		/// </remarks>
 		/// <value>A FileControlMode enum</value>
-		/// <history>
-		///   [cnurse]	7/13/2005  created
-		/// </history>
 		protected FileControlMode Mode
 		{
 			get
@@ -182,9 +173,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Gets the root folder for the control
 		/// </summary>
 		/// <value>A String</value>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		protected string ParentFolder
 		{
 			get
@@ -199,10 +187,7 @@ namespace DotNetNuke.Web.UI.WebControls
 	    /// <remarks>
 	    ///   Defaults to PortalSettings.PortalId
 	    /// </remarks>
-	    /// <value>An Integer</value>
-	    /// <history>
-	    ///   [cnurse]	07/31/2006  created
-	    /// </history>        
+	    /// <value>An Integer</value>        
         protected int PortalId
 		{
 			get
@@ -223,9 +208,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   Gets the current Portal Settings
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		protected PortalSettings PortalSettings
 		{
 			get
@@ -245,9 +227,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Defaults to 'CommandButton'
 		/// </remarks>
 		/// <value>A String</value>
-		/// <history>
-		///   [cnurse]	7/13/2005  created
-		/// </history>
 		public string CommandCssClass
 		{
 			get
@@ -284,9 +263,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Gets or sets the FileID for the control
 		/// </summary>
 		/// <value>An Integer</value>
-		/// <history>
-		///   [cnurse]	7/13/2005  created
-		/// </history>
 		public int FileID
 		{
 			get
@@ -323,9 +299,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Gets or sets the FilePath for the control
 		/// </summary>
 		/// <value>A String</value>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		public string FilePath
 		{
 			get
@@ -361,9 +334,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Gets or sets the class to be used for the Labels
 		/// </summary>
 		/// <value>A String</value>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		public string LabelCssClass
 		{
 			get
@@ -397,9 +367,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   Defaults to True (ie no "Not Specified")
 		/// </remarks>
 		/// <value>A Boolean</value>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		public bool Required
 		{
 			get
@@ -409,33 +376,6 @@ namespace DotNetNuke.Web.UI.WebControls
 			set
 			{
 				ViewState["Required"] = value;
-			}
-		}
-
-		/// <summary>
-		///   Gets or sets whether to Show Database Folders
-		/// </summary>
-		/// <remarks>
-		///   Defaults to false
-		/// </remarks>
-		/// <value>A Boolean</value>
-		/// <history>
-		///   [cnurse]	7/31/2005  created
-		/// </history>
-		[Obsolete("Deprecated in DNN 6.0")]
-		public bool ShowDatabase
-		{
-			get
-			{
-			    if (ViewState["ShowDatabase"] == null)
-				{
-					return false;
-				}
-			    return Convert.ToBoolean(ViewState["ShowDatabase"]);
-			}
-		    set
-			{
-				ViewState["ShowDatabase"] = value;
 			}
 		}
 
@@ -452,38 +392,12 @@ namespace DotNetNuke.Web.UI.WebControls
 		}
 
 		/// <summary>
-		///   Gets or sets whether to Show Secure Folders
-		/// </summary>
-		/// <remarks>
-		///   Defaults to false
-		/// </remarks>
-		/// <value>A Boolean</value>
-		/// <history>
-		///   [cnurse]	7/31/2005  created
-		/// </history>
-		[Obsolete("Deprecated in DNN 6.0")]
-		public bool ShowSecure
-		{
-			get
-			{
-				return ViewState["ShowSecure"] != null && Convert.ToBoolean(ViewState["ShowSecure"]);
-			}
-			set
-			{
-				ViewState["ShowSecure"] = value;
-			}
-		}
-
-		/// <summary>
 		///   Gets or sets whether to Show the Upload Button
 		/// </summary>
 		/// <remarks>
 		///   Defaults to True
 		/// </remarks>
 		/// <value>A Boolean</value>
-		/// <history>
-		///   [cnurse]	7/31/2005  created
-		/// </history>
 		public bool ShowUpLoad
 		{
 			get
@@ -506,9 +420,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   AddButton adds a button to the Command Row
 		/// </summary>
 		/// <param name = "button">The button to add to the Row</param>
-		/// <history>
-		///   [cnurse]	07/31/2006 created
-		/// </history>
 		private void AddButton(ref LinkButton button)
 		{
 		    button = new LinkButton {EnableViewState = false, CausesValidation = false};
@@ -521,9 +432,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   AddCommandRow adds the Command Row
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		private void AddButtonArea()
 		{
 		    _pnlButtons = new Panel {Visible = false};
@@ -543,9 +451,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   AddFileRow adds the Files Row
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		private void AddFileAndUploadArea()
 		{
 			//Create Url Div
@@ -576,9 +481,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   AddFolderRow adds the Folders Row
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		private void AddFolderArea()
 		{
 			//Create Url Div
@@ -612,9 +514,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   AddMessageRow adds the Message Row
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		private void AddMessageRow()
 		{
 		    _pnlMessage = new Panel {CssClass = "dnnFormMessage dnnFormWarning"};
@@ -646,9 +545,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   LoadFolders fetches the list of folders from the Database
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		private void LoadFolders()
 		{
             UserInfo user = User ?? UserController.Instance.GetCurrentUserInfo();
@@ -693,9 +589,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <remarks>
 		///   This overload uses the selected item in the Folder combo
 		/// </remarks>
-		/// <history>
-		///   [cnurse]	08/01/2006  created
-		/// </history>
 		private void SetFilePath()
 		{
 			SetFilePath(_cboFiles.SelectedItem.Text);
@@ -708,9 +601,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   This overload allows the caller to specify a file
 		/// </remarks>
 		/// <param name = "fileName">The filename to use in setting the property</param>
-		/// <history>
-		///   [cnurse]	08/01/2006  created
-		/// </history>
 		private void SetFilePath(string fileName)
 		{
 			if (string.IsNullOrEmpty(_cboFolders.SelectedItem.Value))
@@ -728,9 +618,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		/// <param name = "button">The button to configure</param>
 		/// <param name = "command">The command name (amd key) of the button</param>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		private void ShowButton(LinkButton button, string command)
 		{
 			button.Visible = true;
@@ -745,9 +632,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   ShowImage displays the Preview Image
 		/// </summary>
-		/// <history>
-		///   [cnurse]	08/01/2006  created
-		/// </history>
 		private void ShowImage()
 		{
 			var image = (FileInfo)FileManager.Instance.GetFile(FileID);
@@ -791,9 +675,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		///   CreateChildControls overrides the Base class's method to correctly build the
 		///   control based on the configuration
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		protected override void CreateChildControls()
 		{
 			//First clear the controls collection
@@ -824,9 +705,6 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <summary>
 		///   OnPreRender runs just before the control is rendered
 		/// </summary>
-		/// <history>
-		///   [cnurse]	07/31/2006  created
-		/// </history>
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);

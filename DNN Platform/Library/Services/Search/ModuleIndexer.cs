@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 
@@ -50,10 +51,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	11/15/2004	documented
-    ///     [vnguyen]   04/16/2013  updated with methods for an Updated Search
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ModuleIndexer : IndexingProvider
     {
@@ -100,12 +97,12 @@ namespace DotNetNuke.Services.Search
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override int IndexSearchDocuments(int portalId,
-            int scheduleId, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024 * 2;
             var totalIndexed = 0;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, scheduleId, startDateLocal);
+            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
 			var searchModuleCollection = _searchModules.ContainsKey(portalId)
                 ? _searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
@@ -120,10 +117,8 @@ namespace DotNetNuke.Services.Search
 
             if (modulesInDateRange.Any())
             {
-                ModuleInfo lastModule = null;
                 foreach (var module in modulesInDateRange)
                 {
-                    lastModule = module;
                     try
                     {
                         var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
@@ -143,7 +138,7 @@ namespace DotNetNuke.Services.Search
 
                             if (searchDocuments.Count >= saveThreshold)
                             {
-                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, scheduleId, module);
+                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
                                 searchDocuments.Clear();
                             }
                         }
@@ -156,7 +151,7 @@ namespace DotNetNuke.Services.Search
 
                 if (searchDocuments.Count > 0)
                 {
-                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, scheduleId, lastModule);
+                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
                 }
             }
 
@@ -182,12 +177,11 @@ namespace DotNetNuke.Services.Search
         }
 
         private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int scheduleId, ModuleInfo module)
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;
-            // no way for module to be null when searchDocuments is not empty
-            SetLocalTimeOfLastIndexedItem(module.PortalID, scheduleId, module.LastContentModifiedOnDate);
+            SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
             return total;
         }
 
@@ -198,9 +192,6 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId"></param>
         /// <param name="startDate"></param>
         /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   05/17/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
@@ -222,7 +213,7 @@ namespace DotNetNuke.Services.Search
                             Title = module.ModuleTitle,
                             PortalId = portalId,
                             CultureCode = module.CultureCode,
-                            ModifiedTimeUtc = module.LastModifiedOnDate,
+                            ModifiedTimeUtc = module.LastModifiedOnDate.ToUniversalTime(),
                             Body = module.Header + " " + module.Footer
                         };
 
@@ -253,9 +244,6 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <param name="searchItem"></param>
         /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   05/16/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         #pragma warning disable 0618
         public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
@@ -296,9 +284,6 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   04/16/2013  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId)
         {
@@ -319,7 +304,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetSearchIndexItems gets the SearchInfo Items for the Portal
@@ -327,12 +312,8 @@ namespace DotNetNuke.Services.Search
         /// <remarks>
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        ///     [vnguyen]   09/07/2010  Modified: Included logic to add TabId to searchItems
-        /// </history>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             var searchItems = new SearchItemInfoCollection();
@@ -364,7 +345,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LEGACY: Depricated in DNN 7.1. Use 'GetSearchModules' instead.
+        /// LEGACY: Deprecated in DNN 7.1. Use 'GetSearchModules' instead.
         /// Used for Legacy Search (ISearchable) 
         /// 
         /// GetModuleList gets a collection of SearchContentModuleInfo Items for the Portal
@@ -373,11 +354,8 @@ namespace DotNetNuke.Services.Search
         /// Parses the Modules of the Portal, determining whetehr they are searchable.
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
-        /// <history>
-        ///		[cnurse]	11/15/2004	documented
-        /// </history>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Depricated in DNN 7.1. Use 'GetSearchModules' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'GetSearchModules' instead.")]
         protected SearchContentModuleInfoCollection GetModuleList(int portalId)
         {
             var results = new SearchContentModuleInfoCollection();

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("DotNetNuke.Tests.Urls")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DotNetNuke Corporation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2017 by DotNetNuke Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

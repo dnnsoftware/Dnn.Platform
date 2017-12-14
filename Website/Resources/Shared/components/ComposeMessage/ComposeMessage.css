@@ -3,7 +3,7 @@
 .composeMessageDialog .dnnLeft button{cursor:pointer;padding:0.5em 1em;border:none;}
 .composeMessageDialog .dnnFormItem label, .composeMessageDialog .dnnFormItem .dnnFormLabel, .composeMessageDialog .dnnFormItem .dnnTooltip{width: 25%;}
 ul.token-input-list-facebook{width: 46%; margin-bottom: 18px;}
-div.token-input-dropdown-facebook ul li img{padding-right:10px;vertical-align:middle;}
+div.token-input-dropdown-facebook ul li img{margin-right:10px;vertical-align:middle;}
 /* MESSAGE ATTACHMENTS */
 .composeMessageDialog .messageAttachments {
     width:300px;

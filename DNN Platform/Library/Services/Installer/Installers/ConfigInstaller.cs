@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,9 +37,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	08/03/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ConfigInstaller : ComponentInstallerBase
     {
@@ -62,9 +59,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Install config changes
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string InstallConfig
         {
@@ -79,9 +73,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Target Config XmlDocument
         /// </summary>
         /// <value>An XmlDocument</value>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig
         {
@@ -96,9 +87,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the Target Config file to change
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public InstallFile TargetFile
         {
@@ -113,9 +101,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets the UnInstall config changes
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string UnInstallConfig
         {
@@ -134,15 +119,12 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
             try
             {
-                if (string.IsNullOrEmpty(_FileName))
+                if (string.IsNullOrEmpty(_FileName) && _xmlMerge.ConfigUpdateChangedNodes)
                 {
                     //Save the XmlDocument
                     Config.Save(TargetConfig, TargetFile.FullName);
@@ -167,9 +149,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Install method installs the config component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
@@ -185,10 +164,10 @@ namespace DotNetNuke.Services.Installer.Installers
                     TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
                     //Create XmlMerge instance from InstallConfig source
-                    var merge = new XmlMerge(new StringReader(InstallConfig), Package.Version.ToString(), Package.Name);
+                    _xmlMerge = new XmlMerge(new StringReader(InstallConfig), Package.Version.ToString(), Package.Name);
 
                     //Update the Config file - Note that this method does not save the file - we will save it in Commit
-                    merge.UpdateConfig(TargetConfig);
+                    _xmlMerge.UpdateConfig(TargetConfig);
                     Completed = true;
                     Log.AddInfo(Util.CONFIG_Updated + " - " + TargetFile.Name);
                 }
@@ -222,9 +201,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The ReadManifest method reads the manifest file for the config compoent.
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/03/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
@@ -257,9 +233,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The Rollback method undoes the installation of the file component in the event 
         /// that one of the other components fails
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
@@ -271,23 +244,23 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The UnInstall method uninstalls the config component
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	08/04/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
             if (string.IsNullOrEmpty(_UninstallFileName))
             {
-				//Create an XmlDocument for the config file
-                _TargetConfig = new XmlDocument();
-                TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
+                if (!string.IsNullOrEmpty(UnInstallConfig))
+                {
+                    //Create an XmlDocument for the config file
+                    _TargetConfig = new XmlDocument();
+                    TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
-                //Create XmlMerge instance from UnInstallConfig source
-                var merge = new XmlMerge(new StringReader(UnInstallConfig), Package.Version.ToString(), Package.Name);
+                    //Create XmlMerge instance from UnInstallConfig source
+                    var merge = new XmlMerge(new StringReader(UnInstallConfig), Package.Version.ToString(), Package.Name);
 
-                //Update the Config file - Note that this method does save the file
-                merge.UpdateConfig(TargetConfig, TargetFile.FullName);
+                    //Update the Config file - Note that this method does save the file
+                    merge.UpdateConfig(TargetConfig, TargetFile.FullName);
+                }
             }
             else
             {

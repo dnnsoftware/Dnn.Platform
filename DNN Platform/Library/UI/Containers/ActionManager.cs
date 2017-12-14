@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,9 +51,6 @@ namespace DotNetNuke.UI.Containers
     /// ActionManager is a helper class that provides common Action Behaviours that can
     /// be used by any IActionControl implementation
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	12/23/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class ActionManager
     {
@@ -71,9 +68,6 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// Constructs a new ActionManager
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ActionManager(IActionControl actionControl)
         {
@@ -89,9 +83,6 @@ namespace DotNetNuke.UI.Containers
         /// Gets and sets the Action Control that is connected to this ActionManager instance
         /// </summary>
         /// <returns>An IActionControl object</returns>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public IActionControl ActionControl { get; set; }
 
@@ -101,9 +92,6 @@ namespace DotNetNuke.UI.Containers
         /// instance
         /// </summary>
         /// <returns>A ModuleInstanceContext object</returns>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected ModuleInstanceContext ModuleContext
         {
@@ -240,9 +228,6 @@ namespace DotNetNuke.UI.Containers
         /// DisplayControl determines whether the associated Action control should be 
         /// displayed
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
@@ -275,9 +260,6 @@ namespace DotNetNuke.UI.Containers
         /// GetAction gets the action associated with the commandName
         /// </summary>
         /// <param name="commandName">The command name</param>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(string commandName)
         {
@@ -289,9 +271,6 @@ namespace DotNetNuke.UI.Containers
         /// GetAction gets the action associated with the id
         /// </summary>
         /// <param name="id">The Id</param>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(int id)
         {
@@ -305,9 +284,6 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         /// <param name="action">The Action</param>
         /// <param name="control">The Control</param>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
@@ -329,9 +305,6 @@ namespace DotNetNuke.UI.Containers
         /// IsVisible determines whether the action control is Visible
         /// </summary>
         /// <param name="action">The Action</param>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsVisible(ModuleAction action)
         {
@@ -359,9 +332,6 @@ namespace DotNetNuke.UI.Containers
         /// ProcessAction processes the action
         /// </summary>
         /// <param name="id">The Id of the Action</param>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(string id)
         {
@@ -379,9 +349,6 @@ namespace DotNetNuke.UI.Containers
         /// ProcessAction processes the action
         /// </summary>
         /// <param name="action">The Action</param>
-        /// <history>
-        /// 	[cnurse]	12/23/2007  documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(ModuleAction action)
         {

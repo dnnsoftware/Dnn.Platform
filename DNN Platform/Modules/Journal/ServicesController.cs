@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Journal.Internal;
@@ -45,7 +46,6 @@ namespace DotNetNuke.Modules.Journal
 {
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [SupportedModules("Journal")]
-    [ValidateAntiForgeryToken]
     public class ServicesController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesController));
@@ -53,6 +53,8 @@ namespace DotNetNuke.Modules.Journal
         private const int MentionNotificationLength = 100;
         private const string MentionNotificationSuffix = "...";
         private const string MentionIdentityChar = "@";
+
+        private static readonly string [] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
 
         #region Public Methods
         public class CreateDTO
@@ -74,104 +76,55 @@ namespace DotNetNuke.Modules.Journal
 
         private static bool IsImageFile(string relativePath)
         {
-	        if (relativePath.Contains("?"))
+            if (relativePath == null)
+            {
+                return false;
+            }
+
+            if (relativePath.Contains("?"))
 	        {
 		        relativePath = relativePath.Substring(0,
 			        relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
 	        }
 
-            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff","bmp" };
+            
             var extension = relativePath.Substring(relativePath.LastIndexOf(".",
             StringComparison.Ordinal) + 1).ToLower();
-            return acceptedExtensions.Contains(extension);
+            return AcceptedFileExtensions.Contains(extension);
+        }
+
+        private static bool IsAllowedLink(string url)
+        {
+            return !string.IsNullOrEmpty(url) && !url.Contains("//");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
 		[DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Create(CreateDTO postData)
         {
             try
             {
-                var journalTypeId = 1;
-                switch (postData.JournalType)
-                {
-                    case "link":
-                        journalTypeId = 2;
-                        break;
-                    case "photo":
-                        journalTypeId = 3;
-                        break;
-                    case "file":
-                        journalTypeId = 4;
-                        break;
-                }
+                int userId = UserInfo.UserID;
+                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
 
                 if (postData.ProfileId == -1)
                 {
-                    postData.ProfileId = UserInfo.UserID;
+                    postData.ProfileId = userId;
                 }
 
-                if (postData.GroupId > 0)
-                {
-                    postData.ProfileId = -1;
-                }
-                
-                var ji = new JournalItem
-                {
-                    JournalId = -1,
-                    JournalTypeId = journalTypeId,
-                    PortalId = ActiveModule.OwnerPortalID,
-                    UserId = UserInfo.UserID,
-                    SocialGroupId = postData.GroupId,
-                    ProfileId = postData.ProfileId,
-                    Summary = postData.Text,
-                    SecuritySet = postData.SecuritySet
-                };
-                ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));
-                ji.Summary = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Summary));
+                checkProfileAccess(postData.ProfileId, UserInfo);
 
-                var ps = new PortalSecurity();
+                checkGroupAccess(postData);
 
-                ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoScripting);
-                ji.Title = Utilities.RemoveHTML(ji.Title);
-                ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoMarkup);
+                var journalItem = prepareJournalItem(postData, mentionedUsers);
 
-                ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoScripting);
-                ji.Summary = Utilities.RemoveHTML(ji.Summary);
-                ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
+                JournalController.Instance.SaveJournalItem(journalItem, ActiveModule);
 
-				//parse the mentions context in post data
-                var originalSummary = ji.Summary;
-                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
-                ji.Summary = ParseMentions(ji.Summary, postData.Mentions, ref mentionedUsers);
+                var originalSummary = journalItem.Summary;
+                SendMentionNotifications(mentionedUsers, journalItem, originalSummary);
 
-                if (ji.Summary.Length > 2000)
-                {
-                    ji.Body = ji.Summary;
-                    ji.Summary = null;
-                }
-
-                if (!string.IsNullOrEmpty(postData.ItemData))
-                {
-                    ji.ItemData = postData.ItemData.FromJson<ItemData>();
-                    if (!IsImageFile(ji.ItemData.ImageUrl))
-                        ji.ItemData.ImageUrl = string.Empty;
-                    ji.ItemData.Description = HttpUtility.UrlDecode(ji.ItemData.Description);
-
-                    if (!string.IsNullOrEmpty(ji.ItemData.Url) && ji.ItemData.Url.StartsWith("fileid="))
-                    {
-                        var fileId = Convert.ToInt32(ji.ItemData.Url.Replace("fileid=", string.Empty).Trim());
-                        var file = FileManager.Instance.GetFile(fileId);
-                        ji.ItemData.Title = file.FileName;
-						ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
-                    }
-                }
-
-                JournalController.Instance.SaveJournalItem(ji, ActiveModule);
-
-                SendMentionNotifications(mentionedUsers, ji, originalSummary);
-
-                return Request.CreateResponse(HttpStatusCode.OK, ji);
+                return Request.CreateResponse(HttpStatusCode.OK, journalItem);
             }
             catch (Exception exc)
             {
@@ -180,32 +133,140 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        //        public class ListDTO
-        //        {
-        //            public int ProfileId { get; set; }
-        //        }
+        // Check if a user can post content on a specific profile's page
+        private void checkProfileAccess(int profileId, UserInfo currentUser)
+        {
+            if (profileId != currentUser.UserID)
+            {
+                var profileUser = UserController.Instance.GetUser(PortalSettings.PortalId, profileId);
+                if (profileUser == null || (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !Utilities.AreFriends(profileUser, currentUser)))
+                {
+                    throw new ArgumentException("you have no permission to post journal on current profile page.");
+                }
+            }
+        }
 
-        //        [DnnAuthorize]
-        //        [HttpGet]
-        //        public HttpResponseMessage List(ListDTO postData)
-        //        {
-        //            try
-        //            {
-        //                return Request.CreateResponse(HttpStatusCode.OK, InternalJournalController.Instance.GetJournalItemsByProfile(PortalSettings.PortalId, ActiveModule.ModuleID, UserInfo.UserID, postData.ProfileId, 0, 20));
-        //            }
-        //            catch (Exception exc)
-        //            {
-        //                Logger.Error(exc);
-        //                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-        //            }
-        //        }
-        
+        private void checkGroupAccess(CreateDTO postData)
+        {
+            if (postData.GroupId > 0)
+            {
+                postData.ProfileId = -1;
+
+                RoleInfo roleInfo = RoleController.Instance.GetRoleById(ActiveModule.OwnerPortalID, postData.GroupId);
+                if (roleInfo != null)
+                {
+                    if (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !UserInfo.IsInRole(roleInfo.RoleName))
+                    {
+                        throw new ArgumentException("you have no permission to post journal on current group.");
+                    }
+
+                    if (!roleInfo.IsPublic)
+                    {
+                        postData.SecuritySet = "R";
+                    }
+                }
+            }
+        }
+
+        private JournalItem prepareJournalItem(CreateDTO postData, IDictionary<string, UserInfo> mentionedUsers)
+        {
+            var journalTypeId = 1;
+            switch (postData.JournalType)
+            {
+                case "link":
+                    journalTypeId = 2;
+                    break;
+                case "photo":
+                    journalTypeId = 3;
+                    break;
+                case "file":
+                    journalTypeId = 4;
+                    break;
+            }
+
+            var ji = new JournalItem
+            {
+                JournalId = -1,
+                JournalTypeId = journalTypeId,
+                PortalId = ActiveModule.OwnerPortalID,
+                UserId = UserInfo.UserID,
+                SocialGroupId = postData.GroupId,
+                ProfileId = postData.ProfileId,
+                Summary = postData.Text ?? "",
+                SecuritySet = postData.SecuritySet
+            };
+            ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));
+            ji.Summary = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Summary));
+
+            var ps = PortalSecurity.Instance;
+
+            ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoScripting);
+            ji.Title = Utilities.RemoveHTML(ji.Title);
+            ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoMarkup);
+
+            ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoScripting);
+            ji.Summary = Utilities.RemoveHTML(ji.Summary);
+            ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
+
+            //parse the mentions context in post data
+            var originalSummary = ji.Summary;
+
+            ji.Summary = ParseMentions(ji.Summary, postData.Mentions, ref mentionedUsers);
+
+            if (ji.Summary.Length > 2000)
+            {
+                ji.Body = ji.Summary;
+                ji.Summary = null;
+            }
+
+            if (!string.IsNullOrEmpty(postData.ItemData))
+            {
+                ji.ItemData = postData.ItemData.FromJson<ItemData>();
+                var originalImageUrl = ji.ItemData.ImageUrl;
+                if (!IsImageFile(ji.ItemData.ImageUrl))
+                {
+                    ji.ItemData.ImageUrl = string.Empty;
+                }
+
+                ji.ItemData.Description = HttpUtility.UrlDecode(ji.ItemData.Description);
+
+                if (!IsAllowedLink(ji.ItemData.Url))
+                {
+                    ji.ItemData.Url = string.Empty;
+                }
+
+                if (!string.IsNullOrEmpty(ji.ItemData.Url) && ji.ItemData.Url.StartsWith("fileid="))
+                {
+                    var fileId = Convert.ToInt32(ji.ItemData.Url.Replace("fileid=", string.Empty).Trim());
+                    var file = FileManager.Instance.GetFile(fileId);
+
+                    if (!IsCurrentUserFile(file))
+                    {
+                        throw new ArgumentException("you have no permission to attach files not belongs to you.");
+                    }
+
+                    ji.ItemData.Title = file.FileName;
+                    ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
+
+                    if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) &&
+                        originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") &&
+                        AcceptedFileExtensions.Contains(file.Extension.ToLower()))
+                    {
+                        ji.ItemData.ImageUrl = originalImageUrl;
+                    }
+                }
+            }
+
+            return ji;
+        }
+
         public class JournalIdDTO
         {
             public int JournalId { get; set; }
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Delete(JournalIdDTO postData)
         {
@@ -235,6 +296,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage SoftDelete(JournalIdDTO postData)
         {
@@ -263,60 +325,14 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        //        public class SearchStringDTO
-        //        {
-        //            public string Search { get; set; }
-        //        }
-        //
-        //
-        //        [HttpPost]
-        //        public HttpResponseMessage Users(SearchStringDTO postData)
-        //        {
-        //            try
-        //            {
-        //                var totalRecords = 0;
-        //                var list = new List<object>();
-        //                foreach (UserInfo u in UserController.GetUsersByUserName(PortalSettings.PortalId, postData.Search + '%', 0, 100, ref totalRecords))
-        //                {
-        //                    list.Add(new { label = u.DisplayName, value = u.UserID });
-        //                }
-        //                return Request.CreateResponse(HttpStatusCode.OK, list);
-        //            }
-        //            catch (Exception exc)
-        //            {
-        //                Logger.Error(exc);
-        //                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-        //            }
-        //        }
-        //
-        //        [HttpPost]
-        //        public HttpResponseMessage Tags(SearchStringDTO postData)
-        //        {
-        //            try
-        //            {
-        //                var terms = Util.GetTermController().GetTermsByVocabulary(1).Where(t => t.Name.ToLower().Contains(postData.Search.ToLower())).Select(term => term.Name);
-        //
-        //                var list = new List<object>();
-        //                foreach (var t in terms)
-        //                {
-        //                    list.Add(new { label = t, value = t });
-        //                }
-        //
-        //                return Request.CreateResponse(HttpStatusCode.OK, terms);
-        //            }
-        //            catch (Exception exc)
-        //            {
-        //                Logger.Error(exc);
-        //                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-        //            }
-        //        }
-
+        
         public class PreviewDTO
         {
             public string Url { get; set; }
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
 		[DnnAuthorize]
         public HttpResponseMessage PreviewUrl(PreviewDTO postData)
         {
@@ -331,48 +347,7 @@ namespace DotNetNuke.Modules.Journal
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-//        [DnnAuthorize]
-//        public HttpResponseMessage Upload()
-//        {
-//            var sourceFile = Request.Files[0];
-//            if (sourceFile == null)
-//            {
-//                throw new HttpException(400, Localization.GetString("SaveFileError", "''"));
-//            }
-//
-//            var userFolder = FolderManager.Instance.GetUserFolder(UserInfo);
-//
-//            var message = string.Empty;
-//            IFileInfo fi = null;
-//            try
-//            {
-//                fi = FileManager.Instance.AddFile(userFolder, sourceFile.FileName, sourceFile.InputStream, true);
-//            }
-//            catch (PermissionsNotMetException)
-//            {
-//                message = string.Format(Localization.GetString("InsufficientFolderPermission"), userFolder.FolderPath);
-//            }
-//            catch (NoSpaceAvailableException)
-//            {
-//                message = string.Format(Localization.GetString("DiskSpaceExceeded"), sourceFile.FileName);
-//            }
-//            catch (InvalidFileExtensionException)
-//            {
-//                message = string.Format(Localization.GetString("RestrictedFileType"), sourceFile.FileName, Host.AllowedExtensionWhitelist.ToDisplayString());
-//            }
-//            catch
-//            {
-//                message = string.Format(Localization.GetString("SaveFileError"), sourceFile.FileName);
-//            }
-//            if (String.IsNullOrEmpty(message) && fi != null)
-//            {
-//                return Json(fi);
-//            }
-//
-//            return Json(new { Result = message });
-//        }
-
+        
         public class GetListForProfileDTO
         {
             public int ProfileId { get; set; }
@@ -382,6 +357,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage GetListForProfile(GetListForProfileDTO postData)
         {
             try
@@ -398,6 +374,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Like(JournalIdDTO postData)
         {
@@ -426,12 +403,14 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage CommentSave(CommentSaveDTO postData)
         {
             try
             {
-                var comment = HttpUtility.UrlDecode(postData.Comment);
+                var comment = Utilities.RemoveHTML(HttpUtility.UrlDecode(postData.Comment));
+
                 IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
                 var originalComment = comment;
                 comment = ParseMentions(comment, postData.Mentions, ref mentionedUsers);
@@ -461,6 +440,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage CommentDelete(CommentDeleteDTO postData)
         {
@@ -604,6 +584,41 @@ namespace DotNetNuke.Modules.Journal
 
                 Services.Social.Notifications.NotificationsController.Instance.SendNotification(notification, PortalSettings.PortalId, null, new List<UserInfo> { mentionUser });
             }
+        }
+
+        private bool IsCurrentUserFile(IFileInfo file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            var userFolders = GetUserFolders();
+
+            return userFolders.Any(f => file.FolderId == f.FolderID);
+        }
+
+        private IList<IFolderInfo> GetUserFolders()
+        {
+            var folders = new List<IFolderInfo>();
+
+            var userFolder = FolderManager.Instance.GetUserFolder(UserInfo);
+            folders.Add(userFolder);
+            folders.AddRange(GetSubFolders(userFolder));
+
+            return folders;
+        }
+
+        private IList<IFolderInfo> GetSubFolders(IFolderInfo parentFolder)
+        {
+            var folders = new List<IFolderInfo>();
+            foreach (var folder in FolderManager.Instance.GetFolders(parentFolder))
+            {
+                folders.Add(folder);
+                folders.AddRange(GetSubFolders(folder));
+            }
+
+            return folders;
         }
 
         #endregion

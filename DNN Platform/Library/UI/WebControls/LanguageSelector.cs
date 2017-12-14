@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,10 +38,6 @@ namespace DotNetNuke.UI.WebControls
 	/// <summary>
 	/// Language Selector control
 	/// </summary>
-	/// <history>
-	///     [sleupold]	2007-11-10 created
-	///     [sleupold]  2007-12-08 Support for Languages ("de", "en") and Locales ("de-DE", "en-US") added
-	/// </history>
 	public class LanguageSelector : Control, INamingContainer
 	{
 

@@ -1,6 +1,6 @@
 ﻿<div class="mdMemberDetails" data-bind="css: {mdFriend: IsFriend(), mdFollowing: IsFollowing(), mdFollower: IsFollower() }">
     <a href="" class="mdMemberImg" data-bind="attr: { title: DisplayName, href: ProfileUrl }">
-        <span><img data-bind="attr: { src: getProfilePicture(50,50), title: DisplayName }" /></span>
+        <span><img data-bind="attr: { src: getProfilePicture(50,50), title: DisplayName, alt: DisplayName }" /></span>
     </a>
     <ul class="MdMemberInfo">
         <li class="mdDisplayName">

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,9 +43,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	02/21/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:TrueFalseEditControl runat=server></{0}:TrueFalseEditControl>")]
     public class TrueFalseEditControl : EditControl
@@ -57,9 +54,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Constructs a TrueFalseEditControl
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/22/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public TrueFalseEditControl()
         {
@@ -75,9 +69,6 @@ namespace DotNetNuke.UI.WebControls
         /// BooleanValue returns the Boolean representation of the Value
         /// </summary>
         /// <value>A Boolean representing the Value</value>
-        /// <history>
-        ///     [cnurse]	06/14/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool BooleanValue
         {
@@ -103,9 +94,6 @@ namespace DotNetNuke.UI.WebControls
         /// OldBooleanValue returns the Boolean representation of the OldValue
         /// </summary>
         /// <value>A Boolean representing the OldValue</value>
-        /// <history>
-        ///     [cnurse]	06/14/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected bool OldBooleanValue
         {
@@ -131,9 +119,6 @@ namespace DotNetNuke.UI.WebControls
         /// StringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -157,9 +142,6 @@ namespace DotNetNuke.UI.WebControls
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
@@ -175,9 +157,6 @@ namespace DotNetNuke.UI.WebControls
         /// RenderEditMode renders the Edit mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {

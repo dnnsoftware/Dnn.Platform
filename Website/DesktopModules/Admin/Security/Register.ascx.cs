@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,7 +40,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
-using DotNetNuke.Modules.Dashboard.Components.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
@@ -118,7 +117,9 @@ namespace DotNetNuke.Modules.Admin.Users
 			}
 		}
 
-		#endregion
+	    protected override bool AddUser { get; } = true;
+
+	    #endregion
 
 		#region Event Handlers
 
@@ -246,7 +247,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				Context.ApplicationInstance.CompleteRequest();
 			}
 
-			cancelLink.NavigateUrl = GetRedirectUrl(false);
+			cancelLink.NavigateUrl = closeLink.NavigateUrl = GetRedirectUrl(false);
 			registerButton.Click += registerButton_Click;
 
 			if (PortalSettings.Registration.UseAuthProviders)
@@ -436,7 +437,8 @@ namespace DotNetNuke.Modules.Admin.Users
 				Required = required,
 				TextMode = TextBoxMode.Password,
 				TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
-				ClearContentInPasswordMode = true
+				ClearContentInPasswordMode = true,
+                MaxLength = 39
 			};
 			userForm.Items.Add(formItem);
 
@@ -527,8 +529,7 @@ namespace DotNetNuke.Modules.Admin.Users
 					{
 						RegistrationForm.Visible = false;
 						registerButton.Visible = false;
-						cancelLink.Attributes["resourcekey"] = "Close";
-						RegistrationForm.Parent.Controls.Add(cancelLink);
+					    closeLink.Visible = true;
 					}
 				}
 				else
@@ -559,10 +560,25 @@ namespace DotNetNuke.Modules.Admin.Users
 		    }
 
 			CreateStatus = UserCreateStatus.AddUser;
-			var portalSecurity = new PortalSecurity();
+			var portalSecurity = PortalSecurity.Instance;
 
 			//Check User Editor
 			bool _IsValid = userForm.IsValid;
+
+		    if (_IsValid)
+		    {
+                // Validate username against bad characters; it must not start or end with space, 
+                // must not containg control characters, and not contain special puctuations
+                // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+		        char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+		        var name = User.Username;
+		        var valid = name.Length >= 5 &&
+		                    name == name.Trim() &&
+		                    name.All(ch => ch >= ' ') &&
+		                    name.IndexOfAny(unallowedAscii) < 0;
+		        if (!valid)
+		            CreateStatus = UserCreateStatus.InvalidUserName;
+		    }
 
 			if (PortalSettings.Registration.RegistrationFormType == 0)
 			{
@@ -743,14 +759,11 @@ namespace DotNetNuke.Modules.Admin.Users
 				{
 					//return to the url passed to register
 					redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-					if (redirectUrl.Contains("://") &&
-						!redirectUrl.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-							StringComparison.InvariantCultureIgnoreCase))
-					{
-						redirectUrl = "";
-					}
-					if (redirectUrl.Contains("?returnurl"))
+
+                    //clean the return url to avoid possible XSS attack.
+                    redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
+
+                    if (redirectUrl.Contains("?returnurl"))
 					{
 						string baseURL = redirectUrl.Substring(0,
 							redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
@@ -776,7 +789,11 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 				if (IsValid)
 				{
-					CreateUser();
+                    if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
+                    {
+                        CreateUser();
+                    }
+
 				}
 				else
 				{

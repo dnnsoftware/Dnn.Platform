@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -72,9 +72,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
         {
-#pragma warning disable 612,618
-            return GetLog(portalID, logType, pageSize, pageIndex, ref totalRecords).Cast<LogInfo>().ToList();
-#pragma warning restore 612,618
+            return new List<LogInfo>();
         }
 
         public abstract ArrayList GetLogTypeConfigInfo();
@@ -103,38 +101,6 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public abstract void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string notificationThresholdTime, string notificationThresholdTimeType, string mailFromAddress, string mailToAddress);
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog();
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog(string logType);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog(int portalID);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog(int portalID, string logType);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog(int pageSize, int pageIndex, ref int totalRecords);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog(string logType, int pageSize, int pageIndex, ref int totalRecords);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog(int portalID, int pageSize, int pageIndex, ref int totalRecords);
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public abstract LogInfoArray GetLog(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords);
-		
 		#endregion
     }
 }

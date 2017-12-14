@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Reflection;
-using System.IO;
-using System.Linq;
-using System.Web.UI;
-using ClientDependency.Core.CompositeFiles.Providers;
+﻿using ClientDependency.Core.CompositeFiles.Providers;
 using ClientDependency.Core.Config;
-using System.Text;
-using System.Web.Security;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
 
 namespace ClientDependency.Core.CompositeFiles
 {
@@ -17,7 +13,11 @@ namespace ClientDependency.Core.CompositeFiles
 
 
         private readonly static object Lock = new object();
+
+        //*** DNN related change *** begin
         private static DnnConfiguration dnnConfig = new DnnConfiguration();
+        //*** DNN related change *** end
+
         /// <summary>
         /// When building composite includes, it creates a Base64 encoded string of all of the combined dependency file paths
         /// for a given composite group. If this group contains too many files, then the file path with the query string will be very long.
@@ -39,20 +39,29 @@ namespace ClientDependency.Core.CompositeFiles
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
             var contextBase = new HttpContextWrapper(context);
-            
+
             ClientDependencyType type;
             string fileKey;
             int version = 0;
 
             if (string.IsNullOrEmpty(context.Request.PathInfo))
             {
+                var decodedUrl = HttpUtility.HtmlDecode(context.Request.Url.OriginalString);
+                var query = decodedUrl.Split(new char[] { '?' });
+                if (query.Length < 2)
+                {
+                    throw new ArgumentException("No query string found in request");
+                }
+                var queryStrings = HttpUtility.ParseQueryString(query[1]);
+
                 // querystring format
-                fileKey = context.Request["s"];
-                if (!string.IsNullOrEmpty(context.Request["cdv"]) && !Int32.TryParse(context.Request["cdv"], out version))
+                fileKey = queryStrings["s"];
+                var clientDepdendencyVersion = queryStrings["cdv"].TrimEnd('/');
+                if (!string.IsNullOrEmpty(clientDepdendencyVersion) && !Int32.TryParse(clientDepdendencyVersion, out version))
                     throw new ArgumentException("Could not parse the version in the request");
                 try
                 {
-                    type = (ClientDependencyType)Enum.Parse(typeof(ClientDependencyType), context.Request["t"], true);
+                    type = (ClientDependencyType)Enum.Parse(typeof(ClientDependencyType), queryStrings["t"], true);
                 }
                 catch
                 {
@@ -68,12 +77,14 @@ namespace ClientDependency.Core.CompositeFiles
                 //parse using the parser
                 if (!PathBasedUrlFormatter.Parse(pathFormat, path, out fileKey, out type, out version))
                 {
+                    //*** DNN related change *** begin
                     if (context.IsDebuggingEnabled || dnnConfig.IsDebugMode())
                     {
                         throw new FormatException("Could not parse the URL path: " + path + " with the format specified: " + pathFormat);
                     }
 
-                    throw new HttpException(404, "File not found");
+                    throw new HttpException(404, "Path not found");
+                    //*** DNN related change *** end
                 }
             }
 
@@ -81,6 +92,11 @@ namespace ClientDependency.Core.CompositeFiles
 
             if (string.IsNullOrEmpty(fileKey))
                 throw new ArgumentException("Must specify a fileset in the request");
+
+            // don't process if the version doesn't match - this would be nice to do but people will get errors if 
+            // their html pages are cached and are referencing an old version
+            //if (version != ClientDependencySettings.Instance.Version)
+            //    throw new ArgumentException("Configured version does not match request");
 
             byte[] outputBytes = null;
 
@@ -94,6 +110,7 @@ namespace ClientDependency.Core.CompositeFiles
                 Enabled = true,
                 VaryByParam = "t;s;cdv",
                 VaryByContentEncoding = "gzip;deflate",
+                VaryByHeader = "Accept-Encoding",
                 Location = OutputCacheLocation.Any
             });
 
@@ -127,10 +144,10 @@ namespace ClientDependency.Core.CompositeFiles
             //get the compression type supported
             var clientCompression = context.GetClientCompression();
 
-			var x1 = ClientDependencySettings.Instance;
-			if (x1 == null) throw new Exception("x1");
-			var x2 = x1.DefaultFileMapProvider;
-			if (x2 == null) throw new Exception("x2");
+            var x1 = ClientDependencySettings.Instance;
+            if (x1 == null) throw new Exception("x1");
+            var x2 = x1.DefaultFileMapProvider;
+            if (x2 == null) throw new Exception("x2");
 
             //get the map to the composite file for this file set, if it exists.
             var map = ClientDependencySettings.Instance.DefaultFileMapProvider.GetCompositeFile(fileset, version, clientCompression.ToString());
@@ -162,23 +179,28 @@ namespace ClientDependency.Core.CompositeFiles
 
                             if (filePaths == null)
                             {
+                                //*** DNN related change *** begin
                                 if (context.IsDebuggingEnabled || dnnConfig.IsDebugMode())
                                 {
                                     throw new KeyNotFoundException("no map was found for the dependency key: " + fileset +
                                                                " ,CompositeUrlType.MappedId requires that a map is found");
                                 }
 
-                                throw new HttpException(404, "File not found");
+                                throw new HttpException(404, "Path not found");
+                                //*** DNN related change *** end
                             }
 
+                            var filePathArray = filePaths.ToArray();
+                            // sanity check/fix for file type
+                            type = ValidateTypeFromFileNames(context, type, filePathArray);
                             //combine files and get the definition types of them (internal vs external resources)
                             fileBytes = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider
-                                .CombineFiles(filePaths.ToArray(), context, type, out fileDefinitions);
+                                .CombineFiles(filePathArray, context, type, out fileDefinitions);
                         }
                         else
                         {
                             //need to do the combining, etc... and save the file map                            
-                            fileBytes = GetCombinedFiles(context, fileset, type, out fileDefinitions);                           
+                            fileBytes = GetCombinedFiles(context, fileset, type, out fileDefinitions);
                         }
 
                         //compress data                        
@@ -206,17 +228,46 @@ namespace ClientDependency.Core.CompositeFiles
                     }
                 }
             }
-            
+
             //set our caching params 
             SetCaching(context, compositeFileName, fileset, clientCompression, page);
 
             return outputBytes;
         }
 
+        /// <summary>
+        /// Validate ClientDependencyType and return one which is derived from file extension of first file in bundle. We currently see bug in production where
+        /// js bundles are saved as cdC files and are improperly CSS-minifed due to this. Without this validation one can force wrong {type} via http request to /DependencyHandler.axd/{id}/{version}/{type}
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="type"></param>
+        /// <param name="filePaths"></param>
+        /// <returns></returns>
+        private ClientDependencyType ValidateTypeFromFileNames(HttpContextBase context, ClientDependencyType type, string[] filePaths)
+        {
+            if (filePaths.Length > 0)
+            {
+                // sanity check of file types, we see a bug when javascript bundles are saved as cdC bundles and are minified as CSS which breaks them completely
+                if (filePaths[0].EndsWith(".js", StringComparison.OrdinalIgnoreCase) && type == ClientDependencyType.Css)
+                {
+                    type = ClientDependencyType.Javascript;
+                    ClientDependencySettings.Instance.Logger.Error(string.Format("Mismatched ClientDependencyType, attempt to treat .js files bundle as css, forcing js type, Url={0}, UserAgent={1}", context.Request.Url, context.Request.UserAgent), null);
+                }
+                if (filePaths[0].EndsWith(".css", StringComparison.OrdinalIgnoreCase) && type == ClientDependencyType.Javascript)
+                {
+                    type = ClientDependencyType.Css;
+                    ClientDependencySettings.Instance.Logger.Error(string.Format("Mismatched ClientDependencyType, attempt to treat .css files bundle as js, forcing css type, Url={0}, UserAgent={1}", context.Request.Url, context.Request.UserAgent), null);
+                }
+            }
+            return type;
+        }
+
         private byte[] GetCombinedFiles(HttpContextBase context, string fileset, ClientDependencyType type, out List<CompositeFileDefinition> fDefs)
         {
             //get the file list
             string[] filePaths = fileset.DecodeFrom64Url().Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            // sanity check/fix for file type
+            type = ValidateTypeFromFileNames(context, type, filePaths);
             //combine files and get the definition types of them (internal vs external resources)
             return ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.CombineFiles(filePaths, context, type, out fDefs);
         }
@@ -247,9 +298,9 @@ namespace ClientDependency.Core.CompositeFiles
             // just add params for querystring format, just in case...
             context.SetClientCachingResponse(
                 //the e-tag to use
-                (fileset + compressionType.ToString()).GenerateHash(), 
+                (fileset + compressionType.ToString()).GenerateHash(),
                 //10 days
-                10, 
+                10,
                 //vary-by params
                 new[] { "t", "s", "cdv" });
 

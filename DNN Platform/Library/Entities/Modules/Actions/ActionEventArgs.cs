@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,9 +35,6 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// ActionEventArgs provides a custom EventARgs class for Action Events
     /// </summary>
     /// <remarks></remarks>
-    /// <history>
-    /// 	[Joe] 	10/26/2003	Created
-    /// </history>
     ///-----------------------------------------------------------------------------
     public class ActionEventArgs : EventArgs
     {
@@ -50,9 +47,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <param name="Action"></param>
         /// <param name="ModuleConfiguration"></param>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[Joe] 	10/26/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ActionEventArgs(ModuleAction Action, ModuleInfo ModuleConfiguration)
         {
@@ -66,9 +60,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[Joe] 	10/26/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ModuleAction Action
         {
@@ -84,9 +75,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
-        /// <history>
-        /// 	[jbrinkman] 	12/27/2003	Created
-        /// </history>
         ///-----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration
         {

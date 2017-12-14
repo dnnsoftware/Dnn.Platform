@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -17,6 +17,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
 {
@@ -36,11 +38,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
     using DotNetNuke.Web.UI;
     using DotNetNuke.Web.UI.WebControls;
 
-
-
     /// <summary>
     /// Presenter for Provider Configuration
     /// </summary>
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public class ProviderConfigurationPresenter : ModulePresenter<IProviderConfigurationView, ProviderConfigurationViewModel>
     {
         /// <summary>The HTML editor node</summary>
@@ -88,8 +89,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
             this.View.Editor.Controls.Add(this.LoadCurrentEditor());
 
             // hack: force DNN to load the Telerik Combobox skin. Needed for the RadEditor provider
-            var ctl = new DnnComboBox();
-            Utilities.ApplySkin(ctl);
+            ClientResourceManager.RegisterStyleSheet(View.Editor.Page, "~/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css");
         }
 
         /// <summary>Loads the current editor.</summary>
@@ -136,8 +136,8 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         private void View_EditorChanged(object sender, EditorEventArgs e)
         {
             this.View.Editor.Controls.Clear();
-            this.View.Editor.Controls.Add(this.LoadCurrentEditor(e.Editor));
             this.View.Model.SelectedEditor = e.Editor;
+            this.View.Model.CanSave = true;
         }
 
         /// <summary>Handles the SaveEditorChoice event of the View control.</summary>
@@ -146,6 +146,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         private void View_SaveEditorChoice(object sender, EditorEventArgs e)
         {
             this.SaveEditorInConfiguration(e.Editor);
+            this.View.Refresh();
             this.View.Editor.Controls.Clear();
             this.View.Editor.Controls.Add(this.LoadCurrentEditor());
             this.View.Model.SelectedEditor = e.Editor;

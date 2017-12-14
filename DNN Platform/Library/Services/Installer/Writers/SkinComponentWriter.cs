@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,9 +35,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	02/04/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SkinComponentWriter : FileComponentWriter
     {
@@ -57,9 +54,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="basePath">The Base Path for the files</param>
         /// <param name="files">A Dictionary of files</param>
         /// <param name="package">Package Info.</param>
-        /// <history>
-        /// 	[cnurse]	02/04/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public SkinComponentWriter(string skinName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
         {
@@ -75,9 +69,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Collection Node ("skinFiles")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/04/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -92,9 +83,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Component Type ("Skin")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/04/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
@@ -109,9 +97,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the Item Node ("skinFile")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/04/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -126,9 +111,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets the name of the SkinName Node ("skinName")
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	02/04/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinNameNodeName
         {
@@ -148,9 +130,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// of FileComponentWriter may need)
         /// </summary>
         /// <param name="writer">The Xmlwriter to use</param>
-        /// <history>
-        /// 	[cnurse]	02/04/2008	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {

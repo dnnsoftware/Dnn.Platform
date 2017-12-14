@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
@@ -53,6 +54,15 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             Details = Localization.Localization.GetString("InitHostSetting", LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
+
+            //if any super user (even deleted) is found - exit
+            var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
+            if (superUsers != null && superUsers.Count > 0)
+            {
+                Details = "...";
+                Status = StepStatus.Done;
+                return;
+            }
 
             //Need to clear the cache to pick up new HostSettings from the SQLDataProvider script
             DataCache.RemoveCache(DataCache.HostSettingsCacheKey);

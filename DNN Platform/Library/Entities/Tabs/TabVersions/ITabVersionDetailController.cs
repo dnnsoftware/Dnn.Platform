@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -80,5 +80,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="tabVersionId">The TabVersion Id to be queried</param>
         /// <param name="tabVersionDetailId">The TabVersionDetail Id to be deleted</param>
         void DeleteTabVersionDetail(int tabVersionId, int tabVersionDetailId);
+
+        /// <summary>
+        /// Clears the tab version cache based on the tab version identifier.
+        /// </summary>
+        /// <param name="tabVersionId">The tab version identifier.</param>
+        void ClearCache(int tabVersionId);
     }
 }

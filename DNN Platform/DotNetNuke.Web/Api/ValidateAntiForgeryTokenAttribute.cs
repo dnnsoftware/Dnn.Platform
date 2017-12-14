@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,59 +20,98 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Web.Api.Internal;
+using System.Threading;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
 namespace DotNetNuke.Web.Api
 {
-    public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
+    public class ValidateAntiForgeryTokenAttribute : ActionFilterAttribute
     {
-        public override bool IsAuthorized(AuthFilterContext context)
+        private static readonly List<string> BypassedAuthTypes = new List<string>();
+
+        protected static Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
+
+        internal static void AppendToBypassAuthTypes(string authType)
+        {
+            var text = (authType ?? "").Trim();
+            if (text.Length > 0)
+            {
+                BypassedAuthTypes.Add(text);
+            }
+        }
+
+        private static bool BypassTokenCheck()
+        {
+            // bypass anti-forgery for those handllers that request so.
+            var authType = Thread.CurrentPrincipal?.Identity?.AuthenticationType;
+            return !string.IsNullOrEmpty(authType) && BypassedAuthTypes.Contains(authType);
+        }
+
+        public override void OnActionExecuting(HttpActionContext actionContext)
+        {
+            if (!BypassTokenCheck())
+            {
+                var result = IsAuthorized(actionContext);
+                if (!result.Item1)
+                {
+                    throw new UnauthorizedAccessException(result.Item2);
+                }
+            }
+        }
+
+        protected virtual Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
         {
             try
             {
-                string cookieValue = GetAntiForgeryCookieValue(context);
-                var token = context.ActionContext.Request.Headers.GetValues("RequestVerificationToken").FirstOrDefault();
+                if (!BypassTokenCheck())
+                {
+                    string token = null;
+                    IEnumerable<string> values;
+                    if (actionContext?.Request != null &&
+                        actionContext.Request.Headers.TryGetValues("RequestVerificationToken", out values))
+                    {
+                        token = values.FirstOrDefault();
+                    }
 
-                AntiForgery.Instance.Validate(cookieValue, token);
+                    if (string.IsNullOrEmpty(token))
+                        return new Tuple<bool, string>(false, "RequestVerificationToken not present");
+
+                    var cookieValue = GetAntiForgeryCookieValue(actionContext);
+                    AntiForgery.Instance.Validate(cookieValue, token);
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                context.AuthFailureMessage = e.Message;
-                return false;
+                return new Tuple<bool, string>(false, e.Message);
             }
 
-            return true;
+            return SuccessResult;
         }
 
-        protected string GetAntiForgeryCookieValue(AuthFilterContext context)
+        protected static string GetAntiForgeryCookieValue(HttpActionContext actionContext)
         {
-            foreach (var cookieValue in context.ActionContext.Request.Headers.GetValues("Cookie"))
+            IEnumerable<string> cookies;
+            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out cookies))
             {
-                var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
-
-                if(nameIndex > -1)
+                foreach (var cookieValue in cookies)
                 {
-                    var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
-                    var valueEndIndex = cookieValue.Substring(valueIndex).IndexOf(';');
-
-                    if (valueEndIndex > -1)
+                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
+                    if (nameIndex > -1)
                     {
-                        return cookieValue.Substring(valueIndex, valueEndIndex);
-                    }
-                    else
-                    {
-                        return cookieValue.Substring(valueIndex);
+                        var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
+                        var valueEndIndex = cookieValue.Substring(valueIndex).IndexOf(';');
+                        return valueEndIndex > -1 ? cookieValue.Substring(valueIndex, valueEndIndex) : cookieValue.Substring(valueIndex);
                     }
                 }
             }
-            
+
             return "";
         }
 
-        public override bool AllowMultiple
-        {
-            get { return false; }
-        }
+        public override bool AllowMultiple => false;
     }
 }

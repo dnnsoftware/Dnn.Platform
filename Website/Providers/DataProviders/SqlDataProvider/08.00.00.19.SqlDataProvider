@@ -1,0 +1,98 @@
+/* DNN-7161 String Split */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SplitStrings_CTE]', N'TF') IS NOT NULL
+	DROP FUNCTION {databaseOwner}[{objectQualifier}SplitStrings_CTE]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}SplitStrings_CTE]
+(
+   @List       NVARCHAR(MAX),
+   @Delimiter  NVARCHAR(255)
+)
+RETURNS @Items TABLE (Item NVARCHAR(4000))
+WITH SCHEMABINDING
+AS
+BEGIN
+   DECLARE @StringLength INT = LEN(@List) + 1, @DelimiterLength INT = LEN(@Delimiter);
+ 
+   WITH a AS
+   (
+       SELECT
+           [start] = 1,
+           [end]   = COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, 1), 0), @StringLength),
+           [value] = SUBSTRING(@List, 1, 
+                     COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, 1), 0), @StringLength) - 1)
+       UNION ALL
+       SELECT
+           [start] = CONVERT(INT, [end]) + @DelimiterLength,
+           [end]   = COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, [end] + @DelimiterLength), 0), @StringLength),
+           [value] = SUBSTRING(@List, [end] + @DelimiterLength, 
+                     COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, [end] + @DelimiterLength), 0), @StringLength)-[end]-@DelimiterLength)
+       FROM a
+       WHERE [end] < @StringLength
+   )
+   INSERT @Items SELECT [value]
+   FROM a
+   WHERE LEN([value]) > 0
+   OPTION (MAXRECURSION 0);
+ 
+   RETURN;
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+    @MessageID int,         -- message id
+    @RoleIDs nvarchar(max), -- comma separated list of RoleIds
+	@CreateUpdateUserID INT -- create / update user id
+AS
+BEGIN    
+
+    INSERT {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients](
+			[MessageID],
+			[UserID],
+			[Read],
+			[Archived],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+            )
+			SELECT distinct 
+			  @MessageID,
+			  UserID,
+			  0,
+			  0,
+              @CreateUpdateUserID , -- CreatedBy - int
+              GETDATE(), -- CreatedOn - datetime
+              @CreateUpdateUserID , -- LastModifiedBy - int
+              GETDATE() -- LastModifiedOn - datetime
+           FROM {databaseOwner}[{objectQualifier}vw_UserRoles] ur
+			INNER JOIN {databaseOwner}[{objectQualifier}SplitStrings_CTE](@RoleIDs,',') m on ur.RoleID = m.Item
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]
+(
+	@ModuleList NVARCHAR(4000)
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+SELECT DISTINCT m.ModuleID, p.DefaultLanguage
+FROM            {databaseOwner}[{objectQualifier}Modules]  m
+INNER JOIN      {databaseOwner}[{objectQualifier}Portals] p ON p.PortalID = m.PortalID
+Inner Join		{databaseOwner}[{objectQualifier}SplitStrings_CTE](@ModuleList,',') ML ON M.ModuleID = ML.item
+ORDER BY        m.ModuleID	
+		
+END
+GO

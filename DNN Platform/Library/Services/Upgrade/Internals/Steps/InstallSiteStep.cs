@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -73,6 +73,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 Percentage = percentForEachStep * counter++;
             }
 
+            Globals.ResetAppStartElapseTime();
+
             Status = StepStatus.Done;
         }
 
@@ -102,7 +104,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 Details = string.Format(description, portalAlias);
                 return;
             }
-            
+
             //Create default email
             var email = portal.AdminEmail;
             if (string.IsNullOrEmpty(email))
@@ -115,17 +117,29 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 }
             }
 
-            //install LP if installing in a different language            
+            //install LP if installing in a different language
             string culture = installConfig.InstallCulture;
             if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
-                Upgrade.InstallPackage(installFolder + "\\installlanguage.resources", "Language", false);
+                string lpFilePath = installFolder + "\\installlanguage.resources";
+
+                if (File.Exists(lpFilePath))
+                {
+                    if (!Upgrade.InstallPackage(lpFilePath, "Language", false))
+                    {
+                        culture = Localization.Localization.SystemLocale;
+                    }
+                }
+                else
+                {
+                    culture = Localization.Localization.SystemLocale;
+                }
             }
 
-            var template = Upgrade.FindBestTemplate(portal.TemplateFileName);
+            var template = Upgrade.FindBestTemplate(portal.TemplateFileName, culture);
             UserInfo userInfo;
-            
+
             if (!String.IsNullOrEmpty(portal.AdminUserName))
                 userInfo = Upgrade.CreateUserInfo(portal.AdminFirstName, portal.AdminLastName, portal.AdminUserName, portal.AdminPassword, email);
             else
@@ -134,7 +148,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var childPath = string.Empty;
             if (portal.IsChild)
                 childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
-            
+
             //Create Folder Mappings config
             if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
             {
@@ -167,10 +181,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
 
             //remove en-US from portal if installing in a different language
-			if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
+            if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
-                var locale = LocaleController.Instance.GetLocale("en-US");              
-                Localization.Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId);
+                var locale = LocaleController.Instance.GetLocale("en-US");
+                Localization.Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId, true);
             }
 
             //Log user in to site

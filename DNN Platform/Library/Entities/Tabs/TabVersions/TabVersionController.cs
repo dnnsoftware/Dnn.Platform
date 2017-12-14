@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,13 +42,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
-            //if we are not using the cache
+            //if we are not using the cache, then remove from cacehh and re-add loaded items when eeded later
+            var tabCacheKey = GetTabVersionsCacheKey(tabId);
             if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {
-                return CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId));
+                DataCache.RemoveCache(tabCacheKey);
             }
             
-            return CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(GetTabVersionsCacheKey(tabId),
+            return CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
                                                             c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)));            
@@ -93,6 +94,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             Provider.DeleteTabVersion(tabVersionId);
             ClearCache(tabId);
+        }
+
+        public void DeleteTabVersionDetailByModule(int moduleId)
+        {
+            Provider.DeleteTabVersionDetailByModule(moduleId);
         }
         #endregion
 

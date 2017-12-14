@@ -1,0 +1,73 @@
+﻿-- Check if unique id in TabModules exists or not
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]
+	@UniqueId uniqueidentifier
+AS
+BEGIN
+SELECT TOP 1 TabId FROM {databaseOwner}[{objectQualifier}Tabs] 
+	WHERE UniqueId = @UniqueId 
+END
+GO
+
+-- Check if unique id in TabModules exists or not
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUniqueId]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUniqueId]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUniqueId]
+	@TableName			nvarchar(100),
+	@PrimaryKeyName		nvarchar(100),
+	@PrimaryKeyID		int,
+	@UniqueId			uniqueidentifier
+AS
+BEGIN
+	DECLARE @sqlCommand varchar(1000)
+
+    SET @sqlCommand =
+        N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
+        N' SET UniqueId=''' + CONVERT(NVARCHAR(50), @UniqueId) + '''' +
+        N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) + N';'
+
+    --PRINT (@sqlCommand)
+    EXEC (@sqlCommand)
+END
+GO
+
+-- DNN-10143: Fix for ambugity issue
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Tabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Tabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Tabs]
+    @PortalID        int,
+	@IncludeDeleted  bit,
+    @IncludeSystem   bit,
+	@ToDate          datetime,
+	@FromDate        datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT DISTINCT
+		t.TabID, IsNull(t.ParentId, -1) AS ParentId, t.IsSystem, t.IsDeleted
+	FROM
+		{databaseOwner}{objectQualifier}Tabs t
+			LEFT JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
+	WHERE
+		PortalID = @PortalID
+	AND
+		IsSystem = @IncludeSystem
+	AND 
+		(@IncludeDeleted = 1 OR t.IsDeleted = 0)
+	AND (
+			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+		 OR
+			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
+		)
+	ORDER BY
+		t.TabID
+END
+GO

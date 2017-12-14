@@ -28,16 +28,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnGrid dgTabs;
-        
-        /// <summary>
-        /// lblNoRecords control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNoRecords;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgTabs;
         
         /// <summary>
         /// hlCancel control.

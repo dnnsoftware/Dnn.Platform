@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Content.Workflow.Exceptions;
@@ -44,11 +45,16 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         public WorkflowState GetWorkflowStateByID(int stateId)
         {
-            using (var context = DataContext.Instance())
-            {
-                var rep = context.GetRepository<WorkflowState>();
-                return rep.GetById(stateId);
-            }
+            return CBO.GetCachedObject<WorkflowState>(new CacheItemArgs(
+                GetWorkflowStateKey(stateId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
+                _ =>
+                {
+                    using (var context = DataContext.Instance())
+                    {
+                        var rep = context.GetRepository<WorkflowState>();
+                        return rep.GetById(stateId);
+                    }
+                });
         }
 
         // TODO: Validate
@@ -67,6 +73,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
                 rep.Insert(state);
             }
+
+            CacheWorkflowState(state);
         }
 
         // TODO: Validate
@@ -86,6 +94,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
                 rep.Update(state);
             }
+
+            DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
+            DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
+            CacheWorkflowState(state);
         }
 
         public void DeleteWorkflowState(WorkflowState state)
@@ -98,6 +110,9 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 var rep = context.GetRepository<WorkflowState>();
                 rep.Delete(state);
             }
+
+            DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
+            DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
         #endregion
 
@@ -108,6 +123,21 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return rep.Find(
                 "WHERE StateName = @0 AND WorkflowID = @1 AND StateId != @2",
                 state.StateName, state.WorkflowID, state.StateID).SingleOrDefault() != null;
+        }
+
+        private static string GetWorkflowStateKey(int stateId)
+        {
+            return string.Format(DataCache.ContentWorkflowStateCacheKey, stateId);
+        }
+
+        private void CacheWorkflowState(WorkflowState state)
+        {
+            if (state.StateID > 0)
+            {
+                CBO.GetCachedObject<WorkflowState>(new CacheItemArgs(
+                GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
+                _ => state);
+            }
         }
         #endregion
 

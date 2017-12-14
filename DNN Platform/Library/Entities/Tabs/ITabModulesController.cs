@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,6 +20,8 @@
 #endregion
 
 using System.Collections;
+using System.Collections.Generic;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Entities.Tabs
 {
@@ -30,5 +32,20 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tab">TabInfo object</param>       
         ArrayList GetTabModules(TabInfo tab);
+
+        /// <summary>
+        /// Gets a collection of all setting values of <see cref="ModuleInfo"/> that contains the
+        /// setting name in its collection of settings.
+        /// </summary>
+        /// <param name="settingName">Name of the setting to look for</param>
+        Dictionary<int, string> GetTabModuleSettingsByName(string settingName);
+
+        /// <summary>
+        /// Gets a collection of all ID's of <see cref="ModuleInfo"/> that contains the setting name and
+        /// specific value in its collection of settings.
+        /// </summary>
+        /// <param name="settingName">Name of the setting to look for</param>
+        /// <param name="expectedValue">Value of the setting to look for</param>
+        IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue);
     }
 }

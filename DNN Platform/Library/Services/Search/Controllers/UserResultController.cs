@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,6 +42,10 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class UserResultController : BaseResultController
     {
+        private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
+
+        private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
+
         #region Private Properties
 
         private PortalSettings PortalSettings
@@ -102,6 +106,8 @@ namespace DotNetNuke.Services.Search.Controllers
             return url;
         }
 
+        public override string LocalizedSearchTypeName => Localization.Localization.GetString("Crawler_user", LocalizedResxFile);
+
         #endregion
 
         #region Private Methods
@@ -153,15 +159,10 @@ namespace DotNetNuke.Services.Search.Controllers
             return isVisible;
         }
 
-        private int GetUserId(SearchResult searchResult)
+        private static int GetUserId(SearchDocumentToDelete searchResult)
         {
-            var match = Regex.Match(searchResult.UniqueKey, "^(\\d+)_");
-            if (!match.Success)
-            {
-                return Null.NullInteger;
-            }
-
-            return Convert.ToInt32(match.Groups[1].Value);
+            var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
+            return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
         }
         #endregion
     }

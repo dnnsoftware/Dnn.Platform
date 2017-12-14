@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboUsers;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboUsers;
         
         /// <summary>
         /// cboRoles control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboRoles;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboRoles;
         
         /// <summary>
         /// effectiveDatePicker control.
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnDatePicker effectiveDatePicker;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker effectiveDatePicker;
         
         /// <summary>
         /// expiryDatePicker control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnDatePicker expiryDatePicker;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker expiryDatePicker;
         
         /// <summary>
         /// placeIsOwner control.

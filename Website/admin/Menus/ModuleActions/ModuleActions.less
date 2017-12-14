@@ -32,7 +32,7 @@ div.actionMenu ul
 
 }
 
-div.actionMenu ul:hover
+div.actionMenu ul:hover, div.actionMenu ul.showhover
 {
     z-index:1003 !important;
 
@@ -74,11 +74,15 @@ div.actionMenu ul.dnn_mact > li > a {
     font-size: 16px;
     line-height:20px;
     text-align:center;
+    text-decoration: none;
 }
 
 div.actionMenu ul.dnn_mact > li:hover > a {
     background-color: @root_hover_backgroundColor;
     color: @root_hover_color;
+}
+div.actionMenu ul.dnn_mact > li > a > i{
+    vertical-align: baseline;
 }
 
 /* Secondary level */
@@ -94,7 +98,6 @@ div.actionMenu ul.dnn_mact > li ul {  /* Styles for all sub levels */
     list-style-type: none;
     -webkit-box-shadow:  0px 2px 2px 0px rgba(0, 0, 0, 0.3);
     box-shadow:  0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-   
 }
 
 div.actionMenu ul.dnn_mact > li > ul { /* styles specific to secondary level */
@@ -156,9 +159,11 @@ div.actionMenu ul.dnn_mact > li.actionMenuMove > ul li {
 }
 
 div.actionMenu ul.dnn_mact > li.actionQuickSettings > ul {
+    width:auto;
     min-height: 250px;
     overflow: auto;
     cursor:default;
+    z-index: 1000;
 }
 
 div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsHeader{

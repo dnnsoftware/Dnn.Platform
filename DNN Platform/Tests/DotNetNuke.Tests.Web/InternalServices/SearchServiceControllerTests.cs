@@ -1,7 +1,7 @@
 ﻿#region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -53,7 +53,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
     ///  Testing grouping logic of GetGroupedBasicView and GetGroupedDetailView (SearchServiceController methods)
     /// </summary>
     [TestFixture]
-    [AllowAnonymous]
     public class SearchServiceControllerTests
     {
 
@@ -346,8 +345,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("LastModifiedByUserID", typeof(int));
             table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
             
-            table.Rows.Add(56, 5, 0, "Home", null,	0,	"//Home", "C3174A2E-374D-4779-BE5F-BCDFF410E097", "A111A742-C18F-495D-8A23-BD0ECC70BBFE", null, "3A34424A-3CCA-4934-AE15-B9A80EB6D259",	1, null, null, 0, null, null, null, 0,	"[G]Skins/Gravity/Home.ascx", "[G]Containers/Gravity/Title_h2.ascx", null, null, null, "false", null, null, 0, 0,	0.5, 86,	"Home",	1,	-1,	null,	0,	null, null, -1,	DateTime.Now, -1, DateTime.Now);
-            table.Rows.Add(57, 13, 0, "About Us", null, 0, "//AboutUs", "26A4236F-3AAA-4E15-8908-45D35675C677", "8426D3BC-E930-49CA-BDEB-4D41F194B6AC", null, "1461572D-97E8-41F8-BB1A-916DCA48890A", 1, null, null, 0, null, null, null, 0, "[G]Skins/Gravity/Home.ascx", "[G]Containers/Gravity/Title_h2.ascx", null, null, null, "true", null, null, 0, 0, 0.5, 97, "About Us", 1, -1, null, 0, null, null, -1, DateTime.Now, -1, DateTime.Now);
+            table.Rows.Add(56, 5, 0, "Home", null,	0,	"//Home", "C3174A2E-374D-4779-BE5F-BCDFF410E097", "A111A742-C18F-495D-8A23-BD0ECC70BBFE", null, "3A34424A-3CCA-4934-AE15-B9A80EB6D259",	1, null, null, 0, null, null, null, 0, "[G]Skins/Xcillion/Inner.ascx", "[G]Containers/Xcillion/NoTitle.ascx", null, null, null, "false", null, null, 0, 0,	0.5, 86,	"Home",	1,	-1,	null,	0,	null, null, -1,	DateTime.Now, -1, DateTime.Now);
+            table.Rows.Add(57, 13, 0, "About Us", null, 0, "//AboutUs", "26A4236F-3AAA-4E15-8908-45D35675C677", "8426D3BC-E930-49CA-BDEB-4D41F194B6AC", null, "1461572D-97E8-41F8-BB1A-916DCA48890A", 1, null, null, 0, null, null, null, 0, "[G]Skins/Xcillion/Inner.ascx", "[G]Containers/Xcillion/NoTitle.ascx", null, null, null, "true", null, null, 0, 0, 0.5, 97, "About Us", 1, -1, null, 0, null, null, -1, DateTime.Now, -1, DateTime.Now);
             
 
             return table.CreateDataReader();
@@ -414,7 +413,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             
             table.Rows.Add(0, 0, 56, 57, 368, 116, 1, "contentpane", "Text/HTML", 1200,
                            "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Gravity/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 92,
                            "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
@@ -424,7 +423,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             table.Rows.Add(0, 0, 56, 56, 367, 116, 1, "contentpane", "Header Images", 1200,
                            "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Gravity/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 91,
                            "Header Images", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
@@ -434,7 +433,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             table.Rows.Add(0, 0, 56, 59, 370, 116, 1, "contentpane", "Customer Support", 1200,
                            "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Gravity/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 94,
                            "Customer Support", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
@@ -444,7 +443,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             table.Rows.Add(0, 0, 57, 67, 378, 116, 1, "contentpane", "About Us", 1200,
                            "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Gravity/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 103,
                            "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,

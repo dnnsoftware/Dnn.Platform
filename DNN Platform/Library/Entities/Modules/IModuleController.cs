@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -198,6 +198,13 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="definitionName">The name of the module definition.</param>
         /// <returns>module collection</returns>
         ArrayList GetModulesByDefinition(int portalID, string definitionName);
+
+        /// <summary>
+        /// Gets the modules by DesktopModuleId.
+        /// </summary>
+        /// <param name="desktopModuleId">The Desktop Module Id.</param>
+        /// <returns>module collection</returns>
+        ArrayList GetModulesByDesktopModuleId(int desktopModuleId);
 
         /// <summary>
         /// For a portal get a list of all active module and tabmodule references that are Searchable

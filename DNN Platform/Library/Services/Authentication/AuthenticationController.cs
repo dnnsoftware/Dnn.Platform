@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,9 +42,6 @@ namespace DotNetNuke.Services.Authentication
     /// The AuthenticationController class provides the Business Layer for the
     /// Authentication Systems.
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	07/10/2007  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class AuthenticationController
     {
@@ -71,9 +68,6 @@ namespace DotNetNuke.Services.Authentication
         /// AddAuthentication adds a new Authentication System to the Data Store.
         /// </summary>
         /// <param name="authSystem">The new Authentication System to add</param>
-        /// <history>
-        /// 	[cnurse]	07/10/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
@@ -94,10 +88,6 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="userID">The new Authentication System to add</param>
         /// <param name="authenticationType">The authentication type</param>
         /// <param name="authenticationToken">The authentication token</param>
-        /// <history>
-        /// 	[cnurse]	07/12/2007  Created
-        /// 	[skydnn]    11/14/2013  DNN-4016
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {
@@ -130,9 +120,6 @@ namespace DotNetNuke.Services.Authentication
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        /// <history>
-        ///    [skydnn]  11/11/2013 DNN-4016
-        /// </history>
         public static UserAuthenticationInfo GetUserAuthentication(int userID)
         {
             //Go to database
@@ -152,9 +139,6 @@ namespace DotNetNuke.Services.Authentication
         /// </summary>
         /// <param name="authenticationID">The ID of the Authentication System</param>
         /// <returns>An AuthenticationInfo object</returns>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationService(int authenticationID)
         {
@@ -181,9 +165,6 @@ namespace DotNetNuke.Services.Authentication
         /// </summary>
         /// <param name="packageID">The id of the Package</param>
         /// <returns>An AuthenticationInfo object</returns>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationServiceByPackageID(int packageID)
         {
@@ -210,9 +191,6 @@ namespace DotNetNuke.Services.Authentication
         /// </summary>
         /// <param name="authenticationType">The type of the Authentication System</param>
         /// <returns>An AuthenticationInfo object</returns>
-        /// <history>
-        /// 	[cnurse]	07/31/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationServiceByType(string authenticationType)
         {
@@ -239,9 +217,6 @@ namespace DotNetNuke.Services.Authentication
         /// installed in the system
         /// </summary>
         /// <returns>A List of AuthenticationInfo objects</returns>
-        /// <history>
-        /// 	[cnurse]	07/10/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static List<AuthenticationInfo> GetAuthenticationServices()
         {
@@ -256,9 +231,6 @@ namespace DotNetNuke.Services.Authentication
         /// GetAuthenticationType fetches the authentication method used by the currently logged on user
         /// </summary>
         /// <returns>An AuthenticationInfo object</returns>
-        /// <history>
-        /// 	[cnurse]	07/23/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationType()
         {
@@ -283,9 +255,6 @@ namespace DotNetNuke.Services.Authentication
         /// installed in the system that have been enabled by the Host user
         /// </summary>
         /// <returns>A List of AuthenticationInfo objects</returns>
-        /// <history>
-        /// 	[cnurse]	07/10/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static List<AuthenticationInfo> GetEnabledAuthenticationServices()
         {
@@ -307,10 +276,6 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="settings">A PortalSettings object</param>
         /// <param name="request">The current Request</param>
         /// <returns>The Url</returns>
-        /// <history>
-        /// 	[cnurse]	08/15/2007  Created
-        ///     [cnurse]    02/28/2008  DNN-6881 Logoff redirect
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
@@ -352,9 +317,6 @@ namespace DotNetNuke.Services.Authentication
         /// SetAuthenticationType sets the authentication method used by the currently logged on user
         /// </summary>
         /// <param name="value">The Authentication type</param>
-        /// <history>
-        /// 	[cnurse]	07/23/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void SetAuthenticationType(string value)
         {
@@ -415,9 +377,6 @@ namespace DotNetNuke.Services.Authentication
         /// UpdateAuthentication updates an existing Authentication System in the Data Store.
         /// </summary>
         /// <param name="authSystem">The new Authentication System to update</param>
-        /// <history>
-        /// 	[cnurse]	07/10/2007  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void UpdateAuthentication(AuthenticationInfo authSystem)
         {

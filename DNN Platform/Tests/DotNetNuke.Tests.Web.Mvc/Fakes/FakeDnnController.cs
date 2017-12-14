@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,8 +22,8 @@
 #endregion
 
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
+using System.Web.Routing;
 
 namespace DotNetNuke.Tests.Web.Mvc.Fakes
 {
@@ -43,5 +43,13 @@ namespace DotNetNuke.Tests.Web.Mvc.Fakes
         {
             return View("Action3", "Master3", dog);
         }
+
+        public void MockInitialize(RequestContext requestContext)
+        {
+            // Mocking out the entire MvcHandler and Controller lifecycle proved to be difficult
+            // This method executes the initialization logic that occurs on every request which is
+            // executed from the Execute method.
+            Initialize(requestContext);
+        }    
     }
 }

@@ -63,6 +63,12 @@ namespace ClientDependency.Core.Module
             _http = http;
         }
 
+        //*** DNN related change *** begin
+        ~ResponseFilterStream()
+        {
+            Dispose(false);
+        }
+        //*** DNN related change *** end
 
         /// <summary>
         /// Determines whether the stream is captured
@@ -312,6 +318,15 @@ namespace ClientDependency.Core.Module
             _stream.Close();
             _cacheStream.Close();
         }
+
+        //*** DNN related change *** begin
+        public new void Dispose()
+        {
+            base.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        //*** DNN related change *** end
 
         protected override void Dispose(bool disposing)
         {

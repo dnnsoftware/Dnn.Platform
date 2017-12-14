@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,8 +48,6 @@ namespace DotNetNuke.Services.Sitemap
 		private string _cacheFileName;
 		private string _cacheIndexFileNameFormat;
 
-        private XmlWriter writer;
-
 		#endregion
 
 		#region Properties
@@ -60,7 +58,12 @@ namespace DotNetNuke.Services.Sitemap
 		    {
 			    if (string.IsNullOrEmpty(_cacheFileName))
 			    {
-					var currentCulture = Localization.Localization.GetPageLocale(PortalSettings).Name.ToLowerInvariant();
+                    var currentCulture = PortalSettings.CultureCode?.ToLowerInvariant();
+                    if (string.IsNullOrEmpty(currentCulture))
+                    {
+                        currentCulture = Localization.Localization.GetPageLocale(PortalSettings).Name.ToLowerInvariant();
+                    }
+
 					_cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);   
 			    }
 
@@ -245,44 +248,53 @@ namespace DotNetNuke.Services.Sitemap
         {
             // sitemap Output: can be a file is cache is enabled
             TextWriter sitemapOutput = output;
-            if (cached)
+            try
             {
-                if (!Directory.Exists(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap"))
+                if (cached)
                 {
-                    Directory.CreateDirectory(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap");
+                    if (!Directory.Exists(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap"))
+                    {
+                        Directory.CreateDirectory(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap");
+                    }
+                    var cachedFile = (index > 0) ? string.Format(CacheIndexFileNameFormat, index) : CacheFileName;                
+                    sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
                 }
-                var cachedFile = (index > 0) ? string.Format(CacheIndexFileNameFormat, index) : CacheFileName;                
-                sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
+
+                // Initialize writer
+                var settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.Encoding = Encoding.UTF8;
+                settings.OmitXmlDeclaration = false;
+
+                using (var writer = XmlWriter.Create(sitemapOutput, settings))
+                {
+                    // build header
+                    writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
+                    writer.WriteAttributeString("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
+                    writer.WriteAttributeString("xmlns", "xhtml", null, "http://www.w3.org/1999/xhtml");
+                    var schemaLocation = "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION;
+                    writer.WriteAttributeString("xsi", "schemaLocation", null, string.Format("{0} {0}/sitemap.xsd", schemaLocation));
+
+                    // write urls to output
+                    foreach (SitemapUrl url in allUrls)
+                    {
+                        AddURL(url, writer);
+                    }
+
+                    writer.WriteEndElement();
+                    writer.Close();
+                }
+
+                if (cached)
+                {
+                    sitemapOutput.Flush();
+                    sitemapOutput.Close();
+                }
             }
-
-            // Initialize writer
-            var settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.Encoding = Encoding.UTF8;
-            settings.OmitXmlDeclaration = false;
-
-            writer = XmlWriter.Create(sitemapOutput, settings);
-
-            // build header
-            writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
-            writer.WriteAttributeString("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
-            writer.WriteAttributeString("xmlns", "xhtml", null, "http://www.w3.org/1999/xhtml");
-            var schemaLocation = "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION;
-            writer.WriteAttributeString("xsi", "schemaLocation", null, string.Format("{0} {0}/sitemap.xsd", schemaLocation));
-
-            // write urls to output
-            foreach (SitemapUrl url in allUrls)
+            finally
             {
-                AddURL(url);
-            }
-
-            writer.WriteEndElement();
-            writer.Close();
-
-            if (cached)
-            {
-                sitemapOutput.Flush();
-                sitemapOutput.Close();
+                if (sitemapOutput != null)
+                    sitemapOutput.Dispose();
             }
         }
 
@@ -293,41 +305,43 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name = "totalFiles">Number of files that are included in the sitemap index</param>
         private void WriteSitemapIndex(TextWriter output, int totalFiles)
         {
-            TextWriter sitemapOutput = null;
-            sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + CacheFileName, false, Encoding.UTF8);
-
-            // Initialize writer
-            var settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.Encoding = Encoding.UTF8;
-            settings.OmitXmlDeclaration = false;
-
-            writer = XmlWriter.Create(sitemapOutput, settings);
-
-            // build header
-            writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
-
-            // write urls to output
-            for (int index = 1; index <= totalFiles; index++)
+            TextWriter sitemapOutput;
+            using (sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + CacheFileName, false, Encoding.UTF8))
             {
-                string url = null;
+                // Initialize writer
+                var settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.Encoding = Encoding.UTF8;
+                settings.OmitXmlDeclaration = false;
 
-                url = "~/Sitemap.aspx?i=" + index;
-                if (IsChildPortal(PortalSettings, HttpContext.Current))
+                using (var writer = XmlWriter.Create(sitemapOutput, settings))
                 {
-                    url += "&portalid=" + PortalSettings.PortalId;
+                    // build header
+                    writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
+
+                    // write urls to output
+                    for (int index = 1; index <= totalFiles; index++)
+                    {
+                        string url = null;
+
+                        url = "~/Sitemap.aspx?i=" + index;
+                        if (IsChildPortal(PortalSettings, HttpContext.Current))
+                        {
+                            url += "&portalid=" + PortalSettings.PortalId;
+                        }
+
+                        writer.WriteStartElement("sitemap");
+                        writer.WriteElementString("loc", Globals.AddHTTP(HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(url)));
+                        writer.WriteElementString("lastmod", DateTime.Now.ToString("yyyy-MM-dd"));
+                        writer.WriteEndElement();
+                    }
+                    writer.WriteEndElement();
+                    writer.Close();
                 }
 
-                writer.WriteStartElement("sitemap");
-                writer.WriteElementString("loc", Globals.AddHTTP(HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(url)));
-                writer.WriteElementString("lastmod", DateTime.Now.ToString("yyyy-MM-dd"));
-                writer.WriteEndElement();
+                sitemapOutput.Flush();
+                sitemapOutput.Close();
             }
-            writer.WriteEndElement();
-            writer.Close();
-
-            sitemapOutput.Flush();
-            sitemapOutput.Close();
         }
 
         #endregion
@@ -340,7 +354,7 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name = "sitemapUrl">The url to be included in the sitemap</param>
         /// <remarks>
         /// </remarks>
-        private void AddURL(SitemapUrl sitemapUrl)
+        private void AddURL(SitemapUrl sitemapUrl, XmlWriter writer)
         {
             writer.WriteStartElement("url");
             writer.WriteElementString("loc", sitemapUrl.Url);
@@ -368,8 +382,6 @@ namespace DotNetNuke.Services.Sitemap
         /// <returns>True is the cached file exists and is still valid, false otherwise</returns>
         private bool CacheIsValid()
         {
-			var currentCulture = Localization.Localization.GetPageLocale(PortalSettings).Name.ToLowerInvariant();
-
             int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", PortalSettings.PortalId, "1"));
             var isValid = File.Exists(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + CacheFileName);
 
@@ -398,10 +410,12 @@ namespace DotNetNuke.Services.Sitemap
                 return;
             }
             // write the cached file to output
-            var reader = new StreamReader(PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8);
-            output.Write(reader.ReadToEnd());
+            using (var reader = new StreamReader(PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8))
+            {
+                output.Write(reader.ReadToEnd());
 
-            reader.Close();
+                reader.Close();
+            }
         }
 
 

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,8 +22,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs.TabVersions;
@@ -35,6 +37,7 @@ namespace DotNetNuke.Entities.Tabs
     public class TabModulesController: ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
         #region Public Methods
+
         public ArrayList GetTabModules(TabInfo tab)
         {
             var objPaneModules = new Dictionary<string, int>();
@@ -64,10 +67,57 @@ namespace DotNetNuke.Entities.Tabs
 
             return configuredModules;
         }
+
+        public Dictionary<int,string> GetTabModuleSettingsByName(string settingName)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+            var dataProvider = DataProvider.Instance();
+            var cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
+            var cachedItems = CBO.GetCachedObject<Dictionary<int, string>>(
+                new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
+                c =>
+                {
+                    using (var dr = dataProvider.GetTabModuleSettingsByName(portalId, settingName))
+                    {
+                        var result = new Dictionary<int, string>();
+                        while (dr.Read())
+                        {
+                            result[dr.GetInt32(0)] = dr.GetString(1);
+                        }
+                        return result;
+                    }
+                });
+
+            return cachedItems;
+        }
+
+        public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
+        {
+            var items = GetTabModuleSettingsByName(settingName);
+            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase));
+            var keyValuePairs = matches as KeyValuePair<int, string>[] ?? matches.ToArray();
+            if (keyValuePairs.Any())
+            {
+                return keyValuePairs.Select(kpv => kpv.Key).ToList();
+            }
+
+            // this is fallback in case a new value was added but not in the cache yet
+            var dataProvider = DataProvider.Instance();
+            using (var dr = dataProvider.GetTabModuleIdsBySettingNameAndValue(PortalSettings.Current.PortalId, settingName, expectedValue))
+            {
+                var result = new List<int>();
+                while (dr.Read())
+                {
+                    result.Add(dr.GetInt32(0));
+                }
+                return result;
+            }
+        }
+
         #endregion
 
         #region Private Methods
-        private void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)
+        private static void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)
         {
             if (Null.IsNull(cloneModule.StartDate))
             {
@@ -86,7 +136,7 @@ namespace DotNetNuke.Entities.Tabs
             cloneModule.ContainerPath = SkinController.FormatSkinPath(cloneModule.ContainerSrc);
         }
 
-        private IEnumerable<ModuleInfo> GetModules(TabInfo tab)
+        private static IEnumerable<ModuleInfo> GetModules(TabInfo tab)
         {
             int urlVersion;
             if (TabVersionUtils.TryGetUrlVersion(out urlVersion))

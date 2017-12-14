@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,10 +37,6 @@ namespace DotNetNuke.Common.Controls
 	/// <returns></returns>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-	///                       and localisation
-	/// </history>
 	/// -----------------------------------------------------------------------------
     public partial class Privacy : PortalModuleBase
     {
@@ -70,10 +66,6 @@ namespace DotNetNuke.Common.Controls
 		/// <returns></returns>
 		/// <remarks>
 		/// </remarks>
-		/// <history>
-		/// 	[cnurse]	10/5/2004	Updated to reflect design changes for Help, 508 support
-		///                       and localisation
-		/// </history>
 		/// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {

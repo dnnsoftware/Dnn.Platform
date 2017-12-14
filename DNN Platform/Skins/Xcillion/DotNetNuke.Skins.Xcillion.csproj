@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{104C9117-430C-4389-B67D-B1EFCF8146CB}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotNetNuke.Skins.Xcillion</RootNamespace>
+    <AssemblyName>DotNetNuke.Skins.Xcillion</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <UseIISExpress>true</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>1</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.Skins.Xcillion.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.Skins.Xcillion.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
+      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Name>DotNetNuke.Library</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Container\404.ascx" />
+    <Content Include="Container\404.jpg" />
+    <Content Include="Container\Boxed.ascx" />
+    <Content Include="Container\Boxed.jpg" />
+    <Content Include="Container\NoTitle.ascx" />
+    <Content Include="Container\Title_h2.ascx" />
+    <Content Include="Container\Title_h2.jpg" />
+    <Content Include="Container\Title_h2_centered.ascx" />
+    <Content Include="Container\Title_h2_centered.jpg" />
+    <Content Include="Container\Title_h2_circles.ascx" />
+    <Content Include="Container\Title_h2_circles.jpg" />
+    <Content Include="Container\Title_h2_elegant.ascx" />
+    <Content Include="Container\Title_h2_elegant.jpg" />
+    <Content Include="Container\Title_h2_hexagon.ascx" />
+    <Content Include="Container\Title_h2_hexagon.jpg" />
+    <Content Include="Container\Title_h2_open_rectangle.ascx" />
+    <Content Include="Container\Title_h2_open_rectangle.jpg" />
+    <Content Include="Container\Title_h2_rectangle.ascx" />
+    <Content Include="Container\Title_h2_rectangle.jpg" />
+    <Content Include="Container\Title_h2_slashed.ascx" />
+    <Content Include="Container\Title_h2_slashed.jpg" />
+    <Content Include="Container\Title_h3.ascx" />
+    <Content Include="Container\Title_h3.jpg" />
+    <Content Include="Container\Title_h3_centered.ascx" />
+    <Content Include="Container\Title_h3_centered.jpg" />
+    <Content Include="Container\Title_h4.ascx" />
+    <Content Include="Container\Title_h4.jpg" />
+    <Content Include="Container\Title_h4_centered.ascx" />
+    <Content Include="Container\Title_h4_centered.jpg" />
+    <Content Include="license.htm" />
+    <Content Include="release_notes.htm" />
+    <Content Include="Skin\404.ascx" />
+    <Content Include="Skin\404.jpg" />
+    <Content Include="Skin\Admin.ascx" />
+    <Content Include="Skin\Admin.jpg" />
+    <Content Include="Skin\Bootstrap\css\bootstrap.css" />
+    <Content Include="Skin\Bootstrap\css\bootstrap.min.css" />
+    <Content Include="Skin\Bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Skin\Bootstrap\js\bootstrap.min.js" />
+    <Content Include="Skin\Common\AddFiles.ascx" />
+    <Content Include="Skin\Css\font-awesome.min.css" />
+    <Content Include="Skin\Css\jquery.smartmenus.bootstrap.css" />
+    <Content Include="Skin\Home.ascx" />
+    <Content Include="Skin\Home.jpg" />
+    <Content Include="Skin\Images\arrow-right.png" />
+    <Content Include="Skin\Images\breadcrumb-arrow.png" />
+    <Content Include="Skin\Images\logo.png" />
+    <Content Include="Skin\Images\message_icon.png" />
+    <Content Include="Skin\Images\message_icon_old.png" />
+    <Content Include="Skin\Images\minus-down.png" />
+    <Content Include="Skin\Images\notification_icon.png" />
+    <Content Include="Skin\Images\notification_icon_old.png" />
+    <Content Include="Skin\Images\no_avatar.gif" />
+    <Content Include="Skin\Images\plus-up.png" />
+    <Content Include="Skin\Images\search-icon.png" />
+    <Content Include="Skin\Images\search.png" />
+    <Content Include="Skin\Images\search_old.png" />
+    <Content Include="Skin\Includes\banner01.jpg" />
+    <Content Include="Skin\Includes\contact-address.png" />
+    <Content Include="Skin\Includes\contact-email.png" />
+    <Content Include="Skin\Includes\contact-phone.png" />
+    <Content Include="Skin\Includes\home-content-image1.jpg" />
+    <Content Include="Skin\Includes\home-content-image2.jpg" />
+    <Content Include="Skin\Includes\home-content-image3.jpg" />
+    <Content Include="Skin\Includes\home-content-image4.jpg" />
+    <Content Include="Skin\Includes\home-content-image5.jpg" />
+    <Content Include="Skin\Includes\latest-thumb1.jpg" />
+    <Content Include="Skin\Includes\latest-thumb2.jpg" />
+    <Content Include="Skin\Includes\social-facebook.png" />
+    <Content Include="Skin\Includes\social-googleplus.png" />
+    <Content Include="Skin\Includes\social-linkedin.png" />
+    <Content Include="Skin\Includes\social-sprite.png" />
+    <Content Include="Skin\Includes\social-twitter.png" />
+    <Content Include="Skin\Inner.ascx" />
+    <Content Include="Skin\Inner.jpg" />
+    <Content Include="Skin\Js\jquery.smartmenus.bootstrap.js" />
+    <Content Include="Skin\Js\jquery.smartmenus.js" />
+    <Content Include="Skin\Js\scripts.js" />
+    <Content Include="Skin\Menus\MainMenu\MainMenu-menudef.xml" />
+    <Content Include="Skin\Menus\MainMenu\MainMenu.css" />
+    <Content Include="Skin\Menus\MainMenu\MainMenu.txt" />
+    <Content Include="Skin\PopUp.ascx" />
+    <Content Include="Skin\skin.css" />
+    <Content Include="Skin\skin.doctype.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DNN_Skin_Xcillion.dnn" />
+    <Content Include="Module.build" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Skin\Bootstrap\css\bootstrap.css.map" />
+    <Content Include="Skin\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Skin\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Skin\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Skin\Bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SkinPackage.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Skin.build" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>9081</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost/DNN_Platform</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="Module.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using DotNetNuke.Web.Mvc.Framework;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using DotNetNuke.Web.Mvc.Routing;
 using Moq;
@@ -39,8 +40,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         {
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
-            var result = new ViewEngineResult(new[] { "foo", "bar", "baz" });
-            var context = MockHelper.CreateMockControllerContext();
+            var result = new ViewEngineResult(new[] {"foo", "bar", "baz"});
+            var controller = new Mock<DnnController>();
+            controller.SetupAllProperties();
+            var context = MockHelper.CreateMockControllerContext(controller.Object);
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
             // ReSharper restore ConvertToConstant.Local
@@ -66,8 +69,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         {
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
-            var result = new ViewEngineResult(new[] { "foo", "bar", "baz" });
-            ControllerContext context = MockHelper.CreateMockControllerContext();
+            var result = new ViewEngineResult(new[] {"foo", "bar", "baz"});
+            var controller = new Mock<DnnController>();
+            controller.SetupAllProperties();
+            var context = MockHelper.CreateMockControllerContext(controller.Object);
             // ReSharper disable ConvertToConstant.Local
             var viewName = "Foo";
             var masterName = "Bar";
@@ -97,7 +102,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var mockEngine = new Mock<IViewEngine>();
             var mockView = new Mock<IView>();
             var result = new ViewEngineResult(mockView.Object, mockEngine.Object);
-            ControllerContext context = MockHelper.CreateMockControllerContext();
+            var controller = new Mock<DnnController>();
+            controller.SetupAllProperties();
+            var context = MockHelper.CreateMockControllerContext(controller.Object);
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
             string masterName = "Bar";
@@ -125,7 +132,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var mockEngine = new Mock<IViewEngine>();
             var mockView = new Mock<IView>();
             var result = new ViewEngineResult(mockView.Object, mockEngine.Object);
-            ControllerContext context = MockHelper.CreateMockControllerContext();
+            var controller = new Mock<DnnController>();
+            controller.SetupAllProperties();
+            var context = MockHelper.CreateMockControllerContext(controller.Object);
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
             // ReSharper restore ConvertToConstant.Local
@@ -150,7 +159,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
             var viewEngine = new ModuleDelegatingViewEngine();
-            ControllerContext context = MockHelper.CreateMockControllerContext();
+            var controller = new Mock<DnnController>();
+            controller.SetupAllProperties();
+            var context = MockHelper.CreateMockControllerContext(controller.Object);
 
             // Act
             var engineResult = viewEngine.FindView(context, "Foo", "Bar", true);
@@ -167,7 +178,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
             var viewEngine = new ModuleDelegatingViewEngine();
-            ControllerContext context = MockHelper.CreateMockControllerContext();
+            var controller = new Mock<DnnController>();
+            controller.SetupAllProperties();
+            var context = MockHelper.CreateMockControllerContext(controller.Object);
 
             // Act
             var engineResult = viewEngine.FindPartialView(context, "Foo", true);
@@ -182,6 +195,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         {
             var mockApp = new Mock<ModuleApplication>();
             mockApp.Object.ViewEngines = engines;
+            (context.Controller as IDnnController).ViewEngineCollectionEx = engines;
 
             var activeModuleRequest = new ModuleRequestResult
                                             {

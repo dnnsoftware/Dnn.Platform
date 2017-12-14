@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -334,7 +334,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             if (unPublishedDetail.Action == TabVersionDetailAction.Deleted)
             {
                 var restoredModuleDetail = publishedChanges.SingleOrDefault(tv => tv.ModuleId == unPublishedDetail.ModuleId);
-                RestoreModuleInfo(tabId, restoredModuleDetail);
+                if (restoredModuleDetail != null)
+                {
+                    RestoreModuleInfo(tabId, restoredModuleDetail);
+                }
                 return;
             }
 
@@ -498,8 +501,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private void UpdateModuleOrder(int tabId, TabVersionDetail detailToRestore)
         {
-            var restoredModule = _moduleController.GetModule(detailToRestore.ModuleId, tabId, true);            
-            UpdateModuleInfoOrder(restoredModule, detailToRestore);
+            var restoredModule = _moduleController.GetModule(detailToRestore.ModuleId, tabId, true);
+            if (restoredModule != null)
+            {
+                UpdateModuleInfoOrder(restoredModule, detailToRestore);
+            }
         }
 
         private void UpdateModuleInfoOrder(ModuleInfo module, TabVersionDetail detailToRestore)
@@ -524,8 +530,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private void RestoreModuleInfo(int tabId, TabVersionDetail detailsToRestore )
         {
             var restoredModule = _moduleController.GetModule(detailsToRestore.ModuleId, tabId, true);
-            _moduleController.RestoreModule(restoredModule);            
-            UpdateModuleInfoOrder(restoredModule, detailsToRestore);                  
+            if (restoredModule != null)
+            {
+                _moduleController.RestoreModule(restoredModule);
+                UpdateModuleInfoOrder(restoredModule, detailsToRestore);
+            }
         }
 
         private IEnumerable<TabVersionDetail> GetVersionModulesDetails(int tabId, int version)
@@ -636,8 +645,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 if (detailInSnapshot
                     || deleteOrResetAction)
                 {
+                    var previousTabVersionId = tabVersionDetail.TabVersionId;
                     tabVersionDetail.TabVersionId = snapshotTabVersion.TabVersionId;
                     _tabVersionDetailController.SaveTabVersionDetail(tabVersionDetail);
+                    _tabVersionDetailController.ClearCache(previousTabVersionId);
                 }
                 
             }
@@ -696,6 +707,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private int RollBackDetail(int tabId, TabVersionDetail unPublishedDetail)
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
+            if (moduleInfo == null) return Null.NullInteger;
 
             var versionableController = GetVersionableController(moduleInfo);
             if (versionableController == null) return Null.NullInteger;
@@ -712,7 +724,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
 
-            if (_moduleController.IsSharedModule(moduleInfo))
+            if (moduleInfo == null || _moduleController.IsSharedModule(moduleInfo))
             {
                 return;
             }

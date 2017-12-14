@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -473,7 +473,8 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (cboTabs.SelectedItem != null)
                         {
                             strTab = cboTabs.SelectedItem.Value;
-                            if (Regex.IsMatch(strTab, "^\\d+$") && (Convert.ToInt32(strTab) >= 0))
+                            int id;
+                            if (int.TryParse(strTab,out id) && id >= 0)
                             {
                                 r = strTab;
                             }
@@ -891,12 +892,17 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         cboTabs.IncludeAllTabTypes = false;
                         cboTabs.IncludeActiveTab = IncludeActiveTab;
-                        cboTabs.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
+                        cboTabs.IncludeDisabledTabs = true;
+                        cboTabs.DisabledNotSelectable = true;
+                        cboTabs.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
-                        PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
-                        var tabId = Int32.Parse(_Url);
-                        var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
-                        cboTabs.SelectedPage = page;
+                        if (!string.IsNullOrEmpty(_Url))
+                        {
+                            PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
+                            var tabId = Int32.Parse(_Url);
+                            var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
+                            cboTabs.SelectedPage = page;
+                        }
                         break;
                     case "F": //file
                         URLRow.Visible = false;

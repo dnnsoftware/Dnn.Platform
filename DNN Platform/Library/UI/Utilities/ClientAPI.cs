@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,10 +46,6 @@ namespace DotNetNuke.UI.Utilities
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[Jon Henning]	8/3/2004	Created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class DNNClientAPI
     {
         #region MinMaxPersistanceType enum
@@ -84,11 +80,6 @@ namespace DotNetNuke.UI.Utilities
         /// <param name="strJSFunction">Javascript function name to execute</param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/3/2004	Created
-        ///		[Jon Henning]	4/25/2005	registering dnn namespace when this function is utilized
-        /// </history>
-        /// -----------------------------------------------------------------------------
         [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release")]
         public static void AddBodyOnloadEventHandler(Page objPage, string strJSFunction)
         {
@@ -137,10 +128,6 @@ namespace DotNetNuke.UI.Utilities
         /// <remarks>
         /// This sub also will send down information to notify the client of the panes that have been defined in the current skin.
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2004	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void EnableContainerDragAndDrop(Control objTitle, Control objContainer, int ModuleID)
         {
             if (ClientAPI.ClientAPIDisabled() == false && ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))
@@ -179,10 +166,6 @@ namespace DotNetNuke.UI.Utilities
         /// <remarks>
         /// This method's purpose is to provide a higher level of abstraction between the ClientAPI and the module developer.
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	5/6/2005	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
             EnableMinMax(objButton, objContent, -1, blnDefaultMin, "", "", ePersistanceType);
@@ -212,10 +195,6 @@ namespace DotNetNuke.UI.Utilities
         /// <remarks>
         /// This method's purpose is to provide a higher level of abstraction between the ClientAPI and the module developer.
         /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	5/6/2005	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType)
         {
             EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, strMinIconLoc, strMaxIconLoc, ePersistanceType, 5);

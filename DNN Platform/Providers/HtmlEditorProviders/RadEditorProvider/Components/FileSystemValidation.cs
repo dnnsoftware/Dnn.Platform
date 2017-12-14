@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,7 +51,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		public bool EnableDetailedLogging = true;
 
-#region Public Folder Validate Methods
+        #region Public Folder Validate Methods
 
 		public virtual string OnCreateFolder(string virtualPath, string folderName)
 		{
@@ -158,9 +158,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			return returnValue;
 		}
 
-#endregion
+        #endregion
 
-#region Public File Validate Methods
+        #region Public File Validate Methods
 
         public virtual void OnFolderRenamed(string oldFolderPath, string newFolderPath)
         {
@@ -340,9 +340,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			}
 		}
 
-#endregion
+        #endregion
 
-#region Public Shared Path Properties and Convert Methods
+        #region Public Shared Path Properties and Convert Methods
 
 		/// <summary>
 		/// Gets the DotNetNuke Portal Directory Virtual path
@@ -541,9 +541,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
             return path;
 		}
 
-#endregion
+        #endregion
 
-#region Public Data Access
+        #region Public Data Access
 
         //public virtual IDictionary<string, FolderInfo> GetUserFolders()
         //{
@@ -598,9 +598,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			return string.Empty;
 		}
 
-#endregion
+        #endregion
 
-#region Public Permissions Checks
+        #region Public Permissions Checks
 
         public static bool HasPermission(IFolderInfo folder, string permissionKey)
         {
@@ -782,9 +782,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			return string.Empty;
 		}
 
-#endregion
+        #endregion
 
-#region Private Check Methods
+        #region Private Check Methods
 
 		private string Check_FileName(string virtualPathAndName)
 		{
@@ -800,7 +800,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			        string extension = rawExtension.Replace(".", "").ToLowerInvariant();
 			        string validExtensions = Entities.Host.Host.FileExtensions.ToLowerInvariant();
 
-			        if (fileName != null && (string.IsNullOrEmpty(extension) || ("," + validExtensions + ",").IndexOf("," + extension + ",", StringComparison.Ordinal) == -1 || Regex.IsMatch(fileName, @"\..+;")))
+                    if (string.IsNullOrEmpty(extension) || ("," + validExtensions + ",").IndexOf("," + extension + ",", StringComparison.Ordinal) == -1 || Globals.FileExtensionRegex.IsMatch(fileName))
 			        {
 			            if (HttpContext.Current != null)
 			            {
@@ -842,9 +842,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			return string.Empty;
 		}
 
-#endregion
+        #endregion
 
-#region Misc Helper Methods
+        #region Misc Helper Methods
 
 		private int GetFileSize(string virtualPathAndFile)
 		{
@@ -873,7 +873,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			return returnValue;
 		}
 
- private FolderInfo GetDNNFolder(string path)
+         private FolderInfo GetDNNFolder(string path)
 		{
 			return DNNFolderCtrl.GetFolder(PortalSettings.PortalId, ToDBPath(path), false);
 		}
@@ -974,9 +974,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			return returnValue;
 		}
 
-#endregion
+        #endregion
 
-#region Localized Messages
+        #region Localized Messages
 
 		public string GetString(string key)
 		{
@@ -1015,7 +1015,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			return GetString("ErrorCodes." + ErrorCodes.General_PermissionDenied);
 		}
 
-#endregion
+        #endregion
 
 	}
 

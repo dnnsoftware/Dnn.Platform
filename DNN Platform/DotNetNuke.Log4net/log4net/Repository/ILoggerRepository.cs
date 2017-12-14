@@ -219,7 +219,7 @@ namespace log4net.Repository
 		/// lost.
 		/// </para>
 		/// <para>
-		/// The <see cref="Shutdown()"/> method is careful to close nested
+		/// The <see cref="M:Shutdown()"/> method is careful to close nested
 		/// appenders before closing regular appenders. This is allows
 		/// configurations where a regular appender is attached to a logger
 		/// and again to a nested appender.
@@ -254,7 +254,7 @@ namespace log4net.Repository
 		/// This method should not normally be used to log.
 		/// The <see cref="ILog"/> interface should be used 
 		/// for routine logging. This interface can be obtained
-		/// using the <see cref="log4net.LogManager.GetLogger(string)"/> method.
+		/// using the <see cref="M:log4net.LogManager.GetLogger(string)"/> method.
 		/// </para>
 		/// <para>
 		/// The <c>logEvent</c> is delivered to the appropriate logger and

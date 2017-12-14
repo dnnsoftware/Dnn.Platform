@@ -116,7 +116,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (selectedTab != NaN && selectedTab != null) options.selected = selectedTab;
         $('#' + controls.scopeWrapperId)
             .dnnTabs(options)
-            .bind("tabsactivate", function (event, ui) {
+            .on("tabsactivate", function (event, ui) {
                 currentTab = ui.newTab.index();
                 controller.leftPaneTabActivated(ui.newPanel[0].id);
                 if (currentTab == 0) {
@@ -580,7 +580,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 deleteItems([{
                     ItemId: node.get_value(),
                     IsFolder: true,
-                    UnlinkAllowedStatus: node.get_attributes().getAttribute("UnlinkAllowedStatus")
+                    UnlinkAllowedStatus: node.get_attributes().getAttribute("UnlinkAllowedStatus"),
+                    ItemName: node.get_text()
                 }], node.get_parent().get_value());
                 break;
             case "UnlinkFolder":
@@ -1539,8 +1540,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         grid.dataBind();
 
         $("#" + controls.gridId + " tbody input[type='checkbox']").dnnCheckbox()
-            .unbind('click', gridSelectionCheckboxClick)
-            .bind('click', gridSelectionCheckboxClick);
+            .off('click', gridSelectionCheckboxClick)
+            .on('click', gridSelectionCheckboxClick);
         gridSelectUnselectAll.prop("checked", false);
 
         if (settings.isFilteredContent === false) {
@@ -1566,8 +1567,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         listView.set_dataSource(prepareListViewData(data));
         listView.dataBind();
-        $("#dnnModuleDigitalAssetsListView .dnnModuleDigitalAssetsListViewItem .dnnModuleDigitalAssetsListViewItemLinkName").bind("click", clickOnListViewItemNameLink);
-        $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", '#' + controls.scopeWrapperId).unbind("click", listviewSelectAllOnClick).bind("click", listviewSelectAllOnClick);
+        $("#dnnModuleDigitalAssetsListView .dnnModuleDigitalAssetsListViewItem .dnnModuleDigitalAssetsListViewItemLinkName").on("click", clickOnListViewItemNameLink);
+        $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", '#' + controls.scopeWrapperId).off("click", listviewSelectAllOnClick).on("click", listviewSelectAllOnClick);
         listViewInitialize();
 
         if (settings.isFilteredContent === false) {
@@ -2541,7 +2542,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                     ItemId: item.ItemID,
                     IsFolder: item.IsFolder,
                     ParentFolderId: item.ParentFolderID,
-                    UnlinkAllowedStatus: item.UnlinkAllowedStatus
+                    UnlinkAllowedStatus: item.UnlinkAllowedStatus,
+                    ItemName: item.ItemName
                 });
             }
         }
@@ -2572,21 +2574,52 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
+    function getDeletionDialogText(items, dialogText, dialogNote) {
+        var foldersToDelete = [];
+        var filesToDelete = [];
+
+        for (var x = 0; x < items.length; x++) {
+            if (items[x].IsFolder) {
+                foldersToDelete.push(items[x]);
+            } else {
+                filesToDelete.push(items[x]);
+            }
+        }
+
+        var folderLabel = (foldersToDelete.length == 1 ? resources.folderLabel : resources.folderMultLabel) + ": ";
+        var fileLabel = (filesToDelete.length == 1 ? resources.fileLabel : resources.fileMultLabel) + ": ";
+
+        var foldersString = (foldersToDelete.length > 0 ? folderLabel : "");
+        var filesString = (filesToDelete.length > 0 ? fileLabel : "");
+
+        foldersString += foldersToDelete.map(function (elem) {
+            return elem.ItemName;
+        }).join(", ");
+        filesString += filesToDelete.map(function (elem) {
+            return elem.ItemName;
+        }).join(", ");
+
+        var dialogTextFinal = dialogText + dialogNote + "<br/><br/> " + foldersString + (foldersString != "" ? "<br/>" : "") + filesString;
+
+        return dialogTextFinal;
+    }
+
     function confirmDeleteItems(items, parentFolderId, mappedSubfoldersCount) {
         var folderAndFileText = selectionText(items);
         var dialogTitle = resources.deleteTitle.replace('[ITEMS]', folderAndFileText);
         var dialogText = resources.deleteConfirmText.replace('[ITEMS]', folderAndFileText);
 
         var dialogNote = "";
-        var dialogHeight = 190;
+        var dialogHeight = "auto";
         if (mappedSubfoldersCount > 0) {
             dialogNote = mappedSubfoldersCount == 1 ? resources.deleteConfirmWithMappedSubfolderText.replace('[COUNT]', mappedSubfoldersCount)
                                                     : resources.deleteConfirmWithMappedSubfoldersText.replace('[COUNT]', mappedSubfoldersCount);
             dialogNote = "<p class='dialogNote'>" + dialogNote + "</p>";
-            dialogHeight = 230;
+            dialogHeight = "auto";
         }
 
-        $("<div class='dnnDialog'></div>").html(dialogText+dialogNote).dialog({
+        var dialogTextFinal = getDeletionDialogText(items, dialogText, dialogNote);
+        $("<div class='dnnDialog'></div>").html(dialogTextFinal).dialog({
             modal: true,
             autoOpen: true,
             dialogClass: "dnnFormPopup",
@@ -3020,10 +3053,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function getUrl() {
-        var items = convertToItemsFromGridItems(grid.get_selectedItems());
-        var itemId = items[0].ItemId;
+        var items = convertToItemsFromGridItems(grid.get_selectedItems());        
         if (!items[0].IsFolder) {
-            getUrlFromFileId(itemId);
+            getUrlFromFileId(items[0]);
         }
     }
 
@@ -3038,16 +3070,22 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
-    function getFullUrl(relativePath) {
-        return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + relativePath;
+    function getFullUrl(relativePath, includePathname) {
+        var urlPathName = "";
+
+        if (includePathname) {
+            urlPathName = location.pathname;
+        }
+
+        return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + urlPathName + relativePath;
     }
 
-    function getUrlFromFileId(fileId) {
+    function getUrlFromFileId(item) {
         $.ajax({
             type: 'POST',
             url: getContentServiceUrl() + 'GetUrl',
             data: {
-                fileId: fileId
+                fileId: item.ItemId
             },
             beforeSend: servicesFramework.setModuleHeaders
         }).done(function(data) {
@@ -3057,15 +3095,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             } else {
                 url = getFullUrl(data);
             }
-            openGetUrlModal(url, resources.getFileUrlLabel);
-        }).fail(function(xhr) {
+            openGetUrlModal(url, resources.getFileUrlTitle, item.ItemName);
+        }).fail(function (xhr) {
             handledXhrError(xhr, resources.getUrlErrorTitle);
         });
     }
 
-    function openGetUrlModal(url, label) {
+    function openGetUrlModal(url, title, fileName) {
         $('#dnnModuleDigitalAssetsGetUrlModal input').val(url).select();
-        $('#dnnModuleDigitalAssetsGetUrlModal span').text(label);
+        $('#dnnModuleDigitalAssetsGetUrlModal span').text(resources.getUrlLabel);
         $('#dnnModuleDigitalAssetsGetUrlModal').dialog({
             modal: true,
             autoOpen: true,
@@ -3073,7 +3111,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             width: 500,
             height: 250,
             resizable: false,
-            title: resources.getUrlTitle,
+            title: title + " " + fileName,
             buttons:
                 [
                     {

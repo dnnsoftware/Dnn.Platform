@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,11 +49,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// 	[cnurse]	9/24/2004	Updated to reflect design changes for Help, 508 support
-	///                       and localisation
-	///     [cnurse]    08/07/2007  Ported to new Authentication Framework
-	/// </history>
 	public partial class Login : AuthenticationLoginBase
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
@@ -63,10 +58,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 		/// <summary>
 		/// Gets whether the Captcha control is used to validate the login
 		/// </summary>
-		/// <history>
-		/// 	[cnurse]	03/17/2006  Created
-		///     [cnurse]    07/03/2007  Moved from Sign.ascx.vb
-		/// </history>
 		protected bool UseCaptcha
 		{
 			get
@@ -83,9 +74,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 		/// Check if the Auth System is Enabled (for the Portal)
 		/// </summary>
 		/// <remarks></remarks>
-		/// <history>
-		/// 	[cnurse]	07/04/2007	Created
-		/// </history>
 		public override bool Enabled
 		{
 			get
@@ -106,17 +94,18 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 			cancelLink.NavigateUrl = GetRedirectUrl(false);
 
-			ClientAPI.RegisterKeyCapture(Parent, cmdLogin, 13);
-
             if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration)
             {
                 liRegister.Visible = false;
             }
             lblLogin.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
+		    if (string.IsNullOrEmpty(lblLogin.Text))
+		    {
+		        lblLogin.AssociatedControlID = string.Empty;
+		    }
 
-            if (!string.IsNullOrEmpty(Response.Cookies["USERNAME_CHANGED"].Value))
+            if (Request.QueryString["usernameChanged"] == "true")
             {
-                txtUsername.Text = Response.Cookies["USERNAME_CHANGED"].Value;
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
@@ -268,7 +257,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			if ((UseCaptcha && ctlCaptcha.IsValid) || !UseCaptcha)
 			{
 				var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-				string userName = new PortalSecurity().InputFilter(txtUsername.Text, 
+				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text, 
 										PortalSecurity.FilterFlag.NoScripting | 
                                         PortalSecurity.FilterFlag.NoAngleBrackets | 
                                         PortalSecurity.FilterFlag.NoMarkup);
@@ -302,9 +291,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                     if (objUser.Username.ToLower() != objUser.Email.ToLower())
                     {
                         UserController.ChangeUsername(objUser.UserID, objUser.Email);
+                        userName = objUser.Username = objUser.Email;
                     }
-
-                    Response.Cookies.Remove("USERNAME_CHANGED");
                 }
 				
 				//Raise UserAuthenticated Event
@@ -349,14 +337,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				{
 					//return to the url passed to register
 					redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-					if (redirectUrl.Contains("://") &&
-						!redirectUrl.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-							StringComparison.InvariantCultureIgnoreCase))
-					{
-						redirectUrl = "";
-					}
-					if (redirectUrl.Contains("?returnurl"))
+
+                    //clean the return url to avoid possible XSS attack.
+                    redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
+
+                    if (redirectUrl.Contains("?returnurl"))
 					{
 						string baseURL = redirectUrl.Substring(0,
 							redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.UI.UserControls
     /// To use this control the user must provide somewhere in the asp page the
     /// implementation of the javascript required to expand/collapse the display.
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	9/7/2004	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class SectionHeadControl : UserControl
     {
@@ -70,9 +67,6 @@ namespace DotNetNuke.UI.UserControls
         /// <value>A string representing the name of the css class</value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/7/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CssClass
         {
@@ -94,9 +88,6 @@ namespace DotNetNuke.UI.UserControls
         /// <value>A string representing true or false</value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/7/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IncludeRule
         {
@@ -118,10 +109,6 @@ namespace DotNetNuke.UI.UserControls
         /// or collapsed (false).  The default is true.</value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/7/2004	Created
-        ///		[jhenning]	09/06/2005 Utilizing ClientAPI EnableMinMax
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsExpanded
         {
@@ -143,9 +130,6 @@ namespace DotNetNuke.UI.UserControls
         /// <value>A string representing the name of the javascript function implementation</value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/7/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string JavaScript
         {
@@ -167,9 +151,6 @@ namespace DotNetNuke.UI.UserControls
         /// <value>A string representing the url of the Max Image</value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/7/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string MaxImageUrl
         {
@@ -191,9 +172,6 @@ namespace DotNetNuke.UI.UserControls
         /// <value>A string representing the url of the Min Image</value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/7/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string MinImageUrl
         {
@@ -215,9 +193,6 @@ namespace DotNetNuke.UI.UserControls
  /// <value>A string representing the ResourceKey.</value>
  /// <remarks>
  /// </remarks>
- /// <history>
- /// 	[cnurse]	9/7/2004	Created
- /// </history>
  /// -----------------------------------------------------------------------------
         public string ResourceKey { get; set; }
 
@@ -229,9 +204,6 @@ namespace DotNetNuke.UI.UserControls
  /// <value>A string representing the Section.</value>
  /// <remarks>
  /// </remarks>
- /// <history>
- /// 	[cnurse]	9/7/2004	Created
- /// </history>
  /// -----------------------------------------------------------------------------
         public string Section { get; set; }
 
@@ -242,9 +214,6 @@ namespace DotNetNuke.UI.UserControls
         /// <value>A string representing the Title Text.</value>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	9/7/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Text
         {
@@ -269,9 +238,6 @@ namespace DotNetNuke.UI.UserControls
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	05/11/2004	Move code to Page_Load for localization
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -298,11 +264,6 @@ namespace DotNetNuke.UI.UserControls
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	04/11/2004	Moved code from Page_Load to PreRender so all other properties are set.
-        ///             This allows to inject this control dynamically on a page using LoadControl
-        ///		[jhenning]	09/06/2005 Utilizing ClientAPI EnableMinMax
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {

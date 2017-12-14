@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AuthenticationConfig_Enabled.Help" xml:space="preserve">
-    <value>Check this box to enable the standard DotNetNuke Authentication</value>
+    <value>Check this box to enable the standard DotNetNuke Authentication.</value>
   </data>
   <data name="AuthenticationConfig_Enabled.Text" xml:space="preserve">
-    <value>Enabled?</value>
+    <value>Enabled:</value>
   </data>
   <data name="AuthenticationConfig_UseCaptcha.Help" xml:space="preserve">
-    <value>Check this box to enable Captcha for the DotNetNuke Login</value>
+    <value>Check this box to enable Captcha for the DotNetNuke Login.</value>
   </data>
   <data name="AuthenticationConfig_UseCaptcha.Text" xml:space="preserve">
-    <value>Use Captcha?</value>
+    <value>Use Captcha:</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>DotNetNuke Authentication Settings</value>

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,11 +29,12 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 {
     internal class DigestAuthentication
     {
+        internal const string AuthenticationScheme = "Digest";
         private static readonly MD5 Md5 = new MD5CryptoServiceProvider();
         private DigestAuthenticationRequest _request;
         private string _password;
         private readonly int _portalId;
-        private string _ipAddress;
+        private readonly string _ipAddress;
 
         public DigestAuthenticationRequest Request
         {
@@ -70,7 +71,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 if ((! IsNonceStale) && _request.RequestParams["response"] == CalculateHashedDigest())
                 {
                     IsValid = true;
-                    User = new GenericPrincipal(new GenericIdentity(_request.RawUsername, "digest"), null);
+                    User = new GenericPrincipal(new GenericIdentity(_request.RawUsername, AuthenticationScheme), null);
                 }
             }
         }

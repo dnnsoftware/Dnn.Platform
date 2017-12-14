@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -109,9 +109,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Cell/Mobile Phone
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Cell
         {
@@ -129,9 +126,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the City part of the Address
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string City
         {
@@ -149,9 +143,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Country part of the Address
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Country
         {
@@ -169,9 +160,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Fax Phone
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Fax
         {
@@ -189,9 +177,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the First Name
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FirstName
         {
@@ -209,9 +194,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Full Name
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FullName
         {
@@ -225,9 +207,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Instant Messenger Handle
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string IM
         {
@@ -245,9 +224,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets or sets whether the property has been changed
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool IsDirty
         {
@@ -261,9 +237,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Last Name
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string LastName
         {
@@ -376,9 +349,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the PostalCode part of the Address
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PostalCode
         {
@@ -396,9 +366,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Preferred Locale
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string PreferredLocale
         {
@@ -452,10 +419,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Collection of Profile Properties
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        ///     [cnurse]    03/28/2006  Converted to a ProfilePropertyDefinitionCollection
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection ProfileProperties
         {
@@ -466,9 +429,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Region part of the Address
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Region
         {
@@ -486,9 +446,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Street part of the Address
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Street
         {
@@ -506,9 +463,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Telephone
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Telephone
         {
@@ -543,9 +497,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Unit part of the Address
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Unit
         {
@@ -563,9 +514,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets and sets the Website
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/10/2006	Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Website
         {
@@ -587,16 +535,13 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Clears the IsDirty Flag
         /// </summary>
-        /// <history>
-        ///     [cnurse]	02/29/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void ClearIsDirty()
         {
             _IsDirty = false;
             foreach (ProfilePropertyDefinition profProperty in ProfileProperties)
             {
-                profProperty.ClearIsDirty();
+                profProperty?.ClearIsDirty();
             }
         }
 
@@ -606,9 +551,6 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks></remarks>
         /// <param name="propName">The name of the property to retrieve.</param>
-        /// <history>
-        /// 	[cnurse]	02/13/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinition GetProperty(string propName)
         {
@@ -621,9 +563,6 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks></remarks>
         /// <param name="propName">The name of the propoerty to retrieve.</param>
-        /// <history>
-        /// 	[cnurse]	02/10/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string GetPropertyValue(string propName)
         {
@@ -667,9 +606,6 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks></remarks>
         /// <param name="portalId">The name of the property to retrieve.</param>
-        /// <history>
-        /// 	[cnurse]	05/18/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void InitialiseProfile(int portalId)
         {
@@ -684,9 +620,6 @@ namespace DotNetNuke.Entities.Users
         /// <param name="portalId">The name of the property to retrieve.</param>
         /// <param name="useDefaults">A flag that indicates whether the profile default values should be
         /// copied to the Profile.</param>
-        /// <history>
-        /// 	[cnurse]	08/04/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void InitialiseProfile(int portalId, bool useDefaults)
         {
@@ -707,9 +640,6 @@ namespace DotNetNuke.Entities.Users
         /// <remarks></remarks>
         /// <param name="propName">The name of the propoerty to set.</param>
         /// <param name="propValue">The value of the propoerty to set.</param>
-        /// <history>
-        /// 	[cnurse]	02/10/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void SetProfileProperty(string propName, string propValue)
         {
@@ -728,28 +658,6 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        #region Obsolete
-
-        [Obsolete("Deprecated in DNN 6.0. Replaced by PreferredTimeZone.")]
-        [Browsable(false)]
-        public int TimeZone
-        {
-            get
-            {
-                Int32 retValue = Null.NullInteger;
-                string propValue = GetPropertyValue(USERPROFILE_TimeZone);
-                if (!string.IsNullOrEmpty(propValue))
-                {
-                    retValue = int.Parse(propValue);
-                }
-                return retValue;
-            }
-            set
-            {
-                SetProfileProperty(USERPROFILE_TimeZone, value.ToString(CultureInfo.InvariantCulture));
-            }
-        }
-
         public string Biography
         {
             get
@@ -761,8 +669,6 @@ namespace DotNetNuke.Entities.Users
                 SetProfileProperty(USERPROFILE_Biography, value);
             }
         }
-
-        #endregion
 
         #region Implement IIndexable
 

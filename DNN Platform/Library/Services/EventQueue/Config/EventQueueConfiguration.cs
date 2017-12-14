@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -105,41 +105,42 @@ namespace DotNetNuke.Services.EventQueue.Config
 
             var sb = new StringBuilder();
 
-			XmlWriter writer = XmlWriter.Create(sb, settings);
-            writer.WriteStartElement("EventQueueConfig");
-
-            writer.WriteStartElement("PublishedEvents");
-            foreach (string key in PublishedEvents.Keys)
+            using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
-                writer.WriteStartElement("Event");
+                writer.WriteStartElement("EventQueueConfig");
 
-                writer.WriteElementString("EventName", PublishedEvents[key].EventName);
-                writer.WriteElementString("Subscribers", PublishedEvents[key].Subscribers);
+                writer.WriteStartElement("PublishedEvents");
+                foreach (string key in PublishedEvents.Keys)
+                {
+                    writer.WriteStartElement("Event");
 
+                    writer.WriteElementString("EventName", PublishedEvents[key].EventName);
+                    writer.WriteElementString("Subscribers", PublishedEvents[key].Subscribers);
+
+                    writer.WriteEndElement();
+                }
                 writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
 
-            writer.WriteStartElement("EventQueueSubscribers");
-            foreach (string key in EventQueueSubscribers.Keys)
-            {
-                writer.WriteStartElement("Subscriber");
+                writer.WriteStartElement("EventQueueSubscribers");
+                foreach (string key in EventQueueSubscribers.Keys)
+                {
+                    writer.WriteStartElement("Subscriber");
 
-                writer.WriteElementString("ID", EventQueueSubscribers[key].ID);
-                writer.WriteElementString("Name", EventQueueSubscribers[key].Name);
-                writer.WriteElementString("Address", EventQueueSubscribers[key].Address);
-                writer.WriteElementString("Description", EventQueueSubscribers[key].Description);
-                writer.WriteElementString("PrivateKey", EventQueueSubscribers[key].PrivateKey);
+                    writer.WriteElementString("ID", EventQueueSubscribers[key].ID);
+                    writer.WriteElementString("Name", EventQueueSubscribers[key].Name);
+                    writer.WriteElementString("Address", EventQueueSubscribers[key].Address);
+                    writer.WriteElementString("Description", EventQueueSubscribers[key].Description);
+                    writer.WriteElementString("PrivateKey", EventQueueSubscribers[key].PrivateKey);
+                    writer.WriteEndElement();
+                }
                 writer.WriteEndElement();
+
+                //Close EventQueueConfig
+                writer.WriteEndElement();
+
+                writer.Close();
+                return sb.ToString();
             }
-            writer.WriteEndElement();
-
-            //Close EventQueueConfig
-            writer.WriteEndElement();
-
-            writer.Close();
-
-            return sb.ToString();
         }
 		#endregion
         internal static EventQueueConfiguration GetConfig()

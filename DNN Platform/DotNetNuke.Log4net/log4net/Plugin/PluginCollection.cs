@@ -26,7 +26,10 @@ namespace log4net.Plugin
 	///	A strongly-typed collection of <see cref="IPlugin"/> objects.
 	/// </summary>
 	/// <author>Nicko Cadell</author>
-	public class PluginCollection : ICollection, IList, IEnumerable, ICloneable
+	public class PluginCollection : ICollection, IList, IEnumerable
+#if !NETSTANDARD1_3
+		, ICloneable
+#endif
 	{
 		#region Interfaces
 
@@ -209,10 +212,10 @@ namespace log4net.Plugin
 		/// <summary>
 		/// Gets a value indicating whether access to the collection is synchronized (thread-safe).
 		/// </summary>
-		/// <returns>true if access to the ICollection is synchronized (thread-safe); otherwise, false.</returns>
+		/// <returns>false, because the backing type is an array, which is never thread-safe.</returns>
 		public virtual bool IsSynchronized
 		{
-			get { return m_array.IsSynchronized; }
+			get { return false; }
 		}
 
 		/// <summary>
@@ -223,7 +226,7 @@ namespace log4net.Plugin
 		/// </value>
 		public virtual object SyncRoot
 		{
-			get { return m_array.SyncRoot; }
+			get { return m_array; }
 		}
 
 		#endregion

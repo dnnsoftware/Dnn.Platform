@@ -130,13 +130,13 @@
     <value>Edit Module</value>
   </data>
   <data name="FolderName.Help" xml:space="preserve">
-    <value>This is the name of the Folder</value>
+    <value>The name of the folder.</value>
   </data>
   <data name="FolderName.Text" xml:space="preserve">
     <value>Folder Name</value>
   </data>
   <data name="FolderType.Help" xml:space="preserve">
-    <value>Select the Type of the folder</value>
+    <value>Select the folder type.</value>
   </data>
   <data name="FolderType.Text" xml:space="preserve">
     <value>Folder Type</value>
@@ -148,7 +148,7 @@
     <value>Name</value>
   </data>
   <data name="rfvFolderName.ErrorMessage" xml:space="preserve">
-    <value>Folder name is required</value>
+    <value>Folder name is required.</value>
   </data>
   <data name="Save.Text" xml:space="preserve">
     <value>Save</value>
@@ -157,7 +157,7 @@
     <value>DROP STUFF HERE</value>
   </data>
   <data name="UploadFiles.Info" xml:space="preserve">
-    <value>You can select more than one file at a time. </value>
+    <value>You can select more than one file at a time.</value>
   </data>
   <data name="CreateNewFolderTitle.Text" xml:space="preserve">
     <value>Create New Folder</value>
@@ -169,7 +169,7 @@
     <value>Delete</value>
   </data>
   <data name="NoItemsSelected.Text" xml:space="preserve">
-    <value>You must select at least one item to perform the delete operation</value>
+    <value>You must select at least one item to perform the delete operation.</value>
   </data>
   <data name="DeleteConfirm.Text" xml:space="preserve">
     <value>Are you sure you want to delete [ITEMS]?</value>
@@ -190,13 +190,13 @@
     <value>[FILES] and [FOLDERS]</value>
   </data>
   <data name="NoItems.Text" xml:space="preserve">
-    <value>This folder is empty</value>
+    <value>This folder is empty.</value>
   </data>
   <data name="ExtensionChangeConfirmContent.Text" xml:space="preserve">
     <value>If you change a file name extension, the file might become unusable. &lt;br&gt;Are you sure you want to change it?</value>
   </data>
   <data name="ExtensionChangeConfirmTitle.Text" xml:space="preserve">
-    <value>Extension has changed</value>
+    <value>Extension has changed.</value>
   </data>
   <data name="NoConfirm.Text" xml:space="preserve">
     <value>No</value>
@@ -232,16 +232,16 @@
     <value>Replace</value>
   </data>
   <data name="DuplicateCopy.Subtext" xml:space="preserve">
-    <value>Items with the filename(s) you tried to copy already exist in this location</value>
+    <value>Items with the filename(s) you tried to copy already exist in this location.</value>
   </data>
   <data name="DuplicateFilesExist.Text" xml:space="preserve">
     <value>Duplicate Files Exist</value>
   </data>
   <data name="DuplicateMove.Subtext" xml:space="preserve">
-    <value>Items with the filename(s) you tried to move already exist in this location</value>
+    <value>Items with the filename(s) you tried to move already exist in this location.</value>
   </data>
   <data name="DuplicateUpload.Subtext" xml:space="preserve">
-    <value>Items with the filename(s) you tried to upload already exist in this location</value>
+    <value>Items with the filename(s) you tried to upload already exist in this location.</value>
   </data>
   <data name="KeepAll.Text" xml:space="preserve">
     <value>Keep All</value>
@@ -250,34 +250,34 @@
     <value>Replace All</value>
   </data>
   <data name="CreateFolderError.Title" xml:space="preserve">
-    <value>An error occurred while creating the folder</value>
+    <value>An error occurred while creating the folder.</value>
   </data>
   <data name="DeleteItemsError.Title" xml:space="preserve">
-    <value>An error occurred while deleting the items</value>
+    <value>An error occurred while deleting the items.</value>
   </data>
   <data name="LoadFolderContentError.Title" xml:space="preserve">
-    <value>An error occurred while loading the folder content</value>
+    <value>An error occurred while loading the folder content.</value>
   </data>
   <data name="LoadSubFoldersError.Title" xml:space="preserve">
-    <value>An error occurred while loading the sub folders</value>
+    <value>An error occurred while loading the sub folders.</value>
   </data>
   <data name="RenameFileError.Title" xml:space="preserve">
-    <value>File naming error</value>
+    <value>File naming error.</value>
   </data>
   <data name="RenameFolderError.Title" xml:space="preserve">
-    <value>Folder naming error</value>
+    <value>Folder naming error.</value>
   </data>
   <data name="UploadFiles.Title" xml:space="preserve">
-    <value>Upload Files</value>
+    <value>Upload Files.</value>
   </data>
   <data name="FileUploadAlreadyExists.Text" xml:space="preserve">
-    <value>The file you want to upload already exists in this location</value>
+    <value>The file you want to upload already exists in this location.</value>
   </data>
   <data name="FileUploadErrorOccurred.Error" xml:space="preserve">
-    <value>An error occurred while uploading the file</value>
+    <value>An error occurred while uploading the file.</value>
   </data>
   <data name="FileUploadStopped.Text" xml:space="preserve">
-    <value>File upload stopped</value>
+    <value>File upload stopped.</value>
   </data>
   <data name="ExpandFile.Text" xml:space="preserve">
     <value>Expand File</value>
@@ -286,7 +286,7 @@
     <value>Keep Compressed</value>
   </data>
   <data name="ZipConfirmation.Text" xml:space="preserve">
-    <value>You tried to upload a compressed zip file called [FILE].&lt;br /&gt;Do You want to expand this compressed file?</value>
+    <value>You tried to upload a compressed zip file called [FILE].&lt;br /&gt;Do you want to expand this compressed file?</value>
   </data>
   <data name="GetUrl.Text" xml:space="preserve">
     <value>Get URL</value>
@@ -301,7 +301,7 @@
     <value>File URL Is:</value>
   </data>
   <data name="GetUrlError.Title" xml:space="preserve">
-    <value>An error occurred while getting the URL</value>
+    <value>An error occurred while getting the URL.</value>
   </data>
   <data name="ManageFolderTypes.Text" xml:space="preserve">
     <value>Manage Folder Types</value>
@@ -364,7 +364,7 @@
     <value>Parent Folder</value>
   </data>
   <data name="ParentFolder.Help" xml:space="preserve">
-    <value>The parent folder in which the new folder will be created</value>
+    <value>The parent folder in which the new folder will be created.</value>
   </data>
   <data name="Moving.Text" xml:space="preserve">
     <value>Moving [SELECTION]</value>
@@ -403,7 +403,7 @@
     <value>Go to the next page</value>
   </data>
   <data name="PagerPageSize.Text" xml:space="preserve">
-    <value>Items per page:</value>
+    <value>Items per Page:</value>
   </data>
   <data name="PagerPreviousPage.Text" xml:space="preserve">
     <value>Prev</value>
@@ -430,13 +430,13 @@
     <value>Unzip File</value>
   </data>
   <data name="UnzipFileErrorTitle.Text" xml:space="preserve">
-    <value>An error occured while unzipping the file</value>
+    <value>An error occured while unzipping the file.</value>
   </data>
   <data name="MappedPathRegExValidator.ErrorMessage" xml:space="preserve">
-    <value>The path must be relative to the root of the provider</value>
+    <value>The path must be relative to the root of the provider.</value>
   </data>
   <data name="FileUploadEmptyFileIsNotSupported.Error" xml:space="preserve">
-    <value>Your browser does not support empty file uploads</value>
+    <value>Your browser does not support empty file uploads.</value>
   </data>
   <data name="UploadingExtracting.Text" xml:space="preserve">
     <value>Uploading and extracting...</value>
@@ -445,7 +445,7 @@
     <value>The group ID is not set. Please go back to the groups page and select the desired group.</value>
   </data>
   <data name="InvalidUser.Error" xml:space="preserve">
-    <value>The module is configured as User mode, it cannot be used with unauthenticated user</value>
+    <value>The module is configured as User mode, it cannot be used with unauthenticated user.</value>
   </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>File Management</value>
@@ -463,7 +463,7 @@
     <value>Unlink Folder</value>
   </data>
   <data name="UnlinkFolderError.Title" xml:space="preserve">
-    <value>An error occurred while unlinking the folder</value>
+    <value>An error occurred while unlinking the folder.</value>
   </data>
   <data name="Unlink.Title" xml:space="preserve">
     <value>Unlink Folder...</value>
@@ -472,9 +472,21 @@
     <value>Are you sure you want to unlink the Folder?</value>
   </data>
   <data name="DeleteConfirmWithMappedSubfolder.Text" xml:space="preserve">
-    <value>Note: Selected folders include [COUNT] Remote Folder. This will be unlinked from this site and the folder and files will remain at the remote location</value>
+    <value>Note: Selected folders include [COUNT] Remote Folder.  This will be unlinked from this site and the folder and files will remain at the remote location.</value>
   </data>
   <data name="DeleteConfirmWithMappedSubfolders.Text" xml:space="preserve">
-    <value>Note: Selected folders include [COUNT] Remote Folders. These will be unlinked from this site and folders and files will remain at the remote location</value>
+    <value>Note: Selected folders include [COUNT] Remote Folders.  These will be unlinked from this site and folders and files will remain at the remote location.</value>
+  </data>
+  <data name="FileLabel.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileMultLabel.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="FolderLabel.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="FolderMultLabel.Text" xml:space="preserve">
+    <value>Folders</value>
   </data>
 </root>

@@ -17,7 +17,7 @@ dnn.controls.DNNRichText = function (initFunc)
 	if (this.supportsCE)
 	{
 		this.document = document;
-		this.container = document.createElement('span');
+		this.container = document.createElement('div');
 		this.container.contentEditable = true;	//ie doesn't need no stinkin' iframe
 		this.control = this.container;
 		this.initialized = true;

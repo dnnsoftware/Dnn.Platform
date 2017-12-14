@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,6 +39,7 @@ namespace DotNetNuke.Entities.Users.Membership
         public bool EnablePasswordHistory { get; set; }
 
         public int NumberOfPasswordsStored { get; set; }
+        public int NumberOfDaysBeforePasswordReuse { get; set; }
         public int ResetLinkValidity { get; set; }
 
         /// <summary>
@@ -82,6 +83,14 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
+        /// <summary>
+        /// Regular Expression to validate password strength.
+        /// </summary>
+        public string ValidationExpression
+        {
+            get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
+        }
+
         #endregion
 
         #region initialization methods
@@ -103,6 +112,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
                 ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
                 NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+                NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
             }
             else //setup default values during install process.
             {

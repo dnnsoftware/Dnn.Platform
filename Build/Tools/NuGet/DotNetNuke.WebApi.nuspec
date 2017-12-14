@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>DotNetNuke.WebApi</id>
+    <version>9.1.1</version>
+    <title>DNN Platform (ASP.NET Web API)</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
+    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components required for developing web services for DNN Platform.
+    </description>
+    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="4.0.20710.0" />
+      <dependency id="DotNetNuke.Web" version="9.1.1" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web.Http" targetFramework="net40" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src=".\*" exclude="**\*" />
+  </files>
+</package>

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,11 +30,14 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mobile;
+using DotNetNuke.Tests.Core.Services.ClientCapability;
 using DotNetNuke.Tests.Instance.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 
@@ -54,9 +57,10 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private Mock<DataProvider> _dataProvider;
 		private RedirectionController _redirectionController;
-        private Mock<ClientCapabilityProvider> _clientCapabilityProvider;	    
+        private Mock<ClientCapabilityProvider> _clientCapabilityProvider;
+	    private Mock<IHostController> _mockHostController;
 
-		private DataTable _dtRedirections;
+        private DataTable _dtRedirections;
 		private DataTable _dtRules;
 		
         public const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
@@ -113,13 +117,22 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			MockComponentProvider.CreateDataCacheProvider();
 			MockComponentProvider.CreateEventLogController();
             _clientCapabilityProvider = MockComponentProvider.CreateNew<ClientCapabilityProvider>();
+            _mockHostController = new Mock<IHostController>();
+            HostController.RegisterInstance(_mockHostController.Object);
 
-			_redirectionController = new RedirectionController();
+            _redirectionController = new RedirectionController();
 
 			SetupDataProvider();
 			SetupClientCapabilityProvider();
 			SetupRoleProvider();
-		}
+
+            var tabController = TabController.Instance;
+            var dataProviderField = tabController.GetType().GetField("_dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (dataProviderField != null)
+            {
+                dataProviderField.SetValue(tabController, _dataProvider.Object);
+            }
+        }
 
         [TearDown]
         public void TearDown()
@@ -138,7 +151,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 _dtRules = null;
             }
             ComponentFactory.Container = null;
-            
         }
 
 		#endregion
@@ -673,19 +685,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		private void SetupRoleProvider()
 		{
 			var mockRoleProvider = MockComponentProvider.CreateNew<RoleProvider>();
-
-			mockRoleProvider.Setup(p => p.GetRole(It.IsAny<int>(), It.IsAny<int>())).Returns<int, int>((portalId, roleId) =>
-			{
-				RoleInfo roleInfo = new RoleInfo();
-				roleInfo.RoleID = roleId;
-				roleInfo.PortalID = portalId;
-				if (roleId == 1)
-				{
-					roleInfo.RoleName = "Administrators";
-				}
-
-				return roleInfo;
-			});
 		}
 
 		private IDataReader GetRedirectionsCallBack(int portalId)
@@ -856,7 +855,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private IClientCapability GetClientCapabilityCallBack(string userAgent)
 		{
-            IClientCapability clientCapability = new DotNetNuke.Services.ClientCapability.ClientCapability();
+            IClientCapability clientCapability = new TestClientCapability();
             if (userAgent == iphoneUserAgent)
             {
                 clientCapability.IsMobile = true;

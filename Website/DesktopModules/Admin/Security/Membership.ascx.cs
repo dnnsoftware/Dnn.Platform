@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,9 +46,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// The Membership UserModuleBase is used to manage the membership aspects of a
     /// User
     /// </summary>
-    /// <history>
-    /// 	[cnurse]	03/01/2006  Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Membership : UserModuleBase
     {
@@ -58,9 +55,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Gets the UserMembership associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public UserMembership UserMembership
         {
@@ -83,9 +77,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Raises the MembershipAuthorized Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
 
 
@@ -140,9 +131,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Raises the MembershipAuthorized Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnMembershipAuthorized(EventArgs e)
         {
@@ -160,9 +148,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Raises the MembershipPasswordUpdateChanged Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/14/2008  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnMembershipPasswordUpdateChanged(EventArgs e)
         {
@@ -180,9 +165,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Raises the MembershipUnAuthorized Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnMembershipUnAuthorized(EventArgs e)
         {
@@ -200,9 +182,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// Raises the MembershipUnLocked Event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public void OnMembershipUnLocked(EventArgs e)
         {
@@ -224,9 +203,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
@@ -295,9 +271,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -315,9 +288,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdAuthorize_Click runs when the Authorize User Button is clicked
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdAuthorize_Click(object sender, EventArgs e)
         {
@@ -341,6 +311,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 UserController.ApproveUser(User);
             }
 
+            Mail.SendMail(User, MessageType.UserAuthorized, PortalSettings);
+
             OnMembershipAuthorized(EventArgs.Empty);
         }
 
@@ -348,9 +320,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdPassword_Click runs when the ChangePassword Button is clicked
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/15/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdPassword_Click(object sender, EventArgs e)
         {
@@ -360,10 +329,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (Request.IsAuthenticated != true) return;
 
-            if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
-            {
-                UserController.ResetPasswordToken(User);
-            }
             bool canSend = Mail.SendMail(User, MessageType.PasswordReminder, PortalSettings) == string.Empty;
             var message = String.Empty;
             if (canSend)
@@ -390,9 +355,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdUnAuthorize_Click runs when the UnAuthorize User Button is clicked
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUnAuthorize_Click(object sender, EventArgs e)
         {
@@ -447,9 +409,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdUnlock_Click runs when the Unlock Account Button is clicked
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void cmdUnLock_Click(Object sender, EventArgs e)
         {

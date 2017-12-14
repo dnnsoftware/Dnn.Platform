@@ -17,11 +17,6 @@
 //
 #endregion
 
-using System;
-using System.Text;
-using System.IO;
-
-using log4net.Util;
 using log4net.Core;
 
 namespace log4net.Util.PatternStringConverters
@@ -72,11 +67,11 @@ namespace log4net.Util.PatternStringConverters
 		/// </remarks>
 		public void ActivateOptions()
 		{
-			if (string.Compare(Option, "DOS", true, System.Globalization.CultureInfo.InvariantCulture) == 0)
+			if (SystemInfo.EqualsIgnoringCase(Option, "DOS"))
 			{
 				Option = "\r\n";
 			}
-			else if (string.Compare(Option, "UNIX", true, System.Globalization.CultureInfo.InvariantCulture) == 0)
+			else if (SystemInfo.EqualsIgnoringCase(Option, "UNIX"))
 			{
 				Option = "\n";
 			}

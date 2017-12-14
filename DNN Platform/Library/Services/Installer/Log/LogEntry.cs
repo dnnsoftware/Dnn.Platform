@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,9 +32,6 @@ namespace DotNetNuke.Services.Installer.Log
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	07/24/2007  created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class LogEntry
@@ -49,9 +46,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// </remarks>
         /// <param name="description">The description (detail) of the entry</param>
         /// <param name="type">The type of LogEntry</param>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public LogEntry(LogType type, string description)
         {
@@ -64,9 +58,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets the type of LogEntry
         /// </summary>
         /// <value>A LogType</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public LogType Type { get; private set; }
 
@@ -75,9 +66,6 @@ namespace DotNetNuke.Services.Installer.Log
         /// Gets the description of LogEntry
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	07/24/2007  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Description
         {

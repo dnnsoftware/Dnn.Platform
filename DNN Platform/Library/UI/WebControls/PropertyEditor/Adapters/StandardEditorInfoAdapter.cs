@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,9 +42,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///     [cnurse]	05/05/2006	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class StandardEditorInfoAdapter : IEditorInfoAdapter
     {
@@ -102,9 +99,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetEditorInfo builds an EditorInfo object for a propoerty
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/05/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
         {
@@ -228,9 +222,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetProperty returns the property that is being "bound" to
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	05/05/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private PropertyInfo GetProperty(object dataSource, string fieldName)
         {

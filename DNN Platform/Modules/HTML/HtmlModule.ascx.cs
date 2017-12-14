@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,11 +27,13 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.Modules.Html.Components;
 
 
 #endregion
@@ -44,10 +46,8 @@ namespace DotNetNuke.Modules.Html
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// </history>
     /// -----------------------------------------------------------------------------
-    public partial class HtmlModule : PortalModuleBase, IActionable
+    public partial class HtmlModule : HtmlModuleBase, IActionable
     {
         private bool EditorEnabled;
         private int WorkflowID;
@@ -64,8 +64,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
@@ -91,8 +89,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
@@ -125,47 +121,38 @@ namespace DotNetNuke.Modules.Html
                 else
                 {
                     // get default content from resource file
-                    if (!IsPostBack)
+                    if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
                     {
-                        if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                        if (EditorEnabled)
                         {
-                            if (EditorEnabled)
-                            {
-                                contentString = Localization.GetString("AddContentFromToolBar.Text", LocalResourceFile);
-                            }
-                            else
-                            {
-                                contentString = Localization.GetString("AddContentFromActionMenu.Text", LocalResourceFile);
-                            }
+                            contentString = Localization.GetString("AddContentFromToolBar.Text", LocalResourceFile);
                         }
                         else
                         {
-                            // hide the module if no content and in view mode
-                            ContainerControl.Visible = false;
-                        }
-                    }
-                }
-
-                // token replace
-                if (EditorEnabled && Settings["HtmlText_ReplaceTokens"] != null)
-                {
-                    EditorEnabled = !Convert.ToBoolean(Settings["HtmlText_ReplaceTokens"]);
-                }
-
-                // localize toolbar
-                if (!IsPostBack)
-                {
-                    if (EditorEnabled)
-                    {
-                        foreach (DNNToolBarButton button in editorDnnToobar.Buttons)
-                        {
-                            button.ToolTip = Localization.GetString(button.ToolTip + ".ToolTip", LocalResourceFile);
+                            contentString = Localization.GetString("AddContentFromActionMenu.Text", LocalResourceFile);
                         }
                     }
                     else
                     {
-                        editorDnnToobar.Visible = false;
+                        // hide the module if no content and in view mode
+                        ContainerControl.Visible = false;
                     }
+                }
+
+                // token replace
+                EditorEnabled = EditorEnabled && !Settings.ReplaceTokens;
+
+                // localize toolbar
+                if (EditorEnabled)
+                {
+                    foreach (DNNToolBarButton button in editorDnnToobar.Buttons)
+                    {
+                        button.ToolTip = Localization.GetString(button.ToolTip + ".ToolTip", LocalResourceFile);
+                    }
+                }
+                else
+                {
+                    editorDnnToobar.Visible = false;
                 }
 
                 lblContent.EditEnabled = EditorEnabled;
@@ -173,11 +160,23 @@ namespace DotNetNuke.Modules.Html
                 // add content to module
                 lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(ModuleId, contentString, Settings, PortalSettings, Page)));
 
-				//set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
-				if (Settings.ContainsKey("HtmlText_UseDecorate") && Settings["HtmlText_UseDecorate"].ToString() == "0")
-				{
-					lblContent.CssClass = string.Format("{0} normalCheckBox", lblContent.CssClass);
-				}
+                //set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
+                if (!Settings.UseDecorate)
+                {
+                    lblContent.CssClass = string.Format("{0} normalCheckBox", lblContent.CssClass);
+                }
+
+                if (IsPostBack && AJAX.IsEnabled() && AJAX.GetScriptManager(Page).IsInAsyncPostBack)
+                {
+                    var resetScript = $@"
+if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof dnn.controls.controls !== 'undefined'){{
+    var control = dnn.controls.controls['{lblContent.ClientID}'];
+    if(control && control.container !== $get('{lblContent.ClientID}')){{
+        dnn.controls.controls['{lblContent.ClientID}'] = null;
+    }}
+}};";
+                    ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), $"ResetHtmlModule{ClientID}", resetScript, true);
+                }
             }
             catch (Exception exc)
             {
@@ -191,15 +190,13 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void lblContent_UpdateLabel(object source, DNNLabelEditEventArgs e)
         {
             try
             {
                 // verify security 
-                if ((!new PortalSecurity().InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text)))
+                if ((!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text)))
                 {
                     throw new SecurityException();
                 }
@@ -241,8 +238,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ModuleAction_Click(object sender, ActionEventArgs e)
         {
@@ -288,8 +283,6 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// </history>
         /// -----------------------------------------------------------------------------
         public ModuleActionCollection ModuleActions
         {

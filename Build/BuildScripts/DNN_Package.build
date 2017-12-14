@@ -13,8 +13,6 @@
     <InstallAssemblyExclude Include="$(WebsitePath)\bin\DotNetNuke.Modules.*"/>
     <InstallAssemblyExclude Include="$(WebsitePath)\bin\DotNetNuke.Enterprise.*"/>
     <InstallAssemblyExclude Include="$(WebsitePath)\bin\DotNetNuke.Professional.*"/>
-    <InstallAssemblyExclude Include="$(WebsitePath)\bin\Providers\DotNetNuke.Provider.Professional.FiftyOnePremiumProvider.dll"/>
-    <InstallAssemblyExclude Include="$(WebsitePath)\bin\Providers\FiftyOne.Foundation.dll"/>
   </ItemGroup>
   
   <ItemGroup>
@@ -22,6 +20,7 @@
     <InstallExclude Include="$(WebsitePath)\release.config"/>
     <InstallExclude Include="$(WebsitePath)\DotNetNuke.vstemplate"/>
     <InstallExclude Include="$(WebsitePath)\dotnetnuke.webproj"/>
+    <InstallExclude Include="$(WebsitePath)\App_Data\RadSpell\en-US.tdf"/>
 
     <InstallExclude Include="$(WebsitePath)\Install\Module\DNNXE*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Module\DNNPro*"/>
@@ -29,8 +28,7 @@
     <InstallExclude Include="$(WebsitePath)\Install\Module\Telerik_Design*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\*.resources"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\Facebook*"/>
-    <InstallExclude Include="$(WebsitePath)\Install\Provider\RadEditorProvider_06.01.02_Install.resources" />
-    <InstallExclude Include="$(WebsitePath)\Install\Provider\FiftyOnePremiumProvider_*_Install.zip" />
+    <InstallExclude Include="$(WebsitePath)\Install\Provider\RadEditorProvider_*_Install.resources" />
     <InstallExclude Include="$(WebsitePath)\Install\AuthSystem\DNNPro*"/>
     <InstallExclude Include="$(WebsitePath)\**\*.cs" />
     <InstallExclude Include="$(WebsitePath)\bin\**\*.*"/>
@@ -64,12 +62,19 @@
 
 
   <Target Name="CreateInstall" DependsOnTargets="Compile">
+    <!-- Copy CKEditor Provider assembly into bin folder -->
+    <ItemGroup>
+      <CKEditorPackage Include="$(WebsitePath)\Install\Provider\DNNConnect.CKEditorProvider_*_Install.zip" />
+    </ItemGroup>
+    <Unzip ZipFileName="@(CKEditorPackage)" TargetDirectory="$(WebsitePath)\..\CKEditorPackage"/>
+    <Copy SourceFiles="$(WebsitePath)\..\CKEditorPackage\bin\DNNConnect.CKEditorProvider.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <RemoveDir Directories ="$(WebsitePath)\..\CKEditorPackage" />
+      
     <ItemGroup>
       <InstallPackage Include="$(WebsitePath)\**\*.*" Exclude="@(InstallExclude)" />
       <InstallPackage Include="$(WebsitePath)\bin\*.dll" Exclude="@(InstallAssemblyExclude)" />
       <InstallPackage Include="$(WebsitePath)\bin\Providers\*.dll" Exclude="@(InstallAssemblyExclude)" />
     </ItemGroup>
-
     <Zip Files="@(InstallPackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformRoot)\$(PackageName)_Install.zip" />
     <Message Text="Creating Install Package" Importance="high" />
   </Target>

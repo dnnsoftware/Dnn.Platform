@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -65,6 +65,11 @@ namespace DotNetNuke.Common.Utilities.Internal
             new RetryableAction(action, description, 30, TimeSpan.FromSeconds(1)).TryIt();
         }
 
+        public static void Retry5TimesWith2SecondsDelay(Action action, string description)
+        {
+            new RetryableAction(action, description, 5, TimeSpan.FromSeconds(2)).TryIt();
+        }
+
         /// <summary>
         /// Method that allows thread to sleep until next retry meant for unit testing purposes
         /// </summary>
@@ -106,7 +111,8 @@ namespace DotNetNuke.Common.Utilities.Internal
                 try
                 {
                     Action();
-                    Logger.TraceFormat("Action succeeded - {0}", Description);
+                    if (Logger.IsTraceEnabled)
+                        Logger.TraceFormat("Action succeeded - {0}", Description);
                     return;
                 }
                 catch(Exception)
@@ -117,7 +123,8 @@ namespace DotNetNuke.Common.Utilities.Internal
                         throw;
                     }
 
-                    Logger.TraceFormat("Retrying action {0} - {1}", retrysRemaining, Description);
+                    if (Logger.IsTraceEnabled)
+                        Logger.TraceFormat("Retrying action {0} - {1}", retrysRemaining, Description);
                     SleepAction.Invoke(currentDelay);
 
                     const double epsilon = 0.0001;

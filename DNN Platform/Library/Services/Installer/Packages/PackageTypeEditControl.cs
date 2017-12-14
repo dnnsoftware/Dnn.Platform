@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
     /// The PackageTypeEditControl control provides a standard UI component for editing
     /// package types.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	01/25/2008	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:PackageTypeEditControl runat=server></{0}:PackageTypeEditControl>")]
     public class PackageTypeEditControl : TextEditControl
@@ -55,9 +52,6 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
         /// RenderEditMode renders the Edit mode of the control
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	02/27/2006	created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {

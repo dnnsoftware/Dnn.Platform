@@ -136,19 +136,19 @@
     <value>Import Module</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;Import Module&lt;/h1&gt;&lt;p&gt;Administrators can import content for the specified module.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;Import Module&lt;/h1&gt;&lt;p&gt;Import previously exported content into the specified module.&lt;/p&gt;</value>
   </data>
   <data name="Error.Text" xml:space="preserve">
-    <value>An error occurred during the import</value>
+    <value>An error occurred during the import.</value>
   </data>
   <data name="ImportNotSupported.Text" xml:space="preserve">
-    <value>The module selected does not support the importing of content</value>
+    <value>The module selected does not support the importing of content.</value>
   </data>
   <data name="NotCorrectType.Text" xml:space="preserve">
-    <value>The module content is not the correct type for this module</value>
+    <value>The module content is not the correct type for this module.</value>
   </data>
   <data name="NotValidXml.Text" xml:space="preserve">
-    <value>The module content does not have a valid XML structure</value>
+    <value>The module content does not have a valid XML structure.</value>
   </data>
   <data name="Root.Text" xml:space="preserve">
     <value>Root</value>

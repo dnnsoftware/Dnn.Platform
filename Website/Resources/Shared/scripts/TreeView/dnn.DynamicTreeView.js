@@ -1,7 +1,7 @@
 ﻿; if (typeof window.dnn === "undefined" || window.dnn === null) { window.dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // All Rights Reserved
 
@@ -74,13 +74,13 @@
             var data = nodeContext.data || { name: "", selectable: false };
             var textNode = $("<a>" + $.htmlEncode(data.name) + "</a>").addClass(this.options.textCss);
             if (data.selectable) {
-                textNode.prop("href", "javascript:void(0);").bind("click", this._onNodeTextClickHandler);
+                textNode.prop("href", "javascript:void(0);").on("click", this._onNodeTextClickHandler);
             }
             else {
                 textNode.addClass(this.options.unselectableCss);
             }
             $nodeElement
-                .append($("<a href='javascript:;'/>").addClass(this.options.iconCss).on("click", this._onNodeIconClickHandler))
+                .append($("<a href='javascript:;' aria-label=\"Node\"/>").addClass(this.options.iconCss).on("click", this._onNodeIconClickHandler))
                 .append(textNode);
             this._initializeNodeIcon(nodeContext, $nodeElement);
             $nodeElement.children().eq(1).prop("title", data.name);
@@ -370,9 +370,9 @@
                         .append($("<a href='javascript:void(0);' class='" + this.options.sortButtonCss + "'><span>" + this.options.sortAscendingButtonTitle + "</span></a>"))
                         .append($("<div class='" + this.options.searchContainerCss + "'/>")
                             .append($("<div class='" + this.options.searchInputContainerCss + "'/>")
-                                .append($("<input type='text' placeholder='" + this.options.searchInputPlaceHolder + "' maxlength='200' autocomplete='off' class='" + this.options.searchInputCss + "'>")))
-                            .append($("<a href='javascript:void(0);' title='" + this.options.clearButtonTooltip + "' style='display:none;' class='" + this.options.clearButtonCss + "'/>"))
-                            .append($("<a href='javascript:void(0);' title='" + this.options.searchButtonTooltip + "' class='" + this.options.searchButtonCss + "'/>"))))
+                                .append($("<input type='text' placeholder='" + this.options.searchInputPlaceHolder + "' maxlength='200' autocomplete='off' class='" + this.options.searchInputCss + "' aria-label=\"Search\">")))
+                            .append($("<a href='javascript:void(0);' title='" + this.options.clearButtonTooltip + "' style='display:none;' class='" + this.options.clearButtonCss + "' aria-label=\"Clear\"/>"))
+                            .append($("<a href='javascript:void(0);' title='" + this.options.searchButtonTooltip + "' class='" + this.options.searchButtonCss + "' aria-label=\"Search\"/>"))))
                     .append($("<div class='" + this.options.contentCss + "'/>")
                         .append($("<div class='" + this.options.treeContainerCss + "'/>")))
                     .append($("<div class='" + this.options.footerCss + "'/>")
@@ -471,7 +471,7 @@
             if (!this._resizer) {
                 var $resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
                 this._resizer = new dnn.Resizer($resizerElement[0], { container: this.$element });
-                $(this._resizer).bind("resized", $.proxy(this._onResize, this));
+                $(this._resizer).on("resized", $.proxy(this._onResize, this));
             }
 
             this._showTree(this._selectedNodeId);
@@ -716,16 +716,19 @@
                 }
             }
 
-            if (this.options.rootNodeName) {
-                rootNode.children[0].data.name = this.options.rootNodeName;
+            if (rootNode.children && rootNode.children.length > 0 && this.options.rootNodeName) {
+                if (rootNode.children[0].data.id === this.options.rootNodeId) { // Check if first node is the configured root node. Search or Sort could change that
+                    rootNode.children[0].data.name = this.options.rootNodeName;
+                }
             }
+
 
             onGetTreeCallback.apply(this, [rootNode]);
         },
 
         getChildren: function (parentId, sortOrder, searchText, onGetChildrenCallback) {
             var onGetChildrenHandler = $.proxy(this._onGetChildren, this, onGetChildrenCallback);
-            this._callGet({ parentId: parentId, sortOrder: sortOrder, searchText: searchText }, onGetChildrenHandler, this.options.getNodeDescendantsMethod);
+            this._callGet({ parentId: parentId, sortOrder: sortOrder, searchText: searchText, includeAllTypes: true }, onGetChildrenHandler, this.options.getNodeDescendantsMethod);
         },
 
         _onGetChildren: function(onGetChildrenCallback, data, textStatus, jqXhr) {
@@ -735,12 +738,12 @@
 
         search: function(searchText, sortOrder, onSearchCallback) {
             var onSearchHandler = $.proxy(this._onGetTree, this, onSearchCallback);
-            this._callGet({ searchText: searchText, sortOrder: sortOrder }, onSearchHandler, this.options.searchTreeMethod);
+            this._callGet({ searchText: searchText, sortOrder: sortOrder, includeAllTypes: true }, onSearchHandler, this.options.searchTreeMethod);
         },
 
         getTree: function (sortOrder, onGetFirstLevelItemsCallback) {
             var onGetFirstLevelItemsHandler = $.proxy(this._onGetTree, this, onGetFirstLevelItemsCallback);
-            this._callGet({ sortOrder: sortOrder }, onGetFirstLevelItemsHandler, this.options.getTreeMethod);
+            this._callGet({ sortOrder: sortOrder, includeAllTypes: true }, onGetFirstLevelItemsHandler, this.options.getTreeMethod);
         },
 
         sortTree: function (sortOrder, rootNode, searchText, onSortTreeCallback) {

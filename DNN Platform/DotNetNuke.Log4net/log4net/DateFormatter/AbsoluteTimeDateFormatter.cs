@@ -18,6 +18,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Text;
 
@@ -100,22 +101,36 @@ namespace log4net.DateFormatter
 		/// </remarks>
 		virtual public void FormatDate(DateTime dateToFormat, TextWriter writer)
 		{
+                    lock (s_lastTimeStrings)
+		    {
 			// Calculate the current time precise only to the second
 			long currentTimeToTheSecond = (dateToFormat.Ticks - (dateToFormat.Ticks % TimeSpan.TicksPerSecond));
 
+                        string timeString = null;
 			// Compare this time with the stored last time
 			// If we are in the same second then append
 			// the previously calculated time string
-			if (s_lastTimeToTheSecond != currentTimeToTheSecond)
-			{
+                        if (s_lastTimeToTheSecond != currentTimeToTheSecond)
+                        {
+                            s_lastTimeStrings.Clear();
+                        }
+                        else
+                        {
+                            timeString = (string) s_lastTimeStrings[GetType()];
+                        }
+
+                        if (timeString == null)
+                        {
 				// lock so that only one thread can use the buffer and
-				// update the s_lastTimeToTheSecond and s_lastTimeString
+				// update the s_lastTimeToTheSecond and s_lastTimeStrings
 
 				// PERF: Try removing this lock and using a new StringBuilder each time
 				lock(s_lastTimeBuf)
 				{
-					if (s_lastTimeToTheSecond != currentTimeToTheSecond)
-					{
+                                        timeString = (string) s_lastTimeStrings[GetType()];
+
+                                        if (timeString == null)
+                                        {
 						// We are in a new second.
 						s_lastTimeBuf.Length = 0;
 
@@ -123,7 +138,7 @@ namespace log4net.DateFormatter
 						FormatDateWithoutMillis(dateToFormat, s_lastTimeBuf);
 
 						// Render the string buffer to a string
-						string currentDateWithoutMillis = s_lastTimeBuf.ToString();
+                                                timeString = s_lastTimeBuf.ToString();
 
 #if NET_1_1
 						// Ensure that the above string is written into the variable NOW on all threads.
@@ -131,12 +146,12 @@ namespace log4net.DateFormatter
 						System.Threading.Thread.MemoryBarrier();
 #endif
 						// Store the time as a string (we only have to do this once per second)
-						s_lastTimeString = currentDateWithoutMillis;
+                                                s_lastTimeStrings[GetType()] = timeString;
 						s_lastTimeToTheSecond = currentTimeToTheSecond;
 					}
 				}
 			}
-			writer.Write(s_lastTimeString);
+			writer.Write(timeString);
 	
 			// Append the current millisecond info
 			writer.Write(',');
@@ -150,6 +165,7 @@ namespace log4net.DateFormatter
 				writer.Write('0');
 			}
 			writer.Write(millis);
+                    }
 		}
 
 		#endregion Implementation of IDateFormatter
@@ -190,7 +206,7 @@ namespace log4net.DateFormatter
 		/// Last stored time with precision up to the second, formatted
 		/// as a string.
 		/// </summary>
-		private static string s_lastTimeString;
+		private static Hashtable s_lastTimeStrings = new Hashtable();
 
 		#endregion Private Static Fields
 	}

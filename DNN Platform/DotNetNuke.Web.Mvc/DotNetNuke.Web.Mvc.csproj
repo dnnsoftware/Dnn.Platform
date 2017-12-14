@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
@@ -41,18 +41,30 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Packages\Microsoft.AspNet.Mvc.5.1.3\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -92,24 +104,38 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Common\AntiForgery.cs" />
+    <Compile Include="Common\AntiForgeryImpl.cs" />
     <Compile Include="Common\DesktopModuleControllerAdapter.cs" />
+    <Compile Include="Common\IAntiForgery.cs" />
     <Compile Include="Common\IDesktopModuleController.cs" />
     <Compile Include="Common\IModuleControlController.cs" />
     <Compile Include="Common\ModuleControlControllerAdapter.cs" />
     <Compile Include="Common\PropertyHelper.cs" />
     <Compile Include="Common\TypeHelper.cs" />
+    <Compile Include="Framework\ActionFilters\AuthFilterContext.cs" />
     <Compile Include="Framework\ActionFilters\AuthorizeAttributeBase.cs" />
     <Compile Include="Framework\ActionFilters\DnnAuthorizeAttribute.cs" />
     <Compile Include="Framework\ActionFilters\DnnHandleErrorAttribute.cs" />
-    <Compile Include="Framework\ActionFilters\DnnModuleAuthotize.cs" />
+    <Compile Include="Framework\ActionFilters\DnnModuleAuthorizeAttribute.cs" />
     <Compile Include="Framework\ActionFilters\ModuleActionAttribute.cs" />
     <Compile Include="Framework\ActionFilters\ModuleActionItemsAttribute.cs" />
     <Compile Include="Framework\ActionFilters\RequireHostAttribute.cs" />
+    <Compile Include="Framework\ActionFilters\ValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Framework\ActionResults\DnnPartialViewResult.cs" />
     <Compile Include="Framework\ActionResults\DnnRedirecttoRouteResult.cs" />
     <Compile Include="Framework\ActionResults\DnnViewResult.cs" />
     <Compile Include="Framework\ActionResults\IDnnViewResult.cs" />
     <Compile Include="Framework\Controllers\DnnController.cs" />
     <Compile Include="Framework\Controllers\IDnnController.cs" />
+    <Compile Include="HttpConfigurationExtensions.cs" />
+    <Compile Include="HttpContextExtensions.cs" />
+    <Compile Include="Routing\HttpRequestExtensions.cs" />
+    <Compile Include="ITabAndModuleInfoProvider.cs" />
+    <Compile Include="Routing\ConstraintValidation.cs" />
+    <Compile Include="Routing\IMapRoute.cs" />
+    <Compile Include="Routing\IMvcRouteMapper.cs" />
+    <Compile Include="Framework\ViewEngineCollectionExt.cs" />
     <Compile Include="Framework\DnnWebViewPage.cs" />
     <Compile Include="Framework\DnnWebViewPageOfT.cs" />
     <Compile Include="Framework\ModuleDelegatingViewEngine.cs" />
@@ -121,6 +147,8 @@
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />
     <Compile Include="Helpers\DnnHelperOfT.cs" />
     <Compile Include="Helpers\DnnLabelExtensions.cs" />
+    <Compile Include="Helpers\HtmlDisplayTextExtensions.cs" />
+    <Compile Include="Helpers\HtmlDisplayNameExtensions.cs" />
     <Compile Include="Helpers\HtmlEditorExtensions.cs" />
     <Compile Include="Helpers\HtmlInputExtensions.cs" />
     <Compile Include="Helpers\HtmlLabelExtensions.cs" />
@@ -131,6 +159,8 @@
     <Compile Include="Helpers\DnnUrlHelper.cs" />
     <Compile Include="Helpers\HtmlLinkExtensions.cs" />
     <Compile Include="Helpers\HtmlNameExtensions.cs" />
+    <Compile Include="Helpers\HtmlPartialExtensions.cs" />
+    <Compile Include="Helpers\HtmlRenderPartialExtensions.cs" />
     <Compile Include="Helpers\HtmlSelectExtensions.cs" />
     <Compile Include="Helpers\HtmlTextAreaExtensions.cs" />
     <Compile Include="Helpers\HtmlValidationExtensions.cs" />
@@ -139,19 +169,35 @@
     <Compile Include="MvcHttpModule.cs" />
     <Compile Include="MvcModuleControlFactory.cs" />
     <Compile Include="MvcSettingsControl.cs" />
+    <Compile Include="Common\DictionaryExtensions.cs" />
+    <Compile Include="DnnMvcHandler.cs" />
+    <Compile Include="DnnMvcRouteHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Routing\HttpContextExtensions.cs" />
+    <Compile Include="Routing\IPortalAliasMvcRouteManager.cs" />
     <Compile Include="Routing\ModuleRoutingProvider.cs" />
+    <Compile Include="Routing\MvcRouteExtensions.cs" />
+    <Compile Include="Routing\MvcRoutingManager.cs" />
+    <Compile Include="Routing\PortalAliasMvcRouteManager.cs" />
     <Compile Include="Routing\StandardModuleRoutingProvider.cs" />
+    <Compile Include="StandardTabAndModuleInfoProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
+      <Project>{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}</Project>
+      <Name>DotNetNuke.HttpModules</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

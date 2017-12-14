@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -76,8 +76,7 @@ namespace DotNetNuke.UI.Modules
 
         internal static bool IsValidModuleInjectionFilter(Type t)
         {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                   typeof(IModuleInjectionFilter).IsAssignableFrom(t);
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
         }
 
         public static bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)

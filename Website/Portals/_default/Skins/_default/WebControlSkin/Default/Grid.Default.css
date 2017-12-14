@@ -437,6 +437,7 @@
 .RadGrid_Default .rgRow td {
     border-color: #fff;
     cursor: pointer;
+    min-width: 16px;
 }
 .RadGrid_Default .rgAltRow {
     background: #f2f2f2;

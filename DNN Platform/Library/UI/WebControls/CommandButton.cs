@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,9 +41,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    /// 	[cnurse]	01/06/2006	Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:CommandButton runat=server></{0}:CommandButton>")]
     public class CommandButton : WebControl, INamingContainer
@@ -58,9 +55,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>Defaults to 1 non-breaking spaces</remarks>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	12/17/2007   created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
@@ -82,9 +76,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool CausesValidation
         {
@@ -106,9 +97,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the command argument for this command button
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	12/22/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CommandArgument
         {
@@ -130,9 +118,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the command name for this command button
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string CommandName
         {
@@ -155,9 +140,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
@@ -179,9 +161,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public bool DisplayIcon
         {
@@ -202,9 +181,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the Image used for the Icon
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ImageUrl
         {
@@ -252,9 +228,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the "onClick" Attribute
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string OnClick
         {
@@ -284,9 +257,6 @@ namespace DotNetNuke.UI.WebControls
         ///   Gets or sets the "OnClientClick" Property
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        ///   [cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string OnClientClick
         {
@@ -308,9 +278,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the Resource Key used for the Control
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ResourceKey
         {
@@ -340,9 +307,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the Text used for the Control
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string Text
         {
@@ -363,9 +327,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the tooltip resource key used for the Control
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[Ben]	03/07/2014	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ToolTipKey { get; set; }
 
@@ -374,9 +335,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets or sets the Validation Group that this control "validates"
         /// </summary>
         /// <value>A String</value>
-        /// <history>
-        /// 	[cnurse]	06/03/2008	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string ValidationGroup
         {
@@ -405,9 +363,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
@@ -446,9 +401,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// OnButtonClick raises the CommandButton control's Click event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/17/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnButtonClick(EventArgs e)
         {
@@ -462,9 +414,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// OnCommand raises the CommandButton control's Command event
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/22/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void OnCommand(CommandEventArgs e)
         {
@@ -478,9 +427,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// OnPreRender runs just before the Render phase of the Page Life Cycle
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	12/22/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
@@ -521,9 +467,6 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         /// <param name="sender"> The object that triggers the event</param>
         /// <param name="e">An EventArgs object</param>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void RaiseClick(object sender, EventArgs e)
         {
@@ -538,9 +481,6 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         /// <param name="sender"> The object that triggers the event</param>
         /// <param name="e">An CommandEventArgs object</param>
-        /// <history>
-        /// 	[cnurse]	12/22/2007	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void RaiseCommand(object sender, CommandEventArgs e)
         {
@@ -555,9 +495,6 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         /// <param name="sender"> The object that triggers the event</param>
         /// <param name="e">An ImageClickEventArgs object</param>
-        /// <history>
-        /// 	[cnurse]	01/06/2006	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected void RaiseImageClick(object sender, ImageClickEventArgs e)
         {

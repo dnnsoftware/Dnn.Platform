@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         id = "user-" + user.UserID,
                         name = user.DisplayName,
-                        iconfile = string.Format(Globals.UserProfilePicRelativeUrl(), user.UserID, 32, 32),
+                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32)
                     }).ToList();
 
                 //Roles should be visible to Administrators or User in the Role.

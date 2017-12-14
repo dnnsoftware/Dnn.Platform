@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Common;
 using DotNetNuke.Modules.HTMLEditorProvider;
 
 #endregion
@@ -36,16 +37,48 @@ namespace DotNetNuke.UI.WebControls
     /// The DNNRichTextEditControl control provides a standard UI component for editing
     /// RichText
     /// </summary>
-    /// <history>
-    ///     [cnurse]	03/31/2006	created
-    /// </history>
-    /// <remarks>This is still being used in 6.0.0 (edit a profile, biography field).</remarks>
-    [Obsolete("Deprecated in DNN 5.6.2.  Replaced by control of same name in DotNetNuke.Web assembly")]
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl
     {
+        private HtmlEditorProvider _richTextEditor;
+        private TextBox _defaultTextEditor;
 
-        private HtmlEditorProvider RichTextEditor;
+        protected Control TextEditControl
+        {
+            get
+            {
+                if (_richTextEditor != null)
+                {
+                    return _richTextEditor.HtmlEditorControl;
+                }
+
+                return _defaultTextEditor;
+            }
+        }
+
+        protected string EditorText
+        {
+            get
+            {
+                if (_richTextEditor != null)
+                {
+                    return _richTextEditor.Text;
+                }
+
+                return _defaultTextEditor.Text;
+            }
+            set
+            {
+                if (_richTextEditor != null)
+                {
+                    _richTextEditor.Text = value;
+                }
+                else
+                {
+                    _defaultTextEditor.Text = value;
+                }
+            }
+        }
 
         protected override void CreateChildControls()
         {
@@ -60,23 +93,38 @@ namespace DotNetNuke.UI.WebControls
                 {
                     pnlEditor.CssClass = string.Format("{0} dnnLeft", CssClass);
                 }
-                
 
-                RichTextEditor = HtmlEditorProvider.Instance();
-                RichTextEditor.ControlID = ID + "edit";
-                RichTextEditor.Initialize();
-                RichTextEditor.Height = ControlStyle.Height;
-                RichTextEditor.Width = ControlStyle.Width;
-                if (RichTextEditor.Height.IsEmpty)
+
+                _richTextEditor = HtmlEditorProvider.Instance();
+                if (_richTextEditor != null)
                 {
-                    RichTextEditor.Height = new Unit(250);
+                    _richTextEditor.ControlID = ID + "edit";
+                    _richTextEditor.Initialize();
+                    _richTextEditor.Height = ControlStyle.Height;
+                    _richTextEditor.Width = ControlStyle.Width;
+                    if (_richTextEditor.Height.IsEmpty)
+                    {
+                        _richTextEditor.Height = new Unit(250);
+                    }
+
+                    _richTextEditor.Width = new Unit(400);
+                }
+                else
+                {
+                    _defaultTextEditor = new TextBox
+                                         {
+                                             ID = ID + "edit",
+                                             Width = ControlStyle.Width.IsEmpty ? new Unit(300) : ControlStyle.Width,
+                                             Height = ControlStyle.Height.IsEmpty ? new Unit(250) : ControlStyle.Height,
+                                             TextMode = TextBoxMode.MultiLine
+                                         };
+                    _defaultTextEditor.Attributes.Add("aria-label", "editor");
                 }
 
-                RichTextEditor.Width = new Unit(400);
-
                 Controls.Clear();
-                pnlEditor.Controls.Add(RichTextEditor.HtmlEditorControl);
+                pnlEditor.Controls.Add(TextEditControl);
                 Controls.Add(pnlEditor);
+                
             }
             base.CreateChildControls();
         }
@@ -85,7 +133,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var dataChanged = false;
             var presentValue = StringValue;
-            var postedValue = RichTextEditor.Text;
+            var postedValue = EditorText;
             if (!presentValue.Equals(postedValue))
             {
                 Value = postedValue;
@@ -104,9 +152,7 @@ namespace DotNetNuke.UI.WebControls
 
         private string RemoveBaseTags(String strInput)
         {
-            //const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
-            const string pattern = "<base[^>]*>";
-            return Regex.Replace(strInput, pattern, " ", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            return Globals.BaseTagRegex.Replace(strInput, " ");
         }
 
         protected override void OnInit(EventArgs e)
@@ -120,7 +166,7 @@ namespace DotNetNuke.UI.WebControls
             base.OnPreRender(e);
             if (EditMode == PropertyEditorMode.Edit)
             {
-                RichTextEditor.Text = Page.Server.HtmlDecode(Convert.ToString(Value));
+                EditorText = Page.Server.HtmlDecode(Convert.ToString(Value));
             }
             if (Page != null && EditMode == PropertyEditorMode.Edit)
             {

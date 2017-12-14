@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -115,10 +114,15 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             if (OutputXml)
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
-                var writer = new StreamWriter(new MemoryStream());
-                targetDoc.Save(writer);
-                writer.BaseStream.Seek(0, SeekOrigin.Begin);
-                Debug.WriteLine(new StreamReader(writer.BaseStream).ReadToEnd());
+                using (var writer = new StreamWriter(new MemoryStream()))
+                {
+                    targetDoc.Save(writer);
+                    writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                    using (var sr = new StreamReader(writer.BaseStream))
+                    {
+                        Debug.WriteLine("{0}", sr.ReadToEnd());
+                    }
+                }
             }
         }
 
@@ -447,6 +451,38 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             var node = nodes[0];
             Assert.AreEqual("foo", node.Attributes["test"].Value);
 
+        }
+
+        [Test]
+        public void NoChangeOnOverwrite()
+        {
+            XmlMerge merge = GetXmlMerge(nameof(NoChangeOnOverwrite));
+            XmlDocument targetDoc = LoadTargetDoc(nameof(NoChangeOnOverwrite));
+
+            merge.UpdateConfig(targetDoc);
+
+            WriteToDebug(targetDoc);
+
+            var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
+            Assert.AreEqual(3, nodes.Count);
+            
+            Assert.False(merge.ConfigUpdateChangedNodes);
+        }
+
+        [Test]
+        public void ShouldChangeOnOverwrite()
+        {
+            XmlMerge merge = GetXmlMerge(nameof(ShouldChangeOnOverwrite));
+            XmlDocument targetDoc = LoadTargetDoc(nameof(ShouldChangeOnOverwrite));
+
+            merge.UpdateConfig(targetDoc);
+
+            WriteToDebug(targetDoc);
+
+            var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
+            Assert.AreEqual(3, nodes.Count);
+            
+            Assert.True(merge.ConfigUpdateChangedNodes);
         }
 
 // ReSharper restore PossibleNullReferenceException

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,6 +31,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Content.Workflow.Entities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.FileSystem;
@@ -70,6 +71,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IEventHandlersContainer<IFileEventHandlers>> _fileEventHandlersContainer;
         private Mock<IFileLockingController> _mockFileLockingController;
         private Mock<IFileDeletionController> _mockFileDeletionController;
+        private Mock<IHostController> _hostController;
 
         #endregion
 
@@ -85,6 +87,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderManager = new Mock<IFolderManager>();
             _folderPermissionController = new Mock<IFolderPermissionController>();
             _portalController = new Mock<IPortalController>();
+            _hostController = new Mock<IHostController>();
             _folderMappingController = new Mock<IFolderMappingController>();
             _fileVersionController = new Mock<IFileVersionController>();
             _workflowManager = new Mock<IWorkflowManager>();
@@ -98,6 +101,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FolderManager.RegisterInstance(_folderManager.Object);
             FolderPermissionController.SetTestableInstance(_folderPermissionController.Object);
             PortalController.SetTestableInstance(_portalController.Object);
+            HostController.RegisterInstance(_hostController.Object);
             FolderMappingController.RegisterInstance(_folderMappingController.Object);
             TestableGlobals.SetTestableInstance(_globals.Object);
             CBO.SetTestableInstance(_cbo.Object);
@@ -188,6 +192,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(false);
             
             _mockFileManager.Setup(fm => fm.CreateFileContentItem()).Returns(new ContentItem());
+            _mockFileManager.Setup(fm => fm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
 
             _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
         }
@@ -196,6 +201,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void AddFile_Checks_Space_For_Stream_Length()
         {
             //Arrange
+            PrepareFileSecurityCheck();
             _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
             _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
             _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
@@ -253,7 +259,83 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
         }
 
-         [Test]
+        [TestCase("invalid_script.svg")]
+        [TestCase("invalid_onload.svg")]
+        [TestCase("invalid_onerror.svg")]
+        [ExpectedException(typeof(InvalidFileContentException))]
+        public void AddFile_Throws_When_File_Content_Is_Invalid(string fileName)
+        {
+            PrepareFileSecurityCheck();
+
+            using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Resources\\{fileName}")))
+            {
+                _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
+                _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
+
+                _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
+            }
+        }
+
+        [Test]
+        public void AddFile_No_Error_When_File_Content_Is_Valid()
+        {
+            PrepareFileSecurityCheck();
+
+            using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\valid.svg")))
+            {
+                _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
+                _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
+                _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
+
+                _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
+            }
+        }
+
+        private void PrepareFileSecurityCheck()
+        {
+            _mockData.Setup(p => p.GetListEntriesByListName("FileSecurityChecker", string.Empty, Null.NullInteger)).Returns(() =>
+            {
+                var dataTable = new DataTable();
+                dataTable.Columns.Add("EntryID", typeof(int));
+                dataTable.Columns.Add("ListName", typeof(string));
+                dataTable.Columns.Add("Value", typeof(string));
+                dataTable.Columns.Add("Text", typeof(string));
+                dataTable.Columns.Add("Level", typeof(int));
+                dataTable.Columns.Add("SortOrder", typeof(int));
+                dataTable.Columns.Add("DefinitionID", typeof(int));
+                dataTable.Columns.Add("ParentID", typeof(int));
+                dataTable.Columns.Add("Description", typeof(string));
+                dataTable.Columns.Add("PortalID", typeof(int));
+                dataTable.Columns.Add("SystemList", typeof(bool));
+                dataTable.Columns.Add("ParentKey", typeof(string));
+                dataTable.Columns.Add("Parent", typeof(string));
+                dataTable.Columns.Add("ParentList", typeof(string));
+                dataTable.Columns.Add("MaxSortOrder", typeof(int));
+                dataTable.Columns.Add("EntryCount", typeof(int));
+                dataTable.Columns.Add("HasChildren", typeof(int));
+                dataTable.Columns.Add("CreatedByUserID", typeof(int));
+                dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
+                dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
+                dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+
+                dataTable.Rows.Add(1, "FileSecurityChecker", "svg",
+                    "DotNetNuke.Services.FileSystem.Internal.SecurityCheckers.SvgFileChecker, DotNetNuke",
+                    0, 0, -1, -0, "", -1, 1, "", "", "", 0, 1, 0, -1, DateTime.Now, -1, DateTime.Now);
+
+                return dataTable.CreateDataReader();
+            });
+            _hostController.Setup(c => c.GetString("PerformanceSetting")).Returns("NoCaching");
+            _globals.Setup(g => g.HostMapPath).Returns(AppDomain.CurrentDomain.BaseDirectory);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+        }
+
+        [Test]
         public void AddFile_Does_Not_Call_FolderProvider_AddFile_When_Not_Overwritting_And_File_Exists()
         {
             _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -261,7 +343,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
             _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
             _folderInfo.Setup(fi => fi.WorkflowID).Returns(Null.NullInteger);
-
+            
             var fileContent = new MemoryStream();
 
             _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
@@ -274,6 +356,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(true);
             _mockFolder.Setup(mf => mf.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent));
+            _mockFolder.Setup(mf => mf.GetHashCode(It.IsAny<IFileInfo>())).Returns("aaa");
 
             _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
             _mockFileManager.Setup(mfm => mfm.UpdateFile(It.IsAny<IFileInfo>(), It.IsAny<Stream>()));
@@ -297,6 +380,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                            It.IsAny<int>(),
                            It.IsAny<string>(),
                            It.IsAny<DateTime>(),
+                           It.IsAny<string>(),
                            It.IsAny<string>(),
                            It.IsAny<DateTime>(),
                            It.IsAny<DateTime>(),
@@ -850,6 +934,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFileManager.Setup(mfm => mfm.FileExists(_folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(false);
             _mockFileManager.Setup(mfm => mfm.UpdateFile(_fileInfo.Object));
+            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
 
             var folderMapping = new FolderMappingInfo();
             folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
@@ -882,6 +967,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
 
             _mockFileManager.Setup(mfm => mfm.FileExists(_folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(true);
+            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
 
             _mockFileManager.Object.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherValidFileName);
         }
@@ -913,6 +999,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFileManager.Setup(mfm => mfm.FileExists(_folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(false);
             _mockFileManager.Setup(mfm => mfm.UpdateFile(_fileInfo.Object));
+            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
 
             var folderMapping = new FolderMappingInfo();
             folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
@@ -993,6 +1080,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 It.IsAny<int>(),
                 It.IsAny<string>(),
                 It.IsAny<DateTime>(),
+                It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>(),

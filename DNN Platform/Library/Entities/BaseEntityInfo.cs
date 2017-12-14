@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,9 +40,6 @@ namespace DotNetNuke.Entities
     /// <summary>
     /// BaseEntityInfo provides auditing fields for Core tables.
     /// </summary>
-    /// <history>
-    /// 	[jlucarino]	02/20/2009   Created
-    /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class BaseEntityInfo
@@ -58,21 +55,15 @@ namespace DotNetNuke.Entities
         /// Gets the CreatedByUserID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[jlucarino]	02/20/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public int CreatedByUserID { get; private set; }
+        public int CreatedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the CreatedOnDate
         /// </summary>
         /// <returns>A DateTime</returns>
-        /// <history>
-        /// 	[jlucarino]	02/20/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
         public DateTime CreatedOnDate { get; private set; }
@@ -82,21 +73,15 @@ namespace DotNetNuke.Entities
         /// Gets the LastModifiedByUserID
         /// </summary>
         /// <returns>An Integer</returns>
-        /// <history>
-        /// 	[jlucarino]	02/20/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public int LastModifiedByUserID { get; private set; }
+        public int LastModifiedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the LastModifiedOnDate
         /// </summary>
         /// <returns>A DateTime</returns>
-        /// <history>
-        /// 	[jlucarino]	02/20/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
         public DateTime LastModifiedOnDate { get; private set; }
@@ -107,9 +92,6 @@ namespace DotNetNuke.Entities
         /// </summary>
 		/// <param name="portalId">The PortalID associated with the desired user</param>
         /// <returns>A UserInfo object</returns>
-        /// <history>
-        /// 	[jlucarino]	02/20/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public UserInfo CreatedByUser(int portalId)
         {
@@ -127,9 +109,6 @@ namespace DotNetNuke.Entities
         /// </summary>
 		/// <param name="portalId">The PortalID associated with the desired user</param>
         /// <returns>A UserInfo object</returns>
-        /// <history>
-        /// 	[jlucarino]	02/20/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public UserInfo LastModifiedByUser(int portalId)
         {
@@ -146,9 +125,6 @@ namespace DotNetNuke.Entities
         /// Fills a BaseEntityInfo from a Data Reader
         /// </summary>
         /// <param name="dr">The Data Reader to use</param>
-        /// <history>
-        /// 	[jlucarino]	02/20/2009   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void FillInternal(IDataReader dr)
         {

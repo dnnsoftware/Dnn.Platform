@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="jQuery-UI" type="JavaScript_Library" version="01.11.03" isSystem="true">
+    <package name="jQuery-UI" type="JavaScript_Library" version="01.12.01" isSystem="true">
       <friendlyName>jQueryUI JavaScript Library</friendlyName>
       <description>jQueryUI is a JavaScript library that is used to extend jQuery to provide UI widgets.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
@@ -21,7 +21,7 @@
           <javaScriptLibrary>
             <libraryName>jQuery-UI</libraryName>
             <fileName>jquery-ui.js</fileName>
-            <CDNPath>//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js</CDNPath>
+            <CDNPath>//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
@@ -41,6 +41,7 @@
           </files>
         </component>
         <component type="Cleanup" version="01.10.03" fileName ="01.10.03.txt" />
+        <component type="Cleanup" version="01.11.03" fileName ="01.11.03.txt" />
       </components>
     </package>
   </packages>
