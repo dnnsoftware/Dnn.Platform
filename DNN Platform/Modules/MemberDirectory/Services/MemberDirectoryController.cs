@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     if (CanViewGroupMembers(portalId, groupId))
                     {
                         users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1,
-                                                                                       Int32.Parse(filterValue),
+                                                                                       groupId,
                                                                                        -1, isAdmin, pageIndex, pageSize,
                                                                                        sortField, (sortOrder == "ASC"),
                                                                                        propertyNames, propertyValues);
