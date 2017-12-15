@@ -162,6 +162,15 @@
   <data name="Password.Text" xml:space="preserve">
     <value>Wachtwoord:</value>
   </data>
+  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
+    <value>Productverbeteringsprogramma</value>
+  </data>
+  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
+    <value>Het productverbeteringsprogramma stelt ons in staat beter te begrijpen hoe we DNN voor u kunnen verbeteren. De gegevens zullen ons helpen het gebruik te analyseren en wat belangrijk is voor mensen die het product gebruiken. Alle gegevens zijn anoniem en alleen voor intern gebruik. Lees meer over het &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;productverbeteringsprogramma&lt;/a&gt;.</value>
+  </data>
+  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
+    <value>Verzend anonieme gebruiksinformatie naar DNN</value>
+  </data>
   <data name="Retry.Text" xml:space="preserve">
     <value>Opnieuw proberen</value>
   </data>

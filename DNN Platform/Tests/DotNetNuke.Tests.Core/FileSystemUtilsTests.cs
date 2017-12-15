@@ -20,6 +20,7 @@
 #endregion
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -75,8 +76,9 @@ namespace DotNetNuke.Tests.Core
         public void AddToZip_Should_Able_To_Add_Multiple_Files()
         {
             //Action
-            var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
+            DeleteZippedFiles();
             var zipFilePath = Path.Combine(Globals.ApplicationMapPath, $"Test{Guid.NewGuid().ToString().Substring(0, 8)}.zip");
+            var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
             using (var stream = File.Create(zipFilePath))
             {
                 var zipStream = new ZipOutputStream(stream);
@@ -93,22 +95,27 @@ namespace DotNetNuke.Tests.Core
             }
 
             //Assert
-            using (var stream = File.OpenRead(zipFilePath))
+            var destPath = Path.Combine(Globals.ApplicationMapPath, Path.GetFileNameWithoutExtension(zipFilePath));
+            if (!Directory.Exists(destPath))
             {
-                var zipStream = new ZipInputStream(stream);
-
-                var destPath = Path.Combine(Globals.ApplicationMapPath, Path.GetFileNameWithoutExtension(zipFilePath));
-                if (!Directory.Exists(destPath))
+                Directory.CreateDirectory(destPath);
+            }
+            try
+            {
+                using (var stream = File.OpenRead(zipFilePath))
                 {
-                    Directory.CreateDirectory(destPath);
+                    var zipStream = new ZipInputStream(stream);
+                    FileSystemUtils.UnzipResources(zipStream, destPath);
+                    zipStream.Close();
                 }
 
-                FileSystemUtils.UnzipResources(zipStream, destPath);
-                zipStream.Close();
-
                 var unZippedFiles = Directory.GetFiles(destPath, "*.*", SearchOption.TopDirectoryOnly);
-
                 Assert.AreEqual(files.Length, unZippedFiles.Length);
+            }
+            finally
+            {
+                DeleteZippedFiles();
+                DeleteUnzippedFolder(destPath);
             }
         }
 
@@ -122,6 +129,33 @@ namespace DotNetNuke.Tests.Core
             foreach (var file in Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly))
             {
                 File.Copy(file, Path.Combine(rootPath, Path.GetFileName(file)), true);
+            }
+        }
+
+        private void DeleteZippedFiles()
+        {
+            var excludedFiles = Directory.GetFiles(Globals.ApplicationMapPath, "Test*", SearchOption.TopDirectoryOnly);
+            foreach (var f in excludedFiles)
+            {
+                try
+                {
+                    File.Delete(f);
+                }
+                catch (Exception)
+                {
+                    //ignore
+                }
+            }
+        }
+        private void DeleteUnzippedFolder(string zippedFolder)
+        {
+            try
+            {
+                Directory.Delete(zippedFolder, true);
+            }
+            catch (Exception)
+            {
+                //ignore
             }
         }
     }

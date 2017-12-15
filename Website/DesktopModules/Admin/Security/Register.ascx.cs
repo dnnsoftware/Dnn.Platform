@@ -565,6 +565,21 @@ namespace DotNetNuke.Modules.Admin.Users
 			//Check User Editor
 			bool _IsValid = userForm.IsValid;
 
+		    if (_IsValid)
+		    {
+                // Validate username against bad characters; it must not start or end with space, 
+                // must not containg control characters, and not contain special puctuations
+                // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+		        char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+		        var name = User.Username;
+		        var valid = name.Length >= 5 &&
+		                    name == name.Trim() &&
+		                    name.All(ch => ch >= ' ') &&
+		                    name.IndexOfAny(unallowedAscii) < 0;
+		        if (!valid)
+		            CreateStatus = UserCreateStatus.InvalidUserName;
+		    }
+
 			if (PortalSettings.Registration.RegistrationFormType == 0)
 			{
 				//Update UserName

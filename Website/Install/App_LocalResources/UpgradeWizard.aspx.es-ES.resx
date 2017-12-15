@@ -169,6 +169,17 @@
   <data name="Password.Text" xml:space="preserve">
     <value>Contraseña:</value>
   </data>
+  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
+    <value>Programa de mejora del producto</value>
+  </data>
+  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
+    <value>El programa de mejora del producto nos permite comprender mejor cómo podemos
+mejora DNN para ti Los datos nos ayudarán a analizar el uso y lo que es importante
+para las personas que usan el producto. Todos los datos son anónimos y solo para uso interno. Conozca más sobre el &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de mejora del producto&lt;/a&gt;.</value>
+  </data>
+  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
+    <value>Enviar información de uso anónima a DNN</value>
+  </data>
   <data name="Retry.Text" xml:space="preserve">
     <value>Volver a intentar</value>
   </data>
