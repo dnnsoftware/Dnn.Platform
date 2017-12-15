@@ -202,6 +202,7 @@ const pageActions = {
 
     getNewPage(parentPage) {
         return (dispatch) => PagesService.getNewPage(parentPage).then((page) => {
+            page.referralTabId = parentPage.id;
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
                 data: { page },
