@@ -3822,7 +3822,7 @@ div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
 
 /* Overflow for dnnMenu dropdown */
 #dnnMenu .dropdown-menu {
-    overflow-x: hidden
+    word-wrap: break-word;
 }
 
 /* End Overflow for dnnMenu dropdown */

@@ -3582,8 +3582,3 @@ div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
 	z-index: 1;
 }
 /*END DNN Slider Input Style*/
-
-
-#dnnMenu .dropdown-menu {
-    overflow-x: hidden
-}
