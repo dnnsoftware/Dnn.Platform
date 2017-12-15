@@ -413,6 +413,21 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                 return settings;
             },
+            updateMenuSettings: function(identifier, settings, menuItems) {
+                menuItems = menuItems || menuViewModel.menu.menuItems;
+                for (var i = 0; i < menuItems.length; i++) {
+                    var menuItem = menuItems[i];
+                    if (typeof menuItem.length === "number" && menuItem.length > 0) {
+                        this.updateMenuSettings(identifier, settings, menuItem);
+                    } else {
+                        if (menuItem.id === identifier) {
+                            menuItem.settings = JSON.stringify(settings);
+                        } else if (typeof menuItem.menuItems !== "undefined" && menuItem.menuItems.length > 0) {
+                            this.updateMenuSettings(identifier, settings, menuItem.menuItems);
+                        }
+                    }
+                }
+            },
             loadBundleScript: function (path) {
                 if (path.indexOf('cdv=') === -1) {
                     path += (path.indexOf('?') > -1 ? '&' : '?') + 'cdv=' + config.buildNumber;
