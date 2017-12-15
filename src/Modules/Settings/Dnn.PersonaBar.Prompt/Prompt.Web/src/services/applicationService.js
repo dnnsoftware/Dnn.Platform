@@ -1,4 +1,5 @@
 import util from "../utils";
+
 function serializeQueryStringParameters(obj) {
     let s = [];
     for (let p in obj) {
@@ -20,11 +21,6 @@ class ApplicationService {
         sf.moduleRoot = moduleRoot;
         sf.controller = controller;
         return sf;
-    }
-
-    getCommandList(callback) {
-        const sf = this.getServiceFramework("Command");
-        sf.get("List", {}, callback);
     }
 
     runCommand(payload, callback, failureCallback) {

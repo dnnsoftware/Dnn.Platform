@@ -85,19 +85,19 @@ class Input extends Component {
         props.busy(true);
         if (cmd === "HELP") {
             if (txt.toUpperCase() === "HELP") {
-                props.dispatch(PromptActions.getCommandList(() => {
+                props.dispatch(PromptActions.getCommandList({ cmdLine: "list-commands", currentPage: self.tabId }, () => {
                     props.busy(false);
                 }, (error) => {
                     props.busy(false);
                     props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
                 }));
             } else {
-                props.dispatch(PromptActions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
-                    props.busy(false);
-                }, (error) => {
-                    props.busy(false);
-                    props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
-                }));
+            props.dispatch(PromptActions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
+                props.busy(false);
+            }, (error) => {
+                props.busy(false);
+                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
+            }));
             }
         } else {
             props.dispatch(PromptActions.runCommand({ cmdLine: txt, currentPage: self.tabId }, () => { }, (error) => {
