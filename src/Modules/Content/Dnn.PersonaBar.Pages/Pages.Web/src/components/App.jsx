@@ -519,6 +519,9 @@ class App extends Component {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
                 this.onCancelPage(props.selectedPage.templateTabId);
             }
+            else if (props.selectedPage.tabId === 0 && props.selectedPage.referralTabId) {
+                this.onCancelPage(props.selectedPage.referralTabId);
+            }
             else {
                 this.onCancelPage();
             }
@@ -591,6 +594,9 @@ class App extends Component {
         const onConfirm = () => {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
                 this.onCancelPage(props.selectedPage.templateTabId);
+            }
+            else if (props.selectedPage.tabId === 0 && props.selectedPage.referralTabId) {
+                this.onCancelPage(props.selectedPage.referralTabId);
             }
             else {
                 this.onCancelPage();
