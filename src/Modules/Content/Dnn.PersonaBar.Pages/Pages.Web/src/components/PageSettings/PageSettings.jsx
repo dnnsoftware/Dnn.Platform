@@ -159,7 +159,7 @@ class PageSettings extends Component {
             }
         ];
 
-        if ((isEditingExistingPage || selectedPage.templateTabId) && selectedPage.pageType === "normal") {
+        if ((isEditingExistingPage || selectedPage.templateTabId) && selectedPage.pageType === "normal" && selectedPage.modules) {
             advancedTabs.unshift({
                 label: Localization.get("Modules"),
                 component: <div className="dnn-simple-tab-item dnn-simple-tab-item-modules">
