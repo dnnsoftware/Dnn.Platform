@@ -1350,6 +1350,9 @@
   <data name="SMTPConfigurationProblem.Text" xml:space="preserve">
     <value>There is a problem with the configuration of your SMTP Server.  Mail was not sent.</value>
   </data>
+  <data name="SmtpInvalidPort.Text" xml:space="preserve">
+    <value>The specified port is invalid. The port must be greater than 0 and less than 65536. Mail was not sent.</value>
+  </data>
   <data name="FILE_NotAllowed.Text" xml:space="preserve">
     <value>File extension not allowed - {0}</value>
   </data>
