@@ -36,6 +36,11 @@ export class Body extends Component {
         props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
     }
 
+    shouldComponentUpdate(nextProps){
+        // Only render if is to show the component.Avoid calling backend when not needed. 
+        return nextProps.showing;
+    }
+
     renderSiteBehaviorTab() {
         const {props} = this;
         if (isHost) {
@@ -92,6 +97,10 @@ export class Body extends Component {
         </Tabs>;
     }
 
+    renderBasicSettings() {
+        return (<BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />);
+    }
+
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         let tabHeaders = [];
@@ -111,7 +120,7 @@ export class Body extends Component {
                 <Tabs onSelect={this.handleSelect.bind(this) }
                     tabHeaders={tabHeaders}
                     type="primary">
-                    {this.props.showing && canViewSiteInfo && <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />}
+                    {this.props.showing && canViewSiteInfo && this.renderBasicSettings() }
                     {this.props.showing && isAdmin && this.renderSiteBehaviorTab() }
                     {this.props.showing && isAdmin && <LanguageSettings
                         portalId={this.props.portalId}
