@@ -2729,7 +2729,7 @@
              	var fileId  = selectedFileId ? parseInt(selectedFileId) : 0;
                 if (fileId > 0) {
                     var maxWidth = 180, maxHeight = 150;
-                    var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
+                    var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
                     var img = new Image();
 
                     $(img).on('load', function () {
@@ -2783,7 +2783,7 @@
             var fileId = node.key;
             if (fileId) {
                 var maxWidth = 180, maxHeight = 150;
-                var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
+                var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
                 var img = new Image();
 
                 $(img).on('load', function () {
