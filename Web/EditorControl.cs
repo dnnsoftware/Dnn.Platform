@@ -1357,7 +1357,7 @@ namespace DNNConnect.CKEditorProvider.Web
             //{
                 var postBackScript =
                     string.Format(
-                        @"if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return; if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement(); CKEDITOR.instances.{0}.destroy(); }}",
+                         @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return; CKEDITOR.instances.{0}.destroy(); }}",
                         editorFixedId);
 
                 RegisterOnSubmitStatement(
