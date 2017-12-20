@@ -57,8 +57,8 @@ namespace Dnn.PersonaBar.Servers.Services
                     host = new
                     {
                         smtpServer = HostController.Instance.GetString("SMTPServer"),
-                        smtpConnectionLimit = HostController.Instance.GetInteger("SMTPConnectionLimit", 1),
-                        smtpMaxIdleTime = HostController.Instance.GetInteger("SMTPMaxIdleTime", 0),
+                        smtpConnectionLimit = HostController.Instance.GetInteger("SMTPConnectionLimit", 2),
+                        smtpMaxIdleTime = HostController.Instance.GetInteger("SMTPMaxIdleTime", 100000),
                         smtpAuthentication = HostController.Instance.GetString("SMTPAuthentication"),
                         enableSmtpSsl = HostController.Instance.GetBoolean("SMTPEnableSSL", false),
                         smtpUserName = HostController.Instance.GetString("SMTPUsername"),
@@ -68,8 +68,8 @@ namespace Dnn.PersonaBar.Servers.Services
                     site = new 
                     {
                         smtpServer = PortalController.GetPortalSetting("SMTPServer", portalId, string.Empty),
-                        smtpConnectionLimit = PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", portalId, 1),
-                        smtpMaxIdleTime = PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", portalId, 0),
+                        smtpConnectionLimit = PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", portalId, 2),
+                        smtpMaxIdleTime = PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", portalId, 100000),
                         smtpAuthentication = PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0"),
                         enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
