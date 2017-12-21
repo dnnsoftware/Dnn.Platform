@@ -26,13 +26,11 @@ class Tags extends Component {
         }
 
         this.setState({ newTagText: "" });
-        if (this.props.tags.find(t=> t === newTagText)) {
-            return;
+        if (!this.props.tags.find(t => t.toUpperCase().trim() === newTagText.toUpperCase().trim())) {
+            const tags = this.props.tags.slice();
+            tags.push(newTagText.trim());
+            this.updateTags(tags);
         }
-
-        const tags = this.props.tags.slice();
-        tags.push(newTagText.trim());
-        this.updateTags(tags);
     }
 
     removeTagByName(tag) {
