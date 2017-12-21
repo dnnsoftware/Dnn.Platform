@@ -44,7 +44,7 @@ class PageFile extends Component {
                             wrongFormatText = {Localization.get("WrongFormat")}
                             imageText = {Localization.get("DefaultImageTitle")}
                             linkInputTitleText = {Localization.get("LinkInputTitle")}
-                            linkInputPlaceholderText = {Localization.get("LinkInputPlaceHolder")}
+                            linkInputPlaceholderText = {Localization.get("LinkInputPlaceholder")}
                             linkInputActionText = {Localization.get("LinkInputAction")}
                             uploadCompleteText = {Localization.get("UploadComplete")}
                             uploadingText = {Localization.get("Uploading")}
