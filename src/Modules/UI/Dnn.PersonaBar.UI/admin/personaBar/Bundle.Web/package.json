@@ -97,8 +97,5 @@
     "webpack": "1.13.0",
     "webpack-bundle-analyzer": "^2.8.2",
     "webpack-dev-server": "1.14.1"
-  },
-  "dependencies": {
-    "react-redux": "4.4.8"
   }
 }
