@@ -52,13 +52,11 @@
     "dnn-single-line-input": "1.0.3",
     "dnn-single-line-input-with-error": "0.0.7",
     "dnn-slider": "0.0.1",
-    "dnn-social-panel-body": "1.0.1",
-    "dnn-social-panel-header": "0.0.4",
     "dnn-sortable": "0.0.2",
     "dnn-svg-icons": "0.1.4",
     "dnn-switch": "0.1.1",
     "dnn-tabs": "0.0.6",
-    "dnn-tags": "0.0.6",
+    "dnn-tags": "^0.0.34",
     "dnn-text-overflow-wrapper": "0.0.4",
     "dnn-tooltip": "0.1.0",
     "es6-object-assign": "1.0.3",
@@ -97,5 +95,8 @@
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "react-redux": "4.4.8"
   }
 }
