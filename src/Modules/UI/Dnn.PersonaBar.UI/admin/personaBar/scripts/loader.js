@@ -3,9 +3,14 @@
     var loaded = false;
     var error = true;
 
-    function loading() {
+    var defaultOptions = {
+        slowOperationMessage: "It appears you have a slow connection... We are processing your content"
+    };
+
+    function loading(options) {
         if (window.dnn.loading) return;
 
+        options = $.extend(defaultOptions, options);
         var loadingbar = $(loadingbarId);
         var progressbar = $(loadingbarId + ' > div');
         var width = loadingbar.width();
@@ -46,7 +51,8 @@
                 else {
                     pingDuration += 20;
                     if (pingDuration >= slowConnectionTimeout) {
-                        loadingBarMessage.show().html("It appears you have a slow connection... We are processing your content");
+                        var message = options.slowOperationMessage;
+                        loadingBarMessage.show().html(message);
                         progressbar.animate({
                             height: 25
                         }, 'linear');
@@ -59,8 +65,8 @@
     };
 
     return {
-        startLoading: function () {
-            loading();
+        startLoading: function (options) {
+            loading(options);
         },
         stopLoading: function stopLoading(_error) {
             if (window.dnn.loading) {

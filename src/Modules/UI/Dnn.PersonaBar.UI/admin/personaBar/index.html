@@ -10,6 +10,17 @@
     <script type="text/javascript">
         window.Sys = !window.Sys ? window.top.Sys : window.Sys;
         window.dnn = !window.dnn ? window.top.dnn : window.dnn;
+
+        if (typeof window.Sys._isInstanceOfType === "function") {
+            var originalFunc = window.Sys._isInstanceOfType;
+            window.Sys._isInstanceOfType = function(type, instance) {
+                if (typeof type === "function" && typeof instance === "function") {
+                    return true;
+                }
+
+                return originalFunc.apply(this, arguments);
+            }
+        }
     </script>
 </head>
 <body>
@@ -32,7 +43,8 @@
                         'class': 'btn_panel ' + (menuItem.css || ''),
                         'href': menuItem.link
                     }">
-                        <span data-bind="html: menuItem.displayName"></span>
+                    <span data-bind="html: menuItem.displayName"></span>
+                    <span class="icon-loader" data-bind="visible: menuItem.icon.length > 0, attr: {'data-path': menuItem.icon}"></span>
                         <!-- ko if: menuItem.menuItems.length > 0 -->
                     <div class="hovermenu" data-bind="
                          attr: { 'id': menuItem.id + 'hovermenu' }, 
@@ -72,8 +84,8 @@
         <img class="notify-check" src="images/icon_exclamation.svg" alt="Warning"/>
         <p></p>
         <div class="buttonpanel">
-            <a id="cancelbtn"></a>
-            <a id="confirmbtn"></a>
+            <a id="cancelbtn" aria-label="Cancel"></a>
+            <a id="confirmbtn" aria-label="Confirm"></a>
         </div>
     </div>
     <div id="notification-dialog" style="display: none;">
@@ -84,24 +96,26 @@
         </div>
 
         <div class="buttonpanel">
-            <button id="close-notification" class="dnn-ui-common-button" role="primary"></button>
+            <button id="close-notification" class="dnn-ui-common-button" role="primary" aria-label="Close"></button>
         </div>
     </div>
     <div id="personaBar-loadingbar" style="display: none;">
         <div></div>
         <span></span>
-        <img id="close-load-error" class="thin-close-x" src="images/x_thin.svg" alt="">
+        <img id="close-load-error" class="thin-close-x" src="images/x_thin.svg" alt="Close">
     </div>
     <!-- end extra -->
     <script type="text/javascript">
         (function injectboostrap() {
-            var debugMode = window.parent['personaBarSettings']['debugMode'] === true;
-            var cdv = window.parent['personaBarSettings']['buildNumber'];
-            var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '');
-            var body = document.getElementsByTagName('body')[0];
-            var boostrapScript = document.createElement('script');
-            boostrapScript.setAttribute('src', 'scripts/bootstrap.js' + version);
-            body.appendChild(boostrapScript);
+            if (window.parent['personaBarSettings']) {
+                var debugMode = window.parent['personaBarSettings']['debugMode'] === true;
+                var cdv = window.parent['personaBarSettings']['buildNumber'];
+                var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '');
+                var body = document.getElementsByTagName('body')[0];
+                var boostrapScript = document.createElement('script');
+                boostrapScript.setAttribute('src', 'scripts/bootstrap.js' + version);
+                body.appendChild(boostrapScript);
+            }
         })();
     </script>
 </body>

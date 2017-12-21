@@ -1,6 +1,6 @@
 ﻿// DotNetNuke® - http://www.dnnsoftware.com
 //
-// Copyright (c) 2002-2016, DNN Corp.
+// Copyright (c) 2002-2017, DNN Corp.
 // All rights reserved.
 
 // Binding handler used to bind the mouseover/out value to a boolean attribute in the model.

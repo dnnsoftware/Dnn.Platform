@@ -1,5 +1,27 @@
-﻿using System;
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Dnn.PersonaBar.Library;
@@ -11,7 +33,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Api.Internal;
 
 namespace Dnn.PersonaBar.UI.Services
 {
@@ -22,15 +46,20 @@ namespace Dnn.PersonaBar.UI.Services
     public class ComponentsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ComponentsController));
+        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         #region API in Admin Level
 
         [HttpGet]
-        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetRoleGroups(bool reload = false)
         {
             try
             {
+                if(!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("VIEW"))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", LocalResourcesFile));
+                }
+
                 if (reload)
                 {
                     DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, PortalId));
@@ -65,16 +94,20 @@ namespace Dnn.PersonaBar.UI.Services
 
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
+                var totalRecords2 = 0;
                 var matchedUsers = UserController.GetUsersByDisplayName(PortalId, displayMatch, 0, count,
-                    ref totalRecords, false, false)
+                    ref totalRecords, false, false);
+                matchedUsers.AddRange(UserController.GetUsersByUserName(PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
+                var finalUsers = matchedUsers
                     .Cast<UserInfo>()
+                    .Where(x=>x.Membership.Approved)
                     .Select(u => new SuggestionDto()
                     {
                         Value = u.UserID,
                         Label = $"{u.DisplayName}"
                     });
 
-                return Request.CreateResponse(HttpStatusCode.OK, matchedUsers);
+                return Request.CreateResponse(HttpStatusCode.OK, finalUsers.ToList().GroupBy(x => x.Value).Select(group => group.First()));
             }
             catch (Exception ex)
             {
@@ -95,7 +128,8 @@ namespace Dnn.PersonaBar.UI.Services
 
                 var matchedRoles = RoleController.Instance.GetRoles(PortalId)
                     .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
-                                && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
+                                && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
+                                   && r.Status == RoleStatus.Approved)
                     .Select(r => new SuggestionDto()
                     {
                         Value = r.RoleID,

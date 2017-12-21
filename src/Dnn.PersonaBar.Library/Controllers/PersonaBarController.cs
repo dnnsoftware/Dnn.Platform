@@ -1,7 +1,23 @@
-﻿// DotNetNuke® - http://www.dnnsoftware.com
-//
-// Copyright (c) 2002-2016, DNN Corp.
-// All rights reserved.
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2017
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
 
 using System;
 using System.Collections.Generic;
@@ -36,7 +52,8 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 var personaBarMenu = _personaBarRepository.GetMenu();
                 var filteredMenu = new PersonaBarMenu();
-                GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, personaBarMenu.MenuItems);
+                var rootItems = personaBarMenu.MenuItems.Where(m => PersonaBarContainer.Instance.RootItems.Contains(m.Identifier)).ToList();
+                GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
 
                 PersonaBarContainer.Instance.FilterMenu(filteredMenu);
                 return filteredMenu;
@@ -56,8 +73,17 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             if (visible)
             {
-                var menuController = GetMenuItemController(menuItem);
-                visible = menuController == null || menuController.Visible(menuItem);
+                try
+                {
+                    var menuController = GetMenuItemController(menuItem);
+                    visible = menuController == null || menuController.Visible(menuItem);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    visible = false;
+                }
+                
             }
 
             return visible;
@@ -68,35 +94,44 @@ namespace Dnn.PersonaBar.Library.Controllers
             var menuFiltered = false;
             foreach (var menuItem in menuItems)
             {
-                if (!IsVisible(portalSettings, user, menuItem))
+                try
                 {
-                    menuFiltered = true;
-                    continue;
+                    if (!IsVisible(portalSettings, user, menuItem))
+                    {
+                        menuFiltered = true;
+                        continue;
+                    }
+
+                    var cloneItem = new MenuItem()
+                    {
+                        MenuId = menuItem.MenuId,
+                        Identifier = menuItem.Identifier,
+                        ModuleName = menuItem.ModuleName,
+                        FolderName = menuItem.FolderName,
+                        Controller = menuItem.Controller,
+                        ResourceKey = menuItem.ResourceKey,
+                        Path = menuItem.Path,
+                        Link = menuItem.Link,
+                        CssClass = menuItem.CssClass,
+                        IconFile = menuItem.IconFile,
+                        AllowHost = menuItem.AllowHost,
+                        Order = menuItem.Order,
+                        ParentId = menuItem.ParentId
+                    };
+
+                    UpdateParamters(cloneItem);
+                    cloneItem.Settings = GetMenuSettings(menuItem);
+
+                    var filtered = GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children,
+                        menuItem.Children);
+                    if (!filtered || cloneItem.Children.Count > 0)
+                    {
+                        filterItems.Add(cloneItem);
+                    }
                 }
-
-                var cloneItem = new MenuItem()
+                catch (Exception e) //Ignore the failure and still load personaBar
                 {
-                    MenuId = menuItem.MenuId,
-                    Identifier = menuItem.Identifier,
-                    ModuleName = menuItem.ModuleName,
-                    FolderName = menuItem.FolderName,
-                    Controller = menuItem.Controller,
-                    ResourceKey = menuItem.ResourceKey,
-                    Path = menuItem.Path,
-                    Link = menuItem.Link,
-                    CssClass = menuItem.CssClass,
-                    AllowHost = menuItem.AllowHost,
-                    Order = menuItem.Order,
-                    ParentId = menuItem.ParentId
-                };
-                
-                UpdateParamters(cloneItem);
-                cloneItem.Settings = GetMenuSettings(menuItem);
-
-                var filtered = GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children, menuItem.Children);
-                if (!filtered || cloneItem.Children.Count > 0)
-                {
-                    filterItems.Add(cloneItem);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
                 }
             }
 
@@ -106,35 +141,41 @@ namespace Dnn.PersonaBar.Library.Controllers
         private void UpdateParamters(MenuItem menuItem)
         {
             var menuController = GetMenuItemController(menuItem);
-            menuController?.UpdateParameters(menuItem);
+            try
+            {
+                menuController?.UpdateParameters(menuItem);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         private string GetMenuSettings(MenuItem menuItem)
         {
-            var menuController = GetMenuItemController(menuItem);
-            var settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
-            AddPermissions(menuItem, settings);
+            IDictionary<string, object> settings;
+            try
+            {
+                var menuController = GetMenuItemController(menuItem);
+                settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
+                AddPermissions(menuItem, settings);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                settings = new Dictionary<string, object>();
+            }
+
             return JsonConvert.SerializeObject(settings);
         }
 
         private void AddPermissions(MenuItem menuItem, IDictionary<string, object> settings)
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
             var portalSettings = PortalSettings.Current;
-            if (!settings.ContainsKey("isAdmin") && portalSettings != null)
-            {
-                settings.Add("isAdmin", user.IsInRole(portalSettings.AdministratorRoleName));
-            }
-
-            if (!settings.ContainsKey("isHost"))
-            {
-                settings.Add("isHost", user.IsSuperUser);
-            }
-
             if (!settings.ContainsKey("permissions") && portalSettings != null)
             {
                 var menuPermissions = MenuPermissionController.GetPermissions(menuItem.MenuId)
-                    .Where(p => p.MenuId == menuItem.MenuId);
+                    .Where(p => p.PermissionKey != "VIEW");
                 var portalId = portalSettings.PortalId;
                 var permissions = new Dictionary<string, bool>();
                 foreach (var permission in menuPermissions)
@@ -168,7 +209,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 Logger.Error(ex);
                 return null;
             }
-            
+
         }
 
         protected override Func<IPersonaBarController> GetFactory()

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.UI" type="Library" version="01.02.00">
+        <package name="Dnn.PersonaBar.UI" type="Library" version="01.05.00">
             <friendlyName>Dnn.PersonaBar.UI</friendlyName>
             <description></description>
             <dependencies/>
@@ -44,6 +44,19 @@
                         <file>
                             <name>icon-personabarapp-32px.png</name>
                             <sourceFileName>Images/icon-personabarapp-32px.png</sourceFileName>
+                        </file>
+                    </files>
+                </component>
+                <component type="File">
+                    <files>
+                        <basePath>Licenses</basePath>
+                        <file>
+                            <name>Admin Persona Bar Referenced Licences.txt</name>
+                            <sourceFileName>Licenses/Admin Persona Bar Referenced Licences.txt</sourceFileName>
+                        </file>
+                        <file>
+                            <name>Admin Persona Bar Referenced Licences.zip</name>
+                            <sourceFileName>Licenses/Admin Persona Bar Referenced Licences.zip</sourceFileName>
                         </file>
                     </files>
                 </component>
@@ -106,6 +119,21 @@
                             <name>01.01.00.SqlDataProvider</name>
                             <version>01.01.00</version>
                         </script>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>01.03.00.SqlDataProvider</name>
+                            <version>01.03.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>01.04.00.SqlDataProvider</name>
+                            <version>01.04.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>01.05.00.SqlDataProvider</name>
+                            <version>01.05.00</version>
+                        </script>
                         <script type="UnInstall">
                             <path>Providers\DataProviders\SqlDataProvider</path>
                             <name>Uninstall.SqlDataProvider</name>
@@ -113,6 +141,16 @@
                         </script>
                     </scripts>
                 </component>
+                <component type="File">
+                    <files>
+                        <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
+                        <file>
+                            <name>01.03.00.txt</name>
+                            <sourceFileName>01.03.00.txt</sourceFileName>
+                        </file>
+                    </files>
+                </component>
+                <component type="Cleanup" version="01.03.00" fileName ="01.03.00.txt" />
             </components>
             <eventMessage>
                 <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
@@ -120,7 +158,7 @@
                 <attributes>
                     <businessControllerClass>Dnn.PersonaBar.UI.Components.BusinessController, Dnn.PersonaBar.UI</businessControllerClass>
                     <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-                    <upgradeVersionsList>01.00.00</upgradeVersionsList>
+                    <upgradeVersionsList>01.00.00,01.04.00</upgradeVersionsList>
                 </attributes>
             </eventMessage>
         </package>

@@ -43,44 +43,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>DEBUG;TRACE;CLOUD;CLOUD_DEBUG</DefineConstants>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <NoWarn>1591</NoWarn>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineConstants>TRACE;CLOUD;CLOUD_RELEASE</DefineConstants>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\..\..\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.HttpModules, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\DotNetNuke.HttpModules.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,10 +66,6 @@
     <Reference Include="DotNetNuke.Web.Client">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Deprecated, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -157,9 +122,6 @@
     <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\Controllers\AdminMenuController.cs" />
     <Compile Include="Components\Controllers\IAdminMenuController.cs" />
-    <Compile Include="Components\Dto\Localization.cs" />
-    <Compile Include="Components\Controllers\ILocalizationController.cs" />
-    <Compile Include="Components\Controllers\LocalizationController.cs" />
     <Compile Include="Components\EventHandlers\TabEventsHandler.cs" />
     <Compile Include="Components\Installers\PersonaBarMenuInstaller.cs" />
     <Compile Include="HttpModules\PersonaBarModule.cs" />
@@ -202,13 +164,6 @@
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />
     <Content Include="admin\personaBar\images\more_hover.svg" />
     <Content Include="admin\personaBar\images\more.svg" />
-    <Content Include="admin\personaBar\images\nav_content_pending.svg" />
-    <Content Include="admin\personaBar\images\nav_content_selected.svg" />
-    <Content Include="admin\personaBar\images\nav_edit_selected.svg" />
-    <Content Include="admin\personaBar\images\nav_manage_pending.svg" />
-    <Content Include="admin\personaBar\images\nav_manage_selected.svg" />
-    <Content Include="admin\personaBar\images\nav_settings_pending.svg" />
-    <Content Include="admin\personaBar\images\nav_settings_selected.svg" />
     <Content Include="admin\personaBar\images\notify.png" />
     <Content Include="admin\personaBar\images\notify_check.svg" />
     <Content Include="admin\personaBar\images\notify_error.svg" />
@@ -218,11 +173,11 @@
     <Content Include="admin\personaBar\images\nav_manage.svg" />
     <Content Include="admin\personaBar\images\nav_settings.svg" />
     <Content Include="admin\personaBar\images\x_thin.svg" />
+    <Content Include="admin\personaBar\scripts\contrib\jquery.easydropdown.min.js" />
+    <Content Include="admin\personaBar\scripts\menuIconLoader.js" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
-    <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx" />
     <Content Include="admin\personaBar\css\pikaday.css" />
     <Content Include="admin\personaBar\css\tokenInput.css" />
     <Content Include="admin\personaBar\index.html" />
@@ -245,9 +200,13 @@
     <None Include="admin\personaBar\css\Roboto-Regular.ttf" />
     <None Include="app.config" />
     <None Include="Dnn.PersonaBar.UI.dnn" />
+    <None Include="Licenses\Admin Persona Bar Referenced Licences.zip" />
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Providers\DataProviders\SqlDataProvider\01.05.00.SqlDataprovider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\01.04.00.SqlDataprovider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\01.03.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.01.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Install.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
@@ -293,7 +252,9 @@
     <Content Include="admin\personaBar\scripts\validator.js" />
     <Content Include="Images\icon-personabarapp-16px.png" />
     <Content Include="Images\icon-personabarapp-32px.png" />
+    <Content Include="01.03.00.txt" />
     <Content Include="license.txt" />
+    <Content Include="Licenses\Admin Persona Bar Referenced Licences.txt" />
     <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -320,23 +281,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <PropertyGroup>
-    <PreBuildEvent>if /i not "$(ConfigurationName)"=="Npm_Release" goto end
-
-cd /D $(ProjectDir)admin\personaBar\Bundle.Web
-if exist .\node_modules goto build
-
-echo "Restore node modules"
-cmd /c npm install --cache-min 999999
-xcopy .\node_modules c:\npm_cache\$(ProjectName)\Bundle.Web\node_modules /E /Q /S /Y /I
-goto build
-
-:build
-echo "Start build bundle"
-cmd /c npm run build
-goto end
-
-:end
-echo "$(ProjectName)\Bundle.Web build successful"</PreBuildEvent>
-  </PropertyGroup>
 </Project>
