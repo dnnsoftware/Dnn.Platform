@@ -2,17 +2,17 @@ import { prompt as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const promptActions = {
-    getCommandList(callback, errorCallback) {
+    getCommandList(payload, callback, errorCallback) {
         return (dispatch) => {
-            ApplicationService.getCommandList(data => {
+            ApplicationService.runCommand(payload, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_COMMAND_LIST,
                     data: {
-                        commands: data
+                        commands: data.data
                     }
                 });
                 if (callback) {
-                    callback(data);
+                    callback(data.data);
                 }
             }, data => {
                 if (errorCallback) {
