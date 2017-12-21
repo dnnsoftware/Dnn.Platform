@@ -1,9 +1,12 @@
 const webpack = require("webpack");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
+const isAnalyze = process.env.NODE_ENV === "analyze";
 const path = require("path");
 const extractTextPlugin = require("extract-text-webpack-plugin");
 const optimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
     context: path.resolve(__dirname, '.'),
     entry: "./src/main.jsx",
@@ -52,3 +55,7 @@ module.exports = {
             })
         ]
 };
+
+if(isAnalyze) {
+    module.exports.plugins.push(new BundleAnalyzerPlugin());
+}
