@@ -99,7 +99,6 @@ class Input extends Component {
                 { cmdLine: txt, currentPage: self.tabId },
                 (data) => {
                     props.busy(false);
-                    console.log(data);
                 },
                 (error) => {
                     props.busy(false);
