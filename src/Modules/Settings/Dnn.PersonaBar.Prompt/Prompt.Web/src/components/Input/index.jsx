@@ -97,7 +97,7 @@ class Input extends Component {
         } else {
             actions.runCommand(
                 { cmdLine: txt, currentPage: self.tabId },
-                (data) => {
+                () => {
                     props.busy(false);
                 },
                 (error) => {
