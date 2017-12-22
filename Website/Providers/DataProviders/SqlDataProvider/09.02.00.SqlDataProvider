@@ -1016,7 +1016,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_ADDED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_ADDED', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_ADDED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 -- FILE_CHANGED
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_CHANGED')
@@ -1025,7 +1025,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_CHANGED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_CHANGED', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_CHANGED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 -- FILE_DELETED
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_DELETED')
@@ -1034,7 +1034,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_DELETED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_DELETED', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_DELETED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 -- FILE_DOWNLOADED
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_DOWNLOADED')
@@ -1043,7 +1043,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_DOWNLOADED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_DOWNLOADED', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_DOWNLOADED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 -- FILE_MOVED
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_MOVED')
@@ -1052,7 +1052,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_MOVED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_MOVED', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_MOVED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 -- FILE_OVERWRITTEN
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_OVERWRITTEN')
@@ -1061,7 +1061,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_OVERWRITTEN')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_OVERWRITTEN', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_OVERWRITTEN', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 -- FILE_RENAMED
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_RENAMED')
@@ -1070,7 +1070,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_RENAMED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_RENAMED', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_RENAMED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 -- FILE_METADATACHANGED
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'FILE_METADATACHANGED')
@@ -1079,7 +1079,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHE
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'FILE_METADATACHANGED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'FILE_METADATACHANGED', NULL, 1, 500, 0, 1, 1, 2, N'', N'')
+	VALUES (N'FILE_METADATACHANGED', NULL, 0, 100, 0, 1, 1, 2, N'', N'')
 
 GO
 
