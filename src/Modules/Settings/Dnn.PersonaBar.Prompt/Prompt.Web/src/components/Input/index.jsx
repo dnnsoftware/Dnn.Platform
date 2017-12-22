@@ -1,19 +1,13 @@
 import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
 import Localization from "localization";
 import util from "../../utils";
 import "../Prompt.less";
-import {
-    prompt as PromptActions
-} from "../../actions";
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 import { formatString } from "../../helpers";
 
 class Input extends Component {
-    constructor() {
-        super();
-    }
+
     componentDidUpdate() {
         //This should be replaced by User Personalization API
         const consoleHeight = cookies.get("dnn-prompt-console-height");
@@ -22,27 +16,28 @@ class Input extends Component {
         }
     }
     setValue(value) {
-        this.refs.cmdPromptInput.value = value;
+        this.cmdPromptInput.value = value;
     }
     getValue() {
-        return this.refs.cmdPromptInput.value;
+        return this.cmdPromptInput.value;
     }
     setFocus(focus) {
         if (focus)
-            this.refs.cmdPromptInput.focus();
+            this.cmdPromptInput.focus();
         else
-            this.refs.cmdPromptInput.blur();
+            this.cmdPromptInput.blur();
     }
     toggleInput(show) {
-        this.refs.cmdPromptInputDiv.style.display = show ? "block" : "none";
+        this.cmdPromptInputDiv.style.display = show ? "block" : "none";
     }
     getTabId() {
         const dnnVariable = JSON.parse(window.parent.document.getElementsByName("__dnnVariable")[0].value);
         return dnnVariable.sf_tabId;
     }
     runCmd() {
-        let self = this;
-        let { props } = self;
+        const self = this;
+        const { props } = self;
+        const { actions } = props;
         let txt = self.getValue().trim();
         if (txt === "" && props.nextPageCommand !== null && props.nextPageCommand != "")
             txt = props.nextPageCommand;
@@ -56,7 +51,7 @@ class Input extends Component {
         if (txt === "") {
             return;
         } // don't process if cmd is emtpy
-        props.dispatch(PromptActions.runLocalCommand("INFO", "\n" + txt + "\n", "cmd"));
+        actions.runLocalCommand("INFO", "\n" + txt + "\n", "cmd");
         if (props.nextPageCommand === null || props.nextPageCommand === "")
             props.updateHistory(txt); // Add cmd to history
         // Client Command
@@ -64,12 +59,12 @@ class Input extends Component {
             cmd = tokens[0].toUpperCase();
 
         if (cmd === "CLS" || cmd === "CLEAR-SCREEN" || cmd === "EXIT" || cmd === "RELOAD") {
-            props.dispatch(PromptActions.runLocalCommand(cmd, null));
+            actions.runLocalCommand(cmd, null);
             return;
         }
         if (cmd === "CLH" || cmd === "CLEAR-HISTORY") {
             props.updateHistory("", true);
-            props.dispatch(PromptActions.runLocalCommand(cmd, Localization.get("SessionHisotryCleared")));
+            actions.runLocalCommand(cmd, Localization.get("SessionHisotryCleared"));
             return;
         }
         if (cmd === "CONFIG") {
@@ -85,32 +80,38 @@ class Input extends Component {
         props.busy(true);
         if (cmd === "HELP") {
             if (txt.toUpperCase() === "HELP") {
-                props.dispatch(PromptActions.getCommandList({ cmdLine: "list-commands", currentPage: self.tabId }, () => {
+                actions.getCommandList({ cmdLine: "list-commands", currentPage: self.tabId }, () => {
                     props.busy(false);
                 }, (error) => {
                     props.busy(false);
-                    props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
-                }));
+                    actions.runLocalCommand("ERROR", error.responseJSON.Message);
+                });
             } else {
-            props.dispatch(PromptActions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
+                actions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
                 props.busy(false);
             }, (error) => {
                 props.busy(false);
-                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
-            }));
+                    actions.runLocalCommand("ERROR", error.responseJSON.Message);
+            });
             }
         } else {
-            props.dispatch(PromptActions.runCommand({ cmdLine: txt, currentPage: self.tabId }, () => { }, (error) => {
-                props.busy(false);
-                props.dispatch(PromptActions.runLocalCommand("ERROR", error.responseJSON.Message));
-            }));
+            actions.runCommand(
+                { cmdLine: txt, currentPage: self.tabId },
+                (data) => {
+                    props.busy(false);
+                    console.log(data);
+                },
+                (error) => {
+                    props.busy(false);
+                    actions.runLocalCommand("ERROR", error.responseJSON.Message);
+                });
         }
         this.setFocus(false);
     }
 
-
     changeUserMode(tokens) {
         let { props } = this;
+        const { actions } = props;
         if (!tokens && tokens.length >= 2) {
             return;
         }
@@ -121,15 +122,15 @@ class Input extends Component {
             mode = tokens[1];
         }
         if (mode) {
-            props.dispatch(PromptActions.changeUserMode({ UserMode: mode.toUpperCase() }, () => {
+            actions.changeUserMode({ UserMode: mode.toUpperCase() }, () => {
                 if (mode.toUpperCase() === "EDIT")
                     util.utilities.closePersonaBar();
                 window.parent.document.location.reload(true);
             }, (error) => {
-                props.dispatch(PromptActions.runLocalCommand("ERROR", error));
-            }));
+                actions.runLocalCommand("ERROR", error);
+            });
         } else {
-            props.dispatch(PromptActions.runLocalCommand("ERROR", formatString(Localization.get("Prompt_FlagIsRequired"), "Mode")));
+            actions.runLocalCommand("ERROR", formatString(Localization.get("Prompt_FlagIsRequired"), "Mode"));
         }
     }
     isFlag(token) {
@@ -163,6 +164,7 @@ class Input extends Component {
     }
     configConsole(tokens) {
         let { props } = this;
+        const { actions } = props;
         let height = null;
         if (this.hasFlag("--height")) {
             height = this.getFlag("--height", tokens);
@@ -174,7 +176,7 @@ class Input extends Component {
             props.setHeight(height);
             cookies.set("dnn-prompt-console-height", height, { path: '/' });
         } else {
-            props.dispatch(PromptActions.runLocalCommand("ERROR", formatString(Localization.get("Prompt_FlagIsRequired"), "Height")));
+            actions.runLocalCommand("ERROR", formatString(Localization.get("Prompt_FlagIsRequired"), "Height"));
         }
     }
     hasFlag(flag, tokens) {
@@ -188,24 +190,18 @@ class Input extends Component {
     }
     render() {
         return (
-            <div className="dnn-prompt-input-wrapper" ref="cmdPromptInputDiv">
-                <input className="dnn-prompt-input" ref="cmdPromptInput" />
+            <div className="dnn-prompt-input-wrapper" ref={(el) => this.cmdPromptInputDiv = el}>
+                <input className="dnn-prompt-input" ref={(el) => this.cmdPromptInput = el} />
             </div>
         );
     }
 }
 Input.PropTypes = {
-    dispatch: PropTypes.func.isRequired,
     nextPageCommand: PropTypes.string,
     updateHistory: PropTypes.func.isRequired,
     busy: PropTypes.func.isRequired,
-    setHeight: PropTypes.func.isRequired
+    setHeight: PropTypes.func.isRequired,
+    actions: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-    return {
-        nextPageCommand: state.prompt.nextPageCommand
-    };
-}
-
-export default connect(mapStateToProps, null, null, { withRef: true })(Input);
+export default Input;

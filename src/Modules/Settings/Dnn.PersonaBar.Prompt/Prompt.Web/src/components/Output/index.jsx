@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
 import Localization from "localization";
 import "../Prompt.less";
 import { sort } from "../../helpers";
@@ -171,15 +170,19 @@ class Output extends Component {
     }
 
     writeLine(txt, cssSuffix) {
-        const textLines = txt.split("\\n");
+        const textLines = txt.split("\n");
         cssSuffix = cssSuffix || "ok";
-        return (textLines.map(line => <span className={cssSuffix}>{line}</span>));
+        const rows = textLines.map(line => line ? <span className={cssSuffix}>{Parser(line)}</span> : null).reduce((prev,current,index,arr) => {
+            if(current != "" && current != null && current != undefined) {
+                return [...prev,current];
+            }
+            return [...prev];
+        }, []);
+        return (<div>{rows}</div>);
     }
 
     writeHtml(content) {
-        return (
-            <div>{content}</div>
-        );
+        return <div>{Parser(content)}</div>;
     }
 
     renderData(data, fieldOrder) {
@@ -201,7 +204,7 @@ class Output extends Component {
         return columns;
     }
 
-    renderTableHeader(columns, cssClass) {
+    renderTableHeader(columns) {
         const tableCols = columns.map(col =>  <th>{this.formatLabel(col)}</th>);
         return (
             <thead>
@@ -220,13 +223,13 @@ class Output extends Component {
                         let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] : '';
                         let cmd = row["__" + fieldName] ? row["__" + fieldName] : null;
                         if (cmd) {
-                            <td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fieldValue}</a></td>;
+                            return <td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fieldValue}</a></td>;
                         }
                         else if (fieldName.indexOf("$") >= 0) {
-                            <td className="mono">--{fieldValue}</td>;
+                            return <td className="mono">--{fieldValue}</td>;
                         }
                         else {
-                            <td>{fieldValue}</td>;
+                            return <td>{fieldValue}</td>;
                         }
                     })}
                 </tr>
@@ -265,9 +268,9 @@ class Output extends Component {
             const cmd = data["__" + fldName] ? data["__" + fldName] : null;
 
             if (cmd) {
-                <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fldVal}</a></td></tr>;
+                return <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fldVal}</a></td></tr>;
             } else {
-                <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td>{fldVal}</td></tr>;
+                return <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td>{fldVal}</td></tr>;
             }
 
         });
@@ -297,7 +300,6 @@ class Output extends Component {
     }
 }
 Output.PropTypes = {
-    dispatch: PropTypes.func.isRequired,
     output: PropTypes.string,
     data: PropTypes.array,
     paging: PropTypes.object,
@@ -318,29 +320,9 @@ Output.PropTypes = {
     scrollToBottom: PropTypes.func.isRequired,
     busy: PropTypes.func.isRequired,
     toggleInput: PropTypes.func.isRequired,
-    IsPaging: PropTypes.func.isRequired
+    IsPaging: PropTypes.func.isRequired,
+    updateHistory: PropTypes.func.isRequired,
+    setHeight: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-    return {
-        output: state.prompt.output,
-        data: state.prompt.data,
-        paging: state.prompt.pagingInfo,
-        isHtml: state.prompt.isHtml,
-        reload: state.prompt.reload,
-        style: state.prompt.style,
-        fieldOrder: state.prompt.fieldOrder,
-        commandList: state.prompt.commandList,
-        isError: state.prompt.isError,
-        clearOutput: state.prompt.clearOutput,
-        isHelp: state.prompt.isHelp,
-        name: state.prompt.name,
-        description: state.prompt.description,
-        options: state.prompt.options,
-        resultHtml: state.prompt.resultHtml,
-        error: state.prompt.error,
-        nextPageCommand: state.prompt.nextPageCommand
-    };
-}
-
-export default connect(mapStateToProps, null, null, { withRef: true })(Output);
+export default Output;
