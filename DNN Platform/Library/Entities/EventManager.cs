@@ -28,6 +28,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.EventArgs;
+using DotNetNuke.Services.Log.EventLog;
 
 // ReSharper disable UseNullPropagation
 
@@ -191,6 +192,9 @@ namespace DotNetNuke.Entities
             {
                 FileAdded(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_ADDED);
         }
 
         public virtual void OnFileChanged(FileChangedEventArgs args)
@@ -199,6 +203,9 @@ namespace DotNetNuke.Entities
             {
                 FileChanged(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_CHANGED);
         }
 
         public virtual void OnFileDeleted(FileDeletedEventArgs args)
@@ -207,6 +214,9 @@ namespace DotNetNuke.Entities
             {
                 FileDeleted(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_DELETED);
         }
 
         public virtual void OnFileMetadataChanged(FileChangedEventArgs args)
@@ -215,6 +225,9 @@ namespace DotNetNuke.Entities
             {
                 FileMetadataChanged(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_METADATACHANGED);
         }
 
         public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
@@ -223,6 +236,9 @@ namespace DotNetNuke.Entities
             {
                 FileDownloaded(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_DOWNLOADED);
         }
 
         public virtual void OnFileMoved(FileMovedEventArgs args)
@@ -231,6 +247,9 @@ namespace DotNetNuke.Entities
             {
                 FileMoved(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_MOVED);
         }
 
         public virtual void OnFileOverwritten(FileChangedEventArgs args)
@@ -239,6 +258,9 @@ namespace DotNetNuke.Entities
             {
                 FileOverwritten(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_OVERWRITTEN);
         }
 
         public virtual void OnFileRenamed(FileRenamedEventArgs args)
@@ -247,6 +269,9 @@ namespace DotNetNuke.Entities
             {
                 FileRenamed(this, args);
             }
+
+            EventLogController.Instance.AddLog(args.FileInfo, PortalSettings.Current,
+                args.UserId, "", EventLogController.EventLogType.FILE_RENAMED);
         }
 
         public virtual void OnFolderAdded(FolderChangedEventArgs args)

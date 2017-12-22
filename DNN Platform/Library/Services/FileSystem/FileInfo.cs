@@ -395,6 +395,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets a flag which says whether the file has ever been published
         /// </summary>
+        [XmlIgnore]
         public bool HasBeenPublished { get; private set; }
 
         /// <summary>
