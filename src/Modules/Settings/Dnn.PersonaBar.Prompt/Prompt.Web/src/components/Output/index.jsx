@@ -29,6 +29,12 @@ class Output extends Component {
         };
     }
 
+    renderOutput() {
+        const { props } = this;
+        const style = props.style ? props.style : props.isError ? "error" : "ok";
+        return this.writeLine(props.output);
+    }
+
     renderResults() {
         const { props } = this;
 
@@ -37,23 +43,13 @@ class Output extends Component {
         let { fieldOrder } = props;
         if (props.isHelp) {
             if (props.commandList !== null && props.commandList.length > 0) {
-                this.renderCommands();
+                return this.renderCommands();
             } else {
-                this.renderHelp();
+                return this.renderHelp();
             }
-            return;
         }
         if ((typeof fieldOrder === "undefined" || !fieldOrder || fieldOrder.length === 0) && fieldOrder !== null) {
             fieldOrder = null;
-        }
-        if (props.clearOutput) {
-            if (props.output) {
-                this.refs.cmdPromptOutput.innerHTML = "";
-                this.writeLine(props.output, style);
-            }
-            else {
-                this.refs.cmdPromptOutput.innerHTML = "";
-            }
         }
         else if (props.reload) {
             if (props.output !== null && props.output !== "" && props.output.toLowerCase().indexOf("http") >= 0) {
@@ -63,91 +59,89 @@ class Output extends Component {
             }
         }
         else if (props.data) {
-            let html = this.renderData(props.data, fieldOrder);
-            this.writeHtml(html);
-            if (props.output) { this.writeLine(props.output); }
+            return this.renderData(props.data, fieldOrder);
         }
         else if (props.isHtml) {
-            this.writeHtml(props.output);
+            return this.writeHtml(props.output);
         }
         else if (props.output) {
-            this.writeLine(props.output, style);
+            return this.writeLine(props.output, style);
         }
+
         props.busy(false);
         if (props.paging && props.paging.pageNo < props.paging.totalPages && props.nextPageCommand !== null && props.nextPageCommand !== "") {
             props.toggleInput(false);
             props.IsPaging(true);
         }
-        props.scrollToBottom();
+        // props.scrollToBottom();
     }
+
     renderCommands() {
-        let { props } = this;
+        const { props } = this;
         props.IsPaging(false);
-        let section = document.createElement("section");
-        let headingName = document.createElement("h3");
-        let paragraphDescription = document.createElement("p");
-        let headingCommands = document.createElement("h4");
-        let divCommands = document.createElement("div");
-        let commandsHtml = "";
-        let headingSeeAlso = document.createElement("h4");
-        let anchorSyntax = document.createElement("a");
-        let anchorLearn = document.createElement("a");
-        section.className = "dnn-prompt-inline-help";
-        headingName.className = "mono";
-        headingName.innerHTML = Localization.get("Prompt_Help_PromptCommands");
-        paragraphDescription.className = "lead";
-        paragraphDescription.innerHTML = Localization.get("Prompt_Help_ListOfAvailableMsg");
-        headingCommands.innerHTML = Localization.get("Prompt_Help_Commands");
 
-        //divCommands.className = "table";
-        commandsHtml += "<table class='table'><thead><tr>";
-        commandsHtml += `<th>${Localization.get("Prompt_Help_Command")}</th>`;
-        commandsHtml += `<th>${Localization.get("Prompt_Help_Description")}</th>`;
-        commandsHtml += "</tr></thead>";
-        commandsHtml += "<tbody>";
-        let currentCategory = "";
-        let { commandList } = this.state;
-        commandList = sort(Object.assign(commandList), "Category");
-        let helpItems = commandList.map((cmd) => {
-            let returnHtml = "";
-            if (currentCategory !== cmd.Category) {
-                currentCategory = cmd.Category;
-                returnHtml = `<tr class="divider"><td colspan="2">${currentCategory}</td></tr>`;
+        const headingName = <h3 className="mono">{Parser(Localization.get("Prompt_Help_PromptCommands"))}</h3>;
+        const paragraphDescription = <p className="lead">{Parser(Localization.get("Prompt_Help_ListOfAvailableMsg"))}</p>;
+        const headingCommands = <h4>{Parser(Localization.get("Prompt_Help_Commands"))}</h4>;
+
+        const commandList = sort(Object.assign(props.commandList), "Category").reduce((prev,current,index, arr) => {
+            if(index > 0) {
+                const currentCat = current.Category;
+                const prevCat = arr[index - 1].Category;
+                if(currentCat != prevCat)
+                    return [...prev, {separator: true, Category: current.Category}, current];
             }
-            returnHtml += "<tr>";
-            returnHtml += "<td class='mono'>";
-            returnHtml += `<a class="dnn-prompt-cmd-insert" data-cmd="help ${cmd.Key.toLowerCase()}" href="#">${cmd.Key}</a>`;
-            returnHtml += "</td>";
-            returnHtml += `<td>${cmd.Description}</td>`;
-            returnHtml += "</tr>";
-            return returnHtml;
+
+            return [...prev, current];
+
+        }, []);
+
+        const commandsOutput = commandList.map((cmd) => {
+            if (cmd.separator) {
+                return <tr className="divider"><td colSpan="2">{cmd.Category}</td></tr>;
+            }
+
+            return (
+                <tr>
+                    <td className="mono"><a className="dnn-prompt-cmd-insert" data-cmd="help {cmd.Key.toLowerCase()}" href="#">{cmd.Key}</a></td>
+                    <td>{cmd.Description}</td>
+                </tr>
+            );
         });
-        helpItems.map((line => {
-            commandsHtml += line;
-        }));
-        commandsHtml += "</tbody></table>";
-        divCommands.innerHTML = commandsHtml;
+        const divCommands = (
+            <div>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>{Parser(Localization.get("Prompt_Help_Command"))}</th>
+                            <th>{Parser(Localization.get("Prompt_Help_Description"))}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {commandsOutput}
+                    </tbody>
+                </table>
+            </div>
+        );
 
-        headingSeeAlso.innerHTML = Localization.get("Prompt_Help_SeeAlso");
-        anchorSyntax.className = "dnn-prompt-cmd-insert";
-        anchorSyntax.setAttribute("data-cmd", "help syntax");
-        anchorSyntax.innerHTML = Localization.get("Prompt_Help_Syntax");
-        anchorSyntax.href = "#";
-        anchorLearn.className = "dnn-prompt-cmd-insert";
-        anchorLearn.setAttribute("data-cmd", "help learn");
-        anchorLearn.innerHTML = Localization.get("Prompt_Help_Learn");
-        anchorLearn.style.marginLeft = "10px";
-        anchorLearn.href = "#";
+        const headingSeeAlso = <h4>{Parser(Localization.get("Prompt_Help_SeeAlso"))}</h4>;
+        const anchorSyntax = <a href="#" className="dnn-prompt-cmd-insert" data-cmd="help syntax">{Parser(Localization.get("Prompt_Help_Syntax"))}</a>;
+        const anchorLearn = <a href="#" className="dnn-prompt-cmd-insert" style={{marginLeft:"10px"}} data-cmd="help learn">{Parser(Localization.get("Prompt_Help_Learn"))}</a>;
 
-        section.appendChild(headingName);
-        section.appendChild(paragraphDescription);
-        section.appendChild(headingCommands);
-        section.appendChild(divCommands);
-        section.appendChild(headingSeeAlso);
-        section.appendChild(anchorSyntax);
-        section.appendChild(anchorLearn);
-        this.refs.cmdPromptOutput.appendChild(section);
-        props.scrollToBottom();
+        const out = (
+            <section className="dnn-prompt-inline-help">
+                {headingName}
+                {paragraphDescription}
+                {headingCommands}
+                {divCommands}
+                {headingSeeAlso}
+                {anchorSyntax}
+                {anchorLearn}
+            </section>
+        );
+
+        // props.scrollToBottom();
+        return out;
     }
 
     renderHelp() {
@@ -294,8 +288,11 @@ class Output extends Component {
 
     render() {
         const out = this.renderResults();
+        const { props } = this;
         return (
-            <div className="dnn-prompt-output">{out}</div>
+            <div className="dnn-prompt-output">
+                {!props.clearOutput && out}
+            </div>
         );
     }
 }
