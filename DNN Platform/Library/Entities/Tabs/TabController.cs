@@ -1661,6 +1661,8 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = tab });
         }
 
         /// <summary>
@@ -1684,6 +1686,8 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = tab });
         }
 
         /// <summary>
@@ -1704,6 +1708,8 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = tab });
         }
 
         /// <summary>
