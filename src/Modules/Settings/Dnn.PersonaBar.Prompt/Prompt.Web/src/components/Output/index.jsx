@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Localization from "localization";
 import "../Prompt.less";
 import { sort } from "../../helpers";
+import Parser from "html-react-parser";
 
 class Output extends Component {
     constructor() {
@@ -27,83 +28,15 @@ class Output extends Component {
             nextPageCommand: null
         };
     }
-    componentWillMount() {
-        let { props } = this;
-        this.updateState(props);
-    }
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.shallowCompare(this, nextProps, nextState))
-            this.updateState(nextProps);
-    }
-    shallowEqual(objA, objB) {
-        if (objA === objB) {
-            return true;
-        }
 
-        if (typeof objA !== "object" || objA === null ||
-            typeof objB !== "object" || objB === null) {
-            return false;
-        }
-
-        let keysA = Object.keys(objA);
-        let keysB = Object.keys(objB);
-
-        if (keysA.length !== keysB.length) {
-            return false;
-        }
-
-        // Test for A's keys different from B.
-        let bHasOwnProperty = hasOwnProperty.bind(objB);
-        for (let i = 0; i < keysA.length; i++) {
-            if (typeof objA[keysA[i]] !== "function" || typeof objB[keysA[i]] !== "function") {
-                if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-    shallowCompare(instance, nextProps, nextState) {
-        let result = (
-            !this.shallowEqual(instance.props, nextProps) ||
-            !this.shallowEqual(instance.state, nextState)
-        );
-        return result;
-    }
-
-    updateState(props) {
-        let { state } = this;
-        let self = this;
-        state.commandList = props.commandList;
-        state.output = props.output;
-        state.data = props.data;
-        state.paging = props.paging;
-        state.isHtml = props.isHtml;
-        state.isError = props.isError;
-        state.fieldOrder = props.fieldOrder;
-        state.reload = props.reload;
-        state.clearOutput = props.clearOutput;
-        state.style = props.style;
-        state.isHelp = props.isHelp;
-        state.name = props.name;
-        state.description = props.description;
-        state.options = props.options;
-        state.resultHtml = props.resultHtml;
-        state.error = props.error;
-        state.nextPageCommand = props.nextPageCommand;
-        this.setState({}, () => {
-            self.renderResults();
-        });
-    }
     renderResults() {
-        let { state } = this;
-        let { props } = this;
+        const { props } = this;
+
         props.IsPaging(false);
-        const style = state.style ? state.style : state.isError ? "error" : "ok";
-        let { fieldOrder } = state;
-        if (state.isHelp) {
-            if (state.commandList !== null && state.commandList.length > 0) {
+        const style = props.style ? props.style : props.isError ? "error" : "ok";
+        let { fieldOrder } = props;
+        if (props.isHelp) {
+            if (props.commandList !== null && props.commandList.length > 0) {
                 this.renderCommands();
             } else {
                 this.renderHelp();
@@ -113,35 +46,35 @@ class Output extends Component {
         if ((typeof fieldOrder === "undefined" || !fieldOrder || fieldOrder.length === 0) && fieldOrder !== null) {
             fieldOrder = null;
         }
-        if (state.clearOutput) {
-            if (state.output) {
+        if (props.clearOutput) {
+            if (props.output) {
                 this.refs.cmdPromptOutput.innerHTML = "";
-                this.writeLine(state.output, style);
+                this.writeLine(props.output, style);
             }
             else {
                 this.refs.cmdPromptOutput.innerHTML = "";
             }
         }
-        else if (state.reload) {
-            if (state.output !== null && state.output !== "" && state.output.toLowerCase().indexOf("http") >= 0) {
-                window.top.location.href = state.output;
+        else if (props.reload) {
+            if (props.output !== null && props.output !== "" && props.output.toLowerCase().indexOf("http") >= 0) {
+                window.top.location.href = props.output;
             } else {
                 location.reload(true);
             }
         }
-        else if (state.data) {
-            let html = this.renderData(state.data, fieldOrder);
+        else if (props.data) {
+            let html = this.renderData(props.data, fieldOrder);
             this.writeHtml(html);
-            if (state.output) { this.writeLine(state.output); }
+            if (props.output) { this.writeLine(props.output); }
         }
-        else if (state.isHtml) {
-            this.writeHtml(state.output);
+        else if (props.isHtml) {
+            this.writeHtml(props.output);
         }
-        else if (state.output) {
-            this.writeLine(state.output, style);
+        else if (props.output) {
+            this.writeLine(props.output, style);
         }
         props.busy(false);
-        if (state.paging && state.paging.pageNo < state.paging.totalPages && state.nextPageCommand !== null && state.nextPageCommand !== "") {
+        if (props.paging && props.paging.pageNo < props.paging.totalPages && props.nextPageCommand !== null && props.nextPageCommand !== "") {
             props.toggleInput(false);
             props.IsPaging(true);
         }
@@ -216,71 +149,43 @@ class Output extends Component {
         this.refs.cmdPromptOutput.appendChild(section);
         props.scrollToBottom();
     }
+
     renderHelp() {
-        let { state } = this;
-        let { props } = this;
+        const { props } = this;
         props.IsPaging(false);
-        const style = state.style ? state.style : state.isError ? "error" : "ok";
-        if (state.isError) {
-            this.writeLine(state.error, style);
-            return;
+        const style = props.style ? props.style : props.isError ? "error" : "ok";
+        if (props.isError) {
+            return this.writeLine(props.error, style);
         }
-        let section = document.createElement("section");
-        let headingName = document.createElement("h3");
-        let anchorName = document.createElement("a");
-        let paragraphDescription = document.createElement("p");
-        section.className = "dnn-prompt-inline-help";
-        anchorName.attributes["name"] = state.name;
-        headingName.className = "mono";
-        headingName.innerHTML = state.name;
-        paragraphDescription.className = "lead";
-        paragraphDescription.innerHTML = state.description;
-        section.appendChild(anchorName);
-        section.appendChild(headingName);
-        section.appendChild(paragraphDescription);
-        //        this.refs.cmdPromptOutput.appendChild(section);
-        if (state.options && state.options.length > 0) {
-            let headingOptions = document.createElement("h4");
-            headingOptions.innerHTML = Localization.get("Help_Options");
-            //let fields = ["$" + Localization.get("Help_Flag"), Localization.get("Help_Type"), Localization.get("Help_Required"), Localization.get("Help_Default"), Localization.get("Help_Description")];
-            let fields = ["$Flag", "Type", "Required", "Default", "Description"];
-            let options = this.renderTable(state.options, fields, "table");
-            section.appendChild(headingOptions);
-            let div = document.createElement("div");
-            div.innerHTML = options;
-            section.appendChild(div);
-        }
-        if (state.resultHtml !== undefined && state.resultHtml !== null && state.resultHtml !== "") {
-            let divResults = document.createElement("div");
-            divResults.innerHTML = state.resultHtml;
-            section.appendChild(divResults);
-        }
-        this.refs.cmdPromptOutput.appendChild(section);
-        props.scrollToBottom();
-    }
-    newLine() {
-        let { props } = this;
-        this.refs.cmdPromptOutput.appendChild(document.createElement("br"));
-        props.scrollToBottom();
+
+        const headingName = <h3 className="mono">{props.name}</h3>;
+        const anchorName = <a name={props.name}></a>;
+        const paragraphDescription = <p className="lead">{props.description}</p>;
+        const fields = ["$Flag", "Type", "Required", "Default", "Description"];
+        const out = (
+            <section className="dnn-prompt-inline-help">
+                {anchorName}
+                {headingName}
+                {paragraphDescription}
+                {props.options && props.options.length > 0 && <h4>{Localization.get("Help_Options")}</h4>}
+                {props.options && props.options.length > 0 && <div>{this.renderTable(props.options, fields, "table")}</div>}
+                {props.resultHtml && <div>{Parser(props.resultHtml)}</div>}
+            </section>
+        );
+        // props.scrollToBottom();
+        return out;
     }
 
     writeLine(txt, cssSuffix) {
-        let textLines = txt.split("\\n");
-        textLines.map((line) => {
-            let span = document.createElement("span");
-            cssSuffix = cssSuffix || "ok";
-            span.className = "dnn-prompt-" + cssSuffix;
-            span.innerText = line;
-            this.refs.cmdPromptOutput.appendChild(span);
-            this.newLine();
-        });
+        const textLines = txt.split("\\n");
+        cssSuffix = cssSuffix || "ok";
+        return (textLines.map(line => <span className={cssSuffix}>{line}</span>));
     }
 
-    writeHtml(markup) {
-        let div = document.createElement("div");
-        div.innerHTML = markup;
-        this.refs.cmdPromptOutput.appendChild(div);
-        this.newLine();
+    writeHtml(content) {
+        return (
+            <div>{content}</div>
+        );
     }
 
     renderData(data, fieldOrder) {
@@ -289,95 +194,92 @@ class Output extends Component {
         } else if (data.length === 1) {
             return this.renderObject(data[0], fieldOrder);
         }
-        return "";
+        return <br />;
     }
-    extractLinkFields(row) {
-        let linkFields = [];
-        if (!row || !row.length) { return linkFields; }
 
-        // find any command link fields
-        for (let fld in row) {
-            if (fld.startsWith("__")) {
-                linkFields.push(fld.slice(2));
+    getColumnsFromRow(row) {
+        const columns = [];
+        for (let key in row) {
+            if (!key.startsWith("__")) {
+                columns.push(key);
             }
         }
-        return linkFields;
+        return columns;
     }
+
+    renderTableHeader(columns, cssClass) {
+        const tableCols = columns.map(col =>  <th>{this.formatLabel(col)}</th>);
+        return (
+            <thead>
+            <tr>
+                {tableCols}
+            </tr>
+            </thead>
+        );
+    }
+
+    renderTableRows(rows, columns) {
+        return rows.map((row) => {
+            return (
+                <tr>
+                    {columns.map((fieldName) => {
+                        let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] : '';
+                        let cmd = row["__" + fieldName] ? row["__" + fieldName] : null;
+                        if (cmd) {
+                            <td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fieldValue}</a></td>;
+                        }
+                        else if (fieldName.indexOf("$") >= 0) {
+                            <td className="mono">--{fieldValue}</td>;
+                        }
+                        else {
+                            <td>{fieldValue}</td>;
+                        }
+                    })}
+                </tr>
+            );
+        });
+    }
+
     renderTable(rows, fieldOrder, cssClass) {
         if (!rows || !rows.length) { return; }
-        const linkFields = this.extractLinkFields(rows[0]);
+        const firstRow = rows[0];
 
-        let columns = fieldOrder;
-        if (!columns || !columns.length) {
-            // get columns from first row
-            columns = [];
-            const row = rows[0];
-            for (let key in row) {
-                if (!key.startsWith("__")) {
-                    columns.push(key);
-                }
-            }
-        }
+        const columns = !fieldOrder || fieldOrder.length == 0 ? this.getColumnsFromRow(firstRow) : fieldOrder;
 
         // build header
-        let out = '<table class="' + (cssClass !== undefined && cssClass !== null && cssClass !== '' ? cssClass : "dnn-prompt-tbl") + '"><thead><tr>';
-        columns.map((col) => {
-            let lbl = this.formatLabel(col);
-            out += `<th>${lbl}</th>`;
-        });
-        out += '</tr></thead><tbody>';
+        const tableHeader = this.renderTableHeader(columns, cssClass);
 
         // build rows
-        rows.map((row) => {
-            out += '<tr>';
-            // only use specified columns
-            columns.map((fldName) => {
-                //let fldName = columns[fld];
-                let fldVal = row[fldName.replace("$", "")] ? row[fldName.replace("$", "")] : '';
-                let cmd = row["__" + fldName] ? row["__" + fldName] : null;
-                if (cmd) {
-                    out += `<td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td>`;
-                }
-                else if (fldName.indexOf("$") >= 0) {
-                    out += `<td class="mono">--${fldVal}</td>`;
-                }
-                else {
-                    out += `<td> ${fldVal}</td>`;
-                }
-            });
-            out += '</tr>';
-        });
-        out += '</tbody></table>';
-        return out;
+        const tableRows = this.renderTableRows(rows, columns);
+
+        return (
+            <table className={cssClass ? cssClass : "dnn-prompt-tbl"}>
+                {tableHeader}
+                <tbody>
+                {tableRows}
+                </tbody>
+            </table>
+        );
     }
 
     renderObject(data, fieldOrder) {
-        const linkFields = this.extractLinkFields(data);
-        let columns = fieldOrder;
-        if (!columns || !columns.length) {
-            // no field order. Generate it
-            columns = [];
-            for (let key in data) {
-                if (!key.startsWith("__")) {
-                    columns.push(key);
-                }
-            }
-        }
-        let out = '<table class="dnn-prompt-tbl">';
-        columns.map((fldName) => {
-            let lbl = this.formatLabel(fldName);
-            let fldVal = data[fldName] ? data[fldName] : '';
-            let cmd = data["__" + fldName] ? data["__" + fldName] : null;
+
+        const columns = !fieldOrder || fieldOrder.length == 0 ? this.getColumnsFromRow(data) : fieldOrder;
+        const rows = columns.map((fldName) => {
+            const lbl = this.formatLabel(fldName);
+            const fldVal = data[fldName] ? data[fldName] : '';
+            const cmd = data["__" + fldName] ? data["__" + fldName] : null;
 
             if (cmd) {
-                out += `<tr><td class="dnn-prompt-lbl">${lbl}</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td></tr>`;
+                <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fldVal}</a></td></tr>;
             } else {
-                out += `<tr><td class="dnn-prompt-lbl">${lbl}</td><td>:</td><td>${fldVal}</td></tr>`;
+                <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td>{fldVal}</td></tr>;
             }
 
         });
-        out += '</table>';
-        return out;
+        return (
+            <table className="dnn-prompt-tbl">{rows}</table>
+        );
     }
 
     formatLabel(input) {
@@ -389,10 +291,11 @@ class Output extends Component {
         }
         return "";
     }
+
     render() {
+        const out = this.renderResults();
         return (
-            <div className="dnn-prompt-output" ref="cmdPromptOutput">
-            </div>
+            <div className="dnn-prompt-output">{out}</div>
         );
     }
 }
