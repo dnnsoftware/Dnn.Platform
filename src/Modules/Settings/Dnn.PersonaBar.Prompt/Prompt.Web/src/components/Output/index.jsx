@@ -5,40 +5,11 @@ import { sort } from "../../helpers";
 import Parser from "html-react-parser";
 
 class Output extends Component {
-    constructor() {
-        super();
-        this.state = {
-            commandList: null,
-            output: "",
-            data: [],
-            paging: {},
-            isHtml: false,
-            isError: false,
-            fieldOrder: [],
-            reload: false,
-            clearOutput: false,
-            style: null,
-            isHelp: false,
-            name: null,
-            description: null,
-            options: null,
-            resultHtml: null,
-            error: null,
-            nextPageCommand: null
-        };
-    }
-
-    renderOutput() {
-        const { props } = this;
-        const style = props.style ? props.style : props.isError ? "error" : "ok";
-        return this.writeLine(props.output);
-    }
 
     renderResults() {
         const { props } = this;
 
         props.IsPaging(false);
-        const style = props.style ? props.style : props.isError ? "error" : "ok";
         let { fieldOrder } = props;
         if (props.isHelp) {
             if (props.commandList !== null && props.commandList.length > 0) {
@@ -64,6 +35,7 @@ class Output extends Component {
             return this.writeHtml(props.output);
         }
         else if (props.output) {
+            const style = props.isError ? "error" : "ok dnn-prompt-input";
             return this.writeLine(props.output, style);
         }
 
@@ -72,7 +44,6 @@ class Output extends Component {
             props.toggleInput(false);
             props.IsPaging(true);
         }
-        // props.scrollToBottom();
     }
 
     renderCommands() {
@@ -95,15 +66,15 @@ class Output extends Component {
 
         }, []);
 
-        const commandsOutput = commandList.map((cmd) => {
+        const commandsOutput = commandList.map((cmd, index) => {
             if (cmd.separator) {
-                return <tr className="divider"><td colSpan="2">{cmd.Category}</td></tr>;
+                return <tr key={index} className="divider"><td colSpan="2">{cmd.Category}</td></tr>;
             }
 
             return (
-                <tr>
-                    <td className="mono"><a className="dnn-prompt-cmd-insert" data-cmd="help {cmd.Key.toLowerCase()}" href="#">{cmd.Key}</a></td>
-                    <td>{cmd.Description}</td>
+                <tr key={index}>
+                    <td key={this.getKey("cmdtd")} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd="help {cmd.Key.toLowerCase()}" href="#">{cmd.Key}</a></td>
+                    <td key={this.getKey("cmdtd")}>{cmd.Description}</td>
                 </tr>
             );
         });
@@ -128,7 +99,7 @@ class Output extends Component {
         const anchorLearn = <a href="#" className="dnn-prompt-cmd-insert" style={{marginLeft:"10px"}} data-cmd="help learn">{Parser(Localization.get("Prompt_Help_Learn"))}</a>;
 
         const out = (
-            <section className="dnn-prompt-inline-help">
+            <section key={this.getKey("command")} className="dnn-prompt-inline-help">
                 {headingName}
                 {paragraphDescription}
                 {headingCommands}
@@ -139,8 +110,14 @@ class Output extends Component {
             </section>
         );
 
-        // props.scrollToBottom();
         return out;
+    }
+
+    getKey(prefix) {
+        if(this.key === undefined) {
+            this.key = 0;
+        }
+        return prefix ? `${prefix}-${this.key++}` : this.key++;
     }
 
     renderHelp() {
@@ -156,7 +133,7 @@ class Output extends Component {
         const paragraphDescription = <p className="lead">{props.description}</p>;
         const fields = ["$Flag", "Type", "Required", "Default", "Description"];
         const out = (
-            <section className="dnn-prompt-inline-help">
+            <section key={this.getKey("help")} className="dnn-prompt-inline-help">
                 {anchorName}
                 {headingName}
                 {paragraphDescription}
@@ -165,24 +142,23 @@ class Output extends Component {
                 {props.resultHtml && <div>{Parser(props.resultHtml)}</div>}
             </section>
         );
-        // props.scrollToBottom();
         return out;
     }
 
     writeLine(txt, cssSuffix) {
         const textLines = txt.split("\n");
         cssSuffix = cssSuffix || "ok";
-        const rows = textLines.map(line => line ? <span className={cssSuffix}>{Parser(line)}</span> : null).reduce((prev,current,index,arr) => {
+        const rows = textLines.map((line, index) => line ? <span key={index} className={cssSuffix}>{Parser(line)}</span> : null).reduce((prev,current) => {
             if(current != "" && current != null && current != undefined) {
                 return [...prev,current];
             }
-            return [...prev];
+            return [...prev,<br key={this.getKey("line")}/>,<br key={this.getKey("line")}/>];
         }, []);
-        return (<div>{rows}</div>);
+        return <div key={this.getKey("line")}>{rows}</div>;
     }
 
     writeHtml(content) {
-        return <div>{Parser(content)}</div>;
+        return <div key={this.getKey("html")}>{Parser(content)}</div>;
     }
 
     renderData(data, fieldOrder) {
@@ -191,7 +167,7 @@ class Output extends Component {
         } else if (data.length === 1) {
             return this.renderObject(data[0], fieldOrder);
         }
-        return <br />;
+        return <br  key={this.getKey("data")} />;
     }
 
     getColumnsFromRow(row) {
@@ -205,7 +181,7 @@ class Output extends Component {
     }
 
     renderTableHeader(columns) {
-        const tableCols = columns.map(col =>  <th>{this.formatLabel(col)}</th>);
+        const tableCols = columns.map((col,index) =>  <th key={index}>{this.formatLabel(col)}</th>);
         return (
             <thead>
             <tr>
@@ -216,20 +192,20 @@ class Output extends Component {
     }
 
     renderTableRows(rows, columns) {
-        return rows.map((row) => {
+        return rows.map((row, index) => {
             return (
-                <tr>
+                <tr key={index}>
                     {columns.map((fieldName) => {
                         let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] : '';
                         let cmd = row["__" + fieldName] ? row["__" + fieldName] : null;
                         if (cmd) {
-                            return <td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fieldValue}</a></td>;
+                            return <td key={this.getKey("table")}><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fieldValue}</a></td>;
                         }
                         else if (fieldName.indexOf("$") >= 0) {
-                            return <td className="mono">--{fieldValue}</td>;
+                            return <td key={this.getKey("table")} className="mono">--{fieldValue}</td>;
                         }
                         else {
-                            return <td>{fieldValue}</td>;
+                            return <td key={this.getKey("table")}>{fieldValue}</td>;
                         }
                     })}
                 </tr>
@@ -250,7 +226,7 @@ class Output extends Component {
         const tableRows = this.renderTableRows(rows, columns);
 
         return (
-            <table className={cssClass ? cssClass : "dnn-prompt-tbl"}>
+            <table key={this.getKey("table")} className={cssClass ? cssClass : "dnn-prompt-tbl"}>
                 {tableHeader}
                 <tbody>
                 {tableRows}
@@ -262,21 +238,19 @@ class Output extends Component {
     renderObject(data, fieldOrder) {
 
         const columns = !fieldOrder || fieldOrder.length == 0 ? this.getColumnsFromRow(data) : fieldOrder;
-        const rows = columns.map((fldName) => {
+        const rows = columns.map((fldName, index) => {
             const lbl = this.formatLabel(fldName);
             const fldVal = data[fldName] ? data[fldName] : '';
             const cmd = data["__" + fldName] ? data["__" + fldName] : null;
 
             if (cmd) {
-                return <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fldVal}</a></td></tr>;
+                return <tr key={index}><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fldVal}</a></td></tr>;
             } else {
-                return <tr><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td>{fldVal}</td></tr>;
+                return <tr key={index}><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td>{fldVal}</td></tr>;
             }
 
         });
-        return (
-            <table className="dnn-prompt-tbl">{rows}</table>
-        );
+        return <table key={this.getKey("object")} className="dnn-prompt-tbl"><tbody>{rows}</tbody></table>;
     }
 
     formatLabel(input) {
@@ -290,11 +264,13 @@ class Output extends Component {
     }
 
     render() {
-        const out = this.renderResults();
         const { props } = this;
+        this.output = !props.clearOutput && this.output ? this.output : [];
+        const out = this.renderResults();
+        this.output.push(out);
         return (
             <div className="dnn-prompt-output">
-                {!props.clearOutput && out}
+                {!props.clearOutput && this.output}
             </div>
         );
     }

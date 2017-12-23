@@ -21,16 +21,12 @@ class App extends Component {
         const { dispatch } = props;
         this.actions = bindActionCreators(PromptActionsCreators, dispatch);
     }
-    componentDidMount() {
+    componentDidUpdate() {
         this.setFocus(true);
+        this.scrollToBottom();
     }
     componentWillMount() {
         this.showGreeting();
-    }
-
-    onMouseDownHandler(e) {
-        this.mouseX = e.clientX;
-        this.mouseY = e.clientY;
     }
 
     onClickHandler(e) {
@@ -44,11 +40,10 @@ class App extends Component {
     }
 
     scrollToBottom() {
-        this.cmdPrompt.scrollTop = this.cmdPrompt.scrollHeight;
+        if(this.cmdPrompt) this.cmdPrompt.scrollTop = this.cmdPrompt.scrollHeight;
     }
     busy(b) {
         this.isBusy = b;
-        // this.toggleInput(!b);
     }
 
     showGreeting() {
@@ -56,9 +51,6 @@ class App extends Component {
     }
     setValue(value) {
         this.cmdPromptInputControl.setValue(value);
-    }
-    getValue(value) {
-        return this.cmdPromptInputControl.getValue(value);
     }
     setFocus(focus) {
         this.cmdPromptInputControl.setFocus(focus);
@@ -156,7 +148,6 @@ class App extends Component {
                     className="dnn-prompt"
                     style={{ display: "block" }}
                     onKeyDown={this.keyDownHandler.bind(this)}
-                    onMouseDown={this.onMouseDownHandler.bind(this)}
                     onClick={this.onClickHandler.bind(this)}
                     ref={(el) => this.cmdPrompt = el}>
                     <Output
