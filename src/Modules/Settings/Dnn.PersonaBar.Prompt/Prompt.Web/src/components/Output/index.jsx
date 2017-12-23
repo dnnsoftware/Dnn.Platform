@@ -35,7 +35,7 @@ class Output extends Component {
             return this.writeHtml(props.output);
         }
         else if (props.output) {
-            const style = props.isError ? "error" : "ok dnn-prompt-input";
+            const style = props.isError ? "dnn-prompt-error" : "dnn-prompt-ok";
             return this.writeLine(props.output, style);
         }
 
@@ -73,7 +73,7 @@ class Output extends Component {
 
             return (
                 <tr key={index}>
-                    <td key={this.getKey("cmdtd")} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd="help {cmd.Key.toLowerCase()}" href="#">{cmd.Key}</a></td>
+                    <td key={this.getKey("cmdtd")} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd={`help ${cmd.Key.toLowerCase()}`} href="#">{cmd.Key}</a></td>
                     <td key={this.getKey("cmdtd")}>{cmd.Description}</td>
                 </tr>
             );
@@ -123,7 +123,7 @@ class Output extends Component {
     renderHelp() {
         const { props } = this;
         props.IsPaging(false);
-        const style = props.style ? props.style : props.isError ? "error" : "ok";
+        const style = props.style ? props.style : props.isError ? "dnn-prompt-error" : "dnn-prompt-ok";
         if (props.isError) {
             return this.writeLine(props.error, style);
         }
@@ -145,10 +145,9 @@ class Output extends Component {
         return out;
     }
 
-    writeLine(txt, cssSuffix) {
+    writeLine(txt, css = "dnn-prompt-ok") {
         const textLines = txt.split("\n");
-        cssSuffix = cssSuffix || "ok";
-        const rows = textLines.map((line, index) => line ? <span key={index} className={cssSuffix}>{Parser(line)}</span> : null).reduce((prev,current) => {
+        const rows = textLines.map((line, index) => line ? <span key={index} className={css}>{Parser(line)}</span> : null).reduce((prev,current) => {
             if(current != "" && current != null && current != undefined) {
                 return [...prev,current];
             }
