@@ -418,9 +418,34 @@ class App extends Component {
                 callback(data);
         });
     }
-    onCancelPage(pageId) {
+
+    _removePageFromTree(parentId) {
+        this._traverse((item, list, updateStore) => {
+            if (item.id === parentId) {
+                let itemIndex = null;
+                item.childCount--;
+                (item.childCount === 0) ? item.isOpen = false : null;
+
+                item.childListItems.forEach((child, index) => {
+                    if (child.tabId !== undefined) {
+                        itemIndex = index;
+                    }
+                });
+                const arr1 = item.childListItems.slice(0, itemIndex);
+                const arr2 = item.childListItems.slice(itemIndex + 1);
+                item.childListItems = [...arr1, ...arr2];
+                updateStore(list);
+            }
+        });
+
+    }
+
+    onCancelPage(parentPageId) {
+        
+        this._removePageFromTree(parentPageId);
+
         this.props.changeSelectedPagePath("");
-        this.props.onCancelPage(pageId);
+        this.props.onCancelPage(parentPageId);
     }
 
     onChangeParentId(newParentId) {
@@ -482,6 +507,7 @@ class App extends Component {
 
     onCancelSettings() {
         const { props } = this;
+    
         if (props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
         }
