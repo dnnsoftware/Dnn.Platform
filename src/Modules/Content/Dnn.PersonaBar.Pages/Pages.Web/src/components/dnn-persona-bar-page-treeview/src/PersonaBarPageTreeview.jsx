@@ -15,12 +15,23 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     trimName(item) {
-        let maxLength = 16;
-        let { name } = item;
-        return name.length > maxLength ? `${name.slice(0, maxLength)}...` : name;
+        if (item.name && item.tabpath){
+            let maxLength = 18;
+            let { name, tabpath } = item;
+            let newLength = tabpath.split(/\//).length * 2 + 1;
+            newLength--;
+            let depth = (newLength < maxLength) ? newLength : 1;
+            return (name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
+        } else {
+            return item.name;
+        }
     }
 
-    renderTree(item, childListItems) {
+    // trimName(item) {
+    //     return item.name;
+    // }
+
+    render_tree(item, childListItems) {
         const {
             draggedItem,
             droppedItem,
