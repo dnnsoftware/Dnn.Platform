@@ -178,7 +178,7 @@ export class PersonaBarPageTreeview extends Component {
                         </div>
                         {((item.childListItems && !item.isOpen) || !item.childListItems) && index === total && this.renderDropZone("after", item)}
                     </div>
-                    {item.childListItems && item.isOpen ? this.renderTree(item, item.childListItems) : null}
+                    {item.childListItems && item.isOpen ? this.render_tree(item, item.childListItems) : null}
                 </li>
             );
         });
