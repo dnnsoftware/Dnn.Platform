@@ -1,5 +1,6 @@
 
 import React, { Component, PropTypes } from "react";
+import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -504,6 +505,8 @@ class App extends Component {
             } else {
                 onConfirm();
             }
+            //Set focus on name
+            ReactDOM.findDOMNode(this).querySelector("#name").focus();        
         };
 
         const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
@@ -1397,7 +1400,56 @@ class App extends Component {
                 return this.render_PagesDetailEditor();
         }
     }
-   
+
+    render_filters() {
+        const { filters } = this.state;
+        return filters
+            .filter(filter => !!filter)
+            .map((filter) => {
+
+                const deleteFilter = (prop) => {
+                    const left = () => {
+                        const update = {};
+                        update[prop] = null;
+                        if (prop === "startAndEndDateDirty") {
+                            this.setState({ startDate: new Date(), endDate: new Date() });
+                        }
+                        this.setState({ filtersUpdated: true }, () => {
+                            this.setState(update, () => this.onSearch());
+                        });
+                    };
+                    const right = () => {
+                        let { filters, tags } = this.state;
+                        tags = this.distinct(tags.split(",")).join(",");
+                        filters = filters.filter(f => f.ref != prop);
+                        const findTag = prop.replace("tag-", "");
+                        let tagList = tags.split(",");
+                        tags = "";
+                        tagList.map((tag) => {
+                            if (tag !== findTag)
+                                tags += tag + ",";
+                        });
+                        tags = tags !== "" ? tags.substring(0, tags.length - 1) : "";
+                        this.setState({ filters, tags, filtersUpdated: true }, () => this.onSearch());
+
+                    };
+                    const condition = prop.indexOf('tag') === -1;
+                    condition ? left() : right();
+                };
+
+                return (
+                    <div className="filter-by-tags">
+                        <OverflowText text={filter.tag} maxWidth={300} />
+                        <div className="xIcon"
+                            dangerouslySetInnerHTML={{ __html: XIcon }}
+                            onClick={(e) => { deleteFilter(filter.ref); }}>
+
+                        </div>
+                    </div>
+                );
+            });
+    }
+
     render() {
         const { props } = this;
         const { selectedPage } = props;
@@ -1413,8 +1465,8 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
                             {securityService.isSuperUser() &&
                                 <div> 
-                                    <Button type="primary" disabled={ (this.onEditMode() || this.state.inSearch) } size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                                    <Button type="secondary" disabled={ (this.onEditMode() || this.state.inSearch) } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                    <Button type="primary" disabled={ this.onEditMode() } size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={ this.onEditMode() } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
                             }
                             { 
