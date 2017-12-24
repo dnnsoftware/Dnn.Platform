@@ -466,6 +466,7 @@ class App extends Component {
         this.props.onLoadAddMultiplePages();
         
     }
+
     /**
      * When on edit mode
      */
@@ -841,6 +842,18 @@ class App extends Component {
         if (this.props.selectedPage[key] !== value) {
             this.props.onChangePageField(key, value);
         }
+        this.updatePageNameOnList(key, value);
+    }
+
+    updatePageNameOnList(key, value) {
+        this._traverse((item, list, updateStore) => {
+            if ((item.tabId === 0 || item.id === this.props.selectedPage.tabId) && key === "name") {
+                item.name = value;
+                item.selected = true;
+                item.isOpen = true;
+                updateStore(list);
+            } 
+        });
     }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
@@ -893,7 +906,7 @@ class App extends Component {
         const { selectedPageDirty } = this.props;
         const viewPage = () => PageActions.viewPage(item.id, item.url);
 
-        const left = () => {
+        const showConfirmationDialog = () => {
             utils.confirm(
                 Localization.get("CancelWithoutSaving"),
                 Localization.get("Close"),
@@ -901,8 +914,7 @@ class App extends Component {
                 viewPage);
         };
 
-        const right = () => viewPage();
-        const proceed = () => selectedPageDirty ? left() : right();
+        const proceed = () => selectedPageDirty ? showConfirmationDialog() : viewPage();
 
         this.clearEmptyStateMessage();
         const message = Localization.get("NoPermissionEditPage");
