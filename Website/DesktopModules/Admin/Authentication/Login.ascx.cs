@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     || (alias.Contains("/") && redirectURL.Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
-                    if (Convert.ToInt32(setting) != Null.NullInteger)
+                    if (NeedRedirectAfterLogin && isDefaultPage && Convert.ToInt32(setting) != Null.NullInteger)
                     {
                         redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
                     }
@@ -336,6 +336,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 ViewState["UserToken"] = value;
             }
         }
+
+        public bool NeedRedirectAfterLogin => LoginStatus == UserLoginStatus.LOGIN_SUCCESS;        
 
         #endregion
 
