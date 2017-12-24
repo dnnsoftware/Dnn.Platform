@@ -485,17 +485,37 @@ class App extends Component {
             const { selectedPage } = props;
             let runUpdateStore = null;
             let pageList = null;
+        
+            const onConfirm = () => {
+                this.props.changeSelectedPagePath(""); 
+                this.props.getNewPage(parentPage).then(()=>{
+                    if (parentPage && parentPage.id) {
+                        this.props.getChildPageList(parentPage.id)
+                        .then(pageChildItems => {
+                            this._traverse((item, list, update) => {
+                                const updateChildItems = () => {
+                                    const newPageChildItems = pageChildItems.concat(this.props.selectedPage);
 
-            this._traverse((item, list, updateStore) => {
-                item.selected = false;
-                pageList = list;
-                runUpdateStore = updateStore;
-            });
+                                    item.childListItems = newPageChildItems;
+                                    item.isOpen = true;
+                                    item.hasChildren = true;
+                                    update(list);
+                                };
+                                (item.id === parentPage.id) ? updateChildItems() : null;
+                            });
+                        });
+                    } else {
+                        this._traverse((item, list, updateStore) => {
+                            pageList = list;
+                            runUpdateStore = updateStore;
+                        });
+                        const newPageList = pageList.concat(this.props.selectedPage);    
+                        runUpdateStore(newPageList);
+                    }
+                }); 
+            };
 
-            runUpdateStore(pageList);
-            const onConfirm = () => { this.props.changeSelectedPagePath(""); this.props.getNewPage(parentPage); };
             if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
-
                 utils.confirm(
                     Localization.get("CancelWithoutSaving"),
                     Localization.get("Close"),
