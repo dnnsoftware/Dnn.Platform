@@ -466,7 +466,6 @@ class App extends Component {
         this.props.onLoadAddMultiplePages();
         
     }
-
     /**
      * When on edit mode
      */
