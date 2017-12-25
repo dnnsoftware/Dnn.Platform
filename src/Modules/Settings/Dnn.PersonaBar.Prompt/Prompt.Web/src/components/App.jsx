@@ -47,7 +47,7 @@ class App extends Component {
     }
 
     showGreeting() {
-        this.actions.runLocalCommand("INFO", formatString(Localization.get('PromptGreeting'), util.version), 'cmd');
+        this.actions.runLocalCommand("INFO", formatString(Localization.get("PromptGreeting"), util.version), "cmd");
     }
     setValue(value) {
         this.cmdPromptInputControl.setValue(value);

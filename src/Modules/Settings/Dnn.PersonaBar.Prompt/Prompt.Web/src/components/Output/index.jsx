@@ -1,23 +1,24 @@
-import React, { Component, PropTypes } from "react";
+import React, {Component, PropTypes} from "react";
 import "../Prompt.less";
 import DataTable from "./DataTable";
 import Command from "./Command";
 import TextLine from "./TextLine";
 import Help from "./Help";
-import { formatLabel} from "./util";
+import {renderObject} from "./util";
 
 class Output extends Component {
 
     renderResults() {
-        const { props } = this;
+        const {props} = this;
 
         props.IsPaging(false);
-        let { fieldOrder } = props;
+        let {fieldOrder} = props;
         if (props.isHelp) {
             if (props.commandList !== null && props.commandList.length > 0) {
-                return <Command commandList={props.commandList} IsPaging={props.IsPaging} />;
+                return <Command {...props} commandList={props.commandList} IsPaging={props.IsPaging}/>;
             } else {
-                return <Help {...props} IsPaging={props.IsPaging} style={props.style} isError={props.isError} name={props.name} />;
+                return <Help {...props} IsPaging={props.IsPaging} style={props.style} isError={props.isError}
+                             name={props.name}/>;
             }
         }
         if ((typeof fieldOrder === "undefined" || !fieldOrder || fieldOrder.length === 0) && fieldOrder !== null) {
@@ -49,7 +50,7 @@ class Output extends Component {
     }
 
     getKey(prefix) {
-        if(this.key === undefined) {
+        if (this.key === undefined) {
             this.key = 0;
         }
         return prefix ? `${prefix}-${this.key++}` : this.key++;
@@ -59,41 +60,13 @@ class Output extends Component {
         if (data.length > 1) {
             return <DataTable rows={data} columns={fieldOrder} cssClass=""/>;
         } else if (data.length === 1) {
-            return this.renderObject(data[0], fieldOrder);
+            return renderObject(data[0], fieldOrder);
         }
-        return <br  key={this.getKey("data")} />;
-    }
-
-    getColumnsFromRow(row) {
-        const columns = [];
-        for (let key in row) {
-            if (!key.startsWith("__")) {
-                columns.push(key);
-            }
-        }
-        return columns;
-    }
-
-    renderObject(data, fieldOrder) {
-
-        const columns = !fieldOrder || fieldOrder.length == 0 ? this.getColumnsFromRow(data) : fieldOrder;
-        const rows = columns.map((fldName, index) => {
-            const lbl = formatLabel(fldName);
-            const fldVal = data[fldName] ? data[fldName] : '';
-            const cmd = data["__" + fldName] ? data["__" + fldName] : null;
-
-            if (cmd) {
-                return <tr key={index}><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fldVal}</a></td></tr>;
-            } else {
-                return <tr key={index}><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td>{fldVal}</td></tr>;
-            }
-
-        });
-        return <table key={this.getKey("object")} className="dnn-prompt-tbl"><tbody>{rows}</tbody></table>;
+        return <br key={this.getKey("data")}/>;
     }
 
     render() {
-        const { props } = this;
+        const {props} = this;
         this.output = !props.clearOutput && this.output ? this.output : [];
         const out = this.renderResults();
         this.output.push(out);
@@ -104,6 +77,7 @@ class Output extends Component {
         );
     }
 }
+
 Output.PropTypes = {
     output: PropTypes.string,
     data: PropTypes.array,
