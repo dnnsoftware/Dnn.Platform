@@ -22,14 +22,14 @@ export function getColumnsFromRow(row) {
 
 export function renderObject(data, fieldOrder) {
 
-    const columns = !fieldOrder || fieldOrder.length == 0 ? getColumnsFromRow(data) : fieldOrder;
+    const columns = !fieldOrder || fieldOrder.length === 0 ? getColumnsFromRow(data) : fieldOrder;
     const rows = columns.map((fldName, index) => {
         const lbl = formatLabel(fldName);
-        const fldVal = data[fldName] ? data[fldName] : '';
+        const fldVal = data[fldName] ? data[fldName] : "";
         const cmd = data["__" + fldName] ? data["__" + fldName] : null;
 
         if (cmd) {
-            return <tr key={index}><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, '&quot;')}>{fldVal}</a></td></tr>;
+            return <tr key={index}><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, "&quot;")}>{fldVal}</a></td></tr>;
         } else {
             return <tr key={index}><td className="dnn-prompt-lbl">{lbl}</td><td>:</td><td>{fldVal}</td></tr>;
         }
