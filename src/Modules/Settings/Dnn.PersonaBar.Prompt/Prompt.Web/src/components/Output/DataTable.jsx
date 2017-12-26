@@ -1,5 +1,6 @@
 import React from "react";
-import { formatLabel} from "./util";
+import { formatLabel, getColumnsFromRow} from "./util";
+import Parser from "html-react-parser";
 
 const DataTable = ({rows, columns, cssClass}) => {
 
@@ -19,16 +20,16 @@ const DataTable = ({rows, columns, cssClass}) => {
             return (
                 <tr key={index}>
                     {columns.map((fieldName, index) => {
-                        let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] : "";
+                        let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] + "" : "";
                         let cmd = row["__" + fieldName] ? row["__" + fieldName] : null;
                         if (cmd) {
-                            return <td key={`table-${index}`}><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, "&quot;")}>{fieldValue}</a></td>;
+                            return <td key={`table-${index}`}><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, "&quot;")}>{Parser(fieldValue)}</a></td>;
                         }
                         else if (fieldName.indexOf("$") >= 0) {
-                            return <td key={`table-${index}`} className="mono">--{fieldValue}</td>;
+                            return <td key={`table-${index}`} className="mono">--{Parser(fieldValue)}</td>;
                         }
                         else {
-                            return <td key={`table-${index}`}>{fieldValue}</td>;
+                            return <td key={`table-${index}`}>{Parser(fieldValue)}</td>;
                         }
                     })}
                 </tr>
@@ -38,6 +39,8 @@ const DataTable = ({rows, columns, cssClass}) => {
 
     const renderTable = () => {
         if (!rows || !rows.length) { return; }
+
+        const columns = columns ? columns : getColumnsFromRow(rows[0]);
 
         // build header
         const tableHeader = renderTableHeader(columns, cssClass);

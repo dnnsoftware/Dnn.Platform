@@ -33,7 +33,6 @@ class App extends Component {
     onClickHandler(e) {
         if (e.target.classList.contains("dnn-prompt-cmd-insert")) {
             this.setValue(e.target.dataset.cmd.replace(/'/g, '"'));
-            this.toggleInput(true);
             this.setFocus(true);
         } else {
             this.setFocus(true);
@@ -55,9 +54,6 @@ class App extends Component {
     }
     setFocus(focus) {
         this.cmdPromptInputControl.setFocus(focus);
-    }
-    toggleInput(show) {
-        this.setFocus(show);
     }
 
     runCmd() {
@@ -107,7 +103,6 @@ class App extends Component {
             }
             if (e.keyCode === 88) {
                 this.actions.endPaging();
-                this.toggleInput(true);
                 this.setFocus(true);
                 return;
             }
@@ -156,7 +151,6 @@ class App extends Component {
                         className="Output"
                         scrollToBottom={this.scrollToBottom.bind(this)}
                         busy={this.busy.bind(this)}
-                        toggleInput={this.toggleInput.bind(this)}
                         IsPaging={this.paging.bind(this)}></Output>
                     <br />
                     <Input
@@ -192,7 +186,6 @@ App.PropTypes = {
     error: PropTypes.string,
     scrollToBottom: PropTypes.func.isRequired,
     busy: PropTypes.func.isRequired,
-    toggleInput: PropTypes.func.isRequired,
     IsPaging: PropTypes.func.isRequired
 };
 
