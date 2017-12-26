@@ -166,7 +166,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             var label = labels.eq(i);
             currentTool.is(':visible') ? label.show() : label.hide();
             if (nextTool.length > 0) {
-                label.width(nextTool.position().left - currentTool.position().left);
+				if ($(document.body).css('direction') == 'rtl')
+					label.width(currentTool.position().left - nextTool.position().left);
+				else
+                	label.width(nextTool.position().left - currentTool.position().left);
             }
         }
     }
@@ -351,8 +354,14 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             left = 0;
         }
 
+		if ($(document.body).css('direction') == 'rtl') {
+			contentPane.animate({ 'margin-right': left }, 500, 'swing', moreItemsHint);
+			loadingPanel.css({ 'right': left });
+		}
+		else {
         contentPane.animate({ 'margin-left': left }, 500, 'swing', moreItemsHint);
         loadingPanel.css({ 'left': left });
+    }
     }
 
     function moreItemsHint() {
@@ -1796,8 +1805,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             clearSearchPattern();
             loadFolderFirstPage(dataItem.ItemID);
         } else {
-            $.each(dataItem.Permissions, function(index, p)
-            {
+            $.each(dataItem.Permissions, function (index, p) {
                 if (p.Key == "READ" && p.Value == true) {
                     self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
                     return false;
@@ -1919,7 +1927,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         controller.gridOnRowDataBound(item, args.get_dataItem());
     }
 
-    function onContextMenuShown() {
+    function onContextMenuShown(mnu, args) {
         // RadMenu asigns overflow: hidden to hidden items. This is not hidding the bottom border
         $('.RadMenu.dnnModuleDigitalAssetsContextMenu li').each(function () {
             if ($(this).css("overflow") == "hidden") {
@@ -1931,6 +1939,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         // Change the rmFirst and rmLast classes considering item visibility
         $('.RadMenu.dnnModuleDigitalAssetsContextMenu').find('li:visible:first').addClass('rmFirst');
         $('.RadMenu.dnnModuleDigitalAssetsContextMenu').find('li:visible:last').addClass('rmLast');
+
+        if ($(document.body).css('direction') == 'rtl') {
+			$('.RadMenu.dnnModuleDigitalAssetsContextMenu').each(function () {
+				var evt = args.get_domEvent();
+				var x;
+				
+				if (evt)
+					x = evt.screenX - $(this).width();
+				else
+					x = $(args.get_node().get_element()).offset().left - $(this).width() / 2;
+					
+				$(this).css("left", x );
+			});
+		}
     }
 
     function isItemAlreadySelected(gridItem, items) {
@@ -2479,8 +2501,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         unlinkFolder(items[0]);
     }
 
-    function unlinkFolder(item)
-    {
+    function unlinkFolder(item) {
         var dialogTitle = resources.unlinkTitle;
         var dialogText = resources.unlinkConfirmText;
 
