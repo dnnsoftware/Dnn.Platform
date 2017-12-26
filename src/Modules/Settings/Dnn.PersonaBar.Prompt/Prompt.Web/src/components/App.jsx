@@ -1,63 +1,38 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Output from "./Output";
 import Input from "./Input";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import Localization from "localization";
 import util from "../utils";
 import "./Prompt.less";
-import {
-    prompt as PromptActions
-} from "../actions";
+import * as PromptActionsCreators from "../actions/prompt";
 import { formatString } from "../helpers";
 import PersonaBarPage from "dnn-persona-bar-page";
 
 class App extends Component {
-    constructor() {
-        super();
+
+    constructor(props) {
+        super(props);
         this.isBusy = false;
         this.isPaging = false;
         this.history = [];
         this.cmdOffset = 0; // reverse offset into history
-        this.keyDownHandler = this.onKeyDown.bind(this);
-        this.clickHandler = this.onClickHandler.bind(this);
-        this.mouseDownHandler = this.onMouseDownHandler.bind(this);
-        this.mouseUpHandler = this.onMouseUpHandler.bind(this);
-        this.isDragging = false;
+        const { dispatch } = props;
+        this.actions = bindActionCreators(PromptActionsCreators, dispatch);
     }
-    componentDidMount() {
-        document.addEventListener('keydown', this.keyDownHandler);
-        document.addEventListener('mousedown', this.mouseDownHandler);
-        document.addEventListener('mouseup', this.mouseUpHandler);
-        document.addEventListener('click', this.clickHandler); this._isMounted = true;
-        this._isMounted = true;
+    componentDidUpdate() {
         this.setFocus(true);
+        this.scrollToBottom();
     }
     componentWillMount() {
         this.showGreeting();
     }
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.keyDownHandler);
-        document.removeEventListener('mousedown', this.mouseDownHandler);
-        document.removeEventListener('mouseup', this.mouseUpHandler);
-        document.removeEventListener('click', this.clickHandler);
-        this._isMounted = false;
-    }
-    onMouseDownHandler(e) {
-        this.mouseX = e.clientX;
-        this.mouseY = e.clientY;
-    }
-    onMouseUpHandler(e) {
-        if (Math.abs(this.mouseX - e.clientX) > 10 || Math.abs(this.mouseY - e.clientY) > 5) {
-            this.isDragging = true;
-        } else {
-            this.isDragging = false;
-        }
-    }
+
     onClickHandler(e) {
-        if (this.isDragging) return;
         if (e.target.classList.contains("dnn-prompt-cmd-insert")) {
-            this.setValue(e.target.dataset.cmd.replace(/'/g, '"'));
-            this.toggleInput(true);
+            this.setValue(e.target.dataset.cmd.replace(/'/g, "\""));
             this.setFocus(true);
         } else {
             this.setFocus(true);
@@ -65,32 +40,26 @@ class App extends Component {
     }
 
     scrollToBottom() {
-        this.refs.cmdPrompt.scrollTop = this.refs.cmdPrompt.scrollHeight;
+        if (this.cmdPrompt) {
+            this.cmdPrompt.scrollTop = this.cmdPrompt.scrollHeight;
+        }
     }
     busy(b) {
         this.isBusy = b;
-        this.toggleInput(!b);
     }
 
     showGreeting() {
-        let { props } = this;
-        props.dispatch(PromptActions.runLocalCommand("INFO", formatString(Localization.get('PromptGreeting'), util.version), 'cmd'));
+        this.actions.runLocalCommand("INFO", formatString(Localization.get("PromptGreeting"), util.version), "cmd");
     }
     setValue(value) {
-        this.refs.cmdPromptInputControl.getWrappedInstance().setValue(value);
-    }
-    getValue(value) {
-        return this.refs.cmdPromptInputControl.getWrappedInstance().getValue(value);
+        this.cmdPromptInputControl.setValue(value);
     }
     setFocus(focus) {
-        this.refs.cmdPromptInputControl.getWrappedInstance().setFocus(focus);
+        this.cmdPromptInputControl.setFocus(focus);
     }
-    toggleInput(show) {
-        this.refs.cmdPromptInputControl.getWrappedInstance().toggleInput(show);
-        this.setFocus(show);
-    }
+
     runCmd() {
-        this.refs.cmdPromptInputControl.getWrappedInstance().runCmd();
+        this.cmdPromptInputControl.runCmd();
     }
     updateHistory(value, isClear) {
         this.cmdOffset = 0; // reset history index
@@ -111,15 +80,14 @@ class App extends Component {
         this.isPaging = isPaging;
     }
     setHeight(height) {
-        if (this.refs.cmdPrompt !== undefined && height !== undefined && height !== "") {
+        if (this.cmdPrompt !== undefined && height !== undefined && height !== "") {
             height = height.replace("%", "");
             if (parseInt(height) > 0 && parseInt(height) <= 100)
-                this.refs.cmdPrompt.style.height = height + "%";
+                this.cmdPrompt.style.height = height + "%";
         }
     }
 
-    onKeyDown(e) {
-        let { props } = this;
+    keyDownHandler(e) {
         //CTRL + Key
         if (e.ctrlKey) {
             if (e.keyCode === 192) {
@@ -136,8 +104,7 @@ class App extends Component {
                 return;
             }
             if (e.keyCode === 88) {
-                props.dispatch(PromptActions.endPaging());
-                this.toggleInput(true);
+                this.actions.endPaging();
                 this.setFocus(true);
                 return;
             }
@@ -172,23 +139,78 @@ class App extends Component {
     }
 
     render() {
+        const { props } = this;
         return (
             <PersonaBarPage isOpen={true} fullWidth={true}>
-                <div className="dnn-prompt" style={{ display: "block" }} ref="cmdPrompt">
-                    <Output className="Output" scrollToBottom={this.scrollToBottom.bind(this)}
-                        busy={this.busy.bind(this)} toggleInput={this.toggleInput.bind(this)} IsPaging={this.paging.bind(this)}></Output>
+                <div
+                    className="dnn-prompt"
+                    style={{ display: "block" }}
+                    onKeyDown={this.keyDownHandler.bind(this)}
+                    onClick={this.onClickHandler.bind(this)}
+                    ref={(el) => this.cmdPrompt = el}>
+                    <Output
+                        {...props}
+                        className="Output"
+                        scrollToBottom={this.scrollToBottom.bind(this)}
+                        busy={this.busy.bind(this)}
+                        IsPaging={this.paging.bind(this)}></Output>
                     <br />
-                    <Input ref="cmdPromptInputControl" updateHistory={this.updateHistory.bind(this)} busy={this.busy.bind(this)} paging={this.paging.bind(this)} setHeight={this.setHeight.bind(this)} />
+                    <Input
+                        ref={(el) => this.cmdPromptInputControl = el}
+                        {...props}
+                        actions={this.actions}
+                        updateHistory={this.updateHistory.bind(this)}
+                        busy={this.busy.bind(this)}
+                        paging={this.paging.bind(this)}
+                        setHeight={this.setHeight.bind(this)} />
                 </div>
             </PersonaBarPage>
         );
     }
 }
 App.PropTypes = {
-    dispatch: PropTypes.func.isRequired
+    output: PropTypes.string,
+    data: PropTypes.array,
+    paging: PropTypes.object,
+    isHtml: PropTypes.bool,
+    reload: PropTypes.bool,
+    isError: PropTypes.bool,
+    clearOutput: PropTypes.bool,
+    fieldOrder: PropTypes.array,
+    commandList: PropTypes.array,
+    style: PropTypes.string,
+    isHelp: PropTypes.bool,
+    name: PropTypes.string,
+    nextPageCommand: PropTypes.string,
+    description: PropTypes.string,
+    options: PropTypes.array,
+    resultHtml: PropTypes.string,
+    error: PropTypes.string,
+    scrollToBottom: PropTypes.func.isRequired,
+    busy: PropTypes.func.isRequired,
+    IsPaging: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
+    return {
+        output: state.prompt.output,
+        data: state.prompt.data,
+        paging: state.prompt.pagingInfo,
+        isHtml: state.prompt.isHtml,
+        reload: state.prompt.reload,
+        style: state.prompt.style,
+        fieldOrder: state.prompt.fieldOrder,
+        commandList: state.prompt.commandList,
+        isError: state.prompt.isError,
+        clearOutput: state.prompt.clearOutput,
+        isHelp: state.prompt.isHelp,
+        name: state.prompt.name,
+        description: state.prompt.description,
+        options: state.prompt.options,
+        resultHtml: state.prompt.resultHtml,
+        error: state.prompt.error,
+        nextPageCommand: state.prompt.nextPageCommand
+    };
 }
 
 export default connect(mapStateToProps)(App);

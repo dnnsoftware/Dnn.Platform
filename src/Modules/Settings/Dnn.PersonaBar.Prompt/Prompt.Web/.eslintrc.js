@@ -22,19 +22,6 @@ module.exports = {
         "VERSION": false
     },
     "rules": {
-    //    "spellcheck/spell-checker": [1,
-    //     {
-    //         "comments": "true",
-    //         "strings": "true",
-    //         "identifiers": "true",
-    //         "skipWords": require("./.eslintskipwords"),
-    //         "skipIfMatch": [
-    //             "http://[^s]*",
-    //             "https://[^s]*",
-    //             "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
-    //         ]
-    //     }
-    //   ],      
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],
