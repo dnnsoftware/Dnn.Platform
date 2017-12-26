@@ -579,10 +579,22 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
             var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, recipientUser);
+            body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
 
             Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
 
             MarkMessagesAsDispatched(messageRecipients);
+        }
+
+        private static string RemoveHttpUrlsIfSiteisSSLEnabled(string stringContainingHttp, PortalSettings portalSettings)
+        {
+            if (stringContainingHttp.IndexOf("http") > -1 && portalSettings != null && (portalSettings.SSLEnabled || portalSettings.SSLEnforced))
+            {
+                var urlToReplace = GetPortalHomeUrl(portalSettings);
+                var urlReplaceWith = $"https://{portalSettings.DefaultPortalAlias}";
+                stringContainingHttp = stringContainingHttp.Replace(urlToReplace, urlReplaceWith);
+            }
+            return stringContainingHttp;
         }
 
         /// <summary>Gets the schedule item date setting.</summary>
@@ -690,7 +702,8 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
                 var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
                 var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
-                
+                body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
+
                 // Include the attachment in the email message if configured to do so
                 if (InternalMessagingController.Instance.AttachmentsAllowed(message.PortalID))
                 {
