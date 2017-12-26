@@ -146,7 +146,7 @@ namespace DotNetNuke.Web.InternalServices
             // local references for use in closure
             var portalSettings = PortalSettings;
             var currentSynchronizationContext = SynchronizationContext.Current;
-            var userInfo = UserInfo;
+            var userInfo = UserInfo;    
             var task = request.Content.ReadAsMultipartAsync(provider)
                 .ContinueWith(o =>
                     {

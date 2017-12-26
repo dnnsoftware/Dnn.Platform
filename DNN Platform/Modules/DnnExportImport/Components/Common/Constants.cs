@@ -30,7 +30,7 @@ namespace Dnn.ExportImport.Components.Common
         /// This is the currently supported schema version support as of this release.
         /// In future releases thi must be updated to be compatible wiht th e
         /// </summary>
-        public const string CurrentSchemaVersion = "1.0.1";
+        public const string CurrentSchemaVersion = "1.0.2";
 
         internal const string ExportFolder = @"\App_Data\ExportImport\";
         internal const string ExportManifestName = "export.json"; // export manifest file name

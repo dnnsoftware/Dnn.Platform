@@ -693,9 +693,9 @@ namespace DotNetNuke.Data
         }
 
         public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,
-                                                string cultureCode)
+                                                string cultureCode, bool isSecure)
         {
-            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode);
+            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode, isSecure);
         }
 
         public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
@@ -4286,6 +4286,30 @@ namespace DotNetNuke.Data
         public virtual void DeleteOldRedirectMessage(DateTime cutofDateTime)
         {
             ExecuteNonQuery("DeleteOldRedirectMessage", FixDate(cutofDateTime));
+        }
+
+        #endregion
+
+        #region User Cookies persistence
+
+        public virtual void UpdateAuthCookie(string cookieValue, DateTime utcExpiry, int userId)
+        {
+            ExecuteNonQuery("AuthCookies_Update", cookieValue, FixDate(utcExpiry), userId);
+        }
+
+        public virtual IDataReader FindAuthCookie(string cookieValue)
+        {
+            return ExecuteReader("AuthCookies_Find", cookieValue);
+        }
+
+        public virtual void DeleteAuthCookie(string cookieValue)
+        {
+            ExecuteNonQuery("AuthCookies_DeleteByValue", cookieValue);
+        }
+
+        public virtual void DeleteExpiredAuthCookies(DateTime utcExpiredBefore)
+        {
+            ExecuteNonQuery("AuthCookies_DeleteOld", FixDate(utcExpiredBefore));
         }
 
         #endregion

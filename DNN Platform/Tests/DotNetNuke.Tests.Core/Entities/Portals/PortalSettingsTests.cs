@@ -19,6 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Tests.Utilities.Mocks;

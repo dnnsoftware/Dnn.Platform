@@ -726,12 +726,37 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNull("userId", userId);
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
-            _dataProvider.ChangeUsername(userId, newUsername);
+            var userName = PortalSecurity.Instance.InputFilter(newUsername,
+                                                      PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+
+            if (!userName.Equals(newUsername))
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
+            // Validate username against bad characters; it must not start or end with space, 
+            // must not containg control characters, and not contain special puctuations
+            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+		    char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+		    var valid = userName.Length >= 5 &&
+                        userName == userName.Trim() &&
+                        userName.All(ch => ch >= ' ') &&
+                        userName.IndexOfAny(unallowedAscii) < 0;
+		    if (!valid)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
+            _dataProvider.ChangeUsername(userId, userName);
+
             EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
+
             DataCache.ClearCache();          
         }
 
@@ -1590,8 +1615,12 @@ namespace DotNetNuke.Security.Membership
 
 			//Get AspNet MembershipUser
 			MembershipUser aspnetUser = GetMembershipUser(user);
+            if (aspnetUser.IsLockedOut)
+            {
+                aspnetUser.UnlockUser();
+            }
 
-			string resetPassword = ResetPassword(user, answer);
+            string resetPassword = ResetPassword(user, answer);
 			return aspnetUser.ChangePassword(resetPassword, newPassword);
 		}
 

@@ -24,6 +24,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
@@ -48,6 +49,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Sitemap;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Installer.Blocker;
 
 #endregion
@@ -61,7 +63,7 @@ namespace DotNetNuke.Web.Common.Internal
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DotNetNukeHttpApplication));
 
-        void Application_Error(object sender, EventArgs eventArgs)
+        private void Application_Error(object sender, EventArgs eventArgs)
         {
             // Code that runs when an unhandled error occurs
             if (HttpContext.Current != null)
@@ -186,6 +188,17 @@ namespace DotNetNuke.Web.Common.Internal
         private void Application_BeginRequest(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;
+            var authCookie = app.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                // if the cookie is not in the database, then it is from before upgrading to 9.2.0 and don't fail
+                var persisted = AuthCookieController.Instance.Find(authCookie.Value);
+                if (persisted != null && persisted.ExpiresOn <= DateTime.UtcNow)
+                {
+                    app.Request.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                }
+            }
+
             var requestUrl = app.Request.Url.LocalPath.ToLower();
             if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") &&  Endings.Any(requestUrl.EndsWith))
             {

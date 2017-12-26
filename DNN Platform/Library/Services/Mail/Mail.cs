@@ -124,7 +124,18 @@ namespace DotNetNuke.Services.Mail
                     {
                         var smtpHostParts = smtpServer.Split(':');
                         smtpClient.Host = smtpHostParts[0];
-                        smtpClient.Port = smtpHostParts.Length > 1 ? Convert.ToInt32(smtpHostParts[1]) : 25;
+                        if (smtpHostParts.Length > 1)
+                        {
+                            // port is guaranteed to be of max 5 digits numeric by the RegEx check
+                            var port = Convert.ToInt32(smtpHostParts[1]);
+                            if (port < 1 || port > 65535)
+                            {
+                                return Localize.GetString("SmtpInvalidPort");
+                            }
+
+                            smtpClient.Port = port;
+                        }
+                        // else the port defaults to 25 by .NET when not set
 
                         smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
                         smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
@@ -331,10 +342,10 @@ namespace DotNetNuke.Services.Mail
             subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
             body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
 
-            var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email)!=null)?
+            var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email) != null) ?
                 String.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
             SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
-
+            
             return Null.NullString;
         }
 

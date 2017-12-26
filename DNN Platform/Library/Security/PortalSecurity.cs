@@ -34,15 +34,12 @@ using System.Web.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Cryptography;
+// ReSharper disable MemberCanBeMadeStatic.Global
 
 #endregion
 
@@ -55,6 +52,8 @@ namespace DotNetNuke.Security
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
+
+        private static readonly DateTime OldExpiryTime = new DateTime(1999, 1, 1);
 
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -617,6 +616,8 @@ namespace DotNetNuke.Security
 
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
+            InvalidateAspNetSession(HttpContext.Current);
+
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
             {
                 //Create a custom auth cookie
@@ -639,7 +640,7 @@ namespace DotNetNuke.Security
                                         };
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
-
+                AuthCookieController.Instance.Update(authCookie.Value, authCookie.Expires.ToUniversalTime(), user.UserID);
 
                 if (PortalController.IsMemberOfPortalGroup(user.PortalID))
                 {
@@ -658,6 +659,15 @@ namespace DotNetNuke.Security
             else
             {
                 FormsAuthentication.SetAuthCookie(user.Username, false);
+                var authCookie = HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName];
+                if (!string.IsNullOrEmpty(authCookie?.Value))
+                {
+                    var t = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (t != null)
+                    {
+                        AuthCookieController.Instance.Update(authCookie.Value, t.Expiration.ToUniversalTime(), user.UserID);
+                    }
+                }
             }
 
             if (user.IsSuperUser)
@@ -672,6 +682,15 @@ namespace DotNetNuke.Security
 
         public void SignOut()
         {
+            InvalidateAspNetSession(HttpContext.Current);
+
+            var currentAuthCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (currentAuthCookie != null)
+            {
+                // This will prevent next requests from being authenticated if using smae cookie
+                AuthCookieController.Instance.Update(currentAuthCookie.Value, OldExpiryTime, Null.NullInteger);
+            }
+
             //Log User Off from Cookie Authentication System
             var domainCookie = HttpContext.Current.Request.Cookies["SiteGroup"];
             if (domainCookie == null)
@@ -693,18 +712,17 @@ namespace DotNetNuke.Security
 
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, str)
                 {
-                    Expires = new DateTime(1999, 1, 1),
+                    Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
                     Secure = FormsAuthentication.RequireSSL
-
                 };
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
 
                 var siteGroupCookie = new HttpCookie("SiteGroup", str)
                 {
-                    Expires = new DateTime(1999, 1, 1),
+                    Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
                     Secure = FormsAuthentication.RequireSSL
@@ -762,7 +780,16 @@ namespace DotNetNuke.Security
                     }
                 }
             }
-           
+        }
+
+        private static void InvalidateAspNetSession(HttpContext context)
+        {
+            if (context.Session != null && !context.Session.IsNewSession)
+            {
+                // invalidate existing session so a new one is created
+                context.Session.Clear();
+                context.Session.Abandon();
+            }
         }
 
         ///-----------------------------------------------------------------------------

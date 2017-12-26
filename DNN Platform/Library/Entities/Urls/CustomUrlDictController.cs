@@ -24,8 +24,9 @@
 #region Usings
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-
+using System.Linq;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -181,7 +182,7 @@ namespace DotNetNuke.Entities.Urls
         {
             SharedDictionary<int, SharedDictionary<string, string>> urlDict;
             //this contains a list of all tabs for all the portals that have been retrieved
-            List<int> urlPortals; //this contains a list of the portals that have been retrieved
+            ConcurrentBag<int> urlPortals; //this contains a list of the portals that have been retrieved
             //get the objects from the cache
             var cc = new CacheController();
             cc.GetFriendlyUrlIndexFromCache(out urlDict, out urlPortals, out customAliasForTabs);
@@ -191,7 +192,7 @@ namespace DotNetNuke.Entities.Urls
                 if (urlPortals == null)
                 //no portals retrieved from cache, but was a dictionary.  Bit weird, but we'll run with it
                 {
-                    urlPortals = new List<int>();
+                    urlPortals = new ConcurrentBag<int>();
                 }
 
                 //check to see if this portal has been included in the dict
@@ -213,7 +214,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 //rebuild the dictionary for this portal
                 urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
-                urlPortals = new List<int> { portalId }; //always rebuild the portal list
+                urlPortals = new ConcurrentBag<int> { portalId }; //always rebuild the portal list
                 if (bypassCache == false) //if we are to cache this item (byPassCache = false)
                 {
                     //cache these items

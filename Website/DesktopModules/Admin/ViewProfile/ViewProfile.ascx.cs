@@ -160,6 +160,13 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 }
                 else
                 {
+                    if (template.IndexOf("[PROFILE:PHOTO]") > -1)
+                    {
+                        var profileImageHandlerBasedURL =
+                            UserController.Instance?.GetUserProfilePictureUrl(ProfileUserId, 120, 120);
+                        template = template.Replace("[PROFILE:PHOTO]", profileImageHandlerBasedURL);
+                    }
+
                     var token = new TokenReplace { User = ProfileUser, AccessingUser = ModuleContext.PortalSettings.UserInfo };
                     profileOutput.InnerHtml = token.ReplaceEnvironmentTokens(template);
                     noPropertiesLabel.Visible = false;

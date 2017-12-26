@@ -94,6 +94,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (Request.QueryString["resetToken"] != null)
             {
                 ResetToken = Request.QueryString["resetToken"];
+                txtUsername.Enabled = false;
                 
             }
 

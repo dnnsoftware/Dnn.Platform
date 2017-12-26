@@ -43,7 +43,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591, 3001, 3002, 1574, 1573</NoWarn>
-    <LangVersion>default</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -57,6 +57,7 @@
     <Optimize>true</Optimize>
     <DefineConstants>
     </DefineConstants>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
@@ -636,6 +637,9 @@
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
     <Compile Include="Obsolete\UserController.cs" />
+    <Compile Include="Security\Cookies\AuthCookieController.cs" />
+    <Compile Include="Security\Cookies\IAuthCookieController.cs" />
+    <Compile Include="Security\Cookies\PersistedAuthCookie.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
