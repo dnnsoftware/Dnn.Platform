@@ -37,10 +37,10 @@ const DataTable = ({rows, columns, cssClass}) => {
         });
     };
 
-    const renderTable = () => {
+    const renderTable = (columns) => {
         if (!rows || !rows.length) { return; }
 
-        const columns = columns ? columns : getColumnsFromRow(rows[0]);
+        columns = columns ? columns : getColumnsFromRow(rows[0]);
 
         // build header
         const tableHeader = renderTableHeader(columns, cssClass);
@@ -58,7 +58,7 @@ const DataTable = ({rows, columns, cssClass}) => {
         );
     };
 
-    return renderTable();
+    return renderTable(columns);
 };
 
 DataTable.propTypes = {

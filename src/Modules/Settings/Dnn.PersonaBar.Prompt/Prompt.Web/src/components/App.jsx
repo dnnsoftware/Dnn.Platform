@@ -32,7 +32,7 @@ class App extends Component {
 
     onClickHandler(e) {
         if (e.target.classList.contains("dnn-prompt-cmd-insert")) {
-            this.setValue(e.target.dataset.cmd.replace(/'/g, '"'));
+            this.setValue(e.target.dataset.cmd.replace(/'/g, "\""));
             this.setFocus(true);
         } else {
             this.setFocus(true);
@@ -40,7 +40,9 @@ class App extends Component {
     }
 
     scrollToBottom() {
-        if(this.cmdPrompt) this.cmdPrompt.scrollTop = this.cmdPrompt.scrollHeight;
+        if (this.cmdPrompt) {
+            this.cmdPrompt.scrollTop = this.cmdPrompt.scrollHeight;
+        }
     }
     busy(b) {
         this.isBusy = b;

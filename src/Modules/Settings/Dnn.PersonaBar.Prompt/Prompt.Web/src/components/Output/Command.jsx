@@ -12,11 +12,12 @@ const Command = ({commandList, IsPaging}) => {
     const headingCommands = <h4>{Parser(Localization.get("Prompt_Help_Commands"))}</h4>;
 
     const commandsList = sort(Object.assign(commandList), "Category").reduce((prev,current,index, arr) => {
-        if(index > 0) {
+        if (index > 0) {
             const currentCat = current.Category;
             const prevCat = arr[index - 1].Category;
-            if(currentCat != prevCat)
+            if (currentCat !== prevCat) {
                 return [...prev, {separator: true, Category: current.Category}, current];
+            }
         }
 
         return [...prev, current];
@@ -71,8 +72,8 @@ const Command = ({commandList, IsPaging}) => {
 };
 
 Command.propTypes = {
-  commandList: React.PropTypes.array.isRequired,
-  IsPaging: React.PropTypes.func.isRequired
+    commandList: React.PropTypes.array.isRequired,
+    IsPaging: React.PropTypes.func.isRequired
 };
 
 export default Command;

@@ -1,14 +1,5 @@
 import util from "../utils";
 
-function serializeQueryStringParameters(obj) {
-    let s = [];
-    for (let p in obj) {
-        if (obj.hasOwnProperty(p)) {
-            s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
-    }
-    return s.join("&");
-}
 class ApplicationService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Localization from "localization";
 import util from "../../utils";
 import "../Prompt.less";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 const cookies = new Cookies();
 import { formatString } from "../../helpers";
 import {commands as Cmd, modes as Mode} from "../../constants/promptLabel";
@@ -14,7 +14,7 @@ class Input extends Component {
         //This should be replaced by User Personalization API
         const consoleHeight = cookies.get("dnn-prompt-console-height");
         if (consoleHeight) {
-            this.configConsole(['config', consoleHeight]);
+            this.configConsole(["config", consoleHeight]);
         }
     }
 
@@ -117,7 +117,7 @@ class Input extends Component {
                 }, errorCallback.bind(this));
             }
         } else {
-            if(!Cmd[cmd]) {
+            if (!Cmd[cmd]) {
                 actions.runCommand(
                     {cmdLine: txt, currentPage: self.tabId},
                     () => {
@@ -135,10 +135,11 @@ class Input extends Component {
 
     runCmd() {
         const txt = this.readInput();
-        if(txt) {
+        if (txt) {
             this.displayCmdInfo(txt);
-            if(!this.runLocalCmd(txt))
+            if (!this.runLocalCmd(txt)) {
                 this.runServerCmd(txt);
+            }
             this.setFocus(false);
         }
     }
@@ -146,7 +147,7 @@ class Input extends Component {
     changeUserMode(tokens) {
         const { props } = this;
         const { actions } = props;
-        if (!tokens && tokens.length >= 2) return;
+        if (!tokens && tokens.length >= 2) { return; }
 
         tokens = tokens.map(token => token.toUpperCase());
 
@@ -164,11 +165,11 @@ class Input extends Component {
     }
 
     isFlag(token) {
-        return (token && token.startsWith('--'));
+        return (token && token.startsWith("--"));
     }
 
     getFlag(flag, tokens) {
-        if (!tokens || tokens.length === 0) return null;
+        if (!tokens || tokens.length === 0) { return null; }
         return tokens.find((token) => this.isFlag(token) && flag.toUpperCase() === token.toUpperCase());
     }
 
