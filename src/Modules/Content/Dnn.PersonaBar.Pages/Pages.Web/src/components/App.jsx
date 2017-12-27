@@ -1411,10 +1411,12 @@ class App extends Component {
             return (
                 <GridCell columnSize={100}>
                     <div className="search-item-card">
-                        {!utils.isPlatform() &&
-                            <div className="search-item-thumbnail">
-                                <img src={item.thumbnail} />
-                            </div>}
+                        {this.props.pageTypeSelectorComponents && this.props.pageTypeSelectorComponents.length > 0 &&                            
+                            this.props.pageTypeSelectorComponents.map(function (component) {
+                                const Component = component.component;
+                                return <div className="search-item-thumbnail"><Component page={item} /></div>;
+                            })
+                        }
                         <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
                             <div className="search-item-details-left">
                                 <h1 onClick={() => onNameClick(item)}><OverflowText text={item.name} /></h1>
