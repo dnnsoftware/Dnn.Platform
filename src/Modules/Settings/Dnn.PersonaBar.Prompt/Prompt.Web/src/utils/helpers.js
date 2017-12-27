@@ -1,5 +1,25 @@
 import React  from "react";
 
+export function formatString() {
+    let format = arguments[0];
+    let methodsArgs = arguments;
+    return format.replace(/[{\[](\d+)[\]}]/gi, function (value, index) {
+        let argsIndex = parseInt(index) + 1;
+        return methodsArgs[argsIndex];
+    });
+}
+export function sort(items, column, order) {
+    order = order === undefined ? "asc" : order;
+    items = items.sort(function (a, b) {
+        if (a[column] > b[column]) //sort string descending
+            return order === "asc" ? 1 : -1;
+        if (a[column] < b[column])
+            return order === "asc" ? -1 : 1;
+        return 0;//default return value (no sorting)
+    });
+    return items;
+}
+
 export function formatLabel(input) {
     if (typeof input === "string") {
         // format camelcase and remove Is from labels
@@ -37,3 +57,13 @@ export function renderObject(data, fieldOrder) {
     });
     return <table className="dnn-prompt-tbl"><tbody>{rows}</tbody></table>;
 }
+
+export const util = {
+    init(utilities) {
+        if (!utilities) {
+            throw new Error("Utilities is undefined.");
+        }
+        this.utilities = utilities;
+    },
+    utilities: null
+};

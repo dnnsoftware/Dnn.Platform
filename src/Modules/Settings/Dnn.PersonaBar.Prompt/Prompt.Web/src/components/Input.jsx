@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Localization from "localization";
-import util from "../../utils";
-import "../Prompt.less";
+import Localization from "localization/Localization";
+import { util, formatString } from "utils/helpers";
+import "./Prompt.less";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
-import { formatString } from "../../helpers";
-import {commands as Cmd, modes as Mode} from "../../constants/promptLabel";
+import {commands as Cmd, modes as Mode} from "constants/promptLabel";
 
 class Input extends Component {
 
@@ -70,7 +69,7 @@ class Input extends Component {
             case Cmd.CLH:
             case Cmd.CLEAR_HISTORY:
                 props.updateHistory("", true);
-                actions.runLocalCommand(cmd, Localization.get("SessionHisotryCleared"));
+                actions.runLocalCommand(cmd, Localization.get("SessionHistoryCleared"));
                 break;
             case Cmd.CONFIG:
                 this.configConsole(tokens);

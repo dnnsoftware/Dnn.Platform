@@ -1,6 +1,7 @@
-import { prompt as ActionTypes } from "../constants/actionTypes";
-import util from "../utils";
-export default function logList(state = {
+import { util } from "utils/helpers";
+import actionTypes from "constants/actionTypes";
+
+export default function promptReducers(state = {
     commandList: null,
     pagingInfo: null,
     nextPageCommand: null,
@@ -20,7 +21,7 @@ export default function logList(state = {
     error: null
 }, action) {
     switch (action.type) {
-        case ActionTypes.RETRIEVED_COMMAND_LIST:
+        case actionTypes.RETRIEVED_COMMAND_LIST:
             return {
                 ...state,
                 commandList: action.data.commands,
@@ -41,7 +42,7 @@ export default function logList(state = {
                 resultHtml: null,
                 error: null
             };
-        case ActionTypes.END_PAGING:
+        case actionTypes.END_PAGING:
             return {
                 ...state,
                 commandList: null,
@@ -62,7 +63,7 @@ export default function logList(state = {
                 resultHtml: null,
                 error: null
             };
-        case ActionTypes.EXECUTED_COMMAND:
+        case actionTypes.EXECUTED_COMMAND:
             if (action.data.result.Message) {
                 return {
                     ...state,
@@ -86,7 +87,7 @@ export default function logList(state = {
                     style: action.style
                 };
             }
-        case ActionTypes.EXECUTED_HELP_COMMAND:
+        case actionTypes.EXECUTED_HELP_COMMAND:
             if (action.data.result.Message) {
                 return {
                     ...state,
@@ -108,7 +109,7 @@ export default function logList(state = {
                     isError: action.data.result.error !== undefined && action.data.result.error !== null && action.data.result.error !== ""
                 };
             }
-        case ActionTypes.EXECUTED_LOCAL_COMMAND:
+        case actionTypes.EXECUTED_LOCAL_COMMAND:
             switch (action.command) {
                 case "CLS":
                 case "CLEAR-SCREEN":

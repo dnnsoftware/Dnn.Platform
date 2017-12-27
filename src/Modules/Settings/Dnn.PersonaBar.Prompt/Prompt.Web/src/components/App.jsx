@@ -4,11 +4,10 @@ import Output from "./Output";
 import Input from "./Input";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Localization from "localization";
-import util from "../utils";
+import Localization from "localization/Localization";
+import { util, formatString } from "utils/helpers";
 import "./Prompt.less";
-import * as PromptActionsCreators from "../actions/prompt";
-import { formatString } from "../helpers";
+import * as PromptActionsCreators from "actions/prompt";
 import PersonaBarPage from "dnn-persona-bar-page";
 
 class App extends Component {
@@ -193,23 +192,23 @@ App.PropTypes = {
 
 function mapStateToProps(state) {
     return {
-        output: state.prompt.output,
-        data: state.prompt.data,
-        paging: state.prompt.pagingInfo,
-        isHtml: state.prompt.isHtml,
-        reload: state.prompt.reload,
-        style: state.prompt.style,
-        fieldOrder: state.prompt.fieldOrder,
-        commandList: state.prompt.commandList,
-        isError: state.prompt.isError,
-        clearOutput: state.prompt.clearOutput,
-        isHelp: state.prompt.isHelp,
-        name: state.prompt.name,
-        description: state.prompt.description,
-        options: state.prompt.options,
-        resultHtml: state.prompt.resultHtml,
-        error: state.prompt.error,
-        nextPageCommand: state.prompt.nextPageCommand
+        output: state.output,
+        data: state.data,
+        paging: state.pagingInfo,
+        isHtml: state.isHtml,
+        reload: state.reload,
+        style: state.style,
+        fieldOrder: state.fieldOrder,
+        commandList: state.commandList,
+        isError: state.isError,
+        clearOutput: state.clearOutput,
+        isHelp: state.isHelp,
+        name: state.name,
+        description: state.description,
+        options: state.options,
+        resultHtml: state.resultHtml,
+        error: state.error,
+        nextPageCommand: state.nextPageCommand
     };
 }
 

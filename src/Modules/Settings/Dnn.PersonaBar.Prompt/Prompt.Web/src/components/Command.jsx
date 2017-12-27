@@ -1,7 +1,7 @@
 import React from "react";
 import Parser from "html-react-parser";
-import Localization from "localization";
-import {sort} from "../../helpers";
+import Localization from "localization/Localization";
+import { sort } from "utils/helpers";
 
 const Command = ({commandList, IsPaging}) => {
 
