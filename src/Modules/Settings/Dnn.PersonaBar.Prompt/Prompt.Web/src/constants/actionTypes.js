@@ -1,4 +1,4 @@
-const promptActionTypes = {
+const actionTypes = {
     RETRIEVED_COMMAND_LIST: "RETRIEVED_COMMAND_LIST",
     EXECUTED_COMMAND: "EXECUTED_COMMAND",
     EXECUTED_HELP_COMMAND: "EXECUTED_HELP_COMMAND",
@@ -6,4 +6,4 @@ const promptActionTypes = {
     END_PAGING: "END_PAGING",
     CHANGE_USER_MODE: "CHANGE_USER_MODE"
 };
-export default promptActionTypes;
+export default actionTypes;

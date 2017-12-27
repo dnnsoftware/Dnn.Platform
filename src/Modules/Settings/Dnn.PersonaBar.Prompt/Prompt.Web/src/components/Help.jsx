@@ -1,6 +1,6 @@
 import React from "react";
 import Parser from "html-react-parser";
-import Localization from "localization";
+import Localization from "localization/Localization";
 import DataTable from "./DataTable";
 import TextLine from "./TextLine";
 

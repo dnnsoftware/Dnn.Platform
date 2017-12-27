@@ -1,5 +1,5 @@
 import React from "react";
-import { formatLabel, getColumnsFromRow} from "./util";
+import { formatLabel, getColumnsFromRow} from "utils/helpers";
 import Parser from "html-react-parser";
 
 const DataTable = ({rows, columns, cssClass}) => {

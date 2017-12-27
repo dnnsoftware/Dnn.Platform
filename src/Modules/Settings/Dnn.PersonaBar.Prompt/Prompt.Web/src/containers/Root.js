@@ -1,6 +1,19 @@
-/* eslint-disable no-undef */
-if (process.env.NODE_ENV === "production") {
-    module.exports = require("./Root.prod");
-} else {
-    module.exports = require("./Root.dev");
+import React, { Component } from "react";
+import App from "components/App";
+import DevTools from "./DevTools";
+import { IS_DEV} from "../globals/promptInit";
+
+export default class Root extends Component {
+    constructor() {
+        super();
+    }
+
+    render() {
+        return (
+            <div className="dnnPrompt-app personaBar-mainContainer">
+                <App />
+                {IS_DEV && <DevTools />}
+            </div>
+        );
+    }
 }

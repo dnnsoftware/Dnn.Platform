@@ -1,9 +1,9 @@
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
-import application from "./globals/application";
+import application from "globals/promptInit";
 import configureStore from "./store/configureStore";
-import App from "./containers/Root";
+import Root from "containers/Root";
 
 let store = configureStore();
 
@@ -13,7 +13,7 @@ application.init();
 const appContainer = document.getElementById("dnnPrompt-container");
 render(
     <Provider store={store}>
-        <App />
+        <Root />
     </Provider>,
     appContainer
 );

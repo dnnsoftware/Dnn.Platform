@@ -1,5 +1,6 @@
-import utilities from "../utils";
-const dnnPrompt = {
+import { util } from "utils/helpers";
+
+const promptInit = {
     init() {
         // This setting is required and define the public path 
         // to allow the web application to download assets on demand 
@@ -7,10 +8,10 @@ const dnnPrompt = {
         // __webpack_public_path__ = options.publicPath;
         let options = window.dnn.initPrompt();
 
-        utilities.init(options.utility);
-        utilities.moduleName = options.moduleName;
-        utilities.settings = options.settings;
-        utilities.version = options.version;
+        util.init(options.utility);
+        util.moduleName = options.moduleName;
+        util.settings = options.settings;
+        util.version = options.version;
         // delay the styles loading after the __webpack_public_path__ is set
         // this allows the fonts associated to be loaded properly in production
         //require("../less/style.less");
@@ -20,5 +21,7 @@ const dnnPrompt = {
     }
 };
 
+export default promptInit;
 
-export default dnnPrompt;
+/* eslint-disable */
+export const IS_DEV = process.env.NODE_ENV !== "production";

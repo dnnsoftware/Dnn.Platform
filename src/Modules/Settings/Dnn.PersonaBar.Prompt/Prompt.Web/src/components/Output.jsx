@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import "../Prompt.less";
+import "./Prompt.less";
 import DataTable from "./DataTable";
 import Command from "./Command";
 import TextLine from "./TextLine";
 import Help from "./Help";
-import {renderObject} from "./util";
+import { renderObject } from "utils/helpers";
 
 class Output extends Component {
 
