@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { PropTypes } from "prop-types";
 import "./styles.less";
-import {PagesIcon, FolderIcon, TreeLinkIcon, TreeDraftIcon, TreePaperClip} from "dnn-svg-icons";
+import {PagesIcon, TreeLinkIcon, TreePaperClip} from "dnn-svg-icons";
 
 export default class PersonaBarPageIcon extends Component {
     /* eslint-disable react/no-danger */
@@ -13,7 +13,7 @@ export default class PersonaBarPageIcon extends Component {
                 return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);
 
             case "file":
-                return (<div dangerouslySetInnerHTML={{ __html: FolderIcon }} />);
+                return (<div dangerouslySetInnerHTML={{ __html: TreePaperClip }} />);
 
             case "tab":
             case "url":
