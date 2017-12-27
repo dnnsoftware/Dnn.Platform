@@ -1072,7 +1072,7 @@
     <value>Click Cancel now if you want to change the current site default.</value>
   </data>
   <data name="TranslationProgressBarText.Text" xml:space="preserve">
-    <value>[number] new pages are beign created for each language. Please wait as you localized pages are generated...</value>
+    <value>[number] new pages are being created for each language. Please wait as your localized pages are generated...</value>
   </data>
   <data name="TotalProgress.Text" xml:space="preserve">
     <value>Total Progress [number]%</value>
