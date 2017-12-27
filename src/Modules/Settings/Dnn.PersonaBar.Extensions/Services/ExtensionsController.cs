@@ -266,6 +266,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     AddFiles(response, path, root, "*.cshtml");
                     AddFiles(response, path, root, "*.vbhtml");
                     AddFiles(response, path, root, "*.html");
+                    AddFiles(response, path, root, "*.htm");
                 }
             }
 
@@ -972,6 +973,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     case FileType.Control:
                         files.AddRange(GetFiles(folder, "*.ascx"));
+                        files.AddRange(GetFiles(folder, "*.html"));
+                        files.AddRange(GetFiles(folder, "*.htm"));
                         files.AddRange(GetFiles(folder, "*.cshtml"));
                         files.AddRange(GetFiles(folder, "*.vbhtml"));
                         break;
