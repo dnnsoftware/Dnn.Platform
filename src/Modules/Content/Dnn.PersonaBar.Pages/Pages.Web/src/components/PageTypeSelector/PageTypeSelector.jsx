@@ -22,7 +22,9 @@ class PageTypeSelector extends Component {
         const createdDate = Localization.get("CreatedValue")
                                 .replace("[CREATEDDATE]", utils.formatDateNoTime(page.createdOnDate))
                                 .replace("[CREATEDUSER]", page.created || "System");
-        const hierarchy = page.hierarchy === "" ? Localization.get("TopPage") : page.hierarchy;
+        
+        const hierarchy = (page.hierarchy === null || page.hierarchy === "") ? Localization.get("TopPage") : page.hierarchy;
+        
         const components = this.getComponents(); 
 
         return (
