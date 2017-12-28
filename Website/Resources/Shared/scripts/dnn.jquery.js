@@ -2669,7 +2669,9 @@
                         src = data.result;
 
                     if (src && $.trim(src)) {
-                        img.src = src;
+                        var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + data.result.FileId + '&MaxWidth=180&MaxHeight=150';
+                        img.src = profileImagePath;
+                        
                         var fileName = data.result.FilePath.replace('\\', '/');
                         if (fileName.indexOf('/') > -1) {
                             fileName = fileName.split('/')[fileName.split('/').length - 1];
@@ -2725,25 +2727,18 @@
             setTimeout(function () {
                 dnn[settings.filesComboId].options.services.parameters.parentId = settings.selectedFolderId;
                 var filesCombo = dnn[settings.filesComboId];
-                var selectedFileId = filesCombo.selectedItem() ? filesCombo.selectedItem().key : null;
-                url = service.getServiceRoot('internalservices') + 'fileupload/loadimage';
+                var selectedFileId = filesCombo.selectedItem() ? filesCombo.selectedItem().key : null;                
              	var fileId  = selectedFileId ? parseInt(selectedFileId) : 0;
                 if (fileId > 0) {
-                    $.ajax({
-                        url: url,
-                        type: 'GET',
-                        data: { fileId: selectedFileId },
-                        success: function (d) {
-                            var img = new Image();
-                            $(img).on('load', function () {
-                                $('#' + settings.dropZoneId + ' img').remove();
-                                $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
-                            });
-                            img.src = d;
-                        },
-                        error: function () {
-                        }
+                    var maxWidth = 180, maxHeight = 150;
+                    var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
+                    var img = new Image();
+
+                    $(img).on('load', function () {
+                        $('#' + settings.dropZoneId + ' img').remove();
+                        $(img).css({ 'max-width': maxWidth, 'max-height': maxHeight }).insertBefore($('#' + settings.dropZoneId + ' span'));
                     });
+                    img.src = profileImagePath;        
                 }
             }, 500);
         });
@@ -2788,24 +2783,16 @@
 
         if (node) {
             var fileId = node.key;
-            var service = $.dnnSF();
-            var url = service.getServiceRoot('internalservices') + 'fileupload/loadimage';
             if (fileId) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: { fileId: fileId },
-                    success: function (d) {
-                        var img = new Image();
-                        $(img).on('load', function () {
-                            $('#' + settings.dropZoneId + ' img').remove();
-                            $(img).css({ 'max-width': 180, 'max-height': 150 }).insertBefore($('#' + settings.dropZoneId + ' span'));
-                        });
-                        img.src = d;
-                    },
-                    error: function () {
-                    }
+                var maxWidth = 180, maxHeight = 150;
+                var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
+                var img = new Image();
+
+                $(img).on('load', function () {
+                    $('#' + settings.dropZoneId + ' img').remove();
+                    $(img).css({ 'max-width': maxWidth, 'max-height': maxHeight }).insertBefore($('#' + settings.dropZoneId + ' span'));
                 });
+                img.src = profileImagePath;        
             }
             else
                 $('#' + settings.dropZoneId + ' img').remove();

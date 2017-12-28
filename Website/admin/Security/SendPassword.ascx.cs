@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
 
             cmdSendPassword.Click += OnSendPasswordClick;
-			cancelButton.Click += cancelButton_Click;
+            lnkCancel.NavigateUrl = Globals.NavigateURL();
 
             _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));            
 
@@ -328,7 +328,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (canSend)
                     {
                         LogSuccess();
-						cancelButton.Attributes["resourcekey"] = "cmdClose";
+                        lnkCancel.Attributes["resourcekey"] = "cmdClose";
                     }
                     else
                     {
@@ -394,11 +394,6 @@ namespace DotNetNuke.Modules.Admin.Security
             
             LogController.Instance.AddLog(log);
 
-        }
-			
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            Response.Redirect(Globals.NavigateURL(), true);
         }
 
         #endregion

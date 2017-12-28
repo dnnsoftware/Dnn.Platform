@@ -616,7 +616,6 @@ namespace DotNetNuke.Security
 
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
-            if (HttpContext.Current.Session == null) return;
             InvalidateAspNetSession(HttpContext.Current);
 
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
@@ -661,7 +660,7 @@ namespace DotNetNuke.Security
             {
                 FormsAuthentication.SetAuthCookie(user.Username, false);
                 var authCookie = HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName];
-                if (authCookie != null)
+                if (!string.IsNullOrEmpty(authCookie?.Value))
                 {
                     var t = FormsAuthentication.Decrypt(authCookie.Value);
                     if (t != null)
@@ -683,7 +682,6 @@ namespace DotNetNuke.Security
 
         public void SignOut()
         {
-            if (HttpContext.Current.Session == null) return;
             InvalidateAspNetSession(HttpContext.Current);
 
             var currentAuthCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
