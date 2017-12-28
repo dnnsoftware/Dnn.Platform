@@ -6,15 +6,13 @@ import DevTools from "../containers/DevTools";
 import { IS_DEV} from "../globals/promptInit";
 
 export default function configureStore(initialState) {
+    let enhancer;
+
     if (IS_DEV) {
-        return createStore(
-            reducers,
-            initialState,
-            compose(applyMiddleware(thunkMiddleware, reduxImmutableStateInvariant()), DevTools.instrument()));
+        enhancer = compose(applyMiddleware(thunkMiddleware, reduxImmutableStateInvariant()), DevTools.instrument());
     } else {
-        return createStore(
-            reducers,
-            initialState,
-            compose(applyMiddleware(thunkMiddleware), DevTools.instrument()));
+        enhancer = applyMiddleware(thunkMiddleware);
     }
+
+    return createStore(reducers, initialState, enhancer);
 }
