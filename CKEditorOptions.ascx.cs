@@ -1570,7 +1570,7 @@ namespace DNNConnect.CKEditorProvider
             var portalId = _portalSettings?.PortalId != Null.NullInteger? _portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
             var objRole = RoleController.Instance.GetRoleByName(portalId, label.Text);
 
-            if (objRole == null)
+            if (objRole == null && label.Text != UNAUTHENTICATED_USERS)
             {
                 return;
             }
@@ -1581,8 +1581,9 @@ namespace DNNConnect.CKEditorProvider
                 var pageKey = $"DNNCKT#{CurrentOrSelectedTabId}#";
                 LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
             }
-            
-            var currentToolbarSettings = currentSettings.ToolBarRoles.FirstOrDefault(o => o.RoleId == objRole.RoleID);
+
+            var objRoleId = label.Text != UNAUTHENTICATED_USERS ? objRole.RoleID : -1;
+            var currentToolbarSettings = currentSettings.ToolBarRoles.FirstOrDefault(o => o.RoleId == objRoleId);
 
             if (currentToolbarSettings != null)
             {
