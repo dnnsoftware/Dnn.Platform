@@ -1,23 +1,23 @@
 import React from "react";
 import Parser from "html-react-parser";
+import DomKey from "services/DomKey";
 
-const TextLine = ({txt, css, getKey}) => {
+const TextLine = ({txt, css}) => {
     const textLines = txt.split("\n");
-    const rows = textLines.map((line, index) => line ? <span key={getKey("textline")} className={css}>{Parser(line)}</span> : null).reduce((prev,current, index) => {
+    const rows = textLines.map((line) => line ? <span key={DomKey.get("textline")} className={css}>{Parser(line)}</span> : null).reduce((prev,current) => {
         if (current !== "" && current !== null && current !== undefined) {
             return [...prev,current];
         }
-        return [...prev,<br key={getKey("textline")} />,<br key={getKey("textline")} />];
+        return [...prev,<br key={DomKey.get("textline")} />,<br key={DomKey.get("textline")} />];
     }, []);
-    return <div key={getKey("textline")}>{rows}</div>;
+    return <div key={DomKey.get("textline")}>{rows}</div>;
 };
 
 TextLine.defaultProps = { css: "dnn-prompt-ok" };
 
 TextLine.propTypes = {
     txt: React.PropTypes.string.isRequired,
-    css: React.PropTypes.string,
-    getKey: React.PropTypes.func.isRequired
+    css: React.PropTypes.string
 };
 
 export default TextLine;

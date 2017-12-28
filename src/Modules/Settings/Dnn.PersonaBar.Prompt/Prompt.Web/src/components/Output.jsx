@@ -6,13 +6,9 @@ import Command from "./Command";
 import TextLine from "./TextLine";
 import Help from "./Help";
 import { renderObject } from "utils/helpers";
+import DomKey from "services/DomKey";
 
 class Output extends Component {
-
-    getKey(prefix = "key") {
-        this.keyIndex = this.keyIndex ? this.keyIndex : 0;
-        return `${prefix}-${this.keyIndex++}`;
-    }
 
     renderResults() {
         const {props} = this;
@@ -22,9 +18,9 @@ class Output extends Component {
 
         if (props.isHelp) {
             if (props.commandList !== null && props.commandList.length > 0) {
-                return <Command getKey={this.getKey.bind(this)} key={this.getKey("output")} {...props} commandList={props.commandList} IsPaging={props.IsPaging}/>;
+                return <Command key={DomKey.get("output")} {...props} commandList={props.commandList} IsPaging={props.IsPaging}/>;
             } else {
-                return <Help key={this.getKey("output")} getKey={this.getKey.bind(this)} {...props} IsPaging={props.IsPaging} style={props.style} isError={props.isError}
+                return <Help key={DomKey.get("output")} {...props} IsPaging={props.IsPaging} style={props.style} isError={props.isError}
                              name={props.name}/>;
             }
         }
@@ -40,18 +36,18 @@ class Output extends Component {
             return this.renderData(props.data, fieldOrder);
         }
         else if (props.isHtml) {
-            return <TextLine getKey={this.getKey.bind(this)} key={this.getKey("output")} txt={props.output}/>;
+            return <TextLine key={DomKey.get("output")} txt={props.output}/>;
         }
         else if (props.output) {
             const style = props.isError ? "dnn-prompt-error" : "dnn-prompt-ok";
-            return <TextLine getKey={this.getKey.bind(this)} key={this.getKey("output")} txt={props.output} css={style}/>;
+            return <TextLine key={DomKey.get("output")} txt={props.output} css={style}/>;
         }
         props.busy(false);
     }
 
     renderData(data, fieldOrder) {
         if (data.length > 1) {
-            return <DataTable getKey={this.getKey.bind(this)} rows={data} columns={fieldOrder} cssClass=""/>;
+            return <DataTable rows={data} columns={fieldOrder} cssClass=""/>;
         } else if (data.length === 1) {
             return renderObject(data[0], fieldOrder);
         }

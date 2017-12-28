@@ -2,8 +2,9 @@ import React from "react";
 import Parser from "html-react-parser";
 import Localization from "localization/Localization";
 import { sort } from "utils/helpers";
+import DomKey from "services/DomKey";
 
-const Command = ({commandList, IsPaging, getKey}) => {
+const Command = ({commandList, IsPaging}) => {
 
     IsPaging(false);
 
@@ -26,13 +27,13 @@ const Command = ({commandList, IsPaging, getKey}) => {
 
     const commandsOutput = commandsList.map((cmd) => {
         if (cmd.separator) {
-            return <tr key={getKey("command")} className="divider"><td colSpan="2">{cmd.Category}</td></tr>;
+            return <tr key={DomKey.get("command")} className="divider"><td colSpan="2">{cmd.Category}</td></tr>;
         }
 
         return (
-            <tr key={getKey("command")}>
-                <td key={getKey("command")} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd={`help ${cmd.Key.toLowerCase()}`} href="#">{cmd.Key}</a></td>
-                <td key={getKey("command")}>{cmd.Description}</td>
+            <tr key={DomKey.get("command")}>
+                <td key={DomKey.get("command")} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd={`help ${cmd.Key.toLowerCase()}`} href="#">{cmd.Key}</a></td>
+                <td key={DomKey.get("command")}>{cmd.Description}</td>
             </tr>
         );
     });
@@ -71,8 +72,7 @@ const Command = ({commandList, IsPaging, getKey}) => {
 
 Command.propTypes = {
     commandList: React.PropTypes.array.isRequired,
-    IsPaging: React.PropTypes.func.isRequired,
-    getKey: React.PropTypes.func.isRequired
+    IsPaging: React.PropTypes.func.isRequired
 };
 
 export default Command;
