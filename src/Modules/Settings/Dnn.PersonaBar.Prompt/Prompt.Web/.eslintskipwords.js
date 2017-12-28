@@ -86,5 +86,6 @@ module.exports = [
     "href",
     "resx",
     "cmdtd",
-    "textline"
+    "textline",
+    "datatable"
 ];

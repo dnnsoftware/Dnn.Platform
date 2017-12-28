@@ -3,7 +3,7 @@ import Parser from "html-react-parser";
 import Localization from "localization/Localization";
 import { sort } from "utils/helpers";
 
-const Command = ({commandList, IsPaging}) => {
+const Command = ({commandList, IsPaging, getKey}) => {
 
     IsPaging(false);
 
@@ -24,20 +24,19 @@ const Command = ({commandList, IsPaging}) => {
 
     }, []);
 
-    const commandsOutput = commandsList.map((cmd, index) => {
+    const commandsOutput = commandsList.map((cmd) => {
         if (cmd.separator) {
-            return <tr key={index} className="divider"><td colSpan="2">{cmd.Category}</td></tr>;
+            return <tr key={getKey("command")} className="divider"><td colSpan="2">{cmd.Category}</td></tr>;
         }
 
         return (
-            <tr key={index}>
-                <td key={`cmdtd-${index}`} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd={`help ${cmd.Key.toLowerCase()}`} href="#">{cmd.Key}</a></td>
-                <td key={`cmdtd-${index}`}>{cmd.Description}</td>
+            <tr key={getKey("command")}>
+                <td key={getKey("command")} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd={`help ${cmd.Key.toLowerCase()}`} href="#">{cmd.Key}</a></td>
+                <td key={getKey("command")}>{cmd.Description}</td>
             </tr>
         );
     });
-    const divCommands = (
-        <div>
+    const divCommands = (<div>
             <table className="table">
                 <thead>
                 <tr>
@@ -49,8 +48,7 @@ const Command = ({commandList, IsPaging}) => {
                 {commandsOutput}
                 </tbody>
             </table>
-        </div>
-    );
+        </div>);
 
     const headingSeeAlso = <h4>{Parser(Localization.get("Prompt_Help_SeeAlso"))}</h4>;
     const anchorSyntax = <a href="#" className="dnn-prompt-cmd-insert" data-cmd="help syntax">{Parser(Localization.get("Prompt_Help_Syntax"))}</a>;
@@ -73,7 +71,8 @@ const Command = ({commandList, IsPaging}) => {
 
 Command.propTypes = {
     commandList: React.PropTypes.array.isRequired,
-    IsPaging: React.PropTypes.func.isRequired
+    IsPaging: React.PropTypes.func.isRequired,
+    getKey: React.PropTypes.func.isRequired
 };
 
 export default Command;
