@@ -49,6 +49,7 @@ namespace DNNConnect.CKEditorProvider
         ///   The provider type.
         /// </summary>
         private const string ProviderType = "htmlEditor";
+        private const string UNAUTHENTICATED_USERS = "Unauthenticated Users";
 
         /// <summary>
         ///   The provider config.
@@ -812,7 +813,7 @@ namespace DNNConnect.CKEditorProvider
                     {
                         Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                        if (label == null || !label.Text.Equals("Unauthenticated Users"))
+                        if (label == null || !label.Text.Equals(UNAUTHENTICATED_USERS))
                         {
                             continue;
                         }
@@ -931,7 +932,7 @@ namespace DNNConnect.CKEditorProvider
                 lic.Add(roleItem);
             }
 
-            lic.Add(new ListItem { Text = "Unauthenticated Users", Value = "-1" });
+            lic.Add(new ListItem { Text = UNAUTHENTICATED_USERS, Value = "-1" });
 
             gvToolbars.DataSource = lic;
             gvToolbars.DataBind();
@@ -2459,7 +2460,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     moduleController.UpdateModuleSetting(
                         ModuleId,
@@ -2489,7 +2490,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     moduleController.UpdateModuleSetting(
                         ModuleId,
@@ -2713,7 +2714,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     EditorController.AddOrUpdateEditorHostSetting($"{key}toolb#{"-1"}", ddLToolB.SelectedValue);
                 }
@@ -2737,7 +2738,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     EditorController.AddOrUpdateEditorHostSetting($"{key}-1{SettingConstants.UPLOADFILELIMITS}", sizeLimit.Text);
                 }
@@ -3367,7 +3368,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     listToolbarRoles.Add(new ToolbarRoles { RoleId = -1, Toolbar = ddLToolB.SelectedValue });
                 }
@@ -3398,7 +3399,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = -1, UploadFileLimit = Convert.ToInt32(sizeLimit.Text) });
                 }
