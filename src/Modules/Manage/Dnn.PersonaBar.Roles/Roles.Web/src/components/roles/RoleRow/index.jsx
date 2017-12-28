@@ -10,8 +10,7 @@ import util from "utils";
 let canEdit = false;
 
 const roleLabelStyle = {
-    "text-overflow":"ellipsis",
-    "overflow":"hidden"
+    "word-wrap": "break-word"
 };
 
 class RoleRow extends Component {
