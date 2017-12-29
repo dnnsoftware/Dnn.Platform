@@ -42,8 +42,8 @@ class UrlRow extends Component {
         return (
             /* eslint-disable react/no-danger */
             <div className={styles.urlRow + (opened ? " row-opened" : "")} >
-                <GridCell columnSize={50} >
-                    {url.path}
+                <GridCell columnSize={50} className="url-path">
+                   {url.path}
                 </GridCell>
                 <GridCell columnSize={20} >
                     {url.statusCode.Value}
