@@ -6,6 +6,7 @@ import Command from "./Command";
 import TextLine from "./TextLine";
 import Help from "./Help";
 import { renderObject } from "utils/helpers";
+import DomKey from "services/DomKey";
 
 class Output extends Component {
 
@@ -15,12 +16,11 @@ class Output extends Component {
 
         props.IsPaging(false);
 
-
         if (props.isHelp) {
             if (props.commandList !== null && props.commandList.length > 0) {
-                return <Command {...props} commandList={props.commandList} IsPaging={props.IsPaging}/>;
+                return <Command key={DomKey.get("output")} {...props} commandList={props.commandList} IsPaging={props.IsPaging}/>;
             } else {
-                return <Help {...props} IsPaging={props.IsPaging} style={props.style} isError={props.isError}
+                return <Help key={DomKey.get("output")} {...props} IsPaging={props.IsPaging} style={props.style} isError={props.isError}
                              name={props.name}/>;
             }
         }
@@ -36,11 +36,11 @@ class Output extends Component {
             return this.renderData(props.data, fieldOrder);
         }
         else if (props.isHtml) {
-            return <TextLine txt={props.output}/>;
+            return <TextLine key={DomKey.get("output")} txt={props.output}/>;
         }
         else if (props.output) {
             const style = props.isError ? "dnn-prompt-error" : "dnn-prompt-ok";
-            return <TextLine txt={props.output} css={style}/>;
+            return <TextLine key={DomKey.get("output")} txt={props.output} css={style}/>;
         }
         props.busy(false);
     }

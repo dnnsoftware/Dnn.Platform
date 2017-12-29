@@ -58,6 +58,11 @@ export function renderObject(data, fieldOrder) {
     return <table className="dnn-prompt-tbl"><tbody>{rows}</tbody></table>;
 }
 
+export function stripWhiteSpaces(html = "") {
+    const re = /\>[^\w^\<]+\</igm;
+    return html.replace(re,"><");
+}
+
 export const util = {
     init(utilities) {
         if (!utilities) {

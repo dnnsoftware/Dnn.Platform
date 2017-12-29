@@ -1,39 +1,37 @@
 import React from "react";
 import { formatLabel, getColumnsFromRow} from "utils/helpers";
 import Parser from "html-react-parser";
+import DomKey from "services/DomKey";
 
 const DataTable = ({rows, columns, cssClass}) => {
 
     const renderTableHeader = (columns) => {
-        const tableCols = columns.map((col,index) =>  <th key={index}>{formatLabel(col)}</th>);
+        const tableCols = columns.map((col) => <th key={DomKey.get("datatable")}>{formatLabel(col)}</th>);
         return (
             <thead>
-            <tr>
-                {tableCols}
-            </tr>
+                <tr key={DomKey.get("datatable")}>
+                    {tableCols}
+                </tr>
             </thead>
         );
     };
 
     const renderTableRows = (rows, columns) => {
-        return rows.map((row, index) => {
-            return (
-                <tr key={index}>
-                    {columns.map((fieldName, index) => {
-                        let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] + "" : "";
-                        let cmd = row["__" + fieldName] ? row["__" + fieldName] : null;
-                        if (cmd) {
-                            return <td key={`table-${index}`}><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, "&quot;")}>{Parser(fieldValue)}</a></td>;
-                        }
-                        else if (fieldName.indexOf("$") >= 0) {
-                            return <td key={`table-${index}`} className="mono">--{Parser(fieldValue)}</td>;
-                        }
-                        else {
-                            return <td key={`table-${index}`}>{Parser(fieldValue)}</td>;
-                        }
-                    })}
-                </tr>
-            );
+        return rows.map((row) => {
+            const rowCells = columns.map((fieldName) => {
+                let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] + "" : "";
+                let cmd = row["__" + fieldName] ? row["__" + fieldName] : null;
+                if (cmd) {
+                    return <td key={DomKey.get("datatable")}><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, "&quot;")}>{Parser(fieldValue)}</a></td>;
+                }
+                else if (fieldName.indexOf("$") >= 0) {
+                    return <td key={DomKey.get("datatable")} className="mono">--{Parser(fieldValue)}</td>;
+                }
+                else {
+                    return <td key={DomKey.get("datatable")}>{Parser(fieldValue)}</td>;
+                }
+            });
+            return <tr key={DomKey.get("datatable")}>{rowCells}</tr>;
         });
     };
 
@@ -49,7 +47,7 @@ const DataTable = ({rows, columns, cssClass}) => {
         const tableRows = renderTableRows(rows, columns);
 
         return (
-            <table className={cssClass ? cssClass : "dnn-prompt-tbl"}>
+            <table key={DomKey.get("datatable")} className={cssClass ? cssClass : "dnn-prompt-tbl"}>
                 {tableHeader}
                 <tbody>
                 {tableRows}
