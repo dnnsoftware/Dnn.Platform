@@ -9,9 +9,10 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.(svg|png)$/, exclude: /node_modules/,
+                test: /\.svg$/, exclude: /node_modules/,
                 loader: "raw-loader"
             },
+            { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
             { 
                 test: /\.(js|jsx)$/, exclude: /node_modules/,
