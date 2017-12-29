@@ -278,7 +278,7 @@ class BasicSettingsPanelBody extends Component {
                         wrongFormatText = {resx.get("WrongFormat")}
                         imageText = {resx.get("DefaultImageTitle")}
                         linkInputTitleText = {resx.get("LinkInputTitle")}
-                        linkInputPlaceholderText = {resx.get("LinkInputPlaceHolder")}
+                        linkInputPlaceholderText = {resx.get("LinkInputPlaceholder")}
                         linkInputActionText = {resx.get("LinkInputAction")}
                         uploadCompleteText = {resx.get("UploadComplete")}
                         uploadingText = {resx.get("Uploading")}
@@ -314,7 +314,7 @@ class BasicSettingsPanelBody extends Component {
                         wrongFormatText = {resx.get("WrongFormat")}
                         imageText = {resx.get("DefaultImageTitle")}
                         linkInputTitleText = {resx.get("LinkInputTitle")}
-                        linkInputPlaceholderText = {resx.get("LinkInputPlaceHolder")}
+                        linkInputPlaceholderText = {resx.get("LinkInputPlaceholder")}
                         linkInputActionText = {resx.get("LinkInputAction")}
                         uploadCompleteText = {resx.get("UploadComplete")}
                         uploadingText = {resx.get("Uploading")}
