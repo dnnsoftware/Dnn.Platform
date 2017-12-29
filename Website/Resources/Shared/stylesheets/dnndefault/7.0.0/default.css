@@ -3819,3 +3819,10 @@ div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
 	z-index: 1;
 }
 /*END DNN Slider Input Style*/
+
+/* Overflow for dnnMenu dropdown */
+#dnnMenu .dropdown-menu {
+    word-wrap: break-word;
+}
+
+/* End Overflow for dnnMenu dropdown */
