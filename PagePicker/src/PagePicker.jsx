@@ -590,6 +590,7 @@ class PagePicker extends Component {
                                         className="page-picker-search"
                                         onSearch={this.onSearch.bind(this) }
                                         iconStyle={Object.assign({ right: 4 }, props.iconStyle) }
+                                        inputDisabled={!state.dropDownOpen}
                                         />
                                 }
                                 {picker}

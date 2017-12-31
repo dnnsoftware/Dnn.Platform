@@ -134,9 +134,6 @@ class Tags extends Component {
                 ref={ref => this.containerRef = ref}>
                 <div type="text">
                     {Tags.length > 0 && Tags}
-                    {!this.state.isInputVisible && Tags.length === 0 &&
-                        <div className="typing-text">{typingText}</div>}
-                    {this.state.isInputVisible &&
                     <TagInput
                         value={this.state.newTagText}
                         addTag={this.addTag.bind(this)}
@@ -149,7 +146,7 @@ class Tags extends Component {
                         newTagText={this.state.newTagText}
                         removeLastTag={this.removeLastTag.bind(this)}
                         addTagsPlaceholder={this.props.addTagsPlaceholder}
-                        container={this.containerRef} />}
+                        container={this.containerRef} />
                 </div>
                 {this.state.isInputVisible &&
                     this.props.autoSuggest &&

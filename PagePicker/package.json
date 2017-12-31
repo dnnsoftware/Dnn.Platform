@@ -1,6 +1,6 @@
 {
   "name": "dnn-page-picker",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "DNN Page Picker",
   "main": "index.js",
   "scripts": {
@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "dnn-global-styles": "^0.0.5",
-    "dnn-search-box": "1.0.8",
+    "dnn-search-box": "1.0.9",
     "dnn-svg-icons": "0.1.22",
     "react-collapse": "2.3.3",
     "react-custom-scrollbars": "4.0.0-beta.1"
