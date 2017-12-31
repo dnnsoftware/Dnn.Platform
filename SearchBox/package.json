@@ -1,6 +1,6 @@
 {
   "name": "dnn-search-box",
-  "version": "1.0.16",
+  "version": "1.0.9",
   "description": "Search Box",
   "main": "index.js",
   "scripts": {
