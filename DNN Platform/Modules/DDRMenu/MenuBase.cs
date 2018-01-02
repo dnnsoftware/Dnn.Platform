@@ -91,7 +91,7 @@ namespace DotNetNuke.Web.DDRMenu
 
 		    if (!menuSettings.IncludeHidden)
 		    {
-		        FilterHiddenNodes();
+		        FilterHiddenNodes(RootNode);
 		    }
 
 			var imagePathOption =
@@ -215,19 +215,21 @@ namespace DotNetNuke.Web.DDRMenu
 			RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
 		}
 
-        private void FilterHiddenNodes()
+        private void FilterHiddenNodes(MenuNode parentNode)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var filteredNodes = new List<MenuNode>();
             filteredNodes.AddRange(
-                RootNode.Children.FindAll(
+                parentNode.Children.FindAll(
                     n =>
                     {                     
                         var tab = TabController.Instance.GetTab(n.TabId, portalSettings.PortalId);
                         return tab == null || !tab.IsVisible;
                     }));
 
-            RootNode.Children.RemoveAll(n => filteredNodes.Contains(n));
+            parentNode.Children.RemoveAll(n => filteredNodes.Contains(n));
+
+            parentNode.Children.ForEach(FilterHiddenNodes);
         }
 
         private void ApplyNodeSelector()
