@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Common;
@@ -80,6 +81,29 @@ namespace Dnn.PersonaBar.Users.Components
                 PortalID = portalSettings.PortalId,
                 Email = email
             };
+
+            var cleanUsername = PortalSecurity.Instance.InputFilter(username,
+                                                      PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+
+            if (!cleanUsername.Equals(username))
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
+            // Validate username against bad characters; it must not start or end with space, 
+            // must not containg control characters, and not contain special puctuations
+            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+            char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+            var valid = username.Length >= 5 &&
+                        username == username.Trim() &&
+                        username.All(ch => ch >= ' ') &&
+                        username.IndexOfAny(unallowedAscii) < 0;
+            if (!valid)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
 
             //ensure this user doesn't exist
             if (!string.IsNullOrEmpty(username) && UserController.GetUserByName(portalSettings.PortalId, username) != null)
