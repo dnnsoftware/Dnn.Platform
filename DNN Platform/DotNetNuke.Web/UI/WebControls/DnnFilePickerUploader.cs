@@ -129,6 +129,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     FoldersComboBox.SelectedFolder = null;
                     FilesComboBox.SelectedFile = null;
+
+                    LoadFolders();
                 }
             }
         }
