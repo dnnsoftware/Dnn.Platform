@@ -79,7 +79,7 @@ class App extends Component {
         this.isPaging = isPaging;
     }
     setHeight(height) {
-        if (this.cmdPrompt !== undefined && height !== undefined && height !== "") {
+        if (this.cmdPrompt !== null && this.cmdPrompt !== undefined && height !== undefined && height !== "") {
             height = height.replace("%", "");
             if (parseInt(height) > 0 && parseInt(height) <= 100)
                 this.cmdPrompt.style.height = height + "%";
