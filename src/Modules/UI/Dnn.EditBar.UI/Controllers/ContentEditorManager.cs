@@ -139,8 +139,21 @@ namespace Dnn.EditBar.UI.Controllers
             //if there is callback data cookie, then process the module for drag.
             CheckCallbackData();
 
-            EnsureChildControls();
+            if (!Page.IsPostBack)
+            {
+                EnsureChildControls();
+            }
+            else
+            {
+                Page.PreRenderComplete += Page_PreRenderComplete;
+            }
+
         }
+
+        private void Page_PreRenderComplete(object sender, EventArgs e)
+        {
+            EnsureChildControls();
+        }        
 
         protected override void OnPreRender(EventArgs e)
         {
