@@ -743,7 +743,7 @@ namespace DotNetNuke.Security.Membership
             }
 
             // Validate username against bad characters; it must not start or end with space, 
-            // must not containg control characters, and not contain special puctuations
+            // must not contain control characters, and not contain special punctuations
             // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 		    char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
 		    var valid = userName.Length >= 5 &&
