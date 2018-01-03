@@ -252,7 +252,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        private bool NeedRedirectAfterLogin => LoginStatus == UserLoginStatus.LOGIN_SUCCESS;
+        private bool NeedRedirectAfterLogin => 
+               LoginStatus == UserLoginStatus.LOGIN_SUCCESS 
+            || LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
+            || LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
 
         /// <summary>
         /// Replaces the original language with user language
