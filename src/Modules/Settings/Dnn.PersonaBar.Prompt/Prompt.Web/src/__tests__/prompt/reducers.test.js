@@ -52,7 +52,7 @@ describe("Prompt reducers", () => {
                 isError: false,
                 mustReload: false,
                 data: {fld1: "fld1", fld2: "fld2"},
-                fieldOrder: ["fld1", "fld2"],
+                fieldOrder: null,
                 output: `Excuted: ${types.EXECUTED_COMMAND}`,
                 nextPageCommand: ""
             }
@@ -64,7 +64,7 @@ describe("Prompt reducers", () => {
             isError: false,
             reload: false,
             data: {fld1: "fld1", fld2: "fld2"},
-            fieldOrder: ["fld1", "fld2"],
+            fieldOrder: null,
             output: `Excuted: ${types.EXECUTED_COMMAND}`,
             nextPageCommand: "",
             style: ""
@@ -181,7 +181,7 @@ describe("Prompt reducers", () => {
             clearOutput: false,
             style: "",
             output: "",
-            reload: true
+            reload: false
         };
 
         const state = reducer(initialState, data);
