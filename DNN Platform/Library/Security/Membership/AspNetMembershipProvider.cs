@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 
@@ -701,6 +702,11 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.ValidateUser(username, password);
         }
 
+        private string GetStringSetting(Hashtable settings, string settingKey)
+        {
+            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
+        }
+
         #endregion
 
         #region Public Methods
@@ -737,7 +743,7 @@ namespace DotNetNuke.Security.Membership
             }
 
             // Validate username against bad characters; it must not start or end with space, 
-            // must not containg control characters, and not contain special puctuations
+            // must not contain control characters, and not contain special punctuations
             // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 		    char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
 		    var valid = userName.Length >= 5 &&
@@ -749,11 +755,30 @@ namespace DotNetNuke.Security.Membership
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }
 
+            //read all the user account settings
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (portalSettings != null)
+            {
+                var settings = UserController.GetUserSettings(portalSettings.PortalId);
+
+                //User Name Validation
+                var userNameValidator = GetStringSetting(settings, "Security_UserNameValidation");
+                if (!string.IsNullOrEmpty(userNameValidator))
+                {
+                    var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                    var matches = regExp.Matches(userName);
+                    if (matches.Count == 0)
+                    {
+                        throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+                    }
+                }
+            }
+
             _dataProvider.ChangeUsername(userId, userName);
 
             EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
+                               portalSettings,
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
 
