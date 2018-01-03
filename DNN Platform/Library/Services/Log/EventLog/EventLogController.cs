@@ -255,102 +255,107 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType)
         {
-            var log = new LogInfo {LogUserID = userID, LogTypeKey = logType};
+            var log = new LogInfo { LogUserID = userID, LogTypeKey = logType };
             if (portalSettings != null)
             {
                 log.LogPortalID = portalSettings.PortalId;
                 log.LogPortalName = portalSettings.PortalName;
             }
-            switch (businessObject.GetType().FullName)
+
+            if (businessObject is PortalInfo)
             {
-                case "DotNetNuke.Entities.Portals.PortalInfo":
-                    var portal = (PortalInfo) businessObject;
-                    log.LogProperties.Add(new LogDetailInfo("PortalID",
-                                                                portal.PortalID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("PortalName", portal.PortalName));
-                    log.LogProperties.Add(new LogDetailInfo("Description", portal.Description));
-                    log.LogProperties.Add(new LogDetailInfo("KeyWords", portal.KeyWords));
-                    log.LogProperties.Add(new LogDetailInfo("LogoFile", portal.LogoFile));
-                    break;
-                case "DotNetNuke.Entities.Tabs.TabInfo":
-                    var tab = (TabInfo) businessObject;
-                    log.LogProperties.Add(new LogDetailInfo("TabID",
-                                                                tab.TabID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("PortalID",
-                                                                tab.PortalID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("TabName", tab.TabName));
-                    log.LogProperties.Add(new LogDetailInfo("Title", tab.Title));
-                    log.LogProperties.Add(new LogDetailInfo("Description", tab.Description));
-                    log.LogProperties.Add(new LogDetailInfo("KeyWords", tab.KeyWords));
-                    log.LogProperties.Add(new LogDetailInfo("Url", tab.Url));
-                    log.LogProperties.Add(new LogDetailInfo("ParentId",
-                                                                tab.ParentId.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("IconFile", tab.IconFile));
-                    log.LogProperties.Add(new LogDetailInfo("IsVisible",
-                                                                tab.IsVisible.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("SkinSrc", tab.SkinSrc));
-                    log.LogProperties.Add(new LogDetailInfo("ContainerSrc", tab.ContainerSrc));
-                    break;
-                case "DotNetNuke.Entities.Modules.ModuleInfo":
-                    var module = (ModuleInfo) businessObject;
-                    log.LogProperties.Add(new LogDetailInfo("ModuleId",
-                                                                module.ModuleID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("ModuleTitle", module.ModuleTitle));
-                    log.LogProperties.Add(new LogDetailInfo("TabModuleID",
-                                                                module.TabModuleID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("TabID",
-                                                                module.TabID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("PortalID",
-                                                                module.PortalID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("ModuleDefId",
-                                                                module.ModuleDefID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("FriendlyName", module.DesktopModule.FriendlyName));
-                    log.LogProperties.Add(new LogDetailInfo("IconFile", module.IconFile));
-                    log.LogProperties.Add(new LogDetailInfo("Visibility", module.Visibility.ToString()));
-                    log.LogProperties.Add(new LogDetailInfo("ContainerSrc", module.ContainerSrc));
-                    break;
-                case "DotNetNuke.Entities.Users.UserInfo":
-                    var user = (UserInfo) businessObject;
-                    log.LogProperties.Add(new LogDetailInfo("UserID",
-                                                                user.UserID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("FirstName", user.Profile.FirstName));
-                    log.LogProperties.Add(new LogDetailInfo("LastName", user.Profile.LastName));
-                    log.LogProperties.Add(new LogDetailInfo("UserName", user.Username));
-                    log.LogProperties.Add(new LogDetailInfo("Email", user.Email));
-                    break;
-                case "DotNetNuke.Security.Roles.RoleInfo":
-                    var role = (RoleInfo) businessObject;
-                    log.LogProperties.Add(new LogDetailInfo("RoleID",
-                                                                role.RoleID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("RoleName", role.RoleName));
-                    log.LogProperties.Add(new LogDetailInfo("PortalID",
-                                                                role.PortalID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("Description", role.Description));
-                    log.LogProperties.Add(new LogDetailInfo("IsPublic",
-                                                                role.IsPublic.ToString(CultureInfo.InvariantCulture)));
-                    break;
-                case "DotNetNuke.Entities.Modules.DesktopModuleInfo":
-                    var desktopModule = (DesktopModuleInfo) businessObject;
-                    log.LogProperties.Add(new LogDetailInfo("DesktopModuleID",
-                                                                desktopModule.DesktopModuleID.ToString(
-                                                                    CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("ModuleName", desktopModule.ModuleName));
-                    log.LogProperties.Add(new LogDetailInfo("FriendlyName", desktopModule.FriendlyName));
-                    log.LogProperties.Add(new LogDetailInfo("FolderName", desktopModule.FolderName));
-                    log.LogProperties.Add(new LogDetailInfo("Description", desktopModule.Description));
-                    break;
-                case "DotNetNuke.Services.FileSystem.FolderInfo":
-                    var folderInfo = (FolderInfo) businessObject;
-                    log.LogProperties.Add(new LogDetailInfo("FolderID", folderInfo.FolderID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("PortalID", folderInfo.PortalID.ToString(CultureInfo.InvariantCulture)));
-                    log.LogProperties.Add(new LogDetailInfo("FolderName", folderInfo.FolderName));
-                    log.LogProperties.Add(new LogDetailInfo("FolderPath", folderInfo.FolderPath));
-                    log.LogProperties.Add(new LogDetailInfo("FolderMappingID", folderInfo.FolderMappingID.ToString(CultureInfo.InvariantCulture)));
-                    break;
-                default: //Serialise using XmlSerializer
-                    log.LogProperties.Add(new LogDetailInfo("logdetail", XmlUtils.Serialize(businessObject)));
-                    break;
+                var portal = (PortalInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("PortalID", portal.PortalID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("PortalName", portal.PortalName));
+                log.LogProperties.Add(new LogDetailInfo("Description", portal.Description));
+                log.LogProperties.Add(new LogDetailInfo("KeyWords", portal.KeyWords));
+                log.LogProperties.Add(new LogDetailInfo("LogoFile", portal.LogoFile));
             }
+            else if (businessObject is TabInfo)
+            {
+                var tab = (TabInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("TabID", tab.TabID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("PortalID", tab.PortalID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("TabName", tab.TabName));
+                log.LogProperties.Add(new LogDetailInfo("Title", tab.Title));
+                log.LogProperties.Add(new LogDetailInfo("Description", tab.Description));
+                log.LogProperties.Add(new LogDetailInfo("KeyWords", tab.KeyWords));
+                log.LogProperties.Add(new LogDetailInfo("Url", tab.Url));
+                log.LogProperties.Add(new LogDetailInfo("ParentId", tab.ParentId.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("IconFile", tab.IconFile));
+                log.LogProperties.Add(new LogDetailInfo("IsVisible", tab.IsVisible.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("SkinSrc", tab.SkinSrc));
+                log.LogProperties.Add(new LogDetailInfo("ContainerSrc", tab.ContainerSrc));
+            }
+            else if (businessObject is ModuleInfo)
+            {
+                var module = (ModuleInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("ModuleId", module.ModuleID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("ModuleTitle", module.ModuleTitle));
+                log.LogProperties.Add(new LogDetailInfo("TabModuleID", module.TabModuleID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("TabID", module.TabID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("PortalID", module.PortalID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("ModuleDefId", module.ModuleDefID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("FriendlyName", module.DesktopModule.FriendlyName));
+                log.LogProperties.Add(new LogDetailInfo("IconFile", module.IconFile));
+                log.LogProperties.Add(new LogDetailInfo("Visibility", module.Visibility.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("ContainerSrc", module.ContainerSrc));
+            }
+            else if (businessObject is UserInfo)
+            {
+                var user = (UserInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("UserID", user.UserID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("FirstName", user.Profile.FirstName));
+                log.LogProperties.Add(new LogDetailInfo("LastName", user.Profile.LastName));
+                log.LogProperties.Add(new LogDetailInfo("UserName", user.Username));
+                log.LogProperties.Add(new LogDetailInfo("Email", user.Email));
+            }
+            else if (businessObject is RoleInfo)
+            {
+                var role = (RoleInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("RoleID", role.RoleID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("RoleName", role.RoleName));
+                log.LogProperties.Add(new LogDetailInfo("PortalID", role.PortalID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("Description", role.Description));
+                log.LogProperties.Add(new LogDetailInfo("IsPublic", role.IsPublic.ToString(CultureInfo.InvariantCulture)));
+            }
+            else if (businessObject is DesktopModuleInfo)
+            {
+                var desktopModule = (DesktopModuleInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("DesktopModuleID", desktopModule.DesktopModuleID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("ModuleName", desktopModule.ModuleName));
+                log.LogProperties.Add(new LogDetailInfo("FriendlyName", desktopModule.FriendlyName));
+                log.LogProperties.Add(new LogDetailInfo("FolderName", desktopModule.FolderName));
+                log.LogProperties.Add(new LogDetailInfo("Description", desktopModule.Description));
+            }
+            else if (businessObject is FolderInfo)
+            {
+                var folderInfo = (FolderInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("FolderID", folderInfo.FolderID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("PortalID", folderInfo.PortalID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("FolderName", folderInfo.FolderName));
+                log.LogProperties.Add(new LogDetailInfo("FolderPath", folderInfo.FolderPath));
+                log.LogProperties.Add(new LogDetailInfo("FolderMappingID", folderInfo.FolderMappingID.ToString(CultureInfo.InvariantCulture)));
+            }
+            else if (businessObject is FileInfo)
+            {
+                var fileInfo = (FileInfo)businessObject;
+                log.LogProperties.Add(new LogDetailInfo("FileID", fileInfo.FileId.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("PortalID", fileInfo.PortalId.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("FolderID", fileInfo.FolderId.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("FolderMappingID", fileInfo.FolderMappingID.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("ContentType", fileInfo.ContentType));
+                log.LogProperties.Add(new LogDetailInfo("FileName", fileInfo.FileName));
+                log.LogProperties.Add(new LogDetailInfo("FolderName", fileInfo.Folder));
+                log.LogProperties.Add(new LogDetailInfo("PhysicalPath", fileInfo.PhysicalPath));
+                log.LogProperties.Add(new LogDetailInfo("VersionGuid", fileInfo.VersionGuid.ToString()));
+            }
+            else
+            {
+                //Serialise using XmlSerializer
+                log.LogProperties.Add(new LogDetailInfo("logdetail", XmlUtils.Serialize(businessObject)));
+            }
+
             LogController.Instance.AddLog(log);
         }
 
