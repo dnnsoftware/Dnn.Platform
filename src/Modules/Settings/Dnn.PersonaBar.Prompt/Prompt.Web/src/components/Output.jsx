@@ -5,10 +5,10 @@ import DataTable from "./DataTable";
 import Command from "./Command";
 import TextLine from "./TextLine";
 import Help from "./Help";
-import { renderObject } from "utils/helpers";
-import DomKey from "services/DomKey";
+import { renderObject } from "../utils/helpers";
+import DomKey from "../services/DomKey";
 
-class Output extends Component {
+export class Output extends Component {
 
     renderResults() {
         const {props} = this;
