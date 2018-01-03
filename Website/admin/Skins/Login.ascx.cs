@@ -145,11 +145,20 @@ namespace DotNetNuke.UI.Skins.Controls
 				        }
 
 				        string returnUrl = HttpContext.Current.Request.RawUrl;
-				        if (returnUrl.IndexOf("?returnurl=") != -1)
-				        {
-					        returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("?returnurl="));
-				        }
-				        returnUrl = HttpUtility.UrlEncode(returnUrl);
+                        const string returnUrlToken = "?returnurl=";
+
+                        if (returnUrl.IndexOf(returnUrlToken) != -1)
+                        {
+                            returnUrl = returnUrl.Substring(0, returnUrl.IndexOf(returnUrlToken));
+                            if (returnUrl.ToLowerInvariant().IndexOf("login") > -1)
+                            {
+                                returnUrl = HttpContext.Current.Request.RawUrl;
+
+                                var indexToExtractReturnUrl = returnUrl.IndexOf(returnUrlToken) + returnUrlToken.Length;
+                                returnUrl = returnUrl.Substring(indexToExtractReturnUrl);
+                            }
+                        }
+                        returnUrl = HttpUtility.UrlEncode(returnUrl);
 
 				        loginLink.NavigateUrl = Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
 				        enhancedLoginLink.NavigateUrl = loginLink.NavigateUrl;
