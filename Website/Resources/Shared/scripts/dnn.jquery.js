@@ -2676,6 +2676,9 @@
                         if (fileName.indexOf('/') > -1) {
                             fileName = fileName.split('/')[fileName.split('/').length - 1];
                         }
+                        if (fileName.indexOf('?') > -1) {
+                            fileName = fileName.split('?')[0];
+                        }
                         
                         dnn[settings.filesComboId].refresh(dnn[settings.foldersComboId].selectedItem().key);
                         dnn[settings.filesComboId].selectedItem({ key: data.result.FileId, value: fileName});

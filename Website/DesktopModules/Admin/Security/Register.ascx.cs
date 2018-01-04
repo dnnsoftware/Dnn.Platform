@@ -24,6 +24,7 @@
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -562,16 +563,27 @@ namespace DotNetNuke.Modules.Admin.Users
 			CreateStatus = UserCreateStatus.AddUser;
 			var portalSecurity = PortalSecurity.Instance;
 
-			//Check User Editor
-			bool _IsValid = userForm.IsValid;
+            //Check User Editor
+            bool _IsValid = userForm.IsValid;
 
 		    if (_IsValid)
 		    {
+                var name = User.Username;
+                var cleanUsername = PortalSecurity.Instance.InputFilter(name,
+                                                      PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+
+                if (!cleanUsername.Equals(name))
+                {
+                    CreateStatus = UserCreateStatus.InvalidUserName;
+                }
+
                 // Validate username against bad characters; it must not start or end with space, 
-                // must not containg control characters, and not contain special puctuations
+                // must not contain control characters, and not contain special punctuations
                 // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-		        char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
-		        var name = User.Username;
+                char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+		        
 		        var valid = name.Length >= 5 &&
 		                    name == name.Trim() &&
 		                    name.All(ch => ch >= ' ') &&
@@ -580,7 +592,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		            CreateStatus = UserCreateStatus.InvalidUserName;
 		    }
 
-			if (PortalSettings.Registration.RegistrationFormType == 0)
+            if (PortalSettings.Registration.RegistrationFormType == 0)
 			{
 				//Update UserName
 				if (PortalSettings.Registration.UseEmailAsUserName)
@@ -745,7 +757,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			return _IsValid;
 		}
 
-		private string GetRedirectUrl(bool checkSetting = true)
+        private string GetRedirectUrl(bool checkSetting = true)
 		{
 			var redirectUrl = "";
 			var redirectAfterRegistration = PortalSettings.Registration.RedirectAfterRegistration;
