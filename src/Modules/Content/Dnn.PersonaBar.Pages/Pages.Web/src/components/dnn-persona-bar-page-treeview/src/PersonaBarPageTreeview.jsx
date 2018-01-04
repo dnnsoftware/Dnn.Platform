@@ -9,9 +9,6 @@ import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
 import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
-// const SAFARI_PADDING = 3;
-// const OTHER_PADDING = 1;
-
 export class PersonaBarPageTreeview extends Component {
 
     
@@ -20,15 +17,12 @@ export class PersonaBarPageTreeview extends Component {
         super();
         this.state = {};
         this.ua = navigator.userAgent.toLowerCase(); 
-        console.log("this.ua",this.ua);
-        console.log("isSafari",(this.ua.indexOf('safari') != -1));
-        // this.BROWSER_PADDING = SAFARI_PADDING;
     }
 
     trimName(item) {
         let maxLength = 18;
         let { name, tabpath } = item;
-        let newLength = tabpath.split(/\//).length * 2 + this.BROWSER_PADDING;
+        let newLength = tabpath.split(/\//).length * 2 + 3;
         newLength--;
         let depth = (newLength < maxLength) ? newLength : 1;
         return (item.name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
