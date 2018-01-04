@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import GridCell from "dnn-grid-cell";
 import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new";
 import { PropTypes } from "prop-types";
-import { DragSource } from 'react-dnd';
 import utils from "utils";
 
 import "./styles.less";
@@ -11,17 +9,26 @@ import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
 import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
+// const SAFARI_PADDING = 3;
+// const OTHER_PADDING = 1;
+
 export class PersonaBarPageTreeview extends Component {
+
+    
 
     constructor() {
         super();
         this.state = {};
+        this.ua = navigator.userAgent.toLowerCase(); 
+        console.log("this.ua",this.ua);
+        console.log("isSafari",(this.ua.indexOf('safari') != -1));
+        // this.BROWSER_PADDING = SAFARI_PADDING;
     }
 
     trimName(item) {
         let maxLength = 18;
         let { name, tabpath } = item;
-        let newLength = tabpath.split(/\//).length * 2 + 1;
+        let newLength = tabpath.split(/\//).length * 2 + this.BROWSER_PADDING;
         newLength--;
         let depth = (newLength < maxLength) ? newLength : 1;
         return (item.name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
@@ -196,7 +203,7 @@ export class PersonaBarPageTreeview extends Component {
                             <span
                                 className={`item-name`}
                                 onClick={(e) => { item.canManagePage ? onSelection(item) : onNoPermissionSelection(item); }}>
-                                <p>{name}</p>
+                                {name}
                             </span>
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
