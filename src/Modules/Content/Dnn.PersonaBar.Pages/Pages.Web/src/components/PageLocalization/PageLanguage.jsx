@@ -3,6 +3,7 @@ import Localization from "localization";
 import Module from "./Module";
 import Checkbox from "dnn-checkbox";
 import "./PageLanguage.less";
+import utils from "../../utils";
 
 import { EyeIcon, ModuleIcon, LinkIcon } from "dnn-svg-icons";
 
@@ -44,6 +45,15 @@ class PageLanguage extends Component {
         this.props.onUpdatePages(CultureCode, key, value);
     }
 
+    onViewPage(url, e){
+        utils.getUtilities().closePersonaBar(function () {
+            window.parent.location = url;
+        });
+
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const iconSrc = this.props.local && this.props.local.Icon ? this.props.local.Icon : "";
@@ -66,7 +76,7 @@ class PageLanguage extends Component {
                 <div className="page-language-row">
                     <img src={iconSrc} alt={cultureCode} />
                     <span>{cultureCode}</span>
-                    <a className="icon" href={page.PageUrl} dangerouslySetInnerHTML={{ __html: EyeIcon }} aria-label="View"></a>
+                    <a className="icon" href={page.PageUrl} onClick={this.onViewPage.bind(this, page.PageUrl)} dangerouslySetInnerHTML={{ __html: EyeIcon }} aria-label="View"></a>
                 </div>
                 <div className="page-language-row">
                     <input type="text" value={page.TabName} onChange={this.onUpdatePages.bind(this, "TabName") } aria-label="Name" />
