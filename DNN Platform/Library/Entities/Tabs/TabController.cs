@@ -899,7 +899,7 @@ namespace DotNetNuke.Entities.Tabs
                     // we are adding missing languages to a single culture page that is not in the default language
                     // so we must first add a page in the default culture
 
-                    CreateLocalizedCopy(workingTab, defaultLocale, false);
+                    CreateLocalizedCopyInternal(workingTab, defaultLocale, false, true);
                 }
 
                 if (currentTab.DefaultLanguageTab != null)
@@ -918,7 +918,7 @@ namespace DotNetNuke.Entities.Tabs
                         }
                         if (missing)
                         {
-                            CreateLocalizedCopy(workingTab, locale, false);
+                            CreateLocalizedCopyInternal(workingTab, locale, false, true);
                         }
                     }
                 }
