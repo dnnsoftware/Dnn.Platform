@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import GridCell from "dnn-grid-cell";
 import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new";
 import { PropTypes } from "prop-types";
-import { DragSource } from 'react-dnd';
 import utils from "utils";
 
 import "./styles.less";
@@ -12,7 +10,7 @@ import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
 import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeview extends Component {
-
+    
     constructor() {
         super();
         this.state = {};
@@ -21,11 +19,9 @@ export class PersonaBarPageTreeview extends Component {
     trimName(item) {
         let maxLength = 18;
         let { name, tabpath } = item;
-        let newLength = tabpath.split(/\//).length * 2 + 1;
-        newLength--;
+        let newLength = tabpath.split(/\//).length * 2 + 2;
         let depth = (newLength < maxLength) ? newLength : 1;
         return (item.name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
-
     }
 
     render_tree(item, childListItems) {
@@ -196,7 +192,7 @@ export class PersonaBarPageTreeview extends Component {
                             <span
                                 className={`item-name`}
                                 onClick={(e) => { item.canManagePage ? onSelection(item) : onNoPermissionSelection(item); }}>
-                                <p>{name}</p>
+                                {name}
                             </span>
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
