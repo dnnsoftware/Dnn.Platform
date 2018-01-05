@@ -48,7 +48,7 @@ class PageFile extends Component {
                             linkInputActionText = {Localization.get("LinkInputAction")}
                             uploadCompleteText = {Localization.get("UploadComplete")}
                             uploadingText = {Localization.get("Uploading")}
-                            uploadDefaultText = {Localization.get("UploadDefault")}
+                            uploadDefaultText = {selectedFile ? selectedFile.fileName : Localization.get("Uploading")}
                             browseActionText = {Localization.get("BrowseAction")}
                             notSpecifiedText = {Localization.get("NotSpecified")}
                             searchFilesPlaceHolderText = {Localization.get("SearchFilesPlaceHolder")}

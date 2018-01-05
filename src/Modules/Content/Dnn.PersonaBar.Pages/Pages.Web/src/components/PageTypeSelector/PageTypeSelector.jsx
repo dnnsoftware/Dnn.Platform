@@ -9,9 +9,9 @@ class PageTypeSelector extends Component {
     getComponents() {
         const {props} = this;
         if (props.components && props.components.length > 0) {
-            return this.props.components.map(function (component) {
+            return this.props.components.map((component, index) => {
                 const Component = component.component;
-                return <Component page={props.page} />;
+                return <Component key={index} page={props.page} />;
             });
         }
         return false;
