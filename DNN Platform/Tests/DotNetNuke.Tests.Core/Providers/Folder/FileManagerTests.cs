@@ -39,6 +39,7 @@ using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Log.EventLog;
 using Moq;
 
 using NUnit.Framework;
@@ -98,6 +99,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileLockingController = new Mock<IFileLockingController>();
             _mockFileDeletionController = new Mock<IFileDeletionController>();
             
+            EventLogController.SetTestableInstance(Mock.Of<IEventLogController>());
             FolderManager.RegisterInstance(_folderManager.Object);
             FolderPermissionController.SetTestableInstance(_folderPermissionController.Object);
             PortalController.SetTestableInstance(_portalController.Object);
