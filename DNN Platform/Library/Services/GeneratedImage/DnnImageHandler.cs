@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Drawing;
@@ -233,11 +234,14 @@ namespace DotNetNuke.Services.GeneratedImage
                         }
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
                         {
-                            if (!parameters["Url"].StartsWith("http"))
+                            var url = parameters["Url"];
+                            // allow only site resources when using the url parameter
+                            if (!url.StartsWith("http") || !UriBelongsToSite(new Uri(url)))
                             {
                                 return GetEmptyImageInfo();
                             }
-                            imgUrl = parameters["Url"];
+
+                            imgUrl = url;
                         }
 
                         if (string.IsNullOrEmpty(parameters["format"]))
@@ -554,6 +558,21 @@ namespace DotNetNuke.Services.GeneratedImage
                 default:
                     return ImageFormat.Png;
             }
+        }
+
+        // checks whether the uri belongs to any of the site-wide aliases
+        private static bool UriBelongsToSite(Uri uri)
+        {
+            IEnumerable<string> hostAliases =
+                from PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values
+                 select alias.HTTPAlias.ToLowerInvariant();
+
+            // if URI, for example, = "http(s)://myDomain:80/DNNDev/myPage?var=name" , then the two strings will be
+            // uriNoScheme1 = "mydomain/dnndev/mypage"  -- lower case
+            // uriNoScheme2 = "mydomain:80/dnndev/mypage"  -- lower case
+            var uriNoScheme1 = (uri.DnsSafeHost + uri.LocalPath).ToLowerInvariant();
+            var uriNoScheme2 = (uri.Authority + uri.LocalPath).ToLowerInvariant();
+            return hostAliases.Any(alias => uriNoScheme1.StartsWith(alias) || uriNoScheme2.StartsWith(alias));
         }
     }
 }

@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression) }
                     };
                     var ici = GetEncoderInfo(GetImageMimeType(ContentType));
-                    image.Save(outStream, ici, eps);
+                    image?.Save(outStream, ici, eps);
                 }
             }
             finally

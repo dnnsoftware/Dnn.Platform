@@ -81,6 +81,7 @@
     <Compile Include="Helpers\FolderHelper.cs" />
     <Compile Include="Helpers\HostSettingsHelper.cs" />
     <Compile Include="Helpers\MockComponentHelper.cs" />
+    <Compile Include="Helpers\PortalAliasHelper.cs" />
     <Compile Include="Helpers\PortalInfoHelper.cs" />
     <Compile Include="Helpers\PortalSettingsHelper.cs" />
     <Compile Include="Helpers\StoredProcedureStatsHelper.cs" />
