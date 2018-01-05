@@ -60,6 +60,7 @@ namespace DotNetNuke.Common.Utilities
         private static readonly Regex AfterRegEx = new Regex(PunctuationMatch + "\\s", RegexOptions.Compiled);
         private static readonly Regex BeforeRegEx = new Regex("\\s" + PunctuationMatch, RegexOptions.Compiled);
         private static readonly Regex EntityRegEx = new Regex("&[^;]+;", RegexOptions.Compiled);
+        private static readonly Regex UrlEncodedRegEx = new Regex("%[0-9A-Fa-f]{2}", RegexOptions.Compiled);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -328,6 +329,18 @@ namespace DotNetNuke.Common.Utilities
         public static bool ContainsEntity(string html)
         {
             return !string.IsNullOrEmpty(html) && EntityRegEx.IsMatch(html);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Checks whether the string contains any URL encoded entity or not
+        /// </summary>
+        /// <param name="text">The string check</param>
+        /// <returns>True if the string contains any URL encoded entity</returns>
+        /// -----------------------------------------------------------------------------
+        public static bool IsUrlEncoded(string text)
+        {
+            return !string.IsNullOrEmpty(text) && UrlEncodedRegEx.IsMatch(text);
         }
 
         /// <summary>

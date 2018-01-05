@@ -2947,7 +2947,7 @@ namespace DotNetNuke.Common
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return NavigateURL(_portalSettings.ActiveTab.TabID, controlKey, additionalParameters);
+            return NavigateURL(_portalSettings?.ActiveTab?.TabID ?? -1, controlKey, additionalParameters);
         }
 
         /// <summary>
