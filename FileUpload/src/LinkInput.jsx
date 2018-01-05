@@ -32,14 +32,17 @@ export default class LinkInput extends Component {
     }
 
     onSave() {
-        if (!this.state.url) {
+        const { state } = this;
+        const url = state.url;
+        if (url === undefined || url === null || url === "" || !url.startsWith("http")) {
             return this.props.onCancel();
         }
-        this.props.onSave(this.state.url, true);
+        this.props.onSave(url, true);
     }
 
     onChange(e) {
         this.setState({ url: e.target.value });
+        this.props.onChange(e.target.value);
     }
 
     renderActions(){
@@ -70,7 +73,7 @@ LinkInput.propTypes = {
     linkPath: PropTypes.string.isRequired,
     onSave: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-
+    onChange: PropTypes.func.isRequired,
     linkInputTitleText: PropTypes.string,
     linkInputPlaceholderText: PropTypes.string,
     linkInputActionText: PropTypes.string
