@@ -10,6 +10,7 @@ using System.Xml;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Security.Components
 {
@@ -75,17 +76,15 @@ namespace Dnn.PersonaBar.Security.Components
             try
             {
                 var fileList = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories);
-                var queryMatchingFiles =
+                return
                     from file in fileList
-                    let fileText = GetFileText(file)
-                    let fileInfo = new FileInfo(file)
-                    where fileText.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
-                    select fileInfo;
-                return queryMatchingFiles.Select(f => new
-                {
-                    FileName = f.Name,
-                    LastWriteTime = f.LastWriteTime.ToString(CultureInfo.InvariantCulture)
-                });
+                    where FileContainsText(file, searchText)
+                    let f = new FileInfo(file)
+                    select new SearchFileInfo
+                    {
+                        FileName = f.Name,
+                        LastWriteTime = f.LastWriteTime.ToString(CultureInfo.InvariantCulture)
+                    };
             }
             catch
             {
@@ -132,15 +131,17 @@ namespace Dnn.PersonaBar.Security.Components
 
             try
             {
-                var dr = dataProvider.ExecuteReader("SecurityAnalyzer_SearchAllTables", searchText);
-                while (dr.Read())
+                using (var dr = dataProvider.ExecuteReader("SecurityAnalyzer_SearchAllTables", searchText))
                 {
-
-                    results.Add(new
+                    while (dr.Read())
                     {
-                        ColumnName = dr["ColumnName"],
-                        ColumnValue = dr["ColumnValue"]
-                    });
+
+                        results.Add(new
+                        {
+                            ColumnName = dr["ColumnName"],
+                            ColumnValue = dr["ColumnValue"]
+                        });
+                    }
                 }
             }
             catch
@@ -239,25 +240,23 @@ namespace Dnn.PersonaBar.Security.Components
 
         }
 
-        private static string GetFileText(string name)
+        private static bool FileContainsText(string name, string searchText)
         {
-            var fileContents = String.Empty;
             try
             {
                 // If the file has been deleted since we took  
                 // the snapshot, ignore it and return the empty string. 
                 if (IsReadable(name))
                 {
-                    fileContents = File.ReadAllText(name);
+                    return File.ReadAllText(name).IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
                 }
             }
             catch (Exception)
             {
-
                 //might be a locking issue
             }
 
-            return fileContents;
+            return false;
         }
 
         private static bool IsReadable(string name)
@@ -282,38 +281,51 @@ namespace Dnn.PersonaBar.Security.Components
         /// <returns></returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
-            IList<string> invalidFolders = new List<string>();
-            return GetFiles(path, searchPattern, searchOption, invalidFolders);
+            try
+            {
+                return GetFiles(path, searchPattern, searchOption, new List<string>());
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
         }
 
         /// <summary>
         /// Recursively finds file
         /// </summary>
         /// <returns></returns>
-        private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, IList<string> invalidFolders)
+        private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, ICollection<string> invalidFolders)
         {
-            try
+            //Looking at the root folder only. There should not be any permission issue here.
+            var files = Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList();
+            foreach (var file in files)
             {
-                //Looking at the root folder only. There should not be any permission issue here.
-                var files = Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList();
+                yield return file;
+            }
 
-                if (searchOption == SearchOption.AllDirectories)
+            if (searchOption == SearchOption.AllDirectories)
+            {
+                var folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
+                foreach (var folder in folders)
                 {
-                    var folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
-                    foreach (var folder in folders)
+                    //recursive call to the same method
+                    foreach (var f in GetFiles(folder, searchPattern, searchOption, invalidFolders))
                     {
-                        //recursive call to the same method
-                        files.AddRange(GetFiles(folder, searchPattern, searchOption, invalidFolders));
+                        yield return f;
                     }
                 }
+            }
 
-                return files;
-            }
-            catch (Exception)
-            {
-                invalidFolders.Add(path);
-                return new List<string>();
-            }
+            invalidFolders.Add(path);
+        }
+
+        // This will reduce serialization thrown exceptions of anonymous type
+        [JsonObject]
+        private class SearchFileInfo
+        {
+            public string FileName;
+            public string LastWriteTime;
         }
     }
 }

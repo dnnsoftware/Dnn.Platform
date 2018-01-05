@@ -29,6 +29,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
@@ -918,8 +919,13 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var foundinfiles = Components.Utility.SearchFiles(term);
-                var foundindb = Components.Utility.SearchDatabase(term);
+                // run these in parallel
+                var task1 = Task.Factory.StartNew(() => Components.Utility.SearchFiles(term));
+                var task2 = Task.Factory.StartNew(() => Components.Utility.SearchDatabase(term));
+                Task.WhenAll(task1, task2).Wait();
+
+                var foundinfiles = task1.Result;
+                var foundindb = task2.Result;
                 var response = new
                 {
                     Success = true,
