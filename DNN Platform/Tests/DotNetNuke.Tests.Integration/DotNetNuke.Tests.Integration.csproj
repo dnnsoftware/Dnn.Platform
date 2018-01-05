@@ -98,6 +98,7 @@
     <Compile Include="PersonaBar\Content\Pages\AddPageTests.cs" />
     <Compile Include="PersonaBar\Content\Pages\PageUrlsTests.cs" />
     <Compile Include="PersonaBar\Manage\Users\UsersFiltersTests.cs" />
+    <Compile Include="Tests\Library\ImageHandlerTests.cs" />
     <Compile Include="Tests\Portals\PortalInfoTests.cs" />
     <Compile Include="Tests\Portals\PortalSettingsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

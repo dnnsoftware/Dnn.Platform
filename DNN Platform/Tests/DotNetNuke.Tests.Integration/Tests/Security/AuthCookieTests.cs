@@ -1,8 +1,10 @@
-﻿using System;
+﻿// DotNetNuke® - http://www.dnnsoftware.com
+// Copyright (c) 2002-2018, DNN Corp.
+// All Rights Reserved
+
+using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
 using DNN.Integration.Test.Framework;
 using DNN.Integration.Test.Framework.Helpers;
 using NUnit.Framework;
