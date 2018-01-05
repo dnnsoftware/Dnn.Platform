@@ -1,5 +1,5 @@
-import { util } from "utils/helpers";
-import actionTypes from "constants/actionTypes";
+import { util } from "../utils/helpers";
+import actionTypes from "../constants/actionTypes";
 
 export default function promptReducers(state = {
     commandList: null,

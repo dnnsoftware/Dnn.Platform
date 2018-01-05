@@ -1,6 +1,6 @@
 import React from "react";
 import Parser from "html-react-parser";
-import DomKey from "services/DomKey";
+import DomKey from "../services/DomKey";
 
 const TextLine = ({txt, css}) => {
     const textLines = txt.split("\n");

@@ -10,7 +10,7 @@ import "./Prompt.less";
 import * as PromptActionsCreators from "actions/prompt";
 import PersonaBarPage from "dnn-persona-bar-page";
 
-class App extends Component {
+export class App extends Component {
 
     constructor(props) {
         super(props);
