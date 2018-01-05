@@ -13,7 +13,7 @@ const TextLine = ({txt, css}) => {
     return <div key={DomKey.get("textline")}>{rows}</div>;
 };
 
-TextLine.defaultProps = { css: "dnn-prompt-ok" };
+TextLine.defaultProps = { css: "dnn-prompt-cmd" };
 
 TextLine.propTypes = {
     txt: React.PropTypes.string.isRequired,
