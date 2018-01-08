@@ -1,6 +1,5 @@
 
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -31,9 +30,9 @@ import GridCell from "dnn-grid-cell";
 import OverflowText from "dnn-text-overflow-wrapper";
 import Promise from "promise";
 
-import { PagesSearchIcon, PagesVerticalMore, CalendarIcon, ArrowBack, EyeIcon, TreeEdit, TreeAnalytics } from "dnn-svg-icons";
+import { CalendarIcon, EyeIcon, TreeEdit, XIcon } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
-import { XIcon } from "dnn-svg-icons";
+import SearchPage from "./SearchPage/SearchPage";
 
 import "./style.less";
 
@@ -434,27 +433,6 @@ class App extends Component {
 
     onChangeParentId(newParentId) {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
-    }
-
-    onSearchFocus() {
-
-    }
-
-    onSearchFieldChange(e) {
-        let self = this;
-        const currentSearchTerm = this.state.searchTerm;
-        const inSearch = this.state.inSearch;
-        this.setState({ searchTerm: e.target.value, filtersUpdated: true }, () => {
-            const { searchTerm } = this.state;
-            switch (true) {
-                case searchTerm.length > 3:
-                    self.onSearch();
-                    return;
-                case currentSearchTerm.length > 0 && searchTerm.length === 0 && inSearch:
-                    self.onSearch();
-                    return;
-            }
-        });
     }
 
     onAddMultiplePage() {
@@ -940,7 +918,7 @@ class App extends Component {
         this.noPermissionSelectionPageId = null;
         this.setState({ emptyStateMessage: null });
     }
-
+    
     onSearchMoreFlyoutClick() {
         this.setState({ toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout }, () => {
             const { toggleSearchMoreFlyout } = this.state;
@@ -949,7 +927,7 @@ class App extends Component {
     }
 
     toggleDropdownCalendar(bool) {
-        typeof (bool) == "boolean" ? this.setState({ DropdownCalendarIsActive: bool }) : this.setState({ DropdownCalendarIsActive: !this.state.DropdownCalendarIsActive });
+        typeof (bool) === "boolean" ? this.setState({ DropdownCalendarIsActive: bool }) : this.setState({ DropdownCalendarIsActive: !this.state.DropdownCalendarIsActive });
     }
 
 
@@ -1006,30 +984,40 @@ class App extends Component {
         return new Promise((resolve) => this.setState({ searchFields }, () => resolve()));
     }
 
-    onSearch() {
-        const { selectedPage } = this.props;
-        const { filtersUpdated } = this.state;
-        if (filtersUpdated) {
-            if (selectedPage) {
-                this.lastActivePageId = selectedPage.tabId;
-                if (this.props.selectedPageDirty) {
-                    this.showCancelWithoutSavingDialogAndRun(() => {
+    onSearch(term) {
+        this.setState({
+            searchTerm:term,
+            inSearch:true,
+            filtersUpdated:true
+        },()=>{
+            console.log('continue execution',this.state.searchTerm);
+    
+            const { selectedPage } = this.props;
+            const { filtersUpdated } = this.state;
+            console.log(filtersUpdated);
+            if (filtersUpdated) {
+                if (selectedPage) {
+                    this.lastActivePageId = selectedPage.tabId;
+                    if (this.props.selectedPageDirty) {
+                        this.showCancelWithoutSavingDialogAndRun(() => {
+                            this.doSearch();
+                        }, () => {
+                            this.clearSearch();
+                        });
+                    } else {
                         this.doSearch();
-                    }, () => {
-                        this.clearSearch();
-                    });
-                } else {
+                    }
+                }
+                else {
                     this.doSearch();
                 }
             }
-            else {
-                this.doSearch();
-            }
-        }
-        this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
+            this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
+        });
     }
 
     doSearch() {
+        console.log('doSearch');
         const { selectedPage } = this.props;
         if (selectedPage) {
             this.onCancelPage();
@@ -1542,6 +1530,7 @@ class App extends Component {
         }
     }
 
+    //TODO: Verify render_filters on change 
     render_filters() {
         const { filters } = this.state;
         return filters
@@ -1619,45 +1608,7 @@ class App extends Component {
                         </PersonaBarPageHeader>
                         {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{ padding: "30px 30px 16px 30px" }}>
-                            <div className="search-container">
-                                {inSearch ?
-                                    <div className="dnn-back-to-link" onClick={() => this.clearSearch()}>
-                                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <span>{Localization.get("BackToPages").toUpperCase()}</span>
-                                    </div> : null
-                                }
-
-                                <div className="search-box">
-                                    <div className="search-input">
-                                        <input
-                                            type="text"
-                                            value={searchTerm}
-                                            onFocus={this.onSearchFocus.bind(this)}
-                                            onChange={this.onSearchFieldChange.bind(this)}
-                                            onKeyPress={(e) => { e.key === "Enter" ? this.onSearch() : null; }}
-                                            placeholder="Search" />
-                                    </div>
-                                    {searchTerm ?
-                                        <div
-                                            className="btn clear-search"
-                                            style={{ fill: "#444" }}
-                                            dangerouslySetInnerHTML={{ __html: XIcon }}
-                                            onClick={() => this.setState({ searchTerm: "", filtersUpdated: true }, () => this.onSearch())}
-                                        />
-
-                                        : <div className="btn clear-search" />}
-                                    <div
-                                        className="btn search-btn"
-                                        dangerouslySetInnerHTML={{ __html: PagesSearchIcon }}
-                                        onClick={this.onSearch.bind(this)}
-                                    >
-                                    </div>
-                                    <div
-                                        className="btn search-btn"
-                                        dangerouslySetInnerHTML={{ __html: PagesVerticalMore }}
-                                        onClick={() => { this.onSearchMoreFlyoutClick(); }}
-                                    />
-                                </div>
-                            </div>
+                            <SearchPage onSearchMoreFlyoutClick={this.onSearchMoreFlyoutClick.bind(this)}  toggleSearchMoreFlyout={this.state.toggleSearchMoreFlyout} inSearch={this.state.inSearch} onSearch={this.onSearch.bind(this)} clearSearch={this.clearSearch.bind(this)}  />
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 30px 30px 30px" }} >
                             <GridCell columnSize={1096} type={"px"} className="page-container">
