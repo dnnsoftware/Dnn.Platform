@@ -73,12 +73,11 @@ export default class SearchAdvanced extends Component {
                             <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
                                 <Dropdown
                                     className="more-dropdown"
-                                    options={this.getFilterByWorkflowOptions()}
-                                    label={this.props.filterByWorkflow ? this.getFilterByWorkflowOptions().find(x => x.value === this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
+                                    options={this.props.getFilterByWorkflowOptions()}
+                                    label={this.props.filterByWorkflow ? this.props.getFilterByWorkflowOptions().find(x => x.value === this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
                                     value={this.props.filterByWorkflow !== "" && this.props.filterByWorkflow}
                                     onSelect={data=>this.props.updateFilterByWorkflowOptions(data)}
                                     withBorder={true} />
-                                    asdf
                             </GridCell>
                         }
                     </GridCell>
