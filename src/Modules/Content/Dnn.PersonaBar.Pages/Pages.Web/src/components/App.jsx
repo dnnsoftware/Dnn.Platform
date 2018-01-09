@@ -33,6 +33,7 @@ import Promise from "promise";
 import { CalendarIcon, EyeIcon, TreeEdit, XIcon } from "dnn-svg-icons";
 import Dropdown from "dnn-dropdown";
 import SearchPage from "./SearchPage/SearchPage";
+import SearchAdvanced from "./SearchPage/SearchAdvanced";
 
 import "./style.less";
 
@@ -964,22 +965,12 @@ class App extends Component {
             const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate} - ${fullEndDate} ` });
             const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate}` });
 
-            fullStartDate != fullEndDate ? left() : right();
+            fullStartDate !== fullEndDate ? left() : right();
         }
 
         this.setState({ filters, DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
     }
-    getDateLabel() {
-        let filterByDateText = utils.isPlatform() ? "FilterByModifiedDateText" : "FilterByPublishDateText";
-        const { startDate, endDate, startAndEndDateDirty } = this.state;
-        let label = Localization.get(filterByDateText);
-        if (startAndEndDateDirty) {
-            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
-            label = fullStartDate !== fullEndDate ? `${fullStartDate} - ${fullEndDate}` : `${fullStartDate}`;
-        }
-        return label;
-    }
+
     saveSearchFilters(searchFields) {
         return new Promise((resolve) => this.setState({ searchFields }, () => resolve()));
     }
@@ -990,11 +981,8 @@ class App extends Component {
             inSearch:true,
             filtersUpdated:true
         },()=>{
-            console.log('continue execution',this.state.searchTerm);
-    
             const { selectedPage } = this.props;
             const { filtersUpdated } = this.state;
-            console.log(filtersUpdated);
             if (filtersUpdated) {
                 if (selectedPage) {
                     this.lastActivePageId = selectedPage.tabId;
@@ -1017,7 +1005,6 @@ class App extends Component {
     }
 
     doSearch() {
-        console.log('doSearch');
         const { selectedPage } = this.props;
         if (selectedPage) {
             this.onCancelPage();
@@ -1234,6 +1221,7 @@ class App extends Component {
         });
         return distinctList;
     }
+    
     getFilterByPageTypeOptions() {
         return [
             { value: "", label: Localization.get("lblAll") },
@@ -1243,6 +1231,7 @@ class App extends Component {
             { value: "file", label: Localization.get("lblFile") }
         ];
     }
+
     getFilterByPageStatusOptions() {
         let filterByPageStatusOptions = [
             { value: "published", label: Localization.get("lblPublished") }
@@ -1285,70 +1274,31 @@ class App extends Component {
             const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
             condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
         };
+        const updateFilterByPageTypeOptions = data => { this.setState({ filterByPageType: data.value, filtersUpdated: true }); };
+        const updateFilterByPageStatusOptions = data => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true }) ;
+        const updateFilterByWorkflowOptions = data => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });
         return (
-            <div className="search-more-flyout">
-                <GridCell columnSize={70} style={{ padding: "5px 5px 5px 10px" }}>
-                    <h1>{Localization.get("lblGeneralFilters").toUpperCase()}</h1>
-                </GridCell>
-                <GridCell columnSize={30} style={{ paddingLeft: "10px" }}>
-                    <h1>{Localization.get("lblTagFilters").toUpperCase()}</h1>
-                </GridCell>
-                <GridCell columnSize={70} style={{ padding: "5px" }}>
-                    <GridCell columnSize={100} >
-                        <GridCell columnSize={50} style={{ padding: "5px" }}>
-                            <Dropdown
-                                className="more-dropdown"
-                                options={this.getFilterByPageTypeOptions()}
-                                label={this.state.filterByPageType ? this.getFilterByPageTypeOptions().find(x => x.value === this.state.filterByPageType.toLowerCase()).label : Localization.get("FilterbyPageTypeText")}
-                                value={this.state.filterByPageType !== "" && this.state.filterByPageType}
-                                onSelect={(data) => { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }}
-                                withBorder={true}
-                            />
-                        </GridCell>
-                        <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
-                            <Dropdown
-                                className="more-dropdown"
-                                options={this.getFilterByPageStatusOptions()}
-                                label={this.state.filterByPublishStatus ? this.getFilterByPageStatusOptions().find(x => x.value === this.state.filterByPublishStatus.toLowerCase()).label : Localization.get("FilterbyPublishStatusText")}
-                                value={this.state.filterByPublishStatus !== "" && this.state.filterByPublishStatus}
-                                onSelect={(data) => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true })}
-                                withBorder={true} />
-                        </GridCell>
-                    </GridCell>
-                    <GridCell columnSize={100}>
-                        <GridCell columnSize={50} style={{ padding: "5px" }}>
-                            <DropdownDayPicker
-                                onDayClick={this.onDayClick.bind(this)}
-                                dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                applyChanges={() => onApplyChangesDropdownDayPicker()}
-                                startDate={this.state.startDate}
-                                endDate={this.state.endDate}
-                                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
-                                CalendarIcon={CalendarIcon}
-                                label={this.getDateLabel()}
-                            />
-                        </GridCell>
-                        {!utils.isPlatform() &&
-                            <GridCell columnSize={50} style={{ padding: "5px 5px 5px 15px" }}>
-                                <Dropdown
-                                    className="more-dropdown"
-                                    options={this.getFilterByWorkflowOptions()}
-                                    label={this.state.filterByWorkflow ? this.getFilterByWorkflowOptions().find(x => x.value === this.state.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
-                                    value={this.state.filterByWorkflow !== "" && this.state.filterByWorkflow}
-                                    onSelect={(data) => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true })}
-                                    withBorder={true} />
-                            </GridCell>
-                        }
-                    </GridCell>
-                </GridCell>
-                <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
-                    <textarea placeholder={Localization.get("TagsInstructions")} value={this.state.tags} onChange={(e) => generateTags(e)} onBlur={() => filterTags()}></textarea>
-                </GridCell>
-                <GridCell columnSize={100} style={{ textAlign: "right" }}>
-                    <Button style={{ marginRight: "5px" }} onClick={() => this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false })}>{Localization.get("Cancel")}</Button>
-                    <Button type="primary" onClick={() => this.onSearch()}>{Localization.get("Save")}</Button>
-                </GridCell>
-            </div>);
+            <SearchAdvanced 
+                getFilterByPageTypeOptions={this.getFilterByPageTypeOptions.bind(this)}
+                getFilterByPageStatusOptions={this.getFilterByPageStatusOptions.bind(this)}
+                getFilterByWorkflowOptions={this.getFilterByWorkflowOptions.bind(this)}
+                generateTags={generateTags.bind(this)}
+                filterTags={filterTags.bind(this)}
+                filterByWorkflow={this.state.filterByWorkflow}
+                onApplyChangesDropdownDayPicker={onApplyChangesDropdownDayPicker.bind(this)}
+                updateFilterByPageTypeOptions={updateFilterByPageTypeOptions.bind(this)}
+                updateFilterByPageStatusOptions={updateFilterByPageStatusOptions.bind(this)}
+                updateFilterByWorkflowOptions={updateFilterByWorkflowOptions.bind(this)}
+                filterByPageType={this.state.filterByPageType}
+                onDayClick={this.onDayClick.bind(this)}
+                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                startAndEndDateDirty={this.state.startAndEndDateDirty}
+                tags={this.state.tags}
+                onSearch={this.onSearch.bind(this)}
+                DropdownCalendarIsActive={this.state.DropdownCalendarIsActive}
+            />);
     }
 
     render_searchResults() {
@@ -1584,7 +1534,7 @@ class App extends Component {
 
         const { props } = this;
         const { selectedPage } = props;
-        const { inSearch, headerDropdownSelection, toggleSearchMoreFlyout, searchTerm } = this.state;
+        const { inSearch, toggleSearchMoreFlyout } = this.state;
 
         const isListPagesAllowed = securityService.canSeePagesList();
        
