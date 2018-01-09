@@ -639,6 +639,9 @@ namespace DotNetNuke.Security
                                             Secure = FormsAuthentication.RequireSSL
                                         };
 
+                if (HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName] != null)
+                    HttpContext.Current.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+
                 HttpContext.Current.Response.Cookies.Set(authCookie);
                 AuthCookieController.Instance.Update(authCookie.Value, authCookie.Expires.ToUniversalTime(), user.UserID);
 
@@ -658,6 +661,9 @@ namespace DotNetNuke.Security
             }
             else
             {
+                if (HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName] != null)
+                    HttpContext.Current.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+
                 FormsAuthentication.SetAuthCookie(user.Username, false);
                 var authCookie = HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName];
                 if (!string.IsNullOrEmpty(authCookie?.Value))
