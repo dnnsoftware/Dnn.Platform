@@ -4,13 +4,13 @@ import Localization from "localization";
 import { TreeAddPage, TreeAnalytics, TreeCopy, TreeEdit, EyeIcon } from "dnn-svg-icons";
 import Menu from "./InContextMenu/Menu";
 import MenuItem from "./InContextMenu/MenuItem";
-import ReactDOM from "react-dom";
 import cloneDeep from 'lodash/clonedeep';
 import securityService from "../../../services/securityService";
 
 import "./styles.less";
 
 export class PersonaBarTreeInContextMenu extends Component {
+
     constructor(props) {
         super(props);
         this.showMenu = false;
@@ -18,20 +18,13 @@ export class PersonaBarTreeInContextMenu extends Component {
 
     componentWillMount() {
         let { props } = this;
-        if (props.item === undefined)// || props.item.id !== props.pageId) 
-        {
+        if (props.item === undefined) {
             this.showMenu = false;
-        }
-        else {
+        } else {
             this.showMenu = true;
         }
     }
 
-    render_default(item) {
-        return (
-            <div className="in-context-menu"></div>
-        );
-    }
     onItemClick(key, item, customAction) {
         switch (key) {
             case "Add":
@@ -57,37 +50,81 @@ export class PersonaBarTreeInContextMenu extends Component {
                 break;
         }
     }
-    sort(items, column, order) {
-        order = order === undefined ? "asc" : order;
-        items = items.sort(function (a, b) {
-            if (a[column] > b[column]) //sort string descending
-                return order === "asc" ? 1 : -1;
-            if (a[column] < b[column])
-                return order === "asc" ? -1 : 1;
-            return 0;//default return value (no sorting)
-        });
-        return items;
+
+    getContextMenuItems(item) {
+        const visibleMenus = [];
+
+        const editable = item.canAddContentToPage && (item.pageType !== "tab" && item.pageType !== "url" && item.pageType !== "file");
+
+        if(item.canAddPage) {
+            visibleMenus.push({
+                key: "Add",
+                title: Localization.get("AddPage"),
+                index: 10,
+                icon: TreeAddPage,
+                onClick: this.onItemClick
+            });
+        }
+        if(item.canViewPage) {
+            visibleMenus.push({
+                key: "View",
+                title: Localization.get("View"),
+                index: 20,
+                icon: EyeIcon,
+                onClick: this.onItemClick
+            });
+        }
+
+        if(editable) {
+            visibleMenus.push({
+                key: "Edit",
+                title: Localization.get("Edit"),
+                index: 30,
+                icon: TreeEdit,
+                onClick: this.onItemClick
+            });
+        }
+
+        if (item.canCopyPage) {
+            visibleMenus.push({
+                key: "Duplicate",
+                title: Localization.get("Duplicate"),
+                index: 40,
+                icon: TreeCopy,
+                onClick: this.onItemClick
+            });
+        }
+        return visibleMenus;
     }
 
-    render_actionable(item) {
-        let visibleMenus = [];
-
-        item.canAddPage ? visibleMenus.push({ key: "Add", title: Localization.get("AddPage"), index: 10, icon: TreeAddPage, onClick: this.onItemClick }) : null;
-        item.canViewPage ? visibleMenus.push({ key: "View", title: Localization.get("View"), index: 20, icon: EyeIcon, onClick: this.onItemClick }) : null;
-        item.canAddContentToPage ? visibleMenus.push({ key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick }) : null;
-        item.canCopyPage ? visibleMenus.push({ key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }) : null;
-
+    getAdditionalMenuItems() {
         if (this.props.pageInContextComponents && securityService.isSuperUser()) {
             let { onItemClick } = this;
-            let additionalMenus = cloneDeep(this.props.pageInContextComponents || []);
-            additionalMenus && additionalMenus.map(item => {
-                item.onClick = onItemClick;
+            const additionalMenus = cloneDeep(this.props.pageInContextComponents || []);
+            additionalMenus && additionalMenus.forEach((value, index, arr) => {
+                arr[index].onClick = onItemClick;
             });
-            visibleMenus = visibleMenus.concat(additionalMenus && additionalMenus || []);
+            return additionalMenus;
         }
-        visibleMenus = this.sort(visibleMenus, "index");
-        /*eslint-disable react/no-danger*/
+        return [];
+    }
 
+    buildMenuItems(item) {
+        const menuItems = this.getContextMenuItems(item);
+        const additionalMenuItems = this.getAdditionalMenuItems();
+        const visibleMenus = [...menuItems, ...additionalMenuItems];
+        visibleMenus.sort((a, b) => {
+            const column = "index";
+            const aIdx = parseInt(a[column]);
+            const bIdx = parseInt(b[column]);
+            return aIdx - bIdx;
+        });
+        return visibleMenus;
+    }
+
+    renderActionable(item) {
+        const visibleMenus = this.buildMenuItems(item);
+        /*eslint-disable react/no-danger*/
         if (this.showMenu && visibleMenus.length) {
             return (<Menu>
                 {
@@ -109,7 +146,7 @@ export class PersonaBarTreeInContextMenu extends Component {
         const { item } = this.props;
         return (
             <span>
-                {this.render_actionable(item)}
+                {this.renderActionable(item)}
             </span>
         );
     }
