@@ -1,6 +1,6 @@
 {
   "name": "dnn-dropdown",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "DNN Dropdown Component",
   "main": "index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "enzyme": "^3.1.1",
     "enzyme-adapter-react-15.4": "^1.0.5",
     "enzyme-to-json": "^3.2.2",
-    "eslint": "2.10.2",
+    "eslint": "^2.10.2",
     "eslint-config-dnn": "^0.0.7",
     "eslint-import-resolver-node": "^0.3.1",
     "eslint-import-resolver-webpack": "^0.3.2",

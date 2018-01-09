@@ -48,4 +48,7 @@ module.exports = {
                 VERSION: JSON.stringify(packageJson.version)
             })
         ]
+        ,
+    devtool: "inline-source-map",
+    debug: true
 };
