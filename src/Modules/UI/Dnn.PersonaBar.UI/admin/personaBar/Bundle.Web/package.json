@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p",
-    "webpack": "set NODE_ENV=development&&webpack-dev-server -d --port 8070 --hot --inline --content-base dist/ --history-api-fallback",
+    "webpack": "webpack-dev-server -d --port 8070 --hot --inline --content-base dist/ --history-api-fallback",
     "analyze": "set NODE_ENV=production&&webpack --config webpack.config.js --profile --json > stats.json&&webpack-bundle-analyzer stats.json"
   },
   "devDependencies": {
