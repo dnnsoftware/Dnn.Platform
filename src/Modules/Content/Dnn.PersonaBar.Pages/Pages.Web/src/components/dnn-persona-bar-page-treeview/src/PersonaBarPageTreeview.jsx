@@ -17,11 +17,9 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     trimName(item) {
-        let maxLength = 18;
-        let { name, tabpath } = item;
-        let newLength = tabpath.split(/\//).length * 2 + 2;
-        let depth = (newLength < maxLength) ? newLength : 1;
-        return (item.name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
+        let maxLength = 16;
+        let { name } = item;
+        return name.length > maxLength ? `${name.slice(0, maxLength)}...` : name;
     }
 
     render_tree(item, childListItems) {
@@ -148,7 +146,6 @@ export class PersonaBarPageTreeview extends Component {
         let total = listItems.length;
         return listItems.map((item) => {
             const name = this.trimName(item);
-            const shouldShowTooltip = /\.\.\./.test(name);
             const canManagePage = (e, item, fn) => {
                 const message = Localization.get("NoPermissionManagePage");
                 const left = () => {
