@@ -72,9 +72,11 @@ export class PersonaBarTreeInContextMenu extends Component {
     render_actionable(item) {
         let visibleMenus = [];
 
+        const editable = item.canAddContentToPage && (item.pageType !== "tab" && item.pageType !== "url" && item.pageType !== "file");
+
         item.canAddPage ? visibleMenus.push({ key: "Add", title: Localization.get("AddPage"), index: 10, icon: TreeAddPage, onClick: this.onItemClick }) : null;
         item.canViewPage ? visibleMenus.push({ key: "View", title: Localization.get("View"), index: 20, icon: EyeIcon, onClick: this.onItemClick }) : null;
-        item.canAddContentToPage ? visibleMenus.push({ key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick }) : null;
+        editable ? visibleMenus.push({ key: "Edit", title: Localization.get("Edit"), index: 30, icon: TreeEdit, onClick: this.onItemClick }) : null;
         item.canCopyPage ? visibleMenus.push({ key: "Duplicate", title: Localization.get("Duplicate"), index: 40, icon: TreeCopy, onClick: this.onItemClick }) : null;
 
         if (this.props.pageInContextComponents && securityService.isSuperUser()) {
