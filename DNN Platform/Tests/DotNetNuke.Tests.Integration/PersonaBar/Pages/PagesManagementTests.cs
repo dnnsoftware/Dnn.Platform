@@ -23,14 +23,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using DNN.Integration.Test.Framework;
+using DNN.Integration.Test.Framework.Helpers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Tests.Integration.Executers;
 using DotNetNuke.Tests.Integration.Executers.Builders;
 using DotNetNuke.Tests.Integration.Executers.Dto;
-using DotNetNuke.Tests.Integration.Framework;
-using DotNetNuke.Tests.Integration.Framework.Controllers;
-using DotNetNuke.Tests.Integration.Framework.Helpers;
-using DotNetNuke.Web.Api;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
