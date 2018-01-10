@@ -24,7 +24,6 @@ module.exports = {
     "rules": {      
       "semi": "error",
       "no-var": "error",
-      "quotes": ["warn", "double" ],
       "indent": ["warn", 4, {"SwitchCase": 1}],
       "no-unused-vars": "warn",
       "no-console": "warn",      

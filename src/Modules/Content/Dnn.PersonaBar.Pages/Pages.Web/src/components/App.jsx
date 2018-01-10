@@ -31,9 +31,9 @@ import OverflowText from "dnn-text-overflow-wrapper";
 import Promise from "promise";
 
 import { EyeIcon, TreeEdit, XIcon } from "dnn-svg-icons";
-import SearchPage from "./SearchPage/SearchPage";
+import SearchPageInput from "./SearchPage/SearchPageInput";
 import SearchAdvanced from "./SearchPage/SearchAdvanced";
-import Search from "./SearchPage/Search";
+import SearchAdvancedDetails from "./SearchPage/SearchAdvancedDetails";
 
 import "./style.less";
 
@@ -1276,7 +1276,7 @@ class App extends Component {
         const updateFilterByPageStatusOptions = data => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true }) ;
         const updateFilterByWorkflowOptions = data => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });
         return (
-            <SearchAdvanced 
+            <SearchAdvancedDetails 
                 getFilterByPageTypeOptions={this.getFilterByPageTypeOptions.bind(this)}
                 getFilterByPageStatusOptions={this.getFilterByPageStatusOptions.bind(this)}
                 getFilterByWorkflowOptions={this.getFilterByWorkflowOptions.bind(this)}
@@ -1414,6 +1414,7 @@ class App extends Component {
         return (
             <GridCell columnSize={100} className="fade-in">
                 <GridCell columnSize={100} style={{ padding: "20px" }}>
+                    <SearchAdvanced />
                     <GridCell columnSize={80} style={{ padding: "0px" }}>
                         <div className="tags-container">
                             {this.state.filters ? this.render_filters() : null}
@@ -1556,11 +1557,15 @@ class App extends Component {
                         </PersonaBarPageHeader>
                         {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{ padding: "30px 30px 16px 30px" }}>
-                            <SearchPage onSearchMoreFlyoutClick={this.onSearchMoreFlyoutClick.bind(this)}  toggleSearchMoreFlyout={this.state.toggleSearchMoreFlyout} inSearch={this.state.inSearch} onSearch={this.onSearch.bind(this)} clearSearch={this.clearSearch.bind(this)}  />
+                            <SearchPageInput 
+                                onSearchMoreFlyoutClick={this.onSearchMoreFlyoutClick.bind(this)} 
+                                toggleSearchMoreFlyout={this.state.toggleSearchMoreFlyout} 
+                                inSearch={this.state.inSearch} onSearch={this.onSearch.bind(this)}
+                                clearSearch={this.clearSearch.bind(this)}  />
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 30px 30px 30px" }} >
                             <GridCell columnSize={1096} type={"px"} className="page-container">
-                                <div className={((selectedPage && selectedPage.tabId === 0) || this.onEditMode()) ? "tree-container disabled" : "tree-container"}>
+                                <div className={(this.onEditMode()|| this.state.inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <PersonaBarPageTreeviewInteractor
                                         clearSelectedPage={this.props.clearSelectedPage}
                                         Localization={Localization}
@@ -1586,7 +1591,6 @@ class App extends Component {
                                         enabled={!((selectedPage && selectedPage.tabId === 0) || inSearch)} />
                                 </div>
                                 <GridCell columnSize={760} type={"px"}>
-                                    <Search />
                                     {this.render_details()}
                                 </GridCell>
                             </GridCell>
