@@ -119,6 +119,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ViewEngineCollectionEx = ViewEngines;
                 // Execute the controller and capture the result
+                // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
+                // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
                 moduleController.Execute(RequestContext);
                 var result = moduleController.ResultOfLastExecute;
 

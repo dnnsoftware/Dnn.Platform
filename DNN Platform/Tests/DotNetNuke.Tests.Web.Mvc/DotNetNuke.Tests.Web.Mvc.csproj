@@ -82,6 +82,10 @@
     <Compile Include="Fakes\Dog.cs" />
     <Compile Include="Fakes\FakeController.cs" />
     <Compile Include="Fakes\FakeDnnController.cs" />
+    <Compile Include="Fakes\Filters\FakeHandleExceptionRedirectAttribute.cs" />
+    <Compile Include="Fakes\Filters\FakeOnExecutedRedirectAttribute.cs" />
+    <Compile Include="Fakes\Filters\FakeOnExecutingRedirectAttribute.cs" />
+    <Compile Include="Fakes\Filters\FakeRedirectAttribute.cs" />
     <Compile Include="Framework\Attributes\DnnModuleAuthorizeAttributeTests.cs" />
     <Compile Include="Framework\Attributes\DnnAuthorizeAttributeTests.cs" />
     <Compile Include="Framework\Attributes\DnnHandleErrorAttributeTests.cs" />
