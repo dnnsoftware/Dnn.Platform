@@ -86,12 +86,16 @@
 
                                 var rootMenuWidth = (supportsQuickSettings) ? 85 : 65;
 
+                                var $body = $(document.body);
+                                var positionCss = $body.css('position');
+                                var marginLeft = parseInt($body.css('margin-left'));
+
                                 root.css({
                                     position: "absolute",
                                     marginLeft: 0,
                                     marginTop: 0,
                                     top: containerPosition.top,
-                                    left: containerPosition.left + containerWidth - rootMenuWidth
+                                    left: containerPosition.left + containerWidth - rootMenuWidth - (positionCss === "relative" ? marginLeft : 0)
                                 });
 
                                 if (displayQuickSettings) {
