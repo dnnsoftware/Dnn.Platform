@@ -159,14 +159,12 @@ describe("Dnn Dropdown component", () => {
             let collapsibleLabel = deepRendering.find(".collapsible-label").first();
             collapsibleLabel.simulate("click");
 
-            const input = deepRendering.find("input").first();
-            input.getDOMNode().focus();
+            const input = deepRendering.find("input");
             input.simulate('change', {target: {value: "t"}});
-            expect(input.getDOMNode().value).toEqual("t");
 
-            //const label = deepRendering.find("li.selected > div").first().props().title;
+            const label = deepRendering.find("li.selected > div").first().props().title;
 
-            //expect(label).toEqual("Third Label");
+            expect(label).toEqual("Third Label");
 
     });
 
