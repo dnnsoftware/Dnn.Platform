@@ -1661,6 +1661,10 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            var portalId = GetPortalId(tab.TabID, -1);
+            var updatedTab = GetTab(tab.TabID, portalId, true);
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
@@ -1684,6 +1688,10 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            var portalId = GetPortalId(tab.TabID, -1);
+            var updatedTab = GetTab(tab.TabID, portalId, true);
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
@@ -1704,6 +1712,10 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            var portalId = GetPortalId(tab.TabID, -1);
+            var updatedTab = GetTab(tab.TabID, portalId, true);
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
