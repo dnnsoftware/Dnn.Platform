@@ -5,7 +5,6 @@ import Collapse from "react-collapse";
 import Scrollbars from "react-custom-scrollbars";
 import {ArrowDownIcon} from "dnn-svg-icons";
 import scroll from "scroll";
-import debounce from "lodash/debounce";
 import "./style.less";
 
 const DNN_DROPDOWN_MINHEIGHT = 100;
@@ -22,7 +21,6 @@ class Dropdown extends Component {
         };
         this.handleClick = this.handleClick.bind(this);
         this.uniqueId = Date.now() * Math.random();
-        this.debouncedSearch = debounce(this.searchItems, 500);
     }
 
     toggleDropdown() {
@@ -171,63 +169,36 @@ class Dropdown extends Component {
         return this.props.labelIsMultiLine ? "" : " no-wrap";
     }
 
+    findMatchingItem(option) {
+        const { props, state } = this;
+        const regex = state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+
+        const label = props.getLabelText ? props.getLabelText(option.label) : option.label;
+
+        return label.match(new RegExp("^" + regex, "gi"));
+    }
+
     searchItems() {
 
         const { props } = this;
 
-        let closestValueLength = 0, closestValue = null, itemIndex = 0;
+        const index = props.options.findIndex(this.findMatchingItem, this);
+        if(index) {
 
-        props.options.forEach((option, index) => {
-            let regex = this.state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+            const value = this.getOption(index).value;
 
-            const label = props.decode ? props.decode(option.label) : option.label;
-
-            let stringToMatchBeginning = new RegExp("^" + regex, "gi");
-
-            let labelToMatch = typeof label === "string" ? label : (option.searchableValue || "");
-
-            if (labelToMatch.match(stringToMatchBeginning) && labelToMatch.match(stringToMatchBeginning).length > closestValueLength) {
-                closestValueLength = labelToMatch.match(stringToMatchBeginning).length;
-                closestValue = option.value;
-                itemIndex = index;
-            }
-        });
-
-        if (closestValue === null) {
-            props.options.forEach((option, index) => {
-                let regex = this.state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-
-                let stringToMatchInBetween = new RegExp(regex, "gi");
-
-                const label = props.decode ? props.decode(option.label) : option.label;
-
-                let labelToMatch = typeof label === "string" ? label : (option.searchableValue || "");
-
-                if (labelToMatch.match(stringToMatchInBetween) && labelToMatch.match(stringToMatchInBetween).length > closestValueLength) {
-                    closestValueLength = labelToMatch.match(stringToMatchInBetween).length;
-                    closestValue = option;
-                    itemIndex = index;
-                }
+            this.setState({
+                closestValue: value,
+                currentIndex: index
+            },() => {
+                this.setState({dropdownText: ""});
+                this.dropdownSearch.value = "";
+                setTimeout(() => this.scrollToSelectedItem(),100);
             });
-        }
-
-        this.setState({
-            closestValue,
-            currentIndex: itemIndex
-        }, () => {
-            setTimeout(() => {
-                this.setState({
-                    dropdownText: ""
-                });
-            }, 1500);
-        });
-
-        if (closestValue !== null) {
-            this.scrollToSelectedItem(itemIndex);
         }
     }
 
-    scrollToSelectedItem(itemIndex, eventKey) {
+    scrollToSelectedItem(eventKey) {
 
         const optionRef = this.selectedOptionElement ? this.selectedOptionElement : null;
         if (optionRef) {
@@ -244,7 +215,7 @@ class Dropdown extends Component {
         this.setState({
             dropdownText: event.target.value
         }, () => {
-            this.debouncedSearch();
+            this.searchItems();
         });
     }
 
@@ -403,7 +374,7 @@ Dropdown.propTypes = {
     isDropDownOpen: PropTypes.bool,
     selectedIndex: PropTypes.number,
     onArrowKey: PropTypes.func,
-    decode: PropTypes.func.isRequired // fn(labelObject):string
+    getLabelText: PropTypes.func.isRequired // fn(labelObject):string
 };
 
 Dropdown.defaultProps = {
@@ -417,7 +388,7 @@ Dropdown.defaultProps = {
     className: "",
     isDropDownOpen: false,
     selectedIndex: -1,
-    decode:(label) => label
+    getLabelText:(label) => label
 };
 
 export default Dropdown;
