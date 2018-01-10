@@ -62,7 +62,7 @@ export default class SearchPage extends Component {
                     <div
                         className="btn search-btn"
                         dangerouslySetInnerHTML={{ __html: PagesSearchIcon }}
-                        onClick={this.props.onSearch}
+                        onClick={()=>this.props.onSearch(this.state.searchTerm)}
                     >
                     </div>
                     <div

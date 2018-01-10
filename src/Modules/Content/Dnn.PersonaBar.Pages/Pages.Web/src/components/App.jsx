@@ -30,14 +30,12 @@ import GridCell from "dnn-grid-cell";
 import OverflowText from "dnn-text-overflow-wrapper";
 import Promise from "promise";
 
-import { CalendarIcon, EyeIcon, TreeEdit, XIcon } from "dnn-svg-icons";
-import Dropdown from "dnn-dropdown";
+import { EyeIcon, TreeEdit, XIcon } from "dnn-svg-icons";
 import SearchPage from "./SearchPage/SearchPage";
 import SearchAdvanced from "./SearchPage/SearchAdvanced";
+import Search from "./SearchPage/Search";
 
 import "./style.less";
-
-import DropdownDayPicker from "./DropdownDayPicker/DropdownDayPicker";
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
 
@@ -977,7 +975,7 @@ class App extends Component {
 
     onSearch(term) {
         this.setState({
-            searchTerm:term,
+            searchTerm:term?term:"",
             inSearch:true,
             filtersUpdated:true
         },()=>{
@@ -1588,6 +1586,7 @@ class App extends Component {
                                         enabled={!((selectedPage && selectedPage.tabId === 0) || inSearch)} />
                                 </div>
                                 <GridCell columnSize={760} type={"px"}>
+                                    <Search />
                                     {this.render_details()}
                                 </GridCell>
                             </GridCell>
