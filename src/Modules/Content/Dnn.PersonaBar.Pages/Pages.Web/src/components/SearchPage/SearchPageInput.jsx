@@ -65,11 +65,6 @@ class SearchPageInput extends Component {
                         onClick={()=>this.props.onSearch(this.state.searchTerm)}
                     >
                     </div>
-                    <div
-                        className="btn search-btn"
-                        dangerouslySetInnerHTML={{ __html: PagesVerticalMore }}
-                        onClick={() => { this.props.onSearchMoreFlyoutClick(); }}
-                    />
                 </div>
             </div>
         );
@@ -80,8 +75,7 @@ class SearchPageInput extends Component {
 SearchPageInput.propTypes = {
     inSearch: PropTypes.bool.isRequired,
     onSearch: PropTypes.func.isRequired,
-    clearSearch: PropTypes.func.isRequired,
-    onSearchMoreFlyoutClick: PropTypes.func.isRequired
+    clearSearch: PropTypes.func.isRequired
 };
 
 export default SearchPageInput;

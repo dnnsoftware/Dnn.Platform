@@ -132,7 +132,7 @@ class SearchResult extends Component {
         return (
             <GridCell columnSize={100} className="fade-in">
                 <GridCell columnSize={100} style={{ padding: "20px" }}>
-                    <SearchAdvanced />
+                    <SearchAdvanced {...this.props} />
                     <GridCell columnSize={80} style={{ padding: "0px" }}>
                         <div className="tags-container">
                             {this.props.filters ? this.props.render_filters() : null}

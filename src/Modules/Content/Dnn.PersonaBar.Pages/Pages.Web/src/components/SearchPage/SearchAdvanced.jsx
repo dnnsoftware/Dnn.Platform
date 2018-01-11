@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import Collapse from "dnn-collapsible";
 import { SearchIcon } from "dnn-svg-icons";
 import Localization from "../../localization";
@@ -37,14 +37,59 @@ class SearchAdvanced extends Component {
                     </span>
                 </div>
                 <Collapse isOpened={this.state.collapsed} className="search-header-collapsible">
-                    <div style={{height:"150px", padding: "25px"}}>
-                        <div className="">TODO</div>
-                    </div>
-                    {/* <SearchAdvancedDetails  /> */}
+                        {this.state.collapsed && 
+                            <SearchAdvancedDetails 
+                                                getFilterByPageTypeOptions={this.props.getFilterByPageTypeOptions}
+                                                getFilterByPageStatusOptions={this.props.getFilterByPageStatusOptions}
+                                                getFilterByWorkflowOptions={this.props.getFilterByWorkflowOptions}
+                                                generateTags={this.props.generateTags}
+                                                filterTags={this.props.filterTags}
+                                                filterByWorkflow={this.props.filterByWorkflow}
+                                                onApplyChangesDropdownDayPicker={this.props.onApplyChangesDropdownDayPicker}
+                                                updateFilterByPageTypeOptions={this.props.updateFilterByPageTypeOptions}
+                                                updateFilterByPageStatusOptions={this.props.updateFilterByPageStatusOptions}
+                                                updateFilterByWorkflowOptions={this.props.updateFilterByWorkflowOptions}
+                                                filterByPageType={this.props.filterByPageType}
+                                                onDayClick={this.props.onDayClick}
+                                                toggleDropdownCalendar={this.props.toggleDropdownCalendar}
+                                                startDate={this.props.startDate}
+                                                endDate={this.props.endDate}
+                                                startAndEndDateDirty={this.props.startAndEndDateDirty}
+                                                tags={this.props.tags}
+                                                onSearch={this.props.onSearch}
+                                                DropdownCalendarIsActive={this.props.DropdownCalendarIsActive}
+                                            />
+                        }
+
+
+
                 </Collapse>    
             </div>
         );
     }
 }
+
+SearchAdvanced.propTypes = {
+    getFilterByPageTypeOptions : PropTypes.func.isRequired,
+    getFilterByPageStatusOptions : PropTypes.func.isRequired,
+    getFilterByWorkflowOptions : PropTypes.func.isRequired,
+    generateTags : PropTypes.func.isRequired,
+    filterTags : PropTypes.func.isRequired,
+    filterByWorkflow : PropTypes.func.isRequired,
+    onApplyChangesDropdownDayPicker : PropTypes.func.isRequired,
+    updateFilterByPageTypeOptions : PropTypes.func.isRequired,
+    updateFilterByPageStatusOptions : PropTypes.func.isRequired,
+    updateFilterByWorkflowOptions : PropTypes.func.isRequired,
+    filterByPageType : PropTypes.func.isRequired,
+    onDayClick : PropTypes.func.isRequired,
+    toggleDropdownCalendar : PropTypes.func.isRequired,
+    startDate : PropTypes.instanceOf(Date).isRequired,
+    endDate : PropTypes.instanceOf(Date).isRequired,
+    startAndEndDateDirty : PropTypes.bool.isRequired,
+    tags : PropTypes.string.isRequired,
+    onSearch : PropTypes.func.isRequired,
+    DropdownCalendarIsActive : PropTypes.bool.isRequired
+    
+};
 
 export default SearchAdvanced;

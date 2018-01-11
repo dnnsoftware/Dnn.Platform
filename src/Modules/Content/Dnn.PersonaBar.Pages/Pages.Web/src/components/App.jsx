@@ -25,7 +25,6 @@ import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
-import cloneDeep from "lodash/clonedeep";
 import GridCell from "dnn-grid-cell";
 import OverflowText from "dnn-text-overflow-wrapper";
 import Promise from "promise";
@@ -1257,48 +1256,28 @@ class App extends Component {
         return filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()) && filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()).label || publishStatus;
     }
 
-    /* eslint-disable react/no-danger */
-    render_more_flyout() {
-        const generateTags = (e) => {
-            this.setState({ tags: e.target.value, filtersUpdated: true });
-        };
-        const filterTags = () => {
-            let { tags } = this.state;
-            this.setState({ tags: this.distinct(tags.split(",")).join(",") });
-        };
-        const onApplyChangesDropdownDayPicker = () => {
-            const { startAndEndDateDirty, startDate, endDate } = this.state;
-            const fullStartDate = startDate.getDate() + startDate.getMonth() + startDate.getFullYear();
-            const fullEndDate = endDate.getDate() + endDate.getMonth() + endDate.getFullYear();
-            const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
-            condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
-        };
-        const updateFilterByPageTypeOptions = data => { this.setState({ filterByPageType: data.value, filtersUpdated: true }); };
-        const updateFilterByPageStatusOptions = data => this.setState({ filterByPublishStatus: data.value, filtersUpdated: true }) ;
-        const updateFilterByWorkflowOptions = data => this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });
-        return (
-            <SearchAdvancedDetails 
-                getFilterByPageTypeOptions={this.getFilterByPageTypeOptions.bind(this)}
-                getFilterByPageStatusOptions={this.getFilterByPageStatusOptions.bind(this)}
-                getFilterByWorkflowOptions={this.getFilterByWorkflowOptions.bind(this)}
-                generateTags={generateTags.bind(this)}
-                filterTags={filterTags.bind(this)}
-                filterByWorkflow={this.state.filterByWorkflow}
-                onApplyChangesDropdownDayPicker={onApplyChangesDropdownDayPicker.bind(this)}
-                updateFilterByPageTypeOptions={updateFilterByPageTypeOptions.bind(this)}
-                updateFilterByPageStatusOptions={updateFilterByPageStatusOptions.bind(this)}
-                updateFilterByWorkflowOptions={updateFilterByWorkflowOptions.bind(this)}
-                filterByPageType={this.state.filterByPageType}
-                onDayClick={this.onDayClick.bind(this)}
-                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                startAndEndDateDirty={this.state.startAndEndDateDirty}
-                tags={this.state.tags}
-                onSearch={this.onSearch.bind(this)}
-                DropdownCalendarIsActive={this.state.DropdownCalendarIsActive}
-            />);
+    /** TODO REMOVE THESE FROM HERE */
+    generateTags(e) {
+        this.setState({ tags: e.target.value, filtersUpdated: true });
     }
+
+    filterTags() {
+        let { tags } = this.state;
+     
+        this.setState({ tags: this.distinct(tags.split(",")).join(",") });
+    }
+
+    onApplyChangesDropdownDayPicker() {
+        const { startAndEndDateDirty, startDate, endDate } = this.state;
+        const fullStartDate = startDate.getDate() + startDate.getMonth() + startDate.getFullYear();
+        const fullEndDate = endDate.getDate() + endDate.getMonth() + endDate.getFullYear();
+        const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
+        condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
+    }
+    updateFilterByPageTypeOptions(data) { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }
+    updateFilterByPageStatusOptions(data) { this.setState({ filterByPublishStatus: data.value, filtersUpdated: true });} 
+    updateFilterByWorkflowOptions(data) {this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });}
+    /** END TODO REMOVE THESE FROM HERE */
 
     render_searchResults() {
         return (
@@ -1312,6 +1291,22 @@ class App extends Component {
                 render_filters={this.render_filters.bind(this)}
                 getPageTypeLabel={this.getPageTypeLabel.bind(this)}
                 getPublishStatusLabel={this.getPublishStatusLabel.bind(this)}
+                getFilterByPageTypeOptions={this.getFilterByPageTypeOptions.bind(this)}
+                getFilterByPageStatusOptions={this.getFilterByPageStatusOptions.bind(this)}
+                getFilterByWorkflowOptions={this.getFilterByWorkflowOptions.bind(this)}
+                generateTags={this.generateTags.bind(this)}
+                filterTags={this.filterTags.bind(this)}
+                filterByWorkflow={this.state.filterByWorkflow}
+                onApplyChangesDropdownDayPicker={this.onApplyChangesDropdownDayPicker.bind(this)}
+                updateFilterByPageTypeOptions={this.updateFilterByPageTypeOptions.bind(this)}
+                updateFilterByPageStatusOptions={this.updateFilterByPageStatusOptions.bind(this)}
+                updateFilterByWorkflowOptions={this.updateFilterByWorkflowOptions.bind(this)}
+                filterByPageType={this.state.filterByPageType}
+                onDayClick={this.onDayClick.bind(this)}
+                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
+                startAndEndDateDirty={this.state.startAndEndDateDirty}
+                onSearch={this.onSearch.bind(this)}
+                DropdownCalendarIsActive={this.state.DropdownCalendarIsActive}
             />
         );
     }
@@ -1362,7 +1357,8 @@ class App extends Component {
         }
     }
 
-    //TODO: Verify render_filters on change 
+    //TODO: Verify render_filters on change
+    /* eslint-disable react/no-danger */
     render_filters() {
         const { filters } = this.state;
         return filters
@@ -1405,7 +1401,6 @@ class App extends Component {
                         <div className="xIcon"
                             dangerouslySetInnerHTML={{ __html: XIcon }}
                             onClick={(e) => { deleteFilter(filter.ref); }}>
-
                         </div>
                     </div>
                 );
@@ -1416,8 +1411,7 @@ class App extends Component {
 
         const { props } = this;
         const { selectedPage } = props;
-        const { inSearch, toggleSearchMoreFlyout } = this.state;
-
+        const { inSearch } = this.state;
         const isListPagesAllowed = securityService.canSeePagesList();
        
          /* eslint-disable react/no-danger */
@@ -1438,11 +1432,9 @@ class App extends Component {
                             }                            
                             {!inSearch && <BreadCrumbs items={this.props.selectedPagePath || []} onSelectedItem={this.onSelection.bind(this)} />}
                         </PersonaBarPageHeader>
-                        {toggleSearchMoreFlyout ? this.render_more_flyout() : null}
                         <GridCell columnSize={100} style={{ padding: "30px 30px 16px 30px" }}>
                             <SearchPageInput 
                                 onSearchMoreFlyoutClick={this.onSearchMoreFlyoutClick.bind(this)} 
-                                toggleSearchMoreFlyout={this.state.toggleSearchMoreFlyout} 
                                 inSearch={this.state.inSearch} onSearch={this.onSearch.bind(this)}
                                 clearSearch={this.clearSearch.bind(this)}  />
                         </GridCell>

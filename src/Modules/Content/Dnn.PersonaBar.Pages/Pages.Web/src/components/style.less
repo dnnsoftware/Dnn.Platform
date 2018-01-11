@@ -34,19 +34,12 @@
         float: right;
     }
     .search-more-flyout {
-        position: absolute;
-        z-index: 9999;
-        top: 170px;
-        left: 375px;
-        padding: 20px;
-        -webkit-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
-        box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
         background-color: white;
         height: 200px;
         width: 765px;
         transition: all .25s;
         animation: fadeIn .25s ease-in forwards;
+        z-index: 9999;
         .more-dropdown {
             width: 100%;
         }
@@ -80,7 +73,11 @@
             border: 1px solid @alto;
             overflow: hidden;
             display: none;
-            z-index: 1;
+            z-index: 9999;
+            -webkit-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+            background-color: white;
         }
         .calendar-dropdown-content {
             background-color: white;
@@ -281,7 +278,7 @@
             margin-top: 10px;
             float:right;
             border-left: 1px solid @alto;
-            width: 300px;
+            width: 261px;
             .search-input {
                 width: 200px;
                 float: left;

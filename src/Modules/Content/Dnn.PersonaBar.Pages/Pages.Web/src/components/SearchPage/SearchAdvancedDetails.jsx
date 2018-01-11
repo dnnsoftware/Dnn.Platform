@@ -64,7 +64,7 @@ class SearchAdvancedDetails extends Component {
                                 applyChanges={() => this.props.onApplyChangesDropdownDayPicker()}
                                 startDate={this.props.startDate}
                                 endDate={this.props.endDate}
-                                toggleDropdownCalendar={this.props.toggleDropdownCalendar.bind(this)}
+                                toggleDropdownCalendar={this.props.toggleDropdownCalendar}
                                 CalendarIcon={CalendarIcon}
                                 label={this.getDateLabel()}
                             />
