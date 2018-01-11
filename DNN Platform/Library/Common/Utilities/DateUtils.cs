@@ -20,7 +20,7 @@
 
 #region Usings
 using System;
-
+using System.Globalization;
 using DotNetNuke.Data;
 using DotNetNuke.Services.Localization;
 
@@ -40,6 +40,8 @@ namespace DotNetNuke.Common.Utilities
         private static TimeSpan _driftUtc = TimeSpan.MinValue;
 
         private static TimeSpan _driftLocal = TimeSpan.MinValue;
+
+        public const string StandardDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
         /// <summary>
         /// Gets the database time.
@@ -166,6 +168,22 @@ namespace DotNetNuke.Common.Utilities
 
             // anything else (this is the only time we have to personalize it to the user)
             return date.ToShortDateString();
+        }
+
+        public static string AdjustFormat(string format)
+        {
+            var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
+            switch (format)
+            {
+                case "d":
+                    format = dateTimeFormat.ShortDatePattern;
+                    break;
+                case "g":
+                    format = $"{dateTimeFormat.ShortDatePattern} HH:mm";
+                    break;
+            }
+
+            return format;
         }
     }
 }

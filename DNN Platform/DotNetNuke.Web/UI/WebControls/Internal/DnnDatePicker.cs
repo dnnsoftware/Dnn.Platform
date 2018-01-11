@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
@@ -37,14 +38,28 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnDatePicker : TextBox
     {
-        protected virtual string Format => "yyyy-MM-dd";
-        protected virtual string ClientFormat => "YYYY-MM-DD";
+        private string _datetimeFormat = "d";
+
+        public virtual string Format
+        {
+            get
+            {
+                return DateUtils.AdjustFormat(_datetimeFormat); 
+            }
+            set
+            {
+                _datetimeFormat = value;
+            }
+        }
+
+        protected virtual string ClientFormat => GetJsFormat(Format);
 
         public DateTime? SelectedDate {
             get
             {
                 DateTime value;
-                if (!string.IsNullOrEmpty(Text) && DateTime.TryParse(Text, out value))
+                if (!string.IsNullOrEmpty(Text) 
+                    && DateTime.TryParseExact(Text, DateUtils.AdjustFormat(Format), CultureInfo.InvariantCulture, DateTimeStyles.None, out value))
                 {
                     return value;
                 }
@@ -53,34 +68,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
             set
             {
-                Text = value?.ToString(Format) ?? string.Empty;
-                
+                Text = value?.ToString(DateUtils.AdjustFormat(Format)) ?? string.Empty;
             }
         }
 
         public DateTime MinDate { get; set; } = DateTime.MinValue;
 
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
-
-
-        protected override void OnInit(EventArgs e)
-        {
-            //if (CultureInfo.CurrentCulture.Name == "ar-SA")
-            //{
-            //    Culture.DateTimeFormat.Calendar = new GregorianCalendar();
-            //}
-
-            base.OnInit(e);
-            //base.EnableEmbeddedBaseStylesheet = false;
-            //Utilities.ApplySkin(this);
-            //this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
-            //var specialDay = new RadCalendarDay();
-            //specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
-            //specialDay.ItemStyle.CssClass = "dnnCalendarToday";
-            //this.Calendar.SpecialDays.Add(specialDay);
-            //this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
-            //this.MinDate = (DateTime)SqlDateTime.MinValue;
-        }
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -101,9 +95,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return new Dictionary<string, object>
             {
-                {"minDate", MinDate > DateTime.MinValue ? $"$new Date('{MinDate.ToString(Format)}')$" : ""},
-                {"maxDate", MaxDate > DateTime.MinValue ? $"$new Date('{MaxDate.ToString(Format)}')$" : ""},
-                {"format", ClientFormat }
+                {"minDate", MinDate > DateTime.MinValue ? $"$new Date({MinDate.Year},{MinDate.Month - 1}, {MinDate.Day})$" : ""},
+                {"maxDate", MaxDate > DateTime.MinValue ? $"$new Date({MaxDate.Year},{MaxDate.Month - 1}, {MaxDate.Day})$" : ""},
+                {"format", ClientFormat },
+                {"showTime", false }
             };
         } 
 
@@ -113,6 +108,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             var script = $"$('#{ClientID}').pikaday({settings});";
 
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "DnnDatePicker" + ClientID, script, true);
+        }
+
+        private string GetJsFormat(string format)
+        {
+            return format.Replace("yyyy", "YYYY").Replace("d", "D");
         }
     }
 }

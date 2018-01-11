@@ -32,18 +32,32 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnDateTimePicker : DnnDatePicker
     {
-        protected override string Format => "yyyy-MM-dd HH:mm:ss";
-        protected override string ClientFormat => "YYYY-MM-DD HH:mm:ss";
+        public DnnDateTimePicker()
+        {
+            Format = "g";
+        }
 
         protected override IDictionary<string, object> GetSettings()
         {
             var settings = base.GetSettings();
 
-            settings.Add("showTime", true);
-            settings.Add("use24hour", true);
-            settings.Add("autoClose", true);
+            AddSettings(settings, "showTime", true);
+            AddSettings(settings, "use24hour", true);
+            AddSettings(settings, "autoClose", true);
 
             return settings;
+        }
+
+        private void AddSettings(IDictionary<string, object> settings, string key, object value)
+        {
+            if (settings.ContainsKey(key))
+            {
+                settings[key] = value;
+            }
+            else
+            {
+                settings.Add(key, value);
+            }
         }
     }
 }

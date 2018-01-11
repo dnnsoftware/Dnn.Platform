@@ -26,6 +26,7 @@ using System.Data.SqlTypes;
 using System.Globalization;
 using System.Web.UI;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.UI.WebControls;
 
@@ -63,8 +64,15 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(Value);
-                    DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
+                    if (Value is DateTime)
+                    {
+                        dteValue = (DateTime) Value;
+                    }
+                    else
+                    {
+                        var dteString = Convert.ToString(Value);
+                        dteValue = DateTime.ParseExact(dteString, DateUtils.StandardDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    }
                 }
                 catch (Exception exc)
                 {
@@ -115,6 +123,19 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                         }
                     }
                 }
+
+                //get custom format from portal settings.
+                if (PortalSettings.Current != null)
+                {
+                    var portalSettings = PortalSettings.Current;
+                    const string settingName = "DateEditControl_CustomFormat";
+                    var portalSetting = PortalController.GetPortalSetting(settingName, portalSettings.PortalId, string.Empty, portalSettings.CultureCode);
+                    if (!string.IsNullOrEmpty(portalSetting))
+                    {
+                        _Format = portalSetting;
+                    }
+                }
+                
                 return _Format;
             }
         }
@@ -136,7 +157,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                     var dteString = OldValue as string;
                     if (!string.IsNullOrEmpty(dteString))
                     {
-                        dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
+                        dteValue = DateTime.ParseExact(dteString, DateUtils.StandardDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
                     }
                 }
                 catch (Exception exc)
@@ -158,7 +179,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 string _StringValue = Null.NullString;
                 if ((DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && DateValue != Null.NullDate))
                 {
-                    _StringValue = DateValue.ToString(Format);
+                    _StringValue = DateValue.ToString(DateUtils.AdjustFormat(Format));
                 }
                 return _StringValue;
             }
@@ -204,7 +225,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 		    {
 			    if (_dateControl == null)
 			    {
-				    _dateControl = new DnnDatePicker();
+				    _dateControl = new DnnDatePicker() {Format = Format};
 			    }
 
 			    return _dateControl;
@@ -247,8 +268,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 else
                 {
-                    Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
-                    dataChanged = true;
+                    DateTime value;
+                    if (DateTime.TryParseExact(postedValue, DateUtils.AdjustFormat(Format), CultureInfo.InvariantCulture, DateTimeStyles.None, out value))
+                    {
+                        Value = value;
+                        dataChanged = true;
+                    }
                 }
             }
             LoadDateControls();
@@ -264,7 +289,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             var args = new PropertyEditorEventArgs(Name);
             args.Value = DateValue;
             args.OldValue = OldDateValue;
-            args.StringValue = DateValue.ToString(CultureInfo.InvariantCulture);
+            args.StringValue = DateValue.ToString(DateUtils.StandardDateTimeFormat);
             base.OnValueChanged(args);
         }
 

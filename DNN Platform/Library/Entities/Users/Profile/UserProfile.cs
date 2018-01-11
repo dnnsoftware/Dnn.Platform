@@ -684,7 +684,7 @@ namespace DotNetNuke.Entities.Users
                 if (value is DateTime)
                 {
                     var dateValue = (DateTime)value;
-                    stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
+                    stringValue = dateValue.ToString(DateUtils.StandardDateTimeFormat);
                 }
 				else if (value is TimeZoneInfo)
 				{
