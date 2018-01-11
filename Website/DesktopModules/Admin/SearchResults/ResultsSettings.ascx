@@ -32,4 +32,8 @@
         <dnn:Label ID="plEnableWildSearch" runat="server" ControlName="chkEnableWildSearch" />
         <asp:CheckBox runat="server" ID="chkEnableWildSearch" />
     </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="plShowDescriptionForSnippet" runat="server" ControlName="chkShowDescriptionForSnippet" />
+        <asp:CheckBox runat="server" ID="chkShowDescriptionForSnippet" />
+    </div>
 </div>

@@ -110,5 +110,23 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkEnableWildSearch;
+        
+        /// <summary>
+        /// plShowDescriptionForSnippet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plShowDescriptionForSnippet;
+        
+        /// <summary>
+        /// chkShowDescriptionForSnippet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkShowDescriptionForSnippet;
     }
 }

@@ -159,6 +159,17 @@ namespace DotNetNuke.Modules.SearchResults
             }
         }
 
+        protected string ShowDescriptionForSnippet
+        {
+            get
+            {
+                var showDescriptionForSnippet = Settings.ContainsKey("ShowDescriptionForSnippet") &&
+                       Convert.ToBoolean(Settings["ShowDescriptionForSnippet"]);
+
+                return showDescriptionForSnippet.ToString().ToLowerInvariant();
+            }
+        }
+
         private IList<int> SearchPortalIds
         {
             get

@@ -115,6 +115,15 @@ namespace DotNetNuke.Modules.SearchResults
                     {
                         chkEnableWildSearch.Checked = true;
                     }
+
+                    if (!string.IsNullOrEmpty(Convert.ToString(Settings["ShowDescriptionForSnippet"])))
+                    {
+                        chkShowDescriptionForSnippet.Checked = Convert.ToBoolean(Settings["ShowDescriptionForSnippet"]);
+                    }
+                    else
+                    {
+                        chkEnableWildSearch.Checked = false;
+                    }
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -140,6 +149,7 @@ namespace DotNetNuke.Modules.SearchResults
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "EnableWildSearch", chkEnableWildSearch.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowDescriptionForSnippet", chkShowDescriptionForSnippet.Checked.ToString());
                 }
             }
             catch (Exception exc)

@@ -147,6 +147,12 @@
   <data name="plResultsScopeForPortals.Text" xml:space="preserve">
     <value>Results Scope for Site(s)</value>
   </data>
+  <data name="plShowDescriptionForSnippet.Help" xml:space="preserve">
+    <value>Show description instead of snippet. Snippet will still be shown if description is not present.</value>
+  </data>
+  <data name="plShowDescriptionForSnippet.Text" xml:space="preserve">
+    <value>Show description in place of search snippet</value>
+  </data>
   <data name="plTitleLinkTarget.Help" xml:space="preserve">
     <value>Choose to open the link in the same page or in a new window.</value>
   </data>
