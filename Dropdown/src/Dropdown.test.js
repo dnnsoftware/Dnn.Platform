@@ -1,7 +1,7 @@
 jest.mock("./style.less", () => jest.fn());
 jest.useFakeTimers();
 
-import React, {PropTypes} from "react";
+import React from "react";
 import Dropdown from "./Dropdown";
 import Collapse from "react-collapse";
 
@@ -9,7 +9,7 @@ import {configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15.4';
 import toJson from 'enzyme-to-json';
 
-import {shallow, mount, render} from "enzyme";
+import {shallow, mount} from "enzyme";
 
 configure({adapter: new Adapter()});
 
@@ -134,6 +134,37 @@ describe("Dnn Dropdown component", () => {
 
         const json = toJson(deepRendering);
         expect(json).toMatchSnapshot();
+
+    });
+
+    it("Extracts text from a complex label, given a getLabelText function", () => {
+
+            const options = [
+                {value: "first", label: <div title={"First Label"}>First Label</div>, searchableValue: "first"},
+                {value: "second", label: <div title={"Second Label"}>Second Label</div>, searchableValue: "second"},
+                {value: "third", label: <div title={"Third Label"}>Third Label</div>, searchableValue: "third"},
+            ];
+
+            const props = {
+                options,
+                value: "",
+                label: "My new label",
+                prependWith: "Prepend text:",
+                withIcon: false,
+                isDropDownOpen: true,
+                fixedHeight: 600,
+                getLabelText: (label) => label.props.title
+            };
+            const deepRendering = mount(<Dropdown onSelect={f => f} {...props}/>);
+            let collapsibleLabel = deepRendering.find(".collapsible-label").first();
+            collapsibleLabel.simulate("click");
+
+            const input = deepRendering.find("input");
+            input.simulate('change', {target: {value: "t"}});
+
+            const label = deepRendering.find("li.selected > div").first().props().title;
+
+            expect(label).toEqual("Third Label");
 
     });
 
