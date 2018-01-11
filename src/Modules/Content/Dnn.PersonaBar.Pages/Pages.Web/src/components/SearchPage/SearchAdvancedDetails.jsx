@@ -7,7 +7,7 @@ import DropdownDayPicker from "../DropdownDayPicker/DropdownDayPicker";
 import {CalendarIcon} from "dnn-svg-icons";
 import utils from "../../utils";
 
-export default class SearchAdvancedDetails extends Component {
+class SearchAdvancedDetails extends Component {
 
     constructor(props) {
         super(props);
@@ -118,3 +118,6 @@ SearchAdvancedDetails.propTypes = {
     filterByWorkflow : PropTypes.string.isRequired   
 
 };
+
+
+export default SearchAdvancedDetails;

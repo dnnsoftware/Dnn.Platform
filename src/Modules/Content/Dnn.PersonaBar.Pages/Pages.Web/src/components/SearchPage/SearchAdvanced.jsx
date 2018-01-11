@@ -6,7 +6,7 @@ import SearchAdvancedDetails from "./SearchAdvancedDetails";
 import "./styles.less";
 
 
-export default class SearchAdvanced extends Component {
+class SearchAdvanced extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,9 +40,11 @@ export default class SearchAdvanced extends Component {
                     <div style={{height:"150px", padding: "25px"}}>
                         <div className="">TODO</div>
                     </div>
-                </Collapse>
-                
+                    {/* <SearchAdvancedDetails  /> */}
+                </Collapse>    
             </div>
         );
     }
 }
+
+export default SearchAdvanced;

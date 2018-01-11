@@ -38,6 +38,7 @@ import SearchAdvancedDetails from "./SearchPage/SearchAdvancedDetails";
 import "./style.less";
 
 import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
+import SearchResult from "./SearchPage/SearchResult";
 
 function getSelectedTabBeingViewed(viewTab) {
     switch (viewTab) {
@@ -1300,136 +1301,21 @@ class App extends Component {
     }
 
     render_searchResults() {
-        const { pageInContextComponents, searchList } = this.props;
-        const render_card = (item) => {
-            const onNameClick = (item) => {
-                this.clearSearch(() => {
-                    if (item.canManagePage) {
-                        this.onLoadPage(item.id, (data) => { this.buildTree(item.id); });
-                    }
-                    else {
-                        this.noPermissionSelectionPageId = item.id;
-                        this.buildBreadCrumbPath(item.id);
-                        this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
-                    }
-                });
-            };
-
-            const publishedDate = new Date(item.publishDate.split(" ")[0]);
-
-            const addToTags = (newTag) => {
-                const condition = this.state.tags.indexOf(newTag) === -1;
-                const update = () => {
-                    let tags = this.state.tags;
-                    tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
-                    tags = this.distinct(tags.split(",")).join(",");
-                    this.setState({ tags, filtersUpdated: true }, () => this.onSearch());
-                };
-
-                condition ? update() : null;
-            };
-            const getTabPath = (path) => {
-                path = path.startsWith("/") ? path.substring(1) : path;
-                return path.split("/").join(" / ");
-            };
-
-
-            let visibleMenus = [];
-            item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
-            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
-            if (pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
-                let additionalMenus = cloneDeep(pageInContextComponents || []);
-                additionalMenus && additionalMenus.map(additionalMenu => {
-                    visibleMenus.push(<li onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
-                        && this.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
-                });
-            }
-            return (
-                <GridCell columnSize={100}>
-                    <div className="search-item-card">
-                        {this.props.pageTypeSelectorComponents && this.props.pageTypeSelectorComponents.length > 0 &&                            
-                            this.props.pageTypeSelectorComponents.map(function (component) {
-                                const Component = component.component;
-                                return <div className="search-item-thumbnail"><Component page={item} /></div>;
-                            })
-                        }
-                        <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
-                            <div className="search-item-details-left">
-                                <h1 onClick={() => onNameClick(item)}><OverflowText text={item.name} /></h1>
-                                <h2><OverflowText text={getTabPath(item.tabpath)} /></h2>
-                            </div>
-                            <div className="search-item-details-right">
-                                <ul>
-                                    {visibleMenus}
-                                </ul>
-                            </div>
-                            <div className="search-item-details-list">
-                                <ul>
-                                    <li>
-                                        <p>{Localization.get("PageType")}:</p>
-                                        <p title={this.getPageTypeLabel(item.pageType)} onClick={() => { this.state.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{this.getPageTypeLabel(item.pageType)}</p>
-                                    </li>
-                                    <li>
-                                        <p>{Localization.get("lblPublishStatus")}:</p>
-                                        <p title={this.getPublishStatusLabel(item.publishStatus)} onClick={() => { this.state.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.onSearch()); }} >{this.getPublishStatusLabel(item.publishStatus)}</p>
-                                    </li>
-                                    <li>
-                                        <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
-                                        <p title={item.publishDate} onClick={() => { (this.state.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="search-item-details-list">
-                                <ul>
-                                    {!utils.isPlatform() && <li>
-                                        <p >{Localization.get("WorkflowTitle")}:</p>
-                                        <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
-                                    </li>
-                                    }
-                                    <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
-                                        <p>{Localization.get("Tags")}:</p>
-                                        <p title={item.tags.join(",").trim(",")}>{
-                                            item.tags.map((tag, count) => {
-                                                return (
-                                                    <span>
-                                                        <span style={{ marginLeft: "5px" }} onClick={() => addToTags(tag)}>
-                                                            {tag}
-                                                        </span>
-                                                        {count < (item.tags.length - 1) && <span style={{ color: "#000" }}>
-                                                            ,
-                                                        </span>}
-                                                    </span>
-                                                );
-                                            })}
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </GridCell >
-            );
-        };
+    //     filterByPageType : PropTypes.string.isRequired,
+    // filterByPublishStatus : PropTypes.bool.isRequired,
+    // startDate : PropTypes.instanceOf(Date).isRequired
 
         return (
-            <GridCell columnSize={100} className="fade-in">
-                <GridCell columnSize={100} style={{ padding: "20px" }}>
-                    <SearchAdvanced />
-                    <GridCell columnSize={80} style={{ padding: "0px" }}>
-                        <div className="tags-container">
-                            {this.state.filters ? this.render_filters() : null}
-                        </div>
-                    </GridCell>
-                    <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{searchList.length === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
-                    </GridCell>
-                    <GridCell columnSize={100}>
-                        {searchList.map((item) => {
-                            return render_card(item);
-                        })}
-                    </GridCell>
-                </GridCell>
-            </GridCell>
+            <SearchResult 
+                filters={this.state.filters} 
+                tags={this.state.tags}
+                filterPageByType={this.state.filterByPageType}
+                filterByPublishStatus={this.state.filterByPublishStatus}
+                startDate={this.state.startDate} 
+                render_filters={this.render_filters.bind(this)}
+                getPageTypeLabel={this.getPageTypeLabel.bind(this)}
+                getPublishStatusLabel={this.getPublishStatusLabel.bind(this)}
+                 />
         );
     }
     

@@ -3,7 +3,7 @@ import { PagesSearchIcon, PagesVerticalMore,  ArrowBack, XIcon } from "dnn-svg-i
 import Localization from "../../localization";
 import PropTypes from "prop-types";
 
-export default class SearchPageInput extends Component {
+class SearchPageInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -83,3 +83,5 @@ SearchPageInput.propTypes = {
     clearSearch: PropTypes.func.isRequired,
     onSearchMoreFlyoutClick: PropTypes.func.isRequired
 };
+
+export default SearchPageInput;
