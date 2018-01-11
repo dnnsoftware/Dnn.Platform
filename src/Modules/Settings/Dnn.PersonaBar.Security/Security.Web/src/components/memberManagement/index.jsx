@@ -36,58 +36,58 @@ class MemberManagementPanelBody extends Component {
     componentWillMount() {
         const {props} = this;
         if (props.memberSettings) {
-            this.setState({
-                memberSettings: props.memberSettings
-            });
+            this.updateMemberSettings(props.memberSettings);
             return;
         }
         props.dispatch(SecurityActions.getMemberSettings((data) => {
-            let memberSettings = Object.assign({}, data.Results.Settings);
-            this.setState({
-                memberSettings
-            });
+            this.updateMemberSettings(data.Results.Settings);
         }));
     }
 
-    componentWillReceiveProps(props) {
+    updateMemberSettings(memberSettings){
         let {state} = this;
 
-        let membershipResetLinkValidity = props.memberSettings["MembershipResetLinkValidity"];
+        let membershipResetLinkValidity = memberSettings["MembershipResetLinkValidity"];
         if (membershipResetLinkValidity === "" || !re.test(membershipResetLinkValidity)) {
             state.error["membershipResetLinkValidity"] = true;
         }
         else if (membershipResetLinkValidity !== "" && re.test(membershipResetLinkValidity)) {
             state.error["membershipResetLinkValidity"] = false;
         }
-        let adminMembershipResetLinkValidity = props.memberSettings["AdminMembershipResetLinkValidity"];
+
+        let adminMembershipResetLinkValidity = memberSettings["AdminMembershipResetLinkValidity"];
         if (adminMembershipResetLinkValidity === "" || !re.test(adminMembershipResetLinkValidity)) {
             state.error["adminMembershipResetLinkValidity"] = true;
         }
         else if (adminMembershipResetLinkValidity !== "" && re.test(adminMembershipResetLinkValidity)) {
             state.error["adminMembershipResetLinkValidity"] = false;
         }
-        let membershipNumberPasswords = props.memberSettings["MembershipNumberPasswords"];
+
+        let membershipNumberPasswords = memberSettings["MembershipNumberPasswords"];
         if (membershipNumberPasswords === "" || !re2.test(membershipNumberPasswords)) {
             state.error["membershipNumberPasswords"] = true;
         }
-        else if (adminMembershipResetLinkValidity !== "" && re2.test(membershipNumberPasswords)) {
+        else if (membershipNumberPasswords !== "" && re2.test(membershipNumberPasswords)) {
             state.error["membershipNumberPasswords"] = false;
         }
-        let membershipDaysBeforePasswordReuse = props.memberSettings["MembershipDaysBeforePasswordReuse"];
+
+        let membershipDaysBeforePasswordReuse = memberSettings["MembershipDaysBeforePasswordReuse"];
         if (membershipDaysBeforePasswordReuse === "" || !re2.test(membershipDaysBeforePasswordReuse)) {
             state.error["membershipDaysBeforePasswordReuse"] = true;
         }
-        else if (adminMembershipResetLinkValidity !== "" && re2.test(membershipDaysBeforePasswordReuse)) {
+        else if (membershipDaysBeforePasswordReuse !== "" && re2.test(membershipDaysBeforePasswordReuse)) {
             state.error["membershipDaysBeforePasswordReuse"] = false;
         }
-        let passwordExpiry = props.memberSettings["PasswordExpiry"];
+
+        let passwordExpiry = memberSettings["PasswordExpiry"];
         if (passwordExpiry === "" || !re2.test(passwordExpiry)) {
             state.error["passwordExpiry"] = true;
         }
         else if (passwordExpiry !== "" && re2.test(passwordExpiry)) {
             state.error["passwordExpiry"] = false;
         }
-        let passwordExpiryReminder = props.memberSettings["PasswordExpiryReminder"];
+        
+        let passwordExpiryReminder = memberSettings["PasswordExpiryReminder"];
         if (passwordExpiryReminder === "" || !re2.test(passwordExpiryReminder)) {
             state.error["passwordExpiryReminder"] = true;
         }
@@ -96,10 +96,14 @@ class MemberManagementPanelBody extends Component {
         }
 
         this.setState({
-            memberSettings: Object.assign({}, props.memberSettings),
+            memberSettings: Object.assign({}, memberSettings),
             triedToSubmit: false,
             error: state.error
         });
+    }
+
+    componentWillReceiveProps(props) {
+        this.updateMemberSettings(props.memberSettings);
     }
 
     onSettingChange(key, event) {
@@ -107,53 +111,7 @@ class MemberManagementPanelBody extends Component {
         let memberSettings = Object.assign({}, state.memberSettings);
         memberSettings[key] = typeof (event) === "object" ? event.target.value : event;
 
-        if (!re.test(memberSettings[key]) && key === "MembershipResetLinkValidity") {
-            state.error["membershipResetLinkValidity"] = true;
-        }
-        else if (re.test(memberSettings[key]) && key === "MembershipResetLinkValidity") {
-            state.error["membershipResetLinkValidity"] = false;
-        }
-
-        if (!re.test(memberSettings[key]) && key === "AdminMembershipResetLinkValidity") {
-            state.error["adminMembershipResetLinkValidity"] = true;
-        }
-        else if (re.test(memberSettings[key]) && key === "AdminMembershipResetLinkValidity") {
-            state.error["adminMembershipResetLinkValidity"] = false;
-        }
-
-        if (!re2.test(memberSettings[key]) && key === "MembershipNumberPasswords") {
-            state.error["membershipNumberPasswords"] = true;
-        }
-        else if (re2.test(memberSettings[key]) && key === "MembershipNumberPasswords") {
-            state.error["membershipNumberPasswords"] = false;
-        }
-
-        if (!re2.test(memberSettings[key]) && key === "MembershipDaysBeforePasswordReuse") {
-            state.error["membershipDaysBeforePasswordReuse"] = true;
-        }
-        else if (re2.test(memberSettings[key]) && key === "MembershipDaysBeforePasswordReuse") {
-            state.error["membershipDaysBeforePasswordReuse"] = false;
-        }
-
-        if (!re2.test(memberSettings[key]) && key === "PasswordExpiry") {
-            state.error["passwordExpiry"] = true;
-        }
-        else if (re2.test(memberSettings[key]) && key === "PasswordExpiry") {
-            state.error["passwordExpiry"] = false;
-        }
-
-        if (!re2.test(memberSettings[key]) && key === "PasswordExpiryReminder") {
-            state.error["passwordExpiryReminder"] = true;
-        }
-        else if (re2.test(memberSettings[key]) && key === "PasswordExpiryReminder") {
-            state.error["passwordExpiryReminder"] = false;
-        }
-
-        this.setState({
-            memberSettings: memberSettings,
-            error: state.error,
-            triedToSubmit: false
-        });
+        this.updateMemberSettings(memberSettings);
         props.dispatch(SecurityActions.memberSettingsClientModified(memberSettings));
     }
 
@@ -185,10 +143,7 @@ class MemberManagementPanelBody extends Component {
         const {props} = this;
         util.utilities.confirm(resx.get("MemberSettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SecurityActions.getMemberSettings((data) => {
-                let memberSettings = Object.assign({}, data.Results.Settings);
-                this.setState({
-                    memberSettings
-                });
+                this.updateMemberSettings(data.Results.Settings);
             }));
         });
     }
