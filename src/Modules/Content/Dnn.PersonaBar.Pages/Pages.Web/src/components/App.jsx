@@ -1301,10 +1301,6 @@ class App extends Component {
     }
 
     render_searchResults() {
-    //     filterByPageType : PropTypes.string.isRequired,
-    // filterByPublishStatus : PropTypes.bool.isRequired,
-    // startDate : PropTypes.instanceOf(Date).isRequired
-
         return (
             <SearchResult 
                 filters={this.state.filters} 
@@ -1312,10 +1308,11 @@ class App extends Component {
                 filterPageByType={this.state.filterByPageType}
                 filterByPublishStatus={this.state.filterByPublishStatus}
                 startDate={this.state.startDate} 
+                endDate={this.state.endDate}
                 render_filters={this.render_filters.bind(this)}
                 getPageTypeLabel={this.getPageTypeLabel.bind(this)}
                 getPublishStatusLabel={this.getPublishStatusLabel.bind(this)}
-                 />
+            />
         );
     }
     
