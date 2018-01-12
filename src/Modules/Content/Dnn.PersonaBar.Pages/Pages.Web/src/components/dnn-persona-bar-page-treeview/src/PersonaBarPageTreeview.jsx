@@ -131,10 +131,9 @@ export class PersonaBarPageTreeview extends Component {
         return listItems.map((item) => {
             const name = this.trimName(item);
             const canManagePage = (e, item, fn) => {
-                const message = Localization.get("NoPermissionManagePage");
-                const left = () => e ? fn(e, item) : fn(item);
-                const right = () => this.props.setEmptyPageMessage(message);
-                item.canManagePage ? left() : right();
+                const whenCanManage = () => e ? fn(e, item) : fn(item);
+                const whenCannotManage = () => this.props.setEmptyPageMessage(Localization.get("NoPermissionManagePage"));
+                item.canManagePage ? whenCanManage() : whenCannotManage();
             };
 
             const onDragLeave = e => e.target.classList.remove("list-item-dragover");
