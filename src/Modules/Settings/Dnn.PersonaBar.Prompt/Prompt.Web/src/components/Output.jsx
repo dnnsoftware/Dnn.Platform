@@ -33,7 +33,14 @@ export class Output extends Component {
             }
         }
         else if (props.data) {
-            return this.renderData(props.data, fieldOrder);
+            const result = [];
+            if(props.paging !== null) {
+                props.IsPaging(props.paging.pageNo < props.paging.totalPages);
+            }
+            result.push(this.renderData(props.data, fieldOrder));
+            result.push(<TextLine key={DomKey.get("output")} txt={props.output} css="dnn-prompt-ok"/>);
+
+            return result;
         }
         else if (props.isHtml) {
             return <TextLine key={DomKey.get("output")} txt={props.output}/>;
