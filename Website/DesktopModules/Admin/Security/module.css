@@ -573,16 +573,17 @@ ul.buttonList .windowslive a span
     margin-bottom: 10px;
     margin-right: 10px;
     padding: 0;
-    width: 475px;
+    width: 85%;
+    max-width: 445px;
 }
 
     .dnnProfile .dnnFileUploadScope > div:first-child {
         float: right;
-        width: 250px;
+        width: 220px;
     }
 
     .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem {
-        width: 250px;
+        width: 220px;
     }
 
         .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem .dnnDropDownList {
