@@ -189,7 +189,7 @@ namespace DotNetNuke.Web.Common.Internal
         {
             var app = (HttpApplication)sender;
             var authCookie = app.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie != null)
+            if (authCookie != null && !IsInstallOrUpgradeRequest(app.Request))
             {
                 // if the cookie is not in the database, then it is from before upgrading to 9.2.0 and don't fail
                 var persisted = AuthCookieController.Instance.Find(authCookie.Value);
@@ -228,5 +228,13 @@ namespace DotNetNuke.Web.Common.Internal
             return InstallBlocker.Instance.IsInstallInProgress();
         }
 
+        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
+        {
+            var url = request.Url.LocalPath.ToLower();
+
+            return url.EndsWith("/install.aspx")
+                   || url.Contains("/upgradewizard.aspx")
+                   || url.Contains("/installwizard.aspx");
+        }
     }
 }
