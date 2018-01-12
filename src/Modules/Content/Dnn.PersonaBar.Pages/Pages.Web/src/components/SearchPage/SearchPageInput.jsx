@@ -51,7 +51,7 @@ class SearchPageInput extends Component {
                             className="btn clear-search"
                             style={{ fill: "#444" }}
                             dangerouslySetInnerHTML={{ __html: XIcon }}
-                            onClick={() => this.setState({ searchTerm: "", filtersUpdated: true }, () => this.props.onSearch())}
+                            onClick={() => this.setState({ searchTerm: "", filtersUpdated: true }, () => this.props.onSearch(""))}
                         />
 
                         : <div className="btn clear-search" />}
