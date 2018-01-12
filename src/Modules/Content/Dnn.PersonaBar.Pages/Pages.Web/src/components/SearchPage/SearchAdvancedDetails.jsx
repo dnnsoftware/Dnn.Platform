@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import Localization from "../../localization";
 import GridCell from "dnn-grid-cell";
+import Tags from "dnn-tags";
 import Dropdown from "dnn-dropdown";
 import Button from "dnn-button";
 import DropdownDayPicker from "../DropdownDayPicker/DropdownDayPicker";
@@ -12,7 +13,8 @@ class SearchAdvancedDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            DropdownCalendarIsActive : false
+            DropdownCalendarIsActive : false,
+            tags : []
         };
     }
 
@@ -44,9 +46,23 @@ class SearchAdvancedDetails extends Component {
 
     onClear() {
         this.setState({
-            DropdownCalendarIsActive : false
+            DropdownCalendarIsActive : false,
+            tags:[]
         });
         this.props.clearAdvancedSearch();
+    }
+
+    onChangeTags(evnt){
+        this.setState({
+            tags: evnt
+        });
+    }
+
+    onSearch() {
+        if (this.state.tags!=="") {
+            this.props.updateSearchAdvancedTags(this.state.tags.join(" "));
+        }
+        this.props.onSearch();
     }
 
     render() {
@@ -100,19 +116,20 @@ class SearchAdvancedDetails extends Component {
                                     options={this.props.getFilterByWorkflowOptions()}
                                     label={this.props.filterByWorkflow ? this.props.getFilterByWorkflowOptions().find(x => x.value === this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
                                     value={this.props.filterByWorkflow !== "" && this.props.filterByWorkflow}
-                                    onSelect={data=>this.updateFilterByWorkflowOptions(data)}
-                                    toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
+                                    onSelect={data=>this.props.updateFilterByWorkflowOptions(data)}
                                     withBorder={true} />
                             </GridCell>
                         }
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
-                    <textarea placeholder={Localization.get("TagsInstructions")} value={this.props.tags} onChange={(e) => this.props.generateTags(e)} onBlur={() => this.props.filterTags()}></textarea>
+                    <Tags style={{height:"82px", width:"100%" }}
+                        tags={this.state.tags}
+                        onUpdateTags={this.onChangeTags.bind(this)} />
                 </GridCell>
                 <GridCell columnSize={100} style={{ textAlign: "center" }}>
                     <Button style={{ marginRight: "5px" }} onClick={this.onClear.bind(this)}>{Localization.get("Clear")}</Button>
-                    <Button type="primary" onClick={() => this.props.onSearch()}>{Localization.get("Apply")}</Button>
+                    <Button type="primary" onClick={this.onSearch.bind(this)}>{Localization.get("Apply")}</Button>
                 </GridCell>
             </div>);
     }
@@ -128,8 +145,6 @@ SearchAdvancedDetails.propTypes = {
     updateFilterByPageTypeOptions : PropTypes.func.isRequired,
     updateFilterByPageStatusOptions : PropTypes.func.isRequired,
     updateFilterByWorkflowOptions : PropTypes.func.isRequired,
-    generateTags : PropTypes.func.isRequired,
-    filterTags : PropTypes.func.isRequired,
     onApplyChangesDropdownDayPicker : PropTypes.func.isRequired,
     filterByPublishStatus: PropTypes.string.isRequired,
     filterByPageType : PropTypes.string.isRequired,
@@ -140,7 +155,8 @@ SearchAdvancedDetails.propTypes = {
     tags : PropTypes.string.isRequired,
     filterByWorkflow : PropTypes.string.isRequired,
     collapsed : PropTypes.bool.isRequired, 
-    clearAdvancedSearch : PropTypes.func.isRequired
+    clearAdvancedSearch : PropTypes.func.isRequired,
+    updateSearchAdvancedTags : PropTypes.func.isRequired
 };
 
 

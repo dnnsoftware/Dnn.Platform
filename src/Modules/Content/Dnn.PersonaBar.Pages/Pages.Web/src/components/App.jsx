@@ -441,7 +441,7 @@ class App extends Component {
     /**
      * When on edit mode
      */
-    onEditMode(){
+    onEditMode() {
         const {selectedPage, selectedView} = this.props;
         return (selectedPage && selectedPage.tabId === 0 
             || selectedView === panels.SAVE_AS_TEMPLATE_PANEL
@@ -1001,7 +1001,6 @@ class App extends Component {
                 tags = tags[tags.length - 1] == "," ? tags.split(",").filter(t => !!t).join() : tags;
             }
 
-
             let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
             search = Object.assign({}, search, searchDateRange);
             for (let prop in search) {
@@ -1009,8 +1008,9 @@ class App extends Component {
                     delete search[prop];
                 }
             }
-
+            
             this.generateFilters();
+            
             this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
             this.setState({ inSearch: true, filtersUpdated: false });
         }
@@ -1255,15 +1255,8 @@ class App extends Component {
         return filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()) && filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()).label || publishStatus;
     }
 
-    /** TODO REMOVE THESE FROM HERE */
-    generateTags(e) {
-        this.setState({ tags: e.target.value, filtersUpdated: true });
-    }
-
-    filterTags() {
-        let { tags } = this.state;
-     
-        this.setState({ tags: this.distinct(tags.split(",")).join(",") });
+    updateSearchAdvancedTags(tags){
+        this.setState({tags:tags,filtersUpdated:true});
     }
 
     onApplyChangesDropdownDayPicker() {
@@ -1273,7 +1266,9 @@ class App extends Component {
         const condition = !startAndEndDateDirty && fullStartDate === fullEndDate;
         condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
     }
+    
     updateFilterByPageTypeOptions(data) { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }
+    
     updateFilterByPageStatusOptions(data) {
         this.setState({ filterByPublishStatus: data.value, filtersUpdated: true });
     } 
@@ -1288,14 +1283,11 @@ class App extends Component {
                 filterByPublishStatus={this.state.filterByPublishStatus}
                 startDate={this.state.startDate} 
                 endDate={this.state.endDate}
-                render_filters={this.render_filters.bind(this)}
                 getPageTypeLabel={this.getPageTypeLabel.bind(this)}
                 getPublishStatusLabel={this.getPublishStatusLabel.bind(this)}
                 getFilterByPageTypeOptions={this.getFilterByPageTypeOptions.bind(this)}
                 getFilterByPageStatusOptions={this.getFilterByPageStatusOptions.bind(this)}
                 getFilterByWorkflowOptions={this.getFilterByWorkflowOptions.bind(this)}
-                generateTags={this.generateTags.bind(this)}
-                filterTags={this.filterTags.bind(this)}
                 filterByWorkflow={this.state.filterByWorkflow}
                 onApplyChangesDropdownDayPicker={this.onApplyChangesDropdownDayPicker.bind(this)}
                 updateFilterByPageTypeOptions={this.updateFilterByPageTypeOptions.bind(this)}
@@ -1313,6 +1305,7 @@ class App extends Component {
                 onViewEditPage={this.onViewEditPage.bind(this)}
                 CallCustomAction={this.CallCustomAction.bind(this)}
                 onLoadPage={this.onLoadPage.bind(this)}
+                updateSearchAdvancedTags={this.updateSearchAdvancedTags.bind(this)}
             />
         );
     }
@@ -1362,59 +1355,8 @@ class App extends Component {
                 return this.render_PagesDetailEditor();
         }
     }
-
-    //TODO: Verify render_filters on change
-    /* eslint-disable react/no-danger */
-    render_filters() {
-        const { filters } = this.state;
-        return filters
-            .filter(filter => !!filter)
-            .map((filter) => {
-
-                const deleteFilter = (prop) => {
-                    const left = () => {
-                        const update = {};
-                        update[prop] = null;
-                        if (prop === "startAndEndDateDirty") {
-                            this.setState({ startDate: new Date(), endDate: new Date() });
-                        }
-                        this.setState({ filtersUpdated: true }, () => {
-                            this.setState(update, () => this.onSearch());
-                        });
-                    };
-                    const right = () => {
-                        let { filters, tags } = this.state;
-                        tags = this.distinct(tags.split(",")).join(",");
-                        filters = filters.filter(f => f.ref != prop);
-                        const findTag = prop.replace("tag-", "");
-                        let tagList = tags.split(",");
-                        tags = "";
-                        tagList.map((tag) => {
-                            if (tag !== findTag)
-                                tags += tag + ",";
-                        });
-                        tags = tags !== "" ? tags.substring(0, tags.length - 1) : "";
-                        this.setState({ filters, tags, filtersUpdated: true }, () => this.onSearch());
-
-                    };
-                    const condition = prop.indexOf('tag') === -1;
-                    condition ? left() : right();
-                };
-
-                return (
-                    <div className="filter-by-tags">
-                        <OverflowText text={filter.tag} maxWidth={300} />
-                        <div className="xIcon"
-                            dangerouslySetInnerHTML={{ __html: XIcon }}
-                            onClick={(e) => { deleteFilter(filter.ref); }}>
-                        </div>
-                    </div>
-                );
-            });
-    }
-
+   
     render() {
-
         const { props } = this;
         const { selectedPage } = props;
         const { inSearch } = this.state;

@@ -134,12 +134,7 @@ class SearchResult extends Component {
             <GridCell columnSize={100} className="fade-in">
                 <GridCell columnSize={100} style={{ padding: "20px" }}>
                     <SearchAdvanced {...this.props} />
-                    <GridCell columnSize={80} style={{ padding: "0px" }}>
-                        <div className="tags-container">
-                            {this.props.filters ? this.props.render_filters() : null}
-                        </div>
-                    </GridCell>
-                    <GridCell columnSize={20} style={{ textAlign: "right", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
+                    <GridCell columnSize={100} style={{ textAlign: "center", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
                         <p>{searchList.length === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
@@ -164,7 +159,6 @@ SearchResult.propTypes = {
     filterByPublishStatus : PropTypes.bool.isRequired,
     startDate : PropTypes.instanceOf(Date).isRequired,
     endDate : PropTypes.instanceOf(Date).isRequired,
-    render_filters : PropTypes.func.isRequired,
     getPageTypeLabel : PropTypes.func.isRequired,
     getPublishStatusLabel : PropTypes.func.isRequired,
     onSearch : PropTypes.func.isRequired,
@@ -176,7 +170,8 @@ SearchResult.propTypes = {
     onViewPage : PropTypes.func.isRequired,
     onViewEditPage : PropTypes.func.isRequired,
     CallCustomAction : PropTypes.func.isRequired,
-    onLoadPage : PropTypes.func.isRequired
+    onLoadPage : PropTypes.func.isRequired,
+    updateSearchAdvancedTags : PropTypes.func.isRequired
 
 };
 

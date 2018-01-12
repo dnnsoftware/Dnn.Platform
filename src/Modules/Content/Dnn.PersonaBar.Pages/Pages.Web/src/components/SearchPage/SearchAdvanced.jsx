@@ -45,27 +45,26 @@ class SearchAdvanced extends Component {
                 <Collapse isOpened={this.state.collapsed} className="search-header-collapsible">
                         {this.state.collapsed && 
                             <SearchAdvancedDetails 
-                                                getFilterByPageTypeOptions={this.props.getFilterByPageTypeOptions}
-                                                getFilterByPageStatusOptions={this.props.getFilterByPageStatusOptions}
-                                                getFilterByWorkflowOptions={this.props.getFilterByWorkflowOptions}
-                                                generateTags={this.props.generateTags}
-                                                filterTags={this.props.filterTags}
-                                                filterByWorkflow={this.props.filterByWorkflow}
-                                                onApplyChangesDropdownDayPicker={this.props.onApplyChangesDropdownDayPicker}
-                                                updateFilterByPageTypeOptions={this.props.updateFilterByPageTypeOptions}
-                                                updateFilterByPageStatusOptions={this.props.updateFilterByPageStatusOptions}
-                                                updateFilterByWorkflowOptions={this.props.updateFilterByWorkflowOptions}
-                                                filterByPageType={this.props.filterByPageType}
-                                                filterByPublishStatus={this.props.filterByPublishStatus}
-                                                onDayClick={this.props.onDayClick}
-                                                startDate={this.props.startDate}
-                                                endDate={this.props.endDate}
-                                                startAndEndDateDirty={this.props.startAndEndDateDirty}
-                                                tags={this.props.tags}
-                                                onSearch={this.props.onSearch}
-                                                collapsed={this.state.collapsed}
-                                                clearAdvancedSearch={this.props.clearAdvancedSearch}
-                                            />
+                                getFilterByPageTypeOptions={this.props.getFilterByPageTypeOptions}
+                                getFilterByPageStatusOptions={this.props.getFilterByPageStatusOptions}
+                                getFilterByWorkflowOptions={this.props.getFilterByWorkflowOptions}
+                                filterByWorkflow={this.props.filterByWorkflow}
+                                onApplyChangesDropdownDayPicker={this.props.onApplyChangesDropdownDayPicker}
+                                updateFilterByPageTypeOptions={this.props.updateFilterByPageTypeOptions}
+                                updateFilterByPageStatusOptions={this.props.updateFilterByPageStatusOptions}
+                                updateFilterByWorkflowOptions={this.props.updateFilterByWorkflowOptions}
+                                filterByPageType={this.props.filterByPageType}
+                                filterByPublishStatus={this.props.filterByPublishStatus}
+                                onDayClick={this.props.onDayClick}
+                                startDate={this.props.startDate}
+                                endDate={this.props.endDate}
+                                startAndEndDateDirty={this.props.startAndEndDateDirty}
+                                tags={this.props.tags}
+                                onSearch={this.props.onSearch}
+                                collapsed={this.state.collapsed}
+                                clearAdvancedSearch={this.props.clearAdvancedSearch}
+                                updateSearchAdvancedTags={this.props.updateSearchAdvancedTags}
+                            />
                         }
                 </Collapse>    
             </div>
@@ -77,8 +76,6 @@ SearchAdvanced.propTypes = {
     getFilterByPageTypeOptions : PropTypes.func.isRequired,
     getFilterByPageStatusOptions : PropTypes.func.isRequired,
     getFilterByWorkflowOptions : PropTypes.func.isRequired,
-    generateTags : PropTypes.func.isRequired,
-    filterTags : PropTypes.func.isRequired,
     filterByWorkflow : PropTypes.func.isRequired,
     onApplyChangesDropdownDayPicker : PropTypes.func.isRequired,
     updateFilterByPageTypeOptions : PropTypes.func.isRequired,
@@ -92,7 +89,8 @@ SearchAdvanced.propTypes = {
     startAndEndDateDirty : PropTypes.bool.isRequired,
     tags : PropTypes.string.isRequired,
     onSearch : PropTypes.func.isRequired,
-    clearAdvancedSearch : PropTypes.func.isRequired    
+    clearAdvancedSearch : PropTypes.func.isRequired,
+    updateSearchAdvancedTags : PropTypes.func.isRequired
 };
 
 export default SearchAdvanced;
