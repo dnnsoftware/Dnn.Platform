@@ -20,6 +20,12 @@ class SearchAdvanced extends Component {
         });
     }
 
+    onClear() {
+        this.setState({
+            collapsed : false
+        });
+    }
+
     /*eslint-disable react/no-danger*/
     render() {
         return (
@@ -57,6 +63,7 @@ class SearchAdvanced extends Component {
                                                 startAndEndDateDirty={this.props.startAndEndDateDirty}
                                                 tags={this.props.tags}
                                                 onSearch={this.props.onSearch}
+                                                collapsed={this.state.collapsed}
                                             />
                         }
 
@@ -86,8 +93,7 @@ SearchAdvanced.propTypes = {
     endDate : PropTypes.instanceOf(Date).isRequired,
     startAndEndDateDirty : PropTypes.bool.isRequired,
     tags : PropTypes.string.isRequired,
-    onSearch : PropTypes.func.isRequired
-   
+    onSearch : PropTypes.func.isRequired    
 };
 
 export default SearchAdvanced;

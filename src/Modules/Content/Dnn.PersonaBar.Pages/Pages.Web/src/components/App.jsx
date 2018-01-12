@@ -60,9 +60,7 @@ class App extends Component {
             referralText: "",
             busy: false,
             headerDropdownSelection: "Save Page Template",
-            toggleSearchMoreFlyout: false,
-            DropdownCalendarIsActive: null,
-
+            
             inSearch: false,
             searchTerm: "",
             filtersUpdated: false,

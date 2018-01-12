@@ -327,6 +327,9 @@
   <data name="AdvancedFilters.Text" xml:space="preserve">
     <value>Advanced Filters</value>
   </data>
+  <data name="Clear.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
   <data name="NameTooltip.Text" xml:space="preserve">
     <value>This is the name of the Page. The text you enter will be displayed in the menu system.</value>
   </data>
