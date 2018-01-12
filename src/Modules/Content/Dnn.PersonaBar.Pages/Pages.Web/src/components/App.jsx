@@ -961,7 +961,6 @@ class App extends Component {
 
     onSearch(term) {
         let newTerm = (term!==undefined)?term:this.state.searchTerm;
-        console.log(term,newTerm);
         this.setState({
             searchTerm:newTerm,
             inSearch:true,
