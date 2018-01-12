@@ -24,7 +24,7 @@ class SearchResult extends Component {
             const onNameClick = (item) => {
                 this.props.clearSearch(() => {
                     if (item.canManagePage) {
-                        this.onLoadPage(item.id, () => { this.buildTree(item.id); });
+                        this.props.onLoadPage(item.id, () => { this.buildTree(item.id); });
                     }
                     else {
                         this.noPermissionSelectionPageId = item.id;
@@ -42,7 +42,7 @@ class SearchResult extends Component {
                     let tags = this.props.tags;
                     tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
                     tags = this.distinct(tags.split(",")).join(",");
-                    this.setState({ tags, filtersUpdated: true }, () => this.onSearch());
+                    this.setState({ tags, filtersUpdated: true }, () => this.props.onSearch());
                 };
 
                 condition ? update() : null;
@@ -85,7 +85,7 @@ class SearchResult extends Component {
                                 <ul>
                                     <li>
                                         <p>{Localization.get("PageType")}:</p>
-                                        <p title={this.props.getPageTypeLabel(item.pageType)} onClick={() => { this.props.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.onSearch()); }} >{this.props.getPageTypeLabel(item.pageType)}</p>
+                                        <p title={this.props.getPageTypeLabel(item.pageType)} onClick={() => { this.props.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.props.onSearch()); }} >{this.props.getPageTypeLabel(item.pageType)}</p>
                                     </li>
                                     <li>
                                         <p>{Localization.get("lblPublishStatus")}:</p>
@@ -93,15 +93,16 @@ class SearchResult extends Component {
                                     </li>
                                     <li>
                                         <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
-                                        <p title={item.publishDate} onClick={() => { (this.props.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.state.startDate.toString() !== this.state.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
+                                        <p title={item.publishDate} onClick={() => { (this.props.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.props.startDate.toString() !== this.props.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.props.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
                                     </li>
                                 </ul>
                             </div>
                             <div className="search-item-details-list">
                                 <ul>
                                     {!utils.isPlatform() && <li>
-                                        <p >{Localization.get("WorkflowTitle")}:</p>
-                                        <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.onSearch()); }}>{item.workflowName}</p>
+                                        {/* TODO WORKFLOW */}
+                                        <p >{Localization.get("WorkflowTitle")}:</p>    
+                                        <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.props.onSearch()); }}>{item.workflowName}</p>
                                     </li>
                                     }
                                     <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
@@ -174,7 +175,8 @@ SearchResult.propTypes = {
     setEmptyStateMessage : PropTypes.func.isRequired,
     onViewPage : PropTypes.func.isRequired,
     onViewEditPage : PropTypes.func.isRequired,
-    CallCustomAction : PropTypes.func.isRequired
+    CallCustomAction : PropTypes.func.isRequired,
+    onLoadPage : PropTypes.func.isRequired
 
 };
 

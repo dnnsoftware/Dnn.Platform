@@ -1312,6 +1312,7 @@ class App extends Component {
                 onViewPage={this.onViewPage.bind(this)}
                 onViewEditPage={this.onViewEditPage.bind(this)}
                 CallCustomAction={this.CallCustomAction.bind(this)}
+                onLoadPage={this.onLoadPage.bind(this)}
             />
         );
     }
