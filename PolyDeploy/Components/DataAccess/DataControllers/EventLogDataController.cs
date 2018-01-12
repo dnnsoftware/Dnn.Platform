@@ -3,6 +3,7 @@ using Cantarus.Modules.PolyDeploy.Components.Logging;
 using DotNetNuke.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
 {
@@ -94,6 +95,14 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             using (IDataContext context = DataContext.Instance())
             {
                 return context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT DISTINCT [EventType] FROM [dbo].[Cantarus_PolyDeploy_EventLogs]", null);
+            }
+        }
+
+        public int EventCount()
+        {
+            using (IDataContext context = DataContext.Instance())
+            {
+                return context.ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM [dbo].[Cantarus_PolyDeploy_EventLogs]", null).FirstOrDefault();
             }
         }
 
