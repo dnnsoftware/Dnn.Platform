@@ -523,6 +523,13 @@ const pageActions = {
         return PagesService.movePage({ Action, PageId, ParentId, RelatedPageId }).catch(() => {
             utils.notifyError(Localization.get("AnErrorOccurred"));
         });
+    },
+
+    dirtyCustomDetails() {
+        return {
+            type: ActionTypes.CUSTOM_PAGE_DETAILS_UPDATED,
+            data: {}
+        };
     }
 };
 
