@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import TextOverflowWrapperNew from "dnn-text-overflow-wrapper-new";
 import { PropTypes } from "prop-types";
 import utils from "utils";
 
 import "./styles.less";
 
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
-import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
 import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeview extends Component {
@@ -18,13 +16,13 @@ export class PersonaBarPageTreeview extends Component {
 
     trimName(item) {
         let maxLength = 18;
-        let { name, tabpath } = item;
+        let { tabpath } = item;
         let newLength = tabpath.split(/\//).length * 2 + 2;
         let depth = (newLength < maxLength) ? newLength : 1;
         return (item.name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
     }
 
-    render_tree(item, childListItems) {
+    renderTree(item, childListItems) {
         const {
             draggedItem,
             droppedItem,
@@ -68,23 +66,7 @@ export class PersonaBarPageTreeview extends Component {
         );
     }
 
-
-    render_parentExpandIcon(item) {
-        return (
-            <PersonaBarExpandCollapseIcon isOpen={item.isOpen} item={item} />
-        );
-    }
-
-    render_parentExpandButton(item) {
-        const { getChildListItems } = this.props;
-        return (
-            <div className="parent-expand-button" onClick={() => { getChildListItems(item.id); }}>
-                {item.childCount > 0 ? this.render_parentExpandIcon(item) : <div className="parent-expand-icon"></div>}
-            </div>
-        );
-    }
-
-    render_dropZone(direction, item) {
+    renderDropZone(direction, item) {
         const { onMovePage, onDragEnd, draggedItem, dragOverItem, parentItem } = this.props;
         const onDragOver = (e, item, direction) => {
             e.preventDefault();
@@ -113,15 +95,26 @@ export class PersonaBarPageTreeview extends Component {
                     onDrop={(e) => onMovePage({ e: e, Action: direction, PageId: draggedItem.id, ParentId: draggedItem.parentId, RelatedPageId: dragOverItem.id, RelatedPageParentId: dragOverItem.parentId })} >
                 </div>
             );
-            // (draggedItem.parentId === dragOverItem.parentId ? draggedItem.parentId : dragOverItem.parentId)
         }
-        return;
     }
 
-    render_li() {
+    getClassName(item) {
+        const DRAG_HOVER = item.onDragOverState === true;
+        const SELECTED = item.selected === true;
+        const DISABLED = item.status !== "Visible";
+
+        if(DRAG_HOVER || SELECTED) {
+            return "list-item-highlight list-item-dragover";
+        } else if (DISABLED) {
+            return "list-item-disabled";
+        }
+
+        return "";
+    }
+
+    renderLi() {
         const {
             listItems,
-            getChildListItems,
             onSelection,
             onNoPermissionSelection,
             onDrop,
@@ -133,44 +126,24 @@ export class PersonaBarPageTreeview extends Component {
             draggedItem,
             Localization } = this.props;
 
-        const hotspotStyles = {
-            position: "relative",
-            zIndex: 9997,
-            wordWrap: "break-word",
-            textOverflow: "wrap",
-            width: "100%",
-            height: "20px",
-            marginTop: "-20px"
-            //backgroundColor: "rgb(0,1,2,.5)"
-        };
-
         let index = 0;
         let total = listItems.length;
         return listItems.map((item) => {
             const name = this.trimName(item);
-            const shouldShowTooltip = /\.\.\./.test(name);
             const canManagePage = (e, item, fn) => {
-                const message = Localization.get("NoPermissionManagePage");
-                const left = () => {
-                    e ? fn(e, item) : fn(item);
-                };
-                const right = () => {
-                    this.props.setEmptyPageMessage(message);
-                };
-                item.canManagePage ? left() : right();
+                const whenCanManage = () => e ? fn(e, item) : fn(item);
+                const whenCannotManage = () => this.props.setEmptyPageMessage(Localization.get("NoPermissionManagePage"));
+                item.canManagePage ? whenCanManage() : whenCannotManage();
             };
 
-            let activate = false;
-            const onDragLeave = (e, item) => {
-                e.target.classList.remove("list-item-dragover");
-            };
+            const onDragLeave = e => e.target.classList.remove("list-item-dragover");
             index++;
 
             const style = item.canManagePage ? { height: "28px", lineHeight: "35px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
             return (
                 <li id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
-                        {this.render_dropZone("before", item)}
+                        {this.renderDropZone("before", item)}
                         <div
                             style={style}
                             id={`list-item-title-${item.name}-${item.id}`}
@@ -187,21 +160,20 @@ export class PersonaBarPageTreeview extends Component {
                         >
                         </div>
 
-                        <div style={style} className={(item.selected || item.onDragOverState) ? "list-item-highlight list-item-dragover" : null}>
+                        <div style={style} className={this.getClassName(item)}>
                             <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
                             <span
                                 className={`item-name`}
-                                onClick={(e) => { item.canManagePage ? onSelection(item) : onNoPermissionSelection(item); }}>
+                                onClick={e => item.canManagePage ? onSelection(item) : onNoPermissionSelection(item)}>
                                 {name}
                             </span>
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
                             </div>
-                            {false && <TextOverflowWrapperNew text={item.name} hotspotStyles={hotspotStyles} />}
                         </div>
-                        {((item.childListItems && !item.isOpen) || !item.childListItems) && index === total && this.render_dropZone("after", item)}
+                        {((item.childListItems && !item.isOpen) || !item.childListItems) && index === total && this.renderDropZone("after", item)}
                     </div>
-                    {item.childListItems && item.isOpen ? this.render_tree(item, item.childListItems) : null}
+                    {item.childListItems && item.isOpen ? this.renderTree(item, item.childListItems) : null}
                 </li>
             );
         });
@@ -211,7 +183,7 @@ export class PersonaBarPageTreeview extends Component {
         const { listItems } = this.props;
         return (
             <ul style={!listItems.length ? { padding: "0px", height: "0px" } : null}>
-                {this.render_li()}
+                {this.renderLi()}
             </ul>
         );
     }
