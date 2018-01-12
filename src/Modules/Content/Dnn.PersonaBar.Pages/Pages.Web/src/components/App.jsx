@@ -29,10 +29,8 @@ import GridCell from "dnn-grid-cell";
 import OverflowText from "dnn-text-overflow-wrapper";
 import Promise from "promise";
 
-import { EyeIcon, TreeEdit, XIcon } from "dnn-svg-icons";
+import { XIcon } from "dnn-svg-icons";
 import SearchPageInput from "./SearchPage/SearchPageInput";
-import SearchAdvanced from "./SearchPage/SearchAdvanced";
-import SearchAdvancedDetails from "./SearchPage/SearchAdvancedDetails";
 
 import "./style.less";
 
@@ -925,11 +923,6 @@ class App extends Component {
         });
     }
 
-    toggleDropdownCalendar(bool) {
-        typeof (bool) === "boolean" ? this.setState({ DropdownCalendarIsActive: bool }) : this.setState({ DropdownCalendarIsActive: !this.state.DropdownCalendarIsActive });
-    }
-
-
     onDayClick(newDay, isEndDate) {
         this.setState({ startAndEndDateDirty: true });
         const right = () => {
@@ -1275,7 +1268,9 @@ class App extends Component {
         condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
     }
     updateFilterByPageTypeOptions(data) { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }
-    updateFilterByPageStatusOptions(data) { this.setState({ filterByPublishStatus: data.value, filtersUpdated: true });} 
+    updateFilterByPageStatusOptions(data) {
+        this.setState({ filterByPublishStatus: data.value, filtersUpdated: true });
+    } 
     updateFilterByWorkflowOptions(data) {this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });}
     /** END TODO REMOVE THESE FROM HERE */
 
@@ -1303,10 +1298,8 @@ class App extends Component {
                 updateFilterByWorkflowOptions={this.updateFilterByWorkflowOptions.bind(this)}
                 filterByPageType={this.state.filterByPageType}
                 onDayClick={this.onDayClick.bind(this)}
-                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
                 startAndEndDateDirty={this.state.startAndEndDateDirty}
                 onSearch={this.onSearch.bind(this)}
-                DropdownCalendarIsActive={this.state.DropdownCalendarIsActive}
             />
         );
     }

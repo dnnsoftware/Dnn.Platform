@@ -11,6 +11,9 @@ class SearchAdvancedDetails extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            DropdownCalendarIsActive : false
+        };
     }
 
     getDateLabel() {
@@ -23,6 +26,20 @@ class SearchAdvancedDetails extends Component {
             label = fullStartDate !== fullEndDate ? `${fullStartDate} - ${fullEndDate}` : `${fullStartDate}`;
         }
         return label;
+    }
+    
+    toggleDropdownCalendar(){
+        this.setState({
+            DropdownCalendarIsActive : !this.state.DropdownCalendarIsActive
+        });
+    }
+    getPageStatusLabel() {
+        return (
+            this.props.filterByPublishStatus ? 
+            this.props.getFilterByPageStatusOptions().find(
+                x => x.value === this.props.filterByPublishStatus.toLowerCase()
+            ).label : 
+            Localization.get("FilterbyPublishStatusText"));
     }
 
     render() {
@@ -50,7 +67,7 @@ class SearchAdvancedDetails extends Component {
                             <Dropdown
                                 className="more-dropdown"
                                 options={this.props.getFilterByPageStatusOptions()}
-                                label={this.props.filterByPublishStatus ? this.props.getFilterByPageStatusOptions().find(x => x.value === this.props.filterByPublishStatus.toLowerCase()).label : Localization.get("FilterbyPublishStatusText")}
+                                label={this.getPageStatusLabel()}
                                 value={this.props.filterByPublishStatus !== "" && this.props.filterByPublishStatus}
                                 onSelect={data=>this.props.updateFilterByPageStatusOptions(data)}
                                 withBorder={true} />
@@ -60,11 +77,11 @@ class SearchAdvancedDetails extends Component {
                         <GridCell columnSize={50} style={{ padding: "5px" }}>
                             <DropdownDayPicker
                                 onDayClick={this.props.onDayClick}
-                                dropdownIsActive={this.props.DropdownCalendarIsActive}
-                                applyChanges={() => this.props.onApplyChangesDropdownDayPicker()}
+                                dropdownIsActive={this.state.DropdownCalendarIsActive}
+                                applyChanges={() => {this.toggleDropdownCalendar(); this.props.onApplyChangesDropdownDayPicker();}}
                                 startDate={this.props.startDate}
                                 endDate={this.props.endDate}
-                                toggleDropdownCalendar={this.props.toggleDropdownCalendar}
+                                toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
                                 CalendarIcon={CalendarIcon}
                                 label={this.getDateLabel()}
                             />
@@ -76,7 +93,8 @@ class SearchAdvancedDetails extends Component {
                                     options={this.props.getFilterByWorkflowOptions()}
                                     label={this.props.filterByWorkflow ? this.props.getFilterByWorkflowOptions().find(x => x.value === this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
                                     value={this.props.filterByWorkflow !== "" && this.props.filterByWorkflow}
-                                    onSelect={data=>this.props.updateFilterByWorkflowOptions(data)}
+                                    onSelect={data=>this.updateFilterByWorkflowOptions(data)}
+                                    toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
                                     withBorder={true} />
                             </GridCell>
                         }
@@ -106,13 +124,11 @@ SearchAdvancedDetails.propTypes = {
     generateTags : PropTypes.func.isRequired,
     filterTags : PropTypes.func.isRequired,
     onApplyChangesDropdownDayPicker : PropTypes.func.isRequired,
-    filterByPublishStatus: PropTypes.bool.isRequired,
+    filterByPublishStatus: PropTypes.string.isRequired,
     filterByPageType : PropTypes.string.isRequired,
     onDayClick : PropTypes.func.isRequired,
     startDate : PropTypes.instanceOf(Date).isRequired,
     endDate : PropTypes.instanceOf(Date).isRequired,
-    DropdownCalendarIsActive : PropTypes.bool.isRequired,
-    toggleDropdownCalendar : PropTypes.func.isRequired,
     startAndEndDateDirty : PropTypes.bool.isRequired,
     tags : PropTypes.string.isRequired,
     filterByWorkflow : PropTypes.string.isRequired   

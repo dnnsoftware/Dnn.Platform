@@ -50,14 +50,13 @@ class SearchAdvanced extends Component {
                                                 updateFilterByPageStatusOptions={this.props.updateFilterByPageStatusOptions}
                                                 updateFilterByWorkflowOptions={this.props.updateFilterByWorkflowOptions}
                                                 filterByPageType={this.props.filterByPageType}
+                                                filterByPublishStatus={this.props.filterByPublishStatus}
                                                 onDayClick={this.props.onDayClick}
-                                                toggleDropdownCalendar={this.props.toggleDropdownCalendar}
                                                 startDate={this.props.startDate}
                                                 endDate={this.props.endDate}
                                                 startAndEndDateDirty={this.props.startAndEndDateDirty}
                                                 tags={this.props.tags}
                                                 onSearch={this.props.onSearch}
-                                                DropdownCalendarIsActive={this.props.DropdownCalendarIsActive}
                                             />
                         }
 
@@ -80,16 +79,15 @@ SearchAdvanced.propTypes = {
     updateFilterByPageTypeOptions : PropTypes.func.isRequired,
     updateFilterByPageStatusOptions : PropTypes.func.isRequired,
     updateFilterByWorkflowOptions : PropTypes.func.isRequired,
-    filterByPageType : PropTypes.func.isRequired,
+    filterByPageType : PropTypes.string.isRequired,
+    filterByPublishStatus : PropTypes.string.isRequired,
     onDayClick : PropTypes.func.isRequired,
-    toggleDropdownCalendar : PropTypes.func.isRequired,
     startDate : PropTypes.instanceOf(Date).isRequired,
     endDate : PropTypes.instanceOf(Date).isRequired,
     startAndEndDateDirty : PropTypes.bool.isRequired,
     tags : PropTypes.string.isRequired,
-    onSearch : PropTypes.func.isRequired,
-    DropdownCalendarIsActive : PropTypes.bool.isRequired
-    
+    onSearch : PropTypes.func.isRequired
+   
 };
 
 export default SearchAdvanced;
