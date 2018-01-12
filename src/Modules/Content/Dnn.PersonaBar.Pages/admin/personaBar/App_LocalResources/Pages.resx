@@ -330,6 +330,9 @@
   <data name="Clear.Text" xml:space="preserve">
     <value>Clear</value>
   </data>
+  <data name="Apply.Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="NameTooltip.Text" xml:space="preserve">
     <value>This is the name of the Page. The text you enter will be displayed in the menu system.</value>
   </data>

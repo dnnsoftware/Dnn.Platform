@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { PagesSearchIcon, PagesVerticalMore,  ArrowBack, XIcon } from "dnn-svg-icons";
+import { PagesSearchIcon, ArrowBack, XIcon } from "dnn-svg-icons";
 import Localization from "../../localization";
 import PropTypes from "prop-types";
 
@@ -9,9 +9,6 @@ class SearchPageInput extends Component {
         this.state = {
             searchTerm : ""
         };
-    }
-
-    onSearchFocus() {
     }
 
     onSearchFieldChange(e) {
@@ -45,7 +42,6 @@ class SearchPageInput extends Component {
                         <input
                             type="text"
                             value={this.state.searchTerm}
-                            onFocus={this.onSearchFocus.bind(this)}
                             onChange={this.onSearchFieldChange.bind(this)}
                             onKeyPress={(e) => { e.key === "Enter" ? this.props.onSearch(this.state.searchTerm) : null; }}
                             placeholder="Search" />

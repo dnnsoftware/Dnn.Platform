@@ -12,7 +12,7 @@ import securityService from "../../services/securityService";
 import SearchAdvanced from "./SearchAdvanced";
 
 class SearchResult extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
     }
@@ -22,14 +22,14 @@ class SearchResult extends Component {
         const { pageInContextComponents, searchList } = this.props;
         const render_card = (item) => {
             const onNameClick = (item) => {
-                this.clearSearch(() => {
+                this.props.clearSearch(() => {
                     if (item.canManagePage) {
-                        this.onLoadPage(item.id, (data) => { this.buildTree(item.id); });
+                        this.onLoadPage(item.id, () => { this.buildTree(item.id); });
                     }
                     else {
                         this.noPermissionSelectionPageId = item.id;
-                        this.buildBreadCrumbPath(item.id);
-                        this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
+                        this.props.buildBreadCrumbPath(item.id);
+                        this.props.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
                     }
                 });
             };
@@ -53,13 +53,13 @@ class SearchResult extends Component {
             };
 
             let visibleMenus = [];
-            item.canViewPage && visibleMenus.push(<li onClick={() => this.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
-            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
+            item.canViewPage && visibleMenus.push(<li onClick={() => this.props.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
+            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.props.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
             if (pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
                 let additionalMenus = cloneDeep(pageInContextComponents || []);
                 additionalMenus && additionalMenus.map(additionalMenu => {
                     visibleMenus.push(<li onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
-                        && this.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
+                        && this.props.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
                 });
             }
             return (
@@ -166,7 +166,15 @@ SearchResult.propTypes = {
     render_filters : PropTypes.func.isRequired,
     getPageTypeLabel : PropTypes.func.isRequired,
     getPublishStatusLabel : PropTypes.func.isRequired,
-    onSearch : PropTypes.func.isRequired
+    onSearch : PropTypes.func.isRequired,
+    clearSearch : PropTypes.func.isRequired,
+    clearAdvancedSearch : PropTypes.func.isRequired,
+
+    buildBreadCrumbPath : PropTypes.func.isRequired,
+    setEmptyStateMessage : PropTypes.func.isRequired,
+    onViewPage : PropTypes.func.isRequired,
+    onViewEditPage : PropTypes.func.isRequired,
+    CallCustomAction : PropTypes.func.isRequired
 
 };
 

@@ -914,13 +914,6 @@ class App extends Component {
         this.setState({ emptyStateMessage: null });
     }
     
-    onSearchMoreFlyoutClick() {
-        this.setState({ toggleSearchMoreFlyout: !this.state.toggleSearchMoreFlyout }, () => {
-            const { toggleSearchMoreFlyout } = this.state;
-            !toggleSearchMoreFlyout ? this.setState({ DropdownCalendarIsActive: null }) : null;
-        });
-    }
-
     onDayClick(newDay, isEndDate) {
         this.setState({ startAndEndDateDirty: true });
         const right = () => {
@@ -956,8 +949,6 @@ class App extends Component {
 
             fullStartDate !== fullEndDate ? left() : right();
         }
-
-        this.setState({ filters, DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
     }
 
     saveSearchFilters(searchFields) {
@@ -1024,11 +1015,28 @@ class App extends Component {
             this.setState({ inSearch: true, filtersUpdated: false });
         }
     }
+    
+    clearAdvancedSearch() {
+        let date = new Date();
+        this.setState({
+            startDate: date,
+            endDate: date,
+            defaultDate: date,
+            startAndEndDateDirty: false,
+            filterByPageType: null,
+            filterByPublishStatus: null,
+            filterByWorkflow: null,
+            workflowList: [],
+            tags: "",
+            filters: [],
+            searchFields: {}
+        });
+        this.onSearch(this.state.searchTerm);
+    }
+    
     clearSearch(callback) {
         let date = new Date();
         this.setState({
-            toggleSearchMoreFlyout: false,
-            DropdownCalendarIsActive: null,
             filtersUpdated: false,
             inSearch: false,
             searchTerm: "",
@@ -1270,7 +1278,6 @@ class App extends Component {
         this.setState({ filterByPublishStatus: data.value, filtersUpdated: true });
     } 
     updateFilterByWorkflowOptions(data) {this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });}
-    /** END TODO REMOVE THESE FROM HERE */
 
     render_searchResults() {
         return (
@@ -1298,6 +1305,13 @@ class App extends Component {
                 onDayClick={this.onDayClick.bind(this)}
                 startAndEndDateDirty={this.state.startAndEndDateDirty}
                 onSearch={this.onSearch.bind(this)}
+                clearSearch={this.clearSearch.bind(this)}
+                clearAdvancedSearch={this.clearAdvancedSearch.bind(this)}
+                buildBreadCrumbPath={this.buildBreadCrumbPath.bind(this)} 
+                setEmptyStateMessage={this.setEmptyStateMessage.bind(this)}
+                onViewPage={this.onViewPage.bind(this)}
+                onViewEditPage={this.onViewEditPage.bind(this)}
+                CallCustomAction={this.CallCustomAction.bind(this)}
             />
         );
     }
@@ -1425,7 +1439,6 @@ class App extends Component {
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{ padding: "30px 30px 16px 30px" }}>
                             <SearchPageInput 
-                                onSearchMoreFlyoutClick={this.onSearchMoreFlyoutClick.bind(this)} 
                                 inSearch={this.state.inSearch} onSearch={this.onSearch.bind(this)}
                                 clearSearch={this.clearSearch.bind(this)}  />
                         </GridCell>

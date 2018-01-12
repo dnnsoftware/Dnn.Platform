@@ -28,7 +28,7 @@ class SearchAdvancedDetails extends Component {
         return label;
     }
     
-    toggleDropdownCalendar(){
+    toggleDropdownCalendar() {
         this.setState({
             DropdownCalendarIsActive : !this.state.DropdownCalendarIsActive
         });
@@ -46,6 +46,7 @@ class SearchAdvancedDetails extends Component {
         this.setState({
             DropdownCalendarIsActive : false
         });
+        this.props.clearAdvancedSearch();
     }
 
     render() {
@@ -97,7 +98,7 @@ class SearchAdvancedDetails extends Component {
                                 <Dropdown
                                     className="more-dropdown"
                                     options={this.props.getFilterByWorkflowOptions()}
-                                    label={this.props.filterByWorkflow ? this.props.getFilterByWorkflowOptions().find(x => x.value == this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
+                                    label={this.props.filterByWorkflow ? this.props.getFilterByWorkflowOptions().find(x => x.value === this.props.filterByWorkflow).label : Localization.get("FilterbyWorkflowText")}
                                     value={this.props.filterByWorkflow !== "" && this.props.filterByWorkflow}
                                     onSelect={data=>this.updateFilterByWorkflowOptions(data)}
                                     toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
@@ -110,8 +111,8 @@ class SearchAdvancedDetails extends Component {
                     <textarea placeholder={Localization.get("TagsInstructions")} value={this.props.tags} onChange={(e) => this.props.generateTags(e)} onBlur={() => this.props.filterTags()}></textarea>
                 </GridCell>
                 <GridCell columnSize={100} style={{ textAlign: "center" }}>
-                    <Button style={{ marginRight: "5px" }} onClick={() => this.setState({ DropdownCalendarIsActive: false })}>{Localization.get("Clear")}</Button>
-                    <Button type="primary" onClick={() => this.props.onSearch()}>{Localization.get("Save")}</Button>
+                    <Button style={{ marginRight: "5px" }} onClick={this.onClear.bind(this)}>{Localization.get("Clear")}</Button>
+                    <Button type="primary" onClick={() => this.props.onSearch()}>{Localization.get("Apply")}</Button>
                 </GridCell>
             </div>);
     }
@@ -138,9 +139,8 @@ SearchAdvancedDetails.propTypes = {
     startAndEndDateDirty : PropTypes.bool.isRequired,
     tags : PropTypes.string.isRequired,
     filterByWorkflow : PropTypes.string.isRequired,
-    collapsed : PropTypes.bool.isRequired,
-    onClear : PropTypes.func.isRequired   
-
+    collapsed : PropTypes.bool.isRequired, 
+    clearAdvancedSearch : PropTypes.func.isRequired
 };
 
 
