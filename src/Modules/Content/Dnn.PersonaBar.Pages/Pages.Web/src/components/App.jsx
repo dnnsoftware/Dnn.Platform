@@ -985,8 +985,8 @@ class App extends Component {
 
         if (startAndEndDateDirty) {
             let dateRangeText = Localization.get(utils.isPlatform() ? "ModifiedDateRange" : "PublishedDateRange");
-            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+            const fullStartDate = utils.formatDate(startDate);
+            const fullEndDate = utils.formatDate(endDate);
             const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate} - ${fullEndDate} ` });
             const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate}` });
 
@@ -1000,8 +1000,8 @@ class App extends Component {
         const { startDate, endDate, startAndEndDateDirty } = this.state;
         let label = Localization.get(filterByDateText);
         if (startAndEndDateDirty) {
-            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+            const fullStartDate = utils.formatDate(startDate);
+            const fullEndDate = utils.formatDate(endDate);
             label = fullStartDate !== fullEndDate ? `${fullStartDate} - ${fullEndDate}` : `${fullStartDate}`;
         }
         return label;
