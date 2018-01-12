@@ -9,7 +9,8 @@ export default function pagesReducer(state = {
     urlChanged: false,
     dirtyPage: false,
     selectedPageSettingTab: 0,
-    workflowList: []
+    workflowList: [],
+    dirtyCustomDetails: false
 }, action) {
 
 
@@ -185,6 +186,12 @@ export default function pagesReducer(state = {
             return {
                 ...state,
                 selectedPage: null
+            };
+
+        case ActionTypes.CUSTOM_PAGE_DETAILS_UPDATED:
+            return {
+                ...state,
+                dirtyCustomDetails: true
             };
 
         case ActionTypes.GET_CURRENT_SELECTED_PAGE:
