@@ -12,7 +12,8 @@ import {
     visiblePanelActions as VisiblePanelActions,
     visiblePageSettingsActions as VisiblePageSettingsActions,
     languagesActions as LanguagesActions,
-    pageHierarchyActions as PageHierarchyActions
+    pageHierarchyActions as PageHierarchyActions,
+    extensionActions as ExtensionsActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
@@ -738,6 +739,9 @@ class App extends Component {
         });
     }
 
+    onChangeCustomDetail() {
+
+    }
     
     onCancelSavePageAsTemplate() {
         const { props } = this;
@@ -981,8 +985,8 @@ class App extends Component {
 
         if (startAndEndDateDirty) {
             let dateRangeText = Localization.get(utils.isPlatform() ? "ModifiedDateRange" : "PublishedDateRange");
-            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+            const fullStartDate = utils.formatDate(startDate);
+            const fullEndDate = utils.formatDate(endDate);
             const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate} - ${fullEndDate} ` });
             const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate}` });
 
@@ -996,8 +1000,8 @@ class App extends Component {
         const { startDate, endDate, startAndEndDateDirty } = this.state;
         let label = Localization.get(filterByDateText);
         if (startAndEndDateDirty) {
-            const fullStartDate = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
-            const fullEndDate = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+            const fullStartDate = utils.formatDate(startDate);
+            const fullEndDate = utils.formatDate(endDate);
             label = fullStartDate !== fullEndDate ? `${fullStartDate} - ${fullEndDate}` : `${fullStartDate}`;
         }
         return label;
@@ -1011,16 +1015,60 @@ class App extends Component {
         const { filtersUpdated } = this.state;
         if (filtersUpdated) {
             if (selectedPage) {
-                this.lastActivePageId = selectedPage.tabId;
-                if (this.props.selectedPageDirty) {
+                if (this.props.selectedView === 3) {
+                    if (this.props.dirtyTemplate) {
+                        this.showCancelWithoutSavingDialogAndRun(() => {
+                            this.props.onCancelSavePageAsTemplate();
+                            this.doSearch();
+                        }, () => {
+                            this.clearSearch();
+                        });   
+                    }                    
+                    else {
+                        this.props.onCancelAddMultiplePages();
+                        this.doSearch();
+                    }  
+                }
+                else if (this.props.selectedView === 4) {
+                    if (this.props.dirtyCustomDetails) {
+                        this.showCancelWithoutSavingDialogAndRun(() => {
+                            this.props.onCancelSavePageAsTemplate;
+                            this.doSearch();
+                        }, () => {
+                            this.clearSearch();
+                        }); 
+                    }
+                    else {
+                        this.props.onCancelSavePageAsTemplate;
+                        this.doSearch();
+                    }    
+                }
+                else {
+                    this.lastActivePageId = selectedPage.tabId;
+                    if (this.props.selectedPageDirty) {
+                        this.showCancelWithoutSavingDialogAndRun(() => {
+                            this.doSearch();
+                        }, () => {
+                            this.clearSearch();
+                        });
+                    } else {
+                        this.doSearch();
+                    }
+                }
+            }            
+            else if (this.props.selectedView === 2) {
+                if (this.props.dirtyBulkPage) {
                     this.showCancelWithoutSavingDialogAndRun(() => {
+                        this.props.onCancelAddMultiplePages();
                         this.doSearch();
                     }, () => {
                         this.clearSearch();
-                    });
-                } else {
+                    });    
+                }  
+                else {
+                    this.props.onCancelAddMultiplePages();
                     this.doSearch();
-                }
+                }          
             }
             else {
                 this.doSearch();
@@ -1509,6 +1557,7 @@ class App extends Component {
                     additionalPageSettings.push(
                         <Component
                             onCancel={this.onCancelSaveCustomDetail(this.props.onCancelSavePageAsTemplate)} 
+                            onChange={this.props.onChangeCustomDetails}
                             selectedPage={props.selectedPage}
                             disabled={this.onEditMode()}
                             store={customPageSettings.store} />
@@ -1608,8 +1657,8 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
                             {securityService.isSuperUser() &&
                                 <div> 
-                                    <Button type="primary" disabled={ this.onEditMode() } size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                                    <Button type="secondary" disabled={ this.onEditMode() } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                    <Button type="primary" disabled={ this.onEditMode() || inSearch } size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={ this.onEditMode() || inSearch } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
                             }
                             { 
@@ -1661,7 +1710,7 @@ class App extends Component {
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 30px 30px 30px" }} >
                             <GridCell columnSize={1096} type={"px"} className="page-container">
-                                <div className={((selectedPage && selectedPage.tabId === 0) || this.onEditMode()) ? "tree-container disabled" : "tree-container"}>
+                                <div className={((selectedPage && selectedPage.tabId === 0) || this.onEditMode() || inSearch) ? "tree-container disabled" : "tree-container"}>
                                     <PersonaBarPageTreeviewInteractor
                                         clearSelectedPage={this.props.clearSelectedPage}
                                         Localization={Localization}
@@ -1764,7 +1813,10 @@ App.propTypes = {
     onModuleCopyChange: PropTypes.func,
     workflowList: PropTypes.array.isRequired,
     customPageSettingsComponents: PropTypes.array,
-    getPageHierarchy: PropTypes.func.isRequired
+    getPageHierarchy: PropTypes.func.isRequired,
+    dirtyTemplate: PropTypes.boolean,
+    dirtyCustomDetails: PropTypes.boolean,
+    onChangeCustomDetails: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -1792,7 +1844,8 @@ function mapStateToProps(state) {
         isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled,
         selectedPagePath: state.pageHierarchy.selectedPagePath,
         workflowList: state.pages.workflowList,
-        customPageSettingsComponents : state.extensions.pageSettingsComponent
+        customPageSettingsComponents : state.extensions.pageSettingsComponent,
+        dirtyCustomDetails: state.pages.dirtyCustomDetails
     };
 }
 
@@ -1840,7 +1893,8 @@ function mapDispatchToProps(dispatch) {
         onClearCache: PageActions.clearCache,
         clearSelectedPage: PageActions.clearSelectedPage,
         onModuleCopyChange: PageActions.updatePageModuleCopy,
-        getPageHierarchy: PageActions.getPageHierarchy
+        getPageHierarchy: PageActions.getPageHierarchy,
+        onChangeCustomDetails: PageActions.dirtyCustomDetails
 
     }, dispatch);
 }

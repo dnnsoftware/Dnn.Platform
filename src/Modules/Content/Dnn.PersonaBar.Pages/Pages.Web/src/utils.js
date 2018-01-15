@@ -1,3 +1,4 @@
+import Moment from "moment";
 let utilities = null;
 let config = null;
 let moduleName = null;
@@ -173,6 +174,18 @@ function getIsAdminHostSystemPage() {
     checkInit();
     return settings.isAdminHostSystemPage;
 }
+function formatDate(dateValue, longformat) {
+    if (!dateValue) {
+        return "";
+    }
+    let date = new Date(dateValue);
+    let yearValue = date.getFullYear();
+    if (yearValue < 1900) {
+        return "-";
+    }
+
+    return Moment(dateValue).locale(utilities.getCulture()).format(longformat === true ? "LLL" : "L");
+}
 const utils = {
     init,
     load,
@@ -202,7 +215,8 @@ const utils = {
     getDefaultPageUrl,
     getProductSKU,
     isPlatform,
-    getIsAdminHostSystemPage
+    getIsAdminHostSystemPage,
+    formatDate
 };
 
 export default utils;

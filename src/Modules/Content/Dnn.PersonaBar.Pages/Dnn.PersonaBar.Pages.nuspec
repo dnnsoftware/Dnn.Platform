@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Dnn.PersonaBar.Pages</id>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <title>DNN PersonaBar Pages</title>
     <authors>DNN Corporation</authors>
     <owners>DNN Corporation</owners>
@@ -15,7 +15,7 @@
       Version 1.1.0:
       - Initial reelase.
     </releaseNotes>
-    <copyright>Copyright (c) 2017, DNN Corporation</copyright>
+    <copyright>Copyright (c) 2018, DNN Corporation</copyright>
     <tags>DNN PersonaBar Pages</tags>
     <!--
     <dependencies>
