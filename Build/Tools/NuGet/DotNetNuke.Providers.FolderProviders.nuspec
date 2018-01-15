@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.Providers.FolderProviders</id>
-    <version>9.2.0</version>
+    <version>9.2.1</version>
     <title>DotNetNuke.Providers.FolderProviders</title>
     <authors>DNN Corp.</authors>
     <owners>DNN Corp.</owners>

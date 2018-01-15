@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.SiteExportImport</id>
-    <version>9.1.1</version>
+    <version>9.2.1</version>
     <title>DNN Site Export/Import</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
@@ -16,9 +16,9 @@
     </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
-      <dependency id="DotNetNuke.Core" version="9.1.1" />
-      <dependency id="DotNetNuke.Instrumentation" version="9.1.1" />
-      <dependency id="DotNetNuke.Web" version="9.1.1" />
+      <dependency id="DotNetNuke.Core" version="9.2.1" />
+      <dependency id="DotNetNuke.Instrumentation" version="9.2.1" />
+      <dependency id="DotNetNuke.Web" version="9.2.1" />
     </dependencies>
   </metadata>
   <files>
