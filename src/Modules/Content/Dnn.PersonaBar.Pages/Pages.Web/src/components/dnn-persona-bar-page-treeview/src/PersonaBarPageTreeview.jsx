@@ -15,11 +15,9 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     trimName(item) {
-        let maxLength = 18;
-        let { tabpath } = item;
-        let newLength = tabpath.split(/\//).length * 2 + 2;
-        let depth = (newLength < maxLength) ? newLength : 1;
-        return (item.name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
+        let maxLength = 16;
+        let { name } = item;
+        return name.length > maxLength ? `${name.slice(0, maxLength)}...` : name;
     }
 
     renderTree(item, childListItems) {
