@@ -39,6 +39,12 @@ applicationhost.config
 *.psess
 *.vsp
 
+## Ignore VS2015/Roslyn artifacts
+*.sln.ide/
+.vs/
+
+
+
 # ReSharper is a .NET coding add-in
 _ReSharper*
 
