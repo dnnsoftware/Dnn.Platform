@@ -14,7 +14,7 @@
       DNN Platform is an open source web application framework.
       This package contains components required for developing extensiong to utilize site export/import features.
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Core" version="9.1.1" />
       <dependency id="DotNetNuke.Instrumentation" version="9.1.1" />

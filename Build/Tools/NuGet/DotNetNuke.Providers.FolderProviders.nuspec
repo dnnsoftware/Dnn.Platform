@@ -8,7 +8,7 @@
     <owners>DNN Corp.</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetNuke Folder Providers</description>
-    <copyright>DotNetNuke is copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DotNetNuke is copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
     <file src="DNN.Platform\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\"/>

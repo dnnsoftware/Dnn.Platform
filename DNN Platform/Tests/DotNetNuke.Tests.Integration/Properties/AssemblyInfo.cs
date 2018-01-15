@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("DotNetNuke Corporation")]
 [assembly: AssemblyProduct("http://www.dnnsoftware.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2017 by Dnn Corporation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by Dnn Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DotNetNuke")]
 
 

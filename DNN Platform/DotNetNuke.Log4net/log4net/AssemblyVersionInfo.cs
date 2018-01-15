@@ -41,5 +41,5 @@
 //
 
 [assembly: System.Reflection.AssemblyCompany("The Apache Software Foundation")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright 2004-2017 The Apache Software Foundation.")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright 2004-2018 The Apache Software Foundation.")]
 [assembly: System.Reflection.AssemblyTrademark("Apache and Apache log4net are trademarks of The Apache Software Foundation")]

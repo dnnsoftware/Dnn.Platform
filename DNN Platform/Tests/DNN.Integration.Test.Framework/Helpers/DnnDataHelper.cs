@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2017, DNN Corp.
+// Copyright (c) 2002-2018, DNN Corp.
 // All Rights Reserved
 
 namespace DNN.Integration.Test.Framework.Helpers
