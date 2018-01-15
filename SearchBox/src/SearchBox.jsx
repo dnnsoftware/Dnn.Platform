@@ -59,7 +59,7 @@ class SearchBox extends Component {
     render() {
         return (
             <div className={"dnn-search-box" + (this.props.className ? " " + this.props.className : "")} style={{...style.main, ...this.props.style}}>
-                <input defaultValue={this.props.initialValue} style={{...style.input, ...this.props.inputStyle}} type="search" placeholder={this.props.placeholder} onChange={this.onTextChanged.bind(this)} aria-label="Search" />
+                <input disabled={this.props.inputDisabled} defaultValue={this.props.initialValue} style={{...style.input, ...this.props.inputStyle}} type="search" placeholder={this.props.placeholder} onChange={this.onTextChanged.bind(this)} aria-label="Search" />
                 <MagnifyingGlassIcon style={{...style.magnifyingGlass, ...this.props.iconStyle}} onClick={this.search.bind(this)} />
             </div>
         );
@@ -73,7 +73,8 @@ SearchBox.propTypes = {
     iconStyle: PropTypes.object,
     className: PropTypes.string,
     onSearch: PropTypes.func.isRequired,
-    placeholder: PropTypes.string
+    placeholder: PropTypes.string,
+    inputDisabled: PropTypes.boolean
 };
 
 SearchBox.defaultProps = {

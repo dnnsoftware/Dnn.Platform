@@ -80,7 +80,6 @@ export default class TagInput extends Component {
     }
 
     focusInput() {
-        this.refs.inputField.focus();
         if (typeof(this.props.onFocus) === "function") {
             this.props.onFocus(this.props.newTagText);
         }
