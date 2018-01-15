@@ -18,7 +18,7 @@ export default class FileUpload extends Component {
         let fileExist = false;
         let selectedFile = null;
         let selectedFolder = null;
-            
+
         this.state = {
             text: props.defaultText,
             showLinkInput: false,
@@ -49,12 +49,12 @@ export default class FileUpload extends Component {
         const selectedFolder = { value: file.folderPath, key: file.folderId };
         const selectedFile = { value: file.fileName, key: file.fileId };
         const fileExist = true;
-        
+
         this.setState({fileExist, selectedFile, selectedFolder}, () => {
             this.getPreviewUrl(file.fileId);
         });
     }
-    
+
     componentWillMount() {
         const file = this.props.selectedFile;
         if (file) {
@@ -88,7 +88,7 @@ export default class FileUpload extends Component {
     componentWillUnmount() {
         window.removeEventListener("dragover", this.prevent);
         window.removeEventListener("drop", this.prevent);
-        
+
         this._unmounted = true;
         if(this.compareTimeout){
             clearTimeout(this.compareTimeout);
@@ -164,7 +164,7 @@ export default class FileUpload extends Component {
         if (!file) {
             return;
         }
-        const fileFormats = this.props.fileFormats;        
+        const fileFormats = this.props.fileFormats;
         this.setState({ fileName: file.name });
         if (fileFormats.length > 0) {
             let format = file.type;
@@ -172,8 +172,8 @@ export default class FileUpload extends Component {
             if (!isAcceptFormat) {
                 return this.handleError(this.props.wrongFormatText);
             }
-        }        
-        
+        }
+
         this.postFile(file);
     }
 
@@ -195,10 +195,10 @@ export default class FileUpload extends Component {
             return;
         }
 
-        this.setState({ fileUrl: "" });  
+        this.setState({ fileUrl: "" });
         if (typeof fileUrl !== "string") {
             return;
-        }      
+        }
         this.getImageDimensions(fileUrl);
         this.setState({ fileUrl, fileExist: true });
     }
@@ -209,10 +209,10 @@ export default class FileUpload extends Component {
         const fileId = selectedFile ? selectedFile.fileId || +selectedFile.key : null;
         const folderPath = selectedFolder ? selectedFolder.value : null;
         const fileName = selectedFile ? selectedFile.value : null;
-        this.props.onSelectFile({ 
-            folderPath, 
-            fileId, 
-            fileName 
+        this.props.onSelectFile({
+            folderPath,
+            fileId,
+            fileName
         });
     }
 
@@ -320,6 +320,11 @@ export default class FileUpload extends Component {
         return style;
     }
 
+    onChangeUrl(url) {
+        const {props, state} = this;
+        this.setState({fileUrl: url});
+    }
+
     render() {
         const {props, state} = this;
 
@@ -374,9 +379,10 @@ export default class FileUpload extends Component {
                     linkInputPlaceholderText = {props.linkInputPlaceholderText}
                     linkInputActionText = {props.linkInputActionText}
                     linkPath={state.linkPath}
-                    onSave={this.uploadFromLink.bind(this) }
-                    onCancel={this.hideFields.bind(this) } 
-                    />}
+                    onSave={this.uploadFromLink.bind(this)}
+                    onCancel={this.hideFields.bind(this)}
+                    onChange={this.onChangeUrl.bind(this)}
+                />}
                 {state.showFolderPicker && <Browse
                     browseActionText = {props.browseActionText}
                     fileText = {props.fileText}
@@ -399,13 +405,13 @@ export default class FileUpload extends Component {
                 {state.selectedFile &&
                     <div className="dnn-file-upload-file-name"><span>{state.selectedFile.value}</span></div>}
             </div>
-            {state.uploading && <UploadBar 
+            {state.uploading && <UploadBar
                 uploadCompleteText = {props.uploadCompleteText}
                 uploadingText = {props.uploadingText}
                 uploadDefaultText = {props.uploadDefaultText}
-                uploadComplete={state.uploadComplete} 
-                errorText={state.errorText} 
-                fileName={state.fileName} 
+                uploadComplete={state.uploadComplete}
+                errorText={state.errorText}
+                fileName={state.fileName}
                 />}
         </div>;
     }
@@ -452,7 +458,7 @@ FileUpload.defaultProps = {
     cropImagePreview: false,
     portalId: -1,
     fileFormats: [],
-    
+
     browseButtonText: "Browse Filesystem",
     uploadButtonText: "Upload a File",
     linkButtonText: "Enter URL Link",
@@ -466,7 +472,7 @@ FileUpload.defaultProps = {
     linkInputActionText: "Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel",
     uploadCompleteText: "Upload Complete",
     uploadingText: "Uploading...",
-    uploadDefaultText: "myImage.jpg",
+    uploadDefaultText: "",
     browseActionText: "Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel",
     notSpecifiedText: "<None Specified>",
     searchFilesPlaceHolderText: "Search Files...",

@@ -1,10 +1,10 @@
-import React, {PropTypes, Component} from "react";
+import React, { Component} from "react";
+import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import Scrollbars from "react-custom-scrollbars";
 import {ArrowDownIcon} from "dnn-svg-icons";
 import scroll from "scroll";
-import debounce from "lodash/debounce";
 import "./style.less";
 
 const DNN_DROPDOWN_MINHEIGHT = 100;
@@ -21,7 +21,6 @@ class Dropdown extends Component {
         };
         this.handleClick = this.handleClick.bind(this);
         this.uniqueId = Date.now() * Math.random();
-        this.debouncedSearch = debounce(this.searchItems, 500);
     }
 
     toggleDropdown() {
@@ -170,58 +169,36 @@ class Dropdown extends Component {
         return this.props.labelIsMultiLine ? "" : " no-wrap";
     }
 
+    findMatchingItem(option) {
+        const { props, state } = this;
+        const regex = state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+
+        const label = props.getLabelText ? props.getLabelText(option.label) : option.label;
+
+        return label.match(new RegExp("^" + regex, "gi"));
+    }
+
     searchItems() {
-        let closestValueLength = 0, closestValue = null, itemIndex = 0;
 
-        this.props.options.forEach((option, index) => {
-            let regex = this.state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+        const { props } = this;
 
-            let stringToMatchBeginning = new RegExp("^" + regex, "gi");
+        const index = props.options.findIndex(this.findMatchingItem, this);
+        if(index) {
 
-            let labelToMatch = typeof option.label === "string" ? option.label : (option.searchableValue || "");
+            const value = this.getOption(index).value;
 
-            if (labelToMatch.match(stringToMatchBeginning) && labelToMatch.match(stringToMatchBeginning).length > closestValueLength) {
-                closestValueLength = labelToMatch.match(stringToMatchBeginning).length;
-                closestValue = option.value;
-                itemIndex = index;
-
-            }
-        });
-
-        if (closestValue === null) {
-            this.props.options.forEach((option, index) => {
-                let regex = this.state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-
-                let stringToMatchInBetween = new RegExp(regex, "gi");
-
-                let labelToMatch = typeof option.label === "string" ? option.label : (option.searchableValue || "");
-
-                if (labelToMatch.match(stringToMatchInBetween) && labelToMatch.match(stringToMatchInBetween).length > closestValueLength) {
-                    closestValueLength = labelToMatch.match(stringToMatchInBetween).length;
-                    closestValue = option;
-                    itemIndex = index;
-                }
+            this.setState({
+                closestValue: value,
+                currentIndex: index
+            },() => {
+                this.setState({dropdownText: ""});
+                this.dropdownSearch.value = "";
+                setTimeout(() => this.scrollToSelectedItem(),100);
             });
-        }
-
-        this.setState({
-            closestValue,
-            currentIndex: itemIndex
-        }, () => {
-            setTimeout(() => {
-                this.setState({
-                    dropdownText: ""
-                });
-            }, 1500);
-        });
-
-        if (closestValue !== null) {
-
-            this.scrollToSelectedItem(itemIndex);
         }
     }
 
-    scrollToSelectedItem(itemIndex, eventKey) {
+    scrollToSelectedItem(eventKey) {
 
         const optionRef = this.selectedOptionElement ? this.selectedOptionElement : null;
         if (optionRef) {
@@ -238,7 +215,7 @@ class Dropdown extends Component {
         this.setState({
             dropdownText: event.target.value
         }, () => {
-            this.debouncedSearch();
+            this.searchItems();
         });
     }
 
@@ -284,9 +261,8 @@ class Dropdown extends Component {
         this.scrollToSelectedItem(nextIndex, eventKey);
     }
 
-
-    initOptions(option, index) {
-        const {props, state} = this;
+    initOptions() {
+        const { props } = this;
         this.optionItems = [];
         const options = props.options && props.options.map((option, index) => {
             this.optionItems.push(option);
@@ -311,13 +287,11 @@ class Dropdown extends Component {
         return index == this.state.currentIndex;
     }
 
-
     addOptionRef(option) {
         if (option) {
             this.selectedOptionElement = option;
         }
     }
-
 
     getOption(index) {
         const options = this.optionItems;
@@ -399,7 +373,8 @@ Dropdown.propTypes = {
     onScrollUpdate: PropTypes.func,
     isDropDownOpen: PropTypes.bool,
     selectedIndex: PropTypes.number,
-    onArrowKey: PropTypes.func
+    onArrowKey: PropTypes.func,
+    getLabelText: PropTypes.func.isRequired // fn(labelObject):string
 };
 
 Dropdown.defaultProps = {
@@ -412,7 +387,8 @@ Dropdown.defaultProps = {
     autoHide: true,
     className: "",
     isDropDownOpen: false,
-    selectedIndex: -1
+    selectedIndex: -1,
+    getLabelText:(label) => label
 };
 
 export default Dropdown;

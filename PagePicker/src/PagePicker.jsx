@@ -6,14 +6,18 @@ import SearchBox from "dnn-search-box";
 import {ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon} from "dnn-svg-icons";
 import "./style.less";
 import Service from "./Service";
+import PagePickerScrollbar from "./PagePickerScrollbar";
+
+
 function format() {
     let format = arguments[0];
-    let methodsArgs = arguments;
+    let methodsArguments = arguments;
     return format.replace(/{(\d+)}/gi, function (value, index) {
-        let argsIndex = parseInt(index) + 1;
-        return methodsArgs[argsIndex];
+        let argumentsIndex = parseInt(index) + 1;
+        return methodsArguments[argumentsIndex];
     });
 }
+
 class PagePicker extends Component {
     constructor(props) {
         super(props);
@@ -326,7 +330,7 @@ class PagePicker extends Component {
             for (let i = 0; i < tabs.length; i++) {
                 let child = tabs[i];
                 if (tab === null) {
-                    if (child.TabId == tabId) {
+                    if (child.TabId === tabId) {
                         tab = child;
                     }
                     else if (child.HasChildren && child.ChildTabs !== null && child.ChildTabs.length > 0) {
@@ -336,16 +340,6 @@ class PagePicker extends Component {
                     break;
                 }
             }
-            // tabs.forEach(child => {
-            //     if (tab === null) {
-            //         if (child.TabId == tabId) {
-            //             tab = child;
-            //         }
-            //         else if (child.HasChildren && child.ChildTabs !== null && child.ChildTabs.length > 0) {
-            //             tab = this.findTabById(tabId, child.ChildTabs, tab);
-            //         }
-            //     }
-            // });
         }
         return tab;
     }
@@ -455,8 +449,7 @@ class PagePicker extends Component {
     }
 
     UpdateSelectedData(Tab, checked, selectedPages) {
-        //if ((checked === 0 || checked === 2) && selectedPages.indexOf(parseInt(TabId)) < 0) {
-        if ((checked === 0 || checked === 2) && !selectedPages.some(page => page.TabId == Tab.TabId && page.CheckedState === checked)) {
+        if ((checked === 0 || checked === 2) && !selectedPages.some(page => page.TabId === Tab.TabId && page.CheckedState === checked)) {
             selectedPages = selectedPages.filter(page => {
                 return page.TabId != Tab.TabId;
             });
@@ -516,8 +509,8 @@ class PagePicker extends Component {
 
     RecursiveFindParent(parentId, currentTree) {
         let parent = null;
-        if (currentTree.some(child => child.IsOpen && child.TabId == parentId)) {
-            parent = currentTree.find(child => child.IsOpen && child.TabId == parentId);
+        if (currentTree.some(child => child.IsOpen && child.TabId === parentId)) {
+            parent = currentTree.find(child => child.IsOpen && child.TabId === parentId);
         } else if (parent === undefined || parent === null) {
             for (let child of currentTree) {
                 if (child.HasChildren && child.ChildTabs.length > 0) {
@@ -548,22 +541,20 @@ class PagePicker extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        // const children = state.searchMode ? Object.keys(state.searchPageData).length > 0 &&
-        //     this.getChildItems(state.searchPageData.Tree.children) : Object.keys(state.pageData).length > 0 &&
-        //     this.getChildItems(state.pageData.Tree.children);
+        
         if (this.loaded || props.IsInDropDown) {
             let picker = <div/>;
             if (state.portalTabs.length > 0 && state.portalTabs[0].Processed) {
                 let children = state.portalTabs.length > 0 && state.portalTabs[0].Processed && this.getChildItems(state.portalTabs);
                 picker =
-                    <Scrollbars style={props.scrollAreaStyle}>
+                    <PagePickerScrollbar style={props.scrollAreaStyle}>
                         <div className="pages-container">
                             <ul>
                                 {state.portalTabs.length > 0 && state.portalTabs[0].Processed && children}
                                 {state.portalTabs.length <= 0 || !state.portalTabs[0].Processed && props.noneSpecified}
                             </ul>
                         </div>
-                    </Scrollbars>;
+                    </PagePickerScrollbar>;
             }
             return (
                 <div className={this.getClassName() } style={props.style} ref="dnnPagePicker">
@@ -689,7 +680,15 @@ PagePicker.propTypes = {
 
     serviceFramework: PropTypes.object,
 
-    currentTabId: PropTypes.number
+    currentTabId: PropTypes.number,
+   
+    //Object to apply style scrollbar track horizontal
+    renderThumbHorizontal: PropTypes.function,
+    
+    //Object to apply style scrollbar track horizontal
+    renderThumbVertical: PropTypes.function,
+
+    scrollbarThumbStyleDefault: PropTypes.object
 };
 
 PagePicker.defaultProps = {
