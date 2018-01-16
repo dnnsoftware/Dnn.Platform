@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Collapse from "dnn-collapsible";
 import "./style.less";
 import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon, LanguagesPageIcon } from "dnn-svg-icons";
+import Flag from "dnn-flag";
 
 class LanguageRow extends Component {
     componentWillMount() {
@@ -28,14 +29,13 @@ class LanguageRow extends Component {
         }
     }
 
-    getLanguageNameDisplay(name, icon, isDefault) {
+    getLanguageNameDisplay(name, code, isDefault) {
         if (this.props.id !== "add") {
-            return <div>
-                <div className="language-flag">
-                    <img src={icon} alt={isDefault ? name + " **" : name} />
-                </div>
-                <div className="language-name">{isDefault ? name + " **" : name}</div>
-            </div>;
+            return (
+                <div>
+                    <div className="language-flag"><Flag culture={code} title={name} /></div>
+                    <div className="language-name">{isDefault ? name + " **" : name}</div>
+                </div>);
         }
         else return <span>-</span>;
     }
@@ -157,7 +157,7 @@ class LanguageRow extends Component {
                     <div className={"collapsible-header-language " + !opened} >
                         <div className={"row"}>
                             <div className="language-item item-row-name-adv">
-                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
+                                {this.getLanguageNameDisplay(props.name, props.code, props.isDefault)}
                             </div>
                             <div className="language-item item-row-pages">
                                 {this.getPagesDisplay(props.localizablePages, props.localizedStatus)}&nbsp;
@@ -193,7 +193,7 @@ class LanguageRow extends Component {
                     <div className={"collapsible-header-language " + !opened} >
                         <div className={"row"}>
                             <div className="language-item item-row-name">
-                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
+                                {this.getLanguageNameDisplay(props.name, props.code, props.isDefault)}
                             </div>
                             <div className="language-item item-row-enabled">
                                 {this.getEnabledDisplay(props.enabled)}
