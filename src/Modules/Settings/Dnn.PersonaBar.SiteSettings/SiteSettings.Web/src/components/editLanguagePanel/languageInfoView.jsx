@@ -3,6 +3,7 @@ import resx from "resources";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
 import Label from "dnn-label";
+import Flag from "dnn-flag";
 import RadioButtons from "dnn-radio-buttons";
 import GridCell from "dnn-grid-cell";
 import ResourceTree from "./resourceTree";
@@ -31,7 +32,7 @@ class LanguageInfoView extends Component {
             <GridCell className="edit-language-info">
                 <GridCell className="edit-language-top-bar">
                     <GridCell columnSize={40} className="language-info">
-                        <img src={languageBeingEdited.Icon} className="language-flag" alt={languageBeingEdited.NativeName} />
+                        <div className="language-flag"><Flag culture={languageBeingEdited.Code} title={languageBeingEdited.NativeName} /></div>
                         <p>{languageBeingEdited.NativeName}</p>
                     </GridCell>
                     <GridCell columnSize={60} className="mode-container">
