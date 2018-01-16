@@ -1,134 +1,29 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import cloneDeep from "lodash/clonedeep";
-
 import GridCell from "dnn-grid-cell";
-import { EyeIcon, TreeEdit } from "dnn-svg-icons";
-import OverflowText from "dnn-text-overflow-wrapper";
 import Localization from "../../localization";
-import utils from "../../utils";
-import securityService from "../../services/securityService";
-
 import SearchAdvanced from "./SearchAdvanced";
+import SearchResultCard from "./SearchResultCard";
 
 class SearchResult extends Component {
     constructor(props) {
         super(props);
 
     }
+
+    distinct(list) {
+        let distinctList = [];
+        list.map((item) => {
+            if (item.trim() !== "" && distinctList.indexOf(item.trim().toLowerCase()) === -1)
+                distinctList.push(item.trim().toLowerCase());
+        });
+        return distinctList;
+    }
+    
     
     /* eslint-disable react/no-danger */
     render() {
-        const { pageInContextComponents, searchList } = this.props;
-        const render_card = (item) => {
-            const onNameClick = (item) => {
-                this.props.clearSearch(() => {
-                    if (item.canManagePage) {
-                        this.props.onLoadPage(item.id, () => { this.buildTree(item.id); });
-                    }
-                    else {
-                        this.noPermissionSelectionPageId = item.id;
-                        this.props.buildBreadCrumbPath(item.id);
-                        this.props.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
-                    }
-                });
-            };
-
-            const publishedDate = new Date(item.publishDate.split(" ")[0]);
-
-            const addToTags = (newTag) => {
-                const condition = this.props.tags.indexOf(newTag) === -1;
-                const update = () => {
-                    let tags = this.props.tags;
-                    tags = tags.length > 0 ? `${tags},${newTag}` : `${newTag}`;
-                    tags = this.distinct(tags.split(",")).join(",");
-                    this.setState({ tags, filtersUpdated: true }, () => this.props.onSearch());
-                };
-
-                condition ? update() : null;
-            };
-            const getTabPath = (path) => {
-                path = path.startsWith("/") ? path.substring(1) : path;
-                return path.split("/").join(" / ");
-            };
-
-            let visibleMenus = [];
-            item.canViewPage && visibleMenus.push(<li onClick={() => this.props.onViewPage(item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
-            item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.props.onViewEditPage(item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
-            if (pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
-                let additionalMenus = cloneDeep(pageInContextComponents || []);
-                additionalMenus && additionalMenus.map(additionalMenu => {
-                    visibleMenus.push(<li onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
-                        && this.props.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
-                });
-            }
-            return (
-                <GridCell columnSize={100}>
-                    <div className="search-item-card">
-                        {this.props.pageTypeSelectorComponents && this.props.pageTypeSelectorComponents.length > 0 &&                            
-                            this.props.pageTypeSelectorComponents.map(function (component) {
-                                const Component = component.component;
-                                return <div className="search-item-thumbnail"><Component page={item} /></div>;
-                            })
-                        }
-                        <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
-                            <div className="search-item-details-left">
-                                <h1 onClick={() => onNameClick(item)}><OverflowText text={item.name} /></h1>
-                                <h2><OverflowText text={getTabPath(item.tabpath)} /></h2>
-                            </div>
-                            <div className="search-item-details-right">
-                                <ul>
-                                    {visibleMenus}
-                                </ul>
-                            </div>
-                            <div className="search-item-details-list">
-                                <ul>
-                                    <li>
-                                        <p>{Localization.get("PageType")}:</p>
-                                        <p title={this.props.getPageTypeLabel(item.pageType)} onClick={() => { this.props.filterByPageType !== item.pageType && this.setState({ filterByPageType: item.pageType, filtersUpdated: true }, () => this.props.onSearch()); }} >{this.props.getPageTypeLabel(item.pageType)}</p>
-                                    </li>
-                                    <li>
-                                        <p>{Localization.get("lblPublishStatus")}:</p>
-                                        <p title={this.props.getPublishStatusLabel(item.publishStatus)} onClick={() => { this.props.filterByPublishStatus !== item.publishStatus && this.setState({ filterByPublishStatus: item.publishStatus, filtersUpdated: true }, () => this.props.onSearch()); }} >{this.props.getPublishStatusLabel(item.publishStatus)}</p>
-                                    </li>
-                                    <li>
-                                        <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
-                                        <p title={item.publishDate} onClick={() => { (this.props.startDate.toString() !== new Date(item.publishDate.split(" ")[0]).toString() || this.props.startDate.toString() !== this.props.endDate.toString()) && this.setState({ startDate: publishedDate, endDate: publishedDate, startAndEndDateDirty: true, filtersUpdated: true }, () => this.props.onSearch()); }}>{item.publishDate.split(" ")[0]}</p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="search-item-details-list">
-                                <ul>
-                                    {!utils.isPlatform() && <li>
-                                        {/* TODO WORKFLOW */}
-                                        <p >{Localization.get("WorkflowTitle")}:</p>    
-                                        <p title={item.workflowName} onClick={() => { this.state.filterByWorkflow !== item.workflowId && this.setState({ filterByWorkflow: item.workflowId, filterByWorkflowName: item.workflowName, filtersUpdated: true }, () => this.props.onSearch()); }}>{item.workflowName}</p>
-                                    </li>
-                                    }
-                                    <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
-                                        <p>{Localization.get("Tags")}:</p>
-                                        <p title={item.tags.join(",").trim(",")}>{
-                                            item.tags.map((tag, count) => {
-                                                return (
-                                                    <span>
-                                                        <span style={{ marginLeft: "5px" }} onClick={() => addToTags(tag)}>
-                                                            {tag}
-                                                        </span>
-                                                        {count < (item.tags.length - 1) && <span style={{ color: "#000" }}>
-                                                            ,
-                                                        </span>}
-                                                    </span>
-                                                );
-                                            })}
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </GridCell >
-            );
-        };
+        const { searchList } = this.props;
 
         return (
             <GridCell columnSize={100} className="fade-in">
@@ -139,7 +34,33 @@ class SearchResult extends Component {
                     </GridCell>
                     <GridCell columnSize={100}>
                         {searchList.map((item) => {
-                            return render_card(item);
+                            return (
+                                <SearchResultCard 
+                                    item={item}
+                                    clearSearch={this.props.clearAdvancedSearch}
+                                    onLoadPage={this.props.onLoadPage}
+                                    buildBreadCrumbPath={this.props.buildBreadCrumbPath}
+                                    setEmptyStateMessage={this.props.setEmptyStateMessage}
+                                    tags={this.props.tags}
+                                    onSearch={this.props.onSearch}
+                                    onViewPage={this.props.onViewPage}
+                                    onViewEditPage={this.props.onViewEditPage}
+                                    CallCustomAction={this.props.CallCustomAction}
+                                    getPageTypeLabel={this.props.getPageTypeLabel}
+                                    getPublishStatusLabel={this.props.getPublishStatusLabel}
+                                    filterByPageType={this.props.filterByPageType}
+                                    filterByPublishStatus={this.props.filterByPublishStatus}
+                                    updateFilterByPageStatusOptions={this.props.updateFilterByPageStatusOptions}
+                                    updateFilterByPageTypeOptions={this.props.updateFilterByPageTypeOptions}
+                                    updateFilterByWorkflowOptions={this.props.updateFilterByWorkflowOptions}
+                                    updateFilterStartEndDate={this.props.updateFilterStartEndDate}
+                                    startDate={this.props.startDate}
+                                    endDate={this.props.endDate} 
+                                    pageInContextComponents={this.props.pageInContextComponents} 
+                                    pageTypeSelectorComponents={this.props.pageTypeSelectorComponents}
+                                    updateSearchAdvancedTags={this.props.updateSearchAdvancedTags}
+                                    filterByWorkflow={this.props.filterByWorkflow}  />
+                            );
                         })}
                     </GridCell>
                 </GridCell>
@@ -171,7 +92,13 @@ SearchResult.propTypes = {
     onViewEditPage : PropTypes.func.isRequired,
     CallCustomAction : PropTypes.func.isRequired,
     onLoadPage : PropTypes.func.isRequired,
-    updateSearchAdvancedTags : PropTypes.func.isRequired
+    updateSearchAdvancedTags : PropTypes.func.isRequired,
+    updateFilterByPageStatusOptions : PropTypes.func.isRequired,
+    updateFilterByPageTypeOptions : PropTypes.func.isRequired,
+    updateFilterByWorkflowOptions : PropTypes.func.isRequired,
+    updateFilterStartEndDate : PropTypes.func.isRequired,
+    filterByWorkflow: PropTypes.string.isRequired,
+    buildTree : PropTypes.func.isRequired
 
 };
 

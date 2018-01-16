@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ReactDOM from "react-dom";
 import Localization from "../../localization";
 import GridCell from "dnn-grid-cell";
 import Tags from "dnn-tags";
@@ -11,11 +12,19 @@ import utils from "../../utils";
 class SearchAdvancedDetails extends Component {
 
     constructor(props) {
-        super(props);
+        super(props); 
         this.state = {
             DropdownCalendarIsActive : false,
-            tags : []
+            tags : props.tags?props.tags.split(","):[]
         };
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.tags) {
+            this.setState({
+                tags:newProps.tags.split(",")
+            });
+        }
     }
 
     getDateLabel() {
@@ -52,17 +61,14 @@ class SearchAdvancedDetails extends Component {
         this.props.clearAdvancedSearch();
     }
 
-    onChangeTags(evnt){
+    onChangeTags(evnt) {
         this.setState({
             tags: evnt
-        });
+        },()=>this.props.updateSearchAdvancedTags(this.state.tags.join(",")));        
     }
 
-    onSearch() {
-        if (this.state.tags!=="") {
-            this.props.updateSearchAdvancedTags(this.state.tags.join(" "));
-        }
-        this.props.onSearch();
+    onTagClick() {
+        ReactDOM.findDOMNode(this).getElementsByClassName("input-container")[0].childNodes[0].focus();
     }
 
     render() {
@@ -123,13 +129,15 @@ class SearchAdvancedDetails extends Component {
                     </GridCell>
                 </GridCell>
                 <GridCell columnSize={30} style={{ paddingLeft: "10px", paddingTop: "10px" }}>
-                    <Tags style={{height:"82px", width:"100%" }}
-                        tags={this.state.tags}
-                        onUpdateTags={this.onChangeTags.bind(this)} />
+                    <div onClick={this.onTagClick.bind(this)}>
+                        <Tags style={{minHeight:"82px", width:"100%" }}
+                            tags={this.state.tags}
+                            onUpdateTags={this.onChangeTags.bind(this)} />
+                    </div>
                 </GridCell>
-                <GridCell columnSize={100} style={{ textAlign: "center" }}>
+                <GridCell columnSize={100} style={{ textAlign: "center",height:"30%" }}>
                     <Button style={{ marginRight: "5px" }} onClick={this.onClear.bind(this)}>{Localization.get("Clear")}</Button>
-                    <Button type="primary" onClick={this.onSearch.bind(this)}>{Localization.get("Apply")}</Button>
+                    <Button type="primary" onClick={()=>this.props.onSearch()}>{Localization.get("Apply")}</Button>
                 </GridCell>
             </div>);
     }

@@ -27,10 +27,7 @@ import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
 import GridCell from "dnn-grid-cell";
-import OverflowText from "dnn-text-overflow-wrapper";
 import Promise from "promise";
-
-import { XIcon } from "dnn-svg-icons";
 import SearchPageInput from "./SearchPage/SearchPageInput";
 
 import "./style.less";
@@ -985,7 +982,7 @@ class App extends Component {
                     this.doSearch();
                 }          
             }
-            this.setState({ DropdownCalendarIsActive: null, toggleSearchMoreFlyout: false });
+            this.setState({ DropdownCalendarIsActive: null});
         });
     }
 
@@ -1215,14 +1212,6 @@ class App extends Component {
             <PageList onPageSettings={this.onPageSettings.bind(this)} />
         );
     }
-    distinct(list) {
-        let distinctList = [];
-        list.map((item) => {
-            if (item.trim() !== "" && distinctList.indexOf(item.trim().toLowerCase()) === -1)
-                distinctList.push(item.trim().toLowerCase());
-        });
-        return distinctList;
-    }
     
     getFilterByPageTypeOptions() {
         return [
@@ -1272,12 +1261,24 @@ class App extends Component {
         condition ? this.setState({ startAndEndDateDirty: true, DropdownCalendarIsActive: null }) : this.setState({ DropdownCalendarIsActive: null });
     }
     
-    updateFilterByPageTypeOptions(data) { this.setState({ filterByPageType: data.value, filtersUpdated: true }); }
+    updateFilterByPageTypeOptions(data) { 
+        this.setState({ filterByPageType: data.value, filtersUpdated: true }); 
+    }
     
     updateFilterByPageStatusOptions(data) {
         this.setState({ filterByPublishStatus: data.value, filtersUpdated: true });
     } 
-    updateFilterByWorkflowOptions(data) {this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });}
+    updateFilterByWorkflowOptions(data) {
+        this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });
+    }
+
+    updateFilterStartEndDate(startDate, endDate) {
+        this.setState({
+            startDate,endDate,
+            startAndEndDateDirty:true,
+            filtersUpdated:true
+        });
+    }
 
     render_searchResults() {
         return (
@@ -1311,6 +1312,8 @@ class App extends Component {
                 CallCustomAction={this.CallCustomAction.bind(this)}
                 onLoadPage={this.onLoadPage.bind(this)}
                 updateSearchAdvancedTags={this.updateSearchAdvancedTags.bind(this)}
+                updateFilterStartEndDate={this.updateFilterStartEndDate.bind(this)}
+                buildTree={this.buildTree.bind(this)}
             />
         );
     }
