@@ -39,6 +39,8 @@ In addition to robust content management, the free, open source DNN Platform inc
 We encourage everyone to contribute.
 All the details on contributing with Git and on our working methods can be found on [our Git wiki page] (http://www.dnnsoftware.com/wiki/page/github)
 
+In addition, since DNN is part of the .NET Foundation, we require our contributors to abide by their [Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct) rules and requirements also.
+
 ## .NET Foundation
 
 This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
