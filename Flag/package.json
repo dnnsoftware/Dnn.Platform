@@ -1,0 +1,38 @@
+{
+  "name": "dnn-flag",
+  "version": "1.0.0",
+  "description": "Reusable language flag icon",
+  "main": "index.js",
+  "types": "src/Flag.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "prepublishOnly": "set NODE_ENV=production&&webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnnsoftware/Dnn.Evoq.Microservices.UI.Common.git"
+  },
+  "keywords": [
+    "localization",
+    "flag",
+    "language"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/dnnsoftware/Dnn.Evoq.Microservices.UI.Common/issues"
+  },
+  "homepage": "https://github.com/dnnsoftware/Dnn.Evoq.Microservices.UI.Common#readme",
+  "devDependencies": {
+    "@types/node": "^8.0.33",
+    "@types/react": "~15.0.30",
+    "awesome-typescript-loader": "^3.2.3",
+    "tslint": "^5.7.0",
+    "tslint-loader": "^3.5.3",
+    "typescript": "^2.5.3",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.6.0"
+  }
+}

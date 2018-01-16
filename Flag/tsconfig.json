@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es5",
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "declaration": true,
+    "lib": [
+      "dom",
+      "es7"
+    ]
+  },
+  "include": [
+    "src",
+    "__tests__"
+  ],
+  "typeAcquisition": {
+    "enable": true
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "silent": true
+  }
+}
