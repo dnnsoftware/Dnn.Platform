@@ -16,13 +16,21 @@ class PageTypeSelector extends Component {
         }
         return false;
     }
-
+    _getHierarchyLabel() {
+        const page = this.props.page;
+        if (page.hierarchy === null || page.hierarchy === "" || page.hierarchy === Localization.get("NoneSpecified")) {
+            return Localization.get("TopPage");
+        } else {
+            return page.hierarchy;
+        }
+    }
     render() {
         const {page, onChangePageType} = this.props;
         const createdDate = Localization.get("CreatedValue")
                                 .replace("[CREATEDDATE]", utils.formatDateNoTime(page.createdOnDate))
                                 .replace("[CREATEDUSER]", page.created || "System");
-        const hierarchy = page.hierarchy === "" ? Localization.get("TopPage") : page.hierarchy;
+        
+        const hierarchy = this._getHierarchyLabel();        
         const components = this.getComponents(); 
 
         return (
