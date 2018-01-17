@@ -37,7 +37,7 @@ class SearchResult extends Component {
                             return (
                                 <SearchResultCard 
                                     item={item}
-                                    clearSearch={this.props.clearAdvancedSearch}
+                                    clearSearch={this.props.clearSearch}
                                     onLoadPage={this.props.onLoadPage}
                                     buildBreadCrumbPath={this.props.buildBreadCrumbPath}
                                     setEmptyStateMessage={this.props.setEmptyStateMessage}
