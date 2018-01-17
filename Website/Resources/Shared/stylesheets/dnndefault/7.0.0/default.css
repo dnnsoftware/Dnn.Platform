@@ -1619,6 +1619,7 @@ div.dnnTagsInput span.tag {
     color: #888;
     cursor: pointer;
     background-color: #eee;
+    word-break: break-word;
 }
 
     div.dnnTagsInput span.tag:hover {
