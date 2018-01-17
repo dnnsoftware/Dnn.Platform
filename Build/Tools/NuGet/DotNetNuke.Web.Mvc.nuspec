@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.Web.Mvc</id>
-    <version>9.1.1</version>
+    <version>9.2.0</version>
     <title>DNN Platform (ASP.NET MVC)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
@@ -16,7 +16,7 @@
     </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
-      <dependency id="DotNetNuke.Web" version="9.1.1" />
+      <dependency id="DotNetNuke.Web" version="9.2.0" />
     </dependencies>
   </metadata>
   <files>
