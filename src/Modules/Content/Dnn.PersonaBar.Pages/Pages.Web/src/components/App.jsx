@@ -956,11 +956,11 @@ class App extends Component {
     }
 
     onSearch(term) {
-        let newTerm = (term!==undefined)?term:this.state.searchTerm;
+        let newTerm = (term!==undefined) ? term : this.state.searchTerm;
         this.setState({
-            searchTerm:newTerm,
-            inSearch:true,
-            filtersUpdated:true
+            searchTerm: newTerm,
+            inSearch: true,
+            filtersUpdated: true
         },()=>{
             const { selectedPage } = this.props;
             const { filtersUpdated } = this.state;
