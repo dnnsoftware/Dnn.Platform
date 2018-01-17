@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
@@ -29,19 +30,20 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
                 actualSeverity = (EventLogSeverity)severity;
             }
 
+            // Get event logs.
             List<EventLog> eventLogs = EventLogManager.Browse(pageIndex, pageSize, eventType, actualSeverity).ToList();
 
-            // Work out details.
+            // Work out pagination details.
             int rowCount = EventLogManager.EventCount();
             int pageCount = (int)Math.Ceiling((double)(rowCount / pageSize));
 
             // Start building meta.
-            Dictionary<string, dynamic> meta = new Dictionary<string, dynamic>();
+            Dictionary<string, dynamic> pagination = new Dictionary<string, dynamic>();
 
             // Add basics.
-            meta.Add("Records", rowCount);
-            meta.Add("Pages", pageCount);
-            meta.Add("CurrentPage", pageIndex);
+            pagination.Add("Records", rowCount);
+            pagination.Add("Pages", pageCount);
+            pagination.Add("CurrentPage", pageIndex);
 
             // Build navigation.
             Dictionary<string, string> navigation = new Dictionary<string, string>();
@@ -94,19 +96,29 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
 
             // Add navigation.
-            meta.Add("Navigation", navigation);
+            pagination.Add("Navigation", navigation);
 
             Dictionary<string, dynamic> payload = new Dictionary<string, dynamic>();
 
             payload.Add("Data", eventLogs);
-            payload.Add("Pagination", meta);
+            payload.Add("Pagination", pagination);
 
             // Serialise.
             JavaScriptSerializer js = new JavaScriptSerializer();
 
-            string payloadJson = js.Serialize(payload);
+            string json = js.Serialize(payload);
 
-            return Request.CreateResponse(HttpStatusCode.OK, payloadJson);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+
+            response.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            return response;
+        }
+
+        [HttpGet]
+        public HttpResponseMessage Count()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, EventLogManager.EventCount());
         }
 
         [HttpGet]
