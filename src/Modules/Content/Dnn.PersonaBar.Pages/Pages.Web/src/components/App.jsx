@@ -11,8 +11,7 @@ import {
     visiblePanelActions as VisiblePanelActions,
     visiblePageSettingsActions as VisiblePageSettingsActions,
     languagesActions as LanguagesActions,
-    pageHierarchyActions as PageHierarchyActions,
-    extensionActions as ExtensionsActions
+    pageHierarchyActions as PageHierarchyActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
@@ -585,8 +584,8 @@ class App extends Component {
         const id = (typeof input === "object") ? this.props.selectedPage.tabId : input;
         if (this.props.selectedPageDirty) {
             const onConfirm = () => {
-                this.onLoadPage(id, (data) => {
-                    this._traverse((item, list, updateStore) => {
+                this.onLoadPage(id, () => {
+                    this._traverse((item, list) => {
                         if (item.id === id) {
                             Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
                             this.props.updatePageListStore(list);
@@ -945,10 +944,10 @@ class App extends Component {
             let dateRangeText = Localization.get(utils.isPlatform() ? "ModifiedDateRange" : "PublishedDateRange");
             const fullStartDate = utils.formatDate(startDate);
             const fullEndDate = utils.formatDate(endDate);
-            const left = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate} - ${fullEndDate} ` });
-            const right = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate}` });
+            const dateInterval = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate} - ${fullEndDate} ` });
+            const justOneDate = () => filters.push({ ref: "startAndEndDateDirty", tag: `${dateRangeText}: ${fullStartDate}` });
 
-            fullStartDate !== fullEndDate ? left() : right();
+            fullStartDate !== fullEndDate ? dateInterval() : justOneDate();
         }
     }
 
@@ -1087,13 +1086,13 @@ class App extends Component {
         let selectedPath = [];
         const buildBreadCrumbPathInternal = () => {
             const addNode = (tabId) => {
-                this._traverse((item, list, update) => {
+                this._traverse((item) => {
                     if (item.id === tabId) {
                         page = item;
                         return;
                     }
                 });
-                //page && page.name && page.id && 
+                
                 selectedPath.push({ name: page.name, tabId: (page.id !== pageId ? page.id : null) });
                 const left = () => {
                     addNode(page.parentId);
@@ -1107,12 +1106,6 @@ class App extends Component {
             addNode(pageId);
         };
         buildBreadCrumbPathInternal();
-    }
-    onBreadcrumbSelect(name) {
-    }
-
-    isOnInsertMode(){
-        return false;
     }
 
     render_PagesDetailEditor() {
@@ -1131,7 +1124,7 @@ class App extends Component {
 
 
         const render_pageDetails = () => {
-            const { props, state } = this;
+            const { props } = this;
             const { isContentLocalizationEnabled } = props;
             return (
                 <PageSettings
@@ -1249,7 +1242,7 @@ class App extends Component {
         return filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()) && filterByPublishStatusOptions.find(x => x.value === publishStatus.toLowerCase()).label || publishStatus;
     }
 
-    updateSearchAdvancedTags(tags){
+    updateSearchAdvancedTags(tags) {
         this.setState({tags:tags,filtersUpdated:true});
     }
 
@@ -1348,7 +1341,7 @@ class App extends Component {
         const {inSearch} = this.state;
         const {selectedView} = this.props;
 
-        switch (true){
+        switch (true) {
             case inSearch:
                 return this.render_searchResults();
             case selectedPage && selectedPage.tabId === 0:
