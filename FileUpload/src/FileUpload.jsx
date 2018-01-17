@@ -69,7 +69,7 @@ export default class FileUpload extends Component {
         }
         if(nextProps.selectedFile && this.state.selectedFile)
         {
-            if (nextProps.selectedFile.fileId !== this.state.selectedFile.fileId) {
+            if (nextProps.selectedFile.fileId !== (this.state.selectedFile.fileId || + this.state.selectedFile.key)) {
                 const file = nextProps.selectedFile;
                 this.updateStateAndReloadImage(file);
             }
