@@ -145,5 +145,10 @@ module.exports = [
     "startswith",
     "selectable",
     "overridable",
-    "guid"
+    "guid",
+    "treeview",
+    "flyout",
+    "Flyout",
+    "interactor",
+    "cloneDeep"
 ]
