@@ -1208,7 +1208,7 @@ class App extends Component {
     
     getFilterByPageTypeOptions() {
         return [
-            { value: "", label: Localization.get("lblAll") },
+            { value: "", label: Localization.get("lblNone") },
             { value: "normal", label: Localization.get("lblNormal") },
             { value: "tab", label: Localization.get("Existing") },
             { value: "url", label: Localization.get("lblUrl") },
