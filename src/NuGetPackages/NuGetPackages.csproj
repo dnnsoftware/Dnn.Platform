@@ -68,10 +68,6 @@
       <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.245\lib\DotNetNuke.Modules.DigitalAssets.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Tests.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.245\lib\DotNetNuke.Tests.Data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="DotNetNuke.Tests.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.245\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
       <Private>True</Private>
