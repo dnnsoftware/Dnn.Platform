@@ -164,7 +164,7 @@ class Input extends Component {
     }
 
     isFlag(token) {
-        return (token && token.startsWith("--"));
+        return (token && token.indexOf("--") === 0);
     }
 
     getFlag(flag, tokens) {

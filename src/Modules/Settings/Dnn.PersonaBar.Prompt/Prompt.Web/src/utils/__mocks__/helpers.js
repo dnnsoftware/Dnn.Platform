@@ -34,7 +34,7 @@ export function formatLabel(input) {
 export function getColumnsFromRow(row) {
     const columns = [];
     for (let key in row) {
-        if (!key.startsWith("__")) {
+        if (key.indexOf("__") !== 0) {
             columns.push(key);
         }
     }
