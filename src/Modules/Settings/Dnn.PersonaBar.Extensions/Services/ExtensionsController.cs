@@ -266,6 +266,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     AddFiles(response, path, root, "*.cshtml");
                     AddFiles(response, path, root, "*.vbhtml");
                     AddFiles(response, path, root, "*.html");
+                    AddFiles(response, path, root, "*.htm");
                 }
             }
 
@@ -974,6 +975,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                         files.AddRange(GetFiles(folder, "*.ascx"));
                         files.AddRange(GetFiles(folder, "*.cshtml"));
                         files.AddRange(GetFiles(folder, "*.vbhtml"));
+                        files.AddRange(GetFiles(folder, "*.html"));
+                        files.AddRange(GetFiles(folder, "*.htm"));
                         break;
                     case FileType.Template:
                         files.AddRange(GetFiles(Globals.HostMapPath + "Templates\\", ".module.template"));
