@@ -753,7 +753,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// -----------------------------------------------------------------------------
         private static void LoadResource(IDictionary ht, string filepath)
         {
-            var d = new XmlDocument();
+            var d = new XmlDocument { XmlResolver = null };
             bool xmlLoaded;
             try
             {
@@ -818,8 +818,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// -----------------------------------------------------------------------------
         private string SaveResourceFileFile(int portalId, LanguageResourceMode mode, string locale, IEnumerable<LocalizationEntry> entries)
         {
-            var resDoc = new XmlDocument();
-            var defDoc = new XmlDocument();
+            var resDoc = new XmlDocument { XmlResolver = null };
+            var defDoc = new XmlDocument { XmlResolver = null };
 
             var filename = ResourceFile(portalId, locale, mode);
             resDoc.Load(File.Exists(filename)

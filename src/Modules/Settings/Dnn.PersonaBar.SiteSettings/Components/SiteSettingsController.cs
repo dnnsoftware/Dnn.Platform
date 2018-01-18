@@ -60,8 +60,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         public void SaveLocalizedKeys(int portalId, string propertyName, string propertyCategory, string cultureCode, string propertyNameString,
             string propertyHelpString, string propertyRequiredString, string propertyValidationString, string categoryNameString)
         {
-            var portalResources = new XmlDocument();
-            var defaultResources = new XmlDocument();
+            var portalResources = new XmlDocument { XmlResolver = null };
+            var defaultResources = new XmlDocument { XmlResolver = null };
             XmlNode parent;
 
             defaultResources.Load(GetResourceFile("", Localization.SystemLocale, portalId));

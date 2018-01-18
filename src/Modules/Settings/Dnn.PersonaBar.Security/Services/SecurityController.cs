@@ -689,7 +689,7 @@ namespace Dnn.PersonaBar.Security.Services
 
                 // load XML document
                 StreamReader oReader = new StreamReader(oStream);
-                XmlDocument oDoc = new XmlDocument();
+                XmlDocument oDoc = new XmlDocument { XmlResolver = null };
                 oDoc.LoadXml(oReader.ReadToEnd());
 
                 List<object> items = new List<object>();

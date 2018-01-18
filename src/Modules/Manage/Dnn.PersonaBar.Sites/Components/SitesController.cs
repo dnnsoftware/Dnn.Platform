@@ -1057,7 +1057,7 @@ namespace Dnn.PersonaBar.Sites.Components
                         if (pages.Any(p => p.TabId == tabId && (p.CheckedState == NodeCheckedState.Checked || p.CheckedState == NodeCheckedState.Partial)) ||
                             pages.All(p => p.TabId != tabId))
                         {
-                            tabNode = TabController.SerializeTab(new XmlDocument(), tabs, tab, portal, chkContent);
+                            tabNode = TabController.SerializeTab(new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
                         }
                     }
                     else
@@ -1072,7 +1072,7 @@ namespace Dnn.PersonaBar.Sites.Components
                                     p.TabId == defaultTab.TabID.ToString(CultureInfo.InvariantCulture) &&
                                     (p.CheckedState == NodeCheckedState.Checked || p.CheckedState == NodeCheckedState.Partial)) > 0)
                         {
-                            tabNode = TabController.SerializeTab(new XmlDocument(), tabs, tab, portal, chkContent);
+                            tabNode = TabController.SerializeTab(new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
                         }
                     }
 

@@ -441,7 +441,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 XmlDocument xmlDoc = null;
                 try
                 {
-                    xmlDoc = new XmlDocument();
+                    xmlDoc = new XmlDocument { XmlResolver = null };
                     xmlDoc.Load(strFile);
                 }
                 catch
