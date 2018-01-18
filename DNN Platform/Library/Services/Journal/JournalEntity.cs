@@ -14,11 +14,11 @@ namespace DotNetNuke.Services.Journal {
         }
         public JournalEntity(string entityXML) {
             if (!string.IsNullOrEmpty(entityXML)) {
-                System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
+                XmlDocument xDoc = new XmlDocument { XmlResolver = null };
                 xDoc.LoadXml(entityXML);
                 if ((xDoc != null)) {
-                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    System.Xml.XmlNode xNode = null;
+                    XmlNode xRoot = xDoc.DocumentElement;
+                    XmlNode xNode = null;
                     xNode = xRoot.SelectSingleNode("//entity");
                     if ((xNode != null)) {
                         Id = int.Parse(xNode["id"].InnerText);

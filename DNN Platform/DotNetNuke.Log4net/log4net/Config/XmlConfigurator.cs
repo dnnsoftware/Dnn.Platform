@@ -722,7 +722,7 @@ namespace log4net.Config
 			else
 			{
 				// Load the config file into a document
-				XmlDocument doc = new XmlDocument();
+				XmlDocument doc = new XmlDocument() { XmlResolver = null };
 				try
 				{
 #if (NETCF)
@@ -736,9 +736,9 @@ namespace log4net.Config
 #if NETSTANDARD1_3 // TODO DtdProcessing.Parse not yet available (https://github.com/dotnet/corefx/issues/4376)
 					settings.DtdProcessing = DtdProcessing.Ignore;
 #elif !NET_4_0 && !MONO_4_0
-					settings.ProhibitDtd = false;
+					settings.ProhibitDtd = true;
 #else
-					settings.DtdProcessing = DtdProcessing.Parse;
+					settings.DtdProcessing = DtdProcessing.Prohibit;
 #endif
 
 					// Create a reader over the input stream

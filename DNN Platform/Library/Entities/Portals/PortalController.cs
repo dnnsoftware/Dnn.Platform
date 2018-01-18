@@ -405,7 +405,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 //add profile definitions
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
                 //open the XML template file
                 try
                 {
@@ -1778,7 +1778,7 @@ namespace DotNetNuke.Entities.Portals
         {
 			CachingProvider.DisableCacheExpiration();
 
-            var xmlPortal = new XmlDocument();
+            var xmlPortal = new XmlDocument { XmlResolver = null };
             IFolderInfo objFolder;
             try
             {
@@ -1892,7 +1892,7 @@ namespace DotNetNuke.Entities.Portals
                 string version = xmlPortal.DocumentElement.GetAttribute("version");
                 if (version != "5.0")
                 {
-                    XmlDocument xmlAdmin = new XmlDocument();
+                    XmlDocument xmlAdmin = new XmlDocument { XmlResolver = null };
                     try
                     {
                         string path = Path.Combine(templatePath, "admin.template");

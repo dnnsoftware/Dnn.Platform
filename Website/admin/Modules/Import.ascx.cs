@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         var objObject = Reflection.CreateObject(Module.DesktopModule.BusinessControllerClass, Module.DesktopModule.BusinessControllerClass);
                         if (objObject is IPortable)
                         {
-                            var xmlDoc = new XmlDocument();
+                            var xmlDoc = new XmlDocument { XmlResolver = null };
                             try
                             {
                                 var content = XmlUtils.RemoveInvalidXmlCharacters(txtContent.Text);

@@ -255,7 +255,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <returns>An <see cref="XmlDocument"/> instance.</returns>
         private static XmlDocument GetXmlMergeDoc(string xmlMergePath, string name, string publicKeyToken, string oldVersion, string newVersion)
         {
-            var xmlMergeDoc = new XmlDocument();
+            var xmlMergeDoc = new XmlDocument { XmlResolver = null };
             xmlMergeDoc.Load(xmlMergePath);
 
             var namespaceManager = new XmlNamespaceManager(xmlMergeDoc.NameTable);

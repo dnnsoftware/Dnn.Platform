@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
                 try
                 {
-                    var doc = new XmlDocument();
+                    var doc = new XmlDocument { XmlResolver = null };
                     doc.Load(fname);
                     var root = doc.DocumentElement;
                     var docFilters = root?.SelectNodes("/configuration/property[@name='DocumentsFilters']");

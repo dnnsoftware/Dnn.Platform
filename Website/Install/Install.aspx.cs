@@ -386,7 +386,7 @@ namespace DotNetNuke.Services.Install
             string strNewFile = Globals.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
             if (File.Exists(strNewFile))
             {
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(strNewFile);
 
                 //parse portal(s) if available
