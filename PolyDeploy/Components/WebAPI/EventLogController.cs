@@ -2,6 +2,7 @@
 using Cantarus.Modules.PolyDeploy.Components.Logging;
 using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,10 +104,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             payload.Add("Data", eventLogs);
             payload.Add("Pagination", pagination);
 
-            // Serialise.
-            JavaScriptSerializer js = new JavaScriptSerializer();
-
-            string json = js.Serialize(payload);
+            string json = JsonConvert.SerializeObject(payload);
 
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
 

@@ -70,6 +70,10 @@
       <HintPath>..\packages\DotNetNuke_Community_DotNetNuke.Web.Client.07.00.00\lib\DotNetNuke.Web.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke_Community_Newtonsoft.Json.07.00.00\lib\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
