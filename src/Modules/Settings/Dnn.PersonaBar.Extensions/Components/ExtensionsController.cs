@@ -167,7 +167,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             try
             {
                 StreamReader myResponseReader = UpdateService.GetLanguageList();
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(myResponseReader);
                 XmlNodeList languages = xmlDoc.SelectNodes("available/language");
 

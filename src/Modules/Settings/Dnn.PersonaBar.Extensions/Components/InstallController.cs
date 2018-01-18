@@ -256,7 +256,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 try
                 {
-                    var document = new XmlDocument();
+                    var document = new XmlDocument { XmlResolver = null };
                     document.Load(manifestFile);
                     var compactNode = document.SelectSingleNode("/dotnetnuke/packages/package/azureCompatible");
                     if (compactNode != null && !string.IsNullOrEmpty(compactNode.InnerText))

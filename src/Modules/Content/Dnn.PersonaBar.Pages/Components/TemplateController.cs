@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 filename = folder.FolderPath + template.Name + ".page.template";
                 filename = filename.Replace("/", "\\");
 
-                var xmlTemplate = new XmlDocument();
+                var xmlTemplate = new XmlDocument { XmlResolver = null };
                 var nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));
                 nodePortal.Attributes?.Append(XmlUtils.CreateAttribute(xmlTemplate, "version", "3.0"));
 
@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tab = _tabController.GetTab(template.TabId, portalSettings.PortalId, false);
-            var xmlTab = new XmlDocument();
+            var xmlTab = new XmlDocument { XmlResolver = null };
             var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
         }
@@ -153,7 +153,7 @@ namespace Dnn.PersonaBar.Pages.Components
             // create the page from a template
             if (templateId != Null.NullInteger)
             {
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 try
                 {
                     // open the XML file
