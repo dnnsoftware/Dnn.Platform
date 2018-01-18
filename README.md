@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/3mts88xl9t34ytel?svg=true)](https://ci.appveyor.com/project/DnnAutomation/dnn-platform)
+
 ![DNN Platform At A Glance](dnnplatform.png)
 
 # Project Description
