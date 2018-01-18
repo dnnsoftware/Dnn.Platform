@@ -407,7 +407,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 return log;
             }
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             if (log != null)
             {
                 xmlDoc.LoadXml(log.Serialize());

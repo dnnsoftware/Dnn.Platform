@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 						//Double-check
 						if (objObject is IPortable)
                         {
-                            XmlDocument moduleXml = new XmlDocument();
+                            XmlDocument moduleXml = new XmlDocument { XmlResolver = null };
                             XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, Module, true);
 
                             //add attributes to XML document

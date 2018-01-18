@@ -148,14 +148,14 @@ namespace DotNetNuke.Services.Localization
                 XmlDocument doc = null;
                 if (File.Exists(filePath))
                 {
-                    doc = new XmlDocument();
+                    doc = new XmlDocument { XmlResolver = null };
                     doc.Load(filePath);
                 }
                 else
                 {
                     if (createFile)
                     {
-                        doc = new System.Xml.XmlDocument();
+                        doc = new XmlDocument { XmlResolver = null };
                         doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"));
                         XmlNode root = doc.CreateElement("root");
                         doc.AppendChild(root);

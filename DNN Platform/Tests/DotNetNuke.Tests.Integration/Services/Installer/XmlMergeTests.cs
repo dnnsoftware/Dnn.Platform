@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             {
                 Debug.Assert(targetStream != null,
                              string.Format("Unable to location embedded resource for {0}Target.xml", testMethodName));
-                var targetDoc = new XmlDocument();
+                var targetDoc = new XmlDocument { XmlResolver = null };
                 targetDoc.Load(targetStream);
                 return targetDoc;
             }

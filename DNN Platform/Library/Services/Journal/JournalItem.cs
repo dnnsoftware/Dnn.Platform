@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Journal {
             ProfileId = Null.SetNullInteger(dr["ProfileId"]);
             SocialGroupId = Null.SetNullInteger(dr["GroupId"]);
             if (!String.IsNullOrEmpty(Null.SetNullString(dr["JournalXML"]))) {
-                JournalXML = new XmlDocument();
+                JournalXML = new XmlDocument { XmlResolver = null };
                 JournalXML.LoadXml(dr["JournalXML"].ToString());
                 XmlNode xRoot = JournalXML.DocumentElement;
                 XmlNode xNode = xRoot.SelectSingleNode("//items/item/body");

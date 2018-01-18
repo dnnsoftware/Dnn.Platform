@@ -266,7 +266,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLogType(string configFile, string fallbackConfigFile)
         {
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             try
             {
                 xmlDoc.Load(configFile);

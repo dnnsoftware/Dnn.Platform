@@ -83,7 +83,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             ModuleDefinitionVersion retValue;
             xmlStream.Seek(0, SeekOrigin.Begin);
-            var xmlReader = new XmlTextReader(xmlStream);
+            var xmlReader = new XmlTextReader(xmlStream) { DtdProcessing = DtdProcessing.Prohibit };
             xmlReader.MoveToContent();
 
             //This test assumes provides a simple validation 

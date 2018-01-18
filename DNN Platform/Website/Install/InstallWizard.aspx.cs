@@ -142,7 +142,7 @@ namespace DotNetNuke.Services.Install
             {
                 if (_installTemplate == null)
                 {
-                    _installTemplate = new XmlDocument();
+                    _installTemplate = new XmlDocument { XmlResolver = null };
                     Upgrade.Upgrade.GetInstallTemplate(_installTemplate);
                 }
                 return _installTemplate;
@@ -693,7 +693,7 @@ namespace DotNetNuke.Services.Install
                 languageList.Items.Clear();
 
                 //Loading into XML doc
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(myResponseReader);
                 var languages = xmlDoc.SelectNodes("available/language");
 	            var packages = new List<PackageInfo>();

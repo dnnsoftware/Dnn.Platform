@@ -397,7 +397,7 @@ namespace DotNetNuke.Web.UI
             // create the page from a template
             if (!string.IsNullOrEmpty(templateFileId))
             {
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
                 try
                 {
 	                var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));

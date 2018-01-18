@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.Skins
         {
             string nodename = Enum.GetName(DefaultType.GetType(), DefaultType).ToLower();
             string filePath = Config.GetPathToFile(Config.ConfigFileType.DotNetNuke);
-            var dnndoc = new XmlDocument();
+            var dnndoc = new XmlDocument { XmlResolver = null };
             dnndoc.Load(filePath);
             XmlNode defaultElement = dnndoc.SelectSingleNode("/configuration/skinningdefaults/" + nodename);
             _folder = defaultElement.Attributes["folder"].Value;

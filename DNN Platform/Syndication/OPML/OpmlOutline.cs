@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                var opmlDoc = new XmlDocument();
+                var opmlDoc = new XmlDocument { XmlResolver = null };
                 XmlElement outlineNode = opmlDoc.CreateElement("outline");
 
                 if (!String.IsNullOrEmpty(Title))
