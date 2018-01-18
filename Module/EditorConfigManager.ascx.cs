@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -114,6 +115,7 @@ namespace DNNConnect.CKEditorProvider.Module
                 }
 
                 PortalTabsAndModulesTree.SelectedNodeChanged += PortalTabsAndModulesTree_SelectedNodeChanged;
+                PortalTabsAndModulesTree.SelectedNodeStyle.ForeColor = Color.Gray;
                 PortalOnly.CheckedChanged += PortalOnly_CheckedChanged;
             }
             catch (Exception exception)
@@ -170,8 +172,6 @@ namespace DNNConnect.CKEditorProvider.Module
                 return;
             }
 
-            PortalTabsAndModulesTree.SelectedNode.ExpandAll();
-
             EditorOptions.IsHostMode = true;
             EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
 
@@ -195,8 +195,6 @@ namespace DNNConnect.CKEditorProvider.Module
 
                 EditorOptions.DefaultHostLoadMode = -1;
 
-                BindPortalTabsAndModulesTree();
-
                 // Load Settings
                 EditorOptions.BindOptionsData(true);
             }
@@ -214,8 +212,6 @@ namespace DNNConnect.CKEditorProvider.Module
 
                 EditorOptions.DefaultHostLoadMode = 0;
 
-                BindPortalTabsAndModulesTree();
-
                 // Load Settings
                 EditorOptions.BindOptionsData(true);
             }
@@ -232,8 +228,6 @@ namespace DNNConnect.CKEditorProvider.Module
                 EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
 
                 EditorOptions.DefaultHostLoadMode = 1;
-
-                BindPortalTabsAndModulesTree();
 
                 // Load Settings
                 EditorOptions.BindOptionsData(true);
