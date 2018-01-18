@@ -1105,8 +1105,8 @@ namespace log4net.Config
 					// Copy the xml data into the root of a new document
 					// this isolates the xml config data from the rest of
 					// the document
-					XmlDocument newDoc = new XmlDocument();
-					XmlElement newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
+					XmlDocument newDoc = new XmlDocument() { XmlResolver = null };
+                    XmlElement newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
 
 					// Pass the configurator the config element
 					configurableRepository.Configure(newElement);
