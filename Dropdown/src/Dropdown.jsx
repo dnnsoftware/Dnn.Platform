@@ -185,16 +185,17 @@ class Dropdown extends Component {
         const index = props.options.findIndex(this.findMatchingItem, this);
         if(index) {
 
-            const value = this.getOption(index).value;
+            const value = this.getOption(index);
 
-            this.setState({
-                closestValue: value,
-                currentIndex: index
-            },() => {
-                this.setState({dropdownText: ""});
-                this.dropdownSearch.value = "";
-                setTimeout(() => this.scrollToSelectedItem(),100);
-            });
+            if(value) {
+                this.setState({
+                    closestValue: value,
+                    currentIndex: index,
+                    dropdownText: ""
+                }, () => {
+                    setTimeout(() => this.scrollToSelectedItem());
+                });
+            }
         }
     }
 
@@ -215,6 +216,7 @@ class Dropdown extends Component {
         this.setState({
             dropdownText: event.target.value
         }, () => {
+            this.dropdownSearch.value = "";
             this.searchItems();
         });
     }
