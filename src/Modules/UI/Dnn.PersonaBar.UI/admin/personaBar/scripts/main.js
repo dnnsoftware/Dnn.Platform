@@ -413,6 +413,21 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                 return settings;
             },
+            updateMenuSettings: function(identifier, settings, menuItems) {
+                menuItems = menuItems || menuViewModel.menu.menuItems;
+                for (var i = 0; i < menuItems.length; i++) {
+                    var menuItem = menuItems[i];
+                    if (typeof menuItem.length === "number" && menuItem.length > 0) {
+                        this.updateMenuSettings(identifier, settings, menuItem);
+                    } else {
+                        if (menuItem.id === identifier) {
+                            menuItem.settings = JSON.stringify(settings);
+                        } else if (typeof menuItem.menuItems !== "undefined" && menuItem.menuItems.length > 0) {
+                            this.updateMenuSettings(identifier, settings, menuItem.menuItems);
+                        }
+                    }
+                }
+            },
             loadBundleScript: function (path) {
                 if (path.indexOf('cdv=') === -1) {
                     path += (path.indexOf('?') > -1 ? '&' : '?') + 'cdv=' + config.buildNumber;
@@ -791,7 +806,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             }
                             
                             if (config.visible) {
-                                var mouseOnHovermenu = false;
+                                
 
                                 (function setupMenu() {
                                     $(".btn_panel .hovermenu").click(function(e) {
@@ -889,10 +904,26 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                                     var showMenuHandlers = [];
                                     var leaveSubMenuHandlers = [];
-                                    $('.btn_panel').each(function () {
-                                        var mouseOnButton = false;
-                                        mouseOnHovermenu = false;
+                                    var mouseOnHovermenu = false;
+                                    var mouseOnButton = false;
 
+                                    var resetHandlers = function() {
+                                        if (showMenuHandlers.length > 0) {
+                                            $.each(showMenuHandlers, function(index, item) {
+                                                clearTimeout(item);
+                                            });
+                                            showMenuHandlers = [];
+                                        }
+
+                                        if (leaveSubMenuHandlers.length > 0) {
+                                            $.each(leaveSubMenuHandlers, function(index, item) {
+                                                clearTimeout(item);
+                                            });
+                                            leaveSubMenuHandlers = [];
+                                        }
+                                    };
+
+                                    $('.btn_panel').each(function () {
                                         var $this = $(this);
                                         var hoverMenuId = $this.data('hovermenu-id');
                                         if (hoverMenuId === undefined) return;
@@ -901,20 +932,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         $this.hover(function () {
                                             mouseOnButton = true;
                                             if ($hoverMenu.css('display') === 'none' || $this.find('> div').length > 0) {
-                                                
-                                                if (showMenuHandlers.length > 0) {
-                                                    $.each(showMenuHandlers, function (index, item) {
-                                                        clearTimeout(item);
-                                                    });
-                                                    showMenuHandlers = [];
-                                                }
-
-                                                if (leaveSubMenuHandlers.length > 0) {
-                                                    $.each(leaveSubMenuHandlers, function (index, item) {
-                                                        clearTimeout(item);
-                                                    });
-                                                    leaveSubMenuHandlers = [];
-                                                }
+                                                resetHandlers();
 
                                                 showMenuHandlers.push(setTimeout(function () {
                                                     if (($hoverMenu.css('display') === 'none' || $this.find('> div').length > 0) && mouseOnButton) {
@@ -931,7 +949,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                                                             $('#' + hoverMenuId).hide();
                                                         });
-
 
                                                         $hoverMenu.show();
                                                         // Fix ie personabar hover menús
@@ -963,6 +980,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                             $iframe.width(personaBarMenuWidth);
                                                         }
                                                         $hoverMenu.hide();
+
+                                                        resetHandlers();
                                                     }
                                                 }, 50);
                                             }
@@ -971,8 +990,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                                     $(".hovermenu").each(function () {
                                         var $this = $(this);
-                                        var mouseOnButton = false;
-                                        mouseOnHovermenu = false;
 
                                         $this.hover(function () {
                                             mouseOnHovermenu = true;
@@ -985,6 +1002,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                             $iframe.width(personaBarMenuWidth);
                                                         }
                                                         $this.hide();
+
+                                                        resetHandlers();
                                                     }
                                                 }, 800));
                                             }
