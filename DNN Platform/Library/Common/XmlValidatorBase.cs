@@ -119,7 +119,11 @@ namespace DotNetNuke.Common
         public virtual bool Validate(Stream xmlStream)
         {
             xmlStream.Seek(0, SeekOrigin.Begin);
-            _reader = new XmlTextReader(xmlStream) { DtdProcessing = DtdProcessing.Prohibit };
+            _reader = new XmlTextReader(xmlStream)
+            {
+                XmlResolver = null,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             return IsValid();
         }
 
@@ -130,7 +134,11 @@ namespace DotNetNuke.Common
 		/// <returns></returns>
         public virtual bool Validate(string filename)
         {
-            _reader = new XmlTextReader(filename) { DtdProcessing = DtdProcessing.Prohibit };
+            _reader = new XmlTextReader(filename)
+            {
+                XmlResolver = null,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             return IsValid();
         }
     }
