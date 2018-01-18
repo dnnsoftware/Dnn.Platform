@@ -275,6 +275,8 @@ namespace DNNConnect.CKEditorProvider
 
                 _portalSettings = GetPortalSettings();
 
+                listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
+
                 FillFolders();
 
                 RenderUrlControls(true);
@@ -797,10 +799,7 @@ namespace DNNConnect.CKEditorProvider
                 txtHeight.Text = importedSettings.Config.Height;
             }
 
-            if (!string.IsNullOrEmpty(importedSettings.BlankText))
-            {
-                txtBlanktext.Text = importedSettings.BlankText;
-            }
+            txtBlanktext.Text = Convert.ToString(importedSettings.BlankText);
 
             var imporUploadSizeRoles = importedSettings.UploadSizeRoles;
 
