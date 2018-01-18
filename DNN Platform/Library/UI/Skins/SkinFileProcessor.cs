@@ -72,7 +72,7 @@ namespace DotNetNuke.UI.Skins
         private readonly Hashtable m_ControlList = new Hashtable();
         private readonly ObjectParser m_ObjectFactory;
         private readonly PathParser m_PathFactory = new PathParser();
-        private readonly XmlDocument m_SkinAttributes = new XmlDocument();
+        private readonly XmlDocument m_SkinAttributes = new XmlDocument { XmlResolver = null };
         private readonly string m_SkinName;
         private readonly string m_SkinPath;
         private readonly string m_SkinRoot;
@@ -338,7 +338,7 @@ namespace DotNetNuke.UI.Skins
         private class ControlParser
         {
             private readonly Hashtable m_ControlList;
-            private XmlDocument m_Attributes = new XmlDocument();
+            private XmlDocument m_Attributes = new XmlDocument { XmlResolver = null };
             private string m_ParseMessages = "";
             private ArrayList m_RegisterList = new ArrayList();
 

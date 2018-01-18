@@ -326,7 +326,7 @@ namespace DotNetNuke.Services.Journal
 
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
-                var xDoc = new XmlDocument();
+                var xDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xnode = xDoc.CreateElement("items");
                 XmlElement xnode2 = xDoc.CreateElement("item");
                 xnode2.AppendChild(CreateElement(xDoc, "id", "-1"));
@@ -441,7 +441,7 @@ namespace DotNetNuke.Services.Journal
             }
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
-                var xDoc = new XmlDocument();
+                var xDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xnode = xDoc.CreateElement("items");
                 XmlElement xnode2 = xDoc.CreateElement("item");
                 xnode2.AppendChild(CreateElement(xDoc, "id", "-1"));

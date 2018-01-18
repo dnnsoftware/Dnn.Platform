@@ -3471,7 +3471,7 @@ namespace DotNetNuke.Common
         /// <returns>specific node by content type of the whole document.</returns>
         public static XmlNode GetContent(string Content, string ContentType)
         {
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.LoadXml(Content);
             if (String.IsNullOrEmpty(ContentType))
             {

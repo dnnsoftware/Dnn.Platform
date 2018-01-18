@@ -526,7 +526,7 @@ namespace DotNetNuke.Common.Utilities
         public static XmlDocument Load(string filename)
         {
             //open the config file
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.Load(Globals.ApplicationMapPath + "\\" + filename);
             //test for namespace added by Web Admin Tool
             if (!String.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
@@ -704,7 +704,7 @@ namespace DotNetNuke.Common.Utilities
         public static string UpdateMachineKey()
         {
 			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-            var xmlConfig = new XmlDocument();
+            var xmlConfig = new XmlDocument { XmlResolver = null };
             string strError = "";
 
             //save the current config files
@@ -751,7 +751,7 @@ namespace DotNetNuke.Common.Utilities
         public static string UpdateValidationKey()
         {
 			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-            var xmlConfig = new XmlDocument();
+            var xmlConfig = new XmlDocument { XmlResolver = null };
             string strError = "";
 
             //save the current config files
@@ -855,7 +855,7 @@ namespace DotNetNuke.Common.Utilities
                 // we need to add the InstallVersion
 
 				string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-                var xmlConfig = new XmlDocument();
+                var xmlConfig = new XmlDocument { XmlResolver = null };
                 //save the current config files
                 BackupConfig();
                 try

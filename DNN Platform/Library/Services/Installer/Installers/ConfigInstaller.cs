@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     Util.BackupFile(TargetFile, PhysicalSitePath, Log);
 
                     //Create an XmlDocument for the config file
-                    _TargetConfig = new XmlDocument();
+                    _TargetConfig = new XmlDocument { XmlResolver = null };
                     TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
                     //Create XmlMerge instance from InstallConfig source
@@ -252,7 +252,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (!string.IsNullOrEmpty(UnInstallConfig))
                 {
                     //Create an XmlDocument for the config file
-                    _TargetConfig = new XmlDocument();
+                    _TargetConfig = new XmlDocument { XmlResolver = null };
                     TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
                     //Create XmlMerge instance from UnInstallConfig source

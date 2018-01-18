@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Syndication
             byte[] feed = new WebClient().DownloadData(url);
 
             // parse it as XML
-            var doc = new XmlDocument();
+            var doc = new XmlDocument { XmlResolver = null };
             doc.Load(new MemoryStream(feed));
 
             // parse into DOM
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Syndication
 
                 try
                 {
-                    rssDoc = new XmlDocument();
+                    rssDoc = new XmlDocument { XmlResolver = null };
                     rssDoc.Load(rssFilename);
 
                     // look for special XML comment (before the root tag)'

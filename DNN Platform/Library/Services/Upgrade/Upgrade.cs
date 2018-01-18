@@ -1719,7 +1719,7 @@ namespace DotNetNuke.Services.Upgrade
                     //Synchronize the Templates folder to ensure the templates are accessible
                     FolderManager.Instance.Synchronize(portal.PortalID, "Templates/", false, true);
 
-                    var xmlDoc = new XmlDocument();
+                    var xmlDoc = new XmlDocument { XmlResolver = null };
                     try
                     {
                         // open the XML file
@@ -3976,7 +3976,7 @@ namespace DotNetNuke.Services.Upgrade
         internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
         {
             //Load Template
-            var installTemplate = new XmlDocument();
+            var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
             //Parse the root node
             XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
@@ -4671,7 +4671,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void InstallDNN(string strProviderPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallDNN:" + strProviderPath);
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
 
             // open the Install Template XML file
             string errorMessage = GetInstallTemplate(xmlDoc);
@@ -6153,7 +6153,7 @@ namespace DotNetNuke.Services.Upgrade
                         string.Format("Default Website.template.{0}.resx", Localization.Localization.SystemLocale));
                 }
 
-                var xmlDocument = new XmlDocument();
+                var xmlDocument = new XmlDocument { XmlResolver = null };
                 xmlDocument.Load(languageFilePath);
 
                 resourcesDict.Add(cultureCode, xmlDocument);

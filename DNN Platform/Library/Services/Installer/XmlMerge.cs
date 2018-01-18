@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Installer
         {
             Version = version;
             Sender = sender;
-            SourceConfig = new XmlDocument();
+            SourceConfig = new XmlDocument { XmlResolver = null };
             SourceConfig.Load(sourceFileName);
         }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Installer
         {
             Version = version;
             Sender = sender;
-            SourceConfig = new XmlDocument();
+            SourceConfig = new XmlDocument { XmlResolver = null };
             SourceConfig.Load(sourceStream);
         }
 
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Installer
         {
             Version = version;
             Sender = sender;
-            SourceConfig = new XmlDocument();
+            SourceConfig = new XmlDocument { XmlResolver = null };
             SourceConfig.Load(sourceReader);
         }
 

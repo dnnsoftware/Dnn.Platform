@@ -2203,7 +2203,7 @@ namespace DotNetNuke.Entities.Modules
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
             // Create dummy pane node for private DeserializeModule method
-            var docPane = new XmlDocument();
+            var docPane = new XmlDocument { XmlResolver = null };
             docPane.LoadXml(String.Format("<pane><name>{0}</name></pane>", module.PaneName));
 
             // Create ModuleInfo of Xml
