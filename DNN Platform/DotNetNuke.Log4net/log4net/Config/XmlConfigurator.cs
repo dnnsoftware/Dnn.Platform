@@ -731,13 +731,14 @@ namespace log4net.Config
 #elif NET_2_0 || NETSTANDARD1_3
 					// Allow the DTD to specify entity includes
 					XmlReaderSettings settings = new XmlReaderSettings();
-                                        // .NET 4.0 warning CS0618: 'System.Xml.XmlReaderSettings.ProhibitDtd'
-                                        // is obsolete: 'Use XmlReaderSettings.DtdProcessing property instead.'
+                    // .NET 4.0 warning CS0618: 'System.Xml.XmlReaderSettings.ProhibitDtd'
+                    // is obsolete: 'Use XmlReaderSettings.DtdProcessing property instead.'
 #if NETSTANDARD1_3 // TODO DtdProcessing.Parse not yet available (https://github.com/dotnet/corefx/issues/4376)
 					settings.DtdProcessing = DtdProcessing.Ignore;
 #elif !NET_4_0 && !MONO_4_0
 					settings.ProhibitDtd = true;
 #else
+                    settings.XmlResolver = null;
 					settings.DtdProcessing = DtdProcessing.Prohibit;
 #endif
 

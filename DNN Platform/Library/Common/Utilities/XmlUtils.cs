@@ -156,7 +156,11 @@ namespace DotNetNuke.Common.Utilities
                 var xser = new XmlSerializer(objValue.GetType());
 
                 //A reader is needed to read the XML document.
-                var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml)) { DtdProcessing = DtdProcessing.Prohibit };
+                var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
+                {
+                    XmlResolver = null,
+                    DtdProcessing = DtdProcessing.Prohibit
+                };
 
                 //Use the Deserialize method to restore the object's state, and store it
                 //in the Hashtable
@@ -185,7 +189,11 @@ namespace DotNetNuke.Common.Utilities
                         var xser = new XmlSerializer(Type.GetType(typeName));
 
                         //A reader is needed to read the XML document.
-                        var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml)) { DtdProcessing = DtdProcessing.Prohibit };
+                        var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
+                        {
+                            XmlResolver = null,
+                            DtdProcessing = DtdProcessing.Prohibit
+                        };
 
                         //Use the Deserialize method to restore the object's state, and store it
                         //in the Hashtable
@@ -824,7 +832,11 @@ namespace DotNetNuke.Common.Utilities
             var functionReturnValue = new XmlDocument { XmlResolver = null };
             var req = WebRequest.Create(contentUrl);
             var result = req.GetResponse();
-            var objXmlReader = new XmlTextReader(result.GetResponseStream()) { DtdProcessing = DtdProcessing.Prohibit };
+            var objXmlReader = new XmlTextReader(result.GetResponseStream())
+            {
+                XmlResolver = null,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             functionReturnValue.Load(objXmlReader);
             return functionReturnValue;
         }
