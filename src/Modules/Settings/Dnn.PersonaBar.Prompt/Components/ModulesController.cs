@@ -163,6 +163,11 @@ namespace Dnn.PersonaBar.Prompt.Components
                 {
                     return module;
                 }
+                else
+                {
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
+                    return null;
+                }
             }
 
             var modules = ModuleController.Instance.GetAllTabsModulesByModuleID(moduleId);
