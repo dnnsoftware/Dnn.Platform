@@ -262,7 +262,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 return;
             }
 
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             try
             {
                 xmlDoc.Load(templateFile);

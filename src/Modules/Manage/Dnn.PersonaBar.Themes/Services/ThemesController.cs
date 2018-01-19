@@ -212,7 +212,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 var settings = new List<ListItemInfo>();
                 if (File.Exists(strFile))
                 {
-                    var xmlDoc = new XmlDocument();
+                    var xmlDoc = new XmlDocument { XmlResolver = null };
                     xmlDoc.Load(strFile);
                     foreach (XmlNode xmlSetting in xmlDoc.SelectNodes("//Settings/Setting"))
                     {
@@ -238,7 +238,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 var value = string.Empty;
                 if (File.Exists(strFile))
                 {
-                    var xmlDoc = new XmlDocument();
+                    var xmlDoc = new XmlDocument { XmlResolver = null };
                     xmlDoc.Load(strFile);
                     foreach (XmlNode xmlSetting in xmlDoc.SelectNodes("//Settings/Setting"))
                     {
