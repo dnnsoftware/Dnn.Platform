@@ -265,14 +265,14 @@ class Dropdown extends Component {
         const nextIndex = currentIndex < maxIndex ? currentIndex++ : currentIndex;
         const option = this.getOption(currentIndex);
         this.setState({currentIndex, selectedOption: option, closestValue: null, ignorePreselection: true});
-        this.scrollToSelectedItem(nextIndex, eventKey);
+        this.scrollToSelectedItem(eventKey);
     }
 
     onArrowUp(eventKey) {
         let currentIndex = this.getCurrentIndex();
         const nextIndex = currentIndex > 0 ? currentIndex-- : currentIndex;
         this.setState({currentIndex, selectedOption: this.getOption(currentIndex), closestValue: null, ignorePreselection: true});
-        this.scrollToSelectedItem(nextIndex, eventKey);
+        this.scrollToSelectedItem(eventKey);
     }
 
     initOptions() {
