@@ -34,6 +34,8 @@ module.exports = {
             path.resolve('./node_modules')
         ]
     },
+    devtool: "inline-source-map",
+    debug: true,
     plugins: isProduction ? [
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.DedupePlugin(),

@@ -39,9 +39,7 @@ export default class TagInput extends Component {
 
     addTag(tag) {
         this.props.addTag(tag);
-        
-        const inputField = this.refs.inputField;
-        setTimeout(() => { inputField.focus(); }, 0);
+        this.inputField.focus();
     }
 
     onChange(event) {
@@ -92,7 +90,7 @@ export default class TagInput extends Component {
             <div>
                 <div className="input-container">
                     <input
-                        ref="inputField"
+                        ref={(input) => this.inputField = input}
                         type="text"
                         placeholder={this.props.addTagsPlaceholder}
                         onKeyDown={this.onKeyDown.bind(this)}

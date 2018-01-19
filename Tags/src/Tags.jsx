@@ -149,6 +149,7 @@ class Tags extends Component {
                         container={this.containerRef} />
                 </div>
                 {this.state.isInputVisible &&
+                    this.state.newTagText.length > 0 &&
                     this.props.autoSuggest &&
                     this.props.suggestions &&
                     this.props.suggestions.length > 0 &&
