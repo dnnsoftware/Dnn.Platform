@@ -70,7 +70,6 @@ exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
         }
       }
       type="text"
-      value=""
     />
     <div
       className="collapsible-content open"
@@ -325,7 +324,6 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 1`] = `
         }
       }
       type="text"
-      value=""
     />
     <div
       className="dropdown-icon"
@@ -422,7 +420,6 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
         }
       }
       type="text"
-      value=""
     />
     <div
       className="dropdown-icon"
@@ -706,7 +703,6 @@ ShallowWrapper {
             }
           }
           type="text"
-          value=""
         />,
         false,
         <div
@@ -838,7 +834,6 @@ ShallowWrapper {
             "width": 0,
           },
           "type": "text",
-          "value": "",
         },
         "ref": [Function],
         "rendered": null,
@@ -1168,7 +1163,6 @@ ShallowWrapper {
               }
             }
             type="text"
-            value=""
           />,
           false,
           <div
@@ -1300,7 +1294,6 @@ ShallowWrapper {
               "width": 0,
             },
             "type": "text",
-            "value": "",
           },
           "ref": [Function],
           "rendered": null,
@@ -1686,7 +1679,6 @@ ShallowWrapper {
             }
           }
           type="text"
-          value=""
         />,
         <div
           className="dropdown-icon"
@@ -1832,7 +1824,6 @@ ShallowWrapper {
             "width": 0,
           },
           "type": "text",
-          "value": "",
         },
         "ref": [Function],
         "rendered": null,
@@ -2182,7 +2173,6 @@ ShallowWrapper {
               }
             }
             type="text"
-            value=""
           />,
           <div
             className="dropdown-icon"
@@ -2328,7 +2318,6 @@ ShallowWrapper {
               "width": 0,
             },
             "type": "text",
-            "value": "",
           },
           "ref": [Function],
           "rendered": null,
@@ -2720,7 +2709,6 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
         }
       }
       type="text"
-      value=""
     />
     <div
       className="collapsible-content open"
@@ -2962,7 +2950,6 @@ ShallowWrapper {
             }
           }
           type="text"
-          value=""
         />,
         <div
           className="dropdown-icon"
@@ -3050,7 +3037,6 @@ ShallowWrapper {
             "width": 0,
           },
           "type": "text",
-          "value": "",
         },
         "ref": [Function],
         "rendered": null,
@@ -3257,7 +3243,6 @@ ShallowWrapper {
               }
             }
             type="text"
-            value=""
           />,
           <div
             className="dropdown-icon"
@@ -3345,7 +3330,6 @@ ShallowWrapper {
               "width": 0,
             },
             "type": "text",
-            "value": "",
           },
           "ref": [Function],
           "rendered": null,
@@ -3589,7 +3573,6 @@ ShallowWrapper {
             }
           }
           type="text"
-          value=""
         />,
         <div
           className="dropdown-icon"
@@ -3677,7 +3660,6 @@ ShallowWrapper {
             "width": 0,
           },
           "type": "text",
-          "value": "",
         },
         "ref": [Function],
         "rendered": null,
@@ -3884,7 +3866,6 @@ ShallowWrapper {
               }
             }
             type="text"
-            value=""
           />,
           <div
             className="dropdown-icon"
@@ -3972,7 +3953,6 @@ ShallowWrapper {
               "width": 0,
             },
             "type": "text",
-            "value": "",
           },
           "ref": [Function],
           "rendered": null,
@@ -4243,7 +4223,6 @@ ShallowWrapper {
             }
           }
           type="text"
-          value=""
         />,
         <div
           className="dropdown-icon"
@@ -4389,7 +4368,6 @@ ShallowWrapper {
             "width": 0,
           },
           "type": "text",
-          "value": "",
         },
         "ref": [Function],
         "rendered": null,
@@ -4739,7 +4717,6 @@ ShallowWrapper {
               }
             }
             type="text"
-            value=""
           />,
           <div
             className="dropdown-icon"
@@ -4885,7 +4862,6 @@ ShallowWrapper {
               "width": 0,
             },
             "type": "text",
-            "value": "",
           },
           "ref": [Function],
           "rendered": null,
@@ -5264,7 +5240,6 @@ ShallowWrapper {
             }
           }
           type="text"
-          value=""
         />,
         <div
           className="dropdown-icon"
@@ -5352,7 +5327,6 @@ ShallowWrapper {
             "width": 0,
           },
           "type": "text",
-          "value": "",
         },
         "ref": [Function],
         "rendered": null,
@@ -5559,7 +5533,6 @@ ShallowWrapper {
               }
             }
             type="text"
-            value=""
           />,
           <div
             className="dropdown-icon"
@@ -5647,7 +5620,6 @@ ShallowWrapper {
               "width": 0,
             },
             "type": "text",
-            "value": "",
           },
           "ref": [Function],
           "rendered": null,
