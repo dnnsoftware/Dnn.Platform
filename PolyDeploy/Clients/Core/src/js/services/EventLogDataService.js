@@ -5,24 +5,26 @@
 
         // GET
         // Browse Events.
-        function browseEvents(pageIndex, pageSize, eventType, severity) {
+        function browseEvents(options) {
 
             var queryParameters = {};
 
-            if (pageIndex) {
-                queryParameters['pageIndex'] = pageIndex;
-            }
+            if (options) {
+                if (options.pageIndex) {
+                    queryParameters['pageIndex'] = options.pageIndex;
+                }
 
-            if (pageSize) {
-                queryParameters['pageSize'] = pageSize;
-            }
+                if (options.pageSize) {
+                    queryParameters['pageSize'] = options.pageSize;
+                }
 
-            if (eventType) {
-                queryParameters['eventType'] = eventType;
-            }
+                if (options.eventType) {
+                    queryParameters['eventType'] = options.eventType;
+                }
 
-            if (severity) {
-                queryParameters['severity'] = severity;
+                if (options.severity) {
+                    queryParameters['severity'] = options.severity;
+                }
             }
 
             var queryString = buildQueryString(queryParameters);
@@ -37,7 +39,7 @@
         }
 
         // GET
-        // Get event types..
+        // Get event types.
         function getEventTypes() {
 
             // Make request.

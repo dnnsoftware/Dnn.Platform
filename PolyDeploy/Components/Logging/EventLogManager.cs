@@ -19,6 +19,11 @@ namespace Cantarus.Modules.PolyDeploy.Components.Logging
             return LogDC.GetEventTypes();
         }
 
+        public static int EventCount()
+        {
+            return LogDC.EventCount();
+        }
+
         public static void Log(string eventType, EventLogSeverity severity, string message = null, Exception ex = null)
         {
             // TODO: Internal logging switched on?

@@ -26,6 +26,22 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- Pagination -->
+                    <div class="can-pagination">
+                        <span class="prev"
+                              ng-click="prevPage()"
+                              ng-disable="hasPrevPage()"><</span>
+                        <ul class="pages">
+                            <li ng-repeat="i in getPages(pageCount) track by $index" 
+                                ng-click="loadPage($index+1)" 
+                                ng-class="{ current: $index+1 === currentPage }">{{ $index+1 }}</li>
+                        </ul>
+                        <span class="next"
+                              ng-click="nextPage()"
+                              ng-disable="hasNextPage()">></span>
+                    </div>
+                    <!-- /Pagination -->
                 </div>
             </div>
         </div>
