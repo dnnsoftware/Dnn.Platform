@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
     <style>
         #topLevelMenu .hovermenu > ul, ul.personabarnav {list-style-type: none;}
+        #personabar-wrap {
+          position: fixed;
+          top: 0;
+          right:0;
+          bottom:0;
+          left: 0;
+          overflow-y: scroll;
+          -webkit-overflow-scrolling: touch;
+        }
     </style>
     <script type="text/javascript">
         window.Sys = !window.Sys ? window.top.Sys : window.Sys;
@@ -24,6 +33,7 @@
     </script>
 </head>
 <body>
+    <div id="personabar-wrap">
     <div class="personabar" id="personabar">
         <div class="personabarLogo">
             <a class="update" target="_blank" data-bind="attr: {'href': updateLink}, html: updateText, css: {'normal-update': updateType() === 1, 'critical-update': updateType() === 2}"></a>
@@ -103,6 +113,7 @@
         <div></div>
         <span></span>
         <img id="close-load-error" class="thin-close-x" src="images/x_thin.svg" alt="Close">
+    </div>
     </div>
     <!-- end extra -->
     <script type="text/javascript">
