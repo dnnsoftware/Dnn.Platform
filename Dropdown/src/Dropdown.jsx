@@ -169,32 +169,48 @@ class Dropdown extends Component {
         return this.props.labelIsMultiLine ? "" : " no-wrap";
     }
 
-    findMatchingItem(option) {
+    startWith(option) {
         const { props, state } = this;
         const regex = state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
 
         const label = props.getLabelText ? props.getLabelText(option.label) : option.label;
 
-        return label.match(new RegExp("^" + regex, "gi"));
+        return label.match(new RegExp("^" + regex,"gi"));
+    }
+
+    containsString(option) {
+        const { props, state } = this;
+        const regex = state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+
+        const label = props.getLabelText ? props.getLabelText(option.label) : option.label;
+
+        return label.match(new RegExp(regex,"gi"));
     }
 
     searchItems() {
 
         const { props } = this;
 
-        const index = props.options.findIndex(this.findMatchingItem, this);
-        if(index) {
+        let index = props.options.findIndex(this.startWith, this);
+        if(index < 0) {
+            index = props.options.findIndex(this.containsString, this);
+        }
+        if(index > -1) {
 
-            const value = this.getOption(index).value;
+            const option = this.getOption(index);
 
-            this.setState({
-                closestValue: value,
-                currentIndex: index
-            },() => {
-                this.setState({dropdownText: ""});
-                this.dropdownSearch.value = "";
-                setTimeout(() => this.scrollToSelectedItem(),100);
-            });
+            if(option) {
+                this.setState({
+                    closestValue: option.value,
+                    currentIndex: index,
+                    dropdownText: ""
+                }, () => {
+                    setTimeout(() => {
+                        this.scrollToSelectedItem();
+                        this.dropdownSearch.value = "";
+                    });
+                });
+            }
         }
     }
 
@@ -214,9 +230,7 @@ class Dropdown extends Component {
     onDropdownSearch(event) {
         this.setState({
             dropdownText: event.target.value
-        }, () => {
-            this.searchItems();
-        });
+        }, () => this.searchItems());
     }
 
     onKeyDown(event) {
@@ -251,14 +265,14 @@ class Dropdown extends Component {
         const nextIndex = currentIndex < maxIndex ? currentIndex++ : currentIndex;
         const option = this.getOption(currentIndex);
         this.setState({currentIndex, selectedOption: option, closestValue: null, ignorePreselection: true});
-        this.scrollToSelectedItem(nextIndex, eventKey);
+        this.scrollToSelectedItem(eventKey);
     }
 
     onArrowUp(eventKey) {
         let currentIndex = this.getCurrentIndex();
         const nextIndex = currentIndex > 0 ? currentIndex-- : currentIndex;
         this.setState({currentIndex, selectedOption: this.getOption(currentIndex), closestValue: null, ignorePreselection: true});
-        this.scrollToSelectedItem(nextIndex, eventKey);
+        this.scrollToSelectedItem(eventKey);
     }
 
     initOptions() {
@@ -311,7 +325,6 @@ class Dropdown extends Component {
                     type="text"
                     onChange={this.onDropdownSearch.bind(this)}
                     ref={(input) => this.dropdownSearch = input}
-                    value={this.state.dropdownText}
                     onKeyDown={this.onKeyDown.bind(this)}
                     style={{
                         position: "absolute",
