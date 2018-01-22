@@ -63,6 +63,7 @@ class SearchAdvanced extends Component {
                                 onSearch={this.props.onSearch}
                                 collapsed={this.state.collapsed}
                                 clearAdvancedSearch={this.props.clearAdvancedSearch}
+                                clearAdvancedSearchDateInterval={this.props.clearAdvancedSearchDateInterval}
                                 updateSearchAdvancedTags={this.props.updateSearchAdvancedTags}
                             />
                         }
@@ -90,6 +91,7 @@ SearchAdvanced.propTypes = {
     tags : PropTypes.string.isRequired,
     onSearch : PropTypes.func.isRequired,
     clearAdvancedSearch : PropTypes.func.isRequired,
+    clearAdvancedSearchDateInterval : PropTypes.func.isRequired,
     updateSearchAdvancedTags : PropTypes.func.isRequired
 };
 
