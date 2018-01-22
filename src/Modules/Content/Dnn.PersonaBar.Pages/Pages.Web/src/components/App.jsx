@@ -1034,6 +1034,15 @@ class App extends Component {
         });
         this.onSearch(this.state.searchTerm);
     }
+
+    clearAdvancedSearchDateInterval(){
+        let date = new Date();
+        this.setState({
+            startDate:date,
+            endDate: date,
+            startAndEndDateDirty:false
+        });
+    }
     
     clearSearch(callback) {
         let date = new Date();
@@ -1298,6 +1307,7 @@ class App extends Component {
                 onSearch={this.onSearch.bind(this)}
                 clearSearch={this.clearSearch.bind(this)}
                 clearAdvancedSearch={this.clearAdvancedSearch.bind(this)}
+                clearAdvancedSearchDateInterval={this.clearAdvancedSearchDateInterval.bind(this)}
                 buildBreadCrumbPath={this.buildBreadCrumbPath.bind(this)} 
                 setEmptyStateMessage={this.setEmptyStateMessage.bind(this)}
                 onViewPage={this.onViewPage.bind(this)}

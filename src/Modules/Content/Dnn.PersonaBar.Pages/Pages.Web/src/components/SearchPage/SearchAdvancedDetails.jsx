@@ -108,6 +108,7 @@ class SearchAdvancedDetails extends Component {
                                 onDayClick={this.props.onDayClick}
                                 dropdownIsActive={this.state.DropdownCalendarIsActive}
                                 applyChanges={() => {this.toggleDropdownCalendar(); this.props.onApplyChangesDropdownDayPicker();}}
+                                clearChanges={() => {this.toggleDropdownCalendar();this.props.clearAdvancedSearchDateInterval();}}
                                 startDate={this.props.startDate}
                                 endDate={this.props.endDate}
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
@@ -164,6 +165,7 @@ SearchAdvancedDetails.propTypes = {
     filterByWorkflow : PropTypes.string.isRequired,
     collapsed : PropTypes.bool.isRequired, 
     clearAdvancedSearch : PropTypes.func.isRequired,
+    clearAdvancedSearchDateInterval : PropTypes.func.isRequired,
     updateSearchAdvancedTags : PropTypes.func.isRequired
 };
 
