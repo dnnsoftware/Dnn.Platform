@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
 
             //Load Template
-            var installTemplate = new XmlDocument();
+            var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
             XmlNode dotnetnukeNode = installTemplate.SelectSingleNode("//dotnetnuke");
 
@@ -283,7 +283,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 return;
             }
-            var installTemplate = new XmlDocument();
+            var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
             XmlNodeList nodes = installTemplate.SelectNodes(xmlNodePath);
             if (nodes != null && nodes.Count > 0 && nodes[0].ParentNode != null)
@@ -302,7 +302,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             var installConfig = new InstallConfig();
 
             //Load Template
-            var installTemplate = new XmlDocument();
+            var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
 
             //Parse the root node

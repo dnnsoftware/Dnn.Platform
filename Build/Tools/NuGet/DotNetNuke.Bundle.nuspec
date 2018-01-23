@@ -36,8 +36,8 @@
     <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.pdb" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.pdb" target="lib\"/>
 
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\"/>

@@ -722,7 +722,7 @@ namespace log4net.Config
 			else
 			{
 				// Load the config file into a document
-				XmlDocument doc = new XmlDocument();
+				XmlDocument doc = new XmlDocument() { XmlResolver = null };
 				try
 				{
 #if (NETCF)
@@ -731,14 +731,15 @@ namespace log4net.Config
 #elif NET_2_0 || NETSTANDARD1_3
 					// Allow the DTD to specify entity includes
 					XmlReaderSettings settings = new XmlReaderSettings();
-                                        // .NET 4.0 warning CS0618: 'System.Xml.XmlReaderSettings.ProhibitDtd'
-                                        // is obsolete: 'Use XmlReaderSettings.DtdProcessing property instead.'
+                    // .NET 4.0 warning CS0618: 'System.Xml.XmlReaderSettings.ProhibitDtd'
+                    // is obsolete: 'Use XmlReaderSettings.DtdProcessing property instead.'
 #if NETSTANDARD1_3 // TODO DtdProcessing.Parse not yet available (https://github.com/dotnet/corefx/issues/4376)
 					settings.DtdProcessing = DtdProcessing.Ignore;
 #elif !NET_4_0 && !MONO_4_0
-					settings.ProhibitDtd = false;
+					settings.ProhibitDtd = true;
 #else
-					settings.DtdProcessing = DtdProcessing.Parse;
+                    settings.XmlResolver = null;
+					settings.DtdProcessing = DtdProcessing.Prohibit;
 #endif
 
 					// Create a reader over the input stream
@@ -1104,8 +1105,8 @@ namespace log4net.Config
 					// Copy the xml data into the root of a new document
 					// this isolates the xml config data from the rest of
 					// the document
-					XmlDocument newDoc = new XmlDocument();
-					XmlElement newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
+					XmlDocument newDoc = new XmlDocument() { XmlResolver = null };
+                    XmlElement newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
 
 					// Pass the configurator the config element
 					configurableRepository.Configure(newElement);

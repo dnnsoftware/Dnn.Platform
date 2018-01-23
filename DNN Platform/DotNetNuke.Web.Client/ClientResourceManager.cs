@@ -114,7 +114,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var configPath = HostingEnvironment.MapPath("~/web.config");
             if (!String.IsNullOrEmpty(configPath))
             {
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(configPath);
                 XmlDocumentFragment xmlFrag;
 
@@ -220,7 +220,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             if (!String.IsNullOrEmpty(configPath))
             {
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(configPath);
 
                 // Config Sections

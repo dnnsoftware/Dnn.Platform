@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			}
 
 			var templateText = Utilities.CachedFileContent(baseDefinition.TemplatePath);
-			var xml = new XmlDocument();
+			var xml = new XmlDocument { XmlResolver = null };
 			const string xmlNs = "http://www.w3.org/1999/XSL/Transform";
 			xml.LoadXml(
 				@"
