@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 byte[] feed = new WebClient().DownloadData(uri.AbsoluteUri);
 
-                var opmlDoc = new XmlDocument();
+                var opmlDoc = new XmlDocument { XmlResolver = null };
                 opmlDoc.Load(new MemoryStream(feed));
                 opmlFeed = Opml.LoadFromXml(opmlDoc);
 
@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Syndication
 
                 try
                 {
-                    opmlDoc = new XmlDocument();
+                    opmlDoc = new XmlDocument { XmlResolver = null };
                     opmlDoc.Load(opmlFilename);
 
                     // look for special XML comment (before the root tag)'

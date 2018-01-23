@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 			var result = cache[filename] as XmlDocument;
 			if (result == null)
 			{
-				result = new XmlDocument();
+				result = new XmlDocument { XmlResolver = null };
 				result.Load(filename);
 				cache.Insert(filename, result, new CacheDependency(filename));
 			}

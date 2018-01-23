@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Syndication
 
         internal static XmlDocument CreateEmptyRssXml()
         {
-            var doc = new XmlDocument();
+            var doc = new XmlDocument { XmlResolver = null };
             doc.LoadXml(@"<?xml version=""1.0"" encoding=""utf-8""?>
 <rss version=""2.0"">
 </rss>");

@@ -2720,7 +2720,7 @@ namespace DotNetNuke.Entities.Tabs
                     // for some reason serialization of permissions did not work
                     // we are using a different method here to make sure that 
                     // permissions are included in the tabinfo xml
-                    XmlDocument tabPermissions = new XmlDocument();
+                    XmlDocument tabPermissions = new XmlDocument { XmlResolver = null };
                     CBO.SerializeObject(tab.TabPermissions, tabPermissions);
 
                     XmlNode permissionsNode = tabXml.CreateElement("tabpermissions");
@@ -2879,7 +2879,7 @@ namespace DotNetNuke.Entities.Tabs
                 module = kvp.Value;
                 if (!module.IsDeleted)
                 {
-                    moduleXml = new XmlDocument();
+                    moduleXml = new XmlDocument { XmlResolver = null };
                     moduleNode = ModuleController.SerializeModule(moduleXml, module, includeContent);
                     if (panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']") == null)
                     {
@@ -2899,7 +2899,7 @@ namespace DotNetNuke.Entities.Tabs
             var tabUrlsNode = tabNode.AppendChild(tabXml.CreateElement("tabUrls"));
 			foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, tab.PortalID))
             {
-                var tabUrlXml = new XmlDocument();
+                var tabUrlXml = new XmlDocument { XmlResolver = null };
                 XmlNode tabUrlNode = tabUrlXml.CreateElement("tabUrl");
                 tabUrlNode.AddAttribute("SeqNum", tabUrl.SeqNum.ToString(CultureInfo.InvariantCulture));
                 tabUrlNode.AddAttribute("Url", tabUrl.Url);

@@ -431,7 +431,7 @@ namespace DotNetNuke.Entities.Modules
                     var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
                     {
-                        var xmlDocument = new XmlDocument();
+                        var xmlDocument = new XmlDocument { XmlResolver = null };
                         xmlDocument.LoadXml(package.Manifest);
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)

@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         /// -----------------------------------------------------------------------------
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
-            var xmlTab = new XmlDocument();
+            var xmlTab = new XmlDocument { XmlResolver = null };
             var nodeTab = TabController.SerializeTab(xmlTab, Tab, chkContent.Checked);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
         }
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         var filename = folder.FolderPath + txtFile.Text + ".page.template";
                         filename = filename.Replace("/", "\\");
 
-                        var xmlTemplate = new XmlDocument();
+                        var xmlTemplate = new XmlDocument { XmlResolver = null };
                         XmlNode nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));
                         if (nodePortal.Attributes != null)
                         {

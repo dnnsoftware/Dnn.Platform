@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.FileSystem
             {                
                 if (File.Exists(defaultConfigFilePath))
                 {
-                    var configDocument = new XmlDocument();
+                    var configDocument = new XmlDocument { XmlResolver = null };
                     configDocument.Load(defaultConfigFilePath);
                     FillFolderMappings(configDocument);
                     FillFolderTypes(configDocument);
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 var folderMappingsConfigContent = "<" + ConfigNode + ">" + folderMappinsSettings + "</" + ConfigNode +">";
                 File.AppendAllText(defaultConfigFilePath, folderMappingsConfigContent);
-                var configDocument = new XmlDocument();
+                var configDocument = new XmlDocument { XmlResolver = null };
                 configDocument.LoadXml(folderMappingsConfigContent);
                 FillFolderMappings(configDocument);
                 FillFolderTypes(configDocument);

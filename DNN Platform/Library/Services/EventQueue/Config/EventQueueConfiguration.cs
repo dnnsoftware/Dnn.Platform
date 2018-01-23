@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.EventQueue.Config
         {
             if (!String.IsNullOrEmpty(configXml))
             {
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.LoadXml(configXml);
                 foreach (XmlElement xmlItem in xmlDoc.SelectNodes("/EventQueueConfig/PublishedEvents/Event"))
                 {

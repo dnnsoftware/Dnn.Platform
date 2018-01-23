@@ -117,7 +117,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                     File.Copy(defaultConfigFile, filePath, true);
                 }
             }
-            var doc = new XmlDocument();
+            var doc = new XmlDocument { XmlResolver = null };
             doc.Load(filePath);
             XmlNode ruleRoot = doc.SelectSingleNode("/configuration/blockrequests");
             ruleRoot.RemoveAll();
