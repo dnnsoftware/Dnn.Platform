@@ -232,9 +232,12 @@ namespace DotNetNuke.Web.Common.Internal
         {
             var url = request.Url.LocalPath.ToLower();
 
-            return url.EndsWith("/install.aspx")
-                   || url.Contains("/upgradewizard.aspx")
-                   || url.Contains("/installwizard.aspx");
+            return url.EndsWith("webresource.axd")
+                   || url.EndsWith("scriptresource.axd")
+                   || url.EndsWith("captcha.aspx")
+                   || url.Contains("upgradewizard.aspx")
+                   || url.Contains("installwizard.aspx")
+                   || url.EndsWith("install.aspx");
         }
     }
 }
