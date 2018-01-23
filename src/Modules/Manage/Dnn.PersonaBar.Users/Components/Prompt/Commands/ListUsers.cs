@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagUsername = "username";
         [FlagParameter("role", "Prompt_ListUsers_FlagRole", "String")]
         private const string FlagRole = "role";
-        [FlagParameter("page", "Prompt_ListUsers_FlagPage", "Integer", "1")]
+        [FlagParameter("page", "Prompt_ListUsers_FlagPage", "Integer", "0")]
         private const string FlagPage = "page";
         [FlagParameter("max", "Prompt_ListUsers_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             Email = GetFlagValue(FlagEmail, "Email", string.Empty);
             Username = GetFlagValue(FlagUsername, "Username", string.Empty);
             Role = GetFlagValue(FlagRole, "Role", string.Empty);
-            Page = GetFlagValue(FlagPage, "Page", 1);
+            Page = GetFlagValue(FlagPage, "Page", 0);
             Max = GetFlagValue(FlagMax, "Max", 10);
             if (args.Length != 1 && !(args.Length == 3 && (HasFlag(FlagPage) || HasFlag(FlagMax))) && !(args.Length == 5 && HasFlag(FlagPage) && HasFlag(FlagMax)))
             {
