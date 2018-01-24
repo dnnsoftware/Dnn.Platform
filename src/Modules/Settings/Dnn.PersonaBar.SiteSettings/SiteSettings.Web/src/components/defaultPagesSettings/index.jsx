@@ -131,7 +131,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
         const TabParameters = {
             portalId: props.portalId !== undefined ? props.portalId : -2,
-            cultureCode: "",
+            cultureCode: props.cultureCode || "",
             isMultiLanguage: false,
             excludeAdminTabs: false,
             roles: "",
